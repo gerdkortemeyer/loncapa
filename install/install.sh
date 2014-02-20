@@ -11,6 +11,7 @@ cp conf/ssl.conf /etc/httpd/conf.d
 cp conf/lc.conf /etc/httpd/conf.d
 cp conf/lc_startup.pl /etc/httpd/conf
 cp conf/lc_parameters.pm /home/httpd/lib/perl/Apache
+cp test/lc_test.pm /home/httpd/lib/perl/Apache
 mkdir /home/httpd/html
 mkdir /home/httpd/html/scripts
 if [ ! -d /home/httpd/html/scripts/mathjax ]; then
