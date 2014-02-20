@@ -17,7 +17,7 @@ cp test/lc_test.pm /home/httpd/lib/perl/Apache
 mkdir /home/httpd/html
 mkdir /home/httpd/html/scripts
 if [ ! -d /home/httpd/html/scripts/mathjax ]; then
-   unzip loncapaNG/app/scripts/v2.3-latest -d /home/httpd/html/scripts
+   unzip app/scripts/v2.3-latest -d /home/httpd/html/scripts
    mv /home/httpd/html/scripts/mathjax* /home/httpd/html/scripts/mathjax 
 fi
 if [ ! -e /etc/httpd/conf.d/cluster_manager.conf ]; then
