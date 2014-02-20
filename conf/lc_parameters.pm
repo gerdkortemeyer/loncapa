@@ -32,11 +32,11 @@ sub lc_home_dir {
 }
 
 sub lc_certs_dir {
-   return &lc_home_dir().'/certs/';
+   return &lc_home_dir().'certs/';
 }
 
 sub lc_cluster_dir {
-   return &lc_home_dir().'/cluster/';
+   return &lc_home_dir().'cluster/';
 }
 
 sub lc_cluster_table {
