@@ -15,6 +15,7 @@ cp conf/lc_startup.pl /etc/httpd/conf
 cp conf/lc_parameters.pm /home/httpd/lib/perl/Apache
 cp test/lc_test.pm /home/httpd/lib/perl/Apache
 mkdir /home/httpd/html
+cp app/favicon.ico /home/httpd/html
 mkdir /home/httpd/html/scripts
 if [ ! -d /home/httpd/html/scripts/mathjax ]; then
    unzip app/scripts/v2.3-latest -d /home/httpd/html/scripts
