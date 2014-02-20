@@ -1,6 +1,5 @@
 # The LearningOnline Network with CAPA - LON-CAPA
 # Parameters
-# $Id: lc_parameters.pm,v 1.1 2014/02/13 20:14:06 www Exp $
 #
 # Copyright (C) 2014 Michigan State University Board of Trustees
 # 
@@ -26,18 +25,22 @@ use Apache2::Const qw(:common);
 
 require Exporter;
 our @ISA = qw (Exporter);
-our @EXPORT = qw(lc_home_dir lc_certs_dir);
-
-sub version {
-   return q$Id: lc_parameters.pm,v 1.1 2014/02/13 20:14:06 www Exp $;
-}
+our @EXPORT = qw(lc_home_dir lc_certs_dir lc_cluster_dir lc_cluster_table);
 
 sub lc_home_dir {
    return '/home/loncapa/';
 }
 
 sub lc_certs_dir {
-   return '/home/loncapa/certs/';
+   return &lc_home_dir().'/certs/';
+}
+
+sub lc_cluster_dir {
+   return &lc_home_dir().'/cluster/';
+}
+
+sub lc_cluster_table {
+   return &lc_cluster_dir().'cluster_table.json';
 }
 
 1;

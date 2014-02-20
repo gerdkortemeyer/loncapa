@@ -1,6 +1,8 @@
 cd ..
 mkdir /home/loncapa
 mkdir /home/loncapa/certs
+mkdir /home/loncapa/cluster
+chown -R www:www /home/loncapa
 mkdir /home/httpd
 mkdir /home/httpd/lib
 mkdir /home/httpd/lib/perl
