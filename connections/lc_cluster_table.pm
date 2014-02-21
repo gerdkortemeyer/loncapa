@@ -17,11 +17,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-package Apache::lc_connection_handle;
+package Apache::lc_cluster_table;
 
 use strict;
 use Apache2::RequestRec();
 use Apache2::RequestIO();
+use Apache2::Connection();
 use Apache2::Const qw(:common);
 
 use Apache::lc_parameters;
@@ -31,6 +32,7 @@ use Apache::lc_parameters;
 sub handler {
 # Get request object
    my $r = shift;
+   $r->print("Is: ".$r->connection->get_remote_host());
    return OK;
 }
 
