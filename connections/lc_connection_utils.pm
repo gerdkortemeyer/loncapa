@@ -1,6 +1,6 @@
 # The LearningOnline Network with CAPA - LON-CAPA
 #
-# The cluster primary server delivering the cluster table
+# Utilities for cluster connections
 #
 # Copyright (C) 2014 Michigan State University Board of Trustees
 # 
@@ -17,33 +17,20 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-package Apache::lc_cluster_table;
+package Apache::lc_connection_utils;
 
 use strict;
-use Apache2::RequestRec();
-use Apache2::RequestIO();
-use Apache2::Connection();
-use Apache2::ServerUtil();
-use Apache2::Const qw(:common);
+use Socket;
 
-use Apache::lc_parameters;
-use Apache::lc_connection_utils();
-
-# ==== Main handler
 #
-sub handler {
-# Get request object
-   my $r = shift;
-
-   unless (&Apache::lc_connection_utils::host_match(
-               Apache2::ServerUtil->server->dir_config('cluster_manager'),
-               $r->connection->local_ip())
-          ) {
-      $r->print('DO NOT MATCH');
-   } else {
-      $r->print('Match!');
-   }
-   return OK;
+# Check if two hosts are the same
+#
+sub host_match {
+   my ($host1,$host2)=@_;
+   my $hostip1=&inet_aton($host1);
+   my $hostip2=&inet_aton($host2);
+   unless (($hostip1) && ($hostip2)) { return 0; }
+   return (&inet_ntoa($hostip1) eq &inet_ntoa($hostip2));
 }
 
 1;
