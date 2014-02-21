@@ -24,7 +24,7 @@ if [ ! -d /home/httpd/html/scripts/mathjax ]; then
    unzip app/scripts/v2.3-latest -d /home/httpd/html/scripts
    mv /home/httpd/html/scripts/mathjax* /home/httpd/html/scripts/mathjax 
 fi
-if [ ! -e /etc/httpd/conf.d/cluster_manager.conf ]; then
-   cp conf/cluster/cluster_manager.conf /etc/httpd/conf.d
+if [ ! -e /home/loncapa/cluster/cluster_manager.conf ]; then
+   cp conf/cluster/cluster_manager.conf /home/loncapa/cluster
 fi
 /etc/init.d/httpd restart

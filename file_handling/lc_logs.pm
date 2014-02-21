@@ -31,7 +31,7 @@ our @EXPORT = qw(logerror logwarning lognotice logdebug);
 sub appendlog {
    my ($which,$text)=@_;
    open(LOG,'>>'.&lc_log_dir().$which.'.log');
-   print LOG &Apache::lc_date_utils::now2str().": ".$text."\n";
+   print LOG &Apache::lc_date_utils::now2str().":$$: ".$text."\n";
    close(LOG);
 }
 

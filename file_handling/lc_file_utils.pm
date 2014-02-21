@@ -28,12 +28,21 @@ use Apache::lc_logs;
 
 # ==== Lock a file the hard way
 #
-sub getlock {
+sub get_exclusive_lock {
    my ($filename)=@_;
-   &touch($filename);
+   &touch($filename.'.lock');
    my $fh;
-   open($fh,$filename);
+   open($fh,$filename.'.lock');
    flock($fh,LOCK_EX);
+   return $fh;
+}
+
+sub get_shared_lock {
+   my ($filename)=@_;
+   &touch($filename.'.lock');
+   my $fh;
+   open($fh,$filename.'.lock') || &logwarning("Could not open lockfile for $filename");
+   flock($fh,LOCK_SH) || &logwarning("Could not obtain lock for $filename");
    return $fh;
 }
 
@@ -41,7 +50,7 @@ sub getlock {
 #
 sub unlock {
    my ($fh)=@_;
-   flock($fh,LOCK_UN);
+   flock($fh,LOCK_UN) || &logwarning("Could not remove a lock");
    close($fh);
 }
 
@@ -57,6 +66,7 @@ sub ensuresubdir {
          $f->make_dir($filepath,0700,'--if-not-exists');
       };
       if ($@) { 
+         &logwarning("Could not make subdirectory $filepath: $@");
          return 0; 
       }
    }
@@ -69,13 +79,27 @@ sub readfile {
    my ($filename)=@_;
    my $data='';
    if (-e $filename) {
+      my $fh=&get_shared_lock($filename);
       open(IN,$filename) || &logwarning("Error open readfile $filename: $!");
       $data=join('',<IN>);
       close(IN);
+      &unlock($fh);
    } else {
       &logwarning("Non existing readfile $filename");
    }
    return $data;
+}
+
+# ==== Write a file
+#
+sub writefile {
+   my ($filename,$data)=@_;
+   &ensuresubdir($filename);
+   my $fh=&get_exclusive_lock($filename);
+   open(OUT,'>'.$filename) || &logwarning("Could not open writefile $filename: $!");
+   print OUT $data;
+   close(OUT);
+   &unlock($fh);
 }
 
 1;

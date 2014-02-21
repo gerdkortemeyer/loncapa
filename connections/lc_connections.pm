@@ -26,6 +26,7 @@ use LWP::Protocol::https;
 use Apache2::Const qw(:common :http);
 
 use Apache::lc_parameters;
+use Apache::lc_file_utils();
 
 use vars qw($status $client);
 
@@ -57,7 +58,7 @@ sub dispatch {
 #
 sub copyurl {
    my ($host,$uri,$file)=@_;
-#   &Apache::cw_core_utils::ensuresubdir($file);
+   &Apache::lc_file_utils::ensuresubdir($file);
    my $response=$client->get('https://'.$host.'/'.$uri,':content_file' => $file);
    return ($response->code);
 }

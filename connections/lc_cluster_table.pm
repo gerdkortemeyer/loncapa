@@ -23,13 +23,13 @@ use strict;
 use Apache2::RequestRec();
 use Apache2::RequestIO();
 use Apache2::Connection();
-use Apache2::ServerUtil();
 use Apache2::Const qw(:common :http);
 
 use Apache::lc_parameters;
 use Apache::lc_logs;
 use Apache::lc_connection_utils();
 use Apache::lc_file_utils();
+use Apache::lc_init_cluster_table();
 
 # ==== Main handler
 #
@@ -38,15 +38,12 @@ sub handler {
    my $r = shift;
 # We should not answer this if we are not the cluster manager
    unless (&Apache::lc_connection_utils::host_match(
-               Apache2::ServerUtil->server->dir_config('cluster_manager'),
+               &Apache::lc_init_cluster_table::cluster_manager(),
                $r->connection->local_ip())
           ) {
       return HTTP_BAD_REQUEST;
    } 
-   &logdebug("Testing");
-   $r->print(&lc_log_dir());
-   $r->print(&Apache::lc_file_utils::readfile("/home/loncapa/cluster/cluster_table.json"));
-
+   $r->print(&Apache::lc_file_utils::readfile(&lc_cluster_table));
    return OK;
 }
 
