@@ -1,13 +1,13 @@
 # The LearningOnline Network with CAPA - LON-CAPA
-# Parameters
-#
+# Utilities for writing log files 
+# 
 # Copyright (C) 2014 Michigan State University Board of Trustees
 # 
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
-#
+# 
 #    This program is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -16,35 +16,38 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-package Apache::lc_parameters;
+
+package Apache::lc_logs;
 
 use strict;
-use Apache2::RequestRec();
-use Apache2::RequestIO();
-use Apache2::Const qw(:common);
+
+use Apache::lc_parameters;
+use Apache::lc_date_utils();
 
 require Exporter;
 our @ISA = qw (Exporter);
-our @EXPORT = qw(lc_home_dir lc_certs_dir lc_cluster_dir lc_cluster_table lc_log_dir);
+our @EXPORT = qw(logerror logwarning lognotice logdebug);
 
-sub lc_home_dir {
-   return '/home/loncapa/';
+sub appendlog {
+   my ($which,$text)=@_;
+   open(LOG,'>>'.&lc_log_dir().$which.'.log');
+   print LOG &Apache::lc_date_utils::now2str().": ".$text."\n";
+   close(LOG);
 }
 
-sub lc_certs_dir {
-   return &lc_home_dir().'certs/';
+sub logerror {
+   &appendlog('errors',@_[0]);
 }
 
-sub lc_cluster_dir {
-   return &lc_home_dir().'cluster/';
+sub logwarning {
+   &appendlog('warnings',@_[0]);
+}
+sub lognotice {
+   &appendlog('notices',@_[0]);
 }
 
-sub lc_cluster_table {
-   return &lc_cluster_dir().'cluster_table.json';
-}
-
-sub lc_log_dir {
-   return &lc_home_dir().'logs/';
+sub logdebug {
+   &appendlog('debug',@_[0]);
 }
 
 1;

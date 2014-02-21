@@ -24,25 +24,29 @@ use Apache2::RequestRec();
 use Apache2::RequestIO();
 use Apache2::Connection();
 use Apache2::ServerUtil();
-use Apache2::Const qw(:common);
+use Apache2::Const qw(:common :http);
 
 use Apache::lc_parameters;
+use Apache::lc_logs;
 use Apache::lc_connection_utils();
+use Apache::lc_file_utils();
 
 # ==== Main handler
 #
 sub handler {
 # Get request object
    my $r = shift;
-
+# We should not answer this if we are not the cluster manager
    unless (&Apache::lc_connection_utils::host_match(
                Apache2::ServerUtil->server->dir_config('cluster_manager'),
                $r->connection->local_ip())
           ) {
-      $r->print('DO NOT MATCH');
-   } else {
-      $r->print('Match!');
-   }
+      return HTTP_BAD_REQUEST;
+   } 
+   &logdebug("Testing");
+   $r->print(&lc_log_dir());
+   $r->print(&Apache::lc_file_utils::readfile("/home/loncapa/cluster/cluster_table.json"));
+
    return OK;
 }
 

@@ -1,0 +1,16 @@
+{ domains   : { 'msu'      :    { name    : 'Michigan State University',
+                                  class   : 'university',
+                                  locale  : 'en-us', 
+                                  timezone: 'America/Detroit' },
+                'sfu'      :    { name    : 'Simon Fraser University',
+                                  class   : 'university',
+                                  locale  : 'en-ca',
+                                  timezone: 'America/Vancouver' }
+              },
+  hosts     : { 'local'     :   { address : 'localhost',
+                                  domains : { 'msu'      : { function : 'library' },
+                                              'sfu'      : { function : 'library' }
+                                            }
+                                }
+              }
+}
