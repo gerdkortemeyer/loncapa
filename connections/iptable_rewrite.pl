@@ -29,7 +29,7 @@ use Socket;
 my $cmd=lc(shift);
 $cmd=~s/\W//gs;
 unless ($cmd=~/^(close|rewrite)$/) {
-   print "Must specify 'close' or 'rewrite'\n";
+   print "Must specify 'close' (close all LON-CAPA ports) or 'rewrite' (synchronize iptable with cluster table)\n";
    exit;
 }
 # Do we have a cluster table?
@@ -66,7 +66,7 @@ open(IN,&lc_cluster_dir().'backup.fw');
 my $current_ip_table=join('',<IN>);
 close(IN);
 unless ($current_ip_table=~/\w/) {
-   print "Could not retrieve iptables\n";
+   print "Could not retrieve iptables, likely not running as root\n";
    exit;
 }
 # The next lines close the firewall for all LON-CAPA related activities
@@ -84,7 +84,7 @@ foreach my $line (split("\n",$current_ip_table)) {
 if ($cmd eq 'close') { 
    exit; 
 }
-# Apparently not, let's keep going
+# Apparently not, we are doing rewrite, so let's keep going
 # Open ports for the IP addresses of all servers in the cluster
 #
 foreach my $host (keys(%{$cluster_table->{'hosts'}})) {
