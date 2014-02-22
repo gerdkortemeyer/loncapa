@@ -106,6 +106,7 @@ sub handler {
 }
 
 BEGIN {
+   &load_cluster_table();
 }
 1;
 __END__
