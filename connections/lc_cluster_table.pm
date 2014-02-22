@@ -37,6 +37,8 @@ sub handler {
    my $r = shift;
 # We should not answer this if we are not the cluster manager
    unless (&Apache::lc_init_cluster_table::we_are_manager()) {
+      &logwarning("Cannot serve cluster table. We are ".&Apache::lc_connection_utils::server_name().
+                  ", cluster manager is ".&Apache::lc_init_cluster_table::cluster_manager());
       return HTTP_BAD_REQUEST;
    } 
 # Deliver table
