@@ -19,11 +19,18 @@ cp conf/lc_parameters.pm /home/httpd/lib/perl/Apache
 cp test/lc_test.pm /home/httpd/lib/perl/Apache
 mkdir /home/httpd/html
 cp app/favicon.ico /home/httpd/html
+cp app/html/* /home/httpd/html
+mkdir /home/httpd/html/images
+cp app/images/* /home/httpd/html/images
 mkdir /home/httpd/html/scripts
 if [ ! -d /home/httpd/html/scripts/mathjax ]; then
    unzip app/scripts/v2.3-latest -d /home/httpd/html/scripts
    mv /home/httpd/html/scripts/mathjax* /home/httpd/html/scripts/mathjax 
 fi
+cp app/scripts/jquery* /home/httpd/html/scripts
+cp app/scripts/lc* /home/httpd/html/scripts
+mkdir /home/httpd/html/css
+cp app/css/* /home/httpd/html/css
 if [ ! -e /home/loncapa/cluster/cluster_manager.conf ]; then
    cp conf/cluster/cluster_manager.conf /home/loncapa/cluster
 fi
