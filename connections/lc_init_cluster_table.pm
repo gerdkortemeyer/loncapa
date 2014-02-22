@@ -29,6 +29,7 @@ use Apache::lc_logs;
 use Apache::lc_json_utils();
 use Apache::lc_file_utils();
 use Apache::lc_connection_utils();
+use Apache::lc_connections();
 
 sub cluster_manager {
 # Read the cluster manager configuration file
@@ -59,7 +60,7 @@ sub fetch_cluster_table {
 # Load the cluster table from the cluster manager
    my ($code,$response)=&Apache::lc_connections::dispatch('GET',$cluster_manager,'cluster_table');
 # Only overwrite the cluster table if connection was okay
-   if ($code eq OK) {
+   if ($code eq HTTP_OK) {
       &Apache::lc_file_utils::writefile(&lc_cluster_table(),$response);
       &lognotice("Successfully retrieved cluster table");
    } else {
