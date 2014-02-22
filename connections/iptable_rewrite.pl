@@ -101,4 +101,6 @@ foreach my $host (keys(%{$cluster_table->{'hosts'}})) {
    system("iptables -A INPUT -s $hostip -p tcp --destination-port 27019 -m state --state NEW,ESTABLISHED -j ACCEPT");
    system("iptables -A OUTPUT -d $hostip -p tcp --source-port 27019 -m state --state ESTABLISHED -j ACCEPT");
 }
-
+# Global rejection needs to be last line
+system('iptables -D INPUT -j REJECT --reject-with icmp-host-prohibited');
+system('iptables -A INPUT -j REJECT --reject-with icmp-host-prohibited');
