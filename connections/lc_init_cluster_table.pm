@@ -33,7 +33,7 @@ use Apache::lc_connection_utils();
 sub cluster_manager {
 # Read the cluster manager configuration file
    my $config=&Apache::lc_file_utils::readfile(&lc_cluster_manager());
-   $config=~s/\W//gs;
+   $config=~s/[^\w\.\-]//gs;
    return $config;
 }
 
