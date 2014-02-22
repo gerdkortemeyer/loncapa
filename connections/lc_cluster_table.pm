@@ -22,7 +22,6 @@ package Apache::lc_cluster_table;
 use strict;
 use Apache2::RequestRec();
 use Apache2::RequestIO();
-use Apache2::Connection();
 use Apache2::Const qw(:common :http);
 
 use Apache::lc_parameters;
@@ -37,12 +36,10 @@ sub handler {
 # Get request object
    my $r = shift;
 # We should not answer this if we are not the cluster manager
-   unless (&Apache::lc_connection_utils::host_match(
-               &Apache::lc_init_cluster_table::cluster_manager(),
-               $r->connection->local_ip())
-          ) {
+   unless (&Apache::lc_init_cluster_table::we_are_manager()) {
       return HTTP_BAD_REQUEST;
    } 
+# Deliver table
    $r->print(&Apache::lc_file_utils::readfile(&lc_cluster_table));
    return OK;
 }

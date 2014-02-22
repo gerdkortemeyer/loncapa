@@ -33,5 +33,12 @@ sub host_match {
    return (&inet_ntoa($hostip1) eq &inet_ntoa($hostip2));
 }
 
+#
+# Who are we?
+#
+sub server_name {
+   return $ENV{'SERVER_NAME'};
+}
+
 1;
 __END__

@@ -22,36 +22,46 @@ package Apache::lc_init_cluster_table;
 use strict;
 use Apache2::RequestRec();
 use Apache2::RequestIO();
-use Apache2::Connection();
-use Apache2::ServerUtil();
 use Apache2::Const qw(:common :http);
 
 use Apache::lc_parameters;
 use Apache::lc_logs;
 use Apache::lc_json_utils();
 use Apache::lc_file_utils();
+use Apache::lc_connection_utils();
 
 sub cluster_manager {
 # Read the cluster manager configuration file
    my $config=&Apache::lc_file_utils::readfile(&lc_cluster_manager());
    $config=~s/\W//gs;
-&logdebug("Found cluster manager: $config");
    return $config;
 }
 
+sub we_are_manager {
+   return &Apache::lc_connection_utils::host_match(&Apache::lc_connection_utils::server_name(),&cluster_manager());
+}
+
 sub fetch_cluster_table {
+# If we are cluster manager, we won't go out to fetch the table
+   if (&we_are_manager()) {
+      &lognotice("We are cluster manager, using local table");
+      return;
+   }
 # Who is cluster manager?
    my $cluster_manager=&cluster_manager();
 # If we don't have one, we have a problem
    unless ($cluster_manager) {
       &logerror("No cluster manager defined");
       return;
+   } else {
+      &lognotice("Using cluster manager $cluster_manager");
    }
 # Load the cluster table from the cluster manager
    my ($code,$response)=&Apache::lc_connections::dispatch('GET',$cluster_manager,'cluster_table');
 # Only overwrite the cluster table if connection was okay
    if ($code eq OK) {
       &Apache::lc_file_utils::writefile(&lc_cluster_table(),$response);
+      &lognotice("Successfully retrieved cluster table");
    } else {
       &logwarning("Failed to retrieve cluster table, code: $code");
    }

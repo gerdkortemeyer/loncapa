@@ -26,7 +26,7 @@ use Apache2::Const qw(:common);
 
 use Apache::lc_parameters;
 use Apache::lc_connections();
-
+use Apache::lc_connection_utils();
 
 # ==== Main handler
 #
@@ -34,9 +34,9 @@ sub handler {
 # Get request object
    my $r = shift;
 
-   $r->print("Test");
+   $r->print("Test Handler\n");
 
-   $r->print("\n".join("\n",&Apache::lc_connections::dispatch('GET','localhost','cluster_table')));
+   $r->print("\n".join("\n",&Apache::lc_connections::dispatch('GET',&Apache::lc_connection_utils::server_name(),'cluster_table')));
    
    return OK;
 }
