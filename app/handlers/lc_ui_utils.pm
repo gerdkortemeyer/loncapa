@@ -93,7 +93,7 @@ sub clean_domain {
    return $domain;
 }
 
-BEGIN
+BEGIN {
    $memd=new Cache::Memcached({'servers' => ['127.0.0.1:11211'],'namespace' => 'lc_app'});
 }
 
