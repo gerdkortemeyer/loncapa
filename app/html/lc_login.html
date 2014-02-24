@@ -1,0 +1,25 @@
+<html>
+<head>
+<title>Login</title>
+<script src="/scripts/lc_login.js"></script>
+</head>
+<body>
+<h1><localize>Welcome!</localize></h1>
+<div id="loginwindow">
+<p>
+<span class="lcstandard"><localize>Please enter your user information.</localize></span>
+<span class="lcerror"><localize>A problem occured, please try again later.</localize></span>
+<span class="lcproblem"><localize>Your username or password were not recognized.</localize></span>
+&nbsp;
+</p>
+<lcform id="loginform">
+<lcformtable>
+<lcformtableinput type="username" size="20" description="Username" id="username" />
+<lcformtableinput type="password" size="20" description="Password" id="password" />
+<lcformtableinput type="domain" description="Domain" id="domain" />
+</lcformtable>
+<lcformtrigger id="loginbutton" description="Login" />
+</lcform>
+</div>
+</body>
+</html>
