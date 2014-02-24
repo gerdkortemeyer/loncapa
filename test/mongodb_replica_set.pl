@@ -51,19 +51,53 @@ unless (ref($cluster_table->{'hosts'})) {
    print "Cluster table does not contain hosts\n";
    exit;
 }
-# Good, looks like we have a valid cluster table
-# Write the configuration file
-open(OUT,'>'.&lc_cluster_dir().'mongod.conf');
-print OUT <<ENDHEADER;
-config = {
-"_id":"lctest",
-"members":[
-ENDHEADER
-my $num=0;
-foreach my $host (keys(%{$cluster_table->{'hosts'}})) {
-   if ($num) { print OUT ",\n"; }
-   print OUT '{"_id" : '.$num.', "host" : "'.$cluster_table->{'hosts'}->{$host}->{'address'}.':27017"}';
-   $num++
+# Do we know who is cluster master?
+unless (-e &lc_cluster_manager()) {
+   print "Cluster manager not defined\n";
+   exit;
 }
-print OUT "\n]\n}\n";
-close(OUT);
+# Get the cluster manager
+open(IN,&lc_cluster_manager());
+my $cluster_manager=<IN>;
+close(IN);
+$cluster_manager=~s/[^\w\.\-]//gs;
+unless ($cluster_manager) {
+   print "Cluster manager malconfigured\n";
+   exit;
+}
+# Last check: is the cluster manager part of the cluster?
+my $found=0;
+foreach my $host (keys(%{$cluster_table->{'hosts'}})) {
+   if ($cluster_table->{'hosts'}->{$host}->{'address'} eq $cluster_manager) {
+      $found=1;
+      last;
+   }
+}
+unless ($found) {
+   print "Cluster manager not in cluster\n";
+   exit;
+}
+#
+# Good, looks like we have a valid cluster table
+# We are in busines!!!
+#
+
+
+
+
+
+# Write the configuration file
+#open(OUT,'>'.&lc_cluster_dir().'mongod.conf');
+#print OUT <<ENDHEADER;
+#config = {
+#"_id":"lctest",
+#"members":[
+#ENDHEADER
+#my $num=0;
+#foreach my $host (keys(%{$cluster_table->{'hosts'}})) {
+#   if ($num) { print OUT ",\n"; }
+#   print OUT '{"_id" : '.$num.', "host" : "'.$cluster_table->{'hosts'}->{$host}->{'address'}.':27017"}';
+#   $num++
+#}
+#print OUT "\n]\n}\n";
+#close(OUT);
