@@ -3,7 +3,7 @@ h1 {
    color: #30a097;
 }
 
-.cwformtrigger {
+.lcformtrigger {
    font-family: sans-serif;
    font-size: 16px;
    color: #ffffff;
@@ -13,7 +13,7 @@ h1 {
    z-index: 999;
 }
 
-.cwformcancel {
+.lcformcancel {
    font-family: sans-serif;
    font-size: 16px;
    color: #ffffff;
@@ -23,46 +23,46 @@ h1 {
    z-index: 998;
 }
 
-.cwformtrigger a {
+.lcformtrigger a {
    padding: 6px;
    text-decoration: none;
    color: #ffffff;
 }
 
-.cwformcancel a {
+.lcformcancel a {
    padding: 6px;
    text-decoration: none;
    color: #ffffff;
 }
 
 
-.cwformtabledescription {
+.lcformtabledescription {
    font-family: sans-serif;
    color: #000000;
 }
 
-.cwformusernameinput {
+.lcformusernameinput {
    font-family: monospace;
    color: #000000;
 }
 
-.cwformpasswordinput {
+.lcformpasswordinput {
    font-family: monospace;
    color: #000000;
 }
 
-.cwstandard {
+.lcstandard {
    font-family: sans-serif;
    color: #000000;
 }
 
-.cwerror {
+.lcerror {
    font-family: sans-serif;
    color: #30a097;
    display:none;
 }
 
-.cwproblem {   
+.lcproblem {   
    font-family: sans-serif;
    color: #30a097;
    display:none;

@@ -64,25 +64,25 @@ $.getJSON( "menu", function( data ) {
 }
 
 function logout() {
-   display_modal('/pages/cw_logout.html');
+   display_modal('/pages/lc_logout.html');
    menubar();
    breadcrumbbar();
 }
 
 function login() {
-   display_asset('/pages/cw_login.html');
+   display_asset('/pages/lc_login.html');
    menubar();
    breadcrumbbar();
 }
 
 function dashboard() {
-   display_asset("/pages/cw_dashboard.html");
+   display_asset("/pages/lc_dashboard.html");
    menubar();
    breadcrumbbar();
 }
 
 function help() {
-   display_asset("/help/cw_help.html");
+   display_asset("/help/lc_help.html");
    breadcrumbbar();
 }
 
