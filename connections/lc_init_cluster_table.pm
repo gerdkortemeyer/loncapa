@@ -103,6 +103,8 @@ sub load_cluster_table {
 sub handler {
 # Get request object
    my $r = shift;
+   &fetch_cluster_table();
+   &load_cluster_table();
    return OK;
 }
 
