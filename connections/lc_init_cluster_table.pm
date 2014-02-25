@@ -30,7 +30,6 @@ use Apache::lc_json_utils();
 use Apache::lc_file_utils();
 use Apache::lc_connection_utils();
 use Apache::lc_connections();
-use Apache::lc_memcached();
 
 #
 # This finds out who is cluster manager
@@ -131,6 +130,11 @@ sub load_cluster_table {
    }
 # Good, the cluster table seems fine. Now actually load it
    &lognotice("Loading cluster table");
+# Store this in memory with cluster utils to be accessed from there
+   $Apache::lc_connection_utils::cluster_table=$cluster_table;
+   foreach my $host (keys(%{$cluster_table->{'hosts'}})) {
+      $Apache::lc_connection_utils::address{$host}=$cluster_table->{'hosts'}->{$host}->{'address'};
+   }
 
 }
 
