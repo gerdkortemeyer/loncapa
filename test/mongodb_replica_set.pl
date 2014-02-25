@@ -21,6 +21,7 @@
 use strict;
 use lib '/home/httpd/lib/perl';
 use Apache::lc_parameters;
+use Sys::Hostname;
 use JSON::DWIW;
 use Socket;
 
@@ -66,17 +67,34 @@ unless ($cluster_manager) {
    exit;
 }
 # Last check: is the cluster manager part of the cluster?
+# and: are the addresses real?
 my $found=0;
 foreach my $host (keys(%{$cluster_table->{'hosts'}})) {
    if ($cluster_table->{'hosts'}->{$host}->{'address'} eq $cluster_manager) {
       $found=1;
       last;
    }
+   unless (&inet_aton($cluster_table->{'hosts'}->{$host}->{'address'})) {
+      print "Could not DNS resolve ".$cluster_table->{'hosts'}->{$host}->{'address'}."\n";
+      exit;
+   }
 }
 unless ($found) {
    print "Cluster manager not in cluster\n";
    exit;
 }
+# Are we cluster manager ourselves?
+my $current_aton=&inet_aton(hostname);
+unless ($current_aton) {
+   print "Could not DNS resolve current host\n";
+   exit;
+}
+my $cluster_aton=&inet_aton($cluster_manager);
+unless ($cluster_aton) {
+   print "Count not DNS resolve cluster master\n";
+   exit;
+}
+my $we_are_master=(&inet_ntoa($current_aton) eq &inet_ntoa($cluster_aton));
 #
 # Good, looks like we have a valid cluster table
 # We are in business!!!
@@ -95,6 +113,9 @@ while (my $line=<IN>) {
 close(IN);
 print OUT "\n# ======== LON-CAPA MARKER ======== DO NOT REMOVE ====================\n";
 print OUT "# Configuration for LON-CAPA replica set below, based on cluster table\n";
+print OUT "keyFile = ".&lc_cluster_dir()."mongo_keyfile\n";
+print OUT "replSet = loncapa\n";
+
 close(OUT);
 
 
