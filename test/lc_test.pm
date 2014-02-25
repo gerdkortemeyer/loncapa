@@ -37,6 +37,8 @@ sub handler {
    $r->print("Test Handler\n");
 
    $r->print("\n".join("\n",&Apache::lc_connections::dispatch('GET',&Apache::lc_connection_utils::server_name(),'cluster_table')));
+   $r->print("\n".join("\n",&Apache::lc_connections::dispatch('GET',&Apache::lc_connection_utils::server_name(),'fetch_cluster_table')));
+
    
    return OK;
 }

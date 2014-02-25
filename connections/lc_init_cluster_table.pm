@@ -31,6 +31,9 @@ use Apache::lc_file_utils();
 use Apache::lc_connection_utils();
 use Apache::lc_connections();
 
+#
+# This finds out who is cluster manager
+#
 sub cluster_manager {
 # Read the cluster manager configuration file
    my $config=&Apache::lc_file_utils::readfile(&lc_cluster_manager());
@@ -38,10 +41,16 @@ sub cluster_manager {
    return $config;
 }
 
+#
+# Returns "true" if we are cluster manager ourselves
+#
 sub we_are_manager {
    return &Apache::lc_connection_utils::host_match(&Apache::lc_connection_utils::server_name(),&cluster_manager());
 }
 
+#
+# This fetches the cluster table from the cluster manager
+#
 sub fetch_cluster_table {
 # If we are cluster manager, we won't go out to fetch the table
    if (&we_are_manager()) {
@@ -68,6 +77,10 @@ sub fetch_cluster_table {
    }
 }
 
+#
+# This loads the cluster table
+# - after performing sanity checks, it overwrites the memcached version
+#
 sub load_cluster_table {
 # See if we have a cluster table
    unless (-e &lc_cluster_table()) {
@@ -92,10 +105,32 @@ sub load_cluster_table {
       &logerror("Cluster table does not contain hosts");
       return;
    }
-
-# Okay, seems fine
+# Okay, check if we ourselves and our cluster manager
+# are in the cluster table 
+   my $ourselves=&Apache::lc_connection_utils::server_name();
+   my $found_ourselves=0;
+   my $cluster_manager=&cluster_manager();
+   my $found_manager=0;
    foreach my $host (keys(%{$cluster_table->{'hosts'}})) {
+      my $hostaddr=$cluster_table->{'hosts'}->{$host}->{'address'};
+      if (&Apache::lc_connection_utils::host_match($hostaddr,$ourselves)) {
+         $found_ourselves=1;
+      }
+      if (&Apache::lc_connection_utils::host_match($hostaddr,$cluster_manager)) {
+         $found_manager=1;
+      }
    }
+   unless ($found_ourselves) {
+      &logerror("This server is not in the cluster table");
+      return;
+   }
+   unless ($found_manager) {
+      &logerror("The cluster manager is not in the cluster table");
+      return;
+   }
+# Good, the cluster table seems fine. Now actually load it
+   &lognotice("Loading new cluster table");
+
 }
 
 # ==== Main handler
