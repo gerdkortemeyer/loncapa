@@ -30,6 +30,7 @@ use Apache::lc_json_utils();
 use Apache::lc_file_utils();
 use Apache::lc_connection_utils();
 use Apache::lc_connections();
+use Apache::lc_memcached();
 
 #
 # This finds out who is cluster manager
@@ -121,15 +122,15 @@ sub load_cluster_table {
       }
    }
    unless ($found_ourselves) {
-      &logerror("This server is not in the cluster table");
+      &logerror("This server ($ourselves) is not in the cluster table");
       return;
    }
    unless ($found_manager) {
-      &logerror("The cluster manager is not in the cluster table");
+      &logerror("The cluster manager ($cluster_manager) is not in the cluster table");
       return;
    }
 # Good, the cluster table seems fine. Now actually load it
-   &lognotice("Loading new cluster table");
+   &lognotice("Loading cluster table");
 
 }
 
