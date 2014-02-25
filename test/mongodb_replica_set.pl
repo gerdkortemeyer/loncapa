@@ -79,9 +79,23 @@ unless ($found) {
 }
 #
 # Good, looks like we have a valid cluster table
-# We are in busines!!!
+# We are in business!!!
 #
-
+# Make a backup of the mongodb configuration if not existing yet
+unless (-e &lc_cluster_dir().'mongod.conf.bck') {
+   system('cp /etc/mongod.conf '.&lc_cluster_dir().'mongod.conf.bck');
+}
+# Transfer content up to end of file or marker
+open(IN,&lc_cluster_dir().'mongod.conf.bck');
+open(OUT,'>'.&lc_cluster_dir().'mongod.conf');
+while (my $line=<IN>) {
+   if ($line=~/LON\-CAPA MARKER/) { last; }
+   print OUT $line;
+}
+close(IN);
+print OUT "\n# ======== LON-CAPA MARKER ======== DO NOT REMOVE ====================\n";
+print OUT "# Configuration for LON-CAPA replica set below, based on cluster table\n";
+close(OUT);
 
 
 
