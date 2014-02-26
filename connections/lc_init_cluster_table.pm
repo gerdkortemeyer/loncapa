@@ -30,6 +30,7 @@ use Apache::lc_json_utils();
 use Apache::lc_file_utils();
 use Apache::lc_connection_utils();
 use Apache::lc_connections();
+use Apache::lc_memcached;
 
 #
 # This finds out who is cluster manager
@@ -128,14 +129,12 @@ sub load_cluster_table {
       &logerror("The cluster manager ($cluster_manager) is not in the cluster table");
       return;
    }
-# Good, the cluster table seems fine. Now actually load it
+# Good, the cluster table seems fine. Now actually digest it
    &lognotice("Loading cluster table");
-# Store this in memory with cluster utils to be accessed from there
-   $Apache::lc_connection_utils::cluster_table=$cluster_table;
-   foreach my $host (keys(%{$cluster_table->{'hosts'}})) {
-      $Apache::lc_connection_utils::address{$host}=$cluster_table->{'hosts'}->{$host}->{'address'};
-   }
-
+   my $connection_table;
+   $connection_table->{'cluster_table'}=$cluster_table;
+# Store this in memcache for everybody's enjoyment  
+   &mset('connection_table',$connection_table);
 }
 
 # ==== Main handler
@@ -149,7 +148,9 @@ sub handler {
 }
 
 BEGIN {
-   &load_cluster_table();
+   unless (&mget('connection_table')) {
+      &load_cluster_table();
+   }
 }
 1;
 __END__

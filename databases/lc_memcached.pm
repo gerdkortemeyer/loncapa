@@ -23,7 +23,26 @@ use strict;
 use Cache::Memcached;
 use Apache::lc_logs;
 
+require Exporter;
+our @ISA = qw (Exporter);
+our @EXPORT = qw(mget mset);
+
+
 use vars qw($memd);
+
+#
+# Get key
+sub mget {
+   return $memd->get(@_[0]);
+}
+
+#
+# Set key, value, expiration
+sub mset {
+   $memd->set(@_);
+}
+   
+
 
 #
 # Initialize the memd client, local host

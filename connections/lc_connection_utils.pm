@@ -22,13 +22,7 @@ package Apache::lc_connection_utils;
 use strict;
 use Sys::Hostname;
 use Socket;
-
-# This is the cluster table data, as loaded by lc_init_cluster_table
-# The complete cluster table
-my $cluster_table;
-# Host addresses
-my %address=();
-
+use Apache::lc_memcached;
 
 
 #
