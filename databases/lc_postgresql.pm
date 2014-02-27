@@ -1,5 +1,5 @@
 # The LearningOnline Network with CAPA - LON-CAPA
-# Deal with MongoDB
+# Deal with PostgreSQL
 # 
 # Copyright (C) 2014 Michigan State University Board of Trustees
 #
@@ -30,7 +30,78 @@ our @EXPORT = qw();
 
 use vars qw($dbh);
 
+#
+# Make the URLS table
+#
+sub make_urls_table {
+   my $urltable=(<<ENDURLTABLE);
+create table urls
+(url text primary key not null,
+entity text not null,
+domain text not null,
+homeserver text not null)
+ENDURLTABLE
+   my $rv=$dbh->do($urltable);
+}
 
+#
+# Make the user lookup table
+# Get the entity for a username
+#
+sub make_user_lookup_table {
+   my $userstable=(<<ENDUSERSTABLE);
+create table userlookup
+(username text not null,
+domain text not null,
+entity text not null,
+primary key (username,domain))
+ENDUSERSTABLE
+   my $rv=$dbh->do($userstable);
+}
+
+#
+# Make the pid lookup table
+# Get the entity for a PID
+#
+sub make_pid_lookup_table {
+   my $pidstable=(<<ENDPIDSTABLE);
+create table pidlookup
+(pid text not null,
+domain text not null,
+entity text not null,
+primary key (pid,domain))
+ENDPIDSTABLE
+   my $rv=$dbh->do($pidstable);
+}
+
+#
+# Make the courseID lookup table
+# Get the entity for a courseID
+#
+sub make_courseid_lookup_table {
+   my $coursestable=(<<ENDCOURSESTABLE);
+create table courselookup
+(courseid text not null,
+domain text not null,
+entity text not null,
+primary key (courseid,domain))
+ENDCOURSESTABLE
+   my $rv=$dbh->do($coursestable);
+}
+
+#
+# The homeserver for an entity
+#
+sub make_homeserver_lookup_table {
+   my $homeservertable=(<<ENDHOMESERVERTABLE);
+create table homeserverlookup
+(entity text not null,
+domain text not null,
+homeserver text not null,
+primary key (entity,domain))
+ENDHOMESERVERTABLE
+   my $rv=$dbh->do($homeservertable);
+}
 
 #
 # Initialize the postgreSQL handle, local host
