@@ -36,7 +36,7 @@ use vars qw($dbh);
 # Initialize the postgreSQL handle, local host
 #
 sub init_postgres {
-   if ($dbh=DBI->connect('DBI:Pg:dbname=loncapa;host=127.0.0.1;port=5432','loncapa','loncapa',{ Raiseerror => 1 })) {
+   if ($dbh=DBI->connect('DBI:Pg:dbname=loncapa;host=127.0.0.1;port=5432','loncapa','loncapa',{ RaiseError => 1 })) {
       &lognotice("Connected to PostgreSQL");
    } else {
       &logerror("Could not connect to PostgreSQL, ".$DBI::errstr);
