@@ -3,6 +3,7 @@ use Apache::lc_parameters();
 use Apache::lc_logs();
 use Apache::lc_memcached();
 use Apache::lc_mongodb();
+use Apache::lc_postgresql();
 use Apache::lc_trans();
 use Apache::lc_date_utils();
 use Apache::lc_file_utils();

@@ -17,10 +17,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #
-package Apache::lc_mongodb;
+package Apache::lc_postgresql;
 
 use strict;
-use MongoDB;
+use DBI;
 use Apache::lc_logs;
 
 require Exporter;
@@ -28,25 +28,23 @@ our @ISA = qw (Exporter);
 our @EXPORT = qw();
 
 
-use vars qw($client $database);
+use vars qw($dbh);
+
+
 
 #
-# Initialize the MongoDB client, local host
+# Initialize the postgreSQL handle, local host
 #
-sub init_mongo {
-# Open the client. If fail, will likely take down Apache child,
-# but that's okay - we need the database to run
-   if ($client=MongoDB::MongoClient->new()) {
-      &lognotice("Connected to MongoDB");
+sub init_postgres {
+   if ($dbh=DBI->connect('DBI:Pg:dbname=loncapa;host=127.0.0.1;port=5432','loncapa','loncapa',{ Raiseerror => 1 })) {
+      &lognotice("Connected to PostgreSQL");
    } else {
-      &logerror("Could not connect to MongoDB");
-   }
-# Get the LON-CAPA database in MongoDB
-   $database=$client->get_database('loncapa');
+      &logerror("Could not connect to PostgreSQL, ".$DBI::errstr);
+   } 
 }
 
 BEGIN {
-   &init_mongo();
+   &init_postgres();
 }
 
 1;
