@@ -1,6 +1,8 @@
 # The LearningOnline Network with CAPA - LON-CAPA
 #
 # URL translation handler
+# Handles incoming requests for URLs
+# Translates path into entity form, starts replication if necessary
 #
 # Copyright (C) 2014 Michigan State University Board of Trustees
 # 
@@ -27,12 +29,13 @@ use Apache2::Const qw(:common :http);
 
 sub handler {
     my $r = shift;
-#    if ($r->uri=~/^\/(asset|local_asset_entity)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/(.+)$/) {
-#       my $type=$1;
-#       my $version_type=$2;
-#       my $version_arg=$3;
-#       my $domain=$4;
-#       my $path=$5;
+    if ($r->uri=~/^\/asset\/([^\/]+)\/([^\/]+)\/([^\/]+)\/(.+)$/) {
+       my $type=$1;
+       my $version_type=$2;
+       my $version_arg=$3;
+       my $domain=$4;
+       my $path=$5;
+
 #       my $found;
 # Assets need to be translated to entities
 #       if ($type eq 'asset') {
@@ -61,12 +64,11 @@ sub handler {
 #             return HTTP_NOT_FOUND;
 #          }
 #       }
+# Bend the filepath to point to the asset entity
 #       $r->filename($filepath);
-#    } else { 
-# None of our business
-      return DECLINED; 
-#    }
-#    return OK;
+    } 
+# None of our business, no need to translate URL
+    return DECLINED; 
 }
 
 1;
