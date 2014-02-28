@@ -31,12 +31,12 @@ our @EXPORT = qw(insert_url);
 use vars qw($dbh);
 
 sub insert_url {
-   my ($url,$entity)=@_;
+   my ($url,$entity,$homeserver)=@_;
 # Remove initial slash, if present
    $url=~s/^\/+//;
 # Remove "asset" and version tags
    $url=~s/^asset\/\w+\/\w+\///;
-   return $dbh->do("insert into urls (url,entity) values ('$url','$entity')");
+   return $dbh->do("insert into urls (url,entity,homeserver) values ('$url','$entity','$homeserver')");
 }
 
 #

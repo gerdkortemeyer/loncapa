@@ -29,7 +29,8 @@ sub make_urls_table {
    my $urltable=(<<ENDURLTABLE);
 create table urls
 (url text primary key not null,
-entity text not null)
+entity text not null,
+homeserver text not null)
 ENDURLTABLE
    my $rv=$dbh->do($urltable);
 }
@@ -80,6 +81,19 @@ ENDCOURSESTABLE
 }
 
 #
+# Make the homeserver lookup table
+#
+sub make_homeserver_lookup_table {
+   my $homeservertable=(<<ENDHOMESERVERTABLE);
+create table homeserverlookup
+(entity text not null,
+domain text not null,
+homeserver text not null,
+primary key (entity,domain))
+ENDHOMESERVERTABLE
+   my $rv=$dbh->do($homeservertable);
+}
+#
 # Initialize the postgreSQL handle, local host
 #
 sub init_postgres {
@@ -97,3 +111,4 @@ sub init_postgres {
    &make_user_lookup_table();
    &make_pid_lookup_table();
    &make_courseid_lookup_table();
+   &make_homeserver_lookup_table();

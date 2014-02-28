@@ -37,7 +37,7 @@ sub handler {
 
    $r->print("Test Handler\n");
 
-   &insert_url("/asset/version/5/msu/kortemey/testing/test.html","abcdef");
+   &insert_url("/asset/version/5/msu/kortemey/testing/test.html","abcdef","lc1");
    
    return OK;
 }
