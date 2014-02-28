@@ -29,9 +29,7 @@ sub make_urls_table {
    my $urltable=(<<ENDURLTABLE);
 create table urls
 (url text primary key not null,
-entity text not null,
-domain text not null,
-homeserver text not null)
+entity text not null)
 ENDURLTABLE
    my $rv=$dbh->do($urltable);
 }

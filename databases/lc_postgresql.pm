@@ -25,10 +25,19 @@ use Apache::lc_logs;
 
 require Exporter;
 our @ISA = qw (Exporter);
-our @EXPORT = qw();
+our @EXPORT = qw(insert_url);
 
 
 use vars qw($dbh);
+
+sub insert_url {
+   my ($url,$entity)=@_;
+# Remove initial slash, if present
+   $url=~s/^\/+//;
+# Remove "asset" and version tags
+   $url=~s/^asset\/\w+\/\w+\///;
+   return $dbh->do("insert into urls (url,entity) values ('$url','$entity')");
+}
 
 #
 # Initialize the postgreSQL handle, local host

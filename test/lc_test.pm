@@ -27,6 +27,7 @@ use Apache2::Const qw(:common);
 use Apache::lc_parameters;
 use Apache::lc_connections();
 use Apache::lc_connection_utils();
+use Apache::lc_postgresql;
 
 # ==== Main handler
 #
@@ -36,9 +37,7 @@ sub handler {
 
    $r->print("Test Handler\n");
 
-   $r->print("\n".join("\n",&Apache::lc_connections::dispatch('GET',&Apache::lc_connection_utils::server_name(),'cluster_table')));
-   $r->print("\n".join("\n",&Apache::lc_connections::dispatch('GET',&Apache::lc_connection_utils::server_name(),'fetch_cluster_table')));
-
+   &insert_url("/asset/version/5/msu/kortemey/testing/test.html","abcdef");
    
    return OK;
 }
