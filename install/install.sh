@@ -22,6 +22,7 @@ cp app/handlers/*pm /home/httpd/lib/perl/Apache
 cp app/handlers/lc_localize/*.pm /home/httpd/lib/perl/Apache
 cp auth/*.pm /home/httpd/lib/perl/Apache
 cp databases/*.pm /home/httpd/lib/perl/Apache
+cp entities/*.pm /home/httpd/lib/perl/Apache
 cp test/lc_test.pm /home/httpd/lib/perl/Apache
 mkdir /home/httpd/html
 cp app/favicon.ico /home/httpd/html

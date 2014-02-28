@@ -1,5 +1,5 @@
 # The LearningOnline Network with CAPA - LON-CAPA
-# Deal with PostgreSQL
+# Deal with everything having to do with URLs
 # 
 # Copyright (C) 2014 Michigan State University Board of Trustees
 #
@@ -17,38 +17,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #
-package Apache::lc_postgresql;
+package Apache::lc_url;
 
 use strict;
 use DBI;
 use Apache::lc_logs;
 
-use vars qw($dbh);
-
-sub insert_url {
-   my ($url,$entity,$homeserver)=@_;
-# Remove initial slash, if present
-   $url=~s/^\/+//;
-# Remove "asset" and version tags
-   $url=~s/^asset\/\w+\/\w+\///;
-# Commit this to the database return the return value
-   return $dbh->do("insert into urls (url,entity,homeserver) values ('$url','$entity','$homeserver')");
-}
-
-#
-# Initialize the postgreSQL handle, local host
-#
-sub init_postgres {
-   if ($dbh=DBI->connect('DBI:Pg:dbname=loncapa;host=127.0.0.1;port=5432','loncapa','loncapa',{ RaiseError => 0 })) {
-      &lognotice("Connected to PostgreSQL");
-   } else {
-      &logerror("Could not connect to PostgreSQL, ".$DBI::errstr);
-   } 
-}
-
-BEGIN {
-   &init_postgres();
-}
 
 1;
 __END__
