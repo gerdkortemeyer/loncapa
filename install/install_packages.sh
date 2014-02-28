@@ -13,6 +13,7 @@ sudo -u postgres psql -U postgres -d postgres -c "grant all privileges on databa
 cp ../conf/pg_hba.conf /var/lib/pgsql/data
 service postgresql restart
 chkconfig postgresql on
+perl postgres_make_tables.pl 
 yum install memcached
 service memcached start
 chkconfig memcached on
