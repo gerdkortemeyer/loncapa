@@ -37,8 +37,12 @@ sub handler {
 
    $r->print("Test Handler\n");
 
-   &insert_url("/asset/version/5/msu/kortemey/testing/test.html","abcdef","lc1");
-   
+   &Apache::lc_postgresql::insert_url("/asset/version/5/msu/kortemey/testing/test.html","abcdef");
+   &Apache::lc_postgresql::insert_pid("a31412414","msu","cdefgh");
+   &Apache::lc_postgresql::insert_username("kortemey","msu","dhrqfq");
+   &Apache::lc_postgresql::insert_course("phy231c","msu","fasfhae");
+   &Apache::lc_postgresql::insert_homeserver("abcdef","msu","lc1");
+ 
    return OK;
 }
 

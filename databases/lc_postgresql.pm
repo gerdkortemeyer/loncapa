@@ -26,13 +26,37 @@ use Apache::lc_logs;
 use vars qw($dbh);
 
 sub insert_url {
-   my ($url,$entity,$homeserver)=@_;
+   my ($url,$entity)=@_;
 # Remove initial slash, if present
    $url=~s/^\/+//;
 # Remove "asset" and version tags
    $url=~s/^asset\/\w+\/\w+\///;
 # Commit this to the database return the return value
-   return $dbh->do("insert into urls (url,entity,homeserver) values ('$url','$entity','$homeserver')");
+   return $dbh->do("insert into urls (url,entity) values ('$url','$entity')");
+}
+
+sub insert_homeserver {
+   my ($entity,$domain,$homeserver)=@_;
+# Commit this to the database return the return value
+   return $dbh->do("insert into homeserverlookup (entity,domain,homeserver) values ('$entity','$domain','$homeserver')");
+}
+
+sub insert_pid {
+   my ($pid,$domain,$entity)=@_;
+# Commit this to the database return the return value
+   return $dbh->do("insert into pidlookup (pid,domain,entity) values ('$pid','$domain','$entity')");
+}
+
+sub insert_username {
+   my ($username,$domain,$entity)=@_;
+# Commit this to the database return the return value
+   return $dbh->do("insert into userlookup (username,domain,entity) values ('$username','$domain','$entity')");
+}
+
+sub insert_course {
+   my ($courseid,$domain,$entity)=@_;
+# Commit this to the database return the return value
+   return $dbh->do("insert into courselookup (courseid,domain,entity) values ('$courseid','$domain','$entity')");
 }
 
 #
