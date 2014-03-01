@@ -1,6 +1,9 @@
 # The LearningOnline Network with CAPA - LON-CAPA
 # Deal with PostgreSQL
-# 
+# !!!
+# !!! These are low-level routines. They do no sanity checking on parameters!
+# !!! Do not call from higher level handlers, do no not use direct user input
+# !!!
 # Copyright (C) 2014 Michigan State University Board of Trustees
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -25,6 +28,9 @@ use Apache::lc_logs;
 
 use vars qw($dbh);
 
+#
+# Deal URLs
+#
 sub insert_url {
    my ($url,$entity)=@_;
 # Commit this to the database return the return value
@@ -39,18 +45,44 @@ sub lookup_url_entity {
    return $sth->fetchrow_array();
 }
 
+#
+# Deal with homeservers
+#
 sub insert_homeserver {
    my ($entity,$domain,$homeserver)=@_;
 # Commit this to the database return the return value
    return $dbh->do("insert into homeserverlookup (entity,domain,homeserver) values ('$entity','$domain','$homeserver')");
 }
 
+sub lookup_homeserver {
+   my ($entity,$domain)=@_;
+# Do the query
+   my $sth=$dbh->prepare("select homeserver from homeserverlookup where entity = '$entity' and domain = '$domain'");
+   my $rv=$sth->execute();
+   return $sth->fetchrow_array();
+}
+
+#
+# Deal with student personal ID numbers
+# As opposed to the other tables, this one should not store non-local entities
+#
 sub insert_pid {
    my ($pid,$domain,$entity)=@_;
 # Commit this to the database return the return value
    return $dbh->do("insert into pidlookup (pid,domain,entity) values ('$pid','$domain','$entity')");
 }
 
+sub lookup_pid_entity {
+   my ($pid,$domain)=@_;
+# Do the query
+  my $sth=$dbh->prepare("select entity from pidlookup where pid = '$pid' and domain = '$domain'");
+  my $rv=$sth->execute();
+  return $sth->fetchrow_array();
+}
+
+#
+# Deal with usernames
+#
 sub insert_username {
    my ($username,$domain,$entity)=@_;
 # Commit this to the database return the return value
@@ -65,7 +97,9 @@ sub lookup_username_entity {
    return $sth->fetchrow_array();
 }
 
-
+#
+# Deal with course IDs
+#
 sub insert_course {
    my ($courseid,$domain,$entity)=@_;
 # Commit this to the database return the return value
@@ -80,7 +114,6 @@ sub lookup_course_entity {
    return $sth->fetchrow_array();
 }
 
-#
 #
 # Initialize the postgreSQL handle, local host
 #

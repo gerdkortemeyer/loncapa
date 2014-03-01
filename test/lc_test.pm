@@ -41,6 +41,7 @@ sub handler {
    $r->print("result:".&Apache::lc_postgresql::lookup_url_entity("msu/kortemey/testing/test.html")."\n");
 
    &Apache::lc_postgresql::insert_pid("a31412414","msu","cdefgh");
+   $r->print("result:".&Apache::lc_postgresql::lookup_pid_entity("a31412414","msu")."\n");
 
    &Apache::lc_postgresql::insert_username("kortemey","msu","dhrqfq");
    $r->print("result:".&Apache::lc_postgresql::lookup_username_entity("kortemey","msu")."\n");
@@ -49,6 +50,13 @@ sub handler {
    $r->print("result:".&Apache::lc_postgresql::lookup_course_entity("phy231c","msu")."\n");
 
    &Apache::lc_postgresql::insert_homeserver("abcdef","msu","lc1");
+   &Apache::lc_postgresql::insert_homeserver("cdefgh","msu","lc1");
+   &Apache::lc_postgresql::insert_homeserver("dhrqfq","msu","lc1");
+   &Apache::lc_postgresql::insert_homeserver("fasfhae","msu","lc1");
+
+   $r->print("result:".&Apache::lc_postgresql::lookup_homeserver("dhrqfq","msu")."\n");
+
+
  
    return OK;
 }
