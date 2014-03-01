@@ -13,5 +13,7 @@ use Apache::lc_connections();
 use Apache::lc_connection_utils();
 use Apache::lc_connection_handle();
 use Apache::lc_cluster_table();
+use Apache::lc_entity_utils();
+use Apache::lc_entity_urls();
 1;
 __END__

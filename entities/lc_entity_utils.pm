@@ -21,7 +21,26 @@ package Apache::lc_entity_utils;
 
 use strict;
 use DBI;
+use Data::Uniqid qw(luniqid);
+use Digest::MD5 qw(md5_hex);
+
 use Apache::lc_logs;
+
+
+# ================================================================
+# IDs
+# ================================================================
+# ==== Generate a unique ID
+sub make_unique_id {
+   return &luniqid();
+}
+
+# === Oneway encryption of entities
+# Takes domain,entity
+# or any other array of strings
+sub oneway {
+   return md5_hex(@_);
+}
 
 
 1;

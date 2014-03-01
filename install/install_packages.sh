@@ -26,3 +26,5 @@ cpan install Cache::Memcached
 cpan install Locale::Maketext
 cpan install Lingua::Bork
 cpan install Lingua::PigLatin
+cpan install Data::Uniqid
+cpan install Digest::MD5
