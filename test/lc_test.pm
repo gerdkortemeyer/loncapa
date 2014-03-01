@@ -37,10 +37,17 @@ sub handler {
 
    $r->print("Test Handler\n");
 
-   &Apache::lc_postgresql::insert_url("/asset/version/5/msu/kortemey/testing/test.html","abcdef");
+   &Apache::lc_postgresql::insert_url("msu/kortemey/testing/test.html","abcdef");
+   $r->print("result:".&Apache::lc_postgresql::lookup_url_entity("msu/kortemey/testing/test.html")."\n");
+
    &Apache::lc_postgresql::insert_pid("a31412414","msu","cdefgh");
+
    &Apache::lc_postgresql::insert_username("kortemey","msu","dhrqfq");
+   $r->print("result:".&Apache::lc_postgresql::lookup_username_entity("kortemey","msu")."\n");
+
    &Apache::lc_postgresql::insert_course("phy231c","msu","fasfhae");
+   $r->print("result:".&Apache::lc_postgresql::lookup_course_entity("phy231c","msu")."\n");
+
    &Apache::lc_postgresql::insert_homeserver("abcdef","msu","lc1");
  
    return OK;

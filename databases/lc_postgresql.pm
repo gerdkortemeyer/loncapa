@@ -27,12 +27,16 @@ use vars qw($dbh);
 
 sub insert_url {
    my ($url,$entity)=@_;
-# Remove initial slash, if present
-   $url=~s/^\/+//;
-# Remove "asset" and version tags
-   $url=~s/^asset\/\w+\/\w+\///;
 # Commit this to the database return the return value
    return $dbh->do("insert into urls (url,entity) values ('$url','$entity')");
+}
+
+sub lookup_url_entity {
+   my ($url)=@_;
+# Do the query
+   my $sth=$dbh->prepare("select entity from urls where url = '$url'");
+   my $rv=$sth->execute();
+   return $sth->fetchrow_array();
 }
 
 sub insert_homeserver {
@@ -53,12 +57,30 @@ sub insert_username {
    return $dbh->do("insert into userlookup (username,domain,entity) values ('$username','$domain','$entity')");
 }
 
+sub lookup_username_entity {
+   my ($username,$domain)=@_;
+# Do the query
+   my $sth=$dbh->prepare("select entity from userlookup where username = '$username' and domain = '$domain'");
+   my $rv=$sth->execute();
+   return $sth->fetchrow_array();
+}
+
+
 sub insert_course {
    my ($courseid,$domain,$entity)=@_;
 # Commit this to the database return the return value
    return $dbh->do("insert into courselookup (courseid,domain,entity) values ('$courseid','$domain','$entity')");
 }
 
+sub lookup_course_entity {
+   my ($courseid,$domain)=@_;
+# Do the query
+   my $sth=$dbh->prepare("select entity from courselookup where courseid = '$courseid' and domain = '$domain'");
+   my $rv=$sth->execute();
+   return $sth->fetchrow_array();
+}
+
+#
 #
 # Initialize the postgreSQL handle, local host
 #
