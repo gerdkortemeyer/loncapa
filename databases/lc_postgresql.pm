@@ -1,5 +1,8 @@
 # The LearningOnline Network with CAPA - LON-CAPA
 # Deal with PostgreSQL
+#
+# Permanent data for entities is stored on their respective homeservers
+#
 # !!!
 # !!! These are low-level routines. They do no sanity checking on parameters!
 # !!! Do not call from higher level handlers, do no not use direct user input
@@ -41,8 +44,8 @@ sub insert_url {
 sub lookup_url_entity {
    my ($url)=@_;
 # Do the query
-   my $sth=$dbh->prepare("select entity from urls where url = '$url'");
-   my $rv=$sth->execute();
+   my $sth=$dbh->prepare("select entity from urls where url = ?");
+   my $rv=$sth->execute($url);
    return $sth->fetchrow_array();
 }
 
@@ -58,14 +61,13 @@ sub insert_homeserver {
 sub lookup_homeserver {
    my ($entity,$domain)=@_;
 # Do the query
-   my $sth=$dbh->prepare("select homeserver from homeserverlookup where entity = '$entity' and domain = '$domain'");
-   my $rv=$sth->execute();
+   my $sth=$dbh->prepare("select homeserver from homeserverlookup where entity = ? and domain = ?");
+   my $rv=$sth->execute($entity,$domain);
    return $sth->fetchrow_array();
 }
 
 #
 # Deal with student personal ID numbers
-# As opposed to the other tables, this one should not store non-local entities
 #
 sub insert_pid {
    my ($pid,$domain,$entity)=@_;
@@ -81,8 +83,8 @@ sub insert_pid {
 #
 sub modify_pid {
    my ($pid,$domain,$entity)=@_;
-   my $sth=$dbh->prepare("update pidlookup set entity = '$entity' where pid = '$pid' and domain = '$domain'");
-   return $sth->execute();
+   my $sth=$dbh->prepare("update pidlookup set entity = ? where pid = ? and domain = ?");
+   return $sth->execute($entity,$pid,$domain);
 }
 
 #
@@ -93,16 +95,16 @@ sub modify_pid {
 #
 sub delete_pid {
    my ($pid,$domain)=@_;
-   my $sth=$dbh->prepare("delete from pidlookup where pid = '$pid' and domain = '$domain'");
-   return $sth->execute();
+   my $sth=$dbh->prepare("delete from pidlookup where pid = ? and domain = ?");
+   return $sth->execute($pid,$domain);
 }
 
 
 sub lookup_pid_entity {
    my ($pid,$domain)=@_;
 # Do the query
-  my $sth=$dbh->prepare("select entity from pidlookup where pid = '$pid' and domain = '$domain'");
-  my $rv=$sth->execute();
+  my $sth=$dbh->prepare("select entity from pidlookup where pid = ? and domain = ?");
+  my $rv=$sth->execute($pid,$domain);
   return $sth->fetchrow_array();
 }
 
@@ -135,8 +137,8 @@ sub insert_course {
 sub lookup_course_entity {
    my ($courseid,$domain)=@_;
 # Do the query
-   my $sth=$dbh->prepare("select entity from courselookup where courseid = '$courseid' and domain = '$domain'");
-   my $rv=$sth->execute();
+   my $sth=$dbh->prepare("select entity from courselookup where courseid = ? and domain = ?");
+   my $rv=$sth->execute($courseid,$domain);
    return $sth->fetchrow_array();
 }
 

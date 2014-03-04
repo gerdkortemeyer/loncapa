@@ -42,6 +42,27 @@ sub oneway {
    return md5_hex(@_);
 }
 
+# ================================================================
+# Convert stuff to entities
+# ================================================================
+# ==== Usernames to entities
+#
+sub username_to_entity {
+   my ($username,$domain)=@_;
+}
+
+# ==== PIDs to entities
+#
+sub pid_to_entity {
+   my ($pid,$domain)=@_;
+}
+
+# ==== CourseIDs to entities
+#
+sub courseid_to_entity {
+   my ($courseid,$domain)=@_;
+}
+
 
 1;
 __END__
