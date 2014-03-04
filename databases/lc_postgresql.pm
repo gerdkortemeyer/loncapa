@@ -38,7 +38,9 @@ use vars qw($dbh);
 sub insert_url {
    my ($url,$entity)=@_;
 # Commit this to the database return the return value
-   return $dbh->do("insert into urls (url,entity) values ('$url','$entity')");
+   my $sth=$dbh->prepare("insert into urls (url,entity) values (?,?)");
+   $sth->execute($url,$entity);
+   return $dbh->commit;
 }
 
 sub lookup_url_entity {
@@ -55,7 +57,9 @@ sub lookup_url_entity {
 sub insert_homeserver {
    my ($entity,$domain,$homeserver)=@_;
 # Commit this to the database return the return value
-   return $dbh->do("insert into homeserverlookup (entity,domain,homeserver) values ('$entity','$domain','$homeserver')");
+   my $sth=$dbh->prepare("insert into homeserverlookup (entity,domain,homeserver) values (?,?,?)");
+   $sth->execute($entity,$domain,$homeserver);
+   return $dbh->commit;
 }
 
 sub lookup_homeserver {
@@ -72,7 +76,9 @@ sub lookup_homeserver {
 sub insert_pid {
    my ($pid,$domain,$entity)=@_;
 # Commit this to the database return the return value
-   return $dbh->do("insert into pidlookup (pid,domain,entity) values ('$pid','$domain','$entity')");
+   my $sth=$dbh->prepare("insert into pidlookup (pid,domain,entity) values (?,?,?)");
+   $sth->execute($pid,$domain,$entity);
+   return $dbh->commit;
 }
 
 #
@@ -114,14 +120,16 @@ sub lookup_pid_entity {
 sub insert_username {
    my ($username,$domain,$entity)=@_;
 # Commit this to the database return the return value
-   return $dbh->do("insert into userlookup (username,domain,entity) values ('$username','$domain','$entity')");
+   my $sth=$dbh->prepare("insert into userlookup (username,domain,entity) values (?,?,?)");
+   $sth->execute($username,$domain,$entity);
+   return $dbh->commit;
 }
 
 sub lookup_username_entity {
    my ($username,$domain)=@_;
 # Do the query
-   my $sth=$dbh->prepare("select entity from userlookup where username = '$username' and domain = '$domain'");
-   my $rv=$sth->execute();
+   my $sth=$dbh->prepare("select entity from userlookup where username = ? and domain = ?");
+   my $rv=$sth->execute($username,$domain);
    return $sth->fetchrow_array();
 }
 
@@ -131,7 +139,9 @@ sub lookup_username_entity {
 sub insert_course {
    my ($courseid,$domain,$entity)=@_;
 # Commit this to the database return the return value
-   return $dbh->do("insert into courselookup (courseid,domain,entity) values ('$courseid','$domain','$entity')");
+   my $sth=$dbh->prepare("insert into courselookup (courseid,domain,entity) values (?,?,?)");
+   $sth->execute($courseid,$domain,$entity);
+   return $dbh->commit;
 }
 
 sub lookup_course_entity {
