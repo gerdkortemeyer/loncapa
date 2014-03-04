@@ -43,6 +43,13 @@ sub handler {
    &Apache::lc_postgresql::insert_pid("a31412414","msu","cdefgh");
    $r->print("result:".&Apache::lc_postgresql::lookup_pid_entity("a31412414","msu")."\n");
 
+   &Apache::lc_postgresql::modify_pid("a31412414","msu","cdefgh2");
+   $r->print("result:".&Apache::lc_postgresql::lookup_pid_entity("a31412414","msu")."\n");
+
+   &Apache::lc_postgresql::delete_pid("a31412414","msu");
+   $r->print("result:".&Apache::lc_postgresql::lookup_pid_entity("a31412414","msu")."\n");
+
+
    &Apache::lc_postgresql::insert_username("kortemey","msu","dhrqfq");
    $r->print("result:".&Apache::lc_postgresql::lookup_username_entity("kortemey","msu")."\n");
 

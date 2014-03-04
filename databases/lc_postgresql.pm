@@ -30,6 +30,7 @@ use vars qw($dbh);
 
 #
 # Deal URLs
+# - there is no "modify_url", since a URL once assigned stays with that entity
 #
 sub insert_url {
    my ($url,$entity)=@_;
@@ -71,6 +72,31 @@ sub insert_pid {
 # Commit this to the database return the return value
    return $dbh->do("insert into pidlookup (pid,domain,entity) values ('$pid','$domain','$entity')");
 }
+
+#
+# Modify a PID assignment
+# This should hardly ever happen!!!
+# It means that a PID gets assigned from one individual to another - likely only the case if there
+# was an error in the original assignment!!!
+#
+sub modify_pid {
+   my ($pid,$domain,$entity)=@_;
+   my $sth=$dbh->prepare("update pidlookup set entity = '$entity' where pid = '$pid' and domain = '$domain'");
+   return $sth->execute();
+}
+
+#
+# Delete a PID assignment
+# This should hardly ever happen!!!
+# It means that a PID gets deleted - likely only the case if there
+# was an error in the original assignment!!!
+#
+sub delete_pid {
+   my ($pid,$domain)=@_;
+   my $sth=$dbh->prepare("delete from pidlookup where pid = '$pid' and domain = '$domain'");
+   return $sth->execute();
+}
+
 
 sub lookup_pid_entity {
    my ($pid,$domain)=@_;
