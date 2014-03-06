@@ -17,8 +17,10 @@ perl postgres_make_tables.pl
 yum install memcached
 service memcached start
 chkconfig memcached on
+yum install perl-CPAN
+yum install gcc
 cpan Safe
-cpan MongoDB
+cpan -f -i MongoDB
 cpan Safe::Hole
 cpan Math::Cephes
 cpan Math::Random
@@ -27,4 +29,9 @@ cpan Locale::Maketext
 cpan Lingua::Bork
 cpan Lingua::PigLatin
 cpan Data::Uniqid
+cpan Time::y2038
 cpan Digest::MD5
+cpan File::Util
+cpan File::Touch
+cpan JSON::DWIW
+cpan Net::SSL
