@@ -17,14 +17,14 @@ perl postgres_make_tables.pl
 yum install memcached
 service memcached start
 chkconfig memcached on
-cpan install Safe
-cpan install MongoDB
-cpan install Safe::Hole
-cpan install Math::Cephes
-cpan install Math::Random
-cpan install Cache::Memcached
-cpan install Locale::Maketext
-cpan install Lingua::Bork
-cpan install Lingua::PigLatin
-cpan install Data::Uniqid
-cpan install Digest::MD5
+cpan Safe
+cpan MongoDB
+cpan Safe::Hole
+cpan Math::Cephes
+cpan Math::Random
+cpan Cache::Memcached
+cpan Locale::Maketext
+cpan Lingua::Bork
+cpan Lingua::PigLatin
+cpan Data::Uniqid
+cpan Digest::MD5
