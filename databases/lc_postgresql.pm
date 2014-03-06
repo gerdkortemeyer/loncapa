@@ -153,6 +153,40 @@ sub lookup_course_entity {
 }
 
 #
+# Insert a new role into the courselist
+#
+sub insert_into_courselist {
+   my ($courseentity,$coursedomain,
+       $userentity,$userdomain,
+       $role,$section,
+       $startdate,$enddate,
+       $manualenrollentity,$manualenrolldomain)=@_;
+   my $sth=$dbh->prepare("insert into courselist (courseentity,coursedomain,userentity,userdomain,role,section,startdate,enddate,manualenrollentity,manualenrolldomain) values (?,?,?,?,?,?,?,?,?,?)");
+   $sth->execute($courseentity,$coursedomain,
+       $userentity,$userdomain,
+       $role,$section,
+       $startdate,$enddate,
+       $manualenrollentity,$manualenrolldomain);
+   return $dbh->commit;
+
+}
+
+#
+# Modify a user in a courselist
+#
+sub modify_user_in_courselist {
+   my ($courseentity,$coursedomain, 
+       $userentity,$userdomain, 
+       $role,$section,
+       $startdate,$enddate, 
+       $manualenrollentity,$manualenrolldomain)=@_;
+   my $sth=$dbh->prepare("update courselist set startdate = ?, enddate = ?, manualenrollentity = ?, manualenrolldomain = ? where courseentity = ? and coursedomain = ? and userentity = ? and userdomain = ? and role = ? and section = ?");
+   return $sth->execute($startdate,$enddate,$courseentity,$manualenrollentity,$manualenrolldomain,$coursedomain,$userentity,$userdomain,$role,$section);
+}
+
+
+
+#
 # Initialize the postgreSQL handle, local host
 #
 sub init_postgres {

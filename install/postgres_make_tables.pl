@@ -92,6 +92,28 @@ primary key (entity,domain))
 ENDHOMESERVERTABLE
    my $rv=$dbh->do($homeservertable);
 }
+
+#
+# The courselist table
+#
+sub make_courselist_table {
+   my $courselisttable=(<<ENDCOURSELIST);
+create table courselist
+(courseentity text not null,
+coursedomain text not null,
+userentity text not null,
+userdomain text not null,
+role text not null,
+section text not null,
+startdate timestamp,
+enddate timestamp,
+manualenrollentity text not null,
+manualenrolldomain text not null,
+primary key (courseentity,coursedomain,userentity,userdomain,role,section))
+ENDCOURSELIST
+   my $rv=$dbh->do($courselisttable);
+}
+
 #
 # Initialize the postgreSQL handle, local host
 #
@@ -111,3 +133,4 @@ sub init_postgres {
    &make_pid_lookup_table();
    &make_courseid_lookup_table();
    &make_homeserver_lookup_table();
+   &make_courselist_table();
