@@ -94,24 +94,28 @@ ENDHOMESERVERTABLE
 }
 
 #
-# The courselist table
+# The role table
+# These are the roles on this server
+# The primary cluster server (and only the primary cluster server)
+# also has the system and domain-wide roles
+# This is for lookup, the actual roles are with the users
 #
-sub make_courselist_table {
-   my $courselisttable=(<<ENDCOURSELIST);
-create table courselist
-(courseentity text not null,
-coursedomain text not null,
+sub make_role_lookup_table {
+   my $rolelisttable=(<<ENDROLELIST);
+create table rolelist
+(roleentity text,
+roledomain text,
+rolesection text,
 userentity text not null,
 userdomain text not null,
 role text not null,
-section text not null,
 startdate timestamp,
 enddate timestamp,
-manualenrollentity text not null,
-manualenrolldomain text not null,
-primary key (courseentity,coursedomain,userentity,userdomain,role,section))
-ENDCOURSELIST
-   my $rv=$dbh->do($courselisttable);
+manualenrollentity text,
+manualenrolldomain text,
+primary key (roleentity,roledomain,rolesection,userentity,userdomain,role,))
+ENDROLELIST
+   my $rv=$dbh->do($rolelisttable);
 }
 
 #
@@ -133,4 +137,4 @@ sub init_postgres {
    &make_pid_lookup_table();
    &make_courseid_lookup_table();
    &make_homeserver_lookup_table();
-   &make_courselist_table();
+   &make_role_lookup_table();
