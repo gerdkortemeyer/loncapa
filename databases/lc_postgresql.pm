@@ -184,7 +184,20 @@ sub modify_rolelist {
    return $sth->execute($startdate,$enddate,$manualenrollentity,$manualenrolldomain,$roleentity,$roledomain,$rolesection,$userentity,$userdomain,$role);
 }
 
-
+#
+# Lookup all roles for a particular entity
+# e.g, a courselist
+#
+sub lookup_entity_rolelist {
+   my ($roleentity,$roledomain)=@_;
+   my $sth=$dbh->prepare("select * from rolelist where roleentity = ? and roledomain = ?");
+   my $rv=$sth->execute($roleentity,$roledomain);
+   my $return;
+   while (my @newrole=$sth->fetchrow_array()) {
+      push(@{$return},\@newrole);
+   }
+   return $return;
+}
 
 #
 # Initialize the postgreSQL handle, local host

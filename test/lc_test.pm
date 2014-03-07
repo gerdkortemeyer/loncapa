@@ -29,6 +29,8 @@ use Apache::lc_connections();
 use Apache::lc_connection_utils();
 use Apache::lc_postgresql;
 
+use Data::Dumper;
+
 # ==== Main handler
 #
 sub handler {
@@ -70,6 +72,22 @@ sub handler {
                                                 "1999-01-08 04:05:06","1999-03-08 04:05:06",
                                                 "eqdaewq","msu");
 
+   &Apache::lc_postgresql::insert_into_rolelist("fafawrq","msu","007","xx4darqeq","sfu","instructor",
+                                                "1999-01-08 04:05:06","2015-03-08 04:05:06",
+                                                "dawqewq","msu");
+
+   &Apache::lc_postgresql::insert_into_rolelist("fafawrq","msu","007","yy4darqeq","sfu","instructor",
+                                                "1999-01-08 04:05:06","2015-03-08 04:05:06",
+                                                "dawqewq","msu");
+
+   &Apache::lc_postgresql::insert_into_rolelist("rqfawrq","msu","007","zz4darqeq","sfu","instructor",
+                                                "1999-01-08 04:05:06","2015-03-08 04:05:06",
+                                                "dawqewq","msu");
+
+
+   my $list=&Apache::lc_postgresql::lookup_entity_rolelist("fafawrq","msu");
+
+   $r->print(Dumper($list));
  
    return OK;
 }
