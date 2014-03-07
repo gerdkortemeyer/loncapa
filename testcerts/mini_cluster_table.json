@@ -33,7 +33,7 @@
                                               'sfu'      : { function : 'library' }
                                             }
                                 },
-                'slarti'   :    { address : 'slartifbartfast.localdomain',
+                'slarti'   :    { address : 'slartibartfast.localdomain',
                                   domains : { 'ostfalia' : { function : 'library' },
                                               'elps'     : { function : 'access'  },
                                               'sfu'      : { function : 'access'  }

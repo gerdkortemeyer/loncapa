@@ -43,7 +43,7 @@ sub command_dispatch {
    }
    return &Apache::lc_connections::dispatch('POST',
                                             $addresses{$host},
-                                            "/$host/$command",
+                                            "/connection_handle/$host/$command",
                                             $jsondata);
 }
 #
