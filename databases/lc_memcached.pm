@@ -1,5 +1,10 @@
 # The LearningOnline Network with CAPA - LON-CAPA
 # Deal with memcached
+#
+# !!!
+# !!! These are low-level routines. They do no sanity checking on parameters!
+# !!! Do not call from higher level handlers, do no not use direct user input
+# !!!
 # 
 # Copyright (C) 2014 Michigan State University Board of Trustees
 #
@@ -23,12 +28,32 @@ use strict;
 use Cache::Memcached;
 use Apache::lc_logs;
 
-require Exporter;
-our @ISA = qw (Exporter);
-our @EXPORT = qw(mget mset);
-
-
 use vars qw($memd);
+
+#
+# Deal with connection table storage
+#
+sub get_connection_table {
+   return &mget('connection_table');
+}
+
+sub set_connection_table {
+   &mset('connection_table',@_[0]);
+}
+
+#
+# Deal with homeserver cache
+#
+sub insert_homeserver {
+   my ($entity,$domain,$homeserver)=@_;
+   &mput("homeserver:$entity:$domain",$homeserver);
+}
+
+sub lookup_homeserver {
+   my ($entity,$domain)=@_;
+   return &mget("homeserver:$entity:$domain");
+}
+
 
 #
 # Get key

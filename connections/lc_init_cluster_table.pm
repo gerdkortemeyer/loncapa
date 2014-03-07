@@ -30,7 +30,7 @@ use Apache::lc_json_utils();
 use Apache::lc_file_utils();
 use Apache::lc_connection_utils();
 use Apache::lc_connections();
-use Apache::lc_memcached;
+use Apache::lc_memcached();
 
 #
 # This finds out who is cluster manager
@@ -134,7 +134,7 @@ sub load_cluster_table {
    my $connection_table;
    $connection_table->{'cluster_table'}=$cluster_table;
 # Store this in memcache for everybody's enjoyment  
-   &mset('connection_table',$connection_table);
+   &Apache::lc_memcached::set_connection_table($connection_table);
 }
 
 # ==== Main handler
@@ -148,7 +148,7 @@ sub handler {
 }
 
 BEGIN {
-   unless (&mget('connection_table')) {
+   unless (&Apache::lc_memcached::get_connection_table()) {
       &load_cluster_table();
    }
 }

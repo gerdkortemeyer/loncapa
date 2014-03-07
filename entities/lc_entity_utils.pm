@@ -24,6 +24,8 @@ use DBI;
 use Data::Uniqid qw(luniqid);
 use Digest::MD5 qw(md5_hex);
 
+use Apache::lc_memcached();
+use Apache::lc_postgresql();
 use Apache::lc_logs;
 
 
@@ -43,24 +45,23 @@ sub oneway {
 }
 
 # ================================================================
-# Convert stuff to entities
+# Find the homeserver
 # ================================================================
-# ==== Usernames to entities
 #
-sub username_to_entity {
-   my ($username,$domain)=@_;
-}
 
-# ==== PIDs to entities
-#
-sub pid_to_entity {
-   my ($pid,$domain)=@_;
-}
-
-# ==== CourseIDs to entities
-#
-sub courseid_to_entity {
-   my ($courseid,$domain)=@_;
+sub homeserver {
+   my ($entity,$domain)=@_;
+# First see if it is already in memcached
+   my $cached=&Apache::lc_memcached::lookup_homeserver($entity,$domain);
+   if ($cached) { return $cached; }
+# If not, see if we have it in our local database
+   my $stored=&Apache::lc_postgresql::lookup_homeserver($entity,$domain);
+   if ($stored) {
+# Remember for later
+      &Apache::lc_memcached::insert_homeserver($entity,$domain,$stored);
+      return $stored; 
+   }
+# Could not find it locally, have to go out and look for it
 }
 
 

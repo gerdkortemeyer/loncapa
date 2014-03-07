@@ -15,5 +15,8 @@ use Apache::lc_connection_handle();
 use Apache::lc_cluster_table();
 use Apache::lc_entity_utils();
 use Apache::lc_entity_urls();
+use Apache::lc_entity_users();
+use Apache::lc_entity_courses();
+
 1;
 __END__
