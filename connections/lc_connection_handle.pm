@@ -71,7 +71,7 @@ sub handler {
    $uri=~s/^\/*//;
    $uri=~s/\/+/\//g;
    my (undef,$host,$command)=split(/\//,$uri);
-   my $data=&Apache::lc_json_utils::json_to_perl(&Apache::lc_connection_utils($r));
+   my $data=&Apache::lc_json_utils::json_to_perl(&Apache::lc_connection_utils::extract_content($r));
    if ($cmds->{$command}) {
       no strict 'refs';
       if (defined(&$cmds->{'subptr'})) {
