@@ -153,7 +153,7 @@ sub lookup_course_entity {
 }
 
 #
-# Insert a new role into the courselist
+# Insert a new role into the rolelist
 #
 sub insert_into_rolelist {
    my ($roleentity,$roledomain,$rolesection,
@@ -172,7 +172,7 @@ sub insert_into_rolelist {
 }
 
 #
-# Modify a user in a courselist
+# Modify a user in rolelist
 #
 sub modify_rolelist {
    my ($roleentity,$roledomain,$rolesection,
@@ -180,7 +180,7 @@ sub modify_rolelist {
        $role, 
        $startdate,$enddate,
        $manualenrollentity,$manualenrolldomain)=@_; 
-   my $sth=$dbh->prepare("update rolelist set startdate = ?, enddate = ?, manualenrollentity = ?, manualenrolldomain = ? where roleentity = ? and roledomain = ? and rolesection = ? and and userentity = ? and userdomain = ? and role = ?");
+   my $sth=$dbh->prepare("update rolelist set startdate = ?, enddate = ?, manualenrollentity = ?, manualenrolldomain = ? where roleentity = ? and roledomain = ? and rolesection = ? and userentity = ? and userdomain = ? and role = ?");
    return $sth->execute($startdate,$enddate,$manualenrollentity,$manualenrolldomain,$roleentity,$roledomain,$rolesection,$userentity,$userdomain,$role);
 }
 

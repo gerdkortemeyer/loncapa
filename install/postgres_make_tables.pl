@@ -113,7 +113,7 @@ startdate timestamp,
 enddate timestamp,
 manualenrollentity text,
 manualenrolldomain text,
-primary key (roleentity,roledomain,rolesection,userentity,userdomain,role,))
+primary key (roleentity,roledomain,rolesection,userentity,userdomain,role))
 ENDROLELIST
    my $rv=$dbh->do($rolelisttable);
 }

@@ -63,6 +63,12 @@ sub handler {
 
    $r->print("result:".&Apache::lc_postgresql::lookup_homeserver("dhrqfq","msu")."\n");
 
+   &Apache::lc_postgresql::insert_into_rolelist("fafawrq","msu","007","darqeq","sfu","instructor",
+                                                "1999-01-08 04:05:06","2015-03-08 04:05:06",
+                                                "dawqewq","msu");
+   &Apache::lc_postgresql::modify_rolelist("fafawrq","msu","007","darqeq","sfu","instructor",
+                                                "1999-01-08 04:05:06","1999-03-08 04:05:06",
+                                                "eqdaewq","msu");
 
  
    return OK;
