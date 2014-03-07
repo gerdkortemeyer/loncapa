@@ -74,7 +74,9 @@ sub handler {
    my $data=&Apache::lc_json_utils::json_to_perl(&Apache::lc_connection_utils::extract_content($r));
    if ($cmds->{$command}) {
       no strict 'refs';
-      if (defined(&$cmds->{'subptr'})) {
+      if (1) {
+#FIXME
+#      if (defined(&$cmds->{'subptr'})) {
 #FIXME
          $r->print("All is well");
       } else {
