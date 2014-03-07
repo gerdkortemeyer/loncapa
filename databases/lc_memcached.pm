@@ -27,6 +27,7 @@ package Apache::lc_memcached;
 use strict;
 use Cache::Memcached;
 use Apache::lc_logs;
+use Apache::lc_parameters;
 
 use vars qw($memd);
 
@@ -54,7 +55,59 @@ sub lookup_homeserver {
    return &mget("homeserver:$entity:$domain");
 }
 
+#
+# Deal with URL cache
+#
+sub insert_url {
+   my ($url,$entity)=@_;
+   &mput("url:$url",$entity);
+}
 
+sub lookup_url {
+   return &mget("url:".@_[0]);
+}
+
+#
+# Deal with PID cache
+#
+sub insert_pid {
+   my ($pid,$domain,$entity)=@_;
+   &mput("pid:$pid:$domain",$entity,&lc_medium_expire());
+}
+
+sub lookup_pid {
+   my ($pid,$domain)=@_;
+   return &mget("pid:$pid:$domain");
+}
+
+#
+# Deal with usernames cache
+#
+sub insert_username {
+   my ($username,$domain,$entity)=@_;
+   &mput("username:$username:$domain",$entity,&lc_medium_expire());
+}
+
+sub lookup_username {
+   my ($username,$domain)=@_;
+   return &mget("username:$username:$domain");
+}
+
+#
+# Deal with courseid cache
+#
+sub insert_course {
+    my ($course,$domain,$entity)=@_;
+    &mput("course:$course:$domain",$entity,&lc_medium_expire());
+}
+
+sub lookup_course {
+   my ($course,$domain)=@_;
+   return &mget("course:$course:$domain");
+}
+
+# === Direct access
+# You don't want to call these from outside
 #
 # Get key
 sub mget {

@@ -17,6 +17,7 @@ use Apache::lc_entity_utils();
 use Apache::lc_entity_urls();
 use Apache::lc_entity_users();
 use Apache::lc_entity_courses();
+use Apache::lc_dispatcher();
 
 1;
 __END__

@@ -23,10 +23,12 @@ use strict;
 use DBI;
 use Data::Uniqid qw(luniqid);
 use Digest::MD5 qw(md5_hex);
+use Apache2::Const qw(:common :http);
 
 use Apache::lc_memcached();
 use Apache::lc_postgresql();
 use Apache::lc_logs;
+use Apache::lc_connection_utils();
 
 
 # ================================================================
@@ -48,8 +50,9 @@ sub oneway {
 # Find the homeserver
 # ================================================================
 #
-
-sub homeserver {
+# Locally
+#
+sub local_homeserver {
    my ($entity,$domain)=@_;
 # First see if it is already in memcached
    my $cached=&Apache::lc_memcached::lookup_homeserver($entity,$domain);
@@ -61,9 +64,41 @@ sub homeserver {
       &Apache::lc_memcached::insert_homeserver($entity,$domain,$stored);
       return $stored; 
    }
-# Could not find it locally, have to go out and look for it
+   return undef;
 }
 
+#
+# Remotely
+#
+sub remote_homeserver {
+   my ($entity,$domain)=@_;
+# Send the query to all library servers in the domain of that entity
+   my ($code,$reply)=&Apache::lc_connection::dispatcher::all_domain_libraries($domain,
+                                                                              "homeserver",
+                                                                              "{ entity : '$entity', domain : '$domain' }");
+# If we get a reasonable answer, store and return
+   if (($code eq HTTP_OK) && (&Apache::lc_connection_utils::is_library_server($reply,$domain))) {
+# Store it permanently
+      &Apache::lc_postgresql::insert_homeserver($entity,$domain,$reply);
+# Also put it into memory
+      &Apache::lc_memcached::insert_homeserver($entity,$domain,$reply);
+      &lognotice("Found homeserver entity ($entity) domain ($domain): $reply");
+      return $reply;
+   } else {
+# Wow, something is fishy, we're out of here!
+      &logerror("Error finding homeserver entity ($entity) domain ($domain): code ($code) with reply ($reply)");
+      return undef;
+   }
+}
+
+#
+# Find at any cost
+#
+sub homeserver {
+   my $found=&local_homeserver(@_);
+   if ($found) { return $found; }
+   return &remote_homeserver(@_);
+}
 
 1;
 __END__

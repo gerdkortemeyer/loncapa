@@ -107,20 +107,41 @@ sub load_cluster_table {
       return;
    }
 # Okay, check if we ourselves and our cluster manager
-# are in the cluster table 
+# are in the cluster table
+# Compile other useful lists
+   my $connection_table;
    my $ourselves=&Apache::lc_connection_utils::server_name();
    my $found_ourselves=0;
    my $cluster_manager=&cluster_manager();
    my $found_manager=0;
+# Go through all hosts in the cluster table
    foreach my $host (keys(%{$cluster_table->{'hosts'}})) {
       my $hostaddr=$cluster_table->{'hosts'}->{$host}->{'address'};
+# Is it ourselves?
       if (&Apache::lc_connection_utils::host_match($hostaddr,$ourselves)) {
          $found_ourselves=1;
+         $connection_table->{'self'}=$host;
       }
+# Is it the cluster manager?
       if (&Apache::lc_connection_utils::host_match($hostaddr,$cluster_manager)) {
          $found_manager=1;
+         $connection_table->{'manager'}=$host;
+      }
+# Go through all domains on this server
+      foreach my $domain (keys(%{$cluster_table->{'hosts'}->{$host}->{'domains'}})) {
+# Does it have a valid function
+         my $function=$cluster_table->{'hosts'}->{$host}->{'domains'}->{$domain}->{'function'};
+         unless (($function eq 'access') || ($function eq 'library')) {
+            &logerror("Unrecognized function ($function) for server ($host)");
+            return;
+         }
+# Remember all the library servers
+         if ($function eq 'library') {
+            $connection_table->{'libraries'}->{$domain}.=','.$host;
+         } 
       }
    }
+# If there are problems give up now
    unless ($found_ourselves) {
       &logerror("This server ($ourselves) is not in the cluster table");
       return;
@@ -131,7 +152,6 @@ sub load_cluster_table {
    }
 # Good, the cluster table seems fine. Now actually digest it
    &lognotice("Loading cluster table");
-   my $connection_table;
    $connection_table->{'cluster_table'}=$cluster_table;
 # Store this in memcache for everybody's enjoyment  
    &Apache::lc_memcached::set_connection_table($connection_table);
