@@ -22,7 +22,30 @@ package Apache::lc_dispatcher;
 use strict;
 
 use Apache::lc_parameters;
+use Apache::lc_memcached();
+use Apache2::Const qw(:common :http);
 
+use vars qw(%addresses);
+
+#
+# Send a single command to a single server
+#
+sub command_dispatch {
+   my ($host,$command,$jsondata)=@_;
+   unless ($addresses{$host}) {
+      my $connection_table=&Apache::lc_memcached::get_connection_table();
+      my $addr=$connection_table->{'cluster_table'}->{'hosts'}->{$host}->{'address'};
+      unless ($addr) {
+         &logerror("Could not find address for ($host)");
+         return (HTTP_SERVICE_UNAVAILABLE,undef);
+      }
+      $addresses{$host}=$addr;
+   }
+   return &Apache::lc_connections::dispatch('POST',
+                                            $addresses{$host},
+                                            "/$host/$command",
+                                            $jsondata);
+}
 #
 # Send a command to all library servers in a domain
 #

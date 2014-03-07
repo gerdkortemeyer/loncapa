@@ -25,9 +25,7 @@ use Apache2::RequestIO();
 use Apache2::Const qw(:common);
 
 use Apache::lc_parameters;
-use Apache::lc_connections();
-use Apache::lc_connection_utils();
-use Apache::lc_postgresql;
+use Apache::lc_dispatcher();
 
 use Data::Dumper;
 
@@ -38,6 +36,10 @@ sub handler {
    my $r = shift;
 
    $r->print("Test Handler\n");
+   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("marvin","homeserver")));
+   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("zaphod","homeserver")));
+   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("slarti","homeserver")));
+   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("arthur","homeserver")));
 
    return OK;
 }

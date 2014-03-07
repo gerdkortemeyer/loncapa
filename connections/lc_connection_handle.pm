@@ -26,7 +26,7 @@ package Apache::lc_connection_handle;
 use strict;
 use Apache2::RequestRec();
 use Apache2::RequestIO();
-use Apache2::Const qw(:common);
+use Apache2::Const qw(:common :http);
 
 use Apache::lc_parameters;
 use Apache::lc_json_utils();
