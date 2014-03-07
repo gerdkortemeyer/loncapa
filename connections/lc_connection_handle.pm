@@ -1,5 +1,10 @@
 # The LearningOnline Network with CAPA - LON-CAPA
 # The Cluster Connections Module
+# This takes incoming commands and routes them to handlers if allowed
+# Except for the cluster table handler (which is special), all other
+# requests will go through this module
+#
+# Routines that need to be called remotely must register with this module
 #
 # Copyright (C) 2014 Michigan State University Board of Trustees
 # 
@@ -25,13 +30,39 @@ use Apache2::Const qw(:common);
 
 use Apache::lc_parameters;
 
+# All the handled commands
+#
+use vars qw($cmds);
+
+
+# Register a subroutine with the handler
+# WARNING: routines registered here can be called remotely
+# Arguments:
+# - command: what the URL includes
+# - permtype: permission type (optional)
+# - permargdomain: permission domain argument, to be pulled from JSON (optional)
+# - permargentity: permission entity argument, to be pulled from JSON (optional)
+# - subptr: pointer to the subroutine
+# - args: arguments of subroutine in order, to be pulled out of JSON (optional)
+#
+sub register {
+   my ($command,$permtype,$permargdomain,$permargentity,$subptr,@args)=@_;
+   $cmds->{$command}->{'permtype'}=$permtype;
+   $cmds->{$command}->{'permargdomain'}=$permargdomain;
+   $cmds->{$command}->{'permargentity'}=$permargentity;
+   $cmds->{$command}->{'subptr'}=$subptr;
+   $cmds->{$command}->{'args'}=\@args;
+}
+
+
 # ==== Main handler
 #
 sub handler {
 # Get request object
    my $r = shift;
-
-   $r->print("Hello World ".&lc_certs_dir);
+# Requests need to come in as /connection_handle/host/command
+# host needs to be the host as which this one is addressed (in case one server serves more than one host)
+# command is the command which would need to be registered with the register-subroutine
    return OK;
 }
 

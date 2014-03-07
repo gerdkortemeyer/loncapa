@@ -100,5 +100,9 @@ sub homeserver {
    return &remote_homeserver(@_);
 }
 
+BEGIN {
+# Register the local homeserver routine for external call through connection_handle
+   &Apache::lc_connection_handle::register('homeserver',undef,undef,undef,\&local_homeserver,'entity','domain');
+}
 1;
 __END__
