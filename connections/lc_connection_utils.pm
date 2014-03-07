@@ -22,7 +22,7 @@ package Apache::lc_connection_utils;
 use strict;
 use Sys::Hostname;
 use Socket;
-
+use APR::Table;
 use Apache::lc_memcached();
 
 #
