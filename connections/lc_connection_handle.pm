@@ -29,6 +29,10 @@ use Apache2::RequestIO();
 use Apache2::Const qw(:common);
 
 use Apache::lc_parameters;
+use Apache::lc_json_utils();
+use Apache::lc_connection_utils();
+
+use Apache::lc_logs;
 
 # All the handled commands
 #
@@ -61,8 +65,27 @@ sub handler {
 # Get request object
    my $r = shift;
 # Requests need to come in as /connection_handle/host/command
-# host needs to be the host as which this one is addressed (in case one server serves more than one host)
+# host needs to be the host as which this one is addressed (in case one server serves more than one host; currently not used)
 # command is the command which would need to be registered with the register-subroutine
+   my $uri=$r->uri;
+   $uri=~s/^\/*//;
+   $uri=~s/\/+/\//g;
+   my (undef,$host,$command)=split(/\//,$uri);
+   my $data=&Apache::lc_json_utils::json_to_perl(&Apache::lc_connection_utils($r));
+   if ($cmds->{$command}) {
+      no strict 'refs';
+      if (defined(&$cmds->{'subptr'})) {
+#FIXME
+         $r->print("All is well");
+      } else {
+         &logerror("Cannot process ($command), subroutine not defined");
+         return HTTP_SERVICE_UNAVAILABLE;
+      }
+      use strict 'refs';
+   } else {
+      &logwarning("Got unrecognized command ($command)");
+      return HTTP_BAD_REQUEST;
+   }
    return OK;
 }
 

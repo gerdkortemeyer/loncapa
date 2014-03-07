@@ -39,56 +39,6 @@ sub handler {
 
    $r->print("Test Handler\n");
 
-   &Apache::lc_postgresql::insert_url("msu/kortemey/testing/test.html","abcdef");
-   $r->print("result:".&Apache::lc_postgresql::lookup_url_entity("msu/kortemey/testing/test.html")."\n");
-
-   &Apache::lc_postgresql::insert_pid("a31412414","msu","cdefgh");
-   $r->print("result:".&Apache::lc_postgresql::lookup_pid_entity("a31412414","msu")."\n");
-
-   &Apache::lc_postgresql::modify_pid("a31412414","msu","cdefgh2");
-   $r->print("result:".&Apache::lc_postgresql::lookup_pid_entity("a31412414","msu")."\n");
-
-   &Apache::lc_postgresql::delete_pid("a31412414","msu");
-   $r->print("result:".&Apache::lc_postgresql::lookup_pid_entity("a31412414","msu")."\n");
-
-
-   &Apache::lc_postgresql::insert_username("kortemey","msu","dhrqfq");
-   $r->print("result:".&Apache::lc_postgresql::lookup_username_entity("kortemey","msu")."\n");
-
-   &Apache::lc_postgresql::insert_course("phy231c","msu","fasfhae");
-   $r->print("result:".&Apache::lc_postgresql::lookup_course_entity("phy231c","msu")."\n");
-
-   &Apache::lc_postgresql::insert_homeserver("abcdef","msu","lc1");
-   &Apache::lc_postgresql::insert_homeserver("cdefgh","msu","lc1");
-   &Apache::lc_postgresql::insert_homeserver("dhrqfq","msu","lc1");
-   &Apache::lc_postgresql::insert_homeserver("fasfhae","msu","lc1");
-
-   $r->print("result:".&Apache::lc_postgresql::lookup_homeserver("dhrqfq","msu")."\n");
-
-   &Apache::lc_postgresql::insert_into_rolelist("fafawrq","msu","007","darqeq","sfu","instructor",
-                                                "1999-01-08 04:05:06","2015-03-08 04:05:06",
-                                                "dawqewq","msu");
-   &Apache::lc_postgresql::modify_rolelist("fafawrq","msu","007","darqeq","sfu","instructor",
-                                                "1999-01-08 04:05:06","1999-03-08 04:05:06",
-                                                "eqdaewq","msu");
-
-   &Apache::lc_postgresql::insert_into_rolelist("fafawrq","msu","007","xx4darqeq","sfu","instructor",
-                                                "1999-01-08 04:05:06","2015-03-08 04:05:06",
-                                                "dawqewq","msu");
-
-   &Apache::lc_postgresql::insert_into_rolelist("fafawrq","msu","007","yy4darqeq","sfu","instructor",
-                                                "1999-01-08 04:05:06","2015-03-08 04:05:06",
-                                                "dawqewq","msu");
-
-   &Apache::lc_postgresql::insert_into_rolelist("rqfawrq","msu","007","zz4darqeq","sfu","instructor",
-                                                "1999-01-08 04:05:06","2015-03-08 04:05:06",
-                                                "dawqewq","msu");
-
-
-   my $list=&Apache::lc_postgresql::lookup_entity_rolelist("fafawrq","msu");
-
-   $r->print(Dumper($list));
- 
    return OK;
 }
 

@@ -52,5 +52,18 @@ sub is_library_server {
    return ($connection_table->{'cluster_table'}->{'hosts'}->{$host}->{'domains'}->{$domain}->{'function'} eq 'library');
 }
 
+#
+# Get posted data out of a request
+# Takes the request object
+#
+sub extract_content {
+   my ($r)=@_;
+   my $content='';
+   if ($r->headers_in->{"Content-length"}>0) {
+      $r->read($content,$r->headers_in->{"Content-length"});
+   }
+   return $content;
+}
+
 1;
 __END__
