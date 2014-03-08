@@ -37,6 +37,10 @@ use Apache2::Const qw(:common :http);
 #
 sub local_make_new_user {
    my ($username,$domain,$authjson)=@_;
+# Are we even potentially in charge here?
+   unless (&Apache::lc_connection_utils::we_are_library($domain)) {
+      return undef;
+   }
 # First make sure this username does not exist
    if (&local_username_to_entity ($username,$domain)) {
 # Oops, that username already exists locally!
@@ -57,9 +61,16 @@ sub local_make_new_user {
       &logwarning("Tried to generate username ($username), but already exists in the cluster");
       return undef;
    }
-# Okay, now we can be sure that the username does not exist
-
-
+# Okay, we are a library server for the domain and 
+# now we can be sure that the username does not already exist
+# Make new entity ID ...
+   my $entity=&Apache::lc_entity_utils::make_unique_id();
+# ... and assign
+   &Apache::lc_postgresql::insert_username($username,$domain,$entity);
+# Take ownership
+   &Apache::lc_postgresql::insert_homeserver($entity,$domain,&Apache::lc_connection_utils::host_name());
+# Return the entity
+   return $entity;
 }
 
 

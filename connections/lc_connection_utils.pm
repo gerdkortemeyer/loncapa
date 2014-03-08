@@ -53,6 +53,20 @@ sub is_library_server {
 }
 
 #
+# Is this a library server for a domain?
+#
+sub we_are_library_server {
+   my ($domain)=@_;
+   my $connection_table=&Apache::lc_memcached::get_connection_table();
+   return ($connection_table->{'cluster_table'}->{'hosts'}->{$connection_table->{'self'}}->{'domains'}->{$domain}->{'function'} eq 'library');
+}
+
+sub host_name {
+   my $connection_table=&Apache::lc_memcached::get_connection_table();
+   return $connection_table->{'self'};
+}
+
+#
 # Get posted data out of a request
 # Takes the request object
 #
