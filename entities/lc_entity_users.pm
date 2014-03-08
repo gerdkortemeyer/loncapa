@@ -181,9 +181,9 @@ sub local_pid_to_entity {
 #
 sub remote_pid_to_entity {
    my ($pid,$domain)=@_;
-   my ($code,$reply)=&Apache::lc_connection::dispatcher::query_all_domain_libraries($domain,
-                                                                                    "pid_to_entity",
-                                                                                    "{ pid : '$pid', domain : '$domain' }");
+   my ($code,$reply)=&Apache::lc_dispatcher::query_all_domain_libraries($domain,
+                                                                        "pid_to_entity",
+                                                                        "{ pid : '$pid', domain : '$domain' }");
    if ($code eq HTTP_OK) {
       return $reply;
    } else {
