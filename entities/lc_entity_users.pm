@@ -34,6 +34,7 @@ use Apache2::Const qw(:common :http);
 # ================================================================
 #
 # Make a new user on this machine
+# This is also the routine that would be called by remote servers
 #
 sub local_make_new_user {
    my ($username,$domain)=@_;
@@ -73,6 +74,36 @@ sub local_make_new_user {
    return $entity;
 }
 
+#
+# Make a new user on a ***particular*** remote machine
+#
+sub remote_make_new_user {
+   my ($host,$username,$domain)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'make_new_user',
+                                                                 "{ username : '$username', domain : '$domain' }");
+   if ($code eq HTTP_OK) {
+      return $response;
+   } else {
+      return undef;
+   }
+}
+
+#
+# Make a new user somewhere
+#
+sub make_new_user {
+   my ($username,$domain)=@_;
+   my $libhost=&Apache::lc_connection_utils::random_library_server($domain);
+# Is it us?
+   if ($libhost eq &Apache::lc_connection_utils::host_name()) {
+      return &local_make_new_user($username,$domain);
+   } elsif ($libhost) {
+# It wants another server
+      return &remote_make_new_user($libhost,$username,$domain);
+   }
+# Oops, it's neither here nor there
+   return undef;
+}
 
 # ================================================================
 # Convert stuff to entities

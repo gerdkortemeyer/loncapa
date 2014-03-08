@@ -1,6 +1,5 @@
 # The LearningOnline Network with CAPA - LON-CAPA
 # Test Module
-# $Id: lc_test.pm,v 1.3 2014/02/14 13:17:12 www Exp $
 #
 # Copyright (C) 2014 Michigan State University Board of Trustees
 # 
@@ -25,7 +24,8 @@ use Apache2::RequestIO();
 use Apache2::Const qw(:common);
 
 use Apache::lc_parameters;
-use Apache::lc_dispatcher();
+use Apache::lc_entity_users();
+use Apache::lc_entity_utils();
 
 use Data::Dumper;
 
@@ -36,10 +36,23 @@ sub handler {
    my $r = shift;
 
    $r->print("Test Handler\n");
-   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("marvin","homeserver",'{ entity: "abcdef", domain : "msu" }')));
-   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("zaphod","homeserver",'{ entity: "abcdef", domain : "msu" }')));
-   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("slarti","homeserver",'{ entity: "abcdef", domain : "msu" }')));
-   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("arthur","homeserver",'{ entity: "abcdef", domain : "msu" }')));
+   my $entity;
+
+   $r->print(&Apache::lc_entity_users::make_new_user('test128','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test128','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   $r->print(&Apache::lc_entity_users::make_new_user('test129','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test129','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   $r->print(&Apache::lc_entity_users::make_new_user('test130','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test130','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   $r->print(&Apache::lc_entity_users::make_new_user('test131','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test131','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
    return OK;
 }

@@ -23,7 +23,10 @@ use strict;
 use Sys::Hostname;
 use Socket;
 use APR::Table;
+use Apache2::Const qw(:common :http);
+
 use Apache::lc_memcached();
+use Apache::lc_connection_handle();
 
 #
 # Check if two hosts are the same
@@ -61,6 +64,52 @@ sub we_are_library_server {
    return ($connection_table->{'cluster_table'}->{'hosts'}->{$connection_table->{'self'}}->{'domains'}->{$domain}->{'function'} eq 'library');
 }
 
+#
+# Get a random library server in the domain
+#
+sub random_library_server {
+   my ($domain)=@_;
+   my $connection_table=&Apache::lc_memcached::get_connection_table();
+   my @libraries=split(/\,/,$connection_table->{'libraries'}->{$domain});
+# First entry is empty! Take a random one
+   my $random_library=$libraries[1+int(rand($#libraries))];
+   if (&online($random_library)) {
+      return $random_library;
+   }
+# Wow, that one was offline. Take the first one that's online.
+   foreach my $library (@libraries) {
+      unless ($library) { next; }
+      if (&online($library)) {
+         return $library;
+      }
+   }
+   return undef;
+}
+
+#
+# Check if a server is online
+#
+sub online {
+   my ($host)=@_;
+# If it's us, we are online or we weren't here
+   if ($host eq &host_name()) { return 1; }
+# Okay, it's not us. Contact them
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'online');
+   if (($code eq HTTP_OK) && ($response eq 'ok')) { return 1; }
+# Nope
+   return 0;
+}
+
+#
+# This gets called when a remote server asks "online?"
+#
+sub local_online {
+   return 'ok';
+}
+
+#
+# What is our hostname?
+#
 sub host_name {
    my $connection_table=&Apache::lc_memcached::get_connection_table();
    return $connection_table->{'self'};
@@ -77,6 +126,10 @@ sub extract_content {
       $r->read($content,$r->headers_in->{"Content-length"});
    }
    return $content;
+}
+
+BEGIN {
+   &Apache::lc_connection_handle::register('online',undef,undef,undef,\&local_online);
 }
 
 1;
