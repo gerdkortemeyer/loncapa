@@ -47,10 +47,10 @@ sub local_make_new_user {
       &logwarning("Tried to generate username ($username), but already exists locally");
       return undef;
    }
-# Check all other library hosts, make sure they are responsing
-   my ($code,$reply)=&Apache::lc_connection::dispatcher::query_all_domain_libraries($domain,
-                                                                              "username_to_entity",
-                                                                              "{ username : '$username', domain : '$domain' }");
+# Check all other library hosts, make sure they are responding
+   my ($code,$reply)=&Apache::lc_dispatcher::query_all_domain_libraries($domain,
+                                                                        "username_to_entity",
+                                                                        "{ username : '$username', domain : '$domain' }");
 # If we could not get a hold of all libraries, do not proceed. It may exist on that one!
    unless ($code eq HTTP_OK) {
       &logwarning("Tried to generate username ($username), but could not get replies from all library servers");
@@ -101,9 +101,9 @@ sub local_username_to_entity {
 #
 sub remote_username_to_entity {
    my ($username,$domain)=@_;
-   my ($code,$reply)=&Apache::lc_connection::dispatcher::query_all_domain_libraries($domain,
-                                                                              "username_to_entity",
-                                                                              "{ username : '$username', domain : '$domain' }");
+   my ($code,$reply)=&Apache::lc_dispatcher::query_all_domain_libraries($domain,
+                                                                        "username_to_entity",
+                                                                        "{ username : '$username', domain : '$domain' }");
    if ($code eq HTTP_OK) {
       return $reply;
    } else {
