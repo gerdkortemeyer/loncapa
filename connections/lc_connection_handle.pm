@@ -71,14 +71,21 @@ sub handler {
    $uri=~s/^\/*//;
    $uri=~s/\/+/\//g;
    my (undef,$host,$command)=split(/\//,$uri);
-   my $data=&Apache::lc_json_utils::json_to_perl(&Apache::lc_connection_utils::extract_content($r));
+# Does the command even exist?
    if ($cmds->{$command}) {
       no strict 'refs';
-      if (1) {
-#FIXME
-#      if (defined(&$cmds->{'subptr'})) {
-#FIXME
-         $r->print("All is well");
+# Make sure this is a code reference
+      if (ref($cmds->{$command}->{'subptr'}) eq 'CODE') {
+# Extract posted data
+         my $data=&Apache::lc_json_utils::json_to_perl(&Apache::lc_connection_utils::extract_content($r));
+# Stack up the call arguments in the order required
+         my @call_args=();
+         foreach my $arg (@{$cmds->{$command}->{'args'}}) {
+            push(@call_args,$data->{$arg});
+         }
+# Now call the subroutine with the arguments, send reply
+         $r->print(&{$cmds->{$command}->{'subptr'}}(@call_args));
+         return OK;
       } else {
          &logerror("Cannot process ($command), subroutine not defined");
          return HTTP_SERVICE_UNAVAILABLE;
@@ -88,7 +95,6 @@ sub handler {
       &logwarning("Got unrecognized command ($command)");
       return HTTP_BAD_REQUEST;
    }
-   return OK;
 }
 
 1;

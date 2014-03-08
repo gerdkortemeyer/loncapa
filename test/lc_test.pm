@@ -36,10 +36,10 @@ sub handler {
    my $r = shift;
 
    $r->print("Test Handler\n");
-   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("marvin","homeserver")));
-   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("zaphod","homeserver")));
-   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("slarti","homeserver")));
-   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("arthur","homeserver")));
+   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("marvin","homeserver",'{ entity: "abcdef", domain : "msu" }')));
+   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("zaphod","homeserver",'{ entity: "abcdef", domain : "msu" }')));
+   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("slarti","homeserver",'{ entity: "abcdef", domain : "msu" }')));
+   $r->print(join(" - ",&Apache::lc_dispatcher::command_dispatch("arthur","homeserver",'{ entity: "abcdef", domain : "msu" }')));
 
    return OK;
 }
