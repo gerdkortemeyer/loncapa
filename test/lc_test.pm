@@ -60,7 +60,7 @@ sub handler {
 
    $r->print(&Apache::lc_entity_users::make_new_user('test153','sfu')."\n");
    $entity=&Apache::lc_entity_users::username_to_entity('test153','sfu');
-   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'sfu')."\n");
 
    $r->print(&Apache::lc_entity_users::make_new_user('test152','ostfalia')."\n");
    $entity=&Apache::lc_entity_users::username_to_entity('test152','ostfalia');
