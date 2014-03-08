@@ -36,9 +36,9 @@ use Apache2::Const qw(:common :http);
 # Make a new user on this machine
 #
 sub local_make_new_user {
-   my ($username,$domain,$authjson)=@_;
+   my ($username,$domain)=@_;
 # Are we even potentially in charge here?
-   unless (&Apache::lc_connection_utils::we_are_library($domain)) {
+   unless (&Apache::lc_connection_utils::we_are_library_server($domain)) {
       return undef;
    }
 # First make sure this username does not exist
