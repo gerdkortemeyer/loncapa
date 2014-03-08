@@ -22,6 +22,7 @@ package Apache::lc_dispatcher;
 use strict;
 
 use Apache::lc_parameters;
+use Apache::lc_logs;
 use Apache::lc_memcached();
 use Apache2::Const qw(:common :http);
 
