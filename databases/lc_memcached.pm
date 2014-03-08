@@ -47,7 +47,7 @@ sub set_connection_table {
 #
 sub insert_homeserver {
    my ($entity,$domain,$homeserver)=@_;
-   &mput("homeserver:$entity:$domain",$homeserver);
+   &mset("homeserver:$entity:$domain",$homeserver);
 }
 
 sub lookup_homeserver {
@@ -60,7 +60,7 @@ sub lookup_homeserver {
 #
 sub insert_url {
    my ($url,$entity)=@_;
-   &mput("url:$url",$entity);
+   &mset("url:$url",$entity);
 }
 
 sub lookup_url_entity {
@@ -72,7 +72,7 @@ sub lookup_url_entity {
 #
 sub insert_pid {
    my ($pid,$domain,$entity)=@_;
-   &mput("pid:$pid:$domain",$entity,&lc_medium_expire());
+   &mset("pid:$pid:$domain",$entity,&lc_medium_expire());
 }
 
 sub lookup_pid_entity {
@@ -85,7 +85,7 @@ sub lookup_pid_entity {
 #
 sub insert_username {
    my ($username,$domain,$entity)=@_;
-   &mput("username:$username:$domain",$entity,&lc_medium_expire());
+   &mset("username:$username:$domain",$entity,&lc_medium_expire());
 }
 
 sub lookup_username_entity {
@@ -98,7 +98,7 @@ sub lookup_username_entity {
 #
 sub insert_course {
     my ($course,$domain,$entity)=@_;
-    &mput("course:$course:$domain",$entity,&lc_medium_expire());
+    &mset("course:$course:$domain",$entity,&lc_medium_expire());
 }
 
 sub lookup_course {
