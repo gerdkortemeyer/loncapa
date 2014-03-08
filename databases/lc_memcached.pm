@@ -101,7 +101,7 @@ sub insert_course {
     &mset("course:$course:$domain",$entity,&lc_medium_expire());
 }
 
-sub lookup_course {
+sub lookup_course_entity {
    my ($course,$domain)=@_;
    return &mget("course:$course:$domain");
 }

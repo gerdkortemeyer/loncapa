@@ -210,7 +210,7 @@ sub pid_to_entity {
 BEGIN {
    &Apache::lc_connection_handle::register('pid_to_entity',undef,undef,undef,\&local_pid_to_entity,'pid','domain');
    &Apache::lc_connection_handle::register('username_to_entity',undef,undef,undef,\&local_username_to_entity,'username','domain');
-   &Apache::lc_connection_handle::register('make_new_user',undef,undef,undef,\&local_make_new_user,'username','domain','authjson');
+   &Apache::lc_connection_handle::register('make_new_user',undef,undef,undef,\&local_make_new_user,'username','domain');
 }
 
 1;

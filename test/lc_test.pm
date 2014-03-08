@@ -38,21 +38,46 @@ sub handler {
    $r->print("Test Handler\n");
    my $entity;
 
-   $r->print(&Apache::lc_entity_users::make_new_user('test128','msu')."\n");
-   $entity=&Apache::lc_entity_users::username_to_entity('test128','msu');
+   $r->print(&Apache::lc_entity_users::make_new_user('test150','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test150','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
-   $r->print(&Apache::lc_entity_users::make_new_user('test129','msu')."\n");
-   $entity=&Apache::lc_entity_users::username_to_entity('test129','msu');
+   $r->print(&Apache::lc_entity_users::make_new_user('test151','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test151','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
-   $r->print(&Apache::lc_entity_users::make_new_user('test130','msu')."\n");
-   $entity=&Apache::lc_entity_users::username_to_entity('test130','msu');
+   $r->print(&Apache::lc_entity_users::make_new_user('test152','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test152','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
-   $r->print(&Apache::lc_entity_users::make_new_user('test131','msu')."\n");
-   $entity=&Apache::lc_entity_users::username_to_entity('test131','msu');
+   $r->print(&Apache::lc_entity_users::make_new_user('test153','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test153','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   $r->print(&Apache::lc_entity_users::make_new_user('test152','sfu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test152','sfu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'sfu')."\n");
+
+   $r->print(&Apache::lc_entity_users::make_new_user('test153','sfu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test153','sfu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   $r->print(&Apache::lc_entity_users::make_new_user('test152','ostfalia')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test152','ostfalia');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'ostfalia')."\n");
+
+   $r->print(&Apache::lc_entity_users::make_new_user('test153','ostfalia')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test153','ostfalia');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'ostfalia')."\n");
+
+   $r->print(&Apache::lc_entity_courses::make_new_course('test153','msu')."\n");
+   $entity=&Apache::lc_entity_courses::course_to_entity('test153','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   $r->print(&Apache::lc_entity_courses::make_new_course('test152','sfu')."\n");
+   $entity=&Apache::lc_entity_courses::course_to_entity('test152','sfu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'sfu')."\n");
+
 
    return OK;
 }
