@@ -73,7 +73,7 @@ sub local_homeserver {
 sub remote_homeserver {
    my ($entity,$domain)=@_;
 # Send the query to all library servers in the domain of that entity
-   my ($code,$reply)=&Apache::lc_connection::dispatcher::all_domain_libraries($domain,
+   my ($code,$reply)=&Apache::lc_connection::dispatcher::query_all_domain_libraries($domain,
                                                                               "homeserver",
                                                                               "{ entity : '$entity', domain : '$domain' }");
 # If we get a reasonable answer, store and return

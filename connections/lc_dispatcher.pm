@@ -32,7 +32,9 @@ use vars qw(%addresses);
 #
 sub command_dispatch {
    my ($host,$command,$jsondata)=@_;
+# Do we have the address cached in this module?
    unless ($addresses{$host}) {
+# Nope, get it and remember it
       my $connection_table=&Apache::lc_memcached::get_connection_table();
       my $addr=$connection_table->{'cluster_table'}->{'hosts'}->{$host}->{'address'};
       unless ($addr) {
@@ -46,11 +48,41 @@ sub command_dispatch {
                                             "/connection_handle/$host/$command",
                                             $jsondata);
 }
+
 #
-# Send a command to all library servers in a domain
+# Send a query command to all library servers in a domain
+# EXCEPT this server
+# Return with first valid answer
 #
-sub all_domain_libraries {
+sub query_all_domain_libraries {
    my ($domain,$command,$jsondata)=@_;
+# Get connection table from memchache
+   my $connection_table=&Apache::lc_memcached::get_connection_table();
+# The world is still okay
+   my $error_code=0;
+   foreach my $host (split(/\,/,$connection_table->{'libraries'}->{$domain})) {
+# Not interested in ourselves
+      unless ($host) { next; }
+      if ($host eq $connection_table->{'self'}) { next; }
+# Send command
+      my ($code,$response)=&command_dispatch($host,$command,$jsondata);
+      if ($code eq HTTP_OK) {
+# Valid response, we are done
+         return ($code,$response);
+      } elsif ($code ne HTTP_NOT_FOUND) {
+# There was a problem. Not yet fatal, maybe another host has the answer
+         $error_code=$code;
+         &logwarning("Could not contact host ($host): code ($code)");
+      }
+   }
+# Nobody had an answer
+   if ($error_code) {
+# Maybe the failed one would have had the answer, but we don't know
+      return ($error_code,undef);
+   } else {
+# There just is no answer
+      return (HTTP_OK,undef);
+   }
 }
 
 1;
