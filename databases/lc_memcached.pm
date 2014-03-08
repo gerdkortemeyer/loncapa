@@ -63,7 +63,7 @@ sub insert_url {
    &mput("url:$url",$entity);
 }
 
-sub lookup_url {
+sub lookup_url_entity {
    return &mget("url:".@_[0]);
 }
 
@@ -75,7 +75,7 @@ sub insert_pid {
    &mput("pid:$pid:$domain",$entity,&lc_medium_expire());
 }
 
-sub lookup_pid {
+sub lookup_pid_entity {
    my ($pid,$domain)=@_;
    return &mget("pid:$pid:$domain");
 }
@@ -88,7 +88,7 @@ sub insert_username {
    &mput("username:$username:$domain",$entity,&lc_medium_expire());
 }
 
-sub lookup_username {
+sub lookup_username_entity {
    my ($username,$domain)=@_;
    return &mget("username:$username:$domain");
 }
