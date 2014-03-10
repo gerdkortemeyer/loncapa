@@ -31,7 +31,39 @@ use Apache::lc_logs;
 use Hash::Merge;
 use Data::Dumper;
 
-use vars qw($merge $client $database $roles);
+use vars qw($merge $client $database $roles $profiles);
+
+#
+# Make a new profile
+#
+sub insert_profile {
+   my ($entity,$domain,$data)=@_;
+   my $newdata->{'entity'}=$entity;
+   $newdata->{'domain'}=$domain;
+   $newdata->{'profile'}=$data;
+   return $profiles->insert($newdata)->{'value'};
+}
+
+sub update_profile {
+   my ($entity,$domain,$data)=@_;
+   my $olddata=$profiles->find_one({ entity => $entity, domain => $domain });
+   my $newdata->{'profile'}=$merge->merge($olddata->{'profile'},$data);
+   $newdata->{'entity'}=$entity;
+   $newdata->{'domain'}=$domain;
+   delete($newdata->{'_id'});
+   return $profiles->update({ entity => $entity, domain => $domain },$newdata);
+}
+
+sub dump_profile {
+   my ($entity,$domain)=@_;
+   my $result=$profiles->find_one({ entity => $entity, domain => $domain });
+   if ($result) {
+      return $result->{'profile'};
+   } else {
+      return undef;
+   }
+}
+
 
 #
 # Insert something into the roles collection
@@ -84,6 +116,7 @@ sub init_mongo {
    $database=$client->get_database('loncapa');
 # Get handles on all the collections we maintain
    $roles=$database->get_collection('roles');
+   $profiles=$database->get_collection('profiles');
 }
 
 BEGIN {

@@ -46,7 +46,6 @@ sub handler {
    $r->print("\nInsert roles\n");
 
    $r->print(Dumper(&Apache::lc_mongodb::insert_roles('test123','msu',{ 'course' => 13 })));
-#){ 'courseentity' => '123', 'coursedomain' => 'msu' }}))."\n");
    $r->print("\nDump\n");
    $r->print(Dumper(&Apache::lc_mongodb::dump_roles('test123','msu')));
 
@@ -54,6 +53,23 @@ sub handler {
    $r->print(Dumper(&Apache::lc_mongodb::update_roles('test123','msu',{ 'test' => { 'courseentity' => '456', 'coursedomain' => 'msu' }}))."\n");
    $r->print("\nLook again, dump\n");
    $r->print(Dumper(&Apache::lc_mongodb::dump_roles('test123','msu')));
+
+   $r->print("\nCleaning up\n");
+
+   $Apache::lc_mongodb::profiles->remove();
+   $r->print("\nInsert profile\n");
+
+   $r->print(Dumper(&Apache::lc_mongodb::insert_profile('test123','msu',{ 'name' => 'Zaphod' })));
+   $r->print("\nDump\n");
+   $r->print(Dumper(&Apache::lc_mongodb::dump_profile('test123','msu')));
+
+   $r->print("\nUpdate roles\n");
+   $r->print(Dumper(&Apache::lc_mongodb::update_profile('test123','msu',{ 'test' => { 'status' => 'epic', 'stuff' => 'green' }}))."\n");
+   $r->print("\nLook again, dump\n");
+   $r->print(Dumper(&Apache::lc_mongodb::dump_profile('test123','msu')));
+
+   
+
 
 
    return OK;
