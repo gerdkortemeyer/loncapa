@@ -28,7 +28,15 @@ use strict;
 use MongoDB;
 use Apache::lc_logs;
 
-use vars qw($client $database);
+use vars qw($client $database $roles_collection);
+
+#
+# Insert something into the roles collection
+#
+sub insert_roles {
+   my ($data)=@_;
+   return $roles_collection->insert($data);
+}
 
 #
 # Initialize the MongoDB client, local host
@@ -43,6 +51,8 @@ sub init_mongo {
    }
 # Get the LON-CAPA database in MongoDB
    $database=$client->get_database('loncapa');
+# Get handles on all the collections we maintain
+   $roles_collection=$database->get_collection('roles');
 }
 
 BEGIN {
