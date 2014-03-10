@@ -39,14 +39,19 @@ sub handler {
 
    $r->print("Test Handler\n");
 # Never do this in real life!
-   $Apache::lc_mongodb::roles->remove();
+#
+   $r->print("\nCleaning up\n");
 
-   $r->print(Dumper(&Apache::lc_mongodb::insert_roles('test123','msu',{ roles => 'super' }))."\n");
-   $r->print(Dumper(&Apache::lc_mongodb::find_roles_id('test123','msu')));
+   $Apache::lc_mongodb::roles->remove();
+   $r->print("\nInsert roles\n");
+
+   $r->print(Dumper(&Apache::lc_mongodb::insert_roles('test123','msu',{ 'course' => 13 })));
+#){ 'courseentity' => '123', 'coursedomain' => 'msu' }}))."\n");
+   $r->print("\nDump\n");
+   $r->print(Dumper(&Apache::lc_mongodb::dump_roles('test123','msu')));
+
    $r->print("\nUpdate roles\n");
-   $r->print(Dumper(&Apache::lc_mongodb::update_roles('test123','msu',{ roles => 'test' }))."\n");
-   $r->print("\nLook again, find roles\n");
-   $r->print(Dumper(&Apache::lc_mongodb::find_roles_id('test123','msu')));
+   $r->print(Dumper(&Apache::lc_mongodb::update_roles('test123','msu',{ 'test' => { 'courseentity' => '456', 'coursedomain' => 'msu' }}))."\n");
    $r->print("\nLook again, dump\n");
    $r->print(Dumper(&Apache::lc_mongodb::dump_roles('test123','msu')));
 

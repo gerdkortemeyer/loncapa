@@ -26,35 +26,42 @@ package Apache::lc_mongodb;
 
 use strict;
 use MongoDB;
-use Apache::lc_logs;
 
-use vars qw($client $database $roles);
+use Apache::lc_logs;
+use Hash::Merge;
+use Data::Dumper;
+
+use vars qw($merge $client $database $roles);
 
 #
 # Insert something into the roles collection
 #
 sub insert_roles {
-   my ($username,$domain,$data)=@_;
-   $data->{'username'}=$username;
-   $data->{'domain'}=$domain;
-   return $roles->insert($data)->{'value'};
-}
-
-sub find_roles_id {
-   my ($username,$domain)=@_;
-   return $roles->find({ username => $username, domain => $domain })->next->{'_id'}->{'value'};
+   my ($entity,$domain,$data)=@_;
+   my $newdata->{'entity'}=$entity;
+   $newdata->{'domain'}=$domain;
+   $newdata->{'roles'}=$data;
+   return $roles->insert($newdata)->{'value'};
 }
 
 sub update_roles {
-   my ($username,$domain,$data)=@_;
-   $data->{'username'}=$username;
-   $data->{'domain'}=$domain;
-   return $roles->update({ username => $username, domain => $domain },$data);
+   my ($entity,$domain,$data)=@_;
+   my $olddata=$roles->find_one({ entity => $entity, domain => $domain });
+   my $newdata->{'roles'}=$merge->merge($olddata->{'roles'},$data);
+   $newdata->{'entity'}=$entity;
+   $newdata->{'domain'}=$domain;
+   delete($newdata->{'_id'});
+   return $roles->update({ entity => $entity, domain => $domain },$newdata);
 }
 
 sub dump_roles {
-   my ($username,$domain)=@_;
-   return $roles->find_one({ username => $username, domain => $domain });
+   my ($entity,$domain)=@_;
+   my $result=$roles->find_one({ entity => $entity, domain => $domain });
+   if ($result) { 
+      return $result->{'roles'}; 
+   } else {
+      return undef;
+   } 
 }
 
 #
@@ -81,6 +88,7 @@ sub init_mongo {
 
 BEGIN {
    &init_mongo();
+   $merge=Hash::Merge->new();
 }
 
 1;
