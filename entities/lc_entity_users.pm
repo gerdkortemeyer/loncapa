@@ -25,6 +25,7 @@ use Apache::lc_logs;
 
 use Apache::lc_connection_handle();
 use Apache::lc_postgresql();
+use Apache::lc_mongodb();
 use Apache::lc_memcached();
 
 use Apache2::Const qw(:common :http);
@@ -37,7 +38,7 @@ use Apache2::Const qw(:common :http);
 # This is also the routine that would be called by remote servers
 #
 sub local_make_new_user {
-   my ($username,$domain)=@_;
+   my ($username,$domain,$profile,$roles)=@_;
 # Are we even potentially in charge here?
    unless (&Apache::lc_connection_utils::we_are_library_server($domain)) {
       return undef;
@@ -70,6 +71,10 @@ sub local_make_new_user {
    &Apache::lc_postgresql::insert_username($username,$domain,$entity);
 # Take ownership
    &Apache::lc_postgresql::insert_homeserver($entity,$domain,&Apache::lc_connection_utils::host_name());
+# Make a profile
+   &Apache::lc_mongodb::insert_profile($entity,$domain,$profile);
+# Make a roleset
+   &Apache::lc_mongodb::insert_roles($entity,$domain,$roles);
 # Return the entity
    return $entity;
 }
@@ -78,9 +83,12 @@ sub local_make_new_user {
 # Make a new user on a ***particular*** remote machine
 #
 sub remote_make_new_user {
-   my ($host,$username,$domain)=@_;
+   my ($host,$username,$domain,$profile,$roles)=@_;
    my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'make_new_user',
-                                                                 "{ username : '$username', domain : '$domain' }");
+                          &Apache::lc_json_utils::perl_to_json({ username => $username, 
+                                                                 domain => $domain, 
+                                                                 profile => $profile, 
+                                                                 roles => $roles }));
    if ($code eq HTTP_OK) {
       return $response;
    } else {
@@ -92,14 +100,14 @@ sub remote_make_new_user {
 # Make a new user somewhere
 #
 sub make_new_user {
-   my ($username,$domain)=@_;
+   my ($username,$domain,$profile,$roles)=@_;
    my $libhost=&Apache::lc_connection_utils::random_library_server($domain);
 # Is it us?
    if ($libhost eq &Apache::lc_connection_utils::host_name()) {
-      return &local_make_new_user($username,$domain);
+      return &local_make_new_user($username,$domain,$profile,$roles);
    } elsif ($libhost) {
 # It wants another server
-      return &remote_make_new_user($libhost,$username,$domain);
+      return &remote_make_new_user($libhost,$username,$domain,$profile,$roles);
    }
 # Oops, it's neither here nor there
    return undef;
@@ -210,7 +218,7 @@ sub pid_to_entity {
 BEGIN {
    &Apache::lc_connection_handle::register('pid_to_entity',undef,undef,undef,\&local_pid_to_entity,'pid','domain');
    &Apache::lc_connection_handle::register('username_to_entity',undef,undef,undef,\&local_username_to_entity,'username','domain');
-   &Apache::lc_connection_handle::register('make_new_user',undef,undef,undef,\&local_make_new_user,'username','domain');
+   &Apache::lc_connection_handle::register('make_new_user',undef,undef,undef,\&local_make_new_user,'username','domain','profile','roles');
 }
 
 1;

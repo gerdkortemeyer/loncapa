@@ -27,8 +27,6 @@ use Apache::lc_parameters;
 use Apache::lc_entity_users();
 use Apache::lc_entity_utils();
 
-use Apache::lc_mongodb();
-
 use Data::Dumper;
 
 # ==== Main handler
@@ -38,38 +36,52 @@ sub handler {
    my $r = shift;
 
    $r->print("Test Handler\n");
-# Never do this in real life!
-#
-   $r->print("\nCleaning up\n");
+   my $entity;
 
-   $Apache::lc_mongodb::roles->remove();
-   $r->print("\nInsert roles\n");
+   $r->print(&Apache::lc_entity_users::make_new_user('test154','msu',{ lastname => 'Flintstone', firstname => 'Fred' },
+                                                                     { domains => { 'msu' => { role => 'coordinator' }}})."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test154','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
-   $r->print(Dumper(&Apache::lc_mongodb::insert_roles('test123','msu',{ 'course' => 13 })));
-   $r->print("\nDump\n");
-   $r->print(Dumper(&Apache::lc_mongodb::dump_roles('test123','msu')));
+   $r->print(Dumper(&Apache::lc_mongodb::dump_roles($entity,'msu')));
+   $r->print(Dumper(&Apache::lc_mongodb::dump_profile($entity,'msu')));
+return OK;
 
-   $r->print("\nUpdate roles\n");
-   $r->print(Dumper(&Apache::lc_mongodb::update_roles('test123','msu',{ 'test' => { 'courseentity' => '456', 'coursedomain' => 'msu' }}))."\n");
-   $r->print("\nLook again, dump\n");
-   $r->print(Dumper(&Apache::lc_mongodb::dump_roles('test123','msu')));
+   $r->print(&Apache::lc_entity_users::make_new_user('test155','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test155','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
-   $r->print("\nCleaning up\n");
+   $r->print(&Apache::lc_entity_users::make_new_user('test156','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test156','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
-   $Apache::lc_mongodb::profiles->remove();
-   $r->print("\nInsert profile\n");
+   $r->print(&Apache::lc_entity_users::make_new_user('test157','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test157','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
-   $r->print(Dumper(&Apache::lc_mongodb::insert_profile('test123','msu',{ 'name' => 'Zaphod' })));
-   $r->print("\nDump\n");
-   $r->print(Dumper(&Apache::lc_mongodb::dump_profile('test123','msu')));
+   $r->print(&Apache::lc_entity_users::make_new_user('test154','sfu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test154','sfu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'sfu')."\n");
 
-   $r->print("\nUpdate roles\n");
-   $r->print(Dumper(&Apache::lc_mongodb::update_profile('test123','msu',{ 'test' => { 'status' => 'epic', 'stuff' => 'green' }}))."\n");
-   $r->print("\nLook again, dump\n");
-   $r->print(Dumper(&Apache::lc_mongodb::dump_profile('test123','msu')));
+   $r->print(&Apache::lc_entity_users::make_new_user('test155','sfu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test155','sfu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'sfu')."\n");
 
-   
+   $r->print(&Apache::lc_entity_users::make_new_user('test156','ostfalia')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test156','ostfalia');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'ostfalia')."\n");
 
+   $r->print(&Apache::lc_entity_users::make_new_user('test157','ostfalia')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test157','ostfalia');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'ostfalia')."\n");
+
+   $r->print(&Apache::lc_entity_courses::make_new_course('test155','msu')."\n");
+   $entity=&Apache::lc_entity_courses::course_to_entity('test155','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   $r->print(&Apache::lc_entity_courses::make_new_course('test156','sfu')."\n");
+   $entity=&Apache::lc_entity_courses::course_to_entity('test156','sfu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'sfu')."\n");
 
 
    return OK;
