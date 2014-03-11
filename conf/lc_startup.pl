@@ -16,6 +16,8 @@ use Apache::lc_cluster_table();
 use Apache::lc_entity_utils();
 use Apache::lc_entity_urls();
 use Apache::lc_entity_users();
+use Apache::lc_entity_roles();
+use Apache::lc_entity_profile();
 use Apache::lc_entity_courses();
 use Apache::lc_dispatcher();
 

@@ -38,8 +38,8 @@ sub handler {
    $r->print("Test Handler\n");
    my $entity;
 
-   $r->print(&Apache::lc_entity_users::make_new_user('test160','msu')."\n");
-   $entity=&Apache::lc_entity_users::username_to_entity('test160','msu');
+   $r->print(&Apache::lc_entity_users::make_new_user('test161','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test161','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
    $r->print(Dumper(&Apache::lc_mongodb::dump_roles($entity,'msu')));

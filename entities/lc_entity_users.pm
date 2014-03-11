@@ -27,6 +27,7 @@ use Apache::lc_connection_handle();
 use Apache::lc_postgresql();
 use Apache::lc_mongodb();
 use Apache::lc_memcached();
+use Apache::lc_date_utils();
 
 use Apache2::Const qw(:common :http);
 
@@ -71,8 +72,8 @@ sub local_make_new_user {
    &Apache::lc_postgresql::insert_username($username,$domain,$entity);
 # Take ownership
    &Apache::lc_postgresql::insert_homeserver($entity,$domain,&Apache::lc_connection_utils::host_name());
-# Make a profile
-   &Apache::lc_mongodb::insert_profile($entity,$domain,{});
+# Make a profile record
+   &Apache::lc_mongodb::insert_profile($entity,$domain,{ created => &Apache::lc_date_utils::now2str() });
 # Make a roleset
    &Apache::lc_mongodb::insert_roles($entity,$domain,{});
 # Return the entity
