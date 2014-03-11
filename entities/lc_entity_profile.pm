@@ -20,7 +20,6 @@
 package Apache::lc_entity_profile;
 
 use strict;
-use DBI;
 use Apache::lc_logs;
 
 

@@ -17,10 +17,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #
-package Apache::lc_entity_url;
+package Apache::lc_entity_urls;
 
 use strict;
-use DBI;
 use Apache::lc_logs;
 
 

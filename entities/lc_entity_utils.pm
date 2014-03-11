@@ -20,7 +20,6 @@
 package Apache::lc_entity_utils;
 
 use strict;
-use DBI;
 use Data::Uniqid qw(luniqid);
 use Digest::MD5 qw(md5_hex);
 use Apache2::Const qw(:common :http);
@@ -98,6 +97,13 @@ sub homeserver {
    my $found=&local_homeserver(@_);
    if ($found) { return $found; }
    return &remote_homeserver(@_);
+}
+
+#
+# Are we the homeserver?
+#
+sub we_are_homeserver {
+   return (&homeserver(@_) eq &Apache::lc_connection_utils::host_name());
 }
 
 BEGIN {

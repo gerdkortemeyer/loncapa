@@ -20,7 +20,6 @@
 package Apache::lc_entity_users;
 
 use strict;
-use DBI;
 use Apache::lc_logs;
 
 use Apache::lc_connection_handle();
