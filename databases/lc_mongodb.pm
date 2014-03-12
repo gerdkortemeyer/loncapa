@@ -79,7 +79,7 @@ sub insert_roles {
 sub update_roles {
    my ($entity,$domain,$data)=@_;
    my $olddata=$roles->find_one({ entity => $entity, domain => $domain });
-   my $newdata->{'roles'}=$merge->merge($olddata->{'roles'},$data);
+   my $newdata->{'roles'}=$merge->merge($data,$olddata->{'roles'});
    $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
    delete($newdata->{'_id'});
