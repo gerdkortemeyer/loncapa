@@ -134,7 +134,7 @@ sub remote_modify_rolelist {
        $manualenrollentity,$manualenrolldomain)=@_;
    my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'modify_rolelist',
 "{  roleentity:'$roleentity',roledomain:'$roledomain',rolesection:'$rolesection',
-   userentity:'$userentity',usersdomain:'$userdomain',
+   userentity:'$userentity',userdomain:'$userdomain',
    role:'$role',
    startdate:'$startdate',enddate:'$enddate',
    manualenrollentity:'$manualenrollentity',manualenrolldomain:'$manualenrolldomain' 
