@@ -185,6 +185,20 @@ sub modify_rolelist {
 }
 
 #
+# Lookup if a particular role is already set
+#
+sub role_exists_rolelist {
+   my ($roleentity,$roledomain,$rolesection,
+       $userentity,$userdomain,
+       $role)=@_;
+   my $sth=$dbh->prepare("select * from rolelist where roleentity = ? and roledomain = ? and rolesection = ? and userentity = ? and userdomain = ? and role = ?");
+   my $rv=$sth->execute($roleentity,$roledomain,$rolesection,
+                        $userentity,$userdomain,
+                        $role);
+   return $sth->fetchrow_array();
+}
+
+#
 # Lookup all roles for a particular entity
 # e.g, a courselist
 #

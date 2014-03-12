@@ -89,12 +89,33 @@ sub local_modify_rolelist {
       }
    }
 # Okay, we are in charge here
-   &Apache::lc_postgresql::modify_rolelist($roleentity,$roledomain,$rolesection,
+   if (&Apache::lc_postgresql::role_exists_rolelist($roleentity,$roledomain,$rolesection,
+                                           $userentity,$userdomain,
+                                           $role)) {
+      &lognotice("Modifying existing role for ($userentity) ($userdomain)");
+      if (&Apache::lc_postgresql::modify_rolelist($roleentity,$roledomain,$rolesection,
                                            $userentity,$userdomain, 
                                            $role, 
                                            $startdate,$enddate,
-                                           $manualenrollentity,$manualenrolldomain);
-   return 1;
+                                           $manualenrollentity,$manualenrolldomain)<0) {
+         &logerror("Error modifying rolelist");
+         return 0;
+      } else {
+         return 1;
+      }
+   } else {
+      &lognotice("Inserting role for ($userentity) ($userdomain)");
+      if (&Apache::lc_postgresql::insert_into_rolelist($roleentity,$roledomain,$rolesection,
+                                           $userentity,$userdomain, 
+                                           $role, 
+                                           $startdate,$enddate,
+                                           $manualenrollentity,$manualenrolldomain)<0) {
+         &logerror("Error inserting into rolelist");
+         return 0;
+      } else {
+         return 1;
+      }
+   }
 }
 
 #

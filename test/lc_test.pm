@@ -37,10 +37,31 @@ sub handler {
 
    $r->print("Test Handler\n");
    my $entity;
+   my $courseentity;
 
    $r->print(&Apache::lc_entity_users::make_new_user('test161','msu')."\n");
    $entity=&Apache::lc_entity_users::username_to_entity('test161','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   $r->print(&Apache::lc_entity_courses::make_new_course('test155','msu')."\n");
+   $courseentity=&Apache::lc_entity_courses::course_to_entity('test155','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+
+   &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
+       'course', # system, domain, course, user
+       $courseentity,'msu','31fq', # what's the realm?
+       'student', # what role is this?
+       '1999-01-08 04:05:06','1929-01-08 04:05:06', # duration
+       'ggf21wqffas','msu');
+
+   &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
+       'domain', # system, domain, course, user
+       '','msu','', # what's the realm?
+       'domaincoordinator', # what role is this?
+       '1999-01-08 04:05:06','1929-01-08 04:05:06', # duration
+       'hhhf21wqffas','msu');
+
 
    $r->print(Dumper(&Apache::lc_mongodb::dump_roles($entity,'msu')));
    $r->print(Dumper(&Apache::lc_mongodb::dump_profile($entity,'msu')));
@@ -74,9 +95,6 @@ return OK;
    $entity=&Apache::lc_entity_users::username_to_entity('test157','ostfalia');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'ostfalia')."\n");
 
-   $r->print(&Apache::lc_entity_courses::make_new_course('test155','msu')."\n");
-   $entity=&Apache::lc_entity_courses::course_to_entity('test155','msu');
-   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
    $r->print(&Apache::lc_entity_courses::make_new_course('test156','sfu')."\n");
    $entity=&Apache::lc_entity_courses::course_to_entity('test156','sfu');
