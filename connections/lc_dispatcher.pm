@@ -72,9 +72,11 @@ sub query_all_domain_libraries {
 # Send command
       my ($code,$response)=&command_dispatch($host,$command,$jsondata);
       if ($code eq HTTP_OK) {
-# Valid response, we are done
-         return ($code,$response);
-      } elsif ($code ne HTTP_NOT_FOUND) {
+# If valid response, we are done
+         if ($response) {
+            return ($code,$response);
+         }
+      } else {
 # There was a problem. Not yet fatal, maybe another host has the answer
          $error_code=$code;
          &logwarning("Could not contact host ($host) for command ($command): code ($code)");
