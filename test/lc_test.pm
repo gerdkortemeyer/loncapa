@@ -67,20 +67,19 @@ sub handler {
    $r->print(Dumper(&Apache::lc_entity_roles::dump_roles($entity,'msu')));
    $r->print(Dumper(&Apache::lc_entity_profile::dump_profile($entity,'msu')));
 
-   my $sessionid=&Apache::lc_mongodb::open_session( 'fasrqweq','msu',{ color => 'green' } );
+   my $sessionid='rrwfq421c324';
 
+   &Apache::lc_mongodb::open_session( 'fasrqweq','msu',$sessionid,{ color => 'green' } );
 
-   print "SessionID: $sessionid\n";
+   $r->print(Dumper(&Apache::lc_mongodb::dump_session($sessionid)));
 
-   $r->print(Dumper(&Apache::lc_mongodb::dump_session('fasrqweq','msu')));
+   &Apache::lc_mongodb::update_session ($sessionid, { color => 'pink', taste => 'sweet' });
 
-   &Apache::lc_mongodb::update_session ('fasrqweq','msu', { color => 'pink', taste => 'sweet' });
+   $r->print(Dumper(&Apache::lc_mongodb::dump_session($sessionid)));
 
-   $r->print(Dumper(&Apache::lc_mongodb::dump_session('fasrqweq','msu')));
+   &Apache::lc_mongodb::close_session($sessionid);
 
-   &Apache::lc_mongodb::close_session('fasrqweq','msu');
-
-   $r->print(Dumper(&Apache::lc_mongodb::dump_session('fasrqweq','msu')));
+   $r->print(Dumper(&Apache::lc_mongodb::dump_session($sessionid)));
 
 return OK;
 

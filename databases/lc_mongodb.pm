@@ -101,27 +101,27 @@ sub dump_roles {
 #
 
 sub open_session {
-   my ($entity,$domain,$data)=@_;
-   &close_session($entity,$domain);
+   my ($entity,$domain,$sessionid,$data)=@_;
+   $sessions->remove({ entity => $entity, domain => $domain});
    my $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
+   $newdata->{'sessionid'}=$sessionid;
    $newdata->{'sessiondata'}=$data;
    return $sessions->insert($newdata)->{'value'};
 }
 
 sub update_session {
-   my ($entity,$domain,$data)=@_;
-   my $olddata=$sessions->find_one({ entity => $entity, domain => $domain });
-   my $newdata->{'sessiondata'}=$merge->merge($data,$olddata->{'sessiondata'});
-   $newdata->{'entity'}=$entity;
-   $newdata->{'domain'}=$domain;
+   my ($sessionid,$data)=@_;
+   my $olddata=$sessions->find_one({ sessionid => $sessionid });
+   my $newdata=$olddata;
+   $newdata->{'sessiondata'}=$merge->merge($data,$olddata->{'sessiondata'});
    delete($newdata->{'_id'});
-   return $sessions->update({ entity => $entity, domain => $domain },$newdata);
+   return $sessions->update({ sessionid => $sessionid },$newdata);
 }
 
 sub dump_session {
-   my ($entity,$domain)=@_;
-   my $result=$sessions->find_one({ entity => $entity, domain => $domain });
+   my ($sessionid)=@_;
+   my $result=$sessions->find_one({ sessionid => $sessionid });
    if ($result) {
       return $result;
    } else {
@@ -130,9 +130,10 @@ sub dump_session {
 }
 
 sub close_session {
-   my ($entity,$domain)=@_;
-   return $sessions->remove({ entity => $entity, domain => $domain });
+   my ($sessionid)=@_;
+   return $sessions->remove({ sessionid => $sessionid });
 }
+
 
 
 #
