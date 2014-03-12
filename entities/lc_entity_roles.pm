@@ -31,6 +31,8 @@ use Apache::lc_entity_utils();
 use Apache::lc_init_cluster_table();
 use Apache2::Const qw(:common :http);
 
+use Data::Dumper;
+
 #
 # We are the homeserver of the user that gets the role
 # This would also be the routine that's called remotely
@@ -43,8 +45,7 @@ sub local_modify_rolerecord {
       return undef;
    }
 # Okay, store
-   &Apache::lc_mongodb::update_roles($entity,$domain,$rolerecord);
-   return 1;
+   return &Apache::lc_mongodb::update_roles($entity,$domain,$rolerecord)->{'ok'};
 }
 
 #
