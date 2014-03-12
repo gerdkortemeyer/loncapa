@@ -61,7 +61,6 @@ sub remote_modify_rolerecord {
    } else {
       return undef;
    }
-
 }
 
 #
@@ -254,6 +253,41 @@ unless ($manualenrolldomain) { $manualenrolldomain=''; }
    return 1;
 }
 
+#
+# Dump roles from local data source
+#
+sub local_dump_roles {
+   return &Apache::lc_mongodb::dump_roles(@_);
+}
+
+#
+# Get the roles from elsewhere
+#
+sub remote_dump_roles {
+   my ($host,$entity,$domain)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'dump_roles',
+                                               "{ entity : '$entity', domain : '$domain' }");
+   if ($code eq HTTP_OK) {
+      return &Apache::lc_json_utils::json_to_perl($response);
+   } else {
+      return undef;
+   }
+}
+
+
+# Dump current roles for an entity
+# Call this one
+#
+sub dump_roles {
+   my ($entity,$domain)=@_;
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      return &local_dump_roles($entity,$domain);
+   } else {
+      return &remote_dump_roles(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
+   }
+}
+
+
 BEGIN {
     &Apache::lc_connection_handle::register('modify_rolelist',undef,undef,undef,\&local_modify_rolelist,
                   'roleentity','roledomain','rolesection',
@@ -262,6 +296,7 @@ BEGIN {
                   'startdate','enddate',
                   'manualenrollentity','manualenrolldomain');
     &Apache::lc_connection_handle::register('modify_rolerecord',undef,undef,undef,\&local_modify_rolerecord,'entity','domain','rolerecord');
+    &Apache::lc_connection_handle::register('dump_roles',undef,undef,undef,\&dump_roles,'entity','domain');
 }
 
 1;

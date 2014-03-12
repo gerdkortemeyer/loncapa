@@ -63,7 +63,7 @@ sub handler {
        'qhhhf21wqffas','msu');
 
 
-   $r->print(Dumper(&Apache::lc_mongodb::dump_roles($entity,'msu')));
+   $r->print(Dumper(&Apache::lc_entity_roles::dump_roles($entity,'msu')));
    $r->print(Dumper(&Apache::lc_mongodb::dump_profile($entity,'msu')));
 return OK;
 
