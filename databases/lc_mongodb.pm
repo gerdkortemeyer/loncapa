@@ -31,7 +31,7 @@ use Apache::lc_logs;
 use Hash::Merge;
 use Data::Dumper;
 
-use vars qw($merge $client $database $roles $profiles);
+use vars qw($merge $client $database $roles $profiles $sessions);
 
 #
 # Make a new profile
@@ -97,8 +97,42 @@ sub dump_roles {
 }
 
 #
-# 
+# Sessions 
 #
+
+sub open_session {
+   my ($entity,$domain,$data)=@_;
+   &close_session($entity,$domain);
+   my $newdata->{'entity'}=$entity;
+   $newdata->{'domain'}=$domain;
+   $newdata->{'sessiondata'}=$data;
+   return $sessions->insert($newdata)->{'value'};
+}
+
+sub update_session {
+   my ($entity,$domain,$data)=@_;
+   my $olddata=$sessions->find_one({ entity => $entity, domain => $domain });
+   my $newdata->{'sessiondata'}=$merge->merge($data,$olddata->{'sessiondata'});
+   $newdata->{'entity'}=$entity;
+   $newdata->{'domain'}=$domain;
+   delete($newdata->{'_id'});
+   return $sessions->update({ entity => $entity, domain => $domain },$newdata);
+}
+
+sub dump_session {
+   my ($entity,$domain)=@_;
+   my $result=$sessions->find_one({ entity => $entity, domain => $domain });
+   if ($result) {
+      return $result;
+   } else {
+      return undef;
+   }
+}
+
+sub close_session {
+   my ($entity,$domain)=@_;
+   return $sessions->remove({ entity => $entity, domain => $domain });
+}
 
 
 #
@@ -117,6 +151,7 @@ sub init_mongo {
 # Get handles on all the collections we maintain
    $roles=$database->get_collection('roles');
    $profiles=$database->get_collection('profiles');
+   $sessions=$database->get_collection('sessions');
 }
 
 BEGIN {
