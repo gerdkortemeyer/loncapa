@@ -174,6 +174,10 @@ unless (($type eq 'system') || ($type eq 'domain') || ($type eq 'course') || ($t
    &logerror("Type ($type) not supported for modifying roles of entity ($entity) domain ($domain)");
    return undef;
 }
+unless ($roleentity) { $roleentity=''; }
+unless ($rolesection) { $rolesection=''; }
+unless ($manualenrollentity) { $manualenrollentity=''; }
+unless ($manualenrolldomain) { $manualenrolldomain=''; }
 # === Deal with the user's record
 # Role itself
    my $thisrole;
