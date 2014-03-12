@@ -33,13 +33,17 @@ use vars qw(%addresses);
 #
 sub command_dispatch {
    my ($host,$command,$jsondata)=@_;
+   unless ($host) {
+      &logerror("No host provided for command ($command)");
+      return(HTTP_BAD_REQUEST,undef);
+   }
 # Do we have the address cached in this module?
    unless ($addresses{$host}) {
 # Nope, get it and remember it
       my $connection_table=&Apache::lc_memcached::get_connection_table();
       my $addr=$connection_table->{'cluster_table'}->{'hosts'}->{$host}->{'address'};
       unless ($addr) {
-         &logerror("Could not find address for ($host)");
+         &logerror("Could not find address for ($host) while doing command ($command)");
          return (HTTP_SERVICE_UNAVAILABLE,undef);
       }
       $addresses{$host}=$addr;
@@ -73,7 +77,7 @@ sub query_all_domain_libraries {
       } elsif ($code ne HTTP_NOT_FOUND) {
 # There was a problem. Not yet fatal, maybe another host has the answer
          $error_code=$code;
-         &logwarning("Could not contact host ($host): code ($code)");
+         &logwarning("Could not contact host ($host) for command ($command): code ($code)");
       }
    }
 # Nobody had an answer

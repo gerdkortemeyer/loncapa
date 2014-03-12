@@ -160,6 +160,19 @@ sub modify_role {
        $startdate,$enddate, # duration
        $manualenrollentity,$manualenrolldomain # if done manually, who did this?
       )=@_;
+# === This is a big deal, so do sanity testing
+unless ($entity) {
+   &logerror("Modify role must provide entity");
+   return undef;
+}
+unless ($domain) {
+   &logerror("Modify role must provide domain");
+   return undef;
+}
+unless (($type eq 'system') || ($type eq 'domain') || ($type eq 'course') || ($type eq 'user')) {
+   &logerror("Type ($type) not supported for modifying roles of entity ($entity) domain ($domain)");
+   return undef;
+}
 # === Deal with the user's record
 # Role itself
    my $thisrole;
