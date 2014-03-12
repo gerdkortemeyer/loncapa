@@ -260,6 +260,10 @@ sub local_dump_roles {
    return &Apache::lc_mongodb::dump_roles(@_);
 }
 
+sub local_json_dump_roles {
+   return &Apache::lc_json_utils::perl_to_json(&local_dump_roles(@_));
+}
+
 #
 # Get the roles from elsewhere
 #
@@ -296,7 +300,7 @@ BEGIN {
                   'startdate','enddate',
                   'manualenrollentity','manualenrolldomain');
     &Apache::lc_connection_handle::register('modify_rolerecord',undef,undef,undef,\&local_modify_rolerecord,'entity','domain','rolerecord');
-    &Apache::lc_connection_handle::register('dump_roles',undef,undef,undef,\&dump_roles,'entity','domain');
+    &Apache::lc_connection_handle::register('dump_roles',undef,undef,undef,\&local_dump_roles,'entity','domain');
 }
 
 1;
