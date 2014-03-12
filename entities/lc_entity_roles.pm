@@ -300,7 +300,7 @@ BEGIN {
                   'startdate','enddate',
                   'manualenrollentity','manualenrolldomain');
     &Apache::lc_connection_handle::register('modify_rolerecord',undef,undef,undef,\&local_modify_rolerecord,'entity','domain','rolerecord');
-    &Apache::lc_connection_handle::register('dump_roles',undef,undef,undef,\&local_dump_roles,'entity','domain');
+    &Apache::lc_connection_handle::register('dump_roles',undef,undef,undef,\&local_json_dump_roles,'entity','domain');
 }
 
 1;
