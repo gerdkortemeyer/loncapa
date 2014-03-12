@@ -62,9 +62,10 @@ sub handler {
        '1299-01-08 04:05:06','1929-01-08 04:05:06', # duration
        'qhhhf21wqffas','msu');
 
+   &Apache::lc_entity_profile::modify_profile($entity,'msu',{ lastname => "Beeblebrox" });
 
    $r->print(Dumper(&Apache::lc_entity_roles::dump_roles($entity,'msu')));
-   $r->print(Dumper(&Apache::lc_mongodb::dump_profile($entity,'msu')));
+   $r->print(Dumper(&Apache::lc_entity_profile::dump_profile($entity,'msu')));
 return OK;
 
    $r->print(&Apache::lc_entity_users::make_new_user('test155','msu')."\n");

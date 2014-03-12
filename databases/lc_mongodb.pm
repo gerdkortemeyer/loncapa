@@ -47,7 +47,7 @@ sub insert_profile {
 sub update_profile {
    my ($entity,$domain,$data)=@_;
    my $olddata=$profiles->find_one({ entity => $entity, domain => $domain });
-   my $newdata->{'profile'}=$merge->merge($olddata->{'profile'},$data);
+   my $newdata->{'profile'}=$merge->merge($data,$olddata->{'profile'});
    $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
    delete($newdata->{'_id'});

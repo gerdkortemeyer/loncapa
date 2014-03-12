@@ -20,8 +20,106 @@
 package Apache::lc_entity_profile;
 
 use strict;
-use Apache::lc_logs;
 
+use Apache::lc_logs;
+use Apache::lc_connection_handle();
+use Apache::lc_json_utils();
+
+use Apache::lc_postgresql();
+use Apache::lc_memcached();
+use Apache::lc_entity_utils();
+use Apache::lc_init_cluster_table();
+use Apache2::Const qw(:common :http);
+
+use Data::Dumper;
+
+#
+# We are the homeserver of the user/course
+# This would also be the routine that's called remotely
+#
+sub local_modify_profile {
+   my ($entity,$domain,$profile)=@_;
+# Better make sure before we make a mess
+   unless (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      &logwarning("Cannot store profile for ($entity) ($domain), not homeserver");
+      return undef;
+   }
+# Okay, store
+   return &Apache::lc_mongodb::update_profile($entity,$domain,$profile)->{'ok'};
+}
+
+#
+# We are not the homeserver of this entity
+# Send to a *** particular *** other server
+#
+sub remote_modify_profile {
+   my ($host,$entity,$domain,$profile)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'modify_profile',
+                           &Apache::lc_json_utils::perl_to_json({ entity => $entity, domain => $domain, profile => $profile }));
+   if ($code eq HTTP_OK) {
+      return 1;
+   } else {
+      return undef;
+   }
+}
+
+
+#
+# Modify a profile - this is the one to be called
+# Call with new profile data
+#
+sub modify_profile {
+   my ($entity,$domain,$profile)=@_;
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      return &local_modify_profile($entity,$domain,$profile);
+   } else {
+      return &remote_modify_profile(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain,$profile);
+   }
+}
+
+#
+# Dump profile from local data source
+#
+sub local_dump_profile {
+   return &Apache::lc_mongodb::dump_profile(@_);
+}
+
+sub local_json_dump_profile {
+   return &Apache::lc_json_utils::perl_to_json(&local_dump_profile(@_));
+}
+
+#
+# Get the profile from elsewhere
+#
+sub remote_dump_profile {
+   my ($host,$entity,$domain)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'dump_profile',
+                                               "{ entity : '$entity', domain : '$domain' }");
+   if ($code eq HTTP_OK) {
+      return &Apache::lc_json_utils::json_to_perl($response);
+   } else {
+      return undef;
+   }
+}
+
+
+# Dump current profile for an entity
+# Call this one
+#
+sub dump_profile {
+   my ($entity,$domain)=@_;
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      return &local_dump_profile($entity,$domain);
+   } else {
+      return &remote_dump_profile(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
+   }
+}
+
+
+BEGIN {
+    &Apache::lc_connection_handle::register('modify_profile',undef,undef,undef,\&local_modify_profile,'entity','domain','profile');
+    &Apache::lc_connection_handle::register('dump_profile',undef,undef,undef,\&local_json_dump_profile,'entity','domain');
+}
 
 1;
 __END__
