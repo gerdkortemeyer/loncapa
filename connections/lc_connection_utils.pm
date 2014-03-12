@@ -25,8 +25,8 @@ use Socket;
 use APR::Table;
 use Apache2::Const qw(:common :http);
 
-use Apache::lc_memcached();
 use Apache::lc_connection_handle();
+use Apache::lc_init_cluster_table();
 
 #
 # Check if two hosts are the same
@@ -51,7 +51,7 @@ sub server_name {
 #
 sub is_library_server {
    my ($host,$domain)=@_;
-   my $connection_table=&Apache::lc_memcached::get_connection_table();
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
    return ($connection_table->{'cluster_table'}->{'hosts'}->{$host}->{'domains'}->{$domain}->{'function'} eq 'library');
 }
 
@@ -60,8 +60,16 @@ sub is_library_server {
 #
 sub we_are_library_server {
    my ($domain)=@_;
-   my $connection_table=&Apache::lc_memcached::get_connection_table();
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
    return ($connection_table->{'cluster_table'}->{'hosts'}->{$connection_table->{'self'}}->{'domains'}->{$domain}->{'function'} eq 'library');
+}
+
+#
+# Get the cluster host
+#
+sub cluster_manager_host {
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
+   return $connection_table->{'manager'};
 }
 
 #
@@ -69,7 +77,7 @@ sub we_are_library_server {
 #
 sub random_library_server {
    my ($domain)=@_;
-   my $connection_table=&Apache::lc_memcached::get_connection_table();
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
    my @libraries=split(/\,/,$connection_table->{'libraries'}->{$domain});
 # First entry is empty! Take a random one
    my $random_library=$libraries[1+int(rand($#libraries))];
@@ -111,7 +119,7 @@ sub local_online {
 # What is our hostname?
 #
 sub host_name {
-   my $connection_table=&Apache::lc_memcached::get_connection_table();
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
    return $connection_table->{'self'};
 }
 

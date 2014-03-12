@@ -32,6 +32,23 @@ use Apache::lc_connection_utils();
 use Apache::lc_connections();
 use Apache::lc_memcached();
 
+
+#
+# Get the connection table
+#
+sub get_connection_table {
+   my $connection_table=&Apache::lc_memcached::get_connection_table();
+   unless ($connection_table) {
+      &logwarning("Needed to reload connection table!");
+      &load_cluster_table();
+      $connection_table=&Apache::lc_memcached::get_connection_table();
+      unless ($connection_table) {
+         &logerror("Failed to load connection table!");
+      }
+   }
+   return $connection_table;
+}
+
 #
 # This finds out who is cluster manager
 #

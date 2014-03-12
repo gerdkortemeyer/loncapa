@@ -221,7 +221,7 @@ unless (($type eq 'system') || ($type eq 'domain') || ($type eq 'course') || ($t
                                 $manualenrollentity,$manualenrolldomain);
       } else {
 # No, we are not the cluster manager
-         &remote_modify_rolelist(&Apache::lc_init_cluster_table::cluster_manager(),
+         &remote_modify_rolelist(&Apache::lc_connection_utils::cluster_manager_host(),
                                 $roleentity,$roledomain,$rolesection,
                                 $entity,$domain,
                                 $role,

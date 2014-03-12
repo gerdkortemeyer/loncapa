@@ -23,7 +23,7 @@ use strict;
 
 use Apache::lc_parameters;
 use Apache::lc_logs;
-use Apache::lc_memcached();
+use Apache::lc_init_cluster_table();
 use Apache2::Const qw(:common :http);
 
 use vars qw(%addresses);
@@ -40,7 +40,7 @@ sub command_dispatch {
 # Do we have the address cached in this module?
    unless ($addresses{$host}) {
 # Nope, get it and remember it
-      my $connection_table=&Apache::lc_memcached::get_connection_table();
+      my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
       my $addr=$connection_table->{'cluster_table'}->{'hosts'}->{$host}->{'address'};
       unless ($addr) {
          &logerror("Could not find address for ($host) while doing command ($command)");
@@ -62,7 +62,7 @@ sub command_dispatch {
 sub query_all_domain_libraries {
    my ($domain,$command,$jsondata)=@_;
 # Get connection table from memchache
-   my $connection_table=&Apache::lc_memcached::get_connection_table();
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
 # The world is still okay
    my $error_code=0;
    foreach my $host (split(/\,/,$connection_table->{'libraries'}->{$domain})) {

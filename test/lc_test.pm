@@ -57,10 +57,10 @@ sub handler {
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
        'domain', # system, domain, course, user
-       '','msu','', # what's the realm?
+       undef,'msu',undef, # what's the realm?
        'domaincoordinator', # what role is this?
-       '1099-01-08 04:05:06','1929-01-08 04:05:06', # duration
-       'hhhf21wqffas','msu');
+       '1299-01-08 04:05:06','1929-01-08 04:05:06', # duration
+       'qhhhf21wqffas','msu');
 
 
    $r->print(Dumper(&Apache::lc_mongodb::dump_roles($entity,'msu')));
