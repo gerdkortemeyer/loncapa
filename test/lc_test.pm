@@ -52,14 +52,14 @@ sub handler {
        'course', # system, domain, course, user
        $courseentity,'msu','31fq', # what's the realm?
        'student', # what role is this?
-       '1999-01-08 04:05:06','1929-01-08 04:05:06', # duration
+       '1998-01-08 04:05:06','1929-01-08 04:05:06', # duration
        'ggf21wqffas','msu');
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
        'domain', # system, domain, course, user
        '','msu','', # what's the realm?
        'domaincoordinator', # what role is this?
-       '1999-01-08 04:05:06','1929-01-08 04:05:06', # duration
+       '1099-01-08 04:05:06','1929-01-08 04:05:06', # duration
        'hhhf21wqffas','msu');
 
 
