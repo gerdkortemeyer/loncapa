@@ -39,9 +39,6 @@ sub local_check_authentication {
 
 # Get the authentication record
    my $authrecord=&Apache::lc_mongodb::dump_auth($entity,$domain);
-
-&logdebug(Dumper($authrecord));
-
    unless ($authrecord) {
       &logwarning("Contacted for authentication of entity ($entity) domain ($domain), no record.");
       return undef;
@@ -136,6 +133,8 @@ BEGIN {
 #FIXME: these want to test credentials
     &Apache::lc_connection_handle::register('check_authentication',undef,undef,undef,\&local_check_authentication,
                                             'entity','domain','password');
+    &Apache::lc_connection_handle::register('set_authentication',undef,undef,undef,\&local_set_authentication,
+                                            'entity','domain','authdata');
 }
 
 1;

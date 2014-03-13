@@ -39,8 +39,8 @@ sub handler {
    my $entity;
    my $courseentity;
 
-   $r->print(&Apache::lc_entity_users::make_new_user('test170','msu')."\n");
-   $entity=&Apache::lc_entity_users::username_to_entity('test170','msu');
+   $r->print(&Apache::lc_entity_users::make_new_user('test171','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test171','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
    $r->print(&Apache::lc_entity_courses::make_new_course('test155','msu')."\n");
