@@ -16,28 +16,28 @@
                                   timezone: 'America/Detroit' }
               },
   hosts     : { 'zaphod'   :    { address : 'zaphod.localdomain',
-                                  default : msu,
+                                  default : 'msu',
                                   domains : { 'msu'      : { function : 'library' },
                                               'elps'     : { function : 'library' },
                                               'sfu'      : { function : 'access'  }
                                             }
                                 },
                 'marvin'   :    { address : 'marvin.localdomain',
-                                  default : msu,
+                                  default : 'msu',
                                   domains : { 'msu'      : { function : 'library' },
                                               'elps'     : { function : 'access'  },
                                               'sfu'      : { function : 'access'  }
                                             }
                                 },
                 'arthur'   :    { address : 'arthur.localdomain',
-                                  default : sfu,
+                                  default : 'sfu',
                                   domains : { 'msu'      : { function : 'access'  },
                                               'elps'     : { function : 'access'  },
                                               'sfu'      : { function : 'library' }
                                             }
                                 },
                 'slarti'   :    { address : 'slartibartfast.localdomain',
-                                  default : ostfalia,
+                                  default : 'ostfalia',
                                   domains : { 'ostfalia' : { function : 'library' },
                                               'elps'     : { function : 'access'  },
                                               'sfu'      : { function : 'access'  }
