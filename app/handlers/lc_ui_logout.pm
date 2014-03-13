@@ -21,6 +21,7 @@ package Apache::lc_ui_logout;
 use strict;
 use Apache2::RequestRec();
 use Apache2::Const qw(:common);
+use Apache::lc_entity_sessions();
 
 # ==== Main handler
 #
@@ -29,7 +30,7 @@ sub handler {
    my $r = shift;
    my $cookie = new CGI::Cookie(-name => 'lcsession',-value=>'',-expires => '-10y',);
    $r->headers_out->add('Set-Cookie' => $cookie);
-   &core('DELETE','session/'.$ENV{'lc_session'}->{'id'});
+   &Apache::lc_entity_sessions::close_session($ENV{'lc_session'}->{'id'});
    $r->print('ok');
    return OK;
 }
