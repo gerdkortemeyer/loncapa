@@ -23,6 +23,7 @@ use strict;
 use Apache2::RequestRec();
 use Apache2::Const qw(:common :http);
 use Apache::lc_ui_utils;
+use Apache::lc_entity_sessions();
 use CGI::Cookie ();
 
 # ==== Main handler
@@ -35,29 +36,15 @@ sub handler {
 # Clean up username and domain from unwanted or dangerous characters
    my $username=&clean_username($content{'username'});
    my $domain=&clean_domain($content{'domain'});
-# Attempt to authenticate
-   my ($code,$response)=&core('POST','session/authenticate/id/'.$domain.'/'.$username.'/',
-                                     '{ "password" : "'.$content{'password'}.'" }');
-   if ($code ne HTTP_OK) {
-      $r->print('error'); 
-   } else {
-       my $responsedata=&json_to_perl($response);
-       if ($responsedata->{'authenticated'} eq 'yes') {
-# We successfully authenticated, open a session
-          my ($sessioncode,$sessionresponse)=&core('PUT','session/open/id/'.$domain.'/'.$username.'/');
-          my $sessionoutput=&json_to_perl($sessionresponse);
-          my $sessionid=$sessionoutput->{'session'};
-          if ($sessionid) {
+# Attempt to open a session
+   my $sessionid=&Apache::lc_entity_sessions::open_session($username,$domain,$content{'password'});
+   if ($sessionid) {
 # Successfully opened a session, set the cookie
-             my $cookie = CGI::Cookie->new(-name=>'lcsession',-value=>$sessionid);
-             $r->headers_out->add('Set-Cookie' => $cookie);
-             $r->print('yes');
-          } else {
-             $r->print('error');
-          }
-       } else {
-          $r->print('no');
-       }
+      my $cookie = CGI::Cookie->new(-name=>'lcsession',-value=>$sessionid);
+      $r->headers_out->add('Set-Cookie' => $cookie);
+      $r->print('yes');
+   } else {
+      $r->print('no');
    }
    return OK;
 }
