@@ -26,6 +26,7 @@ use Apache::lc_connection_handle();
 use Apache::lc_json_utils();
 
 use Apache::lc_memcached();
+use Apache::lc_mongodb();
 use Apache::lc_entity_utils();
 use Apache::lc_init_cluster_table();
 use Apache::lc_date_utils();
