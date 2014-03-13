@@ -23,7 +23,7 @@ use Apache2::RequestRec();
 use Apache2::Const qw(:common :http);
 use CGI::Cookie ();
 use Apache::lc_ui_utils;
-
+use Apache::lc_entity_sessions();
 use Apache::lc_ui_localize;
 
 
@@ -34,18 +34,16 @@ sub get_session {
    delete($ENV{'lc_session'});
    my %cookie=CGI::Cookie->parse($r->headers_in->{'Cookie'});
 # Clean up the session token
-   my ($token)=($cookie{'lcsession'}=~/\s*lcsession\s*\=\s*(\w+\%40\w+)\s*\;/);
-   $token=~s/\%40/\@/;
+   my ($token)=($cookie{'lcsession'}=~/\s*lcsession\s*\=\s*(\w+)\s*\;/);
    unless ($token=~/\w/) {
       &Apache::lc_ui_localize::reset_language();
       return HTTP_UNAUTHORIZED;
    }
 # Attempt to retrieve the session
-   my ($code,$response)=&core('GET','session/retrieve/'.$token);
-   if ($code eq HTTP_OK) {
-# Remember session ID and data
-      $ENV{'lc_session'}->{'id'}=$token;
-      $ENV{'lc_session'}->{'data'}=&json_to_perl($response);
+   my $sessiondata=&Apache::lc_entity_sessions::dump_session($token);
+   if ($sessiondata) {
+# Remember session data
+      $ENV{'lc_session'}=$sessiondata;
 #FIXME: use actual language
       &Apache::lc_ui_localize::set_language('de');
       return OK;
