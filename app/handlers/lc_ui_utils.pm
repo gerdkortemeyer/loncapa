@@ -19,52 +19,13 @@
 package Apache::lc_ui_utils;
 
 use strict;
-use JSON::DWIW;
-use LWP::UserAgent;
-use LWP::ConnCache;
-use File::Util;
-use Time::y2038;
-use Apache2::Const qw(:common :http);
-use Cache::Memcached;
+use Apache::lc_init_cluster_table();
 
 require Exporter;
 
 our @ISA = qw (Exporter);
-our @EXPORT = qw(core get_content clean_username clean_domain);
+our @EXPORT = qw(get_content clean_username clean_domain domain_choices);
 
-use constant FILEROOT => '/home/cw/ui/';
-
-# Handle to talk to core
-my $client;
-# Handle to talk to memcached in own namespace
-my $memd;
-
-# ==== Send local requests to the local core
-#
-sub core {
-   my ($method,$uri,$data)=@_;
-   if ($ENV{'lc_session'}->{'id'}) {
-      if ($uri=~/\?/) {
-         $uri.='&s='.$ENV{'lc_session'}->{'id'};
-      } else {
-         $uri.='?s='.$ENV{'lc_session'}->{'id'};
-      }
-   }
-   my $response;
-   if ($method eq 'PUT') {
-      $response=$client->put('http://localhost/localcore/'.$uri,Content=>$data);
-   }
-   if ($method eq 'POST') {
-      $response=$client->post('http://localhost/localcore/'.$uri,Content=>$data);
-   }
-   if ($method eq 'GET') {
-      $response=$client->get('http://localhost/localcore/'.$uri);
-   }
-   if ($method eq 'DELETE') {
-      $response=$client->delete('http://localhost/localcore/'.$uri);
-   }
-   return ($response->code,$response->content);
-}
 
 # ==== Get POSTed content
 #
@@ -93,8 +54,30 @@ sub clean_domain {
    return $domain;
 }
 
-BEGIN {
-   $memd=new Cache::Memcached({'servers' => ['127.0.0.1:11211'],'namespace' => 'lc_app'});
+# ==== The domain choices
+#
+sub domain_choices {
+   my ($type)=@_;
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
+   my @shorts;
+   my %names;
+   foreach my $key (keys(%{$connection_table->{'cluster_table'}->{'hosts'}->{$connection_table->{'self'}}->{'domains'}})) {
+      push(@shorts,$key);
+      $names{$key}=$connection_table->{'cluster_table'}->{'domains'}->{$key}->{'name'};
+   }
+   my $domain_short;
+   my $domain_name;
+   @shorts=sort(@shorts);
+   foreach my $key (@shorts) {
+       push(@{$domain_short},$key);
+       push(@{$domain_name},$names{$key});
+   }
+   return ($connection_table->{'cluster_table'}->{'hosts'}->{$connection_table->{'self'}}->{'default'},
+           $domain_short,$domain_name);
+                    
+   
+
+       
 }
 
 1;

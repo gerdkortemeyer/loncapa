@@ -20,6 +20,7 @@ package Apache::lc_xml_forms;
 
 use strict;
 use Apache::lc_ui_localize;
+use Apache::lc_ui_utils;
 
 our @ISA = qw(Exporter);
 
@@ -89,12 +90,26 @@ sub inputfield {
    } elsif ($type eq 'password') {
       unless ($size) { $size=40; }
       return '<input class="lcformpasswordinput" type="password" id="'.$id.'" name="'.$name.'" size="'.$size.'" />';
-   } elsif ($type eq 'domain') {
-#FIXME
-#should make it easy to select domain
-      return '<input class="lcformtextinput" type="text" id="'.$id.'" name="'.$name.'" size="'.$size.'" />';
+   } elsif ($type eq 'hosteddomain') {
+      my ($defaultdomain,$domain_short,$domain_name)=&domain_choices('hosted');
+      unless ($default) { $default=$defaultdomain; }
+      return &selectfield($id,$name,$domain_short,$domain_name,$default);
    }
 }
+
+# ==== Generate a select field
+#
+sub selectfield {
+   my ($id,$name,$values,$choices,$default)=@_;
+   my $selectfield='<select class="lcformselectinput" id="'.$id.'" name="'.$name.'">';
+   for (my $i=0;$i<=$#{$values};$i++) {
+          $selectfield.='<option value="'.$values->[$i].'"'.($values->[$i] eq $default?' selected="selected"':'').'>'.
+                         $choices->[$i].'</option>';
+   }
+   $selectfield.='</select>';
+   return $selectfield;
+}
+
 
 1;
 __END__
