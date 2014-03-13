@@ -27,6 +27,8 @@ use Apache::lc_postgresql();
 use Apache::lc_mongodb();
 use Apache::lc_memcached();
 use Apache::lc_date_utils();
+use Apache::lc_dispatcher();
+
 
 use Apache2::Const qw(:common :http);
 
@@ -75,6 +77,8 @@ sub local_make_new_user {
    &Apache::lc_mongodb::insert_profile($entity,$domain,{ created => &Apache::lc_date_utils::now2str() });
 # Make a roleset
    &Apache::lc_mongodb::insert_roles($entity,$domain,{});
+# Make an authentication record
+   &Apache::lc_mongodb::insert_auth($entity,$domain,{});
 # Return the entity
    return $entity;
 }

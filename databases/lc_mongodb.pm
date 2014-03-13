@@ -31,7 +31,7 @@ use Apache::lc_logs;
 use Hash::Merge;
 use Data::Dumper;
 
-use vars qw($merge $client $database $roles $profiles $sessions);
+use vars qw($merge $client $database $roles $profiles $sessions $auth);
 
 #
 # Make a new profile
@@ -97,6 +97,38 @@ sub dump_roles {
 }
 
 #
+# Authentication data
+#
+
+sub insert_auth {
+   my ($entity,$domain,$data)=@_;
+   my $newdata->{'entity'}=$entity;
+   $newdata->{'domain'}=$domain;
+   $newdata->{'auth'}=$data;
+   return $auth->insert($newdata)->{'value'};
+}
+
+sub update_auth {
+   my ($entity,$domain,$data)=@_;
+   my $olddata=$auth->find_one({ entity => $entity, domain => $domain });
+   my $newdata->{'auth'}=$merge->merge($data,$olddata->{'auth'});
+   $newdata->{'entity'}=$entity;
+   $newdata->{'domain'}=$domain;
+   delete($newdata->{'_id'});
+   return $auth->update({ entity => $entity, domain => $domain },$newdata);
+}
+
+sub dump_auth {
+   my ($entity,$domain)=@_;
+   my $result=$auth->find_one({ entity => $entity, domain => $domain });
+   if ($result) {
+      return $result->{'auth'};
+   } else {
+      return undef;
+   }
+}
+
+#
 # Sessions 
 #
 
@@ -153,6 +185,7 @@ sub init_mongo {
    $roles=$database->get_collection('roles');
    $profiles=$database->get_collection('profiles');
    $sessions=$database->get_collection('sessions');
+   $auth=$database->get_collection('auth');
 }
 
 BEGIN {

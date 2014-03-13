@@ -24,7 +24,7 @@ use strict;
 use Apache::lc_logs;
 use Apache::lc_connection_handle();
 use Apache::lc_json_utils();
-
+use Apache::lc_dispatcher();
 use Apache::lc_postgresql();
 use Apache::lc_memcached();
 use Apache::lc_entity_utils();

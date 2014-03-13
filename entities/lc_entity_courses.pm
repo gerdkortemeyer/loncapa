@@ -21,9 +21,10 @@ package Apache::lc_entity_courses;
 
 use strict;
 use Apache::lc_logs;
-
+use Apache::lc_dispatcher();
 use Apache::lc_connection_handle();
 use Apache::lc_postgresql();
+use Apache::lc_mongodb();
 use Apache::lc_memcached();
 
 use Apache2::Const qw(:common :http);
@@ -69,6 +70,8 @@ sub local_make_new_course {
    &Apache::lc_postgresql::insert_course($courseid,$domain,$entity);
 # Take ownership
    &Apache::lc_postgresql::insert_homeserver($entity,$domain,&Apache::lc_connection_utils::host_name());
+# Start course profile
+   &Apache::lc_mongodb::insert_profile($entity,$domain,{ created => &Apache::lc_date_utils::now2str() });
 # Return the entity
    return $entity;
 }

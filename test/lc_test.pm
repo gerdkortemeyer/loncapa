@@ -39,8 +39,8 @@ sub handler {
    my $entity;
    my $courseentity;
 
-   $r->print(&Apache::lc_entity_users::make_new_user('test161','msu')."\n");
-   $entity=&Apache::lc_entity_users::username_to_entity('test161','msu');
+   $r->print(&Apache::lc_entity_users::make_new_user('test170','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('test170','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
    $r->print(&Apache::lc_entity_courses::make_new_course('test155','msu')."\n");
@@ -80,6 +80,13 @@ sub handler {
    &Apache::lc_mongodb::close_session($sessionid);
 
    $r->print(Dumper(&Apache::lc_mongodb::dump_session($sessionid)));
+
+
+   $r->print(":".&Apache::lc_entity_authentication::set_authentication($entity,'msu',{ mode => 'internal', password => 'zaphodB' })."\n");
+
+   $r->print("Yes: ".&Apache::lc_entity_authentication::check_authentication($entity,'msu','zaphodB')."\n");
+
+   $r->print("No: ".&Apache::lc_entity_authentication::check_authentication($entity,'msu','arthurD')."\n");
 
 return OK;
 
