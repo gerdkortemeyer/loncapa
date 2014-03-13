@@ -67,26 +67,20 @@ sub handler {
    $r->print(Dumper(&Apache::lc_entity_roles::dump_roles($entity,'msu')));
    $r->print(Dumper(&Apache::lc_entity_profile::dump_profile($entity,'msu')));
 
-   my $sessionid='rrwfq421c324';
-
-   &Apache::lc_mongodb::open_session( 'fasrqweq','msu',$sessionid,{ color => 'green' } );
-
-   $r->print(Dumper(&Apache::lc_mongodb::dump_session($sessionid)));
-
-   &Apache::lc_mongodb::update_session ($sessionid, { color => 'pink', taste => 'sweet' });
-
-   $r->print(Dumper(&Apache::lc_mongodb::dump_session($sessionid)));
-
-   &Apache::lc_mongodb::close_session($sessionid);
-
-   $r->print(Dumper(&Apache::lc_mongodb::dump_session($sessionid)));
-
-
    $r->print(":".&Apache::lc_entity_authentication::set_authentication($entity,'msu',{ mode => 'internal', password => 'zaphodB' })."\n");
 
-   $r->print("Yes: ".&Apache::lc_entity_authentication::check_authentication($entity,'msu','zaphodB')."\n");
+   my $sessionid=&Apache::lc_entity_sessions::open_session( 'test171','msu','zaphodB' );
 
-   $r->print("No: ".&Apache::lc_entity_authentication::check_authentication($entity,'msu','arthurD')."\n");
+   $r->print("Have $sessionid: ".Dumper(&Apache::lc_entity_sessions::dump_session($sessionid))."\n");
+
+   &Apache::lc_entity_sessions::update_session ($sessionid, { color => 'pink', taste => 'sweet' });
+
+   $r->print(Dumper(&Apache::lc_entity_sessions::dump_session($sessionid)));
+
+   $r->print(&Apache::lc_mongodb::close_session($sessionid));
+
+   $r->print(Dumper(&Apache::lc_entity_sessions::dump_session($sessionid)));
+
 
 return OK;
 
