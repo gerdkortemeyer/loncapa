@@ -8,6 +8,7 @@
                                   timezone: 'America/Vancouver' }
               },
   hosts     : { 'local'     :   { address : 'localhost',
+                                  default : msu,
                                   domains : { 'msu'      : { function : 'library' },
                                               'sfu'      : { function : 'library' }
                                             }
