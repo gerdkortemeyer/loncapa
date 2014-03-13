@@ -38,6 +38,7 @@ use vars qw($merge $client $database $roles $profiles $sessions $auth);
 #
 sub insert_profile {
    my ($entity,$domain,$data)=@_;
+   unless ($profiles) { &init_mongo(); }
    my $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
    $newdata->{'profile'}=$data;
@@ -46,6 +47,7 @@ sub insert_profile {
 
 sub update_profile {
    my ($entity,$domain,$data)=@_;
+   unless ($profiles) { &init_mongo(); }
    my $olddata=$profiles->find_one({ entity => $entity, domain => $domain });
    my $newdata->{'profile'}=$merge->merge($data,$olddata->{'profile'});
    $newdata->{'entity'}=$entity;
@@ -56,6 +58,7 @@ sub update_profile {
 
 sub dump_profile {
    my ($entity,$domain)=@_;
+   unless ($profiles) { &init_mongo(); }
    my $result=$profiles->find_one({ entity => $entity, domain => $domain });
    if ($result) {
       return $result->{'profile'};
@@ -70,6 +73,7 @@ sub dump_profile {
 #
 sub insert_roles {
    my ($entity,$domain,$data)=@_;
+   unless ($roles) { &init_mongo(); }
    my $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
    $newdata->{'roles'}=$data;
@@ -78,6 +82,7 @@ sub insert_roles {
 
 sub update_roles {
    my ($entity,$domain,$data)=@_;
+   unless ($roles) { &init_mongo(); }
    my $olddata=$roles->find_one({ entity => $entity, domain => $domain });
    my $newdata->{'roles'}=$merge->merge($data,$olddata->{'roles'});
    $newdata->{'entity'}=$entity;
@@ -88,6 +93,7 @@ sub update_roles {
 
 sub dump_roles {
    my ($entity,$domain)=@_;
+   unless ($roles) { &init_mongo(); }
    my $result=$roles->find_one({ entity => $entity, domain => $domain });
    if ($result) { 
       return $result->{'roles'}; 
@@ -102,6 +108,7 @@ sub dump_roles {
 
 sub insert_auth {
    my ($entity,$domain,$data)=@_;
+   unless ($auth) { &init_mongo(); }
    my $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
    $newdata->{'auth'}=$data;
@@ -110,6 +117,7 @@ sub insert_auth {
 
 sub update_auth {
    my ($entity,$domain,$data)=@_;
+   unless ($auth) { &init_mongo(); }
    my $olddata=$auth->find_one({ entity => $entity, domain => $domain });
    my $newdata->{'auth'}=$merge->merge($data,$olddata->{'auth'});
    $newdata->{'entity'}=$entity;
@@ -120,6 +128,7 @@ sub update_auth {
 
 sub dump_auth {
    my ($entity,$domain)=@_;
+   unless ($auth) { &init_mongo(); }
    my $result=$auth->find_one({ entity => $entity, domain => $domain });
    if ($result) {
       return $result->{'auth'};
@@ -134,6 +143,7 @@ sub dump_auth {
 
 sub open_session {
    my ($entity,$domain,$sessionid,$data)=@_;
+   unless ($sessions) { &init_mongo(); }
    $sessions->remove({ entity => $entity, domain => $domain});
    my $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
@@ -144,6 +154,7 @@ sub open_session {
 
 sub update_session {
    my ($sessionid,$data)=@_;
+   unless ($sessions) { &init_mongo(); }
    my $olddata=$sessions->find_one({ sessionid => $sessionid });
    my $newdata=$olddata;
    $newdata->{'sessiondata'}=$merge->merge($data,$olddata->{'sessiondata'});
@@ -153,6 +164,7 @@ sub update_session {
 
 sub dump_session {
    my ($sessionid)=@_;
+   unless ($sessions) { &init_mongo(); }
    my $result=$sessions->find_one({ sessionid => $sessionid });
    if ($result) {
       return $result;
@@ -163,6 +175,7 @@ sub dump_session {
 
 sub close_session {
    my ($sessionid)=@_;
+   unless ($sessions) { &init_mongo(); }
    return $sessions->remove({ sessionid => $sessionid });
 }
 
@@ -189,7 +202,6 @@ sub init_mongo {
 }
 
 BEGIN {
-   &init_mongo();
    $merge=Hash::Merge->new();
 }
 
