@@ -175,10 +175,13 @@ sub local_unsubscribe {
 #
 # List all subscribed hosts
 #
-sub local_subscribed {
+sub local_subscriptions {
    my ($entity,$host)=@_;
-   return &Apache::lc_postgresql::subscribed($entity,$host);
+   return &Apache::lc_postgresql::subscriptions($entity,$host);
 }
 
+BEGIN {
+   &Apache::lc_connection_handle::register('url_to_entity',undef,undef,undef,\&local_url_to_entity,'full_url');
+}
 1;
 __END__

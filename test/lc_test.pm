@@ -83,7 +83,9 @@ sub handler {
 
    &Apache::lc_entity_urls::local_make_new_url('/asset/-/-/msu/fqiofqw/rqdqweq/fqweq.html');
 
-   $r->print(&Apache::lc_entity_urls::url_to_entity('/asset/-/-/msu/fqiofqw/rqdqweq/fqweq.html'));
+   my $entity=&Apache::lc_entity_urls::url_to_entity('/asset/-/-/msu/fqiofqw/rqdqweq/fqweq.html');
+
+   $r->print("\n".Dumper(&Apache::lc_entity_urls::local_subscriptions($entity,'msu')));
 
 
 return OK;

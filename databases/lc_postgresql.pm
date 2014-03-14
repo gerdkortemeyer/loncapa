@@ -38,9 +38,7 @@ use vars qw($dbh);
 sub subscribe {
    my ($entity,$domain,$host)=@_;
    my $sth=$dbh->prepare("insert into subscriptions (entity,domain,host,startdate) values (?,?,?,?)");
-   $sth->execute($entity,$domain,$host,&Apache::lc_date_utils::now2str());
-   return $dbh->commit;
-
+   return $sth->execute($entity,$domain,$host,&Apache::lc_date_utils::now2str());
 }
 
 sub unsubscribe {
@@ -53,12 +51,11 @@ sub subscriptions {
    my ($entity,$domain)=@_;
    my $sth=$dbh->prepare("select * from subscriptions where entity = ? and domain = ?");
    my $rv=$sth->execute($entity,$domain);
-   my $return;
+   my @return;
    while (my @newsubscription=$sth->fetchrow_array()) {
-      &logdebug("Found ".join(" - ",@newsubscription));
-      push(@{$return},\@newsubscription);
+      push(@return,$newsubscription[2]);
    }
-   return $return;
+   return @return;
 }
 
 
@@ -70,8 +67,7 @@ sub insert_url {
    my ($url,$entity)=@_;
 # Commit this to the database return the return value
    my $sth=$dbh->prepare("insert into urls (url,entity) values (?,?)");
-   $sth->execute($url,$entity);
-   return $dbh->commit;
+   return $sth->execute($url,$entity);
 }
 
 sub lookup_url_entity {
@@ -89,8 +85,7 @@ sub insert_homeserver {
    my ($entity,$domain,$homeserver)=@_;
 # Commit this to the database return the return value
    my $sth=$dbh->prepare("insert into homeserverlookup (entity,domain,homeserver) values (?,?,?)");
-   $sth->execute($entity,$domain,$homeserver);
-   return $dbh->commit;
+   return $sth->execute($entity,$domain,$homeserver);
 }
 
 sub lookup_homeserver {
@@ -108,8 +103,7 @@ sub insert_pid {
    my ($pid,$domain,$entity)=@_;
 # Commit this to the database return the return value
    my $sth=$dbh->prepare("insert into pidlookup (pid,domain,entity) values (?,?,?)");
-   $sth->execute($pid,$domain,$entity);
-   return $dbh->commit;
+   return $sth->execute($pid,$domain,$entity);
 }
 
 #
@@ -152,8 +146,7 @@ sub insert_username {
    my ($username,$domain,$entity)=@_;
 # Commit this to the database return the return value
    my $sth=$dbh->prepare("insert into userlookup (username,domain,entity) values (?,?,?)");
-   $sth->execute($username,$domain,$entity);
-   return $dbh->commit;
+   return $sth->execute($username,$domain,$entity);
 }
 
 sub lookup_username_entity {
@@ -171,8 +164,7 @@ sub insert_course {
    my ($courseid,$domain,$entity)=@_;
 # Commit this to the database return the return value
    my $sth=$dbh->prepare("insert into courselookup (courseid,domain,entity) values (?,?,?)");
-   $sth->execute($courseid,$domain,$entity);
-   return $dbh->commit;
+   return $sth->execute($courseid,$domain,$entity);
 }
 
 sub lookup_course_entity {
@@ -193,12 +185,11 @@ sub insert_into_rolelist {
        $startdate,$enddate,
        $manualenrollentity,$manualenrolldomain)=@_;
    my $sth=$dbh->prepare("insert into rolelist (roleentity,roledomain,rolesection,userentity,userdomain,role,startdate,enddate,manualenrollentity,manualenrolldomain) values (?,?,?,?,?,?,?,?,?,?)");
-   $sth->execute($roleentity,$roledomain,$rolesection,
+   return $sth->execute($roleentity,$roledomain,$rolesection,
        $userentity,$userdomain, 
        $role, 
        $startdate,$enddate,
        $manualenrollentity,$manualenrolldomain);
-   return $dbh->commit;
 }
 
 #
