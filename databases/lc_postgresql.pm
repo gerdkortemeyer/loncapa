@@ -28,6 +28,7 @@ package Apache::lc_postgresql;
 use strict;
 use DBI;
 use Apache::lc_logs;
+use Apache::lc_date_utils();
 
 use vars qw($dbh);
 
@@ -36,14 +37,26 @@ use vars qw($dbh);
 #
 sub subscribe {
    my ($entity,$domain,$host)=@_;
+   my $sth=$dbh->prepare("insert into subscriptions (entity,domain,host,startdate) values (?,?,?,?)");
+   $sth->execute($entity,$domain,$host,&Apache::lc_date_utils::now2str());
+   return $dbh->commit;
+
 }
 
 sub unsubscribe {
    my ($entity,$domain,$host)=@_;
+
 }
 
 sub subscriptions {
    my ($entity,$domain)=@_;
+   my $sth=$dbh->prepare("select * from subscriptions where entity = ? and domain = ?");
+   my $rv=$sth->execute($entity,$domain);
+   my $return;
+   while (my @newsubscription=$sth->fetchrow_array()) {
+      push(@{$return},\@newsubscription);
+   }
+   return $return;
 }
 
 
@@ -184,7 +197,6 @@ sub insert_into_rolelist {
        $startdate,$enddate,
        $manualenrollentity,$manualenrolldomain);
    return $dbh->commit;
-
 }
 
 #
