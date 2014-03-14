@@ -31,7 +31,7 @@ use Apache::lc_logs;
 use Hash::Merge;
 use Data::Dumper;
 
-use vars qw($merge $client $database $roles $profiles $sessions $auth);
+use vars qw($merge $client $database $roles $profiles $sessions $auth $metadata);
 
 #
 # Make a new profile
@@ -67,6 +67,39 @@ sub dump_profile {
    }
 }
 
+#
+# Metadata
+#
+sub insert_metadata {
+   my ($entity,$domain,$data)=@_;
+   unless ($metadata) { &init_mongo(); }
+   my $newdata->{'entity'}=$entity;
+   $newdata->{'domain'}=$domain;
+   $newdata->{'metadata'}=$data;
+   return $metadata->insert($newdata)->{'value'};
+}
+
+sub update_metadata {
+   my ($entity,$domain,$data)=@_;
+   unless ($metadata) { &init_mongo(); }
+   my $olddata=$metadata->find_one({ entity => $entity, domain => $domain });
+   my $newdata->{'metadata'}=$merge->merge($data,$olddata->{'metadata'});
+   $newdata->{'entity'}=$entity;
+   $newdata->{'domain'}=$domain;
+   delete($newdata->{'_id'});
+   return $metadata->update({ entity => $entity, domain => $domain },$newdata);
+}
+
+sub dump_metadata {
+   my ($entity,$domain)=@_;
+   unless ($metadata) { &init_mongo(); }
+   my $result=$metadata->find_one({ entity => $entity, domain => $domain });
+   if ($result) {
+      return $result->{'metadata'};
+   } else {
+      return undef;
+   }
+}
 
 #
 # Insert something into the roles collection
@@ -199,6 +232,7 @@ sub init_mongo {
    $profiles=$database->get_collection('profiles');
    $sessions=$database->get_collection('sessions');
    $auth=$database->get_collection('auth');
+   $metadata=$database->get_collection('metadata');
 }
 
 BEGIN {

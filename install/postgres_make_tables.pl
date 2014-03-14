@@ -44,7 +44,7 @@ create table subscriptions
 domain text not null,
 host text not null,
 startdate timestamp,
-primary key (entity,domain,host)
+primary key (entity,domain,host))
 ENDSUBTABLE
    my $rv=$dbh->do($subtable);
 }

@@ -33,7 +33,7 @@ use Apache::lc_date_utils();
 use vars qw($dbh);
 
 #
-# Subscription
+# Subscriptions
 #
 sub subscribe {
    my ($entity,$domain,$host)=@_;
@@ -45,7 +45,8 @@ sub subscribe {
 
 sub unsubscribe {
    my ($entity,$domain,$host)=@_;
-
+   my $sth=$dbh->prepare("delete from subscriptions where entity = ? and domain = ? and host = ?");
+   return $sth->execute($entity,$domain,$host);
 }
 
 sub subscriptions {
@@ -54,6 +55,7 @@ sub subscriptions {
    my $rv=$sth->execute($entity,$domain);
    my $return;
    while (my @newsubscription=$sth->fetchrow_array()) {
+      &logdebug("Found ".join(" - ",@newsubscription));
       push(@{$return},\@newsubscription);
    }
    return $return;
