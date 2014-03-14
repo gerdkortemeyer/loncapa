@@ -32,7 +32,23 @@ use Apache::lc_logs;
 use vars qw($dbh);
 
 #
-# Deal URLs
+# Subscription
+#
+sub subscribe {
+   my ($entity,$domain,$host)=@_;
+}
+
+sub unsubscribe {
+   my ($entity,$domain,$host)=@_;
+}
+
+sub subscriptions {
+   my ($entity,$domain)=@_;
+}
+
+
+#
+# Deal with URLs
 # - there is no "modify_url", since a URL once assigned stays with that entity
 #
 sub insert_url {
