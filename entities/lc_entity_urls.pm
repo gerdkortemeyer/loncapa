@@ -31,12 +31,12 @@ use Apache::lc_connection_utils();
 
 #
 # Get URL data out
-# /asset/version_type/version_arg/domain
+# /asset/version_type/version_arg/domain/authorentity/...
 #
 sub split_url {
    my ($full_url)=@_;
-   my ($version_type,$version_arg,$domain,$path)=($full_url=~/^\/asset\/([^\/]+)\/([^\/]+)\/([^\/]+)\/(.*)$/);
-   return ($version_type,$version_arg,$domain,$domain.'/'.$path);
+   my ($version_type,$version_arg,$domain,$author,$path)=($full_url=~/^\/asset\/([^\/]+)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/(.*)$/);
+   return ($version_type,$version_arg,$domain,$author,$domain.'/'.$author.'/'.$path);
 }
 
 # ======================================================
@@ -44,10 +44,11 @@ sub split_url {
 # ======================================================
 #
 sub local_make_new_url {
-   my ($version_type,$version_arg,$domain,$url)=&split_url(@_[0]);
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url(@_[0]);
 # Are we even potentially in charge here?
-   unless (&Apache::lc_connection_utils::we_are_library_server($domain)) {
-       return undef;
+   unless (&Apache::lc_entity_utils::we_are_homeserver($author,$domain)) {
+      &logwarning("Tried to generate url ($url), but not homeserver of entity ($author) domain ($domain)");
+      return undef;
    }
 # First make sure this url does not exist
    if (&local_url_to_entity ($url)) {
@@ -82,6 +83,31 @@ sub local_make_new_url {
    return $entity;
 }
 
+sub remote_make_new_url {
+   my ($host,$full_url)=@_;
+   unless ($host) {
+      &logwarning("Cannot make new URL, no homewserver for ($full_url)");
+      return undef;
+   }
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'make_new_url',
+                              &Apache::lc_json_utils::perl_to_json({ full_url => $full_url }));
+   if ($code eq HTTP_OK) {
+      return $response;
+   } else {
+      return undef;
+   }
+}
+
+sub make_new_url {
+   my ($full_url)=@_;
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+   if (&Apache::lc_entity_utils::we_are_homeserver($author,$domain)) {
+      return &local_make_new_url($full_url);
+   } else {
+      return &remote_make_new_url(&Apache::lc_entity_utils::homeserver($author,$domain),$full_url);
+   }
+}
+
 
 # ======================================================
 # URL - Entity
@@ -90,7 +116,7 @@ sub local_make_new_url {
 # Check locally (also the one to be called from outside)
 #
 sub local_url_to_entity {
-   my ($version_type,$version_arg,$domain,$url)=&split_url(@_[0]);
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url(@_[0]);
 # Do we have it in memcache?
    my $entity=&Apache::lc_memcached::lookup_url_entity($url);
    if ($entity) { return $entity; }
@@ -109,7 +135,7 @@ sub local_url_to_entity {
 
 sub remote_url_to_entity {
    my ($full_url)=@_;
-   my ($version_type,$version_arg,$domain,$url)=&split_url($full_url);
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
    my ($code,$reply)=&Apache::lc_dispatcher::query_all_domain_libraries($domain,"url_to_entity", 
                                      &Apache::lc_json_utils::perl_to_json({ full_url => $full_url })); 
    if ($code eq HTTP_OK) {
@@ -130,7 +156,7 @@ sub url_to_entity {
 # Nope, go out on the network
     $entity=&remote_url_to_entity($full_url);
     if ($entity) { 
-       my ($version_type,$version_arg,$domain,$url)=&split_url($full_url);
+       my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
        &Apache::lc_memcached::insert_url($url,$entity);
     }
     return $entity;
