@@ -184,7 +184,17 @@ sub url_to_filepath {
       $version_arg='-';
    }
 #FIXME: actually do versions
-   return &Apache::lc_file_utils::asset_workspace_dirpath($entity,$domain).'/'.$entity;
+   return &Apache::lc_file_utils::asset_resource_dirpath($entity,$domain).'/'.$entity;
+}
+
+# ======================================================
+# Copy an asset
+# ======================================================
+#
+sub copy_asset {
+   my ($entity,$domain)=@_;
+#FIXME
+   return 0;
 }
 
 # ======================================================
@@ -194,7 +204,21 @@ sub url_to_filepath {
 #
 sub replicate {
    my ($full_url)=@_;
-#FIXME
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+   my $entity=&url_to_entity($full_url);
+# If the version is latest, we need to be kept up-to-date
+   if ($version_type eq '-') {
+# Subscribe to it
+      unless (&subscribe($entity,$domain)) {
+         &logwarning("Failed to subscribe to URL ($full_url) entity ($entity) domain ($domain)");
+         return 0;
+      }
+   }
+# Now copy it
+   if (&copy_asset($entity,$domain,$full_url) {
+      return 1;
+   }
+   &logwarning("Failed to copy URL ($full_url) entity ($entity) domain ($domain)");
    return 0;
 }
 
