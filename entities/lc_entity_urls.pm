@@ -154,34 +154,113 @@ sub local_subscribe {
 }
 
 #
+# Subscribe on a specific host
+#
+sub remote_subscribe {
+   my ($remotehost,$entity,$domain,$thishost)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($remotehost,'subscribe',
+                                                                 "{ entity : '$entity', domain : '$domain', host : '$thishost' }");
+   if ($code eq HTTP_OK) {
+      return $response;
+   } else {
+      return undef;
+   }
+}
+
+sub subscribe {
+   my ($entity,$domain)=@_;
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+# That's odd, why are we doing this?
+      &logwarning("Explicitly trying to subscribe to entity ($entity) domain ($domain), but we are homeserver");
+      return undef;
+   } else {
+      return &remote_subscribe(&Apache::lc_entity_utils::homeserver($entity,$domain),
+                               $entity,$domain,&Apache::lc_connection_utils::host_name());
+   }
+}
+
+#
 # Unsubscribe a host
 #
 sub local_unsubscribe {
    my ($entity,$domain,$host)=@_;
 # if this is not our entity, it's none of our business
    unless (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) { 
-      &logwarning("Trying to unsubscribe to entity ($entity) domain ($domain), but not homeserver");
+      &logwarning("Trying to unsubscribe from entity ($entity) domain ($domain), but not homeserver");
       return undef; 
    }
 # The homeserver must not unsubscribe!
    if ($host eq &Apache::lc_connection_utils::host_name()) {
-      &logwarning("Trying to unsubscribe to entity ($entity) domain ($domain), but the homeserver cannot unsubscribe!");
+      &logwarning("Trying to unsubscribe from entity ($entity) domain ($domain), but the homeserver cannot unsubscribe!");
       return undef;
    }
 # Okay, unsubscribe
    return &Apache::lc_postgresql::unsubscribe($entity,$domain,$host);
 }
 
+sub remote_unsubscribe {
+   my ($remotehost,$entity,$domain,$thishost)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($remotehost,'unsubscribe',
+                                                                 "{ entity : '$entity', domain : '$domain', host : '$thishost' }");
+   if ($code eq HTTP_OK) {
+      return $response;
+   } else {
+      return undef;
+   }
+}
+
+sub unsubscribe {
+   my ($entity,$domain)=@_;
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+# That's not good, we cannot unsubscribe from our own assets
+      &logwarning("Trying to unsubscribe from entity ($entity) domain ($domain), but we are homeserver");
+      return undef;
+   } else {
+      return &remote_unsubscribe(&Apache::lc_entity_utils::homeserver($entity,$domain),
+                                 $entity,$domain,&Apache::lc_connection_utils::host_name());
+   }
+}
+
+
 #
 # List all subscribed hosts
 #
 sub local_subscriptions {
-   my ($entity,$host)=@_;
-   return &Apache::lc_postgresql::subscriptions($entity,$host);
+   my ($entity,$domain)=@_;
+   return &Apache::lc_postgresql::subscriptions($entity,$domain);
 }
+
+sub local_json_subscriptions {
+   return &Apache::lc_json_utils::perl_to_json(&local_subscriptions(@_));
+}
+
+sub remote_subscriptions {
+   my ($host,$entity,$domain)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'subscriptions',
+                                                                 "{ entity : '$entity', domain : '$domain' }");
+   if ($code eq HTTP_OK) {
+      return &Apache::lc_json_utils::json_to_perl($response);
+   } else {
+      return undef;
+   }
+}
+
+sub subscriptions {
+   my ($entity,$domain)=@_;
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      return &local_subscriptions($entity,$domain);
+   } else {
+      return &remote_subscriptions(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
+   }
+}
+
 
 BEGIN {
    &Apache::lc_connection_handle::register('url_to_entity',undef,undef,undef,\&local_url_to_entity,'full_url');
+   &Apache::lc_connection_handle::register('subscribe',undef,undef,undef,\&local_subscribe,'entity','domain','host');
+   &Apache::lc_connection_handle::register('unsubscribe',undef,undef,undef,\&local_unsubscribe,'entity','domain','host');
+   &Apache::lc_connection_handle::register('subscriptions',undef,undef,undef,\&local_json_subscriptions,'entity','domain');
+
 }
 1;
 __END__
