@@ -10,6 +10,7 @@ mkdir /home/httpd
 mkdir /home/httpd/lib
 mkdir /home/httpd/lib/perl
 mkdir /home/httpd/lib/perl/Apache
+rm /home/httpd/lib/perl/Apache/*
 cp connections/*.pm /home/httpd/lib/perl/Apache
 cp xml/*pm /home/httpd/lib/perl/Apache
 cp xml/xml_tag_defs/*.pm /home/httpd/lib/perl/Apache

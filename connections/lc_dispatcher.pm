@@ -28,6 +28,17 @@ use Apache2::Const qw(:common :http);
 
 use vars qw(%addresses);
 
+
+sub host_address {
+   my ($host)=@_;
+   unless ($addresses{$host}) {
+# Nope, get it and remember it
+      my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
+      $addresses{$host}=$connection_table->{'cluster_table'}->{'hosts'}->{$host}->{'address'};
+   }
+   return $addresses{$host};
+}
+
 #
 # Send a single command to a single server
 #
@@ -38,18 +49,13 @@ sub command_dispatch {
       return(HTTP_BAD_REQUEST,undef);
    }
 # Do we have the address cached in this module?
-   unless ($addresses{$host}) {
-# Nope, get it and remember it
-      my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
-      my $addr=$connection_table->{'cluster_table'}->{'hosts'}->{$host}->{'address'};
-      unless ($addr) {
-         &logerror("Could not find address for ($host) while doing command ($command)");
-         return (HTTP_SERVICE_UNAVAILABLE,undef);
-      }
-      $addresses{$host}=$addr;
+   my $addr=&host_address($host);
+   unless ($addr) {
+      &logerror("Could not find address for ($host) while doing command ($command)");
+      return (HTTP_SERVICE_UNAVAILABLE,undef);
    }
    return &Apache::lc_connections::dispatch('POST',
-                                            $addresses{$host},
+                                            $addr,
                                             "/connection_handle/$host/$command",
                                             $jsondata);
 }
@@ -91,6 +97,20 @@ sub query_all_domain_libraries {
       return (HTTP_OK,undef);
    }
 }
+
+#
+# Copy a file from a host
+#
+sub copy_file {
+   my ($host,$url,$file)=@_;
+   my $addr=&host_address($host);
+   unless ($addr) {
+      &logwarning("No host address for ($host) in copying");
+      return 0;
+   }
+   return (&Apache::lc_connection::copyurl($addr,$url,$file) eq 'HTTP_OK');
+}
+
 
 1;
 __END__
