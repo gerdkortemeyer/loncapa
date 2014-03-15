@@ -25,7 +25,7 @@ use Apache2::Const qw(:common);
 
 require Exporter;
 our @ISA = qw (Exporter);
-our @EXPORT = qw(lc_home_dir lc_certs_dir lc_cluster_dir lc_cluster_table lc_cluster_manager lc_log_dir lc_short_expire lc_medium_expire);
+our @EXPORT = qw(lc_home_dir lc_certs_dir lc_cluster_dir lc_cluster_table lc_cluster_manager lc_log_dir lc_wrk_dir lc_res_dir lc_short_expire lc_medium_expire);
 
 sub lc_home_dir {
    return '/home/loncapa/';
@@ -49,6 +49,14 @@ sub lc_cluster_manager {
 
 sub lc_log_dir {
    return &lc_home_dir().'logs/';
+}
+
+sub lc_wrk_dir {
+   return &lc_home_dir().'wrk/';
+}
+
+sub lc_res_dir {
+   return &lc_home_dir().'res/';
 }
 
 sub lc_short_expire {

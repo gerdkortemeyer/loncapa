@@ -25,6 +25,7 @@ use Fcntl qw(:flock);
 use File::Touch;
 
 use Apache::lc_logs;
+use Apache::lc_parameters;
 
 # ==== Lock a file the hard way
 #
@@ -100,6 +101,28 @@ sub writefile {
    print OUT $data;
    close(OUT);
    &unlock($fh);
+}
+
+# ==== Asset files
+# Takes URL entity and returns workspace path
+#
+sub asset_workspace_filename {
+   my ($entity,$domain)=@_;
+   $entity=~/(\w)(\w)(\w)(\w)/;
+   return &lc_wrk_dir().$domain.'/'.$1.'/'.$2.'/'.$3.'/'.$4.'/'.$entity;
+}
+
+sub asset_resource_filename {
+   my ($entity,$domain)=@_;
+   $entity=~/(\w)(\w)(\w)(\w)/;
+   return &lc_res_dir().$domain.'/'.$1.'/'.$2.'/'.$3.'/'.$4.'/'.$entity;
+}
+#
+#
+# Takes URL entity and domain to make paths in workspace and resource space
+#
+sub ensure_asset_subdir {
+   my ($entity,$domain)=@_;
 }
 
 1;
