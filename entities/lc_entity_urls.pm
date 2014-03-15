@@ -215,7 +215,7 @@ sub replicate {
       }
    }
 # Now copy it
-   if (&copy_asset($entity,$domain,$full_url) {
+   if (&copy_asset($entity,$domain,$full_url)) {
       return 1;
    }
    &logwarning("Failed to copy URL ($full_url) entity ($entity) domain ($domain)");
