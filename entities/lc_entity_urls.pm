@@ -283,6 +283,7 @@ sub subscriptions {
 
 BEGIN {
    &Apache::lc_connection_handle::register('url_to_entity',undef,undef,undef,\&local_url_to_entity,'full_url');
+   &Apache::lc_connection_handle::register('make_new_url',undef,undef,undef,\&local_make_new_url,'full_url');
    &Apache::lc_connection_handle::register('subscribe',undef,undef,undef,\&local_subscribe,'entity','domain','host');
    &Apache::lc_connection_handle::register('unsubscribe',undef,undef,undef,\&local_unsubscribe,'entity','domain','host');
    &Apache::lc_connection_handle::register('subscriptions',undef,undef,undef,\&local_json_subscriptions,'entity','domain');
