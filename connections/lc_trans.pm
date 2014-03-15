@@ -25,47 +25,28 @@ use strict;
 use Apache2::RequestRec();
 use Apache2::RequestIO();
 use Apache2::Const qw(:common :http);
-
+use Apache::lc_entity_urls();
 
 sub handler {
     my $r = shift;
-    if ($r->uri=~/^\/asset\/([^\/]+)\/([^\/]+)\/([^\/]+)\/(.+)$/) {
-       my $type=$1;
-       my $version_type=$2;
-       my $version_arg=$3;
-       my $domain=$4;
-       my $path=$5;
-
-#       my $found;
-# Assets need to be translated to entities
-#       if ($type eq 'asset') {
-# Before we go out to the net, let's see if we already know locally
-#          $found=&Apache::cw_core_entity::local_uri_to_entity('asset',$domain,$path);
-#          unless ($found) {
-# Out to the net we go!
-#             $found=&Apache::cw_core_entity::uri_to_entity('asset',$domain,
-#                          &Apache::cw_core_utils::escape($path));
-#          }
-#       } else {
-# local_asset_entity does not to be translated
-#          $found=$path;
-#       }
-#       unless ($found) { return HTTP_NOT_FOUND; }
-#       my $filepath=&Apache::cw_core_asset::entity_to_filepath($domain,$found,$version_type,$version_arg);
+# We care about assets
+    if ($r->uri=~/^\/asset\//) {
+# First check if we can even find this
+       my $filepath=&Apache::lc_entity_urls::url_to_filepath($r->uri);
+       unless ($filepath) {
+# Nope, this does not exist anywhere
+          return HTTP_NOT_FOUND;
+       }
 # Is this locally present?
-#       unless (-e $filepath) {
-#          if ($type eq 'asset') {
-# Try to replicate an asset if needed
-#             unless (&Apache::cw_core_asset::replicate($domain,$found,$version_type,$version_arg)) { 
-#                return HTTP_NOT_FOUND; 
-#             }
-#          } else {
-# local_asset: hopeless if not present
-#             return HTTP_NOT_FOUND;
-#          }
-#       }
+       unless (-e $filepath) {
+# Nope, we don't have it yet, let's try to get it
+          unless (&Apache::lc_entity_urls::replicate($r->uri)) {
+# Wow, something went wrong, not sure why we can't get it
+             return HTTP_SERVICE_UNAVAILABLE; 
+          }
+       }
 # Bend the filepath to point to the asset entity
-#       $r->filename($filepath);
+       $r->filename($filepath);
     } 
 # None of our business, no need to translate URL
     return DECLINED; 

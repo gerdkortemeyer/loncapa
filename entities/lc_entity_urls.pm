@@ -162,6 +162,42 @@ sub url_to_entity {
     return $entity;
 }
 
+#
+# Get the complete filepath
+#
+sub url_to_filepath {
+   my ($full_url)=@_;
+# First see if this is for real, i.e., if there is a corresponding entity
+   my $entity=&url_to_entity($full_url);
+   unless ($entity) { return undef; }
+# Okay, now determine where it would sit on the filesystem
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+# Maybe it's in workspace?
+   if ($version_type eq 'wrk') {
+      my $wrkpath=&Apache::lc_file_utils::asset_workspace_dirpath($entity,$domain);
+# If it's actually there, use it
+      if (-e $wrkpath.'/'.$entity) {
+         return $wrkpath.'/'.$entity;
+      }
+# Not there, probably a reference from something inside
+      $version_type='-';
+      $version_arg='-';
+   }
+#FIXME: actually do versions
+   return &Apache::lc_file_utils::asset_workspace_dirpath($entity,$domain).'/'.$entity;
+}
+
+# ======================================================
+# Replication
+# ======================================================
+# Subscribes to a URL and copies it
+#
+sub replicate {
+   my ($full_url)=@_;
+#FIXME
+   return 0;
+}
+
 # ======================================================
 # Subscriptions
 # ======================================================
