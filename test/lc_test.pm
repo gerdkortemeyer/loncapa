@@ -81,12 +81,16 @@ sub handler {
 
    $r->print(Dumper(&Apache::lc_entity_sessions::dump_session($sessionid)));
 
-   &Apache::lc_entity_urls::make_new_url('/asset/-/-/msu/'.$entity.'/rqdqweq/fqweq.html');
 
-   my $urlentity=&Apache::lc_entity_urls::url_to_entity('/asset/-/-/msu/'.$entity.'/rqdqweq/fqweq.html');
+   my $url='/asset/-/-/msu/'.$entity.'/rqdqweq/fqweq.html';
+
+   &Apache::lc_entity_urls::make_new_url($url);
+
+   my $urlentity=&Apache::lc_entity_urls::url_to_entity($url);
+
+   $r->print("\nURL: $url.\nUrlentity: $urlentity");
 
    $r->print("\n".Dumper(&Apache::lc_entity_urls::subscriptions($urlentity,'msu')));
-
 
 return OK;
 

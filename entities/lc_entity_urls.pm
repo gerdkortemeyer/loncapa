@@ -27,7 +27,9 @@ use Apache::lc_logs;
 use Apache::lc_postgresql();
 use Apache::lc_entity_utils();
 use Apache::lc_connection_utils();
+use Apache::lc_parameters;
 
+use File::stat;
 
 #
 # Get URL data out
@@ -35,7 +37,7 @@ use Apache::lc_connection_utils();
 #
 sub split_url {
    my ($full_url)=@_;
-   my ($version_type,$version_arg,$domain,$author,$path)=($full_url=~/^\/asset\/([^\/]+)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/(.*)$/);
+   my ($version_type,$version_arg,$domain,$author,$path)=($full_url=~/^\/(?:asset|raw)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/(.*)$/);
    return ($version_type,$version_arg,$domain,$author,$domain.'/'.$author.'/'.$path);
 }
 
@@ -75,8 +77,6 @@ sub local_make_new_url {
    &Apache::lc_postgresql::insert_url($url,$entity);
 # Take ownership
    &Apache::lc_postgresql::insert_homeserver($entity,$domain,&Apache::lc_connection_utils::host_name());
-# Subscribe ourselves
-   &local_subscribe($entity,$domain,&Apache::lc_connection_utils::host_name());
 # Make a metadata record
    &Apache::lc_mongodb::insert_metadata($entity,$domain,{ created => &Apache::lc_date_utils::now2str() });
 # And return the entity
@@ -182,16 +182,43 @@ sub url_to_filepath {
 sub copy_raw_asset {
    my ($entity,$domain,$version_type,$version_arg)=@_;
 # Get the raw file
-   if (&Apache::lc_dispatcher::copy_file(&Apache::lc_entity_utils::homeserver($entity,$domain),'/raw/'.$domain.'/'.$entity,
+   if (&Apache::lc_dispatcher::copy_file(&Apache::lc_entity_utils::homeserver($entity,$domain),'/raw/'.$version_type.'/'.$version_arg.'/'.$domain.'/'.$entity,
                                          &Apache::lc_file_utils::asset_resource_filename($entity,$domain,$version_type,$version_arg))) {
       return 1;
    }
+   &logwarning("Failed to copy raw asset entity ($entity) domain ($domain)");
    return 0;
 }
 
 # ======================================================
 # Replication
 # ======================================================
+#
+# Get a new copy of $entity and $domain
+#
+sub local_fetch_update {
+   my ($entity,$domain)=@_;
+   my $filename=&Apache::lc_file_utils::asset_resource_filename($entity,$domain,'-','-');
+# Do we even have this?
+   unless (-e $filename) {
+      &logwarning("Asked to update entity ($entity) domain ($domain), but no local copy");
+      &unsubscribe($entity,$domain);
+      return undef;
+   }
+# Okay, how long has it been since we last used this?
+   my $sb=stat($filename);
+   my $lastaccess=$sb->atime;
+# Unsubscribe after a day of not being used
+#FIXME: y2038?
+   if (time-$lastaccess>&lc_long_expire()) {
+      &lognotice("Unsubscribing from entity ($entity) domain ($domain), unused");
+      &unsubscribe($entity,$domain);
+      return undef;
+   }
+# It's here and used!
+   return &copy_raw_asset($entity,$domain,'-','-');
+}
+
 # Subscribes to a URL and copies it
 #
 sub replicate {
@@ -224,7 +251,7 @@ sub local_subscribe {
    my ($entity,$domain,$host)=@_;
 # if this is not our entity, do not subscribe to it
    unless (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) { 
-      &logwarning("Trying to subscribe to entity ($entity) domain ($domain), but not homeserver");
+      &logwarning("Host ($host) trying to subscribe to entity ($entity) domain ($domain), but not homeserver");
       return undef; 
    }
 # Okay, subscribe
@@ -339,7 +366,7 @@ BEGIN {
    &Apache::lc_connection_handle::register('subscribe',undef,undef,undef,\&local_subscribe,'entity','domain','host');
    &Apache::lc_connection_handle::register('unsubscribe',undef,undef,undef,\&local_unsubscribe,'entity','domain','host');
    &Apache::lc_connection_handle::register('subscriptions',undef,undef,undef,\&local_json_subscriptions,'entity','domain');
-
+   &Apache::lc_connection_handle::register('fetch_update',undef,undef,undef,\&local_fetch_update,'entity','domain');
 }
 1;
 __END__
