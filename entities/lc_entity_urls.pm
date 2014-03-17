@@ -172,19 +172,7 @@ sub url_to_filepath {
    unless ($entity) { return undef; }
 # Okay, now determine where it would sit on the filesystem
    my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
-# Maybe it's in workspace?
-   if ($version_type eq 'wrk') {
-      my $wrkpath=&Apache::lc_file_utils::asset_workspace_dirpath($entity,$domain);
-# If it's actually there, use it
-      if (-e $wrkpath.'/'.$entity) {
-         return $wrkpath.'/'.$entity;
-      }
-# Not there, probably a reference from something inside
-      $version_type='-';
-      $version_arg='-';
-   }
-#FIXME: actually do versions
-   return &Apache::lc_file_utils::asset_resource_dirpath($entity,$domain).'/'.$entity;
+   return &Apache::lc_file_utils::asset_resource_filename($entity,$domain,$version_type,$version_arg);
 }
 
 # ======================================================
@@ -192,10 +180,10 @@ sub url_to_filepath {
 # ======================================================
 #
 sub copy_raw_asset {
-   my ($entity,$domain)=@_;
+   my ($entity,$domain,$version_type,$version_arg)=@_;
 # Get the raw file
    if (&Apache::lc_dispatcher::copy_file(&Apache::lc_entity_utils::homeserver($entity,$domain),'/raw/'.$domain.'/'.$entity,
-                                         &Apache::lc_file_utils::asset_resource_dirpath($entity,$domain).'/'.$entity)) {
+                                         &Apache::lc_file_utils::asset_resource_filename($entity,$domain,$version_type,$version_arg))) {
       return 1;
    }
    return 0;
@@ -219,7 +207,7 @@ sub replicate {
       }
    }
 # Now copy it - the unprocessed version
-   if (&copy_raw_asset($entity,$domain,$full_url)) {
+   if (&copy_raw_asset($entity,$domain,$version_type,$version_arg)) {
       return 1;
    }
    &logwarning("Failed to copy URL ($full_url) entity ($entity) domain ($domain)");

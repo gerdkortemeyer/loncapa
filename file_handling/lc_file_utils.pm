@@ -104,18 +104,11 @@ sub writefile {
 }
 
 # ==== Asset files
-# Takes URL entity and returns workspace directory path
-#
-sub asset_workspace_dirpath {
-   my ($entity,$domain)=@_;
-   $entity=~/(\w)(\w)(\w)(\w)/;
-   return &lc_wrk_dir().$domain.'/'.$1.'/'.$2.'/'.$3.'/'.$4.'/'.$entity;
-}
 
-# Takes URL entity and returns resource space directory path
+# Takes URL entity and returns the filename in resource space
 #
-sub asset_resource_dirpath {
-   my ($entity,$domain)=@_;
+sub asset_resource_filename {
+   my ($entity,$domain,$version_type,$version_arg)=@_;
    $entity=~/(\w)(\w)(\w)(\w)/;
    return &lc_res_dir().$domain.'/'.$1.'/'.$2.'/'.$3.'/'.$4.'/'.$entity;
 }
