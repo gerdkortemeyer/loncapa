@@ -191,9 +191,13 @@ sub url_to_filepath {
 # Copy an asset
 # ======================================================
 #
-sub copy_asset {
+sub copy_raw_asset {
    my ($entity,$domain)=@_;
-#FIXME
+# Get the raw file
+   if (&Apache::lc_dispatcher::copy_file(&Apache::lc_entity_utils::homeserver($entity,$domain),'/raw/'.$domain.'/'.$entity,
+                                         &Apache::lc_file_utils::asset_resource_dirpath($entity,$domain).'/'.$entity)) {
+      return 1;
+   }
    return 0;
 }
 
@@ -214,8 +218,8 @@ sub replicate {
          return 0;
       }
    }
-# Now copy it
-   if (&copy_asset($entity,$domain,$full_url)) {
+# Now copy it - the unprocessed version
+   if (&copy_raw_asset($entity,$domain,$full_url)) {
       return 1;
    }
    &logwarning("Failed to copy URL ($full_url) entity ($entity) domain ($domain)");
