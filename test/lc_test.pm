@@ -82,9 +82,13 @@ sub handler {
    $r->print(Dumper(&Apache::lc_entity_sessions::dump_session($sessionid)));
 
 
-   my $url='/asset/-/-/msu/'.$entity.'/rqdqweq/fqweq.html';
+   my $wrk_url='/wrk/msu/'.$entity.'/rqdqweq/fqweq.html';
 
-   &Apache::lc_entity_urls::make_new_url($url);
+   &Apache::lc_entity_urls::local_publish($wrk_url);   
+
+   my $url='/asset/-/-/msu/'.$entity.'/rqdqweq/fqweq.html';
+#
+#   &Apache::lc_entity_urls::make_new_url($url);
 
    my $urlentity=&Apache::lc_entity_urls::url_to_entity($url);
 

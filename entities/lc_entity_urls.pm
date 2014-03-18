@@ -42,6 +42,37 @@ sub split_url {
 }
 
 # ======================================================
+# This transfers a file from wrk into res
+# ======================================================
+# Unpublished assets sit under the given filepath in the wrk-directory
+# Published assets have one or more virtual URLs
+#
+sub local_publish {
+   my ($wrk_url)=@_;
+# Can't publish what does not exist
+   my $wrk_filename=&wrk_to_filepath($wrk_url);
+   unless (-e $wrk_filename) {
+      &logwarning("Attempting to publish ($wrk_url), but associated file does not exist");
+      return 0;
+   }
+# Construct the asset-URL for this
+   my $full_url=$wrk_url;
+   $full_url=~s/^\/wrk\//\/asset\/\-\/\-\//;
+   &lognotice("Initiated publication of ($wrk_url) to ($full_url)");
+# First thing to find out: does this already exist?
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+   my $entity=&url_to_entity($full_url);
+   if ($entity) {
+# This already exists, must be a new version
+      &lognotice("Resource ($full_url) exists, making new version");
+   } else {
+# This does not yet exist, first publication
+      &lognotice("Resource ($full_url) does not yet exist");
+   }
+}
+
+
+# ======================================================
 # Make a new URL
 # ======================================================
 #
@@ -185,6 +216,15 @@ sub raw_to_filepath {
    return &Apache::lc_file_utils::asset_resource_filename($entity,$domain,$version_type,$version_arg);
 }
 
+#
+# Get the complete filepath for a workspace resource
+# /wrk/domain/authorentity/path
+#
+sub wrk_to_filepath {
+   my ($wrk_url)=@_;
+   $wrk_url=~s/^\/wrk\///;
+   return &lc_wrk_dir().$wrk_url;
+}
 
 # ======================================================
 # Copy an asset

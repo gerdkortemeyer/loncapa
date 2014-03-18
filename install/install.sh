@@ -4,6 +4,7 @@ mkdir /home/loncapa/certs
 mkdir /home/loncapa/cluster
 mkdir /home/loncapa/logs
 mkdir /home/loncapa/res
+mkdir /home/loncapa/wrk
 chown -R www:www /home/loncapa
 mkdir /home/httpd
 mkdir /home/httpd/lib
