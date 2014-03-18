@@ -25,11 +25,36 @@ use Apache2::Const qw(:common :http);
 
 use Apache::lc_logs;
 use Apache::lc_postgresql();
+use Apache::lc_mongodb();
 use Apache::lc_entity_utils();
 use Apache::lc_connection_utils();
 use Apache::lc_parameters;
-
+use File::Copy;
 use File::stat;
+
+
+#
+# Versioning metadata
+#
+sub local_new_version {
+   my ($entity,$domain)=@_;
+   my $current_metadata=&Apache::lc_mongodb::dump_metadata($entity,$domain);
+   my $new_version=$current_metadata->{'current_version'}+1;
+   &Apache::lc_mongodb::update_metadata($entity,$domain,{ 'current_version' => $new_version,
+                                          'versions' => { $new_version => &Apache::lc_date_utils::now2str() }});
+} 
+
+sub local_initial_version {
+   my ($entity,$domain)=@_;
+   &Apache::lc_mongodb::insert_metadata($entity,$domain,{ current_version => 1,
+                                                          versions => { 1 => &Apache::lc_date_utils::now2str() } });
+}
+
+sub local_current_version {
+   my ($entity,$domain)=@_;
+   my $current_metadata=&Apache::lc_mongodb::dump_metadata($entity,$domain);
+   return $current_metadata->{'current_version'};
+}
 
 #
 # Get URL data out
@@ -64,11 +89,41 @@ sub local_publish {
    my $entity=&url_to_entity($full_url);
    if ($entity) {
 # This already exists, must be a new version
-      &lognotice("Resource ($full_url) exists, making new version");
+      my $current_version=&local_current_version($entity,$domain);
+      my $new_version=$current_version+1;
+      &lognotice("Resource ($full_url) exists, making new version ($new_version)");
+      my $dest_filename=&Apache::lc_file_utils::asset_resource_filename($entity,$domain,'n',$new_version);
+      my $current_filename=&Apache::lc_file_utils::asset_resource_filename($entity,$domain,'-','-');
+      &copy($wrk_filename,$dest_filename);
+# Update the metadata
+      &local_new_version($entity,$domain);
+# Set the symbolic link
+      unlink($current_filename);
+      symlink($dest_filename,$current_filename);
+# Notify subscribers
+      &remote_notify_subscribed($entity,$domain); 
    } else {
 # This does not yet exist, first publication
       &lognotice("Resource ($full_url) does not yet exist");
+      $entity=&local_make_new_url($full_url);
+      unless ($entity) {
+         &logwarning("Could not obtain URL entity for ($full_url)");
+         return undef;
+      }
+      my $dest_filename=&Apache::lc_file_utils::asset_resource_filename($entity,$domain,'n',1);
+      &lognotice("Destination filename is ($dest_filename)");
+# Make sure we have the subdirectory
+      &Apache::lc_file_utils::ensuresubdir($dest_filename);
+# Okay, can copy over
+      &copy($wrk_filename,$dest_filename);
+# Make the first metadata entry
+      &local_initial_version($entity,$domain);
+# Set the symbolic link
+      symlink($dest_filename,
+            &Apache::lc_file_utils::asset_resource_filename($entity,$domain,'-','-'));
+
    }
+   return 1;
 }
 
 
@@ -108,8 +163,6 @@ sub local_make_new_url {
    &Apache::lc_postgresql::insert_url($url,$entity);
 # Take ownership
    &Apache::lc_postgresql::insert_homeserver($entity,$domain,&Apache::lc_connection_utils::host_name());
-# Make a metadata record
-   &Apache::lc_mongodb::insert_metadata($entity,$domain,{ created => &Apache::lc_date_utils::now2str() });
 # And return the entity
    return $entity;
 }

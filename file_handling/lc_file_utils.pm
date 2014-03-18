@@ -110,7 +110,12 @@ sub writefile {
 sub asset_resource_filename {
    my ($entity,$domain,$version_type,$version_arg)=@_;
    $entity=~/(\w)(\w)(\w)(\w)/;
-   return &lc_res_dir().$domain.'/'.$1.'/'.$2.'/'.$3.'/'.$4.'/'.$entity;
+   my $filename=&lc_res_dir().$domain.'/'.$1.'/'.$2.'/'.$3.'/'.$4.'/'.$entity;
+# Absolute version number
+   if ($version_type eq 'n') {
+      $filename.='.'.$version_arg;
+   }
+   return $filename;
 }
 
 1;
