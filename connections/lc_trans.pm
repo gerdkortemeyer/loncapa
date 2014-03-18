@@ -26,8 +26,7 @@ use Apache2::RequestRec();
 use Apache2::RequestIO();
 use Apache2::Const qw(:common :http);
 use Apache::lc_entity_urls();
-use APR::Finfo ();
-use APR::Const -compile => qw(FINFO_NORM);
+use Apache::lc_logs;
 
 sub handler {
     my $r = shift;
@@ -44,20 +43,15 @@ sub handler {
 # Nope, we don't have it yet, let's try to get it
           unless (&Apache::lc_entity_urls::replicate($r->uri)) {
 # Wow, something went wrong, not sure why we can't get it
+             &logwarning("Failed to replicate ".$r->uri);
              return HTTP_SERVICE_UNAVAILABLE; 
           }
        }
 # Bend the filepath to point to the asset entity
        $r->filename($filepath);
-# Have another look, it's there now!
-       $r->finfo(APR::Finfo::stat($filepath, APR::Const::FINFO_NORM, $r->pool));
        return OK;
     } elsif ($r->uri=~/^\/raw\//) {
-       my $filepath=&Apache::lc_entity_urls::raw_to_filepath($r->uri);
-# Bend
-       $r->filename($filepath);
-# Refresh stat
-       $r->finfo(APR::Finfo::stat($filepath, APR::Const::FINFO_NORM, $r->pool));
+       $r->filename(&Apache::lc_entity_urls::raw_to_filepath($r->uri));
        return OK;
     } 
 # None of our business, no need to translate URL

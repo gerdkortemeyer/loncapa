@@ -108,7 +108,7 @@ sub copy_file {
       &logwarning("No host address for ($host) in copying");
       return 0;
    }
-   return (&Apache::lc_connections::copyurl($addr,$url,$file) eq 'HTTP_OK');
+   return (&Apache::lc_connections::copyurl($addr,$url,$file) eq HTTP_OK);
 }
 
 
