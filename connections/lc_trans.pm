@@ -26,6 +26,8 @@ use Apache2::RequestRec();
 use Apache2::RequestIO();
 use Apache2::Const qw(:common :http);
 use Apache::lc_entity_urls();
+use APR::Finfo ();
+use APR::Const -compile => qw(FINFO_NORM);
 
 sub handler {
     my $r = shift;
@@ -47,9 +49,15 @@ sub handler {
        }
 # Bend the filepath to point to the asset entity
        $r->filename($filepath);
+# Have another look, it's there now!
+       $r->finfo(APR::Finfo::stat($filepath, APR::Const::FINFO_NORM, $r->pool));
        return OK;
     } elsif ($r->uri=~/^\/raw\//) {
-       $r->filename(&Apache::lc_entity_urls::raw_to_filepath($r->uri));
+       my $filepath=&Apache::lc_entity_urls::raw_to_filepath($r->uri);
+# Bend
+       $r->filename($filepath);
+# Refresh stat
+       $r->finfo(APR::Finfo::stat($filepath, APR::Const::FINFO_NORM, $r->pool));
        return OK;
     } 
 # None of our business, no need to translate URL
