@@ -265,6 +265,10 @@ sub local_subscribe {
       &logwarning("Host ($host) trying to subscribe to entity ($entity) domain ($domain), but not homeserver");
       return undef; 
    }
+   if (&local_already_subscribed($entity,$domain,$host)) {
+      &lognotice("Host ($host) trying to subscribe to entity ($entity) domain ($domain), but already subscribed");
+      return 1;
+   }
 # Okay, subscribe
    return (!(&Apache::lc_postgresql::subscribe($entity,$domain,$host)<0));
 }
@@ -370,6 +374,13 @@ sub subscriptions {
    }
 }
 
+sub local_already_subscribed {
+   my ($entity,$domain,$host)=@_;
+   foreach my $thishost (&local_subscriptions($entity,$domain)) {
+      if ($thishost eq $host) { return 1; }
+   }
+   return 0;
+}
 
 BEGIN {
    &Apache::lc_connection_handle::register('url_to_entity',undef,undef,undef,\&local_url_to_entity,'full_url');
