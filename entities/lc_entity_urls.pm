@@ -224,6 +224,8 @@ sub local_fetch_update {
    if (time-$lastaccess>&lc_long_expire()) {
       &lognotice("Unsubscribing from entity ($entity) domain ($domain), unused");
       &unsubscribe($entity,$domain);
+# And remove local copy
+      unlink($filename);
       return undef;
    }
 # It's here and used!
