@@ -37,7 +37,7 @@ use File::stat;
 #
 sub split_url {
    my ($full_url)=@_;
-   my ($version_type,$version_arg,$domain,$author,$path)=($full_url=~/^\/(?:asset|raw)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/(.*)$/);
+   my ($version_type,$version_arg,$domain,$author,$path)=($full_url=~/^\/(?:asset|raw)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/([^\/]+)\/*(.*)$/);
    return ($version_type,$version_arg,$domain,$author,$domain.'/'.$author.'/'.$path);
 }
 
@@ -164,7 +164,7 @@ sub url_to_entity {
 
 #
 # Get the complete filepath
-#
+# /asset/versiontype/versionarg/domain/path
 sub url_to_filepath {
    my ($full_url)=@_;
 # First see if this is for real, i.e., if there is a corresponding entity
@@ -174,6 +174,17 @@ sub url_to_filepath {
    my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
    return &Apache::lc_file_utils::asset_resource_filename($entity,$domain,$version_type,$version_arg);
 }
+
+#
+# Get the complete filepath for a raw resource
+# /raw/versiontype/versionarg/domain/entity
+#
+sub raw_to_filepath {
+   my ($raw_url)=@_;
+   my ($version_type,$version_arg,$domain,$entity)=&split_url($raw_url);
+   return &Apache::lc_file_utils::asset_resource_filename($entity,$domain,$version_type,$version_arg);
+}
+
 
 # ======================================================
 # Copy an asset

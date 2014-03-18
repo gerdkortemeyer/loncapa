@@ -30,7 +30,7 @@ use Apache::lc_entity_urls();
 sub handler {
     my $r = shift;
 # We care about assets
-    if ($r->uri=~/^\/(asset|raw)\//) {
+    if ($r->uri=~/^\/asset\//) {
 # First check if we can even find this
        my $filepath=&Apache::lc_entity_urls::url_to_filepath($r->uri);
        unless ($filepath) {
@@ -47,6 +47,9 @@ sub handler {
        }
 # Bend the filepath to point to the asset entity
        $r->filename($filepath);
+       return OK;
+    } elsif ($r->uri=~/^\/raw\//) {
+       $r->filename(&Apache::lc_entity_urls::raw_to_filepath($r->uri));
        return OK;
     } 
 # None of our business, no need to translate URL
