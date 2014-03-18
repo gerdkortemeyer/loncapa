@@ -255,7 +255,7 @@ sub local_subscribe {
       return undef; 
    }
 # Okay, subscribe
-   return &Apache::lc_postgresql::subscribe($entity,$domain,$host);
+   return (!(&Apache::lc_postgresql::subscribe($entity,$domain,$host)<0));
 }
 
 #
@@ -300,7 +300,7 @@ sub local_unsubscribe {
       return undef;
    }
 # Okay, unsubscribe
-   return &Apache::lc_postgresql::unsubscribe($entity,$domain,$host);
+   return (!(&Apache::lc_postgresql::unsubscribe($entity,$domain,$host)<0));
 }
 
 sub remote_unsubscribe {
