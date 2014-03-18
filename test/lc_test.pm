@@ -92,6 +92,8 @@ sub handler {
 
    $r->print("\n".Dumper(&Apache::lc_entity_urls::subscriptions($urlentity,'msu')));
 
+   &Apache::lc_entity_urls::remote_notify_subscribed($urlentity,'msu');
+
 return OK;
 
    $r->print(&Apache::lc_entity_users::make_new_user('test155','msu')."\n");

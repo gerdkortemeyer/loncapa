@@ -382,6 +382,17 @@ sub local_already_subscribed {
    return 0;
 }
 
+sub remote_notify_subscribed {
+   my ($entity,$domain)=@_;
+   my $ourselves=&Apache::lc_connection_utils::host_name();
+   foreach my $host (&local_subscriptions($entity,$domain)) {
+      unless ($host) { next; }
+      if ($host eq $ourselves) { next; }
+      my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'fetch_update',
+                                                                 "{ entity : '$entity', domain : '$domain' }");      
+   }
+}
+
 BEGIN {
    &Apache::lc_connection_handle::register('url_to_entity',undef,undef,undef,\&local_url_to_entity,'full_url');
    &Apache::lc_connection_handle::register('make_new_url',undef,undef,undef,\&local_make_new_url,'full_url');
