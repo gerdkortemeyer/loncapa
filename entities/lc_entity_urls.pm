@@ -35,6 +35,7 @@ use File::stat;
 
 #
 # Versioning metadata
+# --- update (increment) the version
 #
 sub local_new_version {
    my ($entity,$domain)=@_;
@@ -44,16 +45,51 @@ sub local_new_version {
                                           'versions' => { $new_version => &Apache::lc_date_utils::now2str() }});
 } 
 
+# --- set the initial version, which is 1
+#
 sub local_initial_version {
    my ($entity,$domain)=@_;
    &Apache::lc_mongodb::insert_metadata($entity,$domain,{ current_version => 1,
                                                           versions => { 1 => &Apache::lc_date_utils::now2str() } });
 }
 
+
+#
+# Handling current version requests
+# --- retrieve the actual current version
+# This is also what's called externally
+#
 sub local_current_version {
    my ($entity,$domain)=@_;
    my $current_metadata=&Apache::lc_mongodb::dump_metadata($entity,$domain);
    return $current_metadata->{'current_version'};
+}
+
+sub remote_current_version {
+   my ($host,$entity,$domain)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'current_version',
+                                            "{ entity : '$entity', domain : '$domain' }");
+   if ($code eq HTTP_OK) {
+      return $response;
+   } else {
+      return undef;
+   }
+
+}
+
+sub current_version {
+   my ($entity,$domain)=@_;
+   my $version=&Apache::lc_memcached::lookup_current_version($entity,$domain);
+   if ($version) { return $version; }
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      $version=&local_current_version($entity,$domain);
+   } else {
+      $version=&remote_current_version(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
+   }
+   if ($version) {
+      &Apache::lc_memcached::insert_current_version($entity,$domain,$version);
+   }
+   return $version;     
 }
 
 #
@@ -92,16 +128,11 @@ sub local_publish {
       my $current_version=&local_current_version($entity,$domain);
       my $new_version=$current_version+1;
       &lognotice("Resource ($full_url) exists, making new version ($new_version)");
-      my $dest_filename=&Apache::lc_file_utils::asset_resource_filename($entity,$domain,'n',$new_version);
-      my $current_filename=&Apache::lc_file_utils::asset_resource_filename($entity,$domain,'-','-');
+      my $dest_filename=&asset_resource_filename($entity,$domain,'n',$new_version);
       &copy($wrk_filename,$dest_filename);
 # Update the metadata
       &local_new_version($entity,$domain);
-# Set the symbolic link
-      unlink($current_filename);
-      symlink($dest_filename,$current_filename);
-# Notify subscribers
-      &remote_notify_subscribed($entity,$domain); 
+      &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
    } else {
 # This does not yet exist, first publication
       &lognotice("Resource ($full_url) does not yet exist");
@@ -110,7 +141,7 @@ sub local_publish {
          &logwarning("Could not obtain URL entity for ($full_url)");
          return undef;
       }
-      my $dest_filename=&Apache::lc_file_utils::asset_resource_filename($entity,$domain,'n',1);
+      my $dest_filename=&asset_resource_filename($entity,$domain,'n',1);
       &lognotice("Destination filename is ($dest_filename)");
 # Make sure we have the subdirectory
       &Apache::lc_file_utils::ensuresubdir($dest_filename);
@@ -118,10 +149,7 @@ sub local_publish {
       &copy($wrk_filename,$dest_filename);
 # Make the first metadata entry
       &local_initial_version($entity,$domain);
-# Set the symbolic link
-      symlink($dest_filename,
-            &Apache::lc_file_utils::asset_resource_filename($entity,$domain,'-','-'));
-
+      &Apache::lc_memcached::insert_current_version($entity,$domain,1);
    }
    return 1;
 }
@@ -246,6 +274,22 @@ sub url_to_entity {
     return $entity;
 }
 
+sub asset_resource_filename {
+   my ($entity,$domain,$version_type,$version_arg)=@_;
+   $entity=~/(\w)(\w)(\w)(\w)/;
+   my $base=&lc_res_dir().$domain.'/'.$1.'/'.$2.'/'.$3.'/'.$4.'/'.$entity;
+   if ($version_type eq '-') {
+# Current version
+      return $base.'.'.&current_version($entity,$domain);
+   } elsif ($version_type eq 'n') {
+# Absolute version number
+      return $base.'.'.$version_arg;
+   }
+# Huh?
+   return undef;
+}
+
+
 #
 # Get the complete filepath
 # /asset/versiontype/versionarg/domain/path
@@ -256,7 +300,7 @@ sub url_to_filepath {
    unless ($entity) { return undef; }
 # Okay, now determine where it would sit on the filesystem
    my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
-   return &Apache::lc_file_utils::asset_resource_filename($entity,$domain,$version_type,$version_arg);
+   return &asset_resource_filename($entity,$domain,$version_type,$version_arg);
 }
 
 #
@@ -266,7 +310,7 @@ sub url_to_filepath {
 sub raw_to_filepath {
    my ($raw_url)=@_;
    my ($version_type,$version_arg,$domain,$entity)=&split_url($raw_url);
-   return &Apache::lc_file_utils::asset_resource_filename($entity,$domain,$version_type,$version_arg);
+   return &asset_resource_filename($entity,$domain,$version_type,$version_arg);
 }
 
 #
@@ -287,59 +331,26 @@ sub copy_raw_asset {
    my ($entity,$domain,$version_type,$version_arg)=@_;
 # Get the raw file
    if (&Apache::lc_dispatcher::copy_file(&Apache::lc_entity_utils::homeserver($entity,$domain),'/raw/'.$version_type.'/'.$version_arg.'/'.$domain.'/'.$entity,
-                                         &Apache::lc_file_utils::asset_resource_filename($entity,$domain,$version_type,$version_arg))) {
+                                         &asset_resource_filename($entity,$domain,$version_type,$version_arg))) {
       return 1;
    }
    &logwarning("Failed to copy raw asset entity ($entity) domain ($domain)");
    return 0;
 }
 
-# ======================================================
-# Replication
-# ======================================================
 #
-# Get a new copy of $entity and $domain
-#
-sub local_fetch_update {
-   my ($entity,$domain)=@_;
-   my $filename=&Apache::lc_file_utils::asset_resource_filename($entity,$domain,'-','-');
-# Do we even have this?
-   unless (-e $filename) {
-      &logwarning("Asked to update entity ($entity) domain ($domain), but no local copy");
-      &unsubscribe($entity,$domain);
-      return undef;
-   }
-# Okay, how long has it been since we last used this?
-   my $sb=stat($filename);
-   my $lastaccess=$sb->atime;
-# Unsubscribe after a day of not being used
-#FIXME: y2038?
-   if (time-$lastaccess>&lc_long_expire()) {
-      &lognotice("Unsubscribing from entity ($entity) domain ($domain), unused");
-      &unsubscribe($entity,$domain);
-# And remove local copy
-      unlink($filename);
-      return undef;
-   }
-# It's here and used!
-   return &copy_raw_asset($entity,$domain,'-','-');
-}
-
-# Subscribes to a URL and copies it
+# Copies a URL
 #
 sub replicate {
    my ($full_url)=@_;
    my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
    my $entity=&url_to_entity($full_url);
-# If the version is latest, we need to be kept up-to-date
-   if ($version_type eq '-') {
-# Subscribe to it
-      unless (&subscribe($entity,$domain)) {
-         &logwarning("Failed to subscribe to URL ($full_url) entity ($entity) domain ($domain)");
-         return 0;
-      }
+# Does that exist?
+   unless ($entity) {
+      &lognotice("No entity exists for ($full_url)");
+      return 0;
    }
-# Now copy it - the unprocessed version
+# Copy the unprocessed version
    if (&copy_raw_asset($entity,$domain,$version_type,$version_arg)) {
       return 1;
    }
@@ -347,154 +358,10 @@ sub replicate {
    return 0;
 }
 
-# ======================================================
-# Subscriptions
-# ======================================================
-# Subscribe a host
-# The homeserver keeps the list of the subscribed hosts
-#
-sub local_subscribe {
-   my ($entity,$domain,$host)=@_;
-# if this is not our entity, do not subscribe to it
-   unless (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) { 
-      &logwarning("Host ($host) trying to subscribe to entity ($entity) domain ($domain), but not homeserver");
-      return undef; 
-   }
-   if (&local_already_subscribed($entity,$domain,$host)) {
-      &lognotice("Host ($host) trying to subscribe to entity ($entity) domain ($domain), but already subscribed");
-      return 1;
-   }
-# Okay, subscribe
-   return (!(&Apache::lc_postgresql::subscribe($entity,$domain,$host)<0));
-}
-
-#
-# Subscribe on a specific host
-#
-sub remote_subscribe {
-   my ($remotehost,$entity,$domain,$thishost)=@_;
-   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($remotehost,'subscribe',
-                                                                 "{ entity : '$entity', domain : '$domain', host : '$thishost' }");
-   if ($code eq HTTP_OK) {
-      return $response;
-   } else {
-      return undef;
-   }
-}
-
-sub subscribe {
-   my ($entity,$domain)=@_;
-   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
-# That's odd, why are we doing this?
-      &logwarning("Explicitly trying to subscribe to entity ($entity) domain ($domain), but we are homeserver");
-      return undef;
-   } else {
-      return &remote_subscribe(&Apache::lc_entity_utils::homeserver($entity,$domain),
-                               $entity,$domain,&Apache::lc_connection_utils::host_name());
-   }
-}
-
-#
-# Unsubscribe a host
-#
-sub local_unsubscribe {
-   my ($entity,$domain,$host)=@_;
-# if this is not our entity, it's none of our business
-   unless (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) { 
-      &logwarning("Trying to unsubscribe from entity ($entity) domain ($domain), but not homeserver");
-      return undef; 
-   }
-# The homeserver must not unsubscribe!
-   if ($host eq &Apache::lc_connection_utils::host_name()) {
-      &logwarning("Trying to unsubscribe from entity ($entity) domain ($domain), but the homeserver cannot unsubscribe!");
-      return undef;
-   }
-# Okay, unsubscribe
-   return (!(&Apache::lc_postgresql::unsubscribe($entity,$domain,$host)<0));
-}
-
-sub remote_unsubscribe {
-   my ($remotehost,$entity,$domain,$thishost)=@_;
-   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($remotehost,'unsubscribe',
-                                                                 "{ entity : '$entity', domain : '$domain', host : '$thishost' }");
-   if ($code eq HTTP_OK) {
-      return $response;
-   } else {
-      return undef;
-   }
-}
-
-sub unsubscribe {
-   my ($entity,$domain)=@_;
-   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
-# That's not good, we cannot unsubscribe from our own assets
-      &logwarning("Trying to unsubscribe from entity ($entity) domain ($domain), but we are homeserver");
-      return undef;
-   } else {
-      return &remote_unsubscribe(&Apache::lc_entity_utils::homeserver($entity,$domain),
-                                 $entity,$domain,&Apache::lc_connection_utils::host_name());
-   }
-}
-
-
-#
-# List all subscribed hosts
-#
-sub local_subscriptions {
-   my ($entity,$domain)=@_;
-   return &Apache::lc_postgresql::subscriptions($entity,$domain);
-}
-
-sub local_json_subscriptions {
-   return &Apache::lc_json_utils::perl_to_json(&local_subscriptions(@_));
-}
-
-sub remote_subscriptions {
-   my ($host,$entity,$domain)=@_;
-   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'subscriptions',
-                                                                 "{ entity : '$entity', domain : '$domain' }");
-   if ($code eq HTTP_OK) {
-      return &Apache::lc_json_utils::json_to_perl($response);
-   } else {
-      return undef;
-   }
-}
-
-sub subscriptions {
-   my ($entity,$domain)=@_;
-   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
-      return &local_subscriptions($entity,$domain);
-   } else {
-      return &remote_subscriptions(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
-   }
-}
-
-sub local_already_subscribed {
-   my ($entity,$domain,$host)=@_;
-   foreach my $thishost (&local_subscriptions($entity,$domain)) {
-      if ($thishost eq $host) { return 1; }
-   }
-   return 0;
-}
-
-sub remote_notify_subscribed {
-   my ($entity,$domain)=@_;
-   my $ourselves=&Apache::lc_connection_utils::host_name();
-   foreach my $host (&local_subscriptions($entity,$domain)) {
-      unless ($host) { next; }
-      if ($host eq $ourselves) { next; }
-      my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'fetch_update',
-                                                                 "{ entity : '$entity', domain : '$domain' }");      
-   }
-}
-
 BEGIN {
    &Apache::lc_connection_handle::register('url_to_entity',undef,undef,undef,\&local_url_to_entity,'full_url');
    &Apache::lc_connection_handle::register('make_new_url',undef,undef,undef,\&local_make_new_url,'full_url');
-   &Apache::lc_connection_handle::register('subscribe',undef,undef,undef,\&local_subscribe,'entity','domain','host');
-   &Apache::lc_connection_handle::register('unsubscribe',undef,undef,undef,\&local_unsubscribe,'entity','domain','host');
-   &Apache::lc_connection_handle::register('subscriptions',undef,undef,undef,\&local_json_subscriptions,'entity','domain');
-   &Apache::lc_connection_handle::register('fetch_update',undef,undef,undef,\&local_fetch_update,'entity','domain');
+   &Apache::lc_connection_handle::register('current_version',undef,undef,undef,\&local_current_version,'entity','domain');
 }
 1;
 __END__

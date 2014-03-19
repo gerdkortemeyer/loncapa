@@ -100,9 +100,6 @@ sub handler {
    $r->print("\n".Dumper(&Apache::lc_mongodb::dump_metadata($urlentity,'msu')));
 
 
-   $r->print("\n".Dumper(&Apache::lc_entity_urls::subscriptions($urlentity,'msu')));
-
-   &Apache::lc_entity_urls::remote_notify_subscribed($urlentity,'msu');
 
 return OK;
 

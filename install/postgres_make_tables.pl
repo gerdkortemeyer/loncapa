@@ -35,21 +35,6 @@ ENDURLTABLE
 }
 
 #
-# Make the subscription table
-#
-sub make_subscription_table {
-   my $subtable=(<<ENDSUBTABLE);
-create table subscriptions
-(entity text not null,
-domain text not null,
-host text not null,
-startdate timestamp,
-primary key (entity,domain,host))
-ENDSUBTABLE
-   my $rv=$dbh->do($subtable);
-}
-
-#
 # Make the user lookup table
 # Get the entity for a username
 #
@@ -153,4 +138,3 @@ sub init_postgres {
    &make_courseid_lookup_table();
    &make_homeserver_lookup_table();
    &make_role_lookup_table();
-   &make_subscription_table();

@@ -106,6 +106,21 @@ sub lookup_course_entity {
    return &mget("course:$course:$domain");
 }
 
+#
+# Deal with current version cache
+#
+sub insert_current_version {
+   my ($entity,$domain,$version)=@_;
+   &mset("currentversion:$entity:$domain",$version,&lc_short_expire());
+}
+
+sub lookup_current_version {
+   my ($entity,$domain)=@_;
+   return &mget("currentversion:$entity:$domain");
+}
+
+
+
 # === Direct access
 # You don't want to call these from outside
 #

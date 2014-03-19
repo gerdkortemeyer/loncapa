@@ -33,33 +33,6 @@ use Apache::lc_date_utils();
 use vars qw($dbh);
 
 #
-# Subscriptions
-#
-sub subscribe {
-   my ($entity,$domain,$host)=@_;
-   my $sth=$dbh->prepare("insert into subscriptions (entity,domain,host,startdate) values (?,?,?,?)");
-   return $sth->execute($entity,$domain,$host,&Apache::lc_date_utils::now2str());
-}
-
-sub unsubscribe {
-   my ($entity,$domain,$host)=@_;
-   my $sth=$dbh->prepare("delete from subscriptions where entity = ? and domain = ? and host = ?");
-   return $sth->execute($entity,$domain,$host);
-}
-
-sub subscriptions {
-   my ($entity,$domain)=@_;
-   my $sth=$dbh->prepare("select * from subscriptions where entity = ? and domain = ?");
-   my $rv=$sth->execute($entity,$domain);
-   my @return;
-   while (my @newsubscription=$sth->fetchrow_array()) {
-      push(@return,$newsubscription[2]);
-   }
-   return @return;
-}
-
-
-#
 # Deal with URLs
 # - there is no "modify_url", since a URL once assigned stays with that entity
 #
