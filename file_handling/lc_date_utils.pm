@@ -75,6 +75,8 @@ sub now2str {
 #
 sub str2num {
    my ($datestr)=@_;
+# If _ is used instead of string (for URLs)
+   $datestr=~s/\_+/ /g;
 # Sat Dec  6 03:48:16 142715360
    if ($datestr=~/\s*(\w+)\s+(\d+)\s+(\d+)\:(\d+)\:(\d+)\s+(\d+)$/) {
       return &timegm($5,$4,$3,$2,$months{$1},$6-1900);

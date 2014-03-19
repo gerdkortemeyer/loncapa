@@ -34,6 +34,44 @@ use File::stat;
 
 
 #
+# Get the metadata for an asset
+#
+sub local_dump_metadata {
+   return &Apache::lc_mongodb::dump_metadata(@_);
+}
+
+sub local_json_dump_metadata {
+   return &Apache::lc_json_utils::perl_to_json(&local_get_metadata(@_));
+}
+
+sub remote_dump_metadata {
+   my ($host,$entity,$domain)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'dump_metadata',
+                                            "{ entity : '$entity', domain : '$domain' }");
+   if ($code eq HTTP_OK) {
+      return &Apache::lc_json_utils::json_to_perl($response);
+   } else {
+      return undef;
+   }
+}
+
+sub dump_metadata {
+   my ($entity,$domain)=@_;
+   my $metadata=&Apache::lc_memcached::lookup_metadata($entity,$domain);
+   if ($metadata) { return $metadata; }
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      $metadata=&local_dump_metadata($entity,$domain);
+   } else {
+      $metadata=&remote_dump_metadata(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
+   }
+   if ($metadata) {
+      &Apache::lc_memcached::insert_metadata($entity,$domain,$metadata);
+   }
+   return $metadata;
+}
+
+
+#
 # Versioning metadata
 # --- update (increment) the version
 #
@@ -43,6 +81,9 @@ sub local_new_version {
    my $new_version=$current_metadata->{'current_version'}+1;
    &Apache::lc_mongodb::update_metadata($entity,$domain,{ 'current_version' => $new_version,
                                           'versions' => { $new_version => &Apache::lc_date_utils::now2str() }});
+# Consistency, want to see immediate results locally
+   &Apache::lc_memcached::insert_metadata($entity,$domain,&Apache::lc_mongodb::dump_metadata($entity,$domain));
+   &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
 } 
 
 # --- set the initial version, which is 1
@@ -74,7 +115,6 @@ sub remote_current_version {
    } else {
       return undef;
    }
-
 }
 
 sub current_version {
@@ -278,12 +318,39 @@ sub asset_resource_filename {
    my ($entity,$domain,$version_type,$version_arg)=@_;
    $entity=~/(\w)(\w)(\w)(\w)/;
    my $base=&lc_res_dir().$domain.'/'.$1.'/'.$2.'/'.$3.'/'.$4.'/'.$entity;
+   my $current_version=&current_version($entity,$domain);
    if ($version_type eq '-') {
 # Current version
-      return $base.'_'.&current_version($entity,$domain);
+      return $base.'_'.$current_version;
    } elsif ($version_type eq 'n') {
 # Absolute version number
-      return $base.'_'.$version_arg;
+      my $version_num=int($version_arg);
+      if ($version_num<0) { $version_num=1; }
+      if ($version_num>$current_version) { $version_num=$current_version; }
+      return $base.'_'.$version_num;
+   } elsif ($version_type eq 'as_of') {
+# Want the resource as of a certain date
+      my $version_date=&Apache::lc_date_utils::str2num($version_arg);
+      unless ($version_date) {
+         &lognotice("Wrong date format for versioned asset ($version_arg)");
+         return $base.'_'.$current_version;
+      }
+# Do we have it cached?
+      my $clean_date_string=&Apache::lc_date_utils::num2str($version_date);
+      my $version_num=&Apache::lc_memcached::lookup_as_of_version($entity,$domain,$clean_date_string);
+      if ($version_num) { return $base.'_'.$version_num; }
+      my $metadata=&dump_metadata($entity,$domain);
+# If it did not exist yet by the given date, use first existing version
+      $version_num=1;
+# Move forward
+      for (my $i=1; $i<=$current_version; $i++) {
+          my $pub_date=&Apache::lc_date_utils::str2num($metadata->{'versions'}->{$i});
+          if ($pub_date<=$version_date) {
+             $version_num=$i;
+          }
+      }
+      &Apache::lc_memcached::insert_as_of_version($entity,$domain,$clean_date_string,$version_num);
+      return $base.'_'.$version_num;
    }
 # Huh?
    return undef;
@@ -362,6 +429,7 @@ BEGIN {
    &Apache::lc_connection_handle::register('url_to_entity',undef,undef,undef,\&local_url_to_entity,'full_url');
    &Apache::lc_connection_handle::register('make_new_url',undef,undef,undef,\&local_make_new_url,'full_url');
    &Apache::lc_connection_handle::register('current_version',undef,undef,undef,\&local_current_version,'entity','domain');
+   &Apache::lc_connection_handle::register('dump_metadata',undef,undef,undef,\&local_json_dump_metadata,'entity','domain');
 }
 1;
 __END__

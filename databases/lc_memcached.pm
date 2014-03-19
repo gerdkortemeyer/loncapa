@@ -119,7 +119,31 @@ sub lookup_current_version {
    return &mget("currentversion:$entity:$domain");
 }
 
+#
+# Deal with as-of version cache
+#
+sub insert_as_of_version {
+   my ($entity,$domain,$date,$version)=@_;
+   &mset("asofversion:$entity:$domain:$date",$version,&lc_long_expire());
+}
 
+sub lookup_as_of_version {
+   my ($entity,$domain,$date)=@_;
+   return &mget("asofversion:$entity:$domain:$date");
+}
+
+#
+# Store all of the metadata
+#
+sub insert_metadata {
+   my ($entity,$domain,$metadata)=@_;
+   &mset("metadata:$entity:$domain",$metadata,&lc_short_expire());
+}
+
+sub lookup_metadata {
+   my ($entity,$domain)=@_;
+   return &mget("metadata:$entity:$domain");
+}
 
 # === Direct access
 # You don't want to call these from outside
