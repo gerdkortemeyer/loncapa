@@ -81,9 +81,6 @@ sub local_new_version {
    my $new_version=$current_metadata->{'current_version'}+1;
    &Apache::lc_mongodb::update_metadata($entity,$domain,{ 'current_version' => $new_version,
                                           'versions' => { $new_version => &Apache::lc_date_utils::now2str() }});
-# Consistency, want to see immediate results locally
-   &Apache::lc_memcached::insert_metadata($entity,$domain,&Apache::lc_mongodb::dump_metadata($entity,$domain));
-   &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
 } 
 
 # --- set the initial version, which is 1
@@ -173,6 +170,7 @@ sub local_publish {
 # Update the metadata
       &local_new_version($entity,$domain);
       &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
+      &Apache::lc_memcached::insert_metadata($entity,$domain,&Apache::lc_mongodb::dump_metadata($entity,$domain));
    } else {
 # This does not yet exist, first publication
       &lognotice("Resource ($full_url) does not yet exist");
@@ -325,8 +323,7 @@ sub asset_resource_filename {
    } elsif ($version_type eq 'n') {
 # Absolute version number
       my $version_num=int($version_arg);
-      if ($version_num<0) { $version_num=1; }
-      if ($version_num>$current_version) { $version_num=$current_version; }
+      if ($version_num<=0) { $version_num=1; }
       return $base.'_'.$version_num;
    } elsif ($version_type eq 'as_of') {
 # Want the resource as of a certain date
