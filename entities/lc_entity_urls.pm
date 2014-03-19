@@ -41,7 +41,7 @@ sub local_dump_metadata {
 }
 
 sub local_json_dump_metadata {
-   return &Apache::lc_json_utils::perl_to_json(&local_get_metadata(@_));
+   return &Apache::lc_json_utils::perl_to_json(&local_dump_metadata(@_));
 }
 
 sub remote_dump_metadata {
