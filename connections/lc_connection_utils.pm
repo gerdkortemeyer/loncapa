@@ -20,7 +20,6 @@
 package Apache::lc_connection_utils;
 
 use strict;
-use Sys::Hostname;
 use Socket;
 use APR::Table;
 use Apache2::Const qw(:common :http);
@@ -28,23 +27,6 @@ use Apache2::Const qw(:common :http);
 use Apache::lc_connection_handle();
 use Apache::lc_init_cluster_table();
 
-#
-# Check if two hosts are the same
-#
-sub host_match {
-   my ($host1,$host2)=@_;
-   my $hostip1=&inet_aton($host1);
-   my $hostip2=&inet_aton($host2);
-   unless (($hostip1) && ($hostip2)) { return 0; }
-   return (&inet_ntoa($hostip1) eq &inet_ntoa($hostip2));
-}
-
-#
-# Who are we?
-#
-sub server_name {
-   return hostname;
-}
 
 #
 # Is a host a library server for a domain?

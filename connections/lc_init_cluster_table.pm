@@ -24,13 +24,35 @@ use Apache2::RequestRec();
 use Apache2::RequestIO();
 use Apache2::Const qw(:common :http);
 
+use Sys::Hostname;
+use Socket;
+
 use Apache::lc_parameters;
 use Apache::lc_logs;
 use Apache::lc_json_utils();
 use Apache::lc_file_utils();
-use Apache::lc_connection_utils();
 use Apache::lc_connections();
 use Apache::lc_memcached();
+
+#
+# Are two hosts the same?
+#
+sub host_match {
+   my ($host1,$host2)=@_;
+   my $hostip1=&inet_aton($host1);
+   my $hostip2=&inet_aton($host2);
+   unless (($hostip1) && ($hostip2)) { return 0; }
+   return (&inet_ntoa($hostip1) eq &inet_ntoa($hostip2));
+}
+
+#
+# What is our server name?
+#
+sub server_name {
+   return hostname;
+}
+
+
 
 
 #
@@ -63,7 +85,7 @@ sub cluster_manager {
 # Returns "true" if we are cluster manager ourselves
 #
 sub we_are_manager {
-   return &Apache::lc_connection_utils::host_match(&Apache::lc_connection_utils::server_name(),&cluster_manager());
+   return &host_match(&server_name(),&cluster_manager());
 }
 
 #
@@ -127,7 +149,7 @@ sub load_cluster_table {
 # are in the cluster table
 # Compile other useful lists
    my $connection_table;
-   my $ourselves=&Apache::lc_connection_utils::server_name();
+   my $ourselves=&server_name();
    my $found_ourselves=0;
    my $cluster_manager=&cluster_manager();
    my $found_manager=0;
@@ -135,12 +157,12 @@ sub load_cluster_table {
    foreach my $host (keys(%{$cluster_table->{'hosts'}})) {
       my $hostaddr=$cluster_table->{'hosts'}->{$host}->{'address'};
 # Is it ourselves?
-      if (&Apache::lc_connection_utils::host_match($hostaddr,$ourselves)) {
+      if (&host_match($hostaddr,$ourselves)) {
          $found_ourselves=1;
          $connection_table->{'self'}=$host;
       }
 # Is it the cluster manager?
-      if (&Apache::lc_connection_utils::host_match($hostaddr,$cluster_manager)) {
+      if (&host_match($hostaddr,$cluster_manager)) {
          $found_manager=1;
          $connection_table->{'manager'}=$host;
       }
