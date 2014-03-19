@@ -280,10 +280,10 @@ sub asset_resource_filename {
    my $base=&lc_res_dir().$domain.'/'.$1.'/'.$2.'/'.$3.'/'.$4.'/'.$entity;
    if ($version_type eq '-') {
 # Current version
-      return $base.'.'.&current_version($entity,$domain);
+      return $base.'_'.&current_version($entity,$domain);
    } elsif ($version_type eq 'n') {
 # Absolute version number
-      return $base.'.'.$version_arg;
+      return $base.'_'.$version_arg;
    }
 # Huh?
    return undef;
