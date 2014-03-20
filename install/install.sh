@@ -39,6 +39,7 @@ if [ ! -d /home/httpd/html/scripts/mathjax ]; then
 fi
 cp app/scripts/jquery* /home/httpd/html/scripts
 cp app/scripts/lc* /home/httpd/html/scripts
+cp -R app/scripts/jstree /home/httpd/html/scripts/
 mkdir /home/httpd/html/css
 cp app/css/* /home/httpd/html/css
 mkdir /home/httpd/html/pages
