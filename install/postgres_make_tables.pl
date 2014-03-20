@@ -119,6 +119,32 @@ ENDROLELIST
 }
 
 #
+# This is the big table of course assessments on the homeserver of the courses
+# Authoritative
+#
+sub make_assessment_table {
+   my $assessmenttable=(<<ENDASSESSMENTTABLE);
+create table assessments
+(courseentity text not null,
+coursedomain text not null,
+userentity text not null,
+userdomain text not null,
+resourceid text not null,
+partid text not null,
+scoretype text,
+score text,
+totaltries text,
+countedtries text,
+status text,
+responsedetailsjson text,
+primary key (courseentity,coursedomain,userentity,userdomain,resourceid,partid))
+ENDASSESSMENTTABLE
+   my $rv=$dbh->do($assessmenttable);
+}
+
+
+
+#
 # Initialize the postgreSQL handle, local host
 #
 sub init_postgres {
@@ -138,3 +164,4 @@ sub init_postgres {
    &make_courseid_lookup_table();
    &make_homeserver_lookup_table();
    &make_role_lookup_table();
+   &make_assessment_table();

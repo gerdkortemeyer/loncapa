@@ -33,6 +33,61 @@ use Apache::lc_date_utils();
 use vars qw($dbh);
 
 #
+# Deal with assessment data
+#
+# === Store data from one transaction
+#
+sub store_assessment_transaction {
+   my ($courseentity,$coursedomain,
+       $userentity,$userdomain,
+       $resourceid,
+       $partid,
+       $scoretype,$score,
+       $totaltries,$countedtries,
+       $status,
+       $responsedetailsjson)=@_;
+# We need to see if this row exists already
+   my $sth=$dbh->prepare(
+    "select totaltries from assessments where courseentity = ? and coursedomain = ? and userentity = ? and userdomain = ? and resourceid = ? and partid = ?"
+                        );
+   $sth->execute($courseentity,$coursedomain,
+                 $userentity,$userdomain,
+                 $resourceid,
+                 $partid);
+   my $prev_totaltries=$sth->fetchrow_array();
+   if ($prev_totaltries) {
+# Yes, this existed
+      unless ($totaltries==$prev_totaltries+1) {
+         &logwarning(
+    "Checking number of tries failed for course ($courseentity) ($coursedomain) ($userentity) ($userdomain) ($resourceid) ($partid): $prev_totaltries/$totaltries");
+         return -1;
+      }
+      $sth=$dbh->prepare(
+    "update assessments set scoretype = ?, score = ?, totaltries = ?, countedtries = ?, status = ?, responsedetailsjson = ? where courseentity = ? and coursedomain = ? and userentity = ? and userdomain = ? and resourceid = ? and partid = ?");
+      return $sth->execute($scoretype,$score,$totaltries,$countedtries,$status,$responsedetailsjson,
+                           $courseentity,$coursedomain,$userentity,$userdomain,$resourceid,$partid);
+   } else {
+# New record
+      unless ($totaltries==1) {
+         &logwarning("No existing record found for ($courseentity) ($coursedomain) ($userentity) ($userdomain) ($resourceid) ($partid)");
+         return -1;
+      }
+      $sth=$dbh->prepare(
+ "insert into assessments (courseentity,coursedomain,userentity,userdomain,resourceid,partid,scoretype,score,totaltries,countedtries,status,responsedetailsjson) values (?,?,?,?,?,?,?,?,?,?,?,?)");
+      return $sth->execute($courseentity,$coursedomain,
+       $userentity,$userdomain,
+       $resourceid,
+       $partid,
+       $scoretype,$score,
+       $totaltries,$countedtries,
+       $status,
+       $responsedetailsjson);
+   }
+}
+
+
+
+#
 # Deal with URLs
 # - there is no "modify_url", since a URL once assigned stays with that entity
 #
