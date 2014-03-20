@@ -124,11 +124,13 @@ sub lookup_current_version {
 #
 sub insert_as_of_version {
    my ($entity,$domain,$date,$version)=@_;
+   $date=~s/\s+/\_/gs;
    &mset("asofversion:$entity:$domain:$date",$version,&lc_long_expire());
 }
 
 sub lookup_as_of_version {
    my ($entity,$domain,$date)=@_;
+   $date=~s/\s+/\_/gs;
    return &mget("asofversion:$entity:$domain:$date");
 }
 
