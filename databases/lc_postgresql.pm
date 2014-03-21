@@ -95,7 +95,7 @@ sub store_assessment_transaction {
 # returns a row for every part
 # Called everytime that a problem needs to be brought up on the screen
 #
-sub get_one_student_assessment {
+sub get_one_user_assessment {
    my ($courseentity,$coursedomain,
        $userentity,$userdomain,
        $resourceid)=@_;

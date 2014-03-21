@@ -91,11 +91,13 @@ sub handler {
        'abs','1.4',
        '1','1','correct','{ color : "pink" }')));
 
-   $r->print(">".Dumper(&Apache::lc_postgresql::get_one_student_assessment(
+   $r->print(">".Dumper(&Apache::lc_entity_assessments::get_one_user_assessment(
        $courseentity,'msu',
        'userEN','userDO',
        'theResID')));
 
+   $r->print(">".Dumper(&Apache::lc_entity_assessments::get_all_assessment_performance(
+       $courseentity,'msu')));
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
        'course', # system, domain, course, user

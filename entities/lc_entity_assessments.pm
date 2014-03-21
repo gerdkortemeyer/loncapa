@@ -91,10 +91,93 @@ sub store_assessment {
    }
 }
 
+#
+# Assessment data from one asset
+#
+sub local_get_one_user_assessment {
+   return &Apache::lc_postgresql::get_one_user_assessment(@_);
+}
+
+sub local_json_get_one_user_assessment {
+   return &Apache::lc_json_utils::perl_to_json(&local_get_one_user_assessment(@_));
+}
+
+sub remote_get_one_user_assessment {
+   my($host,
+      $courseentity,$coursedomain,
+      $userentity,$userdomain,
+      $resourceid)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'get_one_user_assessment',
+       &Apache::lc_json_utils::perl_to_json({'courseentity' => $courseentity, 'coursedomain' => $coursedomain,
+                                            'userentity' => $userentity, 'userdomain' => $userdomain,
+                                            'resourceid' => $resourceid}));
+   if ($code eq HTTP_OK) {
+      return &Apache::lc_json_utils::json_to_perl($response);
+   } else {
+      return undef;
+   }
+}
+
+sub get_one_user_assessment {
+   my ($courseentity,$coursedomain,
+       $userentity,$userdomain,
+       $resourceid,
+       $partid)=@_;
+   if (&Apache::lc_entity_utils::we_are_homeserver($courseentity,$coursedomain)) {
+      return &local_get_one_user_assessment($courseentity,$coursedomain,
+                                     $userentity,$userdomain,
+                                     $resourceid);
+   } else {
+      return &remote_get_one_user_assessment(&Apache::lc_entity_utils::homeserver($courseentity,$coursedomain),
+                                     $courseentity,$coursedomain,
+                                     $userentity,$userdomain,
+                                     $resourceid);
+   }
+}
+
+#
+# Get data for all course assessments
+#
+sub local_get_all_assessment_performance {
+   return &Apache::lc_postgresql::get_all_assessment_performance(@_);
+}
+
+sub local_json_get_all_assessment_performance {
+   return &Apache::lc_json_utils::perl_to_json(&local_get_all_assessment_performance(@_));
+}
+
+sub remote_get_all_assessment_performance {
+   my($host,
+      $courseentity,$coursedomain)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'get_all_assessment_performance',
+       &Apache::lc_json_utils::perl_to_json({'courseentity' => $courseentity, 'coursedomain' => $coursedomain}));
+   if ($code eq HTTP_OK) {
+      return &Apache::lc_json_utils::json_to_perl($response);
+   } else {
+      return undef;
+   }
+}
+
+sub get_all_assessment_performance {
+   my ($courseentity,$coursedomain)=@_;
+   if (&Apache::lc_entity_utils::we_are_homeserver($courseentity,$coursedomain)) {
+      return &local_get_all_assessment_performance($courseentity,$coursedomain);
+   } else {
+      return &remote_get_all_assessment_performance(&Apache::lc_entity_utils::homeserver($courseentity,$coursedomain),
+                                     $courseentity,$coursedomain);
+   }
+}
+
+
 BEGIN {
    &Apache::lc_connection_handle::register('store_assessment',undef,undef,undef,\&local_store_assessment,
                                            'courseentity','coursedomain','userentity','userdomain','resourceid','partid',
                                            'scoretype','score','totaltries','countedtries','status','responsedetailsjson');
+   &Apache::lc_connection_handle::register('get_one_user_assessment',undef,undef,undef,\&local_json_get_one_user_assessment,
+                                           'courseentity','coursedomain','userentity','userdomain','resourceid');
+   &Apache::lc_connection_handle::register('get_all_assessment_performance',undef,undef,undef,\&local_json_get_all_assessment_performance,
+                                           'courseentity','coursedomain');
+
 }
 
 1;
