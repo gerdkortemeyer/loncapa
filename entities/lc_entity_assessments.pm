@@ -93,7 +93,7 @@ sub store_assessment {
 
 BEGIN {
    &Apache::lc_connection_handle::register('store_assessment',undef,undef,undef,\&local_store_assessment,
-                                           'courseentity','coursedomain','userentity','userdomain','resourceid','$partid',
+                                           'courseentity','coursedomain','userentity','userdomain','resourceid','partid',
                                            'scoretype','score','totaltries','countedtries','status','responsedetailsjson');
 }
 
