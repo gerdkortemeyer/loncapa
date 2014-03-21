@@ -20,6 +20,7 @@ use Apache::lc_entity_roles();
 use Apache::lc_entity_profile();
 use Apache::lc_entity_courses();
 use Apache::lc_entity_sessions();
+use Apache::lc_entity_assessments();
 use Apache::lc_entity_authentication();
 use Apache::lc_dispatcher();
 

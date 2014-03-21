@@ -26,7 +26,7 @@ use Apache2::Const qw(:common);
 use Apache::lc_parameters;
 use Apache::lc_entity_users();
 use Apache::lc_entity_utils();
-
+use Apache::lc_entity_assessments();
 use Data::Dumper;
 
 # ==== Main handler
@@ -46,6 +46,21 @@ sub handler {
    $r->print(&Apache::lc_entity_courses::make_new_course('test155','msu')."\n");
    $courseentity=&Apache::lc_entity_courses::course_to_entity('test155','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   $r->print(">".Dumper(&Apache::lc_entity_assessments::store_assessment(
+       $courseentity,'msu',
+       'userEN','userDO',
+       'theResID','thePartID',
+       'abs','1.4',
+       '1','1','incorrect','{ color : "green" }')));
+
+   $r->print(">".Dumper(&Apache::lc_entity_assessments::store_assessment(
+       $courseentity,'msu',
+       'userEN','userDO',
+       'theResID','thePartID',
+       'abs','1.6',
+       '2','1','incorrect','{ color : "red", foo : "bar" }')));
+
 
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
