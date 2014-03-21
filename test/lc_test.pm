@@ -61,6 +61,40 @@ sub handler {
        'abs','1.6',
        '2','1','incorrect','{ color : "red", foo : "bar" }')));
 
+   $r->print(">".Dumper(&Apache::lc_entity_assessments::store_assessment(
+       $courseentity,'msu',
+       'userEN','userDO',
+       'theResID','thePartID',
+       'abs','1.8',
+       '3','2','incorrect','{ color : "yellow" }')));
+
+   $r->print(">".Dumper(&Apache::lc_entity_assessments::store_assessment(
+       $courseentity,'msu',
+       'userEN','userDO',
+       'theResID','thePartID',
+       'abs','1.8',
+       '4','2','incorrect','{ foo : "foobar" }')));
+
+   $r->print(">".Dumper(&Apache::lc_entity_assessments::store_assessment(
+       $courseentity,'msu',
+       'userEN','userDO',
+       'theResID','thePartID',
+       'abs','2.1',
+       '5','2','incorrect','{ color : "blue" }')));
+
+
+
+   $r->print(">".Dumper(&Apache::lc_entity_assessments::store_assessment(
+       $courseentity,'msu',
+       'userEN','userDO',
+       'theResID','anotherPartID',
+       'abs','1.4',
+       '1','1','correct','{ color : "pink" }')));
+
+   $r->print(">".Dumper(&Apache::lc_postgresql::get_one_student_assessment(
+       $courseentity,'msu',
+       'userEN','userDO',
+       'theResID')));
 
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?

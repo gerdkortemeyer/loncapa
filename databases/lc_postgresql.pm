@@ -27,10 +27,11 @@ package Apache::lc_postgresql;
 
 use strict;
 use DBI;
+use Hash::Merge;
 use Apache::lc_logs;
 use Apache::lc_date_utils();
 
-use vars qw($dbh);
+use vars qw($merge $dbh);
 
 #
 # Deal with assessment data
@@ -48,13 +49,13 @@ sub store_assessment_transaction {
        $responsedetailsjson)=@_;
 # We need to see if this row exists already
    my $sth=$dbh->prepare(
-    "select totaltries from assessments where courseentity = ? and coursedomain = ? and userentity = ? and userdomain = ? and resourceid = ? and partid = ?"
+    "select totaltries,responsedetailsjson from assessments where courseentity = ? and coursedomain = ? and userentity = ? and userdomain = ? and resourceid = ? and partid = ?"
                         );
    $sth->execute($courseentity,$coursedomain,
                  $userentity,$userdomain,
                  $resourceid,
                  $partid);
-   my $prev_totaltries=$sth->fetchrow_array();
+   my ($prev_totaltries,$oldresponsedetails)=$sth->fetchrow_array();
    if ($prev_totaltries) {
 # Yes, this existed
       unless ($totaltries==$prev_totaltries+1) {
@@ -62,9 +63,13 @@ sub store_assessment_transaction {
     "Checking number of tries failed for course ($courseentity) ($coursedomain) ($userentity) ($userdomain) ($resourceid) ($partid): $prev_totaltries/$totaltries");
          return -1;
       }
+# Merge the new responsedetails into the old ones
+      my $newresponsedetails=&Apache::lc_json_utils::perl_to_json($merge->merge(
+                               (&Apache::lc_json_utils::json_to_perl($responsedetailsjson))[0],
+                               (&Apache::lc_json_utils::json_to_perl($oldresponsedetails))[0]));
       $sth=$dbh->prepare(
     "update assessments set scoretype = ?, score = ?, totaltries = ?, countedtries = ?, status = ?, responsedetailsjson = ? where courseentity = ? and coursedomain = ? and userentity = ? and userdomain = ? and resourceid = ? and partid = ?");
-      return $sth->execute($scoretype,$score,$totaltries,$countedtries,$status,$responsedetailsjson,
+      return $sth->execute($scoretype,$score,$totaltries,$countedtries,$status,$newresponsedetails,
                            $courseentity,$coursedomain,$userentity,$userdomain,$resourceid,$partid);
    } else {
 # New record
@@ -94,7 +99,7 @@ sub get_one_student_assessment {
    my ($courseentity,$coursedomain,
        $userentity,$userdomain,
        $resourceid)=@_;
-   my $sth=$dbh->prepare("select * from assessments where courseentity = ? and coursedomain = ? and userentity = ? and userdomain = ? and resourceid = ?");
+   my $sth=$dbh->prepare("select partid,scoretype,score,totaltries,countedtries,status,responsedetailsjson from assessments where courseentity = ? and coursedomain = ? and userentity = ? and userdomain = ? and resourceid = ?");
    my $rv=$sth->execute($courseentity,$coursedomain,
                         $userentity,$userdomain,
                         $resourceid);
@@ -308,6 +313,7 @@ sub init_postgres {
 
 BEGIN {
    &init_postgres();
+   $merge=Hash::Merge->new();
 }
 
 1;
