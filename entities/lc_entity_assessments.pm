@@ -45,14 +45,14 @@ sub remote_store_assessment {
        $status,
        $responsedetailsjson)=@_;
    my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'store_assessment',
-                                            $courseentity,$coursedomain,
-                                            $userentity,$userdomain,
-                                            $resourceid,
-                                            $partid,
-                                            $scoretype,$score,
-                                            $totaltries,$countedtries,
-                                            $status,
-                                            $responsedetailsjson);
+       &Apache::lc_json_utils::perl_to_json('courseentity' => $courseentity, 'coursedomain' => $coursedomain,
+                                            'userentity' => $userentity, 'userdomain' => $userdomain,
+                                            'resourceid' => $resourceid,
+                                            'partid' => $partid,
+                                            'scoretype' => $scoretype, 'score' => $score,
+                                            'totaltries' => $totaltries, 'countedtries' => $countedtries,
+                                            'status' => $status,
+                                            'responsedetailsjson' => $responsedetailsjson));
    if ($code eq HTTP_OK) {
       return $response;
    } else {
