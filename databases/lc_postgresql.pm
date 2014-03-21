@@ -85,7 +85,40 @@ sub store_assessment_transaction {
    }
 }
 
+#
+# Get all data about one resource for one user
+# returns a row for every part
+# Called everytime that a problem needs to be brought up on the screen
+#
+sub get_one_student_assessment {
+   my ($courseentity,$coursedomain,
+       $userentity,$userdomain,
+       $resourceid)=@_;
+   my $sth=$dbh->prepare("select * from assessments where courseentity = ? and coursedomain = ? and userentity = ? and userdomain = ? and resourceid = ?");
+   my $rv=$sth->execute($courseentity,$coursedomain,
+                        $userentity,$userdomain,
+                        $resourceid);
+   my $return;
+   while (my @newrole=$sth->fetchrow_array()) {
+      push(@{$return},\@newrole);
+   }
+   return $return;
+}
 
+#
+# Get all assessment performance data for a class
+# returns a row for every problem part
+#
+sub get_all_assessment_performance {
+   my ($courseentity,$coursedomain)=@_;
+   my $sth=$dbh->prepare("select userentity,userdomain,resourceid,partid,scoretype,score,totaltries,countedtries,status from assessments where courseentity = ? and coursedomain = ?");
+   my $rv=$sth->execute($courseentity,$coursedomain);
+   my $return;
+   while (my @newrole=$sth->fetchrow_array()) {
+      push(@{$return},\@newrole);
+   }
+   return $return;
+}
 
 #
 # Deal with URLs
