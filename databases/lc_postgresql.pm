@@ -65,8 +65,8 @@ sub store_assessment_transaction {
       }
 # Merge the new responsedetails into the old ones
       my $newresponsedetails=&Apache::lc_json_utils::perl_to_json($merge->merge(
-                               (&Apache::lc_json_utils::json_to_perl($responsedetailsjson))[0],
-                               (&Apache::lc_json_utils::json_to_perl($oldresponsedetails))[0]));
+                               &Apache::lc_json_utils::json_to_perl($responsedetailsjson),
+                               &Apache::lc_json_utils::json_to_perl($oldresponsedetails)));
       $sth=$dbh->prepare(
     "update assessments set scoretype = ?, score = ?, totaltries = ?, countedtries = ?, status = ?, responsedetailsjson = ? where courseentity = ? and coursedomain = ? and userentity = ? and userdomain = ? and resourceid = ? and partid = ?");
       return $sth->execute($scoretype,$score,$totaltries,$countedtries,$status,$newresponsedetails,

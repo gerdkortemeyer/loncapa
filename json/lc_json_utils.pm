@@ -24,10 +24,10 @@ use JSON::DWIW;
 
 # ==== Parsing JSON to Perl data structure
 # Input: JSON text
-# Output: data structure, error
+# Output: data structure
 #
 sub json_to_perl {
-   return JSON::DWIW->new->from_json(@_[0]);
+   return (JSON::DWIW->new->from_json(@_[0]))[0];
 }
 
 # ==== Translate Perl data structure into JSON

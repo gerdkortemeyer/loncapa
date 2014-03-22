@@ -93,6 +93,14 @@ sub handler {
        'abs','1.4',
        '1','1','correct','{ color : "pink" }')));
 
+   $r->print(">".Dumper(&Apache::lc_entity_assessments::store_assessment(
+       $courseentity,'msu',
+       'userEN','userDO',
+       'theResID','anotherPartID',
+       'abs','4.4',
+       '2','1','correct','{ temperature : "hot" }')));
+
+
    $r->print(">".Dumper(&Apache::lc_entity_assessments::get_one_user_assessment(
        $courseentity,'msu',
        'userEN','userDO',
