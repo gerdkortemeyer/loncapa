@@ -140,12 +140,45 @@ sub split_url {
 }
 
 # ======================================================
+# Directory listing
+# ======================================================
+#
+sub local_dir_list {
+   return &Apache::lc_postgresql::dir_list(@_);
+}
+
+sub local_json_dir_list {
+   return &Apache::lc_json_utils(&local_dir_list(@_));
+}
+
+sub remote_dir_list {
+   my ($host,$path)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'dir_list',
+       &Apache::lc_json_utils::perl_to_json({'path' => $path}));
+   if ($code eq HTTP_OK) {
+      return &Apache::lc_json_utils::json_to_perl($response);
+   } else {
+      return undef;
+   }
+}
+
+sub dir_list {
+   my ($path)=@_;
+   my ($domain,$entity)=($path=~/^([^\/]+)\/([^\/]+)\//);
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      return &local_dir_list($path);
+   } else {
+      return &remote_dir_list(&Apache::lc_entity_utils::homeserver($entity,$domain),$path);
+   }
+}
+
+# ======================================================
 # This transfers a file from wrk into res
 # ======================================================
 # Unpublished assets sit under the given filepath in the wrk-directory
 # Published assets have one or more virtual URLs
 #
-sub local_publish {
+sub local_workspace_publish {
    my ($wrk_url)=@_;
 # Can't publish what does not exist
    my $wrk_filename=&wrk_to_filepath($wrk_url);
@@ -192,6 +225,41 @@ sub local_publish {
    return 1;
 }
 
+#
+# Fetches a file from workspace on another server and then publishes it
+#
+sub local_fetch_workspace_publish {
+   my ($orig_host,$wrk_url)=@_;
+}
+#
+# Take a file out of local workspace and publish it through the homeserver
+#
+sub remote_workspace_publish {
+   my ($host,$wrk_url)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'workspace_publish',
+       &Apache::lc_json_utils::perl_to_json({'orig_host' => &Apache::lc_connection_utils::host_name(), 'wrk_url' => $wrk_url}));
+   if ($code eq HTTP_OK) {
+      return $response;
+   } else {
+      return undef;
+   } 
+}
+
+#
+# Routine to call to publish a file from out of workspace
+#
+sub workspace_publish {
+   my ($wrk_url)=@_;
+# Get author and domain to see if we are in charge here
+   my ($domain,$author_entity)=($wrk_url=~/^\/wrk\/([^\/]+)\/([^\/]+)\//);
+# It's our job if this is the author's homeserver
+   if (&Apache::lc_entity_utils::we_are_homeserver($author_entity,$domain)) {
+      return &local_workspace_publish($wrk_url);
+   } else {
+# No, this is another server's business
+     return &remote_workspace_publish(&Apache::lc_entity_utils::homeserver($author_entity,$domain),$wrk_url);
+   }
+}
 
 # ======================================================
 # Make a new URL
@@ -348,6 +416,9 @@ sub asset_resource_filename {
       }
       &Apache::lc_memcached::insert_as_of_version($entity,$domain,$clean_date_string,$version_num);
       return $base.'_'.$version_num;
+   } elsif ($version_type eq 'wrk') {
+# Currently worked-on version in asset space
+      return $base.'_wrk';
    }
 # Huh?
    return undef;
@@ -380,6 +451,8 @@ sub raw_to_filepath {
 #
 # Get the complete filepath for a workspace resource
 # /wrk/domain/authorentity/path
+# Workspace is where uploaded resources get unpacked, etc.
+# It still retains an actual directory structure
 #
 sub wrk_to_filepath {
    my ($wrk_url)=@_;
@@ -427,6 +500,8 @@ BEGIN {
    &Apache::lc_connection_handle::register('make_new_url',undef,undef,undef,\&local_make_new_url,'full_url');
    &Apache::lc_connection_handle::register('current_version',undef,undef,undef,\&local_current_version,'entity','domain');
    &Apache::lc_connection_handle::register('dump_metadata',undef,undef,undef,\&local_json_dump_metadata,'entity','domain');
+   &Apache::lc_connection_handle::register('dir_list',undef,undef,undef,\&local_json_dir_list,'path');
+   &Apache::lc_connection_handle::register('workspace_publish',undef,undef,undef,\&local_fetch_workspace_publish,'orig_host','wrk_url');
 }
 1;
 __END__

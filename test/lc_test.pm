@@ -26,6 +26,8 @@ use Apache2::Const qw(:common);
 use Apache::lc_parameters;
 use Apache::lc_entity_users();
 use Apache::lc_entity_utils();
+use Apache::lc_file_utils();
+use Apache::lc_entity_urls();
 use Apache::lc_entity_assessments();
 use Data::Dumper;
 
@@ -135,7 +137,7 @@ sub handler {
 
    my $wrk_url='/wrk/msu/'.$entity.'/rqdqweq/fqweqz.html';
 
-   &Apache::lc_entity_urls::local_publish($wrk_url);   
+   &Apache::lc_entity_urls::workspace_publish($wrk_url);   
 
 
 
@@ -145,12 +147,16 @@ sub handler {
 
    my $urlentity=&Apache::lc_entity_urls::url_to_entity($url);
 
+
+   $r->print("\n=====\n".&Apache::lc_file_utils::readurl($url)."\n=====\n");
+
    $r->print("\nURL: $url.\nUrlentity: $urlentity");
 
 
-   $r->print("\n".Dumper(&Apache::lc_mongodb::dump_metadata($urlentity,'msu')));
+   $r->print("\n".Dumper(&Apache::lc_entity_urls::dump_metadata($urlentity,'msu')));
 
 
+   $r->print("\n".Dumper(&Apache::lc_entity_urls::dir_list("msu/".$entity."/rqdqweq")));
 
 return OK;
 

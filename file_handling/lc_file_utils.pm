@@ -91,6 +91,24 @@ sub readfile {
    return $data;
 }
 
+# ==== Read a URL, replicate if needed
+#
+sub readurl {
+   my ($url)=@_;
+   my $filepath=&Apache::lc_entity_urls::url_to_filepath($url);
+   unless ($filepath) {
+      &logwarning("Trying to read ($url), but does not exist");
+      return undef;
+   }
+   unless (-e $filepath) {
+      unless (&Apache::lc_entity_urls::replicate($url)) {
+         &logwarning("Failed to replicate ".$url);
+         return undef;
+      }
+   }
+   return &readfile($filepath);
+}
+
 # ==== Write a file
 #
 sub writefile {
