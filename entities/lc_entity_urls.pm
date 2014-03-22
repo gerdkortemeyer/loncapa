@@ -148,7 +148,7 @@ sub local_dir_list {
 }
 
 sub local_json_dir_list {
-   return &Apache::lc_json_utils(&local_dir_list(@_));
+   return &Apache::lc_json_utils::perl_to_json(&local_dir_list(@_));
 }
 
 sub remote_dir_list {
