@@ -146,8 +146,8 @@ sub lookup_url_entity {
 
 sub dir_list {
    my ($urlstart)=@_;
-   my $sth=$dbh->prepare("select url,entity from urls where url like '?%'");
-   my $rv=$sth->execute($urlstart);
+   my $sth=$dbh->prepare("select url,entity from urls where url like ?");
+   my $rv=$sth->execute($urlstart.'%');
    my $return;
    while (my @newfile=$sth->fetchrow_array()) {
       push(@{$return},\@newfile);
