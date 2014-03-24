@@ -323,6 +323,7 @@ sub remote_workspace_publish {
       }
 # Locally we would like to see this immediately, so we don't confuse the user
       &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
+      &Apache::lc_memcached::insert_metadata($entity,$domain,&remote_dump_metadata($host,$entity,$domain));
    } else {
 # This does not yet exist, first publication
      &lognotice("Resource ($full_url) does not yet exist");
