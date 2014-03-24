@@ -79,7 +79,7 @@ sub local_new_version {
    my ($entity,$domain)=@_;
    my $current_metadata=&Apache::lc_mongodb::dump_metadata($entity,$domain);
    my $new_version=$current_metadata->{'current_version'}+1;
-   &Apache::lc_mongodb::update_metadata($entity,$domain,{ 'current_version' => $new_version,
+   return &Apache::lc_mongodb::update_metadata($entity,$domain,{ 'current_version' => $new_version,
                                           'versions' => { $new_version => &Apache::lc_date_utils::now2str() }});
 } 
 
@@ -99,7 +99,7 @@ sub remote_new_version {
 #
 sub local_initial_version {
    my ($entity,$domain)=@_;
-   &Apache::lc_mongodb::insert_metadata($entity,$domain,{ current_version => 1,
+   return &Apache::lc_mongodb::insert_metadata($entity,$domain,{ current_version => 1,
                                                           versions => { 1 => &Apache::lc_date_utils::now2str() } });
 }
 
@@ -223,7 +223,10 @@ sub local_workspace_publish {
       my $dest_filename=&asset_resource_filename($entity,$domain,'n',$new_version);
       &copy($wrk_filename,$dest_filename);
 # Update the metadata
-      &local_new_version($entity,$domain);
+      unless (&local_new_version($entity,$domain)) {
+         &logwarning("Failed to generate local new verion metadata entity ($entity) domain ($domain)");
+         return undef;
+      }
       &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
       &Apache::lc_memcached::insert_metadata($entity,$domain,&Apache::lc_mongodb::dump_metadata($entity,$domain));
    } else {
@@ -241,7 +244,10 @@ sub local_workspace_publish {
 # Okay, can copy over
       &copy($wrk_filename,$dest_filename);
 # Make the first metadata entry
-      &local_initial_version($entity,$domain);
+      unless (&local_initial_version($entity,$domain)) {
+         &logwarning("Failed to generate local initial version of entity ($entity) domain ($domain)");
+         return undef;
+      }
       &Apache::lc_memcached::insert_current_version($entity,$domain,1);
    }
    return 1;
@@ -308,7 +314,10 @@ sub remote_workspace_publish {
 # Copy it over to the homeserver
       unless (&remote_fetch_wrk_file($host,$entity,$domain)) { return undef; }
 # Update the metadata remotely
-     &remote_new_version($host,$entity,$domain);
+     unless (&remote_new_version($host,$entity,$domain)) {
+        &logwarning("Failed to remote generate new version of entity ($entity) domain ($domain) on host ($host)");
+        return undef;
+     }
 # Locally we would like to see this immediately, so we don't confuse the user
      &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
    } else {
@@ -316,7 +325,7 @@ sub remote_workspace_publish {
      &lognotice("Resource ($full_url) does not yet exist");
      $entity=&remote_make_new_url($host,$full_url);
      unless ($entity) {
-        &logwarning("Could remotely not obtain URL entity for ($full_url)");
+        &logwarning("Could remotely not obtain URL entity for ($full_url) from host ($host)");
         return undef;
      }
 # Where does the wrk-version sit?
@@ -327,12 +336,19 @@ sub remote_workspace_publish {
 # Okay, can copy over locally
      &copy($wrk_filename,$dest_filename);
 # Copy over to homeserver
-     unless (&remote_fetch_wrk_file($host,$entity,$domain)) { return undef; }
+     unless (&remote_fetch_wrk_file($host,$entity,$domain)) {
+        &logwarning("Remote server ($host) failed to fetch work copy of entity ($entity) domain ($domain)"); 
+        return undef; 
+     }
 # Remotely make the first metadata entry
-     &remote_initial_version($host,$entity,$domain);
+     unless (&remote_initial_version($host,$entity,$domain)) {
+        &logwarning("Failed to remote generate initial version of entity ($entity) domain ($domain) on host ($host)");
+        return undef;
+     }
 # Update locally immediately
      &Apache::lc_memcached::insert_current_version($entity,$domain,1);
    }
+   return 1;
 }
 
 #
