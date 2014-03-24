@@ -251,20 +251,26 @@ sub local_workspace_publish {
 # Fetches a wrk-file from another server
 #
 sub local_fetch_wrk_file {
-   my ($orig_host,$wrk_url)=@_;
+   my ($orig_host,$entity,$domain)=@_;
+   if (&Apache::lc_dispatcher::copy_file($orig_host,'/raw/wrk/-/'.$domain.'/'.$entity,
+                                         &asset_resource_filename($entity,$domain,'wrk','-'))) {
+      return 1;
+   }
+   &logwarning("Failed to copy wrk-file entity ($entity) domain ($domain) from host ($orig_host)");
+   return 0;
 }
 
 sub remote_fetch_wrk_file {
-   my ($target_host,$wrk_url)=@_;
+   my ($target_host,$entity,$domain)=@_;
    my ($code,$reply)=&Apache::lc_dispatcher::command_dispatch($target_host,'fetch_wrk_file',
                               &Apache::lc_json_utils::perl_to_json({ orig_host => &Apache::lc_connection_utils::host_name(),
-                                                                     wrk_url => $wrk_url }));
+                                                                     entity => $entity, domain => $domain }));
    unless ($code eq HTTP_OK) {
-       &logwarning("Tried to copy ($wrk_url), got code ($code) from host ($target_host)");
+       &logwarning("Tried to copy entity ($entity) domain ($domain), got code ($code) from host ($target_host)");
        return undef;
    }
    unless ($reply) {
-      &logwarning("Tried to copy ($wrk_url), failed on host ($target_host)");
+      &logwarning("Tried to copy entity ($entity) domain ($domain), failed on host ($target_host)");
       return undef;
     }
     return 1;
@@ -300,7 +306,7 @@ sub remote_workspace_publish {
 # Move it into position locally
       &copy($wrk_filename,$dest_filename);
 # Copy it over to the homeserver
-      unless (&remote_fetch_wrk_file($host,$wrk_url)) { return undef; }
+      unless (&remote_fetch_wrk_file($host,$entity,$domain)) { return undef; }
 # Update the metadata remotely
      &remote_new_version($host,$entity,$domain);
 # Locally we would like to see this immediately, so we don't confuse the user
@@ -321,7 +327,7 @@ sub remote_workspace_publish {
 # Okay, can copy over locally
      &copy($wrk_filename,$dest_filename);
 # Copy over to homeserver
-     unless (&remote_fetch_wrk_file($host,$wrk_url)) { return undef; }
+     unless (&remote_fetch_wrk_file($host,$entity,$domain)) { return undef; }
 # Remotely make the first metadata entry
      &remote_initial_version($host,$entity,$domain);
 # Update locally immediately
@@ -585,7 +591,7 @@ BEGIN {
    &Apache::lc_connection_handle::register('current_version',undef,undef,undef,\&local_current_version,'entity','domain');
    &Apache::lc_connection_handle::register('dump_metadata',undef,undef,undef,\&local_json_dump_metadata,'entity','domain');
    &Apache::lc_connection_handle::register('dir_list',undef,undef,undef,\&local_json_dir_list,'path');
-   &Apache::lc_connection_handle::register('fetch_wrk_file',undef,undef,undef,\&local_fetch_wrk_file,'orig_host','wrk_url');
+   &Apache::lc_connection_handle::register('fetch_wrk_file',undef,undef,undef,\&local_fetch_wrk_file,'orig_host','entity','domain');
    &Apache::lc_connection_handle::register('initial_version',undef,undef,undef,\&local_initial_version,'entity','domain');
    &Apache::lc_connection_handle::register('new_version',undef,undef,undef,\&local_new_version,'entity','domain');
 }
