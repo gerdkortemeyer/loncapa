@@ -257,20 +257,20 @@ sub local_workspace_publish {
 # Fetches a wrk-file from another server
 #
 sub local_fetch_wrk_file {
-   my ($orig_host,$entity,$domain)=@_;
+   my ($orig_host,$entity,$domain,$version)=@_;
    if (&Apache::lc_dispatcher::copy_file($orig_host,'/raw/wrk/-/'.$domain.'/'.$entity,
-                                         &asset_resource_filename($entity,$domain,'wrk','-'))) {
+                                         &asset_resource_filename($entity,$domain,'n',$version))) {
       return 1;
    }
-   &logwarning("Failed to copy wrk-file entity ($entity) domain ($domain) from host ($orig_host)");
+   &logwarning("Failed to copy wrk-file entity ($entity) domain ($domain) from host ($orig_host) as version ($version)");
    return 0;
 }
 
 sub remote_fetch_wrk_file {
-   my ($target_host,$entity,$domain)=@_;
+   my ($target_host,$entity,$domain,$version)=@_;
    my ($code,$reply)=&Apache::lc_dispatcher::command_dispatch($target_host,'fetch_wrk_file',
                               &Apache::lc_json_utils::perl_to_json({ orig_host => &Apache::lc_connection_utils::host_name(),
-                                                                     entity => $entity, domain => $domain }));
+                                                                     entity => $entity, domain => $domain, version => $version }));
    unless ($code eq HTTP_OK) {
        &logwarning("Tried to copy entity ($entity) domain ($domain), got code ($code) from host ($target_host)");
        return undef;
@@ -312,14 +312,17 @@ sub remote_workspace_publish {
 # Move it into position locally
       &copy($wrk_filename,$dest_filename);
 # Copy it over to the homeserver
-      unless (&remote_fetch_wrk_file($host,$entity,$domain)) { return undef; }
+      unless (&remote_fetch_wrk_file($host,$entity,$domain,$new_version)) {
+         &logwarning("Failed to turn local wrk file entity ($entity) domain ($domain) into version ($new_version) on host ($host)"); 
+         return undef; 
+      }
 # Update the metadata remotely
-     unless (&remote_new_version($host,$entity,$domain)) {
-        &logwarning("Failed to remote generate new version of entity ($entity) domain ($domain) on host ($host)");
-        return undef;
-     }
+      unless (&remote_new_version($host,$entity,$domain)) {
+         &logwarning("Failed to remote generate new version of entity ($entity) domain ($domain) on host ($host)");
+         return undef;
+      }
 # Locally we would like to see this immediately, so we don't confuse the user
-     &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
+      &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
    } else {
 # This does not yet exist, first publication
      &lognotice("Resource ($full_url) does not yet exist");
@@ -336,7 +339,7 @@ sub remote_workspace_publish {
 # Okay, can copy over locally
      &copy($wrk_filename,$dest_filename);
 # Copy over to homeserver
-     unless (&remote_fetch_wrk_file($host,$entity,$domain)) {
+     unless (&remote_fetch_wrk_file($host,$entity,$domain,1)) {
         &logwarning("Remote server ($host) failed to fetch work copy of entity ($entity) domain ($domain)"); 
         return undef; 
      }
@@ -607,7 +610,8 @@ BEGIN {
    &Apache::lc_connection_handle::register('current_version',undef,undef,undef,\&local_current_version,'entity','domain');
    &Apache::lc_connection_handle::register('dump_metadata',undef,undef,undef,\&local_json_dump_metadata,'entity','domain');
    &Apache::lc_connection_handle::register('dir_list',undef,undef,undef,\&local_json_dir_list,'path');
-   &Apache::lc_connection_handle::register('fetch_wrk_file',undef,undef,undef,\&local_fetch_wrk_file,'orig_host','entity','domain');
+   &Apache::lc_connection_handle::register('fetch_wrk_file',undef,undef,undef,\&local_fetch_wrk_file,'orig_host',
+                                                                                                     'entity','domain','version');
    &Apache::lc_connection_handle::register('initial_version',undef,undef,undef,\&local_initial_version,'entity','domain');
    &Apache::lc_connection_handle::register('new_version',undef,undef,undef,\&local_new_version,'entity','domain');
 }
