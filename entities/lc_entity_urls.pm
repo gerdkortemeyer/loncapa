@@ -293,7 +293,8 @@ sub remote_workspace_publish {
       my $current_version=&current_version($entity,$domain);
       my $new_version=$current_version+1;
       &lognotice("Resource ($full_url) exists, making new version ($new_version)");
-      my $dest_filename=&asset_resource_filename($entity,$domain,'n',$new_version);
+# This needs to become the wrk-version
+      my $dest_filename=&asset_resource_filename($entity,$domain,'wrk','-');
 # Make sure we have the subdirectory locally
       &Apache::lc_file_utils::ensuresubdir($dest_filename);
 # Move it into position locally
@@ -312,8 +313,9 @@ sub remote_workspace_publish {
         &logwarning("Could remotely not obtain URL entity for ($full_url)");
         return undef;
      }
-     my $dest_filename=&asset_resource_filename($entity,$domain,'n',1);
-     &lognotice("Destination filename is ($dest_filename)");
+# Where does the wrk-version sit?
+     my $dest_filename=&asset_resource_filename($entity,$domain,'wrk','-');
+     &lognotice("Intermediate filename is ($dest_filename)");
 # Make sure we have the subdirectory locally
      &Apache::lc_file_utils::ensuresubdir($dest_filename);
 # Okay, can copy over locally
