@@ -79,8 +79,11 @@ sub local_new_version {
    my ($entity,$domain)=@_;
    my $current_metadata=&Apache::lc_mongodb::dump_metadata($entity,$domain);
    my $new_version=$current_metadata->{'current_version'}+1;
-   return &Apache::lc_mongodb::update_metadata($entity,$domain,{ 'current_version' => $new_version,
+   my $return=&Apache::lc_mongodb::update_metadata($entity,$domain,{ 'current_version' => $new_version,
                                           'versions' => { $new_version => &Apache::lc_date_utils::now2str() }});
+   &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
+   &Apache::lc_memcached::insert_metadata($entity,$domain,&Apache::lc_mongodb::dump_metadata($entity,$domain));
+   return $return;
 } 
 
 
@@ -99,6 +102,7 @@ sub remote_new_version {
 #
 sub local_initial_version {
    my ($entity,$domain)=@_;
+   &Apache::lc_memcached::insert_current_version($entity,$domain,1);
    return &Apache::lc_mongodb::insert_metadata($entity,$domain,{ current_version => 1,
                                                           versions => { 1 => &Apache::lc_date_utils::now2str() } });
 }
@@ -227,8 +231,6 @@ sub local_workspace_publish {
          &logwarning("Failed to generate local new verion metadata entity ($entity) domain ($domain)");
          return undef;
       }
-      &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
-      &Apache::lc_memcached::insert_metadata($entity,$domain,&Apache::lc_mongodb::dump_metadata($entity,$domain));
    } else {
 # This does not yet exist, first publication
       &lognotice("Resource ($full_url) does not yet exist");
@@ -248,7 +250,6 @@ sub local_workspace_publish {
          &logwarning("Failed to generate local initial version of entity ($entity) domain ($domain)");
          return undef;
       }
-      &Apache::lc_memcached::insert_current_version($entity,$domain,1);
    }
    return 1;
 }
