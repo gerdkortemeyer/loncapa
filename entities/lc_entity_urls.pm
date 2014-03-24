@@ -83,6 +83,18 @@ sub local_new_version {
                                           'versions' => { $new_version => &Apache::lc_date_utils::now2str() }});
 } 
 
+
+sub remote_new_version {
+   my ($host,$entity,$domain)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'new_version',
+                                            "{ entity : '$entity', domain : '$domain' }");
+   if ($code eq HTTP_OK) {
+      return $response;
+   } else {
+      return undef;
+   }
+}
+
 # --- set the initial version, which is 1
 #
 sub local_initial_version {
@@ -91,6 +103,16 @@ sub local_initial_version {
                                                           versions => { 1 => &Apache::lc_date_utils::now2str() } });
 }
 
+sub remote_initial_version {
+   my ($host,$entity,$domain)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'initial_version',
+                                            "{ entity : '$entity', domain : '$domain' }");
+   if ($code eq HTTP_OK) {
+      return $response;
+   } else {
+      return undef;
+   }
+}
 
 #
 # Handling current version requests
@@ -226,23 +248,83 @@ sub local_workspace_publish {
 }
 
 #
-# Fetches a file from workspace on another server and then publishes it
+# Fetches a wrk-file from another server
 #
-sub local_fetch_workspace_publish {
+sub local_fetch_wrk_file {
    my ($orig_host,$wrk_url)=@_;
 }
+
+sub remote_fetch_wrk_file {
+   my ($target_host,$wrk_url)=@_;
+   my ($code,$reply)=&Apache::lc_dispatcher::command_dispatch($target_host,'fetch_wrk_file',
+                              &Apache::lc_json_utils::perl_to_json({ orig_host => &Apache::lc_connection_utils::host_name(),
+                                                                     wrk_url => $wrk_url }));
+   unless ($code eq HTTP_OK) {
+       &logwarning("Tried to copy ($wrk_url), got code ($code) from host ($target_host)");
+       return undef;
+   }
+   unless ($reply) {
+      &logwarning("Tried to copy ($wrk_url), failed on host ($target_host)");
+      return undef;
+    }
+    return 1;
+}
+
 #
 # Take a file out of local workspace and publish it through the homeserver
 #
 sub remote_workspace_publish {
    my ($host,$wrk_url)=@_;
-   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'workspace_publish',
-       &Apache::lc_json_utils::perl_to_json({'orig_host' => &Apache::lc_connection_utils::host_name(), 'wrk_url' => $wrk_url}));
-   if ($code eq HTTP_OK) {
-      return $response;
+# Does this file exist?
+   my $wrk_filename=&wrk_to_filepath($wrk_url);
+   unless (-e $wrk_filename) {
+      &logwarning("Attempting to remote publish ($wrk_url), but associated file does not exist");
+      return 0;
+   }
+# Construct the asset-URL for this
+   my $full_url=$wrk_url;
+   $full_url=~s/^\/wrk\//\/asset\/\-\/\-\//;
+   &lognotice("Initiated remote publication of ($wrk_url) to ($full_url)");
+# First thing to find out: does this already exist?
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+   my $entity=&url_to_entity($full_url);
+   if ($entity) {
+# This already exists, must be a new version
+      my $current_version=&current_version($entity,$domain);
+      my $new_version=$current_version+1;
+      &lognotice("Resource ($full_url) exists, making new version ($new_version)");
+      my $dest_filename=&asset_resource_filename($entity,$domain,'n',$new_version);
+# Make sure we have the subdirectory locally
+      &Apache::lc_file_utils::ensuresubdir($dest_filename);
+# Move it into position locally
+      &copy($wrk_filename,$dest_filename);
+# Copy it over to the homeserver
+      unless (&remote_fetch_wrk_file($host,$wrk_url)) { return undef; }
+# Update the metadata remotely
+     &remote_new_version($host,$entity,$domain);
+# Locally we would like to see this immediately, so we don't confuse the user
+     &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
    } else {
-      return undef;
-   } 
+# This does not yet exist, first publication
+     &lognotice("Resource ($full_url) does not yet exist");
+     $entity=&remote_make_new_url($host,$full_url);
+     unless ($entity) {
+        &logwarning("Could remotely not obtain URL entity for ($full_url)");
+        return undef;
+     }
+     my $dest_filename=&asset_resource_filename($entity,$domain,'n',1);
+     &lognotice("Destination filename is ($dest_filename)");
+# Make sure we have the subdirectory locally
+     &Apache::lc_file_utils::ensuresubdir($dest_filename);
+# Okay, can copy over locally
+     &copy($wrk_filename,$dest_filename);
+# Copy over to homeserver
+     unless (&remote_fetch_wrk_file($host,$wrk_url)) { return undef; }
+# Remotely make the first metadata entry
+     &remote_initial_version($host,$entity,$domain);
+# Update locally immediately
+     &Apache::lc_memcached::insert_current_version($entity,$domain,1);
+   }
 }
 
 #
@@ -501,7 +583,9 @@ BEGIN {
    &Apache::lc_connection_handle::register('current_version',undef,undef,undef,\&local_current_version,'entity','domain');
    &Apache::lc_connection_handle::register('dump_metadata',undef,undef,undef,\&local_json_dump_metadata,'entity','domain');
    &Apache::lc_connection_handle::register('dir_list',undef,undef,undef,\&local_json_dir_list,'path');
-   &Apache::lc_connection_handle::register('workspace_publish',undef,undef,undef,\&local_fetch_workspace_publish,'orig_host','wrk_url');
+   &Apache::lc_connection_handle::register('fetch_wrk_file',undef,undef,undef,\&local_fetch_wrk_file,'orig_host','wrk_url');
+   &Apache::lc_connection_handle::register('initial_version',undef,undef,undef,\&local_initial_version,'entity','domain');
+   &Apache::lc_connection_handle::register('new_version',undef,undef,undef,\&local_new_version,'entity','domain');
 }
 1;
 __END__
