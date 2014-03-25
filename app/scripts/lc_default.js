@@ -81,6 +81,12 @@ function dashboard() {
    breadcrumbbar();
 }
 
+function portfolio() {
+   display_asset("/pages/lc_portfolio.html");
+   menubar();
+   breadcrumbbar();
+}
+
 function help() {
    display_asset("/help/lc_help.html");
    breadcrumbbar();

@@ -39,6 +39,7 @@ sub handler {
    my $menu='{';
    if ($ENV{'lc_session'}->{'id'}) {
       $menu.=&menu_item('dashboard','Dashboard','dashboard()').',';
+      $menu.=&menu_item('portfolio','Portfolio','portfolio()').',';
    }
 # Always second to last item
    $menu.=&menu_item('help','Help','help()').',';
