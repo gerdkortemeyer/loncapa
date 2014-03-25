@@ -37,6 +37,9 @@ if [ ! -d /home/httpd/html/scripts/mathjax ]; then
    unzip app/scripts/v2.3-latest -d /home/httpd/html/scripts
    mv /home/httpd/html/scripts/mathjax* /home/httpd/html/scripts/mathjax 
 fi
+if [ ! -d /home/httpd/html/scripts/ckeditor ]; then
+   unzip app/scripts/ckeditor.zip -d /home/httpd/html/scripts
+fi
 cp app/scripts/jquery* /home/httpd/html/scripts
 cp app/scripts/lc* /home/httpd/html/scripts
 cp -R app/scripts/jstree /home/httpd/html/scripts/
