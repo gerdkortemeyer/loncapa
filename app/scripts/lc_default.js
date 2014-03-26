@@ -96,7 +96,8 @@ function breadcrumbbar() {
 $.getJSON( "breadcrumbs", function( data ) {
   var newmenu = "<ul id='breadcrumbrow'>";
   $.each( data, function( key, val ) {
-    newmenu+="<li class='breadcrumb' id='" + key + "'><a href='#'>" + val + "</a></li>";
+     func=val.split("&");
+     newmenu+="<li class='breadcrumb' id='"+key+"'><a href='#' onClick='"+func[1]+"'>"+func[0]+"</a></li>";
   });
   newmenu+="</ul>";
   $("#breadcrumbrow").replaceWith(newmenu);

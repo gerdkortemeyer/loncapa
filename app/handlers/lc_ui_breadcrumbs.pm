@@ -23,21 +23,25 @@ use strict;
 use Apache2::RequestRec();
 use Apache2::Const qw(:common);
 
+use Apache::lc_ui_localize;
+
+sub breadcrumb_item {
+   my ($title,$text,$function)=@_;
+   return '"br_'.$title.'" : "'.&mt($text).'&'.$function.'"';
+}
+
 
 # ==== Main handler
 #
 sub handler {
 # Get request object
    my $r = shift;
-   my $output='{';
-   for (my $i=0; $i<=1+int(rand(5)); $i++) {
-      $output.='"i'.$i.'" : "'.
-      ('Capacitors','Circuits','Charge','Voltage','Current','Dielectric')[int(rand(6))].
-      '", ';
-   }
-   $output=~s/\,\s*$//;
-   $output.='}';
-   $r->print($output);
+   $r->print('{'.&breadcrumb_item('portfolio','Portfolio','portfolio()').','.&breadcrumb_item('help','Help','help()').'}');
+#   if ($ENV{'lc_session'}->{'id'}) {
+#      $r->print($ENV{'lc_session'}->{'data'}->{'bread_crumbs'});
+#   } else {
+#      $r->print('{"'.&mt("Welcome").' : "#" }');
+#   }
    return OK;
 }
 1;

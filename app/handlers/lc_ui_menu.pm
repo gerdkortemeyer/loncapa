@@ -27,7 +27,7 @@ use Apache::lc_ui_localize;
 
 sub menu_item {
    my ($title,$text,$function)=@_;
-   return '"'.$title.'" : "'.&mt($text).'&'.$function.'"';
+   return '"menu_'.$title.'" : "'.&mt($text).'&'.$function.'"';
 }
 
 
