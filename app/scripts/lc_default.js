@@ -27,7 +27,7 @@ function display_asset(newuri) {
    var newcontent='<div id="content"><iframe id="contentframe" src="'+newuri+'"></iframe></div>';
    $('#content').replaceWith(newcontent);
    $('#contentframe').load(function() {
-      var frameheight=this.contentWindow.document.body.offsetHeight + 40;
+      var frameheight=this.contentWindow.document.body.offsetHeight + 50;
       this.style.height = frameheight + 'px';
    });
 }
