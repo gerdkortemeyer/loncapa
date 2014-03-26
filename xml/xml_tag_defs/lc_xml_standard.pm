@@ -40,6 +40,8 @@ sub start_head_html {
 <script src="/scripts/mathjax/MathJax.js?config=default"></script>
 <script src="/scripts/jquery.blockUI.js"></script>
 <script src="/scripts/jstree/jstree.min.js"></script>
+<script src="/scripts/ckeditor/ckeditor.js"></script>
+<script src="/scripts/ckeditor/adapters/jquery.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/lc_style.css" />
 <link rel="stylesheet" type="test/css" href="/scripts/jstree/themes/default/style.min.css" />
 ENDHEADER

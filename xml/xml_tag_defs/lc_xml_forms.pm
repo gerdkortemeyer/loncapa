@@ -26,6 +26,7 @@ our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
 our @EXPORT = qw(start_lcform_html end_lcform_html start_lcformtable_html end_lcformtable_html start_lcformtableinput_html
+                 start_lcforminput_html
                  start_lcformtrigger_html start_lcformcancel_html);
 
 sub start_lcform_html {
@@ -64,6 +65,18 @@ sub start_lcformtableinput_html {
    return $output;
 }
 
+sub start_lcforminput_html {
+   my ($p,$safe,$stack,$token)=@_;
+   my $id=$token->[2]->{'id'};
+   my $name=$token->[2]->{'name'};
+   unless ($name) { $name=$id; }
+   return &inputfield($token->[2]->{'type'},
+                              $id,$name,
+                              $token->[2]->{'size'},
+                              $token->[2]->{'default'});
+}
+
+
 sub start_lcformtrigger_html {
    my ($p,$safe,$stack,$token)=@_;
    return '<span class="lcformtrigger"><a href="#" id="'.$token->[2]->{'id'}.'">'.
@@ -84,6 +97,8 @@ sub inputfield {
    if ($type eq 'text') {
       unless ($size) { $size=40; }
       return '<input class="lcformtextinput" type="text" id="'.$id.'" name="'.$name.'" size="'.$size.'" />';
+   } elsif ($type eq 'textarea') {
+      return '<textarea class="ckeditor" id="'.$id.'" name="'.$name.'">'.$default.'</textarea>';
    } elsif ($type eq 'username') {
       unless ($size) { $size=40; }
       return '<input class="lcformusernameinput" type="text" id="'.$id.'" name="'.$name.'" size="'.$size.'" />';
