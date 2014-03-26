@@ -70,9 +70,18 @@ sub dump_session {
    return &Apache::lc_mongodb::dump_session($sessionid);
 }
 
+# Update the session environment
+# For arrays, this adds on
 sub update_session {
    my ($sessionid,$data)=@_;
    return &Apache::lc_mongodb::update_session($sessionid,$data);
+}
+
+# Update the session environment
+# For arrays, this replaces
+sub replace_session_key {
+   my ($sessionid,$key,$data)=@_;
+   return &Apache::lc_mongodb::replace_session_key($sessionid,$key,$data);
 }
 
 1;

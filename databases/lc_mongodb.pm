@@ -195,6 +195,16 @@ sub update_session {
    return $sessions->update({ sessionid => $sessionid },$newdata);
 }
 
+sub replace_session_key {
+   my ($sessionid,$key,$data)=@_;
+   unless ($sessions) { &init_mongo(); }
+   my $olddata=$sessions->find_one({ sessionid => $sessionid });
+   $olddata->{'sessiondata'}->{$key}=$data;
+   delete($olddata->{'_id'});
+   return $sessions->update({ sessionid => $sessionid },$olddata);
+}
+
+
 sub dump_session {
    my ($sessionid)=@_;
    unless ($sessions) { &init_mongo(); }

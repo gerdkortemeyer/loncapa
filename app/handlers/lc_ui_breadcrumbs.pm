@@ -22,6 +22,7 @@ package Apache::lc_ui_breadcrumbs;
 use strict;
 use Apache2::RequestRec();
 use Apache2::Const qw(:common);
+use Apache::lc_entity_sessions();
 
 use Apache::lc_ui_localize;
 
@@ -30,19 +31,36 @@ sub breadcrumb_item {
    return '"br_'.$title.'" : "'.&mt($text).'&'.$function.'"';
 }
 
+sub add_breadcrumb {
+   my ($title,$text,$function)=@_;
+   &Apache::lc_entity_sessions::update_session($ENV{'lc_session'}->{'id'},
+          &Apache::lc_json_utils::json_to_perl("{ breadcrumbs : [{title:'$title',text:'$text',function:'$function'}]}"));
+}
+
+sub fresh_breadcrumbs {
+   my ($title,$text,$function)=@_;
+   &Apache::lc_entity_sessions::replace_session_key($ENV{'lc_session'}->{'id'},'breadcrumbs',
+          &Apache::lc_json_utils::json_to_perl("[{title:'$title',text:'$text',function:'$function'}]"));
+}
+
 
 # ==== Main handler
 #
 sub handler {
 # Get request object
    my $r = shift;
-   $r->print('{'.&breadcrumb_item('portfolio','Portfolio','portfolio()').','.&breadcrumb_item('help','Help','help()').'}');
-#   if ($ENV{'lc_session'}->{'id'}) {
-#      $r->print($ENV{'lc_session'}->{'data'}->{'bread_crumbs'});
-#   } else {
-#      $r->print('{"'.&mt("Welcome").' : "#" }');
-#   }
+   if ($ENV{'lc_session'}->{'data'}->{'breadcrumbs'}) {
+      my $output='{';
+      foreach my $item (@{$ENV{'lc_session'}->{'data'}->{'breadcrumbs'}}) {
+         $output.=&breadcrumb_item($item->{'title'},$item->{'text'},$item->{'function'}).',';
+      }
+      $output=~s/\,$/\}/;
+      $r->print($output);
+   } else {
+      $r->print('{'.&breadcrumb_item('welcome','Welcome','#').'}');
+   }
    return OK;
 }
+
 1;
 __END__

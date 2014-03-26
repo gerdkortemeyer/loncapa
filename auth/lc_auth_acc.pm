@@ -44,7 +44,7 @@ sub get_session {
    if ($sessiondata) {
 # Remember session data
       $ENV{'lc_session'}->{'id'}=$token;
-      $ENV{'lc_session'}->{'data'}=$sessiondata;
+      $ENV{'lc_session'}->{'data'}=$sessiondata->{'sessiondata'};
 #FIXME: use actual language
       &Apache::lc_ui_localize::set_language('de');
       return OK;

@@ -51,7 +51,9 @@ ENDHEADER
 sub start_script_html {
    my ($p,$safe,$stack,$token)=@_;
    unless (($token->[2]->{'src'}=~/\/jquery.*\.js$/) || 
-           ($token->[2]->{'src'}=~/\/MathJax\.js$/)) {
+           ($token->[2]->{'src'}=~/\/jstree.*\.js$/) ||
+           ($token->[2]->{'src'}=~/\/MathJax\.js$/) ||
+           ($token->[2]->{'src'}=~/\/ckeditor\.js$/)) {
       return $token->[-1];
    }
 }
