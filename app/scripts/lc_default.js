@@ -64,24 +64,28 @@ $.getJSON( "menu", function( data ) {
 }
 
 function logout() {
+   setbreadcrumbbar('fresh','logout','Logout','logout()');
    display_modal('/pages/lc_logout.html');
    menubar();
    breadcrumbbar();
 }
 
 function login() {
+   setbreadcrumbbar('fresh','login','Login','login()');
    display_asset('/pages/lc_login.html');
    menubar();
    breadcrumbbar();
 }
 
 function dashboard() {
+   setbreadcrumbbar('fresh','dashboard','Dashboard','dashboard()');
    display_asset("/pages/lc_dashboard.html");
    menubar();
    breadcrumbbar();
 }
 
 function portfolio() {
+   setbreadcrumbbar('fresh','portfolio','Portfolio','portfolio()');
    display_asset("/pages/lc_portfolio.html");
    menubar();
    breadcrumbbar();
@@ -104,6 +108,10 @@ $.getJSON( "breadcrumbs", function( data ) {
 });
 }
 
+function setbreadcrumbbar(mode,title,text,func) {
+$.post( "breadcrumbs",$.parseJSON('{"mode":"'+mode+'","title":"'+title+'","text":"'+text+'","function":"'+func+'"}'));
+}
+
 function notificationbox() {
 $.getJSON( "notifications", function( data ) {
   var newmenu = "<ul id='notifications'>";
@@ -114,9 +122,4 @@ $.getJSON( "notifications", function( data ) {
   $("#notifications").replaceWith(newmenu);
 });
 setTimeout(notificationbox,30000);
-}
-
-function testupdates() {
-   menubar();
-   breadcrumbbar();
 }

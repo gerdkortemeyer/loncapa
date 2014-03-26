@@ -26,6 +26,8 @@ use base qw(Apache::lc_localize);
 
 'Welcome!' => 'Willkommen!',
 
+'Welcome' => 'Willkommen',
+
 'Username' => 'Benutzerkennung',
 
 'Password' => 'Passwort',
@@ -48,7 +50,9 @@ use base qw(Apache::lc_localize);
 
 'Your username or password were not recognized.' => 'Ihre Benutzerkennnung oder Ihr Passwort wurden nicht erkannt.',
 
-'Dashboard' => 'Übersicht'
+'Dashboard' => 'Übersicht',
+
+'Portfolio' => 'Portfolio'
 
 );
 

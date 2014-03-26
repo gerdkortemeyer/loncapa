@@ -62,11 +62,13 @@ sub open_session {
 
 sub close_session {
    my ($sessionid)=@_;
+   unless ($sessionid) { return undef; }
    return &Apache::lc_mongodb::close_session($sessionid);
 }
 
 sub dump_session {
    my ($sessionid)=@_;
+   unless ($sessionid) { return undef; }
    return &Apache::lc_mongodb::dump_session($sessionid);
 }
 
@@ -74,6 +76,7 @@ sub dump_session {
 # For arrays, this adds on
 sub update_session {
    my ($sessionid,$data)=@_;
+   unless ($sessionid) { return undef; }
    return &Apache::lc_mongodb::update_session($sessionid,$data);
 }
 
@@ -81,6 +84,7 @@ sub update_session {
 # For arrays, this replaces
 sub replace_session_key {
    my ($sessionid,$key,$data)=@_;
+   unless ($sessionid) { return undef; }
    return &Apache::lc_mongodb::replace_session_key($sessionid,$key,$data);
 }
 
