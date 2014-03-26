@@ -22,7 +22,9 @@ cp conf/lc.conf /etc/httpd/conf.d
 cp conf/lc_startup.pl /etc/httpd/conf
 cp conf/lc_parameters.pm /home/httpd/lib/perl/Apache
 cp app/handlers/*pm /home/httpd/lib/perl/Apache
-cp app/handlers/lc_localize/*.pm /home/httpd/lib/perl/Apache
+mkdir /home/httpd/lib/perl/Apache/lc_localize
+rm /home/httpd/lib/perl/Apache/lc_localize/*
+cp app/handlers/lc_localize/*.pm /home/httpd/lib/perl/Apache/lc_localize
 cp auth/*.pm /home/httpd/lib/perl/Apache
 cp databases/*.pm /home/httpd/lib/perl/Apache
 cp entities/*.pm /home/httpd/lib/perl/Apache
