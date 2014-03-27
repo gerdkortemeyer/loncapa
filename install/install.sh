@@ -42,6 +42,7 @@ fi
 if [ ! -d /home/httpd/html/scripts/ckeditor ]; then
    unzip app/scripts/ckeditor.zip -d /home/httpd/html/scripts
 fi
+cp app/scripts/ckeditor/config.js /home/httpd/html/scripts/ckeditor
 cp app/scripts/jquery* /home/httpd/html/scripts
 cp app/scripts/lc* /home/httpd/html/scripts
 cp -R app/scripts/jstree /home/httpd/html/scripts/
