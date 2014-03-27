@@ -31,7 +31,6 @@ use Apache::lc_ui_localize;
 #
 sub get_session {
    my $r = shift;
-   delete($ENV{'lc_session'});
    my %cookie=CGI::Cookie->parse($r->headers_in->{'Cookie'});
 # Clean up the session token
    my ($token)=($cookie{'lcsession'}=~/\s*lcsession\s*\=\s*(\w+)\s*\;/);
@@ -40,13 +39,8 @@ sub get_session {
       return HTTP_UNAUTHORIZED;
    }
 # Attempt to retrieve the session
-   my $sessiondata=&Apache::lc_entity_sessions::dump_session($token);
-   if ($sessiondata) {
-# Remember session data
-      $ENV{'lc_session'}->{'id'}=$token;
-      $ENV{'lc_session'}->{'data'}=$sessiondata->{'sessiondata'};
-#FIXME: use actual language
-      &Apache::lc_ui_localize::set_language('de');
+   if (&Apache::lc_entity_sessions::grab_session($token)) {
+      &Apache::lc_ui_localize::determine_language();
       return OK;
    } else {
       &Apache::lc_ui_localize::reset_language();

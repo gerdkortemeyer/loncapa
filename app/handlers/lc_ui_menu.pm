@@ -23,7 +23,7 @@ use Apache2::RequestRec();
 use Apache2::Const qw(:common);
 
 use Apache::lc_ui_localize;
-
+use Apache::lc_entity_sessions();
 
 sub menu_item {
    my ($title,$text,$function)=@_;
@@ -38,7 +38,7 @@ sub handler {
    my $r = shift;
    $r->content_type('application/json; charset=utf-8');
    my $menu='{';
-   if ($ENV{'lc_session'}->{'id'}) {
+   if (&Apache::lc_entity_sessions::session_id()) {
       $menu.=&menu_item('dashboard','Dashboard','dashboard()').',';
       $menu.=&menu_item('portfolio','Portfolio','portfolio()').',';
       $menu.=&menu_item('preferences','Preferences','preferences()').',';
@@ -46,7 +46,7 @@ sub handler {
 # Always second to last item
    $menu.=&menu_item('help','Help','help()').',';
 # Always the last item
-   if ($ENV{'lc_session'}->{'id'}) {
+   if (&Apache::lc_entity_sessions::session_id()) {
       $menu.=&menu_item('logout','Logout','logout()');
    } else {
       $menu.=&menu_item('login','Login','login()');

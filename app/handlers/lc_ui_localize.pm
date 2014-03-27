@@ -28,9 +28,12 @@ our @EXPORT = qw(mt);
 
 # ========================================================= The language handle
 
-use vars qw($lh $current_language $mtcache);
+use vars qw($lh $current_language $mtcache %known_languages);
 
-
+sub all_languages {
+   return %known_languages;
+}
+ 
 sub mt {
    if ($lh) {
       if ($#_>0) { return $lh->maketext(@_); }
@@ -45,8 +48,14 @@ sub mt {
    }
 }
 
+sub determine_language {
+#FIXME
+   &set_language('x-bork');
+}
+
 sub set_language {
    my ($lang)=@_;
+   unless ($known_languages{$lang}) { return undef; }
    undef $lh;
    $lh=Apache::lc_localize->get_handle($lang);
    $current_language=$lang;
@@ -58,5 +67,13 @@ sub reset_language {
    $current_language=&mt('language_code',1);
 }
 
+BEGIN {
+   %known_languages=(
+       'de' => 'German',
+       'en' => 'English',
+       'x-bork' => 'Swedish Chef',
+       'x-pig' => 'Pig Latin'
+                    );
+}
 1;
 __END__

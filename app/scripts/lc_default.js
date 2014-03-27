@@ -91,6 +91,13 @@ function portfolio() {
    breadcrumbbar();
 }
 
+function preferences() {
+   setbreadcrumbbar('fresh','preferences','Preferences','preferences()');
+   display_asset("/pages/lc_preferences.html");
+   menubar();
+   breadcrumbbar();
+}
+
 function help() {
    display_asset("/help/lc_help.html");
    breadcrumbbar();

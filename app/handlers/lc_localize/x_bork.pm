@@ -51,7 +51,8 @@ sub borkborkbork {
 
 %Lexicon=(
 'language_code'      => 'x-bork',
-'language_direction' => 'ltr'
+'language_direction' => 'ltr',
+'language_description' => 'Swedish Chef'
 );
 
 1;

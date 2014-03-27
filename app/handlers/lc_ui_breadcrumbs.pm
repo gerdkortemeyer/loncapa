@@ -33,13 +33,13 @@ sub breadcrumb_item {
 
 sub add_breadcrumb {
    my ($title,$text,$function)=@_;
-   &Apache::lc_entity_sessions::update_session($ENV{'lc_session'}->{'id'},
+   &Apache::lc_entity_sessions::update_session(
           &Apache::lc_json_utils::json_to_perl("{ breadcrumbs : [{title:'$title',text:'$text',function:'$function'}]}"));
 }
 
 sub fresh_breadcrumbs {
    my ($title,$text,$function)=@_;
-   &Apache::lc_entity_sessions::replace_session_key($ENV{'lc_session'}->{'id'},'breadcrumbs',
+   &Apache::lc_entity_sessions::replace_session_key('breadcrumbs',
           &Apache::lc_json_utils::json_to_perl("[{title:'$title',text:'$text',function:'$function'}]"));
 }
 
@@ -56,9 +56,9 @@ sub handler {
       &fresh_breadcrumbs($content{'title'},$content{'text'},$content{'function'});
    } elsif ($content{'mode'} eq 'add') {
       &add_breadcrumb($content{'title'},$content{'text'},$content{'function'});
-   } elsif ($ENV{'lc_session'}->{'data'}->{'breadcrumbs'}) {
+   } elsif (&Apache::lc_entity_sessions::breadcrumbs()) {
       my $output='{';
-      foreach my $item (@{$ENV{'lc_session'}->{'data'}->{'breadcrumbs'}}) {
+      foreach my $item (&Apache::lc_entity_sessions::breadcrumbs()) {
          $output.=&breadcrumb_item($item->{'title'},$item->{'text'},$item->{'function'}).',';
       }
       $output=~s/\,$/\}/;

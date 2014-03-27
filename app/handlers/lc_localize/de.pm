@@ -23,6 +23,7 @@ use base qw(Apache::lc_localize);
 %Lexicon=('_AUTO' => 1,
 'language_code'      => 'de',
 'language_direction' => 'ltr',
+'language_description' => 'Deutsch',
 
 'Welcome!' => 'Willkommen!',
 
@@ -43,6 +44,18 @@ use base qw(Apache::lc_localize);
 'Help' => 'Hilfe',
 
 'Preferences' => 'Einstellungen',
+
+'Store' => 'Speichern',
+
+'Language' => 'Sprache',
+
+'German' => 'Deutsch',
+
+'English' => 'Englisch',
+
+'Swedish Chef' => 'Dänischer Koch',
+
+'Pig Latin' => 'Schweine-Latein',
 
 'Cancel' => 'Abbrechen',
 

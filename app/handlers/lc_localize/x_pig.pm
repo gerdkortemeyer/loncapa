@@ -47,7 +47,8 @@ sub pig {
 
 %Lexicon=(
 'language_code'      => 'x-pig',
-'language_direction' => 'rtl'
+'language_direction' => 'rtl',
+'language_description' => 'Pig Latin'
 );
 
 1;

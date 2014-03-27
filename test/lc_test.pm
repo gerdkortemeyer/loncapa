@@ -128,19 +128,6 @@ sub handler {
    $r->print(Dumper(&Apache::lc_entity_roles::dump_roles($entity,'msu')));
    $r->print(Dumper(&Apache::lc_entity_profile::dump_profile($entity,'msu')));
 
-   $r->print(":".&Apache::lc_entity_authentication::set_authentication($entity,'msu',{ mode => 'internal', password => 'zaphodB' })."\n");
-
-   my $sessionid=&Apache::lc_entity_sessions::open_session( 'test171','msu','zaphodB' );
-
-   $r->print("Have $sessionid: ".Dumper(&Apache::lc_entity_sessions::dump_session($sessionid))."\n");
-
-   &Apache::lc_entity_sessions::update_session ($sessionid, { color => 'pink', taste => 'sweet' });
-
-   $r->print(Dumper(&Apache::lc_entity_sessions::dump_session($sessionid)));
-
-   $r->print(&Apache::lc_mongodb::close_session($sessionid));
-
-   $r->print(Dumper(&Apache::lc_entity_sessions::dump_session($sessionid)));
 
 
    my $wrk_url='/wrk/msu/'.$entity.'/rqdqweq/fqweqz.html';

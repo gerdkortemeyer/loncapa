@@ -30,7 +30,7 @@ sub handler {
    my $r = shift;
    my $cookie = new CGI::Cookie(-name => 'lcsession',-value=>'',-expires => '-10y',);
    $r->headers_out->add('Set-Cookie' => $cookie);
-   &Apache::lc_entity_sessions::close_session($ENV{'lc_session'}->{'id'});
+   &Apache::lc_entity_sessions::close_session();
    $r->print('ok');
    return OK;
 }

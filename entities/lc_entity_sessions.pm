@@ -60,32 +60,60 @@ sub open_session {
    }
 }
 
-sub close_session {
+sub grab_session {
    my ($sessionid)=@_;
    unless ($sessionid) { return undef; }
-   return &Apache::lc_mongodb::close_session($sessionid);
+   delete($ENV{'lc_session'});
+   my $sessiondata=&Apache::lc_mongodb::dump_session($sessionid);
+   if ($sessiondata) {
+      $ENV{'lc_session'}->{'id'}=$sessionid;
+      $ENV{'lc_session'}->{'data'}=$sessiondata->{'sessiondata'};
+      return 1;
+   } else {
+      return undef;
+   }
+}
+
+sub session_id {
+   return $ENV{'lc_session'}->{'id'};
+}
+
+sub breadcrumbs {
+   if ($ENV{'lc_session'}->{'data'}->{'breadcrumbs'}) {
+      return @{$ENV{'lc_session'}->{'data'}->{'breadcrumbs'}};
+   } else {
+      return undef;
+   }
+}
+
+sub userlanguage {
+   return $ENV{'lc_session'}->{'data'}->{'language'};
+}
+
+sub close_session {
+   unless (&session_id()) { return undef; }
+   return &Apache::lc_mongodb::close_session(&session_id());
 }
 
 sub dump_session {
-   my ($sessionid)=@_;
-   unless ($sessionid) { return undef; }
-   return &Apache::lc_mongodb::dump_session($sessionid);
+   unless (&session_id()) { return undef; }
+   return &Apache::lc_mongodb::dump_session(&session_id());
 }
 
 # Update the session environment
 # For arrays, this adds on
 sub update_session {
-   my ($sessionid,$data)=@_;
-   unless ($sessionid) { return undef; }
-   return &Apache::lc_mongodb::update_session($sessionid,$data);
+   my ($data)=@_;
+   unless (&session_id()) { return undef; }
+   return &Apache::lc_mongodb::update_session(&session_id(),$data);
 }
 
 # Update the session environment
 # For arrays, this replaces
 sub replace_session_key {
-   my ($sessionid,$key,$data)=@_;
-   unless ($sessionid) { return undef; }
-   return &Apache::lc_mongodb::replace_session_key($sessionid,$key,$data);
+   my ($key,$data)=@_;
+   unless (&session_id()) { return undef; }
+   return &Apache::lc_mongodb::replace_session_key(&session_id(),$key,$data);
 }
 
 1;
