@@ -109,6 +109,9 @@ sub inputfield {
       my ($defaultdomain,$domain_short,$domain_name)=&domain_choices('hosted');
       unless ($default) { $default=$defaultdomain; }
       return &selectfield($id,$name,$domain_short,$domain_name,$default);
+   } elsif ($type eq 'language') {
+      my ($default,$language_short,$language_name)=&language_choices($default);
+      return &selectfield($id,$name,$language_short,$language_name,$default);
    }
 }
 

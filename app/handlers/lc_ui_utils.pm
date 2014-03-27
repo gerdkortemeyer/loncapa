@@ -20,11 +20,13 @@ package Apache::lc_ui_utils;
 
 use strict;
 use Apache::lc_init_cluster_table();
+use Apache::lc_ui_localize;
+use Apache::lc_entity_sessions();
 
 require Exporter;
 
 our @ISA = qw (Exporter);
-our @EXPORT = qw(get_content clean_username clean_domain domain_choices);
+our @EXPORT = qw(get_content clean_username clean_domain domain_choices language_choices);
 
 
 # ==== Get POSTed content
@@ -74,10 +76,25 @@ sub domain_choices {
    }
    return ($connection_table->{'cluster_table'}->{'hosts'}->{$connection_table->{'self'}}->{'default'},
            $domain_short,$domain_name);
-                    
-   
+}
 
-       
+# ==== Language choices
+#
+sub language_choices {
+   my ($type)=@_;
+   my %language_choices=&Apache::lc_ui_localize::all_languages();
+   my $language_short;
+   my $language_name;
+   foreach my $key (sort(keys(%language_choices))) {
+       push(@{$language_short},$key);
+       push(@{$language_name},&mt($language_choices{$key}));
+   }
+   my $default;
+   if ($type eq 'user') {
+      $default=&Apache::lc_entity_sessions::userlanguage();
+   }
+   unless ($default) { $default='en'; }
+   return ($default,$language_short,$language_name);
 }
 
 1;
