@@ -36,10 +36,12 @@ sub menu_item {
 sub handler {
 # Get request object
    my $r = shift;
+   $r->content_type('application/json; charset=utf-8');
    my $menu='{';
    if ($ENV{'lc_session'}->{'id'}) {
       $menu.=&menu_item('dashboard','Dashboard','dashboard()').',';
       $menu.=&menu_item('portfolio','Portfolio','portfolio()').',';
+      $menu.=&menu_item('preferences','Preferences','preferences()').',';
    }
 # Always second to last item
    $menu.=&menu_item('help','Help','help()').',';

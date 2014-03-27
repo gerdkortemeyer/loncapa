@@ -38,7 +38,11 @@ use base qw(Apache::lc_localize);
 
 'Logout' => 'Abmelden',
 
+'Submit' => 'Einreichen',
+
 'Help' => 'Hilfe',
+
+'Preferences' => 'Einstellungen',
 
 'Cancel' => 'Abbrechen',
 

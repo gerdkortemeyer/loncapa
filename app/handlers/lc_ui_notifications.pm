@@ -28,6 +28,7 @@ use Apache2::Const qw(:common);
 sub handler {
 # Get request object
    my $r = shift;
+   $r->content_type('application/json; charset=utf-8');
    my $output='{';
    for (my $i=0; $i<=1+int(rand(10)); $i++) {
       $output.='"i'.$i.'" : "'.

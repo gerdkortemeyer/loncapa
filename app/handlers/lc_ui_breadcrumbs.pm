@@ -49,6 +49,7 @@ sub fresh_breadcrumbs {
 sub handler {
 # Get request object
    my $r = shift;
+   $r->content_type('application/json; charset=utf-8');
    my %content=&Apache::lc_ui_utils::get_content($r);
    if ($content{'mode'} eq 'fresh') {
 # Set fresh breadcrumbs ... mmm!
