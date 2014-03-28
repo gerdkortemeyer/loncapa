@@ -60,6 +60,9 @@ sub open_session {
    }
 }
 
+# Transfers the session to the environment,
+# returns 1 on sucess
+#
 sub grab_session {
    my ($sessionid)=@_;
    unless ($sessionid) { return undef; }
@@ -74,10 +77,22 @@ sub grab_session {
    }
 }
 
+# Returns the session ID
+# - good quick check if the user is logged in
+#
 sub session_id {
    return $ENV{'lc_session'}->{'id'};
 }
 
+# Returns the session user's entity and domain
+# in the order that most subroutines expect
+#
+sub entity_domain {
+   return ($ENV{'lc_session'}->{'entity'},$ENV{'lc_session'}->{'domain'});
+}
+
+# Returns the current breadcrumbs
+#
 sub breadcrumbs {
    if ($ENV{'lc_session'}->{'data'}->{'breadcrumbs'}) {
       return @{$ENV{'lc_session'}->{'data'}->{'breadcrumbs'}};
@@ -86,15 +101,22 @@ sub breadcrumbs {
    }
 }
 
+# Returns the language preferred by the user for the session
+#
 sub userlanguage {
    return $ENV{'lc_session'}->{'data'}->{'language'};
 }
 
+# Get rid of this session
+#
 sub close_session {
    unless (&session_id()) { return undef; }
    return &Apache::lc_mongodb::close_session(&session_id());
 }
 
+# Dumps the session data fresh from the database
+# (rather than the environment)
+#
 sub dump_session {
    unless (&session_id()) { return undef; }
    return &Apache::lc_mongodb::dump_session(&session_id());

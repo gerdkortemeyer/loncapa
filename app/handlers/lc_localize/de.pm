@@ -67,6 +67,12 @@ use base qw(Apache::lc_localize);
 
 'Your username or password were not recognized.' => 'Ihre Benutzerkennnung oder Ihr Passwort wurden nicht erkannt.',
 
+'You can modify your user preferences below.' => 'Sie können die untenstehenden Einstellungen verändern.',
+
+'A problem occurred while saving your preferences.' => 'Während der Speicherung Ihrer Einstellungen trat ein Problem ein.',
+
+'Your preferences were saved.' => 'Ihre Einstellungen wurden gespeichert.',
+
 'Dashboard' => 'Übersicht',
 
 'Portfolio' => 'Portfolio'

@@ -58,12 +58,18 @@ h1 {
 
 .lcerror {
    font-family: sans-serif;
-   color: #30a097;
+   color: #ff9911;
    display:none;
 }
 
 .lcproblem {   
    font-family: sans-serif;
    color: #30a097;
+   display:none;
+}
+
+.lcsuccess {
+   font-family: sans-serif;
+   color: #11aa55;
    display:none;
 }
