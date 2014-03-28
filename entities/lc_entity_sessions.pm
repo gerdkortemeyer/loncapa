@@ -49,9 +49,12 @@ sub open_session {
       &lognotice("Failed attempt to login by entity ($entity) domain ($domain)");
       return undef;
    }
+# Get profile data
+   my $data->{'profile'}=&Apache::lc_entity_profile::dump_profile($entity,$domain);
+#FIXME: want more data here
 # Okay, looks like we are in business
    my $sessionid=&Apache::lc_entity_utils::make_unique_id();
-   if (&Apache::lc_mongodb::open_session($entity,$domain,$sessionid,{ created => &Apache::lc_date_utils::now2str() })) {
+   if (&Apache::lc_mongodb::open_session($entity,$domain,$sessionid,$data)) {
       &lognotice("Opened session ($sessionid) for entity ($entity) domain ($domain)"); 
       return $sessionid;
    } else {
@@ -69,6 +72,8 @@ sub grab_session {
    delete($ENV{'lc_session'});
    my $sessiondata=&Apache::lc_mongodb::dump_session($sessionid);
    if ($sessiondata) {
+      $ENV{'lc_session'}->{'entity'}=$sessiondata->{'entity'};
+      $ENV{'lc_session'}->{'domain'}=$sessiondata->{'domain'};
       $ENV{'lc_session'}->{'id'}=$sessionid;
       $ENV{'lc_session'}->{'data'}=$sessiondata->{'sessiondata'};
       return 1;
@@ -104,7 +109,7 @@ sub breadcrumbs {
 # Returns the language preferred by the user for the session
 #
 sub userlanguage {
-   return $ENV{'lc_session'}->{'data'}->{'language'};
+   return $ENV{'lc_session'}->{'data'}->{'profile'}->{'language'};
 }
 
 # Get rid of this session

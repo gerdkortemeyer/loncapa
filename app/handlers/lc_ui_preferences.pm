@@ -24,6 +24,7 @@ use Apache2::RequestRec();
 use Apache2::Const qw(:common :http);
 use Apache::lc_ui_utils;
 use Apache::lc_entity_sessions();
+use Apache::lc_entity_profile();
 
 # ==== Main handler
 #
@@ -32,7 +33,14 @@ sub handler {
    my $r = shift;
 # Extract posted content from AJAX
    my %content=&get_content($r);
-   if (1) {
+# Collect items that changed
+   my $newprofile;
+   if ($content{'language'} ne &Apache::lc_entity_sessions::userlanguage) {
+      &Apache::lc_entity_sessions::update_session({ 'profile' => {'language' => $content{'language'}}});
+      $newprofile->{'language'}=$content{'language'};
+   }
+   if (&Apache::lc_entity_profile::modify_profile(&Apache::lc_entity_sessions::entity_domain(),
+                                                  $newprofile)) {
       $r->print('yes');
    } else {
       $r->print('no');

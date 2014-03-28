@@ -20,6 +20,7 @@ package Apache::lc_ui_localize;
 
 use strict;
 use Apache::lc_localize;
+use Apache::lc_entity_sessions();
 
 require Exporter;
 
@@ -49,8 +50,8 @@ sub mt {
 }
 
 sub determine_language {
-#FIXME
-   &set_language('x-bork');
+#FIXME: needs cascading set
+   &set_language(&Apache::lc_entity_sessions::userlanguage());
 }
 
 sub set_language {
