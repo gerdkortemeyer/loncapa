@@ -37,4 +37,5 @@ cpan JSON::DWIW
 cpan Net::SSL
 cpan DateTime
 cpan DateTime::TimeZone
+cpan DateTime::Format::RFC3339
 cpan Hash::Merge

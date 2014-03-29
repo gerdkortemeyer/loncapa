@@ -23,6 +23,7 @@ use Apache::lc_localize;
 use Apache::lc_entity_sessions();
 use DateTime;
 use DateTime::TimeZone;
+use DateTime::Format::RFC3339;
 
 require Exporter;
 
@@ -39,8 +40,9 @@ sub locallocaltime {
    my $dt = DateTime->from_epoch(epoch => $thistime)
                     ->set_time_zone($timezone);
    my $format=$lh->maketext('date_locale');
+   my $f=DateTime::Format::RFC3339->new();
    if ($format!~/\$/) {
-      return $dt->strftime("%a %b %e %I:%M:%S %P %Y (%Z)");
+      return ($dt->strftime("%a %b %e %I:%M:%S %P %Y (%Z)"),$f->format_datetime($dt));
    }
    my $time_zone  = $dt->time_zone_short_name();
    my $seconds    = $dt->second();
@@ -66,7 +68,7 @@ sub locallocaltime {
    foreach ('seconds','minutes','twentyfour','twelve','day','year','month','weekday','ampm') {
       $format=~s/\$$_/eval('$'.$_)/gse;
    }
-   return $format." ($time_zone)";
+   return ($format." ($time_zone)",$f->format_datetime($dt));
 }
 
 sub all_languages {
