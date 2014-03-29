@@ -112,6 +112,9 @@ sub inputfield {
    } elsif ($type eq 'language') {
       my ($default,$language_short,$language_name)=&language_choices($default);
       return &selectfield($id,$name,$language_short,$language_name,$default);
+   } elsif ($type eq 'timezone') {
+      my ($default,$timezones)=&timezone_choices($default);
+      return &selectfield($id,$name,$timezones,$timezones,$default);
    }
 }
 

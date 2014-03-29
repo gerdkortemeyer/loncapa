@@ -57,6 +57,8 @@ use base qw(Apache::lc_localize);
 
 'Pig Latin' => 'Schweine-Latein',
 
+'Timezone' => 'Zeitzone',
+
 'Cancel' => 'Abbrechen',
 
 'Do you really want to logout?' => 'Wollen Sie sich wirklich abmelden?',

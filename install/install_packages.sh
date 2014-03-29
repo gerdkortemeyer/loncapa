@@ -36,4 +36,5 @@ cpan File::Touch
 cpan JSON::DWIW
 cpan Net::SSL
 cpan DateTime
+cpan DateTime::TimeZone
 cpan Hash::Merge

@@ -39,6 +39,11 @@ sub handler {
       &Apache::lc_entity_sessions::update_session({ 'profile' => {'language' => $content{'language'}}});
       $newprofile->{'language'}=$content{'language'};
    }
+   if ($content{'timezone'} ne &Apache::lc_entity_sessions::usertimezone) {
+      &Apache::lc_entity_sessions::update_session({ 'profile' => {'timezone' => $content{'timezone'}}});
+      $newprofile->{'timezone'}=$content{'timezone'};
+   }
+
    if (&Apache::lc_entity_profile::modify_profile(&Apache::lc_entity_sessions::entity_domain(),
                                                   $newprofile)) {
       $r->print('yes');

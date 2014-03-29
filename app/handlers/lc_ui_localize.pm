@@ -21,6 +21,8 @@ package Apache::lc_ui_localize;
 use strict;
 use Apache::lc_localize;
 use Apache::lc_entity_sessions();
+use DateTime;
+use DateTime::TimeZone;
 
 require Exporter;
 
@@ -33,6 +35,10 @@ use vars qw($lh $current_language $mtcache %known_languages);
 
 sub all_languages {
    return %known_languages;
+}
+
+sub all_timezones {
+   return DateTime::TimeZone->all_names;
 }
  
 sub mt {

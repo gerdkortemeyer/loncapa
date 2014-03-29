@@ -26,7 +26,7 @@ use Apache::lc_entity_sessions();
 require Exporter;
 
 our @ISA = qw (Exporter);
-our @EXPORT = qw(get_content clean_username clean_domain domain_choices language_choices);
+our @EXPORT = qw(get_content clean_username clean_domain domain_choices language_choices timezone_choices);
 
 
 # ==== Get POSTed content
@@ -37,7 +37,12 @@ sub get_content {
    if ($r->headers_in->{"Content-length"}>0) {
       $r->read($content,$r->headers_in->{"Content-length"});
    }
-   return split(/[\&\=]/,$content);
+   my %content=split(/[\&\=]/,$content);
+   foreach my $key (keys(%content)) {
+      $content{$key}=~s/\+/ /g;
+      $content{$key}=~s/%([a-fA-F0-9][a-fA-F0-9])/pack("C",hex($1))/eg;
+   }
+   return %content;
 }
 
 # ==== Clean up usernames and domains
@@ -91,10 +96,25 @@ sub language_choices {
    }
    my $default;
    if ($type eq 'user') {
+#FIXME: cascade if we don't find anything
       $default=&Apache::lc_entity_sessions::userlanguage();
    }
    unless ($default) { $default='en'; }
    return ($default,$language_short,$language_name);
+}
+
+# ==== Timezone choices
+#
+sub timezone_choices {
+   my ($type)=@_;
+   my @timezones=&Apache::lc_ui_localize::all_timezones();
+   my $default;
+   if ($type eq 'user') {
+#FIXME: cascade if we don't find anything
+      $default=&Apache::lc_entity_sessions::usertimezone();
+   }
+   unless ($default) { $default='UTC'; }
+   return ($default,\@timezones);
 }
 
 1;

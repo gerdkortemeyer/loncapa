@@ -112,6 +112,12 @@ sub userlanguage {
    return $ENV{'lc_session'}->{'data'}->{'profile'}->{'language'};
 }
 
+# Returns the timezone preferred by the user
+#
+sub usertimezone {
+   return $ENV{'lc_session'}->{'data'}->{'profile'}->{'timezone'};
+}
+
 # Get rid of this session
 #
 sub close_session {
