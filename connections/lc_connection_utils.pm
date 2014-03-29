@@ -29,6 +29,24 @@ use Apache::lc_init_cluster_table();
 
 
 #
+# Get the timezone for a domain
+#
+sub domain_timezone {
+   my ($domain)=@_;
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
+   return ($connection_table->{'cluster_table'}->{'domains'}->{$domain}->{'timezone'});
+}
+
+#
+# Get the locale for a domain
+#
+sub domain_locale {
+   my ($domain)=@_;
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
+   return ($connection_table->{'cluster_table'}->{'domains'}->{$domain}->{'locale'});
+}
+
+#
 # Is a host a library server for a domain?
 #
 sub is_library_server {
@@ -103,6 +121,14 @@ sub local_online {
 sub host_name {
    my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
    return $connection_table->{'self'};
+}
+
+#
+# What is our default domain?
+#
+sub default_domain {
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
+   return $connection_table->{'cluster_table'}->{'hosts'}->{$connection_table->{'self'}}->{'default'};
 }
 
 #

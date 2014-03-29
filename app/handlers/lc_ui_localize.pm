@@ -33,6 +33,42 @@ our @EXPORT = qw(mt);
 
 use vars qw($lh $current_language $mtcache %known_languages);
 
+sub locallocaltime {
+   my ($thistime) = @_;
+   my $timezone=&context_timezone();
+   my $dt = DateTime->from_epoch(epoch => $thistime)
+                    ->set_time_zone($timezone);
+   my $format=$lh->maketext('date_locale');
+   if ($format!~/\$/) {
+      return $dt->strftime("%a %b %e %I:%M:%S %P %Y (%Z)");
+   }
+   my $time_zone  = $dt->time_zone_short_name();
+   my $seconds    = $dt->second();
+   my $minutes    = $dt->minute();
+   my $twentyfour = $dt->hour();
+   my $day        = $dt->day_of_month();
+   my $mon        = $dt->month()-1;
+   my $year       = $dt->year();
+   my $wday       = $dt->wday();                            	    			   
+   if ($wday==7) { $wday=0; }
+   my $month  =(split(/\,/,$lh->maketext('date_months')))[$mon];
+   my $weekday=(split(/\,/,$lh->maketext('date_days')))[$wday];
+   if ($seconds<10) { $seconds='0'.$seconds; }
+   if ($minutes<10) { $minutes='0'.$minutes; }
+   my $twelve=$twentyfour;
+   my $ampm;
+   if ($twelve>12) {
+      $twelve-=12;
+      $ampm=$lh->maketext('date_pm');
+   } else {
+      $ampm=$lh->maketext('date_am');
+   }
+   foreach ('seconds','minutes','twentyfour','twelve','day','year','month','weekday','ampm') {
+      $format=~s/\$$_/eval('$'.$_)/gse;
+   }
+   return $format." ($time_zone)";
+}
+
 sub all_languages {
    return %known_languages;
 }
@@ -55,23 +91,55 @@ sub mt {
    }
 }
 
+#
+# Cascade down to set the language
+#
 sub determine_language {
-#FIXME: needs cascading set
-   &set_language(&Apache::lc_entity_sessions::userlanguage());
+   my $language=&Apache::lc_entity_sessions::userlanguage();
+   unless ($language) {
+      $language=&Apache::lc_connection_utils::domain_locale(&Apache::lc_entity_sessions::user_domain());
+   }
+   unless ($language) {
+      $language=&Apache::lc_connection_utils::domain_locale(&Apache::lc_connection_utils::default_domain());
+   }
+   &set_language($language);
 }
 
+#
+# Which timezone to use?
+#
+sub context_timezone {
+   my $timezone=&Apache::lc_entity_sessions::usertimezone();
+   if ($timezone) { return $timezone; }
+   $timezone=&Apache::lc_connection_utils::domain_timezone(&Apache::lc_entity_sessions::user_domain());
+   if ($timezone) { return $timezone; }
+   return &Apache::lc_connection_utils::domain_locale(&Apache::lc_connection_utils::default_domain());
+}
+
+#
+# Actually set the language for this request cycle
+#
 sub set_language {
    my ($lang)=@_;
-   unless ($known_languages{$lang}) { return undef; }
    undef $lh;
+   unless ($known_languages{$lang}) {
+# Maybe we just don't have a special case 
+      $lang=~s/\-\w+$//;
+      unless ($known_languages{$lang}) { 
+# Give up
+         return undef; 
+      }
+   }
+# Okay, we got this
    $lh=Apache::lc_localize->get_handle($lang);
    $current_language=$lang;
 }
 
+#
+# Set the default language for the server
+#
 sub reset_language {
-   undef $lh;
-   $lh=Apache::lc_localize->get_handle();
-   $current_language=&mt('language_code',1);
+   &set_language(&Apache::lc_connection_utils::domain_locale(&Apache::lc_connection_utils::default_domain()));
 }
 
 BEGIN {

@@ -44,7 +44,7 @@ sub handler {
       $newprofile->{'timezone'}=$content{'timezone'};
    }
 
-   if (&Apache::lc_entity_profile::modify_profile(&Apache::lc_entity_sessions::entity_domain(),
+   if (&Apache::lc_entity_profile::modify_profile(&Apache::lc_entity_sessions::user_entity_domain(),
                                                   $newprofile)) {
       $r->print('yes');
    } else {

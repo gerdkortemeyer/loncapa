@@ -92,8 +92,12 @@ sub session_id {
 # Returns the session user's entity and domain
 # in the order that most subroutines expect
 #
-sub entity_domain {
+sub user_entity_domain {
    return ($ENV{'lc_session'}->{'entity'},$ENV{'lc_session'}->{'domain'});
+}
+
+sub user_domain {
+   return $ENV{'lc_session'}->{'domain'};
 }
 
 # Returns the current breadcrumbs

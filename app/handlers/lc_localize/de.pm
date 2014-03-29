@@ -24,6 +24,11 @@ use base qw(Apache::lc_localize);
 'language_code'      => 'de',
 'language_direction' => 'ltr',
 'language_description' => 'Deutsch',
+'date_locale'  => '$weekday, $day. $month $year, $twentyfour:$minutes:$seconds Uhr',
+'date_months'  => 'Jan.,Feb.,März,April,Mai,Juni,Juli,Aug.,Sep.,Okt.,Nov.,Dez.',
+'date_days'    => 'So.,Mo.,Di.,Mi.,Do.,Fr.,Sa.',
+'date_am' => 'vormittags',
+'date_pm' => 'nachmittags',
 
 'Welcome!' => 'Willkommen!',
 
