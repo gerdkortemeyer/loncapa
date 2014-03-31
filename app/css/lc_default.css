@@ -10,18 +10,18 @@ body {
 header {
    background-color: rgba(220,220,220,0.5);
    position: fixed;
-   margin: 10px 10px 0px 10px;
-   top: 10px;
-   left: 10px;
-   right: 10px;
-   height: 70px;
+   margin: 5px 5px 0px 5px;
+   top: 5px;
+   left: 5px;
+   right: 5px;
+   height: 30px;
    padding: 2px;
 }
 
 #headerleft {
    position: fixed;
-   width: 160px;
-   height: 68px; 
+   width: 60px;
+   height: 24px;
    padding: 1px;
    background-image: url(../images/loncapa_logo.png);
    background-repeat: no-repeat;
@@ -29,7 +29,7 @@ header {
 
 #headermiddle {
    position: fixed;
-   left: 200px;
+   left: 65px;
 }
 
 #headerright {
@@ -40,11 +40,11 @@ header {
 aside {
    background-color: rgba(220,220,220,0.5);
    position: fixed;
-   margin: 10px 10px 0px 10px;
+   margin: 5px 5px 0px 5px;
    border-radius: 5px 5px 5px 5px;
-   top: 146px;
-   right: 10px;
-   width: 210px;
+   top: 100px;
+   right: 5px;
+   width: 150px;
 }
 
 footer {
@@ -53,21 +53,21 @@ footer {
    font-family: sans-serif;
    font-size: 14px;
    padding: 2px; 
-   margin: 0px 0px 0px 10px;
+   margin: 0px 0px 0px 5px;
    position: fixed;
    bottom: 0px;
-   right: 240px;
-   left: 10px;
+   right: 168px;
+   left: 5px;
 }
 
 section {
    background-color: #ffffff;
-   margin: 10px 0px 0px 10px;
-   padding: 10px;
+   margin: 5px 0px 0px 5px;
+   padding: 5px;
    position: absolute;
-   top: 146px;
-   right: 240px;
-   left: 10px;
+   top: 100px;
+   right: 168px;
+   left: 5px;
    z-index: -1;
    border-radius: 5px 5px 5px 5px;
    box-shadow: 2px 2px 3px #111111;
@@ -80,15 +80,15 @@ section {
 nav {
    background-color: rgba(40,40,40,0.5);
    position: fixed;
-   margin: 10px 10px 0px 10px;
-   top: 100px;
-   right: 10px;
-   left: 10px;
+   margin: 5px 5px 0px 5px;
+   top: 52px;
+   right: 5px;
+   left: 5px;
    height: 40px;
 }
 
 #menubuttonrow {
-   top: 70px;
+   top: 20px;
    left: 0px;
    font-family: sans-serif;
    font-size: 16px;
@@ -177,7 +177,7 @@ nav {
 }
 
 #breadcrumbrow {
-   top: 110px;
+   top: 58px;
    left: 5px;
    font-family: sans-serif;
    color: #ffffff;
@@ -202,13 +202,13 @@ nav {
 
 #notifications {
    list-style-type:none;
-   padding: 5px;
+   padding: 3px;
 }
 
 .notification {
    background-color: rgba(240,240,240,0.5);
-   width: 180px;
-   padding: 5px;
+   width: 130px;
+   padding: 3px;
    border-style: solid;
    border-color: #000000;
    border-width: thin;
