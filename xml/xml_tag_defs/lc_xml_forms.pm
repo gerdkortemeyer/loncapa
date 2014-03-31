@@ -21,6 +21,7 @@ package Apache::lc_xml_forms;
 use strict;
 use Apache::lc_ui_localize;
 use Apache::lc_ui_utils;
+use Apache::lc_date_utils;
 
 our @ISA = qw(Exporter);
 
@@ -115,6 +116,9 @@ sub inputfield {
    } elsif ($type eq 'timezone') {
       my ($default,$timezones)=&timezone_choices($default);
       return &selectfield($id,$name,$timezones,$timezones,$default);
+   } elsif ($type eq 'datetime') {
+      unless ($default) { $default=&Apache::lc_date_utils::now2str(); }
+      return &datetimefield($id,$name,$default);
    }
 }
 
@@ -131,6 +135,20 @@ sub selectfield {
    return $selectfield;
 }
 
+# ==== Datetime
+#
+sub datetimefield {
+   my ($id,$name,$default)=@_;
+   my $dateid=$id.'_date';
+   my $datename=$id.'_name';
+   my $lang=&mt('language_code');
+   if ($lang eq 'en') { $lang=''; }
+   my $timeformat=&mt('date_format');
+   my $output=
+   "<script>\$(function(){\$('#$dateid').datepick();\$('#$dateid').datepick('option',\$.datepick.regionalOptions['$lang']);});</script>".
+   "<input type='text' id='$dateid' size='10' />";
+   return $output;
+}
 
 1;
 __END__

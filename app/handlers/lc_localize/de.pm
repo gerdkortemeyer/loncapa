@@ -29,6 +29,7 @@ use base qw(Apache::lc_localize);
 'date_days'    => 'So.,Mo.,Di.,Mi.,Do.,Fr.,Sa.',
 'date_am' => 'vormittags',
 'date_pm' => 'nachmittags',
+'date_format' => '24',
 
 'Welcome!' => 'Willkommen!',
 
