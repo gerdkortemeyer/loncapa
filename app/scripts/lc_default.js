@@ -2,7 +2,12 @@ $(document).ready(function() {
    menubar();
    breadcrumbbar();
    notificationbox();
+   checknotificationbox();
    dashboard();
+});
+
+$( window ).resize(function() {
+   checknotificationbox();
 });
 
 function display_modal(newuri) {
@@ -117,6 +122,18 @@ $.getJSON( "breadcrumbs", function( data ) {
 
 function setbreadcrumbbar(mode,title,text,func) {
 $.post( "breadcrumbs",$.parseJSON('{"mode":"'+mode+'","title":"'+title+'","text":"'+text+'","function":"'+func+'"}'));
+}
+
+function checknotificationbox() {
+   if ($(window).width()<680) {
+      $("aside").hide();
+      $("section").css("right","5px");
+      $("footer").css("right","5px");
+   } else {
+      $("section").css("right","168px");
+      $("footer").css("right","168px");
+      $("aside").show();
+   }
 }
 
 function notificationbox() {
