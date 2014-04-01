@@ -139,32 +139,33 @@ sub selectfield {
 #
 sub datetimefield {
    my ($id,$name,$default)=@_;
+# Figure out defaults for fields
+#FIXME
+# The date field
    my $dateid=$id.'_date';
    my $datename=$name.'_name';
-   my $timeidhour=$id.'_time_hour';
-   my $timenamehour=$name.'_name_hour';
-   my $timeidmin=$id.'_time_min';
-   my $timenamemin=$name.'_name_min';
-   my $timeidsec=$id.'_time_sec';
-   my $timenamesec=$name.'_name_sec';
    my $lang=&mt('language_code');
-   my $ampm='';
    if ($lang eq 'en') { $lang=''; }
+   my $output="<script>\$(function(){\$('#$dateid').datepick();\$('#$dateid').datepick('option',\$.datepick.regionalOptions['$lang']);});</script><input type='text' id='$dateid' name='$datename' size='10' />";
+# The time fields
    my $timeformat=&mt('date_format');
-   my $am=&mt('date_am');
-   if ($am eq 'date_am') { $am='am'; }
-   my $pm=&mt('date_pm');
-   if ($pm eq 'date_pm') { $pm='pm'; }
-   unless ($timeformat eq '24') {
-      $ampm=&selectfield($id.'_time_ampm',$name.'_time_ampm',['am','pm'],[$am,$pm],'am');
+   my $hourselect=[1..12];
+   if ($timeformat eq '24') {
+      $hourselect=[0..23];
    }
-   return(<<ENDENTRY);
-<script>\$(function(){\$('#$dateid').datepick();\$('#$dateid').datepick('option',\$.datepick.regionalOptions['$lang']);});</script>
-<input type='text' id='$dateid' name='$datename' size='10' />
-<input type='text' id='$timeidhour' name='$timenamehour' size='2' /> :
-<input type='text' id='$timeidmin' name='$timenamemin' size='2' /> :
-<input type='text' id='$timeidsec' name='$timenamesec' size='2' /> $ampm
-ENDENTRY
+   $output.=&selectfield($id.'_time_hour',$name.'_time_hour',$hourselect,$hourselect,12).':'.
+            &selectfield($id.'_time_min',$name.'_time_min',[0..59],[0..59],0).':'.
+            &selectfield($id.'_time_sec',$name.'_time_sec',[0..59],[0..59],0);
+   unless ($timeformat eq '24') {
+      my $am=&mt('date_am');
+      if ($am eq 'date_am') { $am='am'; }
+      my $pm=&mt('date_pm');
+      if ($pm eq 'date_pm') { $pm='pm'; }
+      unless ($timeformat eq '24') {
+         $output.=&selectfield($id.'_time_ampm',$name.'_time_ampm',['am','pm'],[$am,$pm],'am');
+      }
+   }
+   return $output;
 }
 
 1;

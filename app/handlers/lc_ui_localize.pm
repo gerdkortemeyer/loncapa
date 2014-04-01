@@ -96,7 +96,7 @@ sub mt {
 #
 # Cascade down to set the language
 #
-sub determine_language {
+sub context_language {
    my $language=&Apache::lc_entity_sessions::userlanguage();
    unless ($language) {
       $language=&Apache::lc_connection_utils::domain_locale(&Apache::lc_entity_sessions::user_domain());
@@ -104,7 +104,11 @@ sub determine_language {
    unless ($language) {
       $language=&Apache::lc_connection_utils::domain_locale(&Apache::lc_connection_utils::default_domain());
    }
-   &set_language($language);
+   return $language;
+}
+
+sub determine_language {
+   &set_language(&context_language());
 }
 
 #

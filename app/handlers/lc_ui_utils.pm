@@ -96,8 +96,7 @@ sub language_choices {
    }
    my $default;
    if ($type eq 'user') {
-#FIXME: cascade if we don't find anything
-      $default=&Apache::lc_entity_sessions::userlanguage();
+      $default=&Apache::lc_ui_localize::context_language();
    }
    unless ($default) { $default='en'; }
    return ($default,$language_short,$language_name);
@@ -110,8 +109,7 @@ sub timezone_choices {
    my @timezones=&Apache::lc_ui_localize::all_timezones();
    my $default;
    if ($type eq 'user') {
-#FIXME: cascade if we don't find anything
-      $default=&Apache::lc_entity_sessions::usertimezone();
+      $default=&Apache::lc_ui_localize::context_timezone();
    }
    unless ($default) { $default='UTC'; }
    return ($default,\@timezones);
