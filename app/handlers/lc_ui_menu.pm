@@ -25,6 +25,11 @@ use Apache2::Const qw(:common);
 use Apache::lc_ui_localize;
 use Apache::lc_entity_sessions();
 
+sub submenu {
+   my ($title,$content)=@_;
+   return '"'.$title.'" : {'.$content.'}';
+}
+
 sub menu_item {
    my ($title,$text,$function)=@_;
    return '"menu_'.$title.'" : "'.&mt($text).'&'.$function.'"';
@@ -43,6 +48,14 @@ sub handler {
       $menu.=&menu_item('portfolio','Portfolio','portfolio()').',';
       $menu.=&menu_item('preferences','Preferences','preferences()').',';
    }
+# Testing
+  $menu.=&submenu("Stuff",
+      &menu_item('dashboard','Dashboard','dashboard()').','.
+      &menu_item('portfolio','Portfolio','portfolio()').','.
+      &submenu("More Stuff",
+      &menu_item('portfolio','Portfolio','portfolio()').','.
+      &menu_item('preferences','Preferences','preferences()'))).',';
+
 # Always second to last item
    $menu.=&menu_item('help','Help','help()').',';
 # Always the last item
