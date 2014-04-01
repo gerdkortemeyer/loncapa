@@ -38,7 +38,7 @@ function display_asset(newuri) {
 }
 
 function showsub (submenuelement) {
-   $('#'+submenuelement).show();
+   $('#'+submenuelement).toggle();
 }
 
 function menubar() { 
