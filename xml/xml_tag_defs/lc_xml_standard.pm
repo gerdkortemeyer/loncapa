@@ -36,6 +36,7 @@ sub start_head_html {
    return (<<ENDHEADER);
 <head>
 <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0;">
 <script src="/scripts/jquery-2.0.3.min.js"></script>
 <script src="/scripts/mathjax/MathJax.js?config=default"></script>
 <script src="/scripts/jquery.blockUI.js"></script>
