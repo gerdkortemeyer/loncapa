@@ -38,7 +38,7 @@ function display_asset(newuri) {
 }
 
 function showsub (submenuelement) {
-   if (navigator.userAgent.match(/(iPod|iPhone|iPad)/i) {
+   if (navigator.userAgent.match(/(iPod|iPhone|iPad)/i)) {
       $('#'+submenuelement).toggle();
    }
 }
