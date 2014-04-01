@@ -38,7 +38,9 @@ function display_asset(newuri) {
 }
 
 function showsub (submenuelement) {
-   $('#'+submenuelement).toggle();
+   if (navigator.userAgent.match(/(iPod|iPhone|iPad)/i) {
+      $('#'+submenuelement).toggle();
+   }
 }
 
 function menubar() { 
