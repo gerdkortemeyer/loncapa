@@ -1,12 +1,14 @@
 $(document).ready(function() {
+   $('.hover').bind('touchstart touchend', function(e) {
+        e.preventDefault();
+        $(this).toggleClass('hover_effect');
+   });
    menubar();
    breadcrumbbar();
    notificationbox();
    checknotificationbox();
    dashboard();
 });
-
-document.addEventListener("touchstart", function(){}, true);
 
 $( window ).resize(function() {
    checknotificationbox();
