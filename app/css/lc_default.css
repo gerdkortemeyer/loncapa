@@ -174,17 +174,7 @@ nav {
 #menubuttonrow li:hover > ul {
     display: block;
     visibility:  visible;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;  
 }
-
-#menubuttonrow li.hover_effect > ul {
-    display: block;
-    visibility:  visible;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
-}
-
 
 #breadcrumbrow {
    top: 54px;
