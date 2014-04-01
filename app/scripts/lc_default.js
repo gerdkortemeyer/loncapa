@@ -6,6 +6,8 @@ $(document).ready(function() {
    dashboard();
 });
 
+document.addEventListener("touchstart", function(){}, true);
+
 $( window ).resize(function() {
    checknotificationbox();
 });

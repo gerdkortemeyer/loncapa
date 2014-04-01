@@ -176,12 +176,6 @@ nav {
     visibility:  visible;
 }
 
-#menubuttonrow li:active > ul {
-    display: block;
-    visibility:  visible;
-}
-
-
 #breadcrumbrow {
    top: 54px;
    left: 5px;
