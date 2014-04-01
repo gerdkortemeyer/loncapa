@@ -53,20 +53,20 @@ footer {
    font-family: sans-serif;
    font-size: 8px;
    padding: 2px; 
-   margin: 0px 0px 0px 5px;
+   margin: 0px 5px 0px 5px;
    position: fixed;
    bottom: 0px;
-   right: 168px;
+   right: 162px;
    left: 5px;
 }
 
 section {
    background-color: #ffffff;
-   margin: 5px 0px 0px 5px;
+   margin: 5px 5px 5px 5px;
    padding: 5px;
    position: absolute;
    top: 86px;
-   right: 168px;
+   right: 162px;
    left: 5px;
    z-index: -1;
    border-radius: 5px 5px 5px 5px;

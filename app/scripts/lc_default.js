@@ -139,8 +139,8 @@ function checknotificationbox() {
       $("section").css("right","5px");
       $("footer").css("right","5px");
    } else {
-      $("section").css("right","168px");
-      $("footer").css("right","168px");
+      $("section").css("right","162px");
+      $("footer").css("right","162px");
       $("aside").show();
    }
 }
