@@ -53,6 +53,7 @@ sub borkborkbork {
 'language_code'      => 'x-bork',
 'language_direction' => 'ltr',
 'language_description' => 'Swedish Chef',
+'date_short_locale' => '$year/$month/$day',
 'date_format' => "24"
 );
 

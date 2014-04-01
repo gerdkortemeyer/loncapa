@@ -25,6 +25,7 @@ use base qw(Apache::lc_localize);
 'language_direction' => 'ltr',
 'language_description' => 'Deutsch',
 'date_locale'  => '$weekday, $day. $month $year, $twentyfour:$minutes:$seconds Uhr',
+'date_short_locale' => '$day.$month.$year';
 'date_months'  => 'Jan.,Feb.,März,April,Mai,Juni,Juli,Aug.,Sep.,Okt.,Nov.,Dez.',
 'date_days'    => 'So.,Mo.,Di.,Mi.,Do.,Fr.,Sa.',
 'date_am' => 'vormittags',

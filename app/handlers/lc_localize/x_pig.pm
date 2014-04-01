@@ -48,7 +48,8 @@ sub pig {
 %Lexicon=(
 'language_code'      => 'x-pig',
 'language_direction' => 'rtl',
-'language_description' => 'Pig Latin'
+'language_description' => 'Pig Latin',
+'date_short_locale' => '$year/$month/$day',
 );
 
 1;

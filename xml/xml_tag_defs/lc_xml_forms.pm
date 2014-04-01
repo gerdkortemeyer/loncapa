@@ -22,6 +22,10 @@ use strict;
 use Apache::lc_ui_localize;
 use Apache::lc_ui_utils;
 use Apache::lc_date_utils;
+use Apache::lc_ui_localize();
+use DateTime;
+use DateTime::TimeZone;
+use DateTime::Format::RFC3339;
 
 our @ISA = qw(Exporter);
 
@@ -117,7 +121,8 @@ sub inputfield {
       my ($default,$timezones)=&timezone_choices($default);
       return &selectfield($id,$name,$timezones,$timezones,$default);
    } elsif ($type eq 'datetime') {
-      unless ($default) { $default=&Apache::lc_date_utils::now2str(); }
+#FIXME: y2038?
+      unless ($default) { $default=time; }
       return &datetimefield($id,$name,$default);
    }
 }
@@ -139,32 +144,59 @@ sub selectfield {
 #
 sub datetimefield {
    my ($id,$name,$default)=@_;
-# Figure out defaults for fields
-#FIXME
+   my $timezone=&Apache::lc_ui_localize::context_timezone();
+   my $dt = DateTime->from_epoch(epoch => $default)
+                    ->set_time_zone($timezone);
+   my $f=DateTime::Format::RFC3339->new();
+   my $time_zone  = $dt->time_zone_short_name();
+   my $seconds    = $dt->second();
+   my $minutes    = $dt->minute();
+   my $twentyfour = $dt->hour();
+   my $day        = $dt->day_of_month();
+   my $month      = $dt->month();
+   my $year       = $dt->year();
 # The date field
    my $dateid=$id.'_date';
    my $datename=$name.'_name';
    my $lang=&mt('language_code');
    if ($lang eq 'en') { $lang=''; }
-   my $output="<script>\$(function(){\$('#$dateid').datepick();\$('#$dateid').datepick('option',\$.datepick.regionalOptions['$lang']);});</script><input type='text' id='$dateid' name='$datename' size='10' />";
+   my $short_locale=&mt('date_short_locale');
+   foreach ('day','year','month') {
+      $short_locale=~s/\$$_/eval('$'.$_)/gse;
+   }
+   my $output="<time datetime='".$f->format_datetime($dt)."'>";
+   $output.="<script>\$(function(){\$('#$dateid').datepick();\$('#$dateid').datepick('option',\$.datepick.regionalOptions['$lang']);})</script><input type='text' id='$dateid' name='$datename' value='$short_locale' size='10' />";
 # The time fields
    my $timeformat=&mt('date_format');
-   my $hourselect=[1..12];
+   my $hourselect;
+   my $hour;
+   my $ampm;
    if ($timeformat eq '24') {
       $hourselect=[0..23];
+      $hour=$twentyfour;
+   } else {
+      $hourselect=[1..12];
+      if ($twentyfour>12) {
+         $hour=$twentyfour-12;
+         $ampm='pm';
+      } else {
+         $hour=$twentyfour;
+         $ampm='am';
+      }
    }
-   $output.=&selectfield($id.'_time_hour',$name.'_time_hour',$hourselect,$hourselect,12).':'.
-            &selectfield($id.'_time_min',$name.'_time_min',[0..59],[0..59],0).':'.
-            &selectfield($id.'_time_sec',$name.'_time_sec',[0..59],[0..59],0);
+   $output.=&selectfield($id.'_time_hour',$name.'_time_hour',$hourselect,$hourselect,$hour).':'.
+            &selectfield($id.'_time_min',$name.'_time_min',[0..59],[0..59],$minutes).':'.
+            &selectfield($id.'_time_sec',$name.'_time_sec',[0..59],[0..59],$seconds);
    unless ($timeformat eq '24') {
       my $am=&mt('date_am');
       if ($am eq 'date_am') { $am='am'; }
       my $pm=&mt('date_pm');
       if ($pm eq 'date_pm') { $pm='pm'; }
       unless ($timeformat eq '24') {
-         $output.=&selectfield($id.'_time_ampm',$name.'_time_ampm',['am','pm'],[$am,$pm],'am');
+         $output.=&selectfield($id.'_time_ampm',$name.'_time_ampm',['am','pm'],[$am,$pm],$ampm);
       }
    }
+   $output.=$time_zone."</time>";
    return $output;
 }
 

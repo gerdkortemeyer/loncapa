@@ -68,7 +68,7 @@ sub locallocaltime {
    foreach ('seconds','minutes','twentyfour','twelve','day','year','month','weekday','ampm') {
       $format=~s/\$$_/eval('$'.$_)/gse;
    }
-   return ($format." ($time_zone)",$f->format_datetime($dt));
+   return ($format." $time_zone",$f->format_datetime($dt));
 }
 
 sub all_languages {

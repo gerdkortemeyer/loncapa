@@ -24,7 +24,8 @@ use base qw(Apache::lc_localize);
 %Lexicon=('_AUTO' => 1, 
 'language_code'      => 'en',
 'language_direction' => 'ltr',
-'language_description' => 'English'
+'language_description' => 'English',
+'date_short_locale' => '$month/$day/$year'
 );
 
 1;
