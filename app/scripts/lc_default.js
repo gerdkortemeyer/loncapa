@@ -37,16 +37,23 @@ function display_asset(newuri) {
    });
 }
 
+function showsub (submenuelement) {
+   $('#'+submenuelement).show();
+}
+
 function menubar() { 
 $.getJSON( "menu", function( data ) {
   var newmenu = "<ul id='menubuttonrow' class='dropmenu'>";
   var func = new Array();
+  var submenu=1;
   $.each(data, function(key, val) {
      if (typeof(val)=='object') {
-        newmenu+="<li class='menucategory'>"+key+"<ul>";
+        newmenu+="<li class='menucategory'><a href='#' onClick='showsub(\"submenu"+submenu+"\")'>"+key+"</a><ul id='submenu"+submenu+"'>";
+        submenu++;
         $.each(val, function(subkey,subval) {
            if (typeof(subval)=='object') {
-              newmenu+="<li class='menucategory'>"+subkey+"<ul>";
+              newmenu+="<li class='menucategory'><a href='#' onClick='showsub(\"submenu"+submenu+"\")'>"+subkey+"</a><ul id='submenu"+submenu+"'>";
+              submenu++;
               $.each(subval, function(subsubkey,subsubval) {
                  func=subsubval.split("&");
                  newmenu+="<li id='"+subsubkey+"' class='menulink'><a href='#' onClick='"+func[1]+"'>"+func[0]+"</a></li>";
