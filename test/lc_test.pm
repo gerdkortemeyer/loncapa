@@ -29,6 +29,7 @@ use Apache::lc_entity_utils();
 use Apache::lc_file_utils();
 use Apache::lc_entity_urls();
 use Apache::lc_entity_assessments();
+use Apache::lc_asset_safeeval();
 use Data::Dumper;
 
 # ==== Main handler
@@ -38,6 +39,15 @@ sub handler {
    my $r = shift;
 
    $r->print("Test Handler\n");
+
+my $safe=&Apache::lc_asset_safeeval::init_safe();
+
+&Apache::lc_asset_safeeval::codeeval($safe,'$a=17;$b=42;sub stuff { return 3.1415; }');
+
+$r->print(&Apache::lc_asset_safeeval::texteval($safe,'The answer is $b, not $a.'));
+
+return OK;
+
    my $entity;
    my $courseentity;
 

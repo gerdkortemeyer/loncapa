@@ -136,5 +136,10 @@ sub texteval {
    return $safeeval->reval('"'.$text.'"');
 }
 
+sub codeeval {
+   my ($safeeval,$code)=@_;
+   return $safeeval->reval($code);
+}
+
 1;
 __END__

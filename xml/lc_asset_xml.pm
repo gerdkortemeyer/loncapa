@@ -39,16 +39,22 @@ sub error {
    push(@{$stack->{'errors'}},$notes);
 }
 
+# Output a piece of text
+#
 sub process_text {
    my ($p,$safe,$stack,$status,$target,$token)=@_;
    return $token->[1];
 }
 
+# Process an HTML tag, call routines if defined
+#
 sub process_tag {
    my ($type,$tag,$p,$safe,$stack,$status,$target,$token)=@_;
 # The output that this script is going to produce
    my $tag_output='';
 # The routine that would run any commands for this
+# These would be things that should always be run independent of target
+# prior to actually rendering anything
    my $cmdtag=$type.'_'.$tag.'_cmd';
 # The routine that would produce the output
    my $outtag=$type.'_'.$tag.'_'.$target;
@@ -60,11 +66,33 @@ sub process_tag {
       $tag_output.=&{$outtag}($p,$safe,$stack,$token);
    } elsif ($target eq 'html') {
 # If nothing is defined and we render for html, just output what we got
-      $tag_output.=$token->[-1];
+      $tag_output.=&default_html($token);
    }
    use strict 'refs';
 }
 
+# Give out the tag again unchanged, except for the evaluated args
+#
+sub default_html {
+   my ($token)=@_;
+   if ($token->[0] eq 'S') {
+# Start tag
+      my @arguments=keys(%{$token->[2]});
+      if ($#arguments<0) {
+# No arguments here, just return
+         return $token->[-1];
+      } else {
+# Rebuild this, since arguments may have been evaluated
+         return '<'.$token->[1].' '.join(' ',map{$_.'="'.$token->[2]->{$_}.'"'}(@arguments)).'>';
+      }
+   } else {
+# End tag
+      return $token->[-1];
+   }
+}
+
+# Central parser routine
+#
 sub parser {
    my ($p,$safe,$stack,$status,$target)=@_;
    my $output='';
@@ -72,7 +100,11 @@ sub parser {
       if ($token->[0] eq 'T') {
          $output.=&process_text($p,$safe,$stack,$status,$target,$token);
       } elsif ($token->[0] eq 'S') {
-# A start tag - remember for embedded tags and for the end tag
+# A start tag - evaluate the attributes in here
+         foreach my $key (keys(%{$token->[2]})) {
+            $token->[2]->{$key}=&Apache::lc_asset_safeeval::texteval($safe,$token->[2]->{$key}); 
+         }
+# - remember for embedded tags and for the end tag
          push(@{$stack->{'tags'}},{ 'name' => $token->[1], 'args' => $token->[2] });
          $output.=&process_tag('start',$token->[1],$p,$safe,$stack,$status,$target,$token);
       } elsif ($token->[0] eq 'E') {
@@ -101,6 +133,7 @@ sub parser {
 #
 sub target_render {
    my ($fn,$target)=@_;
+# Clear out and initialize everything
    my $p=HTML::TokeParser->new($fn);
    $p->empty_element_tags(1);
    my $safe=&Apache::lc_asset_safeeval::init_safe();
