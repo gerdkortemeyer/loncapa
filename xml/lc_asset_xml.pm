@@ -31,7 +31,7 @@ use Apache::lc_ui_localize;
 use Apache::lc_xml_standard;
 use Apache::lc_xml_localize;
 use Apache::lc_xml_forms;
-
+use Apache::lc_xml_perl;
 
 sub error {
    my ($stack,$type,$notes)=@_;
