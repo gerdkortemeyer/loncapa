@@ -160,6 +160,23 @@ sub course_to_entity {
     return $entity;
 }
 
+# =================================================================
+# Table of contents
+# =================================================================
+#
+
+sub load_contents {
+   my ($courseid,$domain)=@_;
+# See if we already have it cached
+   my $toc=&Apache::lc_memcached::lookup_toc($courseid,$domain);
+   if ($toc) { return $toc; }
+}
+
+# Store the table of contents in $toc
+#
+sub store_contents {
+   my ($courseid,$domain,$toc)=@_;
+}
 
 BEGIN {
    &Apache::lc_connection_handle::register('course_to_entity',undef,undef,undef,\&local_course_to_entity,'courseid','domain');

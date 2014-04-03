@@ -147,6 +147,19 @@ sub lookup_metadata {
    return &mget("metadata:$entity:$domain");
 }
 
+#
+# Caching table of contents
+#
+sub insert_toc {
+   my ($entity,$domain,$toc)=@_;
+   &mset("toc:$entity:$domain",$toc,&lc_short_expire());
+}
+
+sub lookup_toc {
+   my ($entity,$domain)=@_;
+   return &mget("toc:$entity:$domain");
+}
+
 # === Direct access
 # You don't want to call these from outside
 #
