@@ -209,11 +209,55 @@ sub load_contents {
 }
 
 # ==== Store the table of contents in $toc
+# This is for real, actually changing the table of contents
 #
 sub store_contents {
    my ($courseid,$domain,$toc)=@_;
    &Apache::lc_file_utils::writefile(&toc_wrk_filepath($courseid,$domain),&Apache::lc_json_utils::perl_to_json($toc));
-   return &Apache::lc_entity_urls::workspace_publish(&toc_wrk_url($courseid,$domain));
+   my $return=&Apache::lc_entity_urls::workspace_publish(&toc_wrk_url($courseid,$domain));
+   if ($return) {
+# Cache it, too, so it takes effect immediately in order to avoid confusion
+      &Apache::lc_memcached::insert_toc($courseid,$domain,$toc);
+      return 1;
+   } else {
+      return undef;
+   }
+}
+
+
+# ==== Load work copy
+# This is while editing the table of contents
+# If there is none yet, it will be latest
+#
+sub load_wrk_contents {
+   my ($courseid,$domain)=@_;
+   my $wrk_path=&toc_wrk_filepath($courseid,$domain);
+   if (-e $wrk_path) {
+      return &Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readfile($wrk_path));
+   } else {
+# Make sure we have a fresh copy, just in case ...
+      my $toc=&Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readurl(&toc_url($courseid,$domain)));
+      if ($toc) {
+         &store_wrk_contents($courseid,$domain,$toc);
+         return $toc;
+      } else {
+         return undef;
+      }
+   }
+}
+
+# Store a work copy
+#
+sub store_wrk_contents {
+   my ($courseid,$domain,$wrktoc)=@_;
+   return &Apache::lc_file_utils::writefile(&toc_wrk_filepath($courseid,$domain),&Apache::lc_json_utils::perl_to_json($wrktoc));
+}
+
+# Destroy the work copy, it will then default back
+#
+sub undo_wrk_contents {
+   my ($courseid,$domain)=@_;
+   unlink &toc_wrk_filepath($courseid,$domain);
 }
 
 BEGIN {
