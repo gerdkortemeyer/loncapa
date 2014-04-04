@@ -27,6 +27,7 @@ use Apache::lc_parameters;
 use Apache::lc_entity_users();
 use Apache::lc_entity_utils();
 use Apache::lc_file_utils();
+use Apache::lc_entity_sessions();
 use Apache::lc_entity_urls();
 use Apache::lc_entity_assessments();
 use Apache::lc_asset_safeeval();
@@ -58,6 +59,11 @@ sub handler {
 
 
    $r->print(">".Dumper(&Apache::lc_entity_courses::load_contents($courseentity,'msu'))."\n");
+
+   $r->print("Course: ".join(',',&Apache::lc_entity_sessions::course_entity_domain()));
+
+   &Apache::lc_entity_sessions::enter_course($courseentity,'msu');
+
 
 return OK;
 

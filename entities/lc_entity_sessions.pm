@@ -100,6 +100,23 @@ sub user_domain {
    return $ENV{'lc_session'}->{'domain'};
 }
 
+# Returns the current session's entity and domain
+# in the order expected by most subroutines
+#
+sub course_entity_domain {
+   return ($ENV{'lc_session'}->{'data'}->{'current_course'}->{'entity'},
+           $ENV{'lc_session'}->{'data'}->{'current_course'}->{'domain'});
+}
+
+#
+# Enter a course
+#
+sub enter_course {
+   my ($courseid,$domain)=@_;
+   &update_session({ 'current_course' => { 'entity' => $courseid, 'domain' => $domain }});
+}
+
+
 # Returns the current breadcrumbs
 #
 sub breadcrumbs {
