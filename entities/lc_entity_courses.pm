@@ -26,6 +26,7 @@ use Apache::lc_connection_handle();
 use Apache::lc_postgresql();
 use Apache::lc_mongodb();
 use Apache::lc_memcached();
+use Apache::lc_parameters;
 
 use Apache2::Const qw(:common :http);
 
@@ -72,6 +73,8 @@ sub local_make_new_course {
    &Apache::lc_postgresql::insert_homeserver($entity,$domain,&Apache::lc_connection_utils::host_name());
 # Start course profile
    &Apache::lc_mongodb::insert_profile($entity,$domain,{ created => &Apache::lc_date_utils::now2str() });
+# Start empty table of contents
+   &store_contents($entity,$domain,[]);
 # Return the entity
    return $entity;
 }
@@ -165,17 +168,52 @@ sub course_to_entity {
 # =================================================================
 #
 
+# ==== Return the URL for the table of contents of this course
+#
+
+sub toc_path {
+   my ($courseid,$domain)=@_;
+   return $domain.'/'.$courseid.'/toc.json';
+}
+
+sub toc_url {
+   return '/asset/-/-/'.&toc_path(@_);
+}
+
+sub toc_wrk_filepath {
+  return &lc_wrk_dir().'/'.&toc_path(@_);
+}
+
+sub toc_wrk_url {
+   return '/wrk/'.&toc_path(@_);
+}
+
+# ==== Load and return the table of contents
+#
 sub load_contents {
    my ($courseid,$domain)=@_;
 # See if we already have it cached
    my $toc=&Apache::lc_memcached::lookup_toc($courseid,$domain);
    if ($toc) { return $toc; }
+# Load it
+   $toc=&Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readurl(&toc_url($domain,$courseid)));
+   if ($toc) {
+# Cache and return it
+      &Apache::lc_memcached::insert_toc($courseid,$domain,$toc);
+      return $toc;
+   } else {
+# Oops!
+      &logwarning("Could not find table of contents for ($courseid) ($domain)");
+      return undef;
+   }
 }
 
-# Store the table of contents in $toc
+# ==== Store the table of contents in $toc
 #
 sub store_contents {
    my ($courseid,$domain,$toc)=@_;
+   &Apache::lc_file_utils::writefile(&toc_wrk_filepath($courseid,$domain),&Apache::lc_json_utils::perl_to_json($toc));
+   return &Apache::lc_entity_urls::workspace_publish(&toc_wrk_url($courseid,$domain));
 }
 
 BEGIN {

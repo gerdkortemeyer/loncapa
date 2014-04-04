@@ -40,14 +40,6 @@ sub handler {
 
    $r->print("Test Handler\n");
 
-my $safe=&Apache::lc_asset_safeeval::init_safe();
-
-&Apache::lc_asset_safeeval::codeeval($safe,'$a=17;$b=42;sub stuff { return 3.1415; }');
-
-$r->print(&Apache::lc_asset_safeeval::texteval($safe,'The answer is $b, not $a.'));
-
-return OK;
-
    my $entity;
    my $courseentity;
 
@@ -55,9 +47,20 @@ return OK;
    $entity=&Apache::lc_entity_users::username_to_entity('test171','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
-   $r->print(&Apache::lc_entity_courses::make_new_course('test155','msu')."\n");
-   $courseentity=&Apache::lc_entity_courses::course_to_entity('test155','msu');
+   $r->print(&Apache::lc_entity_courses::make_new_course('test200','msu')."\n");
+   $courseentity=&Apache::lc_entity_courses::course_to_entity('test200','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+
+   $r->print(">".Dumper(&Apache::lc_entity_courses::load_contents($courseentity,'msu'))."\n");
+
+   $r->print(">".Dumper(&Apache::lc_entity_courses::store_contents($courseentity,'msu',[42]))."\n");
+
+
+   $r->print(">".Dumper(&Apache::lc_entity_courses::load_contents($courseentity,'msu'))."\n");
+
+return OK;
+
 
    $r->print(">".Dumper(&Apache::lc_entity_assessments::store_assessment(
        $courseentity,'msu',
