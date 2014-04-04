@@ -196,7 +196,7 @@ sub load_contents {
    my $toc=&Apache::lc_memcached::lookup_toc($courseid,$domain);
    if ($toc) { return $toc; }
 # Load it
-   $toc=&Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readurl(&toc_url($domain,$courseid)));
+   $toc=&Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readurl(&toc_url($courseid,$domain)));
    if ($toc) {
 # Cache and return it
       &Apache::lc_memcached::insert_toc($courseid,$domain,$toc);
