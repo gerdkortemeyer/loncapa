@@ -266,12 +266,20 @@ sub local_workspace_publish {
 # While working on an asset, the version is /(asset|raw)/wrk
 #
 # Fetches a /raw/wrk-file from another server as a particular version number
-# during publication
+# or wrk-version
 #
 sub local_fetch_wrk_file {
    my ($orig_host,$entity,$domain,$version)=@_;
+# Default: numbered after publication
+   my $version_type='n';
+   my $version_arg=$version;
+# ... or wrk-version if not published
+   if ($version eq 'wrk') {
+      $version_type='wrk';
+      $version_arg='-';
+   }
    if (&Apache::lc_dispatcher::copy_file($orig_host,'/raw/wrk/-/'.$domain.'/'.$entity,
-                                         &asset_resource_filename($entity,$domain,'n',$version))) {
+                                         &asset_resource_filename($entity,$domain,$version_type,$version_arg))) {
       return 1;
    }
    &logwarning("Failed to copy wrk-file entity ($entity) domain ($domain) from host ($orig_host) as version ($version)");
@@ -379,12 +387,24 @@ sub workspace_publish {
    my ($wrk_url)=@_;
 # Get author and domain to see if we are in charge here
    my ($domain,$author_entity)=($wrk_url=~/^\/wrk\/([^\/]+)\/([^\/]+)\//);
+   my $return;
 # It's our job if this is the author's homeserver
    if (&Apache::lc_entity_utils::we_are_homeserver($author_entity,$domain)) {
-      return &local_workspace_publish($wrk_url);
+      $return=&local_workspace_publish($wrk_url);
    } else {
 # No, this is another server's business
-     return &remote_workspace_publish(&Apache::lc_entity_utils::homeserver($author_entity,$domain),$wrk_url);
+      $return=&remote_workspace_publish(&Apache::lc_entity_utils::homeserver($author_entity,$domain),$wrk_url);
+   }
+# Are we done?
+   if ($return) {
+# Get rid of /wrk-copy, we are done with it
+      unless (unlink(&wrk_to_filepath($wrk_url))) {
+         &logerror("Could not remove local workspace copy of ($wrk_url)");
+         return undef;
+      }
+      return 1;
+   } else {
+      return undef;
    }
 }
 
@@ -450,6 +470,43 @@ sub make_new_url {
       return &local_make_new_url($full_url);
    } else {
       return &remote_make_new_url(&Apache::lc_entity_utils::homeserver($author,$domain),$full_url);
+   }
+}
+
+# ======================================================
+# /(asset|raw)/wrk -versions
+# This is the normal way to deal with unpublished
+# resources, they are the version "wrk"
+# ======================================================
+#
+
+
+# Publish an asset
+# This publishes an /asset/wrk through its homeserver
+#
+sub publish {
+   my ($full_url)=@_;
+}
+
+# Save an asset
+# Should be called after every saving of an /asset/wrk
+# to current file system, this also save it to its homeserver
+#
+sub save {
+   my ($full_url)=@_;
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+   if (&Apache::lc_entity_utils::we_are_homeserver($author,$domain)) {
+# There's nothing to do, all set
+      return 1;
+   } else {
+      my $entity=&url_to_entity($full_url);
+      unless ($entity) {
+# Wow, this should not happen. We cannot save unassigned URLs!
+         &logerror("Trying to save ($full_url), but no entity assigned yet!");
+         return 0;
+      }
+# Make the homeserver copy it over
+      return &remote_fetch_wrk_file(&Apache::lc_entity_utils::homeserver($author,$domain),$entity,$domain,'wrk');   
    }
 }
 
