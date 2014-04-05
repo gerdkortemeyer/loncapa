@@ -74,6 +74,7 @@ sub dump_metadata {
 #
 # Versioning metadata
 # --- update (increment) the version
+# Nothing more - returns the new version number
 #
 sub local_new_version {
    my ($entity,$domain)=@_;
@@ -99,6 +100,7 @@ sub remote_new_version {
 }
 
 # --- set the initial version, which is 1
+# Nothing more ... just make the new version
 #
 sub local_initial_version {
    my ($entity,$domain)=@_;
@@ -155,6 +157,10 @@ sub current_version {
    return $version;     
 }
 
+# =======================================================
+# Taking apart a URL of type /asset/... or /raw/ ...
+# Both point the same resource, but "raw" leaves it
+# unrendered for copying
 #
 # Get URL data out
 # /asset/version_type/version_arg/domain/authorentity/...
@@ -199,9 +205,11 @@ sub dir_list {
 }
 
 # ======================================================
-# This transfers a file from wrk into res
+# This transfers a file from workspace into res
 # ======================================================
-# Unpublished assets sit under the given filepath in the wrk-directory
+# Unpublished uploaded assets sit under the given filepath
+# in the wrk-directory
+# /wrk/givenpath
 # Published assets have one or more virtual URLs
 #
 sub local_workspace_publish {
@@ -254,8 +262,11 @@ sub local_workspace_publish {
    return 1;
 }
 
+# =============================================================
+# While working on an asset, the version is /(asset|raw)/wrk
 #
-# Fetches a wrk-file from another server
+# Fetches a /raw/wrk-file from another server as a particular version number
+# during publication
 #
 sub local_fetch_wrk_file {
    my ($orig_host,$entity,$domain,$version)=@_;
@@ -267,6 +278,10 @@ sub local_fetch_wrk_file {
    return 0;
 }
 
+#
+# Make another server fetch my /raw/wrk-file as a particular version number
+# during publication
+#
 sub remote_fetch_wrk_file {
    my ($target_host,$entity,$domain,$version)=@_;
    my ($code,$reply)=&Apache::lc_dispatcher::command_dispatch($target_host,'fetch_wrk_file',
@@ -358,6 +373,7 @@ sub remote_workspace_publish {
 
 #
 # Routine to call to publish a file from out of workspace
+# /wrl/filepath
 #
 sub workspace_publish {
    my ($wrk_url)=@_;
