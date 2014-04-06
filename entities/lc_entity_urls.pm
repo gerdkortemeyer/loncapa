@@ -479,6 +479,18 @@ sub make_new_url {
 # resources, they are the version "wrk"
 # ======================================================
 #
+# Locally publish this
+#
+sub local_publish {
+   my ($full_url)=@_;
+}
+
+# Call on other host to publish this
+# It's already there due to previous "safe"
+#
+sub remote_publish {
+   my ($host,$full_url)=@_;
+}
 
 
 # Publish an asset
@@ -486,6 +498,16 @@ sub make_new_url {
 #
 sub publish {
    my ($full_url)=@_;
+   unless (&save($full_url)) {
+      &logerror("Could not publish ($full_url)");
+      return 0;
+   }
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+   if (&Apache::lc_entity_utils::we_are_homeserver($author,$domain)) {
+      return &local_publish($full_url);
+   } else {
+      return &remote_publish(&Apache::lc_entity_utils::homeserver($author,$domain),$full_url);
+   }
 }
 
 # Save an asset
