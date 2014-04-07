@@ -33,8 +33,9 @@ use File::Copy;
 use File::stat;
 
 
-#
+# =========================================================================
 # Get the metadata for an asset
+# =========================================================================
 #
 sub local_dump_metadata {
    return &Apache::lc_mongodb::dump_metadata(@_);
@@ -70,7 +71,9 @@ sub dump_metadata {
    return $metadata;
 }
 
-
+# =======================================================================
+# Version handling
+# =======================================================================
 #
 # Versioning metadata
 # --- update (increment) the version
@@ -157,6 +160,8 @@ sub current_version {
    return $version;     
 }
 
+# =======================================================
+# Evaluating an URL
 # =======================================================
 # Taking apart a URL of type /asset/... or /raw/ ...
 # Both point the same resource, but "raw" leaves it
@@ -263,38 +268,64 @@ sub local_workspace_publish {
 }
 
 # =============================================================
+# Moving an uploaded asset from wrk-space over to asset space
+# =============================================================
+# At this point, the uploaded asset already needs to have an
+# assigned $entity, i.e., we need to know where this is going
+#
+sub transfer_uploaded {
+   my ($full_url)=@_;
+   my $entity=&url_to_entity($full_url);
+   unless ($entity) {
+      &logwarning("Cannot transfer uploaded version of ($full_url), no entity");
+      return undef;
+   }
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+   my $wrk_filename=&wrk_to_filepath('/wrk/'.$url);
+   unless (-e $wrk_filename) {
+      &logwarning("Cannot transfer uploaded version of ($full_url), file ($wrk_filename) does not exist");
+      return undef;
+   }
+   my $dest_filename=&asset_resource_filename($entity,$domain,'wrk','-');
+   unless (&move($wrk_filename,$dest_filename)) {
+      &logerror("Failed to move ($wrk_filename) to ($dest_filename)");
+      return undef;
+   }
+   unless (&save($full_url)) {
+      &logerror("Unable to save uploaded file ($full_url) to homeserver");
+      return undef;
+   }
+   return 1;
+}
+
+
+# =============================================================
+# Moving unpublished assets between servers
+# =============================================================
 # While working on an asset, the version is /(asset|raw)/wrk
 #
-# Fetches a /raw/wrk-file from another server as a particular version number
-# or wrk-version
+# Fetches a /raw/wrk-file from another server
+# Shuffling around unpublished assets between servers
 #
 sub local_fetch_wrk_file {
-   my ($orig_host,$entity,$domain,$version)=@_;
-# Default: numbered after publication
-   my $version_type='n';
-   my $version_arg=$version;
-# ... or wrk-version if not published
-   if ($version eq 'wrk') {
-      $version_type='wrk';
-      $version_arg='-';
-   }
+   my ($orig_host,$entity,$domain)=@_;
    if (&Apache::lc_dispatcher::copy_file($orig_host,'/raw/wrk/-/'.$domain.'/'.$entity,
-                                         &asset_resource_filename($entity,$domain,$version_type,$version_arg))) {
+                                         &asset_resource_filename($entity,$domain,'wrk','-'))) {
       return 1;
    }
-   &logwarning("Failed to copy wrk-file entity ($entity) domain ($domain) from host ($orig_host) as version ($version)");
+   &logwarning("Failed to copy wrk-file entity ($entity) domain ($domain) from host ($orig_host)");
    return 0;
 }
 
 #
-# Make another server fetch my /raw/wrk-file as a particular version number
+# Make another server fetch my /raw/wrk-file
 # during publication
 #
 sub remote_fetch_wrk_file {
-   my ($target_host,$entity,$domain,$version)=@_;
+   my ($target_host,$entity,$domain)=@_;
    my ($code,$reply)=&Apache::lc_dispatcher::command_dispatch($target_host,'fetch_wrk_file',
                               &Apache::lc_json_utils::perl_to_json({ orig_host => &Apache::lc_connection_utils::host_name(),
-                                                                     entity => $entity, domain => $domain, version => $version }));
+                                                                     entity => $entity, domain => $domain }));
    unless ($code eq HTTP_OK) {
        &logwarning("Tried to copy entity ($entity) domain ($domain), got code ($code) from host ($target_host)");
        return undef;
@@ -412,6 +443,10 @@ sub workspace_publish {
 # Make a new URL
 # ======================================================
 #
+# Takes a full URL and generates an entity for it
+# Happing on this server, which would need to be the
+# homeserver for the author
+#
 sub local_make_new_url {
    my ($version_type,$version_arg,$domain,$author,$url)=&split_url(@_[0]);
 # Are we even potentially in charge here?
@@ -448,6 +483,8 @@ sub local_make_new_url {
    return $entity;
 }
 
+# Takes a full URL and generates an entity on the homeserver of the author
+#
 sub remote_make_new_url {
    my ($host,$full_url)=@_;
    unless ($host) {
@@ -463,6 +500,10 @@ sub remote_make_new_url {
    }
 }
 
+#
+# This generates the entity for a new initial URL
+# It returns the $entity for it
+#
 sub make_new_url {
    my ($full_url)=@_;
    my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
@@ -525,13 +566,79 @@ sub save {
       unless ($entity) {
 # Wow, this should not happen. We cannot save unassigned URLs!
          &logerror("Trying to save ($full_url), but no entity assigned yet!");
-         return 0;
+         return undef;
       }
 # Make the homeserver copy it over
       return &remote_fetch_wrk_file(&Apache::lc_entity_utils::homeserver($author,$domain),$entity,$domain,'wrk');   
    }
 }
 
+# Get a fresh version of the /asset/wrk-file from the
+# homeserver
+#
+sub checkout {
+   my ($full_url)=@_;
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+# We can only do this with the most recent version
+   unless ($version_type eq '-') {
+      &logerror("Cannot checkout anything but most recent of ($full_url)");
+      return undef;
+   }
+   if (&Apache::lc_entity_utils::we_are_homeserver($author,$domain)) {
+# Nothing to do, we are homeserver ourselves
+      return 1;
+   } else {
+      my $entity=&url_to_entity($full_url);
+      unless ($entity) {
+# There's a problem here
+         &logwarning("Cannot check out ($full_url), no entity defined");
+         return undef;
+      }
+# Get it from the homeserver
+      if (&local_fetch_wrk_file(&Apache::lc_entity_utils::homeserver($author,$domain),$entity,$domain)) {
+# Great, we are done
+#FIXME: remember that we did this in the environment
+         return 1;
+      } else {
+# There was no work version, get the latest and make it a wrk-version
+         return &checkout_published($full_url);
+      }
+   }
+}
+
+# Check out a specific published version of an asset
+# to be the local wrk-file
+#
+sub checkout_published {
+   my ($full_url)=@_;
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+# We cannot do this with the wrk-file
+   if ($version_type eq 'wrk') {
+      &logerror("Cannot checkout ($full_url) as a published file");
+      return undef;
+   } 
+   my $entity=&url_to_entity($full_url);
+   unless ($entity) {
+# Published assets would have an entity for sure
+      &logerror("Cannot check out ($full_url) as published, no entity defined");
+      return undef;
+   }
+   unless (&replicate($full_url)) {
+# Failed to get the asset
+      &logerror("Could not check out ($full_url), replication failed");
+      return undef;
+   }
+# So far so good. Make it the new wrk-version
+   if (&copy(&asset_resource_filename($entity,$domain,$version_type,$version_arg),
+             &asset_resource_filename($entity,$domain,'wrk','-'))) {
+#FIXME: remember that we did this
+      return 1;
+   } else {
+# How could this fail?
+      &logerror("Could not copy ($full_url) to wrk-copy");
+      return undef;
+   }
+}
 
 # ======================================================
 # URL - Entity
@@ -707,8 +814,7 @@ BEGIN {
    &Apache::lc_connection_handle::register('current_version',undef,undef,undef,\&local_current_version,'entity','domain');
    &Apache::lc_connection_handle::register('dump_metadata',undef,undef,undef,\&local_json_dump_metadata,'entity','domain');
    &Apache::lc_connection_handle::register('dir_list',undef,undef,undef,\&local_json_dir_list,'path');
-   &Apache::lc_connection_handle::register('fetch_wrk_file',undef,undef,undef,\&local_fetch_wrk_file,'orig_host',
-                                                                                                     'entity','domain','version');
+   &Apache::lc_connection_handle::register('fetch_wrk_file',undef,undef,undef,\&local_fetch_wrk_file,'orig_host','entity','domain');
    &Apache::lc_connection_handle::register('initial_version',undef,undef,undef,\&local_initial_version,'entity','domain');
    &Apache::lc_connection_handle::register('new_version',undef,undef,undef,\&local_new_version,'entity','domain');
 }
