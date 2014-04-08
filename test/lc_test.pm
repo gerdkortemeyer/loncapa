@@ -149,13 +149,14 @@ return OK;
 
 
 
-   my $wrk_url='/wrk/msu/'.$entity.'/rqdqweq/fqweqz.html';
+   my $wrk_url='/wrk/msu/'.$entity.'/rqdqweq/fqweqc.html';
 
-   &Apache::lc_entity_urls::workspace_publish($wrk_url);   
+   my $url='/asset/-/-/msu/'.$entity.'/rqdqweq/fqweqc.html';
+ 
+   &Apache::lc_entity_urls::transfer_uploaded($url);
+   &Apache::lc_entity_urls::save($url);
+   &Apache::lc_entity_urls::publish($url);
 
-
-
-   my $url='/asset/-/-/msu/'.$entity.'/rqdqweq/fqweqz.html';
 #
 #   &Apache::lc_entity_urls::make_new_url($url);
 
