@@ -130,7 +130,7 @@ sub writefile {
 #
 sub writeurl {
    my ($url,$data)=@_;
-   my ($version_type,$version_arg,$domain,$author,$url)=&Apache::lc_entity::urls::split_url($url);
+   my ($version_type,$version_arg,$domain,$author,$url)=&Apache::lc_entity_urls::split_url($url);
    unless ($version_type eq 'wrk') {
       &logerror("Cannot directly write to any published version of ($url)");
       return undef;
