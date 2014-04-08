@@ -76,52 +76,38 @@ sub dump_metadata {
 # =======================================================================
 #
 # Versioning metadata
-# --- update (increment) the version
+# Set initial version or increment the version
 # Nothing more - returns the new version number
 #
 sub local_new_version {
    my ($entity,$domain)=@_;
+   unless (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      &logwarning("Cannot locally update version of ($entity) ($domain), not homeserver");
+      return undef;
+   }
    my $current_metadata=&Apache::lc_mongodb::dump_metadata($entity,$domain);
-   my $new_version=$current_metadata->{'current_version'}+1;
-   my $return=&Apache::lc_mongodb::update_metadata($entity,$domain,{ 'current_version' => $new_version,
-                                          'versions' => { $new_version => &Apache::lc_date_utils::now2str() }});
+   my $new_version;
+   if ($current_metadata->{'current_version'}>0) {
+# There already is an existing version
+      $new_version=$current_metadata->{'current_version'}+1;
+      unless (&Apache::lc_mongodb::update_metadata($entity,$domain,{ 'current_version' => $new_version,
+                                          'versions' => { $new_version => &Apache::lc_date_utils::now2str() }})) {
+         &logerror("Could not update metadata entry for ($entity) ($domain) to version ($new_version)");
+         return undef;
+      }
+   } else {
+      $new_version=1;
+      unless (&Apache::lc_mongodb::insert_metadata($entity,$domain,{ current_version => 1,
+                                                          versions => { 1 => &Apache::lc_date_utils::now2str() } })) {
+         &logerror("Could not generate first metadata entry for ($entity) ($domain)");
+         return undef;
+      }
+   }
+# Update the local memcache, since we know this now ...
    &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
    &Apache::lc_memcached::insert_metadata($entity,$domain,&Apache::lc_mongodb::dump_metadata($entity,$domain));
-   return $return;
+   return $new_version;
 } 
-
-
-sub remote_new_version {
-   my ($host,$entity,$domain)=@_;
-   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'new_version',
-                                            "{ entity : '$entity', domain : '$domain' }");
-   if ($code eq HTTP_OK) {
-      return $response;
-   } else {
-      return undef;
-   }
-}
-
-# --- set the initial version, which is 1
-# Nothing more ... just make the new version
-#
-sub local_initial_version {
-   my ($entity,$domain)=@_;
-   &Apache::lc_memcached::insert_current_version($entity,$domain,1);
-   return &Apache::lc_mongodb::insert_metadata($entity,$domain,{ current_version => 1,
-                                                          versions => { 1 => &Apache::lc_date_utils::now2str() } });
-}
-
-sub remote_initial_version {
-   my ($host,$entity,$domain)=@_;
-   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'initial_version',
-                                            "{ entity : '$entity', domain : '$domain' }");
-   if ($code eq HTTP_OK) {
-      return $response;
-   } else {
-      return undef;
-   }
-}
 
 #
 # Handling current version requests
@@ -209,64 +195,6 @@ sub dir_list {
    }
 }
 
-# ======================================================
-# This transfers a file from workspace into res
-# ======================================================
-# Unpublished uploaded assets sit under the given filepath
-# in the wrk-directory
-# /wrk/givenpath
-# Published assets have one or more virtual URLs
-#
-sub local_workspace_publish {
-   my ($wrk_url)=@_;
-# Can't publish what does not exist
-   my $wrk_filename=&wrk_to_filepath($wrk_url);
-   unless (-e $wrk_filename) {
-      &logwarning("Attempting to publish ($wrk_url), but associated file does not exist");
-      return 0;
-   }
-# Construct the asset-URL for this
-   my $full_url=$wrk_url;
-   $full_url=~s/^\/wrk\//\/asset\/\-\/\-\//;
-   &lognotice("Initiated publication of ($wrk_url) to ($full_url)");
-# First thing to find out: does this already exist?
-   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
-   my $entity=&url_to_entity($full_url);
-   if ($entity) {
-# This already exists, must be a new version
-      my $current_version=&local_current_version($entity,$domain);
-      my $new_version=$current_version+1;
-      &lognotice("Resource ($full_url) exists, making new version ($new_version)");
-      my $dest_filename=&asset_resource_filename($entity,$domain,'n',$new_version);
-      &copy($wrk_filename,$dest_filename);
-# Update the metadata
-      unless (&local_new_version($entity,$domain)) {
-         &logwarning("Failed to generate local new verion metadata entity ($entity) domain ($domain)");
-         return undef;
-      }
-   } else {
-# This does not yet exist, first publication
-      &lognotice("Resource ($full_url) does not yet exist");
-      $entity=&local_make_new_url($full_url);
-      unless ($entity) {
-         &logwarning("Could not obtain URL entity for ($full_url)");
-         return undef;
-      }
-      my $dest_filename=&asset_resource_filename($entity,$domain,'n',1);
-      &lognotice("Destination filename is ($dest_filename)");
-# Make sure we have the subdirectory
-      &Apache::lc_file_utils::ensuresubdir($dest_filename);
-# Okay, can copy over
-      &copy($wrk_filename,$dest_filename);
-# Make the first metadata entry
-      unless (&local_initial_version($entity,$domain)) {
-         &logwarning("Failed to generate local initial version of entity ($entity) domain ($domain)");
-         return undef;
-      }
-   }
-   return 1;
-}
-
 # =============================================================
 # Moving an uploaded asset from wrk-space over to asset space
 # =============================================================
@@ -287,6 +215,7 @@ sub transfer_uploaded {
       return undef;
    }
    my $dest_filename=&asset_resource_filename($entity,$domain,'wrk','-');
+   &Apache::lc_file_utils::ensuresubdir($dest_filename);
    unless (&move($wrk_filename,$dest_filename)) {
       &logerror("Failed to move ($wrk_filename) to ($dest_filename)");
       return undef;
@@ -335,108 +264,6 @@ sub remote_fetch_wrk_file {
       return undef;
     }
     return 1;
-}
-
-#
-# Take a file out of local workspace and publish it through the homeserver
-#
-sub remote_workspace_publish {
-   my ($host,$wrk_url)=@_;
-# Does this file exist?
-   my $wrk_filename=&wrk_to_filepath($wrk_url);
-   unless (-e $wrk_filename) {
-      &logwarning("Attempting to remote publish ($wrk_url), but associated file does not exist");
-      return 0;
-   }
-# Construct the asset-URL for this
-   my $full_url=$wrk_url;
-   $full_url=~s/^\/wrk\//\/asset\/\-\/\-\//;
-   &lognotice("Initiated remote publication of ($wrk_url) to ($full_url)");
-# First thing to find out: does this already exist?
-   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
-   my $entity=&url_to_entity($full_url);
-   if ($entity) {
-# This already exists, must be a new version
-      my $current_version=&current_version($entity,$domain);
-      my $new_version=$current_version+1;
-      &lognotice("Resource ($full_url) exists, making new version ($new_version)");
-# This needs to become the wrk-version
-      my $dest_filename=&asset_resource_filename($entity,$domain,'wrk','-');
-# Make sure we have the subdirectory locally
-      &Apache::lc_file_utils::ensuresubdir($dest_filename);
-# Move it into position locally
-      &copy($wrk_filename,$dest_filename);
-# Copy it over to the homeserver
-      unless (&remote_fetch_wrk_file($host,$entity,$domain,$new_version)) {
-         &logwarning("Failed to turn local wrk file entity ($entity) domain ($domain) into version ($new_version) on host ($host)"); 
-         return undef; 
-      }
-# Update the metadata remotely
-      unless (&remote_new_version($host,$entity,$domain)) {
-         &logwarning("Failed to remote generate new version of entity ($entity) domain ($domain) on host ($host)");
-         return undef;
-      }
-# Locally we would like to see this immediately, so we don't confuse the user
-      &Apache::lc_memcached::insert_current_version($entity,$domain,$new_version);
-      &Apache::lc_memcached::insert_metadata($entity,$domain,&remote_dump_metadata($host,$entity,$domain));
-   } else {
-# This does not yet exist, first publication
-     &lognotice("Resource ($full_url) does not yet exist");
-     $entity=&remote_make_new_url($host,$full_url);
-     unless ($entity) {
-        &logwarning("Could remotely not obtain URL entity for ($full_url) from host ($host)");
-        return undef;
-     }
-# Where does the wrk-version sit?
-     my $dest_filename=&asset_resource_filename($entity,$domain,'wrk','-');
-     &lognotice("Intermediate filename is ($dest_filename)");
-# Make sure we have the subdirectory locally
-     &Apache::lc_file_utils::ensuresubdir($dest_filename);
-# Okay, can copy over locally
-     &copy($wrk_filename,$dest_filename);
-# Copy over to homeserver
-     unless (&remote_fetch_wrk_file($host,$entity,$domain,1)) {
-        &logwarning("Remote server ($host) failed to fetch work copy of entity ($entity) domain ($domain)"); 
-        return undef; 
-     }
-# Remotely make the first metadata entry
-     unless (&remote_initial_version($host,$entity,$domain)) {
-        &logwarning("Failed to remote generate initial version of entity ($entity) domain ($domain) on host ($host)");
-        return undef;
-     }
-# Update locally immediately
-     &Apache::lc_memcached::insert_current_version($entity,$domain,1);
-   }
-   return 1;
-}
-
-#
-# Routine to call to publish a file from out of workspace
-# /wrl/filepath
-#
-sub workspace_publish {
-   my ($wrk_url)=@_;
-# Get author and domain to see if we are in charge here
-   my ($domain,$author_entity)=($wrk_url=~/^\/wrk\/([^\/]+)\/([^\/]+)\//);
-   my $return;
-# It's our job if this is the author's homeserver
-   if (&Apache::lc_entity_utils::we_are_homeserver($author_entity,$domain)) {
-      $return=&local_workspace_publish($wrk_url);
-   } else {
-# No, this is another server's business
-      $return=&remote_workspace_publish(&Apache::lc_entity_utils::homeserver($author_entity,$domain),$wrk_url);
-   }
-# Are we done?
-   if ($return) {
-# Get rid of /wrk-copy, we are done with it
-      unless (unlink(&wrk_to_filepath($wrk_url))) {
-         &logerror("Could not remove local workspace copy of ($wrk_url)");
-         return undef;
-      }
-      return 1;
-   } else {
-      return undef;
-   }
 }
 
 # ======================================================
@@ -521,9 +348,36 @@ sub make_new_url {
 # ======================================================
 #
 # Locally publish this
+# return the new version
 #
 sub local_publish {
    my ($full_url)=@_;
+   my $entity=&url_to_entity($full_url);
+   unless ($entity) {
+      &logerror("Cannot locally publish unassigned URL ($full_url)");
+      return undef;
+   }
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+   my $new_version=&local_new_version($entity,$domain);
+   if ($new_version) {
+# Sanity check - we should not have the version yet that we are about to make
+      my $dest_filename=&asset_resource_filename($entity,$domain,'n',$new_version);
+      if (-e $dest_filename) {
+         &logerror("About to publish version ($new_version) or ($full_url), but file already exists");
+         return undef;
+      }
+      if (&move(&asset_resource_filename($entity,$domain,'wrk','-'),$dest_filename)) {
+         &lognotice("Published version ($new_version) of ($full_url)"); 
+         return $new_version;
+      } else {
+# How could that fail?
+         &logerror("Could not copy wrk-version of ($full_url) to version ($new_version)");
+         return undef;
+      } 
+   } else {
+      &logerror("Failed to obtain new version of ($full_url)");
+      return undef;
+   }
 }
 
 # Call on other host to publish this
@@ -531,6 +385,27 @@ sub local_publish {
 #
 sub remote_publish {
    my ($host,$full_url)=@_;
+   my $entity=&url_to_entity($full_url);
+   unless ($entity) {
+      &logerror("Cannot remotely publish unassigned URL ($full_url)");
+      return undef;
+   }
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'publish',
+                                      &Apache::lc_json_utils::perl_to_json({'full_url' => $full_url}));
+   if ($code eq HTTP_OK) {
+      if ($response) {
+# The response is the new version, update local cache and return
+         my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+         &Apache::lc_memcached::insert_current_version($entity,$domain,$response);
+         &Apache::lc_memcached::insert_metadata($entity,$domain,&Apache::lc_mongodb::dump_metadata($entity,$domain));
+         return $response;
+      } else {
+         &logerror("Failed to publish new version of ($full_url) on ($host)");
+         return undef;
+      }
+   } else {
+      return undef;
+   }
 }
 
 
@@ -544,10 +419,19 @@ sub publish {
       return 0;
    }
    my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+   my $new_version;
    if (&Apache::lc_entity_utils::we_are_homeserver($author,$domain)) {
-      return &local_publish($full_url);
+      $new_version=&local_publish($full_url);
    } else {
-      return &remote_publish(&Apache::lc_entity_utils::homeserver($author,$domain),$full_url);
+      $new_version=&remote_publish(&Apache::lc_entity_utils::homeserver($author,$domain),$full_url);
+   }
+   if ($new_version) {
+      &logerror("Successfully published version ($new_version) of ($full_url)");
+#FIXME: remember that we are done with this
+      return 1;
+   } else {
+      &logerror("Failed to publish ($full_url)");
+      return undef;
    }
 }
 
@@ -776,6 +660,7 @@ sub wrk_to_filepath {
 # ======================================================
 # Copy an asset
 # ======================================================
+# This is used to transfer and replicate assets
 #
 sub copy_raw_asset {
    my ($entity,$domain,$version_type,$version_arg)=@_;
@@ -789,7 +674,7 @@ sub copy_raw_asset {
 }
 
 #
-# Copies a URL
+# Replicates a URL
 #
 sub replicate {
    my ($full_url)=@_;
@@ -815,8 +700,7 @@ BEGIN {
    &Apache::lc_connection_handle::register('dump_metadata',undef,undef,undef,\&local_json_dump_metadata,'entity','domain');
    &Apache::lc_connection_handle::register('dir_list',undef,undef,undef,\&local_json_dir_list,'path');
    &Apache::lc_connection_handle::register('fetch_wrk_file',undef,undef,undef,\&local_fetch_wrk_file,'orig_host','entity','domain');
-   &Apache::lc_connection_handle::register('initial_version',undef,undef,undef,\&local_initial_version,'entity','domain');
-   &Apache::lc_connection_handle::register('new_version',undef,undef,undef,\&local_new_version,'entity','domain');
+   &Apache::lc_connection_handle::register('publish',undef,undef,undef,\&local_publish,'full_url');
 }
 1;
 __END__
