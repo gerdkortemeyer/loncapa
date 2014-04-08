@@ -48,14 +48,14 @@ sub handler {
    $entity=&Apache::lc_entity_users::username_to_entity('test171','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
-   $r->print(&Apache::lc_entity_courses::make_new_course('test201','msu')."\n");
-   $courseentity=&Apache::lc_entity_courses::course_to_entity('test201','msu');
+   $r->print(&Apache::lc_entity_courses::make_new_course('test202','msu')."\n");
+   $courseentity=&Apache::lc_entity_courses::course_to_entity('test202','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
 
    $r->print(">".Dumper(&Apache::lc_entity_courses::load_contents($courseentity,'msu'))."\n");
 
-   $r->print(">".Dumper(&Apache::lc_entity_courses::store_contents($courseentity,'msu',[42]))."\n");
+   $r->print(">".Dumper(&Apache::lc_entity_courses::publish_contents($courseentity,'msu',[42]))."\n");
 
 
    $r->print(">".Dumper(&Apache::lc_entity_courses::load_contents($courseentity,'msu'))."\n");
