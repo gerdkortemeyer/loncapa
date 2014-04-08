@@ -115,10 +115,32 @@ sub writefile {
    my ($filename,$data)=@_;
    &ensuresubdir($filename);
    my $fh=&get_exclusive_lock($filename);
-   open(OUT,'>'.$filename) || &logwarning("Could not open writefile $filename: $!");
+   unless (open(OUT,'>'.$filename)) {
+      &unlock($fh);
+      &logerror("Could not open writefile $filename: $!");
+      return undef;
+   }
    print OUT $data;
    close(OUT);
    &unlock($fh);
+   return 1;
+}
+
+# ==== Write a URL
+#
+sub writeurl {
+   my ($url,$data)=@_;
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($url);
+   unless ($version_type eq 'wrk') {
+      &logerror("Cannot directly write to any published version of ($url)");
+      return undef;
+   }
+   my $filename=&Apache::lc_entity_urls::url_to_filepath($url);
+   unless ($filename) {
+      &logerror("Cannot write to ($url), no file path");
+      return undef;
+   }
+   return &writefile($filename,$data);
 }
 
 1;

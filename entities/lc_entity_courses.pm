@@ -74,7 +74,7 @@ sub local_make_new_course {
 # Start course profile
    &Apache::lc_mongodb::insert_profile($entity,$domain,{ created => &Apache::lc_date_utils::now2str() });
 # Start empty table of contents
-   &store_contents($entity,$domain,[]);
+   &initialize_contents($entity,$domain);
 # Return the entity
    return $entity;
 }
@@ -180,12 +180,8 @@ sub toc_url {
    return '/asset/-/-/'.&toc_path(@_);
 }
 
-sub toc_wrk_filepath {
-  return &lc_wrk_dir().'/'.&toc_path(@_);
-}
-
 sub toc_wrk_url {
-   return '/wrk/'.&toc_path(@_);
+  return '/asset/wrk/-/'.&toc_path(@_);
 }
 
 # ==== Load and return the table of contents
@@ -208,56 +204,52 @@ sub load_contents {
    }
 }
 
-# ==== Store the table of contents in $toc
-# This is for real, actually changing the table of contents
+
+# ==== Initialize new table of contents
 #
-sub store_contents {
+sub initialize_contents {
+   my ($courseid,$domain)=@_;
+# Get an entity assigned
+   my $entity=&make_new_url(&toc_url($courseid,$domain));
+   unless ($entity) {
+      &logerror("Unable to obtain URL for table of contents of course ($courseid) domain ($domain)");
+      return undef;
+   }
+   unless (&publish_contents($courseid,$domain,[])) {
+      &logerror("Unable to publish table of contents of course ($courseid) domain ($domain)");
+      return undef;
+   }
+   return 1;
+}
+
+# ==== Store the table of contents in $toc
+# Store a wrk-copy, also back to homeserver
+#
+sub save_contents {
    my ($courseid,$domain,$toc)=@_;
-   &Apache::lc_file_utils::writefile(&toc_wrk_filepath($courseid,$domain),&Apache::lc_json_utils::perl_to_json($toc));
-   my $return=&Apache::lc_entity_urls::workspace_publish(&toc_wrk_url($courseid,$domain));
-   if ($return) {
+   if (&Apache::lc_file_utils::writeurl(&toc_wrk_url($courseid,$domain),&Apache::lc_json_utils::perl_to_json($toc))) {
+      return &Apache::lc_entity_urls::save(&toc_wrk_url($courseid,$domain));
+   } else {
+      &logerror("Unable to save table of contents for course ($courseid) domain ($domain)");
+      return undef;
+   }
+}
+
+#
+# This is for real, actually publish and change
+
+sub publish_contents {
+   my ($courseid,$domain,$toc)=@_;
+   unless (&save_contents($courseid,$domain,$toc)) {
+      return undef;
+   }
+   if (&Apache::lc_entity_urls::publish(&toc_wrk_url($courseid,$domain))) {
 # Cache it, too, so it takes effect immediately in order to avoid confusion
       &Apache::lc_memcached::insert_toc($courseid,$domain,$toc);
       return 1;
    } else {
       return undef;
    }
-}
-
-
-# ==== Load work copy
-# This is while editing the table of contents
-# If there is none yet, it will be latest
-#
-sub load_wrk_contents {
-   my ($courseid,$domain)=@_;
-   my $wrk_path=&toc_wrk_filepath($courseid,$domain);
-   if (-e $wrk_path) {
-      return &Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readfile($wrk_path));
-   } else {
-# Make sure we have a fresh copy, just in case ...
-      my $toc=&Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readurl(&toc_url($courseid,$domain)));
-      if ($toc) {
-         &store_wrk_contents($courseid,$domain,$toc);
-         return $toc;
-      } else {
-         return undef;
-      }
-   }
-}
-
-# Store a work copy
-#
-sub store_wrk_contents {
-   my ($courseid,$domain,$wrktoc)=@_;
-   return &Apache::lc_file_utils::writefile(&toc_wrk_filepath($courseid,$domain),&Apache::lc_json_utils::perl_to_json($wrktoc));
-}
-
-# Destroy the work copy, it will then default back
-#
-sub undo_wrk_contents {
-   my ($courseid,$domain)=@_;
-   unlink &toc_wrk_filepath($courseid,$domain);
 }
 
 BEGIN {
