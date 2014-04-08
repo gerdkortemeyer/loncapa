@@ -129,15 +129,15 @@ sub writefile {
 # ==== Write a URL
 #
 sub writeurl {
-   my ($url,$data)=@_;
-   my ($version_type,$version_arg,$domain,$author,$url)=&Apache::lc_entity_urls::split_url($url);
+   my ($full_url,$data)=@_;
+   my ($version_type,$version_arg,$domain,$author,$url)=&Apache::lc_entity_urls::split_url($full_url);
    unless ($version_type eq 'wrk') {
-      &logerror("Cannot directly write to any published version of ($url)");
+      &logerror("Cannot directly write to any published version of ($full_url)");
       return undef;
    }
-   my $filename=&Apache::lc_entity_urls::url_to_filepath($url);
+   my $filename=&Apache::lc_entity_urls::url_to_filepath($full_url);
    unless ($filename) {
-      &logerror("Cannot write to ($url), no file path");
+      &logerror("Cannot write to ($full_url), no file path");
       return undef;
    }
    return &writefile($filename,$data);

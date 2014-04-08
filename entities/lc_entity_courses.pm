@@ -210,7 +210,7 @@ sub load_contents {
 sub initialize_contents {
    my ($courseid,$domain)=@_;
 # Get an entity assigned
-   my $entity=&make_new_url(&toc_url($courseid,$domain));
+   my $entity=&Apache::lc_entity_urls::make_new_url(&toc_url($courseid,$domain));
    unless ($entity) {
       &logerror("Unable to obtain URL for table of contents of course ($courseid) domain ($domain)");
       return undef;
