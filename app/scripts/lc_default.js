@@ -13,7 +13,7 @@ $( window ).resize(function() {
 
 function display_modal(newuri) {
     $.blockUI({
-                 message: '<iframe width="100%" height="100%" src="'+newuri+'" />',
+                 message: '<iframe id="lcmodal" width="100%" height="100%" src="'+newuri+'" />',
                  css: {
                       border: 'none',
                       padding: '15px',
@@ -23,6 +23,7 @@ function display_modal(newuri) {
                       'border-radius': '10px',
                       }
                  });
+    $("#lcmodal").focus();
 }
 
 function hide_modal() {
