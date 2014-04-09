@@ -1,4 +1,5 @@
 $(document).ready(function() {
+   $.ajaxSetup({ cache: false });
    menubar();
    breadcrumbbar();
    notificationbox();
@@ -38,7 +39,7 @@ function display_asset(newuri) {
 }
 
 function showsub (submenuelement) {
-   if (navigator.userAgent.match(/(iPod|iPhone|iPad)/i)) {
+   if (!($('#'+submenuelement).is(":hover"))) {
       $('#'+submenuelement).toggle();
    }
 }
