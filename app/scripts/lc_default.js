@@ -39,8 +39,8 @@ function display_asset(newuri) {
 }
 
 function showsub (submenuelement) {
-   if (!($('#'+submenuelement).is(":hover"))) {
-      $('#'+submenuelement).toggle();
+   if (!($('#open'+submenuelement).is(":hover"))) {
+      $('#submenu'+submenuelement).toggle();
    }
 }
 
@@ -51,11 +51,11 @@ $.getJSON( "menu", function( data ) {
   var submenu=1;
   $.each(data, function(key, val) {
      if (typeof(val)=='object') {
-        newmenu+="<li class='menucategory'><a href='#' onClick='showsub(\"submenu"+submenu+"\")'>"+key+"</a><ul id='submenu"+submenu+"'>";
+        newmenu+="<li class='menucategory'><a href='#' id='open"+submenu+"' onClick='showsub(\""+submenu+"\")'>"+key+"</a><ul id='submenu"+submenu+"'>";
         submenu++;
         $.each(val, function(subkey,subval) {
            if (typeof(subval)=='object') {
-              newmenu+="<li class='menucategory'><a href='#' onClick='showsub(\"submenu"+submenu+"\")'>"+subkey+"</a><ul id='submenu"+submenu+"'>";
+              newmenu+="<li class='menucategory'><a href='#' id='open"+submenu+"' onClick='showsub(\""+submenu+"\")'>"+subkey+"</a><ul id='submenu"+submenu+"'>";
               submenu++;
               $.each(subval, function(subsubkey,subsubval) {
                  func=subsubval.split("&");
