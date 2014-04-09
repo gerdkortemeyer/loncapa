@@ -1,20 +1,17 @@
 $(document).ready(function() {
-     $.ajaxSetup({ cache: false });
      $('#logoutbutton').click(function() {
          $.ajax({
              url: '/logout',
-             type:'GET',
+             type:'POST',
              success: function(response) {
                 if (response=='error') {
                    $('.lcstandard').hide();
                    $('.lcerror').show();
                 } else {
-                   parent.menubar();
-                   parent.breadcrumbbar();
                    parent.hide_modal();
                 }
                 if (response=='ok') {
-                   parent.dashboard();
+                   parent.login();
                 }
              },
              error: function(xhr, ajaxOptions, errorThrown) {

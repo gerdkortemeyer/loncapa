@@ -1,5 +1,6 @@
+var serial=0;
+
 $(document).ready(function() {
-   $.ajaxSetup({ cache: false });
    menubar();
    breadcrumbbar();
    notificationbox();
@@ -41,12 +42,26 @@ function display_asset(newuri) {
 
 function showsub (submenuelement) {
    if (!($('#open'+submenuelement).is(":hover"))) {
-      $('#submenu'+submenuelement).toggle();
+      if ($('#submenu'+submenuelement).is(":visible")) {
+         $('#submenu'+submenuelement).css("visibility","hidden");
+         $('#submenu'+submenuelement).hide();
+      } else {
+         $('#submenu'+submenuelement).css("visibility","visible");
+         $('#submenu'+submenuelement).show();
+      }
    }
 }
 
+function no_cache_value() {
+   var noCache=new Date().getTime();
+   serial++;
+   if (serial>1000000) { serial=0; }
+   noCache += '_' + serial;
+   return noCache;
+}
+
 function menubar() {
-var noCache = new Date().getTime(); 
+var noCache = no_cache_value();
 $.getJSON( "menu", { "noCache": noCache }, function( data ) {
   var newmenu = "<ul id='menubuttonrow' class='dropmenu'>";
   var func = new Array();
@@ -121,7 +136,7 @@ function help() {
 }
 
 function breadcrumbbar() {
-var noCache = new Date().getTime();
+var noCache = no_cache_value();
 $.getJSON( "breadcrumbs", { "noCache": noCache }, function( data ) {
   var newmenu = "<ul id='breadcrumbrow'>";
   $.each( data, function( key, val ) {
@@ -150,7 +165,7 @@ function checknotificationbox() {
 }
 
 function notificationbox() {
-var noCache = new Date().getTime();
+var noCache = no_cache_value();
 $.getJSON( "notifications", { "noCache": noCache }, function( data ) {
   var newmenu = "<ul id='notifications'>";
   $.each( data, function( key, val ) {

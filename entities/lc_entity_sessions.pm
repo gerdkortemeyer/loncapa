@@ -33,6 +33,8 @@ use Apache::lc_date_utils();
 use Apache::lc_entity_authentication();
 use Apache2::Const qw(:common :http);
 
+use vars qw($lc_session);
+
 #
 # Sessions are always on the local machine
 #
@@ -63,19 +65,25 @@ sub open_session {
    }
 }
 
+# Clear any session data
+#
+sub clear_session {
+   $lc_session=undef;
+}
+
+
 # Transfers the session to the environment,
 # returns 1 on sucess
 #
 sub grab_session {
    my ($sessionid)=@_;
    unless ($sessionid) { return undef; }
-   delete($ENV{'lc_session'});
    my $sessiondata=&Apache::lc_mongodb::dump_session($sessionid);
    if ($sessiondata) {
-      $ENV{'lc_session'}->{'entity'}=$sessiondata->{'entity'};
-      $ENV{'lc_session'}->{'domain'}=$sessiondata->{'domain'};
-      $ENV{'lc_session'}->{'id'}=$sessionid;
-      $ENV{'lc_session'}->{'data'}=$sessiondata->{'sessiondata'};
+      $lc_session->{'entity'}=$sessiondata->{'entity'};
+      $lc_session->{'domain'}=$sessiondata->{'domain'};
+      $lc_session->{'id'}=$sessionid;
+      $lc_session->{'data'}=$sessiondata->{'sessiondata'};
       return 1;
    } else {
       return undef;
@@ -86,26 +94,26 @@ sub grab_session {
 # - good quick check if the user is logged in
 #
 sub session_id {
-   return $ENV{'lc_session'}->{'id'};
+   return $lc_session->{'id'};
 }
 
 # Returns the session user's entity and domain
 # in the order that most subroutines expect
 #
 sub user_entity_domain {
-   return ($ENV{'lc_session'}->{'entity'},$ENV{'lc_session'}->{'domain'});
+   return ($lc_session->{'entity'},$lc_session->{'domain'});
 }
 
 sub user_domain {
-   return $ENV{'lc_session'}->{'domain'};
+   return $lc_session->{'domain'};
 }
 
 # Returns the current session's entity and domain
 # in the order expected by most subroutines
 #
 sub course_entity_domain {
-   return ($ENV{'lc_session'}->{'data'}->{'current_course'}->{'entity'},
-           $ENV{'lc_session'}->{'data'}->{'current_course'}->{'domain'});
+   return ($lc_session->{'data'}->{'current_course'}->{'entity'},
+           $lc_session->{'data'}->{'current_course'}->{'domain'});
 }
 
 #
@@ -120,8 +128,8 @@ sub enter_course {
 # Returns the current breadcrumbs
 #
 sub breadcrumbs {
-   if ($ENV{'lc_session'}->{'data'}->{'breadcrumbs'}) {
-      return @{$ENV{'lc_session'}->{'data'}->{'breadcrumbs'}};
+   if ($lc_session->{'data'}->{'breadcrumbs'}) {
+      return @{$lc_session->{'data'}->{'breadcrumbs'}};
    } else {
       return undef;
    }
@@ -130,13 +138,13 @@ sub breadcrumbs {
 # Returns the language preferred by the user for the session
 #
 sub userlanguage {
-   return $ENV{'lc_session'}->{'data'}->{'profile'}->{'language'};
+   return $lc_session->{'data'}->{'profile'}->{'language'};
 }
 
 # Returns the timezone preferred by the user
 #
 sub usertimezone {
-   return $ENV{'lc_session'}->{'data'}->{'profile'}->{'timezone'};
+   return $lc_session->{'data'}->{'profile'}->{'timezone'};
 }
 
 # Get rid of this session
