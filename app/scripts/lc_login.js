@@ -1,4 +1,5 @@
 $(document).ready(function() {
+     $.ajaxSetup({ cache: false });
      $('#loginbutton').click(function() {
          var data = $('#loginform').serialize();
          $.ajax({

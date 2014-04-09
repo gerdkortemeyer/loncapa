@@ -1,4 +1,5 @@
 $(document).ready(function() {
+     $.ajaxSetup({ cache: false });
      $('#storebutton').click(function() {
          var data = $('#preferencesform').serialize();
          $.ajax({

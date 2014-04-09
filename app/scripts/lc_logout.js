@@ -1,4 +1,5 @@
 $(document).ready(function() {
+     $.ajaxSetup({ cache: false });
      $('#logoutbutton').click(function() {
          $.ajax({
              url: '/logout',
