@@ -140,6 +140,21 @@ sub selectfield {
    return $selectfield;
 }
 
+# ==== Generate a select field with a hidden label
+#
+sub hidden_label_selectfield {
+   my ($id,$name,$values,$choices,$default,$description)=@_;
+   return &hidden_label($id,$description).
+          &selectfield($id,$name,$values,$choices,$default);
+}
+
+# ==== Hidden label for screenreaders
+#
+sub hidden_label {
+   my ($id,$description)=@_;
+   return  '<label for="'.$id.'" class="hidden">'.&mt($description).'</label>';
+}
+
 # ==== Datetime
 #
 sub datetimefield {
@@ -164,7 +179,8 @@ sub datetimefield {
    foreach ('day','year','month') {
       $short_locale=~s/\$$_/eval('$'.$_)/gse;
    }
-   my $output="<time datetime='".$f->format_datetime($dt)."'>";
+   my $output="<fieldset><time datetime='".$f->format_datetime($dt)."'>";
+   $output.=&hidden_label($dateid,'Date format month/day/year');
    $output.="<script>\$(function(){\$('#$dateid').datepick();\$('#$dateid').datepick('option',\$.datepick.regionalOptions['$lang']);})</script><input type='text' id='$dateid' name='$datename' value='$short_locale' size='10' />";
 # The time fields
    my $timeformat=&mt('date_format');
@@ -184,19 +200,19 @@ sub datetimefield {
          $ampm='am';
       }
    }
-   $output.=&selectfield($id.'_time_hour',$name.'_time_hour',$hourselect,$hourselect,$hour).':'.
-            &selectfield($id.'_time_min',$name.'_time_min',[0..59],[0..59],$minutes).':'.
-            &selectfield($id.'_time_sec',$name.'_time_sec',[0..59],[0..59],$seconds);
+   $output.=&hidden_label_selectfield($id.'_time_hour',$name.'_time_hour',$hourselect,$hourselect,$hour,'Hour').':'.
+            &hidden_label_selectfield($id.'_time_min',$name.'_time_min',[0..59],[0..59],$minutes,'Minute').':'.
+            &hidden_label_selectfield($id.'_time_sec',$name.'_time_sec',[0..59],[0..59],$seconds,'Second');
    unless ($timeformat eq '24') {
       my $am=&mt('date_am');
       if ($am eq 'date_am') { $am='am'; }
       my $pm=&mt('date_pm');
       if ($pm eq 'date_pm') { $pm='pm'; }
       unless ($timeformat eq '24') {
-         $output.=&selectfield($id.'_time_ampm',$name.'_time_ampm',['am','pm'],[$am,$pm],$ampm);
+         $output.=&hidden_label_selectfield($id.'_time_ampm',$name.'_time_ampm',['am','pm'],[$am,$pm],$ampm,'Before/after midday');
       }
    }
-   $output.=$time_zone."</time>";
+   $output.=$time_zone."</time></fieldset>";
    return $output;
 }
 

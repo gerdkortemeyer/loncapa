@@ -3,6 +3,15 @@ h1 {
    color: #30a097;
 }
 
+.hidden {
+   position:absolute;
+   left:-10000px;
+   top:auto;
+   width:1px;
+   height:1px;
+   overflow:hidden;
+}
+
 .lcformtrigger {
    font-family: sans-serif;
    font-size: 16px;
