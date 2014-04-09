@@ -9,6 +9,8 @@ $(document).ready(function() {
                    $('.lcstandard').hide();
                    $('.lcerror').show();
                 } else {
+                   parent.menubar();
+                   parent.breadcrumbbar();
                    parent.hide_modal();
                 }
                 if (response=='ok') {
