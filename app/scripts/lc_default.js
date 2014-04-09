@@ -45,8 +45,9 @@ function showsub (submenuelement) {
    }
 }
 
-function menubar() { 
-$.getJSON( "menu", function( data ) {
+function menubar() {
+var noCache = new Date().getTime(); 
+$.getJSON( "menu", { "noCache": noCache }, function( data ) {
   var newmenu = "<ul id='menubuttonrow' class='dropmenu'>";
   var func = new Array();
   var submenu=1;
@@ -120,7 +121,8 @@ function help() {
 }
 
 function breadcrumbbar() {
-$.getJSON( "breadcrumbs", function( data ) {
+var noCache = new Date().getTime();
+$.getJSON( "breadcrumbs", { "noCache": noCache }, function( data ) {
   var newmenu = "<ul id='breadcrumbrow'>";
   $.each( data, function( key, val ) {
      func=val.split("&");
@@ -148,7 +150,8 @@ function checknotificationbox() {
 }
 
 function notificationbox() {
-$.getJSON( "notifications", function( data ) {
+var noCache = new Date().getTime();
+$.getJSON( "notifications", { "noCache": noCache }, function( data ) {
   var newmenu = "<ul id='notifications'>";
   $.each( data, function( key, val ) {
     newmenu+="<li class='notification' id='" + key + "'>" + val + "</li>";
