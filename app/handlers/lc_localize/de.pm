@@ -66,6 +66,16 @@ use base qw(Apache::lc_localize);
 
 'Timezone' => 'Zeitzone',
 
+'Date format month/day/year' => 'Datum Format Tag.Monat.Jahr',
+
+'Hour' => 'Stunde',
+
+'Minute' => 'Minute',
+
+'Second' => 'Sekunde',
+
+'Before/after midday' => 'vor-/nachmittags',
+
 'Cancel' => 'Abbrechen',
 
 'Do you really want to logout?' => 'Wollen Sie sich wirklich abmelden?',
