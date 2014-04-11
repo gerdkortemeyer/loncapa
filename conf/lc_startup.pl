@@ -23,6 +23,7 @@ use Apache::lc_entity_sessions();
 use Apache::lc_entity_assessments();
 use Apache::lc_entity_authentication();
 use Apache::lc_dispatcher();
+use Apache::lc_file_upload();
 
 1;
 __END__

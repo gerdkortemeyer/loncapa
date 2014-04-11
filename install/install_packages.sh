@@ -20,7 +20,7 @@ chkconfig memcached on
 yum install perl-CPAN
 yum install gcc
 cpan Safe
-cpan -f -i MongoDB
+cpan MongoDB
 cpan Safe::Hole
 cpan Math::Cephes
 cpan Math::Random
