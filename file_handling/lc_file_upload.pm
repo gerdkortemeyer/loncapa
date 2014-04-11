@@ -26,17 +26,12 @@ use Apache::lc_logs;
 use Apache::lc_parameters;
 use CGI;
 
-use Apache::lc_file_utils();
-
-use Data::Dumper;
 
 sub handler {
    my $query = new CGI;
-&logdebug(Dumper($query));
    my $filename = $query->param("uploads");
    my $tmpfilename = $query->tmpFileName($filename);
    &logdebug($tmpfilename);
-   &logdebug(&Apache::lc_file_utils::readfile($tmpfilename));
    return OK;
 }
 
