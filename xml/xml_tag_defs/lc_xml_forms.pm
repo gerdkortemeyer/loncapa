@@ -124,6 +124,8 @@ sub inputfield {
 #FIXME: y2038?
       unless ($default) { $default=time; }
       return &datetimefield($id,$name,$default);
+   } elsif ($type eq 'fileupload') {
+      return &fileupload($id,$name);
    }
 }
 
@@ -153,6 +155,16 @@ sub hidden_label_selectfield {
 sub hidden_label {
    my ($id,$description)=@_;
    return  '<label for="'.$id.'" class="hidden">'.&mt($description).'</label>';
+}
+
+# ==== File upload
+#
+sub fileupload {
+   my ($id,$name)=@_;
+   my $output='<div class="lc_fileupload">';
+   $output.='<input id="'.$id.'" name="'.$name.'" type="file" onChange="do_upload(this.form,event,'."'$id'".')" />';
+   $output.='</div>';
+   return $output;
 }
 
 # ==== Datetime

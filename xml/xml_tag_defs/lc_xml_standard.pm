@@ -46,6 +46,7 @@ sub start_head_html {
 <script src="/scripts/datepick/jquery.plugin.js"></script> 
 <script src="/scripts/datepick/jquery.datepick.js"></script>
 <script src="/scripts/datepick/jquery.datepick.lang.js"></script>
+<script src="/scripts/lc_file_upload.js"></script>
 <script src="/scripts/lc_standard.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/lc_style.css" />
 <link rel="stylesheet" type="text/css" href="/scripts/datepick/flora.datepick.css">

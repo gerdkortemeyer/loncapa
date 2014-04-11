@@ -2,7 +2,6 @@
 <head>
 <title>Portfolio</title>
 <script src="/scripts/lc_portfolio.js"></script>
-<script src="/scripts/lc_file_upload.js"></script>
 </head>
 <body>
 <h1><localize>Portfolio</localize></h1>
@@ -10,13 +9,7 @@
 <lcforminput id="textstuff" type="textarea" />
 <lcforminput id="newdate" type="datetime" />
 <lcformtrigger id="submitstuff" description="Submit" />
-<perl>
-$a=42;
-</perl>
-<input type="text" value="Stuff($a)" />
-<hr />
-<input id="fileselect" type="file" />
-<button type="submit" onClick="do_upload(this.form,event,'/upload_file')">Upload</button>
+<lcforminput id="newfile" type="fileupload" />
 </lcform>
 </body>
 </html>
