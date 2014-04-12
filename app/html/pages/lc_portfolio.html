@@ -5,11 +5,21 @@
 </head>
 <body>
 <h1><localize>Portfolio</localize></h1>
+<script>
+function hurrah(name) {
+   alert("Hurrah "+name);
+}
+
+function epicfail(name,code) {
+   alert("Epic fail "+name+" - "+code);
+}
+</script>
+
 <lcform id="testform">
 <lcforminput id="textstuff" type="textarea" />
 <lcforminput id="newdate" type="datetime" />
 <lcformtrigger id="submitstuff" description="Submit" />
-<lcfileupload id="newfile" />
+<lcfileupload id="newfile" successcall="hurrah" failurecall="epicfail" />
 </lcform>
 </body>
 </html>

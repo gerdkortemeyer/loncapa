@@ -1,4 +1,4 @@
-function do_upload (form,event,id) {
+function do_upload (form,event,id,success,fail) {
    event.preventDefault();
    var file = form.elements[id].files[0];
    var oldtext=$('#'+id+'label').html();
@@ -16,10 +16,19 @@ function do_upload (form,event,id) {
    }, false);
    xhr.open('post','/upload_file', true);
    xhr.onload = function () {
+      $('#'+id+'label').html(oldtext);
       if (xhr.status === 200) {
-          $('#'+id+'label').html(oldtext);
+          var fn=window[success];
+          if (typeof(fn)==='function') {
+             fn(file.name);
+          }
        } else { 
-          $('#'+id+'label').html(file.name+': ---');
+          var fn=window[fail];
+          if (typeof(fn)==='function') {
+             fn(file.name,xhr.status);
+          } else {
+             alert("Error "+xhr.status+" uploading "+file.name);
+          }
        }
    };
    xhr.send(formdata);
