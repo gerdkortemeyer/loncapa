@@ -10,6 +10,8 @@ function do_upload (form,event,id) {
       if (e.lengthComputable) {
          var percentComplete = Math.round(100*e.loaded / e.total);
          $('#'+id+'label').html(file.name+': '+percentComplete+'%');
+      } else {
+         $('#'+id+'label').html(file.name+': '+e.loaded);
       }
    }, false);
    xhr.open('post','/upload_file', true);
