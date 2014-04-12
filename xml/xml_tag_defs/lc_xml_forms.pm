@@ -164,10 +164,8 @@ sub start_lcfileupload_html {
    my $description=$token->[2]->{'description'};
    unless ($name) { $name=$id; }
    unless ($description) { $description="Upload file"; }
-   my $output='<div class="lcfileupload">';
-   $output.='<label for="'.$id.'" id="'.$id.'label">'.&mt($description).'</label>';
+   my $output='<label class="lcfileuploadlabel" for="'.$id.'" id="'.$id.'label">'.&mt($description).'</label>';
    $output.='<input id="'.$id.'" name="'.$name.'" class="lcinnerfileupload" type="file" onChange="do_upload(this.form,event,'."'$id'".')" />';
-   $output.='</div>';
    return $output;
 }
 

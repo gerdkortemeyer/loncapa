@@ -12,12 +12,16 @@ h1 {
    overflow:hidden;
 }
 
-.lcfileupload {
-   background: #30a097;
+.lcfileuploadlabel {
+   background: #cccccc;
    font-family: sans-serif;
    font-size: 16px;
-   color: #ffffff;
+   color: #000000;
+   padding: 6px;
    border-radius: 3px 3px 3px 3px;
+   border-color: #000000;
+   border-style: dashed;
+   border-width: 1px;
 }
 
 .lcinnerfileupload {
