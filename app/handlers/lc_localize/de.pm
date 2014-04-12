@@ -76,6 +76,8 @@ use base qw(Apache::lc_localize);
 
 'Before/after midday' => 'vor-/nachmittags',
 
+'Upload file' => 'Datei hochladen',
+
 'Cancel' => 'Abbrechen',
 
 'Do you really want to logout?' => 'Wollen Sie sich wirklich abmelden?',

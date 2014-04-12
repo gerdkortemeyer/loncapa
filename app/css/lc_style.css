@@ -12,6 +12,18 @@ h1 {
    overflow:hidden;
 }
 
+.lcfileupload {
+   background: #30a097;
+   font-family: sans-serif;
+   font-size: 16px;
+   color: #ffffff;
+   border-radius: 3px 3px 3px 3px;
+}
+
+.lcinnerfileupload {
+   visibility: hidden;
+}
+
 .lcformtrigger {
    font-family: sans-serif;
    font-size: 16px;

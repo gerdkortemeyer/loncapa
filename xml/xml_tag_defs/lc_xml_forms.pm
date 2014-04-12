@@ -31,7 +31,7 @@ our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
 our @EXPORT = qw(start_lcform_html end_lcform_html start_lcformtable_html end_lcformtable_html start_lcformtableinput_html
-                 start_lcforminput_html
+                 start_lcforminput_html start_lcfileupload_html
                  start_lcformtrigger_html start_lcformcancel_html);
 
 sub start_lcform_html {
@@ -124,8 +124,6 @@ sub inputfield {
 #FIXME: y2038?
       unless ($default) { $default=time; }
       return &datetimefield($id,$name,$default);
-   } elsif ($type eq 'fileupload') {
-      return &fileupload($id,$name);
    }
 }
 
@@ -159,10 +157,16 @@ sub hidden_label {
 
 # ==== File upload
 #
-sub fileupload {
-   my ($id,$name)=@_;
-   my $output='<div class="lc_fileupload">';
-   $output.='<input id="'.$id.'" name="'.$name.'" type="file" onChange="do_upload(this.form,event,'."'$id'".')" />';
+sub start_lcfileupload_html {
+   my ($p,$safe,$stack,$token)=@_;
+   my $id=$token->[2]->{'id'};
+   my $name=$token->[2]->{'name'};
+   my $description=$token->[2]->{'description'};
+   unless ($name) { $name=$id; }
+   unless ($description) { $description="Upload file"; }
+   my $output='<div class="lcfileupload">';
+   $output.='<label for="'.$id.'" id="'.$id.'label">'.&mt($description).'</label>';
+   $output.='<input id="'.$id.'" name="'.$name.'" class="lcinnerfileupload" type="file" onChange="do_upload(this.form,event,'."'$id'".')" />';
    $output.='</div>';
    return $output;
 }
