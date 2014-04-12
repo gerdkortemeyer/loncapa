@@ -6,7 +6,7 @@ function do_upload (form,event,id) {
    var formdata = new FormData();
    formdata.append('uploads', file, file.name);
    var xhr = new XMLHttpRequest();
-   xhr.addEventListener("progress", function(e) {
+   xhr.upload.addEventListener("progress", function(e) {
       if (e.lengthComputable) {
          var percentComplete = Math.round(100*e.loaded / e.total);
          $('#'+id+'label').html(file.name+': '+percentComplete+'%');
