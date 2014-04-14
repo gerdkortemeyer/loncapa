@@ -45,17 +45,20 @@ sub handler {
    my $menu='{';
    if (&Apache::lc_entity_sessions::session_id()) {
       $menu.=&menu_item('dashboard','Dashboard','dashboard()').',';
-      $menu.=&menu_item('portfolio','Portfolio','portfolio()').',';
-      $menu.=&menu_item('preferences','Preferences','preferences()').',';
+# Places submenu
+      $menu.=&submenu("Places",
+         &menu_item('courses','Courses','courses()').','.
+         &menu_item('communities','Communities','communities()').','.
+         &menu_item('portfolio','Portfolio','portfolio()')).',';
+#
+# ... other things go here, depending on context and privileges
+#
+# User submenu, third to last item when logged in
+      $menu.=&submenu("User",
+         &menu_item('preferences','Preferences','preferences()').','.
+         &menu_item('messages','Messages','messages()').','.
+         &menu_item('calendar','Calendar','calendar()')).',';
    }
-# Testing
-  $menu.=&submenu("Stuff",
-      &menu_item('dashboard','Dashboard','dashboard()').','.
-      &menu_item('portfolio','Portfolio','portfolio()').','.
-      &submenu("More Stuff",
-      &menu_item('portfolio','Portfolio','portfolio()').','.
-      &menu_item('preferences','Preferences','preferences()'))).',';
-
 # Always second to last item
    $menu.=&menu_item('help','Help','help()').',';
 # Always the last item
