@@ -46,6 +46,24 @@ use base qw(Apache::lc_localize);
 
 'Logout' => 'Abmelden',
 
+'Places' => 'Plätze',
+
+'Courses' => 'Kurse',
+
+'Communities' => 'Gemeinschaften',
+
+'User' => 'Nutzer',
+
+'Messages' => 'Nachrichten',
+
+'Calendar' => 'Kalender',
+
+'Bookmarks' => 'Lesezeichen',
+
+'Show' => 'Anzeigen',
+
+'Set' => 'Setzen',
+
 'Submit' => 'Einreichen',
 
 'Help' => 'Hilfe',
@@ -93,6 +111,8 @@ use base qw(Apache::lc_localize);
 'A problem occurred while saving your preferences.' => 'Während der Speicherung Ihrer Einstellungen trat ein Problem ein.',
 
 'Your preferences were saved.' => 'Ihre Einstellungen wurden gespeichert.',
+
+'Add this page to your bookmark collection.' => 'Fügen Sie diese Seite Ihrer Lesezeichensammlung hinzu.',
 
 'Dashboard' => 'Übersicht',
 

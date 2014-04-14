@@ -116,6 +116,45 @@ function dashboard() {
    breadcrumbbar();
 }
 
+function courses() {
+   setbreadcrumbbar('fresh','courses','Courses','courses()');
+   display_asset("/pages/lc_courses.html");
+   menubar();
+   breadcrumbbar();
+}
+
+function communities() {
+   setbreadcrumbbar('fresh','communities','Communities','communities()');
+   display_asset("/pages/lc_communities.html");
+   menubar();
+   breadcrumbbar();
+}
+
+function messages() {
+   setbreadcrumbbar('fresh','messages','Messages','messages()');
+   display_asset("/pages/lc_messages.html");
+   menubar();
+   breadcrumbbar();
+}
+
+function calendar() {
+   setbreadcrumbbar('fresh','calendar','Calendar','calendar()');
+   display_asset("/pages/lc_calendar.html");
+   menubar();
+   breadcrumbbar();
+}
+
+function listbookmarks() {
+   setbreadcrumbbar('fresh','listbookmarks','Bookmarks','listbookmarks()');
+   display_asset("/pages/lc_bookmarks.html");
+   menubar();
+   breadcrumbbar();
+}
+
+function setbookmark() {
+   display_modal('/pages/lc_setbookmark.html');
+}
+
 function portfolio() {
    setbreadcrumbbar('fresh','portfolio','Portfolio','portfolio()');
    display_asset("/pages/lc_portfolio.html");

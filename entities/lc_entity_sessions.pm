@@ -108,7 +108,7 @@ sub user_domain {
    return $lc_session->{'domain'};
 }
 
-# Returns the current session's entity and domain
+# Returns the current session's course entity and domain
 # in the order expected by most subroutines
 #
 sub course_entity_domain {
@@ -122,6 +122,18 @@ sub course_entity_domain {
 sub enter_course {
    my ($courseid,$domain)=@_;
    &update_session({ 'current_course' => { 'entity' => $courseid, 'domain' => $domain }});
+}
+
+#
+# Return the resourceid
+#
+sub resource_id {
+   return $lc_session->{'data'}->{'current_asset'}->{'resourceid'};
+}
+
+sub asset_entity_domain {
+   return ($lc_session->{'data'}->{'current_asset'}->{'entity'},
+           $lc_session->{'data'}->{'current_asset'}->{'domain'});
 }
 
 

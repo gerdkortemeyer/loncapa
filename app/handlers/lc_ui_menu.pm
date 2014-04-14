@@ -27,7 +27,7 @@ use Apache::lc_entity_sessions();
 
 sub submenu {
    my ($title,$content)=@_;
-   return '"'.$title.'" : {'.$content.'}';
+   return '"'.&mt($title).'" : {'.$content.'}';
 }
 
 sub menu_item {
@@ -57,7 +57,11 @@ sub handler {
       $menu.=&submenu("User",
          &menu_item('preferences','Preferences','preferences()').','.
          &menu_item('messages','Messages','messages()').','.
-         &menu_item('calendar','Calendar','calendar()')).',';
+         &menu_item('calendar','Calendar','calendar()').','.
+         &submenu('Bookmarks',
+             &menu_item('listbookmarks','Show','listbookmarks()').
+             (&Apache::lc_entity_sessions::asset_entity_domain()?','.&menu_item('setbookmark','Set','setbookmark()'):''))
+                     ).',';
    }
 # Always second to last item
    $menu.=&menu_item('help','Help','help()').',';
