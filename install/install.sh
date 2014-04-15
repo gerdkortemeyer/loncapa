@@ -5,6 +5,7 @@ mkdir /home/loncapa/cluster
 mkdir /home/loncapa/logs
 mkdir /home/loncapa/res
 mkdir /home/loncapa/wrk
+mkdir /home/loncapa/conf
 chown -R www:www /home/loncapa
 mkdir /home/httpd
 mkdir /home/httpd/lib
@@ -21,6 +22,7 @@ cp conf/ssl.conf /etc/httpd/conf.d
 cp conf/lc.conf /etc/httpd/conf.d
 cp conf/lc_startup.pl /etc/httpd/conf
 cp conf/lc_parameters.pm /home/httpd/lib/perl/Apache
+cp conf/roles.json /home/loncapa/conf
 cp app/handlers/*pm /home/httpd/lib/perl/Apache
 mkdir /home/httpd/lib/perl/Apache/lc_localize
 rm /home/httpd/lib/perl/Apache/lc_localize/*

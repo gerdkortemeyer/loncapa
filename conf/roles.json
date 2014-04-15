@@ -1,0 +1,16 @@
+{
+"superuser"          : {
+                         "system" : {
+                                      "modify_role" : {
+                                                         "domain_coordinator" : "full"
+                                                      }
+                                    }
+                       }
+"domain_coordinator" : {
+                         "domain" : {
+                                      "modify_role" : {
+                                                         "course_coordinator" : "full"
+                                                      }
+                                    }
+                       }
+}
