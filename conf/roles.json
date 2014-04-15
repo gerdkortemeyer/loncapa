@@ -5,7 +5,7 @@
                                                          "domain_coordinator" : "full"
                                                       }
                                     }
-                       }
+                       },
 "domain_coordinator" : {
                          "domain" : {
                                       "modify_role" : {
