@@ -30,6 +30,7 @@ use Apache::lc_mongodb();
 use Apache::lc_entity_utils();
 use Apache::lc_init_cluster_table();
 use Apache::lc_date_utils();
+use Apache::lc_parameters;
 use Apache::lc_entity_authentication();
 use Apache2::Const qw(:common :http);
 
@@ -51,9 +52,8 @@ sub open_session {
       &lognotice("Failed attempt to login by entity ($entity) domain ($domain)");
       return undef;
    }
-# Get profile data
-   my $data->{'profile'}=&Apache::lc_entity_profile::dump_profile($entity,$domain);
-#FIXME: want more data here
+# Get profile and roles
+   my $data=&load_session_data($entity,$domain);
 # Okay, looks like we are in business
    my $sessionid=&Apache::lc_entity_utils::make_unique_id();
    if (&Apache::lc_mongodb::open_session($entity,$domain,$sessionid,$data)) {
@@ -64,6 +64,19 @@ sub open_session {
       return undef;
    }
 }
+
+#
+# Fetches the user's profile and roles data
+#
+sub load_session_data {
+   my ($entity,$domain)=@_;
+   my $data->{'profile'}=&Apache::lc_entity_profile::dump_profile($entity,$domain);
+   $data->{'roles'}=&Apache::lc_entity_roles::dump_roles($entity,$domain);
+#FIXME: y2038?
+   $data->{'last_loaded'}=time;
+   return $data;
+}
+
 
 # Clear any session data
 #
@@ -80,9 +93,14 @@ sub grab_session {
    unless ($sessionid) { return undef; }
    my $sessiondata=&Apache::lc_mongodb::dump_session($sessionid);
    if ($sessiondata) {
+      $lc_session->{'id'}=$sessionid;
+      if ((time-$sessiondata->{'sessiondata'}->{'last_loaded'})>&lc_short_expire()) {
+# Time to refresh the session
+         &update_session(&load_session_data($sessiondata->{'entity'},$sessiondata->{'domain'}));
+         $sessiondata=&Apache::lc_mongodb::dump_session($sessionid);
+      }
       $lc_session->{'entity'}=$sessiondata->{'entity'};
       $lc_session->{'domain'}=$sessiondata->{'domain'};
-      $lc_session->{'id'}=$sessionid;
       $lc_session->{'data'}=$sessiondata->{'sessiondata'};
       return 1;
    } else {

@@ -23,8 +23,33 @@ use Apache::lc_file_utils();
 use Apache::lc_json_utils();
 use Apache::lc_parameters;
 use Apache::lc_logs;
+use Apache::lc_entity_sessions();
 
 use vars qw($roles);
+require Exporter;
+our @ISA = qw (Exporter);
+our @EXPORT = qw(allowed_system allowed_course allowed_section allowed_user);
+
+sub allowed_system {
+}
+
+sub allowed_domain {
+   my ($domain)=@_;
+}
+
+sub allowed_course {
+   my ($entity,$domain)=@_;
+}
+
+sub allowed_section {
+   my ($entity,$domain,$section)=@_;
+   if (&allowed_course($entity,$domain)) { return 1; }
+}
+
+sub allowed_user {
+   my ($entity,$domain)=@_;
+}
+
 
 BEGIN {
    unless ($roles) {
