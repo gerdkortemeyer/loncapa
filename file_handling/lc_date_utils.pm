@@ -62,7 +62,6 @@ sub endtimer {
 # ================================================================
 # Time handling using Time::y2038
 # ================================================================
-# ==== All date operations with the Core should be done here.
 # All stored times should be GMT.
 #
 # ==== Give current time as string
@@ -78,8 +77,11 @@ sub str2num {
 # If _ is used instead of string (for URLs)
    $datestr=~s/\_+/ /g;
 # Sat Dec  6 03:48:16 142715360
-   if ($datestr=~/\s*(\w+)\s+(\d+)\s+(\d+)\:(\d+)\:(\d+)\s+(\d+)$/) {
+   if ($datestr=~/\s*(\w+)\s+(\d+)\s+(\d+)\:(\d+)\:(\d+)\s+(\d+)\s*$/) {
       return &timegm($5,$4,$3,$2,$months{$1},$6-1900);
+# 2016-01-08 04:05:06
+   } elsif ($datestr=~/\s*(\d+)\-(\d+)\-(\d+)\s+(\d+)\:(\d+)\:(\d+)\s*$/) {
+      return &timegm($6,$5,$4,$3,$2-1,$1-1900);
    } else {
       return 0;
    }
@@ -90,6 +92,22 @@ sub str2num {
 sub num2str {
    my ($num)=@_;
    return scalar &gmtime($num);
+}
+
+# ==== Check if we are within a date range
+# If comparedate not given, use current time
+# All in GMT
+sub in_date_range {
+   my ($startdate,$enddate,$comparedate)=@_;
+   my $now=time;
+   if ($comparedate) {
+      $now=&str2num($comparedate);
+   }
+   my $endnum=&str2num($enddate);
+   if (($endnum) && ($now>$endnum)) { return 0; }
+   my $startnum=&str2num($startdate);
+   if ($now<$startnum) { return 0; }
+   return 1;
 }
 
 1;

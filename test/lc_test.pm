@@ -27,6 +27,7 @@ use Apache::lc_parameters;
 use Apache::lc_entity_users();
 use Apache::lc_entity_utils();
 use Apache::lc_file_utils();
+use Apache::lc_date_utils();
 use Apache::lc_entity_sessions();
 use Apache::lc_entity_urls();
 use Apache::lc_entity_assessments();
@@ -43,6 +44,26 @@ sub handler {
    my $r = shift;
 
    $r->print("Test Handler\n");
+
+my $date='2015-01-20 04:05:06';
+
+   $r->print($date.' -> '.&Apache::lc_date_utils::num2str(&Apache::lc_date_utils::str2num($date))."\n");
+
+$date='2115-7-20 21:05:06';
+
+   $r->print($date.' -> '.&Apache::lc_date_utils::num2str(&Apache::lc_date_utils::str2num($date))."\n");
+
+my $startdate='2014-04-15 08:00:00';
+my $enddate='2014-04-16 01:00:00';
+
+   $r->print("$startdate - $enddate : ".&Apache::lc_date_utils::in_date_range($startdate,$enddate)."\n"); 
+
+my $comparedate='2014-04-16 01:00:01';
+
+   $r->print("$startdate - $enddate - $comparedate: ".&Apache::lc_date_utils::in_date_range($startdate,$enddate,$comparedate)."\n");
+
+return OK;
+
 
    my $entity;
    my $courseentity;
