@@ -37,9 +37,9 @@ sub allowed_system {
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'system'}})) {
       if ($item) {
-         if ($privileges->{$roles}->{'system'}->{$action}->{$item}) { return 1; }
+         if ($privileges->{$role}->{'system'}->{$action}->{$item}) { return 1; }
       } else {
-         if ($privileges->{$roles}->{'system'}->{$action}) { return 1; }
+         if ($privileges->{$role}->{'system'}->{$action}) { return 1; }
       }
    }
    return 0;
@@ -53,9 +53,9 @@ sub allowed_domain {
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'domain'}->{$domain}})) {
       if ($item) {
-         if ($privileges->{$roles}->{'domain'}->{$action}->{$item}) { return 1; }
+         if ($privileges->{$role}->{'domain'}->{$action}->{$item}) { return 1; }
       } else {
-         if ($privileges->{$roles}->{'domain'}->{$action}) { return 1; }
+         if ($privileges->{$role}->{'domain'}->{$action}) { return 1; }
       } 
    }
    return 0;
