@@ -62,8 +62,6 @@ my $comparedate='2014-04-16 01:00:01';
 
    $r->print("$startdate - $enddate - $comparedate: ".&Apache::lc_date_utils::in_date_range($startdate,$enddate,$comparedate)."\n");
 
-return OK;
-
 
    my $entity;
    my $courseentity;
@@ -101,6 +99,16 @@ return OK;
        'domain_coordinator', # what role is this?
        '1299-01-08 04:05:06','2016-01-08 04:05:06', # duration
        'qhhhf21wqffas','msu');
+
+  &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
+       'system', # system, domain, course, user
+       undef,undef,undef, # what's the realm?
+       'superuser', # what role is this?
+       '1299-01-08 04:05:06','2016-01-08 04:05:06', # duration
+       'qhhhf21wqffas','msu');
+
+
+   $r->print("All Roles: ".Dumper(&Apache::lc_entity_roles::dump_roles($entity,'msu'))."\n");
 
    $r->print("Roles: ".Dumper(&Apache::lc_entity_roles::active_roles($entity,'msu'))."\n");
 

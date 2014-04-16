@@ -28,6 +28,7 @@ use Apache::lc_dispatcher();
 use Apache::lc_postgresql();
 use Apache::lc_memcached();
 use Apache::lc_entity_utils();
+use Apache::lc_date_utils();
 use Apache::lc_init_cluster_table();
 use Apache2::Const qw(:common :http);
 
@@ -295,8 +296,48 @@ sub dump_roles {
 sub active_roles {
    my ($entity,$domain)=@_;
    my $roles=&dump_roles($entity,$domain);
-# Check on start and end dates
-#FIXME
+# Check on start and end dates, eliminate non-active roles
+# System level
+   foreach my $role (keys(%{$roles->{'system'}})) {
+      unless (&Apache::lc_date_utils::in_date_range(
+                 $roles->{'system'}->{$role}->{'startdate'},
+                 $roles->{'system'}->{$role}->{'enddate'})) {
+         delete($roles->{'system'}->{$role});
+      }
+   }
+# Domain level
+   foreach my $domain (keys(%{$roles->{'domain'}})) {
+      foreach my $role (keys(%{$roles->{'domain'}->{$domain}})) {
+         unless (&Apache::lc_date_utils::in_date_range(
+                    $roles->{'domain'}->{$domain}->{$role}->{'startdate'},
+                    $roles->{'domain'}->{$domain}->{$role}->{'enddate'})) {
+            delete($roles->{'domain'}->{$domain}->{$role});
+         }
+      }
+   }
+# Course level
+   foreach my $domain (keys(%{$roles->{'course'}})) {
+      foreach my $course (keys(%{$roles->{'course'}->{$domain}})) {
+# Across all sections
+         foreach my $role (keys(%{$roles->{'course'}->{$domain}->{$course}->{'any'}})) {
+            unless (&Apache::lc_date_utils::in_date_range(
+                       $roles->{'course'}->{$domain}->{$course}->{'any'}->{$role}->{'startdate'},
+                       $roles->{'course'}->{$domain}->{$course}->{'any'}->{$role}->{'enddate'})) {
+               delete($roles->{'course'}->{$domain}->{$course}->{'any'}->{$role});
+            }
+         }
+# Within specific sections
+         foreach my $section (keys(%{$roles->{'course'}->{$domain}->{$course}->{'section'}})) {
+            foreach my $role (keys(%{$roles->{'course'}->{$domain}->{$course}->{'section'}->{$section}})) {
+               unless (&Apache::lc_date_utils::in_date_range(
+                          $roles->{'course'}->{$domain}->{$course}->{'section'}->{$section}->{$role}->{'startdate'},
+                          $roles->{'course'}->{$domain}->{$course}->{'section'}->{$section}->{$role}->{'enddate'})) {
+                  delete($roles->{'course'}->{$domain}->{$course}->{'section'}->{$section}->{$role});
+               }
+            }
+         }
+      }
+   }
    return $roles;
 }
 
