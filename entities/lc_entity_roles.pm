@@ -180,7 +180,6 @@ unless ($manualenrolldomain) { $manualenrolldomain=''; }
 # === Deal with the user's record
 # Role itself
    my $thisrole;
-   $thisrole->{'role'}=$role;
    $thisrole->{'startdate'}=$startdate;
    $thisrole->{'enddate'}=$enddate;
    $thisrole->{'manualenrollentity'}=$manualenrollentity;
@@ -190,21 +189,21 @@ unless ($manualenrolldomain) { $manualenrolldomain=''; }
 # Different types of roles have different structures
    if ($type eq 'system') {
 # System-level role
-      $rolerecord->{'system'}=$thisrole;
+      $rolerecord->{'system'}->{$role}=$thisrole;
    } elsif ($type eq 'domain') {
 # Domain-level role
-      $rolerecord->{'domain'}->{$roledomain}=$thisrole;
+      $rolerecord->{'domain'}->{$roledomain}->{$role}=$thisrole;
    } elsif ($type eq 'course') {
 # Course-level role
 # Do we have a section?
       if ($rolesection) {
-         $rolerecord->{'course'}->{$roledomain}->{$roleentity}->{'section'}->{$rolesection}=$thisrole;
+         $rolerecord->{'course'}->{$roledomain}->{$roleentity}->{'section'}->{$rolesection}->{$role}=$thisrole;
       } else {
-         $rolerecord->{'course'}->{$roledomain}->{$roleentity}->{'any'}=$thisrole;
+         $rolerecord->{'course'}->{$roledomain}->{$roleentity}->{'any'}->{$role}=$thisrole;
       }
    } elsif ($type eq 'user') {
 # Role for another user
-      $rolerecord->{'user'}->{$roledomain}->{$roleentity}=$thisrole;
+      $rolerecord->{'user'}->{$roledomain}->{$roleentity}->{$role}=$thisrole;
    }
 # Have the complete rolerecord now, which goes to the user
    if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
@@ -291,6 +290,15 @@ sub dump_roles {
    }
 }
 
+# Get all active roles
+#
+sub active_roles {
+   my ($entity,$domain)=@_;
+   my $roles=&dump_roles($entity,$domain);
+# Check on start and end dates
+#FIXME
+   return $roles;
+}
 
 BEGIN {
     &Apache::lc_connection_handle::register('modify_rolelist',undef,undef,undef,\&local_modify_rolelist,

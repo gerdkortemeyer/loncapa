@@ -31,23 +31,24 @@ our @ISA = qw (Exporter);
 our @EXPORT = qw(allowed_system allowed_course allowed_section allowed_user);
 
 sub allowed_system {
+   my ($action)=@_;
 }
 
 sub allowed_domain {
-   my ($domain)=@_;
+   my ($action,$domain)=@_;
 }
 
 sub allowed_course {
-   my ($entity,$domain)=@_;
+   my ($action,$entity,$domain)=@_;
 }
 
 sub allowed_section {
-   my ($entity,$domain,$section)=@_;
-   if (&allowed_course($entity,$domain)) { return 1; }
+   my ($action,$entity,$domain,$section)=@_;
+   if (&allowed_course($action,$entity,$domain)) { return 1; }
 }
 
 sub allowed_user {
-   my ($entity,$domain)=@_;
+   my ($action,$entity,$domain)=@_;
 }
 
 

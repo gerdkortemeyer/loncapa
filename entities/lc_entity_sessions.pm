@@ -71,7 +71,7 @@ sub open_session {
 sub load_session_data {
    my ($entity,$domain)=@_;
    my $data->{'profile'}=&Apache::lc_entity_profile::dump_profile($entity,$domain);
-   $data->{'roles'}=&Apache::lc_entity_roles::dump_roles($entity,$domain);
+   $data->{'roles'}=&Apache::lc_entity_roles::active_roles($entity,$domain);
 #FIXME: y2038?
    $data->{'last_loaded'}=time;
    return $data;
@@ -176,6 +176,13 @@ sub userlanguage {
 sub usertimezone {
    return $lc_session->{'data'}->{'profile'}->{'timezone'};
 }
+
+# Returns all roles
+# 
+sub roles {
+   return $lc_session->{'data'}->{'roles'};
+}
+
 
 # Get rid of this session
 #

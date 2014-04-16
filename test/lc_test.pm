@@ -31,6 +31,9 @@ use Apache::lc_entity_sessions();
 use Apache::lc_entity_urls();
 use Apache::lc_entity_assessments();
 use Apache::lc_asset_safeeval();
+use Apache::lc_authorize;
+use Apache::lc_entity_authentication();
+
 use Data::Dumper;
 
 # ==== Main handler
@@ -44,13 +47,43 @@ sub handler {
    my $entity;
    my $courseentity;
 
-   $r->print(&Apache::lc_entity_users::make_new_user('test171','msu')."\n");
-   $entity=&Apache::lc_entity_users::username_to_entity('test171','msu');
+   $r->print(&Apache::lc_entity_users::make_new_user('zaphod','msu')."\n");
+   $entity=&Apache::lc_entity_users::username_to_entity('zaphod','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
    $r->print(&Apache::lc_entity_courses::make_new_course('test205','msu')."\n");
    $courseentity=&Apache::lc_entity_courses::course_to_entity('test205','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   &Apache::lc_entity_profile::modify_profile($entity,'msu',{ lastname => "Beeblebrox" });
+   &Apache::lc_entity_authentication::set_authentication($entity,'msu',{ mode => 'internal', password => 'zaphodB' });
+
+   &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
+       'course', # system, domain, course, user
+       $courseentity,'msu','31fq', # what's the realm?
+       'student', # what role is this?
+       '1998-01-08 04:05:06','2015-01-08 04:05:06', # duration
+       'ggf21wqffas','msu');
+
+   &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
+       'course', # system, domain, course, user
+       $courseentity,'msu','31fq', # what's the realm?
+       'teaching_assistant', # what role is this?
+       '1998-01-08 04:05:06','2005-01-08 04:05:06', # duration
+       'ggf21wqffas','msu');
+
+
+
+   &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
+       'domain', # system, domain, course, user
+       undef,'msu',undef, # what's the realm?
+       'domain_coordinator', # what role is this?
+       '1299-01-08 04:05:06','2016-01-08 04:05:06', # duration
+       'qhhhf21wqffas','msu');
+
+   $r->print("Roles: ".Dumper(&Apache::lc_entity_roles::active_roles($entity,'msu'))."\n");
+
+return OK;
 
 
    $r->print(">".Dumper(&Apache::lc_entity_courses::load_contents($courseentity,'msu'))."\n");
