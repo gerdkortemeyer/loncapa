@@ -1,16 +1,73 @@
 {
 "superuser"          : {
                          "system" : {
-                                      "modify_role" : {
-                                                         "domain_coordinator" : "1"
-                                                      }
+                                      "modify_role"     : {
+                                                             "domain_coordinator" : "1"
+                                                          }
                                     }
                        },
 "domain_coordinator" : {
                          "domain" : {
-                                      "modify_role" : {
-                                                         "course_coordinator" : "1"
-                                                      }
+                                      "modify_role"     : {
+                                                             "course_coordinator" : "1"
+                                                          }
                                     }
+                       },
+"course_coordinator" : {
+                         "course" : {
+                                      "modify_role"     : {
+                                                             "course_coordinator" : "1",
+                                                             "instructor"         : "1",
+                                                             "teaching_assistant" : "1",
+                                                             "student"            : "1"
+                                                          },
+                                      "edit_toc"       : "1",
+                                      "access_content" : {
+                                                             "open"               : "1",
+                                                             "closed"             : "1",
+                                                             "hidden"             : "1"
+                                                         },
+                                      "modify_grade"   : "1",
+                                      "notify"         : "1"
+                                    }
+                       },
+"instructor"         : {
+                         "course" : { 
+                                      "access_content" : {
+                                                             "open"               : "1",
+                                                             "closed"             : "1",
+                                                             "hidden"             : "1"
+                                                         }
+                                    },
+                         "section": {
+                                      "modify_grade"   : "1",
+                                      "notify"         : "1"
+                                    }
+                       },
+"teaching_assistant" : {
+                         "course" : { 
+                                      "access_content" : {
+                                                             "open"               : "1"
+                                                         }
+                                    },
+                         "section": {
+                                      "modify_grade"   : "1",
+                                      "notify"         : "1"
+                                    }
+                       },
+"student"            : {
+                         "course" : {
+                                      "access_content" : {
+                                                             "open"               : "1"
+                                                         }
+                                    }
+                       },
+"community_organizer": {
+                       },
+"member"             : {
+                       },
+"author"             : {
+                       },
+"co_author"          : {
                        }
 }
