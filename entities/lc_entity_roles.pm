@@ -174,6 +174,7 @@ unless (($type eq 'system') || ($type eq 'domain') || ($type eq 'course') || ($t
    &logerror("Type ($type) not supported for modifying roles of entity ($entity) domain ($domain)");
    return undef;
 }
+unless ($roledomain) { $roledomain=''; }
 unless ($roleentity) { $roleentity=''; }
 unless ($rolesection) { $rolesection=''; }
 unless ($manualenrollentity) { $manualenrollentity=''; }

@@ -28,15 +28,19 @@ use Apache::lc_entity_sessions();
 use vars qw($privileges);
 require Exporter;
 our @ISA = qw (Exporter);
-our @EXPORT = qw(allowed_system allowed_course allowed_section allowed_user);
+our @EXPORT = qw(allowed_system allowed_domain allowed_course allowed_section allowed_user);
 
 # Check privileges on system-level, going through all system roles
 #
 sub allowed_system {
-   my ($action)=@_;
+   my ($action,$item)=@_;
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'system'}})) {
-      if ($privileges->{$roles}->{'system'}->{$action}) { return 1; }
+      if ($item) {
+         if ($privileges->{$roles}->{'system'}->{$action}->{$item}) { return 1; }
+      } else {
+         if ($privileges->{$roles}->{'system'}->{$action}) { return 1; }
+      }
    }
    return 0;
 }
@@ -44,11 +48,15 @@ sub allowed_system {
 # Check privileges on domain-level and above
 #
 sub allowed_domain {
-   my ($action,$domain)=@_;
-   if (&allowed_system($action)) { return 1; }
+   my ($action,$item,$domain)=@_;
+   if (&allowed_system($action,$item)) { return 1; }
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'domain'}->{$domain}})) {
-      if ($privileges->{$roles}->{'domain'}->{$action}) { return 1; }
+      if ($item) {
+         if ($privileges->{$roles}->{'domain'}->{$action}->{$item}) { return 1; }
+      } else {
+         if ($privileges->{$roles}->{'domain'}->{$action}) { return 1; }
+      } 
    }
    return 0;
 }
@@ -56,11 +64,15 @@ sub allowed_domain {
 # Check privileges on course-level and above
 #
 sub allowed_course {
-   my ($action,$entity,$domain)=@_;
-   if (&allowed_domain($action,$domain)) { return 1; }
+   my ($action,$item,$entity,$domain)=@_;
+   if (&allowed_domain($action,$item,$domain)) { return 1; }
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'any'}})) {
-      if ($privileges->{$role}->{'course'}->{$action}) { return 1; }
+      if ($item) {
+         if ($privileges->{$role}->{'course'}->{$action}->{$item}) { return 1; }
+      } else {
+         if ($privileges->{$role}->{'course'}->{$action}) { return 1; }
+      }
    }
    return 0;
 }
@@ -68,11 +80,15 @@ sub allowed_course {
 # Check privileges on section-level and above
 # 
 sub allowed_section {
-   my ($action,$entity,$domain,$section)=@_;
-   if (&allowed_course($action,$entity,$domain)) { return 1; }
+   my ($action,$item,$entity,$domain,$section)=@_;
+   if (&allowed_course($action,$item,$entity,$domain)) { return 1; }
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'section'}->{$section}})) {
-      if ($privileges->{$role}->{'section'}->{$action}) { return 1; }
+      if ($item) {
+         if ($privileges->{$role}->{'section'}->{$action}->{$item}) { return 1; }
+      } else {
+         if ($privileges->{$role}->{'section'}->{$action}) { return 1; }
+      }
    }
    return 0;
 }
@@ -80,11 +96,15 @@ sub allowed_section {
 # Check privileges on user-level and above
 #
 sub allowed_user {
-   my ($action,$entity,$domain)=@_;
-   if (&allowed_domain($action,$domain)) { return 1; }
+   my ($action,$item,$entity,$domain)=@_;
+   if (&allowed_domain($action,$item,$domain)) { return 1; }
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'user'}->{$domain}->{$entity}})) {
-      if ($privileges->{$role}->{'user'}->{$action}) { return 1; }
+      if ($item) {
+         if ($privileges->{$role}->{'user'}->{$action}->{$item}) { return 1; }
+      } else {
+         if ($privileges->{$role}->{'user'}->{$action}) { return 1; }
+      }
    }
    return 0;
 }

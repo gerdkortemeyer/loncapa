@@ -112,6 +112,14 @@ my $comparedate='2014-04-16 01:00:01';
 
    $r->print("Roles: ".Dumper(&Apache::lc_entity_roles::active_roles($entity,'msu'))."\n");
 
+
+   $r->print(&allowed_domain('modify_role','domain_coordinator','msu')."\n");
+   $r->print(&allowed_domain('modify_role','course_coordinator','msu')."\n");
+   $r->print(&allowed_domain('modify_role',undef,'msu')."\n");
+   $r->print(&allowed_domain('modify_role','superconductor','msu')."\n");
+
+
+
 return OK;
 
 
