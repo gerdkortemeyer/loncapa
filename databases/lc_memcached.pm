@@ -160,6 +160,21 @@ sub lookup_toc {
    return &mget("toc:$entity:$domain");
 }
 
+#
+# Caching entity profiles
+#
+sub insert_profile {
+   my ($entity,$domain,$profile)=@_;
+   &mset("profile:$entity:$domain",$profile,&lc_medium_expire());
+}
+
+sub lookup_profile {
+   my ($entity,$domain)=@_;
+   return &mget("profile:$entity:$domain");
+}
+
+
+
 # === Direct access
 # You don't want to call these from outside
 #

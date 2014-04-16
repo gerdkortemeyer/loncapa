@@ -77,6 +77,13 @@ my $comparedate='2014-04-16 01:00:01';
    &Apache::lc_entity_profile::modify_profile($entity,'msu',{ lastname => "Beeblebrox" });
    &Apache::lc_entity_authentication::set_authentication($entity,'msu',{ mode => 'internal', password => 'zaphodB' });
 
+   $r->print("Profile: ".Dumper(&Apache::lc_entity_profile::dump_profile($entity,'msu'))."\n");
+
+   &Apache::lc_entity_profile::modify_profile($entity,'msu',{ firstname => "Zaphod" });
+
+   $r->print("Profile: ".Dumper(&Apache::lc_entity_profile::dump_profile($entity,'msu'))."\n");
+
+
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
        'course', # system, domain, course, user
        $courseentity,'msu','31fq', # what's the realm?

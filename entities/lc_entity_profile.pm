@@ -45,7 +45,12 @@ sub local_modify_profile {
       return undef;
    }
 # Okay, store
-   return &Apache::lc_mongodb::update_profile($entity,$domain,$profile)->{'ok'};
+   my $result=&Apache::lc_mongodb::update_profile($entity,$domain,$profile)->{'ok'};
+   if ($result) {
+# Immediately update local cache to avoid confusion
+      &Apache::lc_memcached::insert_profile($entity,$domain,&local_dump_profile($entity,$domain));
+   }
+   return $result;
 }
 
 #
@@ -57,6 +62,8 @@ sub remote_modify_profile {
    my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'modify_profile',
                            &Apache::lc_json_utils::perl_to_json({ entity => $entity, domain => $domain, profile => $profile }));
    if ($code eq HTTP_OK) {
+# Immediately update local cache to avoid confusion
+      &Apache::lc_memcached::insert_profile($entity,$domain,&remote_dump_profile($host,$entity,$domain));
       return 1;
    } else {
       return undef;
@@ -108,11 +115,17 @@ sub remote_dump_profile {
 #
 sub dump_profile {
    my ($entity,$domain)=@_;
+   my $profile=&Apache::lc_memcached::lookup_profile($entity,$domain);
+   if ($profile) { return $profile; }
    if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
-      return &local_dump_profile($entity,$domain);
+      $profile=&local_dump_profile($entity,$domain);
    } else {
-      return &remote_dump_profile(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
+      $profile=&remote_dump_profile(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
    }
+   if ($profile) {
+      &Apache::lc_memcached::insert_profile($entity,$domain,$profile);
+   }
+   return $profile;
 }
 
 

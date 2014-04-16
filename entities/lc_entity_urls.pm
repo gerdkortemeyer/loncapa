@@ -26,6 +26,7 @@ use Apache2::Const qw(:common :http);
 use Apache::lc_logs;
 use Apache::lc_postgresql();
 use Apache::lc_mongodb();
+use Apache::lc_memcached();
 use Apache::lc_entity_utils();
 use Apache::lc_connection_utils();
 use Apache::lc_parameters;
