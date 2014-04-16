@@ -25,37 +25,75 @@ use Apache::lc_parameters;
 use Apache::lc_logs;
 use Apache::lc_entity_sessions();
 
-use vars qw($roles);
+use vars qw($privileges);
 require Exporter;
 our @ISA = qw (Exporter);
 our @EXPORT = qw(allowed_system allowed_course allowed_section allowed_user);
 
+# Check privileges on system-level, going through all system roles
+#
 sub allowed_system {
    my ($action)=@_;
+   my $roles=&Apache::lc_entity_sessions::roles();
+   foreach my $role (keys(%{$roles->{'system'}})) {
+      if ($privileges->{$roles}->{'system'}->{$action}) { return 1; }
+   }
+   return 0;
 }
 
+# Check privileges on domain-level and above
+#
 sub allowed_domain {
    my ($action,$domain)=@_;
+   if (&allowed_system($action)) { return 1; }
+   my $roles=&Apache::lc_entity_sessions::roles();
+   foreach my $role (keys(%{$roles->{'domain'}->{$domain}})) {
+      if ($privileges->{$roles}->{'domain'}->{$action}) { return 1; }
+   }
+   return 0;
 }
 
+# Check privileges on course-level and above
+#
 sub allowed_course {
    my ($action,$entity,$domain)=@_;
+   if (&allowed_domain($action,$domain)) { return 1; }
+   my $roles=&Apache::lc_entity_sessions::roles();
+   foreach my $role (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'any'}})) {
+      if ($privileges->{$role}->{'course'}->{$action}) { return 1; }
+   }
+   return 0;
 }
 
+# Check privileges on section-level and above
+# 
 sub allowed_section {
    my ($action,$entity,$domain,$section)=@_;
    if (&allowed_course($action,$entity,$domain)) { return 1; }
+   my $roles=&Apache::lc_entity_sessions::roles();
+   foreach my $role (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'section'}->{$section}})) {
+      if ($privileges->{$role}->{'section'}->{$action}) { return 1; }
+   }
+   return 0;
 }
 
+# Check privileges on user-level and above
+#
 sub allowed_user {
    my ($action,$entity,$domain)=@_;
+   if (&allowed_domain($action,$domain)) { return 1; }
+   my $roles=&Apache::lc_entity_sessions::roles();
+   foreach my $role (keys(%{$roles->{'user'}->{$domain}->{$entity}})) {
+      if ($privileges->{$role}->{'user'}->{$action}) { return 1; }
+   }
+   return 0;
 }
 
 
 BEGIN {
-   unless ($roles) {
-      $roles=&Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readfile(&lc_roles_defs()));
-      if ($roles) {
+   unless ($privileges) {
+      $privileges=&Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readfile(&lc_roles_defs()));
+      if ($privileges) {
          &lognotice("Loaded roles definitions");
       } else {
          &logerror("Could not load roles definitions");
