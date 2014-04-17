@@ -50,6 +50,7 @@ sub start_head_html {
 <script src="/scripts/lc_file_upload.js"></script>
 <script src="/scripts/lc_standard.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/lc_style.css" />
+<link rel="stylesheet" type="text/css" href="/css/jquery.dataTables.css" />
 <link rel="stylesheet" type="text/css" href="/scripts/datepick/flora.datepick.css">
 <link rel="stylesheet" type="test/css" href="/scripts/jstree/themes/default/style.min.css" />
 ENDHEADER

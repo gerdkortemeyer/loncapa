@@ -37,7 +37,7 @@ sub start_lcdatatable_html {
    my $id=$token->[2]->{'id'};
    my $name=$token->[2]->{'name'};
    unless ($name) { $name=$id; }
-   my $output='<table id="'.$id.'" name="'.$name.'" class="'.$class.'">';
+   my $output='<table id="'.$id.'" name="'.$name.'" class="dataTable">';
    if ($class eq "courseselect") {
       $output.=&courseselect($type);
    }
