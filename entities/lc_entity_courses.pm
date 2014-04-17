@@ -277,7 +277,26 @@ sub course_type {
    return $profile->{'type'};
 }
 
-
+#
+# Get the information on active courses/communities in this session
+#
+sub active_session_courses {
+# Get active roles from session environment
+   my $roles=&Apache::lc_entity_sessions::roles();
+# We will return an array of profiles
+   my @courses=();
+   if ($roles) {
+      foreach my $domain (keys(%{$roles->{'course'}})) {
+         foreach my $entity (keys(%{$roles->{'course'}->{$domain}})) {
+            my $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
+            $profile->{'domain'}=$domain;
+            $profile->{'entity'}=$entity;
+            push(@courses,$profile);
+         }
+      }
+   }
+   return @courses;
+}
 
 
 

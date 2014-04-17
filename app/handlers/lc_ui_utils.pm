@@ -26,7 +26,7 @@ use Apache::lc_entity_sessions();
 require Exporter;
 
 our @ISA = qw (Exporter);
-our @EXPORT = qw(get_content clean_username clean_domain domain_choices language_choices timezone_choices);
+our @EXPORT = qw(get_content clean_username clean_domain domain_choices domain_name language_choices timezone_choices);
 
 
 # ==== Get POSTed content
@@ -82,6 +82,13 @@ sub domain_choices {
    return ($connection_table->{'cluster_table'}->{'hosts'}->{$connection_table->{'self'}}->{'default'},
            $domain_short,$domain_name);
 }
+
+sub domain_name {
+   my ($domain)=@_;
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
+   return $connection_table->{'cluster_table'}->{'domains'}->{$domain}->{'name'};
+}
+
 
 # ==== Language choices
 #

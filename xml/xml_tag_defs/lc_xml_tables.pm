@@ -19,6 +19,11 @@
 package Apache::lc_xml_tables;
 
 use strict;
+use Apache::lc_entity_courses();
+use Apache::lc_ui_localize;
+use Apache::lc_ui_utils;
+
+use Data::Dumper;
 
 our @ISA = qw(Exporter);
 
@@ -33,8 +38,21 @@ sub start_lcdatatable_html {
    my $name=$token->[2]->{'name'};
    unless ($name) { $name=$id; }
    my $output='<table id="'.$id.'" name="'.$name.'" class="'.$class.'">';
-#FIXME: doing stuff here based on class and type
+   if ($class eq "courseselect") {
+      $output.=&courseselect($type);
+   }
    $output.='</table>';
+   return $output;
+}
+
+sub courseselect {
+   my ($type)=@_;
+   my $output='<tr><th>'.&mt('Domain').'</th><th>'.&mt('Title').'</th></tr>';
+   foreach my $profile (&Apache::lc_entity_courses::active_session_courses()) {
+      if ($type eq $profile->{'type'}) {
+         $output.='<tr><td>'.&domain_name($profile->{'domain'}).'</td><td>'.$profile->{'title'}.'</td></tr>';
+      }
+   }
    return $output;
 }
 

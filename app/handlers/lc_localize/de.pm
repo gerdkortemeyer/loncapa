@@ -60,6 +60,8 @@ use base qw(Apache::lc_localize);
 
 'Bookmarks' => 'Lesezeichen',
 
+'Title' => 'Titel',
+
 'Show' => 'Anzeigen',
 
 'Set' => 'Setzen',
