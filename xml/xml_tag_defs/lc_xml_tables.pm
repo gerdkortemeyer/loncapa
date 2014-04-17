@@ -53,6 +53,10 @@ sub courseselect {
          $output.='<tr><td>'.&domain_name($profile->{'domain'}).'</td><td>'.$profile->{'title'}.'</td></tr>';
       }
    }
+#FIXME: debug
+   for (my $i=1; $i<=200; $i++) {
+       $output.='<tr><td>Test'.$i.'</td><td>Course'.$i.'</td></tr>';
+   }
    $output.="</tbody>";
    return $output;
 }
