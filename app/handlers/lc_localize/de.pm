@@ -118,7 +118,41 @@ use base qw(Apache::lc_localize);
 
 'Dashboard' => 'Übersicht',
 
-'Portfolio' => 'Portfolio'
+'Portfolio' => 'Portfolio',
+
+'Last Access' => 'Letzter Zugriff',
+
+"No data available in table" => "Keine Daten in der Tabelle",
+
+"Showing [_1] to [_2] of [_3] entries" => "Einträge [_1] bis [_2] von [_3] insgesamt",
+
+"Showing 0 to 0 of 0 entries" => "Einträge 0 bis 0 von 0 insgesamt",
+
+"(filtered from [_1] total entries)" => "(gefiltert aus [_1] Gesamteinträgen)",
+
+"," => ".",
+
+"Show [_1] entries" => "Zeige [_1] Einträge",
+
+"Loading..." => "Laden ...",
+
+"Processing..." => "Verarbeiten ...",
+
+"Search:" => "Suche:",
+
+"No matching records found" => "Keine entsprechenden Einträge gefunden",
+
+"First" => "Erste",
+
+"Last" => "Letzte",
+
+"Next" => "Nächste",
+
+"Previous" => "Vorhergehende",
+
+": activate to sort column ascending" => ": aktiviere um Spalte aufsteigend zu ordnen",
+
+": activate to sort column descending" => ": aktiviere um Spalte absteigend zu ordnen"
 
 );
 
