@@ -216,6 +216,23 @@ sub pid_to_entity {
    return $entity;
 }
 
+#
+# Various accessor functions for profile
+#
+sub set_full_name {
+   my ($entity,$domain,$firstname,$middlename,$lastname,$suffix)=@_;
+   return &Apache::lc_entity_profile::modify_profile($entity,$domain,{ firstname => $firstname, 
+                                                                       middlename => $middlename, 
+                                                                       lastname => $lastname, 
+                                                                       suffix => $suffix });
+}
+
+sub full_name {
+   my ($entity,$domain)=@_;
+   my $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
+   return ($profile->{'firstname'},$profile->{'middlename'},$profile->{'lastname'},$profile->{'suffix'});
+}
+
 BEGIN {
    &Apache::lc_connection_handle::register('pid_to_entity',undef,undef,undef,\&local_pid_to_entity,'pid','domain');
    &Apache::lc_connection_handle::register('username_to_entity',undef,undef,undef,\&local_username_to_entity,'username','domain');

@@ -252,6 +252,35 @@ sub publish_contents {
    }
 }
 
+#
+# Accessor functions for title, type, etc
+#
+sub set_course_title {
+   my ($courseid,$domain,$title)=@_;
+   return &Apache::lc_entity_profile::modify_profile($courseid,$domain,{ title => $title });
+}
+
+sub course_title {
+   my ($courseid,$domain)=@_;
+   my $profile=&Apache::lc_entity_profile::dump_profile($courseid,$domain);
+   return $profile->{'title'};
+}
+
+sub set_course_type {
+   my ($courseid,$domain,$type)=@_;
+   return &Apache::lc_entity_profile::modify_profile($courseid,$domain,{ type => $type });
+}
+
+sub course_type {
+   my ($courseid,$domain)=@_;
+   my $profile=&Apache::lc_entity_profile::dump_profile($courseid,$domain);
+   return $profile->{'type'};
+}
+
+
+
+
+
 BEGIN {
    &Apache::lc_connection_handle::register('course_to_entity',undef,undef,undef,\&local_course_to_entity,'courseid','domain');
    &Apache::lc_connection_handle::register('make_new_course',undef,undef,undef,\&local_make_new_course,'courseid','domain');

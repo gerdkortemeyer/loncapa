@@ -74,14 +74,20 @@ my $comparedate='2014-04-16 01:00:01';
    $courseentity=&Apache::lc_entity_courses::course_to_entity('test205','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
-   &Apache::lc_entity_profile::modify_profile($entity,'msu',{ lastname => "Beeblebrox" });
+   &Apache::lc_entity_users::set_full_name($entity,'msu',"Zaphod","Klausdieter","Beeblebrox","Sr.");
    &Apache::lc_entity_authentication::set_authentication($entity,'msu',{ mode => 'internal', password => 'zaphodB' });
 
-   $r->print("Profile: ".Dumper(&Apache::lc_entity_profile::dump_profile($entity,'msu'))."\n");
-
-   &Apache::lc_entity_profile::modify_profile($entity,'msu',{ firstname => "Zaphod" });
+   $r->print(join(' ',&Apache::lc_entity_users::full_name($entity,'msu'))."\n");
 
    $r->print("Profile: ".Dumper(&Apache::lc_entity_profile::dump_profile($entity,'msu'))."\n");
+
+   &Apache::lc_entity_courses::set_course_title($courseentity,'msu','Intro Physics 17');
+   &Apache::lc_entity_courses::set_course_type($courseentity,'msu','regular');
+
+   $r->print(&Apache::lc_entity_courses::course_title($courseentity,'msu')."\n");
+   $r->print(&Apache::lc_entity_courses::course_type($courseentity,'msu')."\n");
+
+   $r->print("Profile: ".Dumper(&Apache::lc_entity_profile::dump_profile($courseentity,'msu'))."\n");
 
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
