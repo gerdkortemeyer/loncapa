@@ -47,12 +47,13 @@ sub start_lcdatatable_html {
 
 sub courseselect {
    my ($type)=@_;
-   my $output='<tr><th>'.&mt('Domain').'</th><th>'.&mt('Title').'</th></tr>';
+   my $output='<thead><tr><th>'.&mt('Domain').'</th><th>'.&mt('Title').'</th></tr></thead><tbody>';
    foreach my $profile (&Apache::lc_entity_courses::active_session_courses()) {
       if ($type eq $profile->{'type'}) {
          $output.='<tr><td>'.&domain_name($profile->{'domain'}).'</td><td>'.$profile->{'title'}.'</td></tr>';
       }
    }
+   $output.="</tbody>";
    return $output;
 }
 
