@@ -51,6 +51,7 @@ function select_course (entity,domain) {
                    $('.lcerror').hide();
                    $('.lcsuccess').show();
                    parent.menubar();
+                   parent.headermiddle();
                 }
              },
              error: function(xhr, ajaxOptions, errorThrown) {

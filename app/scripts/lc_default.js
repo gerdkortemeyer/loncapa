@@ -6,6 +6,8 @@ $(document).ready(function() {
    notificationbox();
    checknotificationbox();
    dashboard();
+   headerright();
+   headermiddle();
 });
 
 $( window ).resize(function() {
@@ -197,6 +199,31 @@ $.getJSON( "breadcrumbs", { "noCache": noCache }, function( data ) {
 function setbreadcrumbbar(mode,title,text,func) {
 $.post( "breadcrumbs",$.parseJSON('{"mode":"'+mode+'","title":"'+title+'","text":"'+text+'","function":"'+func+'"}'));
 }
+
+function headerright() {
+var noCache = no_cache_value();
+$.getJSON( "headerright", { "noCache": noCache }, function( data ) {
+  var newheader = "<div id='headerright'>";
+  $.each( data, function( key, val ) {
+     newheader+=val;
+  });
+  newheader+="</div>";
+  $("#headerright").replaceWith(newheader);
+});
+}
+
+function headermiddle() {
+var noCache = no_cache_value();
+$.getJSON( "headermiddle", { "noCache": noCache }, function( data ) {
+  var newheader = "<div id='headermiddle'>";
+  $.each( data, function( key, val ) {
+     newheader+=val;
+  });
+  newheader+="</div>";
+  $("#headermiddle").replaceWith(newheader);
+});
+}
+
 
 function checknotificationbox() {
    if ($(window).width()<680) {

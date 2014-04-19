@@ -22,7 +22,9 @@ use strict;
 use Apache2::RequestRec();
 use Apache2::Const qw(:common);
 use Apache::lc_entity_sessions();
+use Apache::lc_entity_users();
 use Apache::lc_ui_utils;
+use Apache::lc_json_utils();
 use Apache::lc_logs;
 
 # ==== Main handler
@@ -30,7 +32,10 @@ use Apache::lc_logs;
 sub handler {
 # Get request object
    my $r = shift;
-   $r->print(&Apache::lc_entity_sessions::course_title());
+   my ($firstname,$middlename,$lastname,$suffix)=&Apache::lc_entity_users::full_name(&Apache::lc_entity_sessions::user_entity_domain());
+   my $name="$firstname $lastname";
+   if ($suffix) { $name.=" $suffix"; }
+   $r->print(&Apache::lc_json_utils::perl_to_json({'name' => $name}));
    return OK;
 }
 1;

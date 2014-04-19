@@ -22,6 +22,7 @@ use strict;
 use Apache2::RequestRec();
 use Apache2::Const qw(:common);
 use Apache::lc_entity_sessions();
+use Apache::lc_entity_courses();
 use Apache::lc_ui_utils;
 use Apache::lc_logs;
 
@@ -30,7 +31,9 @@ use Apache::lc_logs;
 sub handler {
 # Get request object
    my $r = shift;
-   $r->print(&Apache::lc_entity_sessions::course_title());
+   my $title=&Apache::lc_entity_courses::course_title(&Apache::lc_entity_sessions::course_entity_domain());
+   unless ($title) { $title=''; }
+   $r->print(&Apache::lc_json_utils::perl_to_json({'title' => $title}));
    return OK;
 }
 1;

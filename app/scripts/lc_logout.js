@@ -11,6 +11,8 @@ $(document).ready(function() {
                    parent.hide_modal();
                 }
                 if (response=='ok') {
+                   parent.headermiddle();
+                   parent.headerright();
                    parent.login();
                 }
              },

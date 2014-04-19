@@ -32,6 +32,7 @@ $(document).ready(function() {
                    $('.lcerror').show();
                 }
                 if (response=='yes') {
+                   parent.headerright();
                    parent.dashboard();
                 }
              },
