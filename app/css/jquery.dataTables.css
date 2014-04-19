@@ -6,19 +6,24 @@ table.dataTable {
 	margin: 0 auto;
 	clear: both;
 	width: 100%;
+        font-family: sans-serif;
 }
 
 table.dataTable thead th {
 	padding: 3px 18px 3px 10px;
 	border-bottom: 1px solid black;
 	font-weight: bold;
+        background-color: #30a097;
+        color: #ffffff;
 	cursor: pointer;
+        font-family: sans-serif;
 	*cursor: hand;
 }
 
 table.dataTable tfoot th {
 	padding: 3px 18px 3px 10px;
 	border-top: 1px solid black;
+        font-family: sans-serif;
 	font-weight: bold;
 }
 
@@ -31,11 +36,11 @@ table.dataTable td.dataTables_empty {
 	text-align: center;
 }
 
-table.dataTable tr.odd { background-color: #E2E4FF; }
-table.dataTable tr.even { background-color: white; }
+table.dataTable tr.odd { background-color: #ccff66; }
+table.dataTable tr.even { background-color: #99ffcc; }
 
-table.dataTable tr.odd td.sorting_1 { background-color: #D3D6FF; }
-table.dataTable tr.odd td.sorting_2 { background-color: #DADCFF; }
+table.dataTable tr.odd td.sorting_1 { background-color: #33cc66; }
+table.dataTable tr.odd td.sorting_2 { background-color: #33ff99; }
 table.dataTable tr.odd td.sorting_3 { background-color: #E0E2FF; }
 table.dataTable tr.even td.sorting_1 { background-color: #EAEBFF; }
 table.dataTable tr.even td.sorting_2 { background-color: #F2F3FF; }
@@ -48,6 +53,10 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 .dataTables_wrapper {
 	position: relative;
 	clear: both;
+        font-family: sans-serif;
+        background-color: #dddddd;
+        border-radius: 3px 3px 3px 3px;
+        padding: 3px 3px 3px 3px;
 	*zoom: 1;
 }
 
@@ -75,6 +84,10 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 .dataTables_info {
 	clear: both;
 	float: left;
+        font-family: sans-serif;
+        background-color: #dddddd;
+        border-radius: 3px 3px 3px 3px;
+        padding: 3px 3px 3px 3px;
 }
 
 
@@ -84,6 +97,10 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 .dataTables_paginate {
 	float: right;
 	text-align: right;
+        font-family: sans-serif;
+        background-color: #dddddd;
+        border-radius: 3px 3px 3px 3px;
+        padding: 3px 3px 3px 3px;
 }
 
 /* Two button pagination - previous / next */

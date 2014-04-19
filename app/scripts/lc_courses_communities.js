@@ -11,3 +11,7 @@ $(document).ready(function() {
       ]
     } );
 } );
+
+function select_course (entity,domain) {
+   alert(entity+' '+domain);
+}
