@@ -126,6 +126,10 @@ use base qw(Apache::lc_localize);
 
 'Select a community to enter' => 'Wählen Sie eine Gemeinschaft aus',
 
+'A problem occurred while entering the course.' => 'Bei der Auswahl des Kurses trat ein Problem auf.',
+
+'A problem occurred while entering the community.' => 'Bei der Auswahl der Gemeinschaft trat ein Problem auf.',
+
 'Course entered.' => 'Kurs ausgewählt.',
 
 'Community entered.' => 'Gemeinschaft ausgewählt.',

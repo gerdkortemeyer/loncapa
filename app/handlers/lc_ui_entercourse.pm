@@ -22,13 +22,20 @@ use strict;
 use Apache2::RequestRec();
 use Apache2::Const qw(:common);
 use Apache::lc_entity_sessions();
+use Apache::lc_ui_utils;
+use Apache::lc_logs;
 
 # ==== Main handler
 #
 sub handler {
 # Get request object
    my $r = shift;
-   $r->print('yes');
+   my %content=&get_content($r);
+   if (&Apache::lc_entity_sessions::enter_course($content{'entity'},$content{'domain'})) {
+      $r->print('yes');
+   } else {
+      $r->print('no');
+   }
    return OK;
 }
 1;
