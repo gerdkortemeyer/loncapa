@@ -104,6 +104,10 @@ sub context_language {
    unless ($language) {
       $language=&Apache::lc_connection_utils::domain_locale(&Apache::lc_connection_utils::default_domain());
    }
+# Maybe we don't know the "sublanguage"
+   unless ($known_languages{$language}) {
+      $language=(split(/[\-\_]/,$language))[0];
+   }
    return $language;
 }
 
