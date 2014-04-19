@@ -50,6 +50,7 @@ function select_course (entity,domain) {
                    $('.lcproblem').hide();
                    $('.lcerror').hide();
                    $('.lcsuccess').show();
+                   parent.menubar();
                 }
              },
              error: function(xhr, ajaxOptions, errorThrown) {

@@ -134,6 +134,8 @@ use base qw(Apache::lc_localize);
 
 'Community entered.' => 'Gemeinschaft ausgewählt.',
 
+'Content' => 'Inhalt',
+
 'Last Access' => 'Letzter Zugriff',
 
 "No data available in table" => "Keine Daten in der Tabelle",

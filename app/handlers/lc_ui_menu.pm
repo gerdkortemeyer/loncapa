@@ -50,6 +50,10 @@ sub handler {
          &menu_item('courses','Courses','courses()').','.
          &menu_item('communities','Communities','communities()').','.
          &menu_item('portfolio','Portfolio','portfolio()')).',';
+      if (&Apache::lc_entity_sessions::course_entity_domain()) {
+# We are in a course or community
+         $menu.=&menu_item('content','Content','content()').',';
+      }
 #
 # ... other things go here, depending on context and privileges
 #

@@ -55,6 +55,8 @@ mkdir /home/httpd/html/css
 cp app/css/* /home/httpd/html/css
 mkdir /home/httpd/html/pages
 cp app/html/pages/* /home/httpd/html/pages
+mkdir /home/httpd/html/modals
+cp app/html/modals/* /home/httpd/html/modals
 mkdir /home/httpd/html/help
 cp app/html/help/* /home/httpd/html/help
 if [ ! -e /home/loncapa/cluster/cluster_manager.conf ]; then

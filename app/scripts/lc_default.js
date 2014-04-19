@@ -95,9 +95,16 @@ $.getJSON( "menu", { "noCache": noCache }, function( data ) {
 });
 }
 
+function content() {
+   setbreadcrumbbar('fresh','content','Content','content()');
+   display_asset("/pages/lc_content.html");
+   menubar();
+   breadcrumbbar();
+}
+
 function logout() {
    setbreadcrumbbar('fresh','logout','Logout','logout()');
-   display_modal('/pages/lc_logout.html');
+   display_modal('/modals/lc_logout.html');
    menubar();
    breadcrumbbar();
 }
