@@ -50,7 +50,9 @@ sub courseselect {
    my $output='<thead><tr><th>&nbsp;</th><th>'.&mt('Title').'</th><th>'.&mt('Domain').'</th><th>'.&mt('Last Access').'</tr></thead><tbody>';
    foreach my $profile (&Apache::lc_entity_courses::active_session_courses()) {
       if ($type eq $profile->{'type'}) {
-         $output.='<tr><td>Select</td><td>'.$profile->{'title'}.'</td><td>'.&domain_name($profile->{'domain'}).'</td><td>05.03.2017</tr>';
+         $output.='<tr><td><span class="lcformtrigger"><a href="#" id="select_'.$profile->{'entity'}.'_'.$profile->{'domain'}.
+                  '" onClick="select_course('."'".$profile->{'entity'}."','".$profile->{'domain'}."')".'">'.&mt('Select').
+                  '</a></span></td><td>'.$profile->{'title'}.'</td><td>'.&domain_name($profile->{'domain'}).'</td><td>05.03.2017</tr>';
       }
    }
 #FIXME: debug

@@ -120,6 +120,8 @@ use base qw(Apache::lc_localize);
 
 'Portfolio' => 'Portfolio',
 
+'Select' => 'Auswählen',
+
 'Last Access' => 'Letzter Zugriff',
 
 "No data available in table" => "Keine Daten in der Tabelle",
