@@ -35,6 +35,15 @@ sub menu_item {
    return '"menu_'.$title.'" : "'.&mt($text).'&'.$function.'"';
 }
 
+sub admin_menu {
+   my $submenu='';
+   return $submenu;
+}
+
+sub grade_menu {
+   my $submenu='';
+   return $submenu;
+}
 
 # ==== Main handler
 #
@@ -53,7 +62,12 @@ sub handler {
       if (&Apache::lc_entity_sessions::course_entity_domain()) {
 # We are in a course or community
          $menu.=&menu_item('content','Content','content()').',';
+         $menu.=&submenu("Grades",&grade_menu()).',';
       }
+# Can we administrate things?
+     if (&Apache::lc_authorize::allowed_anywhere('modify_role')) {
+        $menu.=&submenu("Administration",&admin_menu()).',';
+     }
 #
 # ... other things go here, depending on context and privileges
 #

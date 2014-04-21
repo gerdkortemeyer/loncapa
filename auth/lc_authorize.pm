@@ -109,7 +109,22 @@ sub allowed_user {
    return 0;
 }
 
-
+#
+# Allowed anywhere checks if the listed actions are allowed for any current role
+#
+sub allowed_anywhere {
+   my (@actions)=@_;
+   my $roles=&Apache::lc_entity_sessions::roles();
+   foreach my $role (keys(%{$roles})) {
+      foreach my $action (@actions) {
+         foreach my $realm ('system','domain','course','section','user') {
+            if ($privileges->{$role}->{$realm}->{$action}) { return 1; }
+         }
+      }
+   }
+   return 0;
+}
+   
 BEGIN {
    unless ($privileges) {
       $privileges=&Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readfile(&lc_roles_defs()));

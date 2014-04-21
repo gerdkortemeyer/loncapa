@@ -136,6 +136,10 @@ use base qw(Apache::lc_localize);
 
 'Content' => 'Inhalt',
 
+'Grades' => 'Benotung',
+
+'Administration' => 'Verwaltung',
+
 'Last Access' => 'Letzter Zugriff',
 
 "No data available in table" => "Keine Daten in der Tabelle",
