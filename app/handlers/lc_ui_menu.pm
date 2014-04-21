@@ -24,6 +24,7 @@ use Apache2::Const qw(:common);
 
 use Apache::lc_ui_localize;
 use Apache::lc_entity_sessions();
+use Apache::lc_authorize;
 
 sub submenu {
    my ($title,$content)=@_;
@@ -33,11 +34,6 @@ sub submenu {
 sub menu_item {
    my ($title,$text,$function)=@_;
    return '"menu_'.$title.'" : "'.&mt($text).'&'.$function.'"';
-}
-
-sub admin_menu {
-   my $submenu='';
-   return $submenu;
 }
 
 sub grade_menu {
@@ -52,6 +48,7 @@ sub handler {
    my $r = shift;
    $r->content_type('application/json; charset=utf-8');
    my $menu='{';
+   my $admin_menu='';
    if (&Apache::lc_entity_sessions::session_id()) {
       $menu.=&menu_item('dashboard','Dashboard','dashboard()').',';
 # Places submenu
@@ -63,14 +60,18 @@ sub handler {
 # We are in a course or community
          $menu.=&menu_item('content','Content','content()').',';
          $menu.=&submenu("Grades",&grade_menu()).',';
+         if (&allowed_any_section('modify_user','student',&Apache::lc_entity_sessions::course_entity_domain())) {
+            $admin_menu.=&menu_item('enrollment','Enrollment','enrollment()').',';
+         }
       }
-# Can we administrate things?
-     if (&Apache::lc_authorize::allowed_anywhere('modify_role')) {
-        $menu.=&submenu("Administration",&admin_menu()).',';
+#
+# ... other things go here
+
+# Can we administrate things? Fourth to last item with collected admin stuff
+     if ($admin_menu) {
+        $admin_menu=~s/\s*\,\s*$//gs;
+        $menu.=&submenu("Administration",$admin_menu).',';
      }
-#
-# ... other things go here, depending on context and privileges
-#
 # User submenu, third to last item when logged in
       $menu.=&submenu("User",
          &menu_item('preferences','Preferences','preferences()').','.

@@ -28,7 +28,7 @@ use Apache::lc_entity_sessions();
 use vars qw($privileges);
 require Exporter;
 our @ISA = qw (Exporter);
-our @EXPORT = qw(allowed_system allowed_domain allowed_course allowed_section allowed_user);
+our @EXPORT = qw(allowed_system allowed_domain allowed_course allowed_section allowed_user allowed_any_section);
 
 # Check privileges on system-level, going through all system roles
 #
@@ -110,15 +110,18 @@ sub allowed_user {
 }
 
 #
-# Allowed anywhere checks if the listed actions are allowed for any current role
+# Allowed in any section of the course?
 #
-sub allowed_anywhere {
-   my (@actions)=@_;
+sub allowed_any_section {
+   my ($action,$item,$entity,$domain)=@_;
+   if (&allowed_course($action,$item,$entity,$domain)) { return 1; }
    my $roles=&Apache::lc_entity_sessions::roles();
-   foreach my $role (keys(%{$roles})) {
-      foreach my $action (@actions) {
-         foreach my $realm ('system','domain','course','section','user') {
-            if ($privileges->{$role}->{$realm}->{$action}) { return 1; }
+   foreach my $section (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'section'}})) {
+      foreach my $role (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'section'}->{$section}})) {
+         if ($item) {
+            if ($privileges->{$role}->{'section'}->{$action}->{$item}) { return 1; }
+         } else {
+            if ($privileges->{$role}->{'section'}->{$action}) { return 1; }
          }
       }
    }

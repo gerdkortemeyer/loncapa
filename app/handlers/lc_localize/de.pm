@@ -140,6 +140,8 @@ use base qw(Apache::lc_localize);
 
 'Administration' => 'Verwaltung',
 
+'Einschreibungen' => 'Enrollment',
+
 'Last Access' => 'Letzter Zugriff',
 
 "No data available in table" => "Keine Daten in der Tabelle",
