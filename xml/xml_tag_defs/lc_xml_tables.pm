@@ -50,17 +50,21 @@ sub courseselect {
    my $output='<thead><tr><th>&nbsp;</th><th>'.&mt('Title').'</th><th>'.&mt('Domain').'</th><th>'.&mt('Last Access').'</th><th>&nbsp;</th></tr></thead><tbody>';
    foreach my $profile (&Apache::lc_entity_courses::active_session_courses()) {
       if ($type eq $profile->{'type'}) {
-         my ($display_date,$sort_date)=&Apache::lc_ui_localize::locallocaltime(
+         my $display_date;
+         my $sort_date;
+         if ($last_accessed->{$profile->{'domain'}}->{$profile->{'entity'}}) {
+             ($display_date,$sort_date)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($last_accessed->{$profile->{'domain'}}->{$profile->{'entity'}}));
-         $output.='<tr><td><span class="lcformtrigger"><a href="#" id="select_'.$profile->{'entity'}.'_'.$profile->{'domain'}.
+         } else {
+             $display_date=&mt('Never');
+             $sort_date=0;
+         }
+         $output.="\n".'<tr><td><span class="lcformtrigger"><a href="#" id="select_'.$profile->{'entity'}.'_'.$profile->{'domain'}.
                   '" onClick="select_course('."'".$profile->{'entity'}."','".$profile->{'domain'}."')".'">'.&mt('Select').
-                  '</a></span></td><td>'.$profile->{'title'}.'</td><td>'.&domain_name($profile->{'domain'}).'</td><td><time datetime="'.$sort_date.'">'.
-                  $display_date.'</time></td><td>'.$sort_date.'</td></tr>';
+                  '</a></span></td><td>'.$profile->{'title'}.'</td><td>'.&domain_name($profile->{'domain'}).'</td><td>'.
+                  ($sort_date?'<time datetime="'.$sort_date.'">':'').
+                  $display_date.($sort_date?'</time>':'').'</td><td>'.$sort_date.'</td></tr>';
       }
-   }
-#FIXME: debug
-   for (my $i=1; $i<=200; $i++) {
-       $output.='<tr><td>Select</td><td>Course'.$i.'</td><td>Test'.$i.'</td><td>04.04.3132</td><td>a'.$i.'</td></tr>';
    }
    $output.="</tbody>";
    return $output;

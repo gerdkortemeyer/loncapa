@@ -89,22 +89,103 @@ my $comparedate='2014-04-16 01:00:01';
 
    $r->print("Profile: ".Dumper(&Apache::lc_entity_profile::dump_profile($courseentity,'msu'))."\n");
 
+# =====
+   $r->print(&Apache::lc_entity_courses::make_new_course('test206','msu')."\n");
+   $courseentity=&Apache::lc_entity_courses::course_to_entity('test206','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   &Apache::lc_entity_courses::set_course_title($courseentity,'msu','Calculus Based Physics 2014/15');
+   &Apache::lc_entity_courses::set_course_type($courseentity,'msu','regular');
+
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
        'course', # system, domain, course, user
-       $courseentity,'msu','31fq', # what's the realm?
-       'student', # what role is this?
+       $courseentity,'msu','007', # what's the realm?
+       'instructor', # what role is this?
        '1998-01-08 04:05:06','2015-01-08 04:05:06', # duration
        'ggf21wqffas','msu');
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
        'course', # system, domain, course, user
-       $courseentity,'msu','31fq', # what's the realm?
+       $courseentity,'msu','008', # what's the realm?
        'teaching_assistant', # what role is this?
        '1998-01-08 04:05:06','2005-01-08 04:05:06', # duration
        'ggf21wqffas','msu');
+# =====
+   $r->print(&Apache::lc_entity_courses::make_new_course('test207','msu')."\n");
+   $courseentity=&Apache::lc_entity_courses::course_to_entity('test207','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   &Apache::lc_entity_courses::set_course_title($courseentity,'msu','Algebra Based Physics 2014/15');
+   &Apache::lc_entity_courses::set_course_type($courseentity,'msu','regular');
 
 
+   &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
+       'course', # system, domain, course, user
+       $courseentity,'msu','006', # what's the realm?
+       'instructor', # what role is this?
+       '1998-01-08 04:05:06','2015-01-08 04:05:06', # duration
+       'ggf21wqffas','msu');
+
+   &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
+       'course', # system, domain, course, user
+       $courseentity,'msu','010', # what's the realm?
+       'teaching_assistant', # what role is this?
+       '1998-01-08 04:05:06','2017-01-08 04:05:06', # duration
+       'ggf21wqffas','msu');
+
+# =====
+   $r->print(&Apache::lc_entity_courses::make_new_course('test208','msu')."\n");
+   $courseentity=&Apache::lc_entity_courses::course_to_entity('test208','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   &Apache::lc_entity_courses::set_course_title($courseentity,'msu','Underwater Basket Weaving 2014/15');
+   &Apache::lc_entity_courses::set_course_type($courseentity,'msu','regular');
+   
+       
+   &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
+       'course', # system, domain, course, user
+       $courseentity,'msu',undef, # what's the realm?
+       'course_coordinator', # what role is this?
+       '1998-01-08 04:05:06','2018-01-08 04:05:06', # duration
+       'ggf21wqffas','msu');
+
+# =====
+
+   $r->print(&Apache::lc_entity_courses::make_new_course('test209','msu')."\n");
+   $courseentity=&Apache::lc_entity_courses::course_to_entity('test209','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   &Apache::lc_entity_courses::set_course_title($courseentity,'msu','Advanced Introductory Special Topics 2014/15');
+   &Apache::lc_entity_courses::set_course_type($courseentity,'msu','regular');
+
+
+   &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
+       'course', # system, domain, course, user
+       $courseentity,'msu',undef, # what's the realm?
+       'course_coordinator', # what role is this?
+       '1998-01-08 04:05:06','2018-01-08 04:05:06', # duration
+       'ggf21wqffas','msu');
+
+
+# =====
+
+   $r->print(&Apache::lc_entity_courses::make_new_course('test210','msu')."\n");
+   $courseentity=&Apache::lc_entity_courses::course_to_entity('test210','msu');
+   $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   &Apache::lc_entity_courses::set_course_title($courseentity,'msu','The greatest committee of all 2014/15');
+   &Apache::lc_entity_courses::set_course_type($courseentity,'msu','community');
+
+
+   &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
+       'course', # system, domain, course, user
+       $courseentity,'msu',undef, # what's the realm?
+       'member', # what role is this?
+       '1998-01-08 04:05:06','2018-01-08 04:05:06', # duration
+       'ggf21wqffas','msu');
+
+return OK;
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
        'domain', # system, domain, course, user

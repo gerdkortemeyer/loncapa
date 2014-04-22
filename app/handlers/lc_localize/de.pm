@@ -122,6 +122,8 @@ use base qw(Apache::lc_localize);
 
 'Select' => 'Auswählen',
 
+'Never' => 'Niemals',
+
 'Select a course to enter' => 'Wählen Sie einen Kurs aus',
 
 'Select a community to enter' => 'Wählen Sie eine Gemeinschaft aus',
