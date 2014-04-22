@@ -28,7 +28,7 @@ use Apache::lc_mongodb();
 use Apache::lc_memcached();
 use Apache::lc_date_utils();
 use Apache::lc_dispatcher();
-
+use Apache::lc_date_utils();
 
 use Apache2::Const qw(:common :http);
 
@@ -232,6 +232,29 @@ sub full_name {
    my $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
    return ($profile->{'firstname'},$profile->{'middlename'},$profile->{'lastname'},$profile->{'suffix'});
 }
+
+#
+# Set last access to an entity (e.g., a course)
+#
+sub set_last_accessed {
+   my ($entity,$domain,$accessed_entity,$accessed_domain)=@_;
+   return &Apache::lc_entity_profile::modify_profile($entity,$domain,{ last_accessed => 
+                                                                       { $accessed_domain => 
+                                                                          { $accessed_entity => &Apache::lc_date_utils::now2str() }
+                                                                       }
+                                                                     });
+}
+
+#
+# Gives back the whole last accessed record
+#
+sub last_accessed {
+   my ($entity,$domain)=@_;
+   my $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
+   return $profile->{'last_accessed'};
+}
+
+
 
 BEGIN {
    &Apache::lc_connection_handle::register('pid_to_entity',undef,undef,undef,\&local_pid_to_entity,'pid','domain');

@@ -27,6 +27,7 @@ use Apache::lc_postgresql();
 use Apache::lc_mongodb();
 use Apache::lc_memcached();
 use Apache::lc_parameters;
+use Apache::lc_date_utils();
 
 use Apache2::Const qw(:common :http);
 
@@ -298,7 +299,19 @@ sub active_session_courses {
    return @courses;
 }
 
+#
+# Update the "last accessed" record for the course
+#
+sub set_last_accessed {
+   my ($courseid,$domain)=@_;
+   return &Apache::lc_entity_profile::modify_profile($courseid,$domain,{ last_accessed => &Apache::lc_date_utils::now2str() });
+}
 
+sub last_accessed {
+   my ($courseid,$domain)=@_;
+   my $profile=&Apache::lc_entity_profile::dump_profile($courseid,$domain);
+   return $profile->{'last_accessed'};
+}
 
 BEGIN {
    &Apache::lc_connection_handle::register('course_to_entity',undef,undef,undef,\&local_course_to_entity,'courseid','domain');

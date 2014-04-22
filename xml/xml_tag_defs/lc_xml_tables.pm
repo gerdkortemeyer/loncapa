@@ -23,8 +23,6 @@ use Apache::lc_entity_courses();
 use Apache::lc_ui_localize;
 use Apache::lc_ui_utils;
 
-use Data::Dumper;
-
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
@@ -47,12 +45,14 @@ sub start_lcdatatable_html {
 
 sub courseselect {
    my ($type)=@_;
+   my $last_accessed=&Apache::lc_entity_users::last_accessed(&Apache::lc_entity_sessions::user_entity_domain());
    my $output='<thead><tr><th>&nbsp;</th><th>'.&mt('Title').'</th><th>'.&mt('Domain').'</th><th>'.&mt('Last Access').'</tr></thead><tbody>';
    foreach my $profile (&Apache::lc_entity_courses::active_session_courses()) {
       if ($type eq $profile->{'type'}) {
          $output.='<tr><td><span class="lcformtrigger"><a href="#" id="select_'.$profile->{'entity'}.'_'.$profile->{'domain'}.
                   '" onClick="select_course('."'".$profile->{'entity'}."','".$profile->{'domain'}."')".'">'.&mt('Select').
-                  '</a></span></td><td>'.$profile->{'title'}.'</td><td>'.&domain_name($profile->{'domain'}).'</td><td>05.03.2017</tr>';
+                  '</a></span></td><td>'.$profile->{'title'}.'</td><td>'.&domain_name($profile->{'domain'}).'</td><td>'.
+                  $last_accessed->{$profile->{'domain'}}->{$profile->{'entity'}}.'</td></tr>';
       }
    }
 #FIXME: debug

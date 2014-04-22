@@ -32,6 +32,8 @@ use Apache::lc_init_cluster_table();
 use Apache::lc_date_utils();
 use Apache::lc_parameters;
 use Apache::lc_entity_authentication();
+use Apache::lc_entity_users();
+use Apache::lc_entity_courses();
 use Apache2::Const qw(:common :http);
 
 use vars qw($lc_session);
@@ -139,6 +141,8 @@ sub course_entity_domain {
 #
 sub enter_course {
    my ($courseid,$domain)=@_;
+   &Apache::lc_entity_courses::set_last_accessed($courseid,$domain);
+   &Apache::lc_entity_users::set_last_accessed(&user_entity_domain(),$courseid,$domain);
    &update_session({ 'current_course' => { 'entity' => $courseid, 'domain' => $domain }});
 }
 
