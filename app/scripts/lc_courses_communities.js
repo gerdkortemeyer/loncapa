@@ -7,7 +7,8 @@ $(document).ready(function() {
          { "bSortable": false },
          null,
          null,
-         null
+         {"iDataSort": 4},
+         {"bVisible": false}
       ]
     } );
 } );
