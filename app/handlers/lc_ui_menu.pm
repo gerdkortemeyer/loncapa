@@ -36,11 +36,6 @@ sub menu_item {
    return '"menu_'.$title.'" : "'.&mt($text).'&'.$function.'"';
 }
 
-sub grade_menu {
-   my $submenu='';
-   return $submenu;
-}
-
 # ==== Main handler
 #
 sub handler {
@@ -49,6 +44,7 @@ sub handler {
    $r->content_type('application/json; charset=utf-8');
    my $menu='{';
    my $admin_menu='';
+   my $grade_menu='';
    if (&Apache::lc_entity_sessions::session_id()) {
       $menu.=&menu_item('dashboard','Dashboard','dashboard()').',';
 # Places submenu
@@ -59,14 +55,21 @@ sub handler {
       if (&Apache::lc_entity_sessions::course_entity_domain()) {
 # We are in a course or community
          $menu.=&menu_item('content','Content','content()').',';
-         $menu.=&submenu("Grades",&grade_menu()).',';
+         if (&Apache::lc_entity_courses::course_type(&Apache::lc_entity_sessions::course_entity_domain()) eq 'regular') {
+            $grade_menu.=&menu_item('my_grades','My Grades','my_grades()').',';
+            if (&allowed_any_section('modify_grade',undef,&Apache::lc_entity_sessions::course_entity_domain())) {
+               $grade_menu.=&menu_item('grading','Grading','grading()').',';
+            }
+         }
          if (&allowed_any_section('modify_user','student',&Apache::lc_entity_sessions::course_entity_domain())) {
             $admin_menu.=&menu_item('enrollment','Enrollment','enrollment()').',';
          }
       }
-#
-# ... other things go here
-
+# Grade menu
+     if ($grade_menu) {
+        $grade_menu=~s/\s*\,\s*$//gs;
+        $menu.=&submenu("Grades",$grade_menu).',';
+     }
 # Can we administrate things? Fourth to last item with collected admin stuff
      if ($admin_menu) {
         $admin_menu=~s/\s*\,\s*$//gs;

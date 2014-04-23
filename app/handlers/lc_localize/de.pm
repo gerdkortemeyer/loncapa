@@ -138,7 +138,11 @@ use base qw(Apache::lc_localize);
 
 'Content' => 'Inhalt',
 
-'Grades' => 'Benotung',
+'Grades' => 'Noten',
+
+'Grading' => 'Benotung',
+
+'My Grades' => 'Meine Noten',
 
 'Administration' => 'Verwaltung',
 
