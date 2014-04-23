@@ -104,6 +104,27 @@ function content() {
    breadcrumbbar();
 }
 
+function courselist() {
+   setbreadcrumbbar('fresh','courselist','List','courselist()');
+   display_asset("/pages/lc_courselist.html");
+   menubar();
+   breadcrumbbar();
+}
+
+function grading() {
+   setbreadcrumbbar('fresh','grading','Grading','grading()');
+   display_asset("/pages/lc_grading.html");
+   menubar();
+   breadcrumbbar();
+}
+
+function my_grades() {
+   setbreadcrumbbar('fresh','my_grades','My Grades','my_grades()');
+   display_asset("/pages/lc_my_grades.html");
+   menubar();
+   breadcrumbbar();
+}
+
 function logout() {
    setbreadcrumbbar('fresh','logout','Logout','logout()');
    display_modal('/modals/lc_logout.html');
