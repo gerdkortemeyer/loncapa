@@ -61,7 +61,7 @@ sub handler {
                $grade_menu.=&menu_item('grading','Grading','grading()').',';
             }
          }
-         if (&allowed_any_section('modify_user','student',&Apache::lc_entity_sessions::course_entity_domain())) {
+         if (&allowed_any_section('modify_role','student',&Apache::lc_entity_sessions::course_entity_domain())) {
             $admin_menu.=&submenu('Enrollment',
                 &menu_item('courselist','List','courselist()')).',';
          }

@@ -146,7 +146,11 @@ use base qw(Apache::lc_localize);
 
 'Administration' => 'Verwaltung',
 
-'Einschreibungen' => 'Enrollment',
+'Enrollment' => 'Teilnehmer',
+
+'Enrollment List' => 'Teilnehmerliste',
+
+'List' => 'Liste',
 
 'Last Access' => 'Letzter Zugriff',
 

@@ -105,7 +105,7 @@ function content() {
 }
 
 function courselist() {
-   setbreadcrumbbar('fresh','courselist','List','courselist()');
+   setbreadcrumbbar('fresh','courselist','Enrollment List','courselist()');
    display_asset("/pages/lc_courselist.html");
    menubar();
    breadcrumbbar();
