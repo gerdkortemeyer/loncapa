@@ -39,11 +39,15 @@ sub start_lcdatatable_html {
    my $output='<table id="'.$id.'" name="'.$name.'" class="dataTable">';
    if ($class eq "courseselect") {
       $output.=&courseselect($type);
+   } elsif ($class eq "courselist") {
+      $output.=&courselist();
    }
    $output.='</table>';
    return $output;
 }
 
+#
+# Shows all courses/communities that the user is currently part of, lets user select
 sub courseselect {
    my ($type)=@_;
    my $last_accessed=&Apache::lc_entity_users::last_accessed(&Apache::lc_entity_sessions::user_entity_domain());
@@ -69,6 +73,20 @@ sub courseselect {
    $output.="</tbody>";
    return $output;
 }
+
+#
+# List of all course/community participants
+#
+sub courselist {
+   my ($type)=@_;
+   my $output='<thead><tr><th>&nbsp;</th><th>'.&mt('First Name').'</th><th>'.&mt('Middle Name').'</th><th>'.&mt('Last Name').'</th><th>'.&mt('Suffix').'</th><th>'.&mt('Role').'</th><th>'.&mt('Section/Group').'</th><th>'.
+              &mt('Start Date').'</th><th>&nbsp;</th><th>'.&mt('End Date').'</th><th>&nbsp;</th><th>'.&mt('Active').'</th></tr></thead><tbody>';
+#FIXME: table here
+   $output.="</tbody>";
+   return $output;
+}
+
+
 
 1;
 __END__

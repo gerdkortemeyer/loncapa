@@ -152,6 +152,24 @@ use base qw(Apache::lc_localize);
 
 'List' => 'Liste',
 
+'First Name' => 'Vorname',
+
+'Middle Name' => 'Weitere Vornamen',
+
+'Last Name' => 'Nachname',
+
+'Suffix' => 'Namensuffix',
+
+'Role' => 'Rolle',
+
+'Section/Group' => 'Sektion/Gruppe',
+
+'Start Date' => 'Anfangsdatum',
+
+'End Date' => 'Enddatum',
+
+'Active' => 'Aktiv',
+
 'Last Access' => 'Letzter Zugriff',
 
 "No data available in table" => "Keine Daten in der Tabelle",
