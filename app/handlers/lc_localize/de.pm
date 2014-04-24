@@ -158,7 +158,7 @@ use base qw(Apache::lc_localize);
 
 'Last Name' => 'Nachname',
 
-'Suffix' => 'Namensuffix',
+'Suffix' => 'Namenssuffix',
 
 'Role' => 'Rolle',
 

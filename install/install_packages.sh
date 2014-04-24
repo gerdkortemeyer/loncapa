@@ -1,3 +1,7 @@
+adduser www
+yum install httpd
+yum install mod_ssl
+yum install mod_perl
 cp mongodb.repo /etc/yum.repos.d
 yum install mongo-10gen mongo-10gen-server
 service mongod start
@@ -20,7 +24,7 @@ chkconfig memcached on
 yum install perl-CPAN
 yum install gcc
 cpan Safe
-cpan MongoDB
+cpan -f -i MongoDB
 cpan Safe::Hole
 cpan Math::Cephes
 cpan Math::Random
