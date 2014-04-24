@@ -79,7 +79,18 @@ sub courseselect {
 #
 sub courselist {
    my ($type)=@_;
-   my $output='<thead><tr><th>&nbsp;</th><th>'.&mt('First Name').'</th><th>'.&mt('Middle Name').'</th><th>'.&mt('Last Name').'</th><th>'.&mt('Suffix').'</th><th>'.&mt('Role').'</th><th>'.&mt('Section/Group').'</th><th>'.
+   my $output='<thead>';
+   $output.='<tr><td colspan="15">'.&mt('Column Visibility:').
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(2)">'.&mt('Middle Name').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(4)">'.&mt('Suffix').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(5)">'.&mt('Username').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(6)">'.&mt('Domain').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(7)">'.&mt('ID Number').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(10)">'.&mt('Start Date').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(12)">'.&mt('End Date').'</a>'.
+            '</td></tr>';
+   $output.='<tr><th>&nbsp;</th><th>'.&mt('First Name').'</th><th>'.&mt('Middle Name').'</th><th>'.&mt('Last Name').'</th><th>'.&mt('Suffix').'</th><th>'.
+              &mt('Username').'</th><th>'.&mt('Domain').'</th><th>'.&mt('ID Number').'</th><th>'.&mt('Role').'</th><th>'.&mt('Section/Group').'</th><th>'.
               &mt('Start Date').'</th><th>&nbsp;</th><th>'.&mt('End Date').'</th><th>&nbsp;</th><th>'.&mt('Active').'</th></tr></thead><tbody>';
 #FIXME: table here
    $output.="</tbody>";

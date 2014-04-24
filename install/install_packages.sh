@@ -1,5 +1,7 @@
 adduser www
 yum install httpd
+yum install openssl
+yum install openssl-devel
 yum install mod_ssl
 yum install mod_perl
 cp mongodb.repo /etc/yum.repos.d
@@ -23,9 +25,13 @@ service memcached start
 chkconfig memcached on
 yum install perl-CPAN
 yum install gcc
+cpan IO::Socket:SSL
+cpan LWP::Protocol::https
+cpan Net::SSLeay
 cpan Safe
 cpan -f -i MongoDB
 cpan Safe::Hole
+cpan CGI::Cookie
 cpan Math::Cephes
 cpan Math::Random
 cpan Cache::Memcached

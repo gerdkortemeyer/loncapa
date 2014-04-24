@@ -12,6 +12,15 @@ h1 {
    overflow:hidden;
 }
 
+.lcvisibilitytoggle {
+   font-family: sans-serif;
+   font-size: 16px;
+   background: #30a097;
+   padding: 2px;
+   color: #ffffff;
+   text-decoration: none;
+}
+
 .lcfileuploadlabel {
    background: #cccccc;
    font-family: sans-serif;

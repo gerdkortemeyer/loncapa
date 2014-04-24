@@ -6,16 +6,25 @@ $(document).ready(function() {
       "aoColumns" : [
          { "bSortable": false },
          null,
-         null,
-         null,
-         null,
-         null,
-         null,
-         {"iDataSort": 8},
          {"bVisible": false},
-         {"iDataSort": 10},
+         null,
+         {"bVisible": false},
+         {"bVisible": false},
+         {"bVisible": false},
+         {"bVisible": false},
+         null,
+         null,
+         {"iDataSort": 11,"bVisible": false},
+         {"bVisible": false},
+         {"iDataSort": 13,"bVisible": false},
          {"bVisible": false},
          null
       ]
     } );
 } );
+
+function fnShowHide( iCol ) {
+   var oTable = $('#courselist').dataTable();
+   var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
+   oTable.fnSetColumnVis( iCol, bVis ? false : true );
+}

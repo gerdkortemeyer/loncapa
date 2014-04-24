@@ -160,6 +160,10 @@ use base qw(Apache::lc_localize);
 
 'Suffix' => 'Namenssuffix',
 
+'ID Number' => 'Matrikelnummer',
+
+'Column Visibility:' => 'Spalteneinblendung:',
+
 'Role' => 'Rolle',
 
 'Section/Group' => 'Sektion/Gruppe',
