@@ -1,4 +1,5 @@
 adduser www
+yum install ntp
 yum install httpd
 yum install openssl
 yum install openssl-devel
