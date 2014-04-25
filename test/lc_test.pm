@@ -185,6 +185,9 @@ my $comparedate='2014-04-16 01:00:01';
        '1998-01-08 04:05:06','2018-01-08 04:05:06', # duration
        'ggf21wqffas','msu');
 
+   $r->print("\nClasslist:\n".Dumper(&Apache::lc_entity_roles::lookup_entity_rolelist($courseentity,'msu'))."\n");
+
+
 return OK;
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?

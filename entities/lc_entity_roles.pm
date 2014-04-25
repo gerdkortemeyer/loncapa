@@ -32,8 +32,6 @@ use Apache::lc_date_utils();
 use Apache::lc_init_cluster_table();
 use Apache2::Const qw(:common :http);
 
-use Data::Dumper;
-
 #
 # We are the homeserver of the user that gets the role
 # This would also be the routine that's called remotely
@@ -255,6 +253,43 @@ unless ($manualenrolldomain) { $manualenrolldomain=''; }
 }
 
 #
+# Get a rolelist for an entity, for example a list of all users in a course
+#
+
+sub local_lookup_entity_rolelist {
+   return &Apache::lc_postgresql::lookup_entity_rolelist(@_);
+}
+
+sub local_json_lookup_entity_rolelist {
+   return &Apache::lc_json_utils::perl_to_json(&local_lookup_entity_rolelist(@_));
+}
+
+sub remote_lookup_entity_rolelist {
+   my ($host,$entity,$domain)=@_;
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'lookup_entity_rolelist',"{entity:'$entity',domain:'$domain'}");
+   if ($code eq 'HTTP_OK') {
+      return &Apache::lc_json_utils::json_to_perl($response);
+   } else {
+      return undef;
+   }
+}
+
+#
+# This is the routine to call
+#
+sub lookup_entity_rolelist {
+   my ($entity,$domain)=@_;
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      return &local_lookup_entity_rolelist($entity,$domain);
+   } else {
+      return &remote_lookup_entity_rolelist(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
+   }
+
+}
+
+
+
+#
 # Dump roles from local data source
 #
 sub local_dump_roles {
@@ -351,6 +386,7 @@ BEGIN {
                   'manualenrollentity','manualenrolldomain');
     &Apache::lc_connection_handle::register('modify_rolerecord',undef,undef,undef,\&local_modify_rolerecord,'entity','domain','rolerecord');
     &Apache::lc_connection_handle::register('dump_roles',undef,undef,undef,\&local_json_dump_roles,'entity','domain');
+    &Apache::lc_connection_handle::register('lookup_entity_rolelist',undef,undef,undef,\&local_json_lookup_entity_rolelist,'entity','domain');
 }
 
 1;
