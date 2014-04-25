@@ -4,6 +4,7 @@ yum install openssl
 yum install openssl-devel
 yum install mod_ssl
 yum install mod_perl
+chkconfig httpd on
 cp mongodb.repo /etc/yum.repos.d
 yum install mongo-10gen mongo-10gen-server
 service mongod start
