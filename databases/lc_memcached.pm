@@ -73,6 +73,7 @@ sub lookup_url_entity {
 sub insert_pid {
    my ($pid,$domain,$entity)=@_;
    &mset("pid:$pid:$domain",$entity,&lc_medium_expire());
+   &mset("entitypid:$entity:$domain",$pid,&lc_medium_expire());
 }
 
 sub lookup_pid_entity {
@@ -80,17 +81,29 @@ sub lookup_pid_entity {
    return &mget("pid:$pid:$domain");
 }
 
+sub lookup_entity_pid {
+   my ($entity,$domain)=@_;
+   return &mget("entitypid:$entity:$domain");
+}
+
+
 #
 # Deal with usernames cache
 #
 sub insert_username {
    my ($username,$domain,$entity)=@_;
    &mset("username:$username:$domain",$entity,&lc_medium_expire());
+   &mset("entityusername:$entity:$domain",$username,&lc_medium_expire());
 }
 
 sub lookup_username_entity {
    my ($username,$domain)=@_;
    return &mget("username:$username:$domain");
+}
+
+sub lookup_entity_username {
+   my ($entity,$domain)=@_;
+   return &mget("entityusername:$entity:$domain");
 }
 
 #

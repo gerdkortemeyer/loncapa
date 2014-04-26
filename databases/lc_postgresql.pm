@@ -216,6 +216,13 @@ sub lookup_pid_entity {
   return $sth->fetchrow_array();
 }
 
+sub lookup_entity_pid {
+   my ($entity,$domain)=@_;
+  my $sth=$dbh->prepare("select pid from pidlookup where entity = ? and domain = ?");
+  my $rv=$sth->execute($entity,$domain);
+  return $sth->fetchrow_array();
+}
+
 #
 # Deal with usernames
 #
@@ -234,6 +241,13 @@ sub lookup_username_entity {
    return $sth->fetchrow_array();
 }
 
+sub lookup_entity_username {
+   my ($entity,$domain)=@_;
+   my $sth=$dbh->prepare("select username from userlookup where entity = ? and domain = ?");
+   my $rv=$sth->execute($entity,$domain);
+   return $sth->fetchrow_array();
+}
+
 #
 # Deal with course IDs
 #
@@ -249,6 +263,13 @@ sub lookup_course_entity {
 # Do the query
    my $sth=$dbh->prepare("select entity from courselookup where courseid = ? and domain = ?");
    my $rv=$sth->execute($courseid,$domain);
+   return $sth->fetchrow_array();
+}
+
+sub lookup_entity_course {
+   my ($entity,$domain)=@_;
+   my $sth=$dbh->prepare("select courseid from courselookup where entity = ? and domain = ?");
+   my $rv=$sth->execute($entity,$domain);
    return $sth->fetchrow_array();
 }
 
