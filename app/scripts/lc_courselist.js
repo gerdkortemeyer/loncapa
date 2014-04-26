@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    $('#courselist').dataTable( {
+    $('#courseuserlist').dataTable( {
+      "bStateSave": true,
       "oLanguage" : {
          "sUrl" : "/datatable_i14n"
       },
@@ -24,7 +25,7 @@ $(document).ready(function() {
 } );
 
 function fnShowHide( iCol ) {
-   var oTable = $('#courselist').dataTable();
+   var oTable = $('#courseuserlist').dataTable();
    var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
    oTable.fnSetColumnVis( iCol, bVis ? false : true );
 }

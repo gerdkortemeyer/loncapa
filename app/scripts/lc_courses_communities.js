@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $('#courselist').dataTable( {
+      "bStateSave": true,
       "oLanguage" : {
          "sUrl" : "/datatable_i14n"
       },
