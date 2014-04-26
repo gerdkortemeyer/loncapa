@@ -79,6 +79,11 @@ my $comparedate='2014-04-16 01:00:01';
 
    $r->print("Reverse: ".&Apache::lc_entity_courses::entity_to_course($courseentity,'msu')."\n");
 
+   $r->print(&Apache::lc_entity_users::assign_pid($entity,'msu','z12345678'));
+
+   $r->print("Forward: ".&Apache::lc_entity_users::pid_to_entity('z12345678','msu')."\n");
+
+   $r->print("Reverse: ".&Apache::lc_entity_users::entity_to_pid($entity,'msu')."\n");
 
 
    &Apache::lc_entity_users::set_full_name($entity,'msu',"Zaphod","Klausdieter","Beeblebrox","Sr.");

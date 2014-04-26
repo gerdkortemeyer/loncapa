@@ -389,6 +389,7 @@ sub courselist {
 
 BEGIN {
    &Apache::lc_connection_handle::register('course_to_entity',undef,undef,undef,\&local_course_to_entity,'courseid','domain');
+   &Apache::lc_connection_handle::register('entity_to_course',undef,undef,undef,\&local_entity_to_course,'entity','domain');
    &Apache::lc_connection_handle::register('make_new_course',undef,undef,undef,\&local_make_new_course,'courseid','domain');
 }
 

@@ -115,6 +115,45 @@ sub make_new_user {
 }
 
 # ================================================================
+# PID assignment
+# ================================================================
+
+sub local_assign_pid {
+   my ($entity,$domain,$pid)=@_;
+   my $existing=&pid_to_entity($pid,$domain);
+   if ($existing) {
+      if ($existing eq $entity) {
+        return 1;
+      } else {
+        &logwarning("Trying to assign PID ($pid) to ($entity) ($domain), but already used by ($existing)");
+        return 0;
+      }
+   }
+   return &Apache::lc_postgresql::insert_pid($pid,$domain,$entity);
+}
+
+sub remote_assign_pid {
+   my ($host,$entity,$domain,$pid)=@_;
+   my ($code,$reply)=&Apache::lc_dispatcher::command_dispatch($host,
+                                                              "assign_pid",
+                                                              "{ entity : '$entity', domain : '$domain', pid : '$pid' }");
+   if ($code eq HTTP_OK) {
+      return $reply;
+   } else {
+      return undef;
+   }
+}
+
+sub assign_pid {
+   my ($entity,$domain,$pid)=@_;
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      return &local_assign_pid($entity,$domain,$pid);
+   } else {
+      return &remote_assign_pid(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain,$pid);
+   }
+}
+
+# ================================================================
 # Convert stuff to entities
 # ================================================================
 # ==== Usernames to entities
@@ -342,7 +381,10 @@ sub last_accessed {
 BEGIN {
    &Apache::lc_connection_handle::register('pid_to_entity',undef,undef,undef,\&local_pid_to_entity,'pid','domain');
    &Apache::lc_connection_handle::register('username_to_entity',undef,undef,undef,\&local_username_to_entity,'username','domain');
+   &Apache::lc_connection_handle::register('entity_to_pid',undef,undef,undef,\&local_entity_to_pid,'entity','domain');
+   &Apache::lc_connection_handle::register('entity_to_username',undef,undef,undef,\&local_entity_to_username,'entity','domain');
    &Apache::lc_connection_handle::register('make_new_user',undef,undef,undef,\&local_make_new_user,'username','domain');
+   &Apache::lc_connection_handle::register('assign_pid',undef,undef,undef,\&local_assign_pid,'entity','domain','pid');
 }
 
 1;
