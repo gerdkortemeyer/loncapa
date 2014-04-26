@@ -313,6 +313,30 @@ sub last_accessed {
    return $profile->{'last_accessed'};
 }
 
+#
+# Assemble a complete list of all users in a course/community
+#
+sub courselist {
+   my ($courseid,$domain)=@_;
+   my $raw_classlist=&Apache::lc_entity_roles::lookup_entity_rolelist($courseid,$domain);
+   foreach my $row (@{$raw_classlist}) {
+      my ($roleentity,$roledomain,$rolesection,
+          $userentity,$userdomain, 
+          $role, 
+          $startdate,$enddate,
+          $manualenrollentity,$manualenrolldomain)=@{$row};
+      my $userprofile=&Apache::lc_entity_profile::dump_profile($userentity,$userdomain);
+#FIXME
+      &logdebug("$roleentity,$roledomain,$rolesection,
+          $userentity,$userdomain,
+          $role,
+          $startdate,$enddate,
+          $manualenrollentity,$manualenrolldomain");
+      &logdebug($userprofile->{'firstname'}.' '.$userprofile->{'lastname'});
+
+   }
+}
+
 BEGIN {
    &Apache::lc_connection_handle::register('course_to_entity',undef,undef,undef,\&local_course_to_entity,'courseid','domain');
    &Apache::lc_connection_handle::register('make_new_course',undef,undef,undef,\&local_make_new_course,'courseid','domain');

@@ -19,6 +19,7 @@
 #
 package Apache::lc_localize::de;
 use base qw(Apache::lc_localize);
+use utf8;
 
 %Lexicon=('_AUTO' => 1,
 'language_code'      => 'de',
