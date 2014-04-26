@@ -370,7 +370,6 @@ sub courselist {
           $startdate,$enddate,
           $manualenrollentity,$manualenrolldomain)=@{$row};
       my $userprofile=&Apache::lc_entity_profile::dump_profile($userentity,$userdomain);
-&logdebug("Profile ".Dumper($userprofile));
       push(@classlist,{ firstname => $userprofile->{'firstname'}, 
                         middlename => $userprofile->{'middlename'}, 
                         lastname => $userprofile->{'lastname'},

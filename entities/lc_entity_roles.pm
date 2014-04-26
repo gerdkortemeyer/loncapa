@@ -137,7 +137,7 @@ sub remote_modify_rolelist {
    startdate:'$startdate',enddate:'$enddate',
    manualenrollentity:'$manualenrollentity',manualenrolldomain:'$manualenrolldomain' 
 }");
-   if ($code eq 'HTTP_OK') {
+   if ($code eq HTTP_OK) {
       return 1;
    } else {
       return undef;
@@ -267,7 +267,7 @@ sub local_json_lookup_entity_rolelist {
 sub remote_lookup_entity_rolelist {
    my ($host,$entity,$domain)=@_;
    my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'lookup_entity_rolelist',"{entity:'$entity',domain:'$domain'}");
-   if ($code eq 'HTTP_OK') {
+   if ($code eq HTTP_OK) {
       return &Apache::lc_json_utils::json_to_perl($response);
    } else {
       return undef;
