@@ -70,9 +70,16 @@ my $comparedate='2014-04-16 01:00:01';
    $entity=&Apache::lc_entity_users::username_to_entity('zaphod','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
 
+   $r->print("Reverse: ".&Apache::lc_entity_users::entity_to_username($entity,'msu')."\n");
+
+
    $r->print(&Apache::lc_entity_courses::make_new_course('test205','msu')."\n");
    $courseentity=&Apache::lc_entity_courses::course_to_entity('test205','msu');
    $r->print(&Apache::lc_entity_utils::homeserver($entity,'msu')."\n");
+
+   $r->print("Reverse: ".&Apache::lc_entity_courses::entity_to_course($courseentity,'msu')."\n");
+
+
 
    &Apache::lc_entity_users::set_full_name($entity,'msu',"Zaphod","Klausdieter","Beeblebrox","Sr.");
    &Apache::lc_entity_authentication::set_authentication($entity,'msu',{ mode => 'internal', password => 'zaphodB' });

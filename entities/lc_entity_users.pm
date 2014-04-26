@@ -167,6 +167,46 @@ sub username_to_entity {
     return $entity;
 }
 
+#
+# Reverse entity to username
+#
+sub local_entity_to_username {
+   my ($entity,$domain)=@_;
+   my $username=&Apache::lc_memcached::lookup_entity_username($entity,$domain);
+   if ($username) { return $username; }
+   $username=&Apache::lc_postgresql::lookup_entity_username($entity,$domain);
+   if ($username) {
+      &Apache::lc_memcached::insert_username($username,$domain,$entity);
+   }
+   return $username;
+}
+
+sub remote_entity_to_username {
+   my ($host,$entity,$domain)=@_;
+   my ($code,$reply)=&Apache::lc_dispatcher::command_dispatch($host,"entity_to_username",
+                                                              "{ entity : '$entity', domain : '$domain' }");
+   if ($code eq HTTP_OK) {
+      return $reply;
+   } else {
+      return undef;
+   }
+}
+
+sub entity_to_username {
+   my ($entity,$domain)=@_;
+   my $username=&Apache::lc_memcached::lookup_entity_username($entity,$domain);
+   if ($username) { return $username; }
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      return &local_entity_to_username($entity,$domain);
+   } else {
+      $username=&remote_entity_to_username(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
+      if ($username) {
+         &Apache::lc_memcached::insert_username($username,$domain,$entity);
+      }
+      return $username;
+   }
+}
+
 # ==== PIDs to entities
 # Try only the local machine
 #- this is the one that needs to be called remotely
@@ -215,6 +255,49 @@ sub pid_to_entity {
    }
    return $entity;
 }
+
+#
+# Reverse
+#
+
+sub local_entity_to_pid {
+   my ($entity,$domain)=@_;
+   my $pid=&Apache::lc_memcached::lookup_entity_pid($entity,$domain);
+   if ($pid) { return $pid; }
+   $pid=&Apache::lc_postgresql::lookup_entity_pid($entity,$domain);
+   if ($pid) {
+      &Apache::lc_memcached::insert_pid($pid,$domain,$entity);
+   }
+   return $pid;
+}
+
+sub remote_entity_to_pid {
+   my ($host,$entity,$domain)=@_;
+   my ($code,$reply)=&Apache::lc_dispatcher::command_dispatch($host,"entity_to_pid",
+                                                              "{ entity : '$entity', domain : '$domain' }");
+   if ($code eq HTTP_OK) {
+      return $reply;
+   } else {
+      return undef;
+   }
+}
+
+sub entity_to_pid {
+   my ($entity,$domain)=@_;
+   my $pid=&Apache::lc_memcached::lookup_entity_pid($entity,$domain);
+   if ($pid) { return $pid; }
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      return &local_entity_to_pid($entity,$domain);
+   } else {
+      $pid=&remote_entity_to_pid(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
+      if ($pid) {
+         &Apache::lc_memcached::insert_pid($pid,$domain,$entity);
+      }
+      return $pid;
+   }
+}
+
+
 
 #
 # Various accessor functions for profile

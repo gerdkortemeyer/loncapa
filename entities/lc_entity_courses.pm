@@ -166,6 +166,47 @@ sub course_to_entity {
     return $entity;
 }
 
+#
+# Reverse
+#
+
+sub local_entity_to_course {
+   my ($entity,$domain)=@_;
+   my $courseid=&Apache::lc_memcached::lookup_entity_course($entity,$domain);
+   if ($courseid) { return $courseid; }
+   $courseid=&Apache::lc_postgresql::lookup_entity_course($entity,$domain);
+   if ($courseid) {
+      &Apache::lc_memcached::insert_course($courseid,$domain,$entity);
+   }
+   return $courseid;
+}
+
+sub remote_entity_to_course {
+   my ($host,$entity,$domain)=@_;
+   my ($code,$reply)=&Apache::lc_dispatcher::command_dispatch($host,"entity_to_course",
+                                                              "{ entity : '$entity', domain : '$domain' }");
+   if ($code eq HTTP_OK) {
+      return $reply;
+   } else {
+      return undef;
+   }
+}
+
+sub entity_to_course {
+   my ($entity,$domain)=@_;
+   my $courseid=&Apache::lc_memcached::lookup_entity_course($entity,$domain);
+   if ($courseid) { return $courseid; }
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      return &local_entity_to_course($entity,$domain);
+   } else {
+      $courseid=&remote_entity_to_course(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
+      if ($courseid) {
+         &Apache::lc_memcached::insert_course($courseid,$domain,$entity);
+      }
+      return $courseid;
+   }
+}
+
 # =================================================================
 # Table of contents
 # =================================================================
@@ -334,10 +375,10 @@ sub courselist {
                         middlename => $userprofile->{'middlename'}, 
                         lastname => $userprofile->{'lastname'},
                         suffix => $userprofile->{'suffix'},
-                        username => '---',
+                        username => &Apache::lc_entity_users::entity_to_username($userentity,$userdomain),
                         entity => $userentity,
                         domain => $userdomain,
-                        pid => $userprofile->{'pid'},
+                        pid => &Apache::lc_entity_users::entity_to_pid($userentity,$userdomain),
                         role => $role,
                         section => $rolesection,
                         startdate => $startdate,

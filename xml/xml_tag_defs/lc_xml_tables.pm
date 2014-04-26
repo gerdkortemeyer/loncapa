@@ -20,6 +20,7 @@ package Apache::lc_xml_tables;
 
 use strict;
 use Apache::lc_entity_courses();
+use Apache::lc_entity_users();
 use Apache::lc_ui_localize;
 use Apache::lc_ui_utils;
 use Apache::lc_date_utils();
@@ -94,21 +95,39 @@ sub courselist {
               &mt('Username').'</th><th>'.&mt('Domain').'</th><th>'.&mt('ID Number').'</th><th>'.&mt('Role').'</th><th>'.&mt('Section/Group').'</th><th>'.
               &mt('Start Date').'</th><th>&nbsp;</th><th>'.&mt('End Date').'</th><th>&nbsp;</th><th>'.&mt('Active').'</th></tr></thead><tbody>'."\n";
    foreach my $record (@courselist) {
+      my $display_startdate;
+      my $sort_startdate;
+      if ($record->{'startdate'}) {
+             ($display_startdate,$sort_startdate)=&Apache::lc_ui_localize::locallocaltime(
+                                           &Apache::lc_date_utils::str2num($record->{'startdate'}));
+      } else {
+             $display_startdate=&mt('Never');
+             $sort_startdate=0;
+      }
+      my $display_enddate;
+      my $sort_enddate;
+      if ($record->{'enddate'}) {
+             ($display_enddate,$sort_enddate)=&Apache::lc_ui_localize::locallocaltime(
+                                           &Apache::lc_date_utils::str2num($record->{'enddate'}));
+      } else {
+          $display_enddate=&mt('Never');
+          $sort_enddate=0;
+      }
       $output.='<tr><td>&nbsp;</td><td>'.
-               $record->{'firstname'}.'-</td><td>'.
-               $record->{'middlename'}.'-</td><td>'.
-               $record->{'lastname'}.'-</td><td>'.
-               $record->{'suffix'}.'-</td><td>'.
-               $record->{'username'}.'-</td><td>'.
-               $record->{'domain'}.'-</td><td>'.
-               $record->{'pid'}.'-</td><td>'.
-               $record->{'role'}.'-</td><td>'.
-               $record->{'section'}.'-</td><td>'.
-               $record->{'startdate'}.'-</td><td>'.
-               '10'.'-</td><td>'.
-               $record->{'enddate'}.'-</td><td>'.
-               '20'.'-</td><td>'.
-               '-'.'</td></tr>'."\n";
+               $record->{'firstname'}.'</td><td>'.
+               $record->{'middlename'}.'</td><td>'.
+               $record->{'lastname'}.'</td><td>'.
+               $record->{'suffix'}.'</td><td>'.
+               $record->{'username'}.'</td><td>'.
+               $record->{'domain'}.'</td><td>'.
+               $record->{'pid'}.'</td><td>'.
+               $record->{'role'}.'</td><td>'.
+               $record->{'section'}.'</td><td>'.
+               ($sort_startdate?'<time datetime="'.$sort_startdate.'">':'').
+                  $display_startdate.($sort_startdate?'</time>':'').'</td><td>'.$sort_startdate.'</td><td>'.
+               ($sort_enddate?'<time datetime="'.$sort_enddate.'">':'').
+                  $display_enddate.($sort_enddate?'</time>':'').'</td><td>'.$sort_enddate.'</td><td>'.
+               (&Apache::lc_date_utils::in_date_range($sort_startdate,$sort_enddate)?'&#10004;':'&nbsp;').'</td></tr>'."\n";
    }
    $output.="</tbody>";
    return $output;

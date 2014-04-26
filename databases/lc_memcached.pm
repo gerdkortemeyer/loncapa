@@ -112,11 +112,17 @@ sub lookup_entity_username {
 sub insert_course {
     my ($course,$domain,$entity)=@_;
     &mset("course:$course:$domain",$entity,&lc_medium_expire());
+    &mset("entitycourse:$entity:$domain",$course,&lc_medium_expire());
 }
 
 sub lookup_course_entity {
    my ($course,$domain)=@_;
    return &mget("course:$course:$domain");
+}
+
+sub lookup_entity_course {
+   my ($entity,$domain)=@_;
+   return &mget("entitycourse:$entity:$domain");
 }
 
 #
