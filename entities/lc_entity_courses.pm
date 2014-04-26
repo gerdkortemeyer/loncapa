@@ -29,6 +29,8 @@ use Apache::lc_memcached();
 use Apache::lc_parameters;
 use Apache::lc_date_utils();
 
+use Data::Dumper;
+
 use Apache2::Const qw(:common :http);
 
 # ================================================================
@@ -319,6 +321,7 @@ sub last_accessed {
 sub courselist {
    my ($courseid,$domain)=@_;
    my $raw_classlist=&Apache::lc_entity_roles::lookup_entity_rolelist($courseid,$domain);
+   my @classlist=();
    foreach my $row (@{$raw_classlist}) {
       my ($roleentity,$roledomain,$rolesection,
           $userentity,$userdomain, 
@@ -326,15 +329,21 @@ sub courselist {
           $startdate,$enddate,
           $manualenrollentity,$manualenrolldomain)=@{$row};
       my $userprofile=&Apache::lc_entity_profile::dump_profile($userentity,$userdomain);
-#FIXME
-      &logdebug("$roleentity,$roledomain,$rolesection,
-          $userentity,$userdomain,
-          $role,
-          $startdate,$enddate,
-          $manualenrollentity,$manualenrolldomain");
-      &logdebug($userprofile->{'firstname'}.' '.$userprofile->{'lastname'});
-
+&logdebug("Profile ".Dumper($userprofile));
+      push(@classlist,{ firstname => $userprofile->{'firstname'}, 
+                        middlename => $userprofile->{'middlename'}, 
+                        lastname => $userprofile->{'lastname'},
+                        suffix => $userprofile->{'suffix'},
+                        username => '---',
+                        entity => $userentity,
+                        domain => $userdomain,
+                        pid => $userprofile->{'pid'},
+                        role => $role,
+                        section => $rolesection,
+                        startdate => $startdate,
+                        enddate => $enddate });
    }
+   return @classlist;
 }
 
 BEGIN {
