@@ -30,6 +30,8 @@ use Apache::lc_memcached();
 use Apache::lc_entity_utils();
 use Apache::lc_date_utils();
 use Apache::lc_init_cluster_table();
+use Apache::lc_ui_localize;
+
 use Apache2::Const qw(:common :http);
 
 #
@@ -375,6 +377,15 @@ sub active_roles {
       }
    }
    return $roles;
+}
+
+#
+# Plaintext roles
+#
+sub plaintext {
+   my ($rolename)=@_;
+#FIXME: if configurable names, insert here
+   return &mt($rolename);
 }
 
 BEGIN {

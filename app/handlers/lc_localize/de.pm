@@ -33,6 +33,17 @@ use utf8;
 'date_pm' => 'nachmittags',
 'date_format' => '24',
 
+'superuser' => 'Superuser',
+'domain_coordinator' => 'Domänenkoordinator',
+'course_coordinator' => 'Kurskoordinator',
+'instructor' => 'Dozent',
+'teaching_assistant' => 'Tutor',
+'student' => 'Studierender',
+'community_organizer' => 'Gemeinschaftsorganisator',
+'member' => 'Mitglied',
+'author' => 'Autor',
+'co_author' => 'Co-Autor',
+
 'Welcome!' => 'Willkommen!',
 
 'Welcome' => 'Willkommen',

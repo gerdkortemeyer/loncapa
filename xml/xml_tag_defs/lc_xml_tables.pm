@@ -21,6 +21,7 @@ package Apache::lc_xml_tables;
 use strict;
 use Apache::lc_entity_courses();
 use Apache::lc_entity_users();
+use Apache::lc_entity_roles();
 use Apache::lc_ui_localize;
 use Apache::lc_ui_utils;
 use Apache::lc_date_utils();
@@ -121,7 +122,7 @@ sub courselist {
                $record->{'username'}.'</td><td>'.
                $record->{'domain'}.'</td><td>'.
                $record->{'pid'}.'</td><td>'.
-               $record->{'role'}.'</td><td>'.
+               &Apache::lc_entity_roles::plaintext($record->{'role'}).'</td><td>'.
                $record->{'section'}.'</td><td>'.
                ($sort_startdate?'<time datetime="'.$sort_startdate.'">':'').
                   $display_startdate.($sort_startdate?'</time>':'').'</td><td>'.$sort_startdate.'</td><td>'.

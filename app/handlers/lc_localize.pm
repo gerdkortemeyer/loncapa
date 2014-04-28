@@ -25,7 +25,18 @@ use base qw(Apache::lc_localize);
 'language_code'      => 'en',
 'language_direction' => 'ltr',
 'language_description' => 'English',
-'date_short_locale' => '$month/$day/$year'
+'date_short_locale' => '$month/$day/$year',
+
+'superuser' => 'Superuser',
+'domain_coordinator' => 'Domain Coordinator',
+'course_coordinator' => 'Course Coordinator',
+'instructor' => 'Instructor',
+'teaching_assistant' => 'Teaching Assistant',
+'student' => 'Student',
+'community_organizer' => 'Community Organizer',
+'member' => 'Member',
+'author' => 'Author',
+'co_author' => 'Co-Author'
 );
 
 1;
