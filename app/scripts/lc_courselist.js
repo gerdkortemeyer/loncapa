@@ -5,7 +5,7 @@ $(document).ready(function() {
          "sUrl" : "/datatable_i14n"
       },
       "aoColumns" : [
-         { "bSortable": false },
+         { "bVisible": false },
          null,
          {"bVisible": false},
          null,

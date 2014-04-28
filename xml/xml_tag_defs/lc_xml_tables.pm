@@ -44,7 +44,7 @@ sub start_lcdatatable_html {
    } elsif ($class eq "courselist") {
       $output.=&courselist();
    }
-   $output.='</table>';
+   $output.='</table><br clear="all" />';
    return $output;
 }
 
@@ -114,7 +114,8 @@ sub courselist {
           $display_enddate=&mt('Never');
           $sort_enddate=0;
       }
-      $output.='<tr><td>&nbsp;</td><td>'.
+      $output.='<tr><td>'.
+               $record->{'entity'}.'</td><td>'.
                $record->{'firstname'}.'</td><td>'.
                $record->{'middlename'}.'</td><td>'.
                $record->{'lastname'}.'</td><td>'.

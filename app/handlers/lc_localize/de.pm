@@ -44,6 +44,10 @@ use utf8;
 'author' => 'Autor',
 'co_author' => 'Co-Autor',
 
+'Modify Selected Entries' => 'Ausgewählte Einträge ändern',
+
+'Add New Entry' => 'Neuen Eintrag hinzufügen',
+
 'Welcome!' => 'Willkommen!',
 
 'Welcome' => 'Willkommen',
