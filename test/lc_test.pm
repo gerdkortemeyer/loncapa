@@ -179,6 +179,27 @@ my $comparedate='2014-04-16 01:00:01';
        '1998-01-08 04:05:06','2018-01-08 04:05:06', # duration
        'ggf21wqffas','msu');
 
+   &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
+       'course', # system, domain, course, user
+       $courseentity,'msu','007', # what's the realm?
+       'instructor', # what role is this?
+       '1998-01-08 04:05:06','2018-01-08 04:05:06', # duration
+       'ggf21wqffas','msu');
+
+   my $arthurentity=&Apache::lc_entity_users::username_to_entity('arthur','msu');
+
+   &Apache::lc_entity_users::set_full_name($arthurentity,'msu',"Arthur","Philip","Dent","17th");
+
+
+   &Apache::lc_entity_roles::modify_role($arthurentity,'msu', # who gets the role?
+       'course', # system, domain, course, user
+       $courseentity,'msu','007', # what's the realm?
+       'student', # what role is this?
+       '1998-01-08 04:05:06','2018-01-08 04:05:06', # duration
+       'ggf21wqffas','msu');
+
+
+
 
 # =====
 

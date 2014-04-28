@@ -21,6 +21,16 @@ h1 {
    text-decoration: none;
 }
 
+.lcselecttoggle {
+   font-family: sans-serif;
+   font-size: 12px;
+   background: #30a097;
+   padding: 2px;
+   color: #ffffff;
+   text-decoration: none;
+}
+
+
 .lcfileuploadlabel {
    background: #cccccc;
    font-family: sans-serif;

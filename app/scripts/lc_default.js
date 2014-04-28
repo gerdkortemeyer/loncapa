@@ -111,6 +111,13 @@ function courselist() {
    breadcrumbbar();
 }
 
+function add_to_courselist() {
+   setbreadcrumbbar('add','addcourselist','Add New Entry','add_to_courselist()');
+   display_asset("/pages/lc_add_to_courselist.html");
+   menubar();
+   breadcrumbbar();
+}
+
 function grading() {
    setbreadcrumbbar('fresh','grading','Grading','grading()');
    display_asset("/pages/lc_grading.html");

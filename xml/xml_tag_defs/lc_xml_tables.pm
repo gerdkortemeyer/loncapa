@@ -83,6 +83,10 @@ sub courselist {
    my ($type)=@_;
    my @courselist=&Apache::lc_entity_courses::courselist(&Apache::lc_entity_sessions::course_entity_domain());
    my $output='<thead>';
+   $output.='<tr><td colspan="15">'.
+            '<a href="#" class="lcselecttoggle" onClick="select_all()">'.&mt('Select All').'</a>'.
+            '&nbsp;<a href="#" class="lcselecttoggle" onClick="select_filtered()">'.&mt('Select Filtered').'</a>'.
+            '&nbsp;<a href="#" class="lcselecttoggle" onClick="deselect_all()">'.&mt('Deselect All').'</a></td></tr>';
    $output.='<tr><td colspan="15">'.&mt('Column Visibility:').
             '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(2)">'.&mt('Middle Name').'</a>'.
             '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(4)">'.&mt('Suffix').'</a>'.

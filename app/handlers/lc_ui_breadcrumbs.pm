@@ -33,8 +33,9 @@ sub breadcrumb_item {
 
 sub add_breadcrumb {
    my ($title,$text,$function)=@_;
-   &Apache::lc_entity_sessions::update_session(
-          &Apache::lc_json_utils::json_to_perl("{ breadcrumbs : [{title:'$title',text:'$text',function:'$function'}]}"));
+   my @breadcrumbs=&Apache::lc_entity_sessions::breadcrumbs();
+   push(@breadcrumbs,{title => $title, text => $text, function => $function});
+   &Apache::lc_entity_sessions::replace_session_key ('breadcrumbs',\@breadcrumbs);
 }
 
 sub fresh_breadcrumbs {

@@ -47,6 +47,14 @@ table.dataTable tr.even td.sorting_1 { background-color: #99ffcc; }
 table.dataTable tr.even td.sorting_2 { background-color: #F2F3FF; }
 table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 
+table.dataTable tr.even.row_selected td {
+	background-color: #B0BED9;
+}
+
+table.dataTable tr.odd.row_selected td {
+	background-color: #9FAFD1;
+}
+
 
 /*
  * Table wrapper

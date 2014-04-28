@@ -48,6 +48,12 @@ use utf8;
 
 'Add New Entry' => 'Neuen Eintrag hinzufügen',
 
+'Select All' => 'Alle auswählen',
+
+'Select Filtered' => 'Gefilterte auswählen',
+
+'Deselect All' => 'Alle Auswahlen zurücksetzen',
+
 'Welcome!' => 'Willkommen!',
 
 'Welcome' => 'Willkommen',
