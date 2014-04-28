@@ -7,6 +7,7 @@ table.dataTable {
 	clear: both;
 	width: 100%;
         font-family: sans-serif;
+        font-size: 12px;
 }
 
 table.dataTable thead th {
@@ -203,7 +204,6 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 	border: 1px solid #ddd;
 	text-align: center;
 	color: #999;
-	font-size: 14px;
 	background-color: white;
 }
 

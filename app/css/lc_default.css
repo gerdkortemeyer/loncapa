@@ -84,7 +84,7 @@ nav {
    background-color: rgba(40,40,40,0.5);
    position: fixed;
    margin: 5px 5px 0px 5px;
-   top: 52px;
+   top: 50px;
    right: 5px;
    left: 5px;
    height: 28px;
@@ -94,7 +94,7 @@ nav {
    top: 20px;
    left: 0px;
    font-family: sans-serif;
-   font-size: 16px;
+   font-size: 14px;
    color: #ffffff;
    background: #30a097;
    position: fixed;
@@ -108,7 +108,7 @@ nav {
     list-style: none;
     display: block;
     float: left;
-    height: 20px;
+    height: 18px;
     position: relative;
     padding: 4px;
 }
@@ -140,7 +140,7 @@ nav {
 #menubuttonrow ul li {
     border-right:none;
     border-bottom: 1px solid #bbbbbb;
-    height: 18px;
+    height: 16px;
     width: 160px;
 }
 
@@ -180,7 +180,7 @@ nav {
 }
 
 #breadcrumbrow {
-   top: 54px;
+   top: 50px;
    left: 5px;
    font-family: sans-serif;
    color: #ffffff;
