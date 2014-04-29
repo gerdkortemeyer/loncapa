@@ -80,7 +80,7 @@ function fnGetSelected() {
    var aTrs = oTable.fnGetNodes();	
    for ( var i=0 ; i<aTrs.length ; i++ ) {
       if ( $(aTrs[i]).hasClass('row_selected') ) {
-	 aReturn.push( '{ entity: "'+oTable.fnGetData(aTrs[i],0)+'",domain: "'+oTable.fnGetData(aTrs[i],6)+'" }' );
+	 aReturn.push(oTable.fnGetData(aTrs[i],0));
       }
    }
    return '['+aReturn.join(',')+']';

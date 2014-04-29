@@ -141,7 +141,8 @@ sub courselist {
          $active_status=&mt('Past');
       }
       $output.='<tr><td>'.
-               $record->{'entity'}.'</td><td>'.
+               &Apache::lc_json_utils::perl_to_json({entity => $record->{'entity'}, domain => $record->{'domain'}, 
+                                                     role => $record->{'role'}, section => $record->{'section'}}).'</td><td>'.
                $record->{'firstname'}.'</td><td>'.
                $record->{'middlename'}.'</td><td>'.
                $record->{'lastname'}.'</td><td>'.
