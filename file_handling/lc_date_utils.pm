@@ -111,7 +111,7 @@ sub status_date_range {
 }
 
 sub in_date_range {
-   return (&state_date_range(@_) eq 'active');
+   return (&status_date_range(@_) eq 'active');
 }
 
 1;
