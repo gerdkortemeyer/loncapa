@@ -381,7 +381,9 @@ sub courselist {
                         role => $role,
                         section => $rolesection,
                         startdate => $startdate,
-                        enddate => $enddate });
+                        enddate => $enddate,
+                        manualenrollentity => $manualenrollentity,
+                        manualenrolldomain => $manualenrolldomain });
    }
    return @classlist;
 }

@@ -83,11 +83,11 @@ sub courselist {
    my ($type)=@_;
    my @courselist=&Apache::lc_entity_courses::courselist(&Apache::lc_entity_sessions::course_entity_domain());
    my $output='<thead>';
-   $output.='<tr><td colspan="15">'.
+   $output.='<tr><td colspan="17">'.
             '<a href="#" class="lcselecttoggle" onClick="select_all()">'.&mt('Select All').'</a>'.
             '&nbsp;<a href="#" class="lcselecttoggle" onClick="select_filtered()">'.&mt('Select Filtered').'</a>'.
             '&nbsp;<a href="#" class="lcselecttoggle" onClick="deselect_all()">'.&mt('Deselect All').'</a></td></tr>';
-   $output.='<tr><td colspan="15">'.&mt('Column Visibility:').
+   $output.='<tr><td colspan="17">'.&mt('Column Visibility:').
             '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(2)">'.&mt('Middle Name').'</a>'.
             '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(4)">'.&mt('Suffix').'</a>'.
             '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(5)">'.&mt('Username').'</a>'.
@@ -95,10 +95,13 @@ sub courselist {
             '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(7)">'.&mt('ID Number').'</a>'.
             '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(10)">'.&mt('Start Date').'</a>'.
             '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(12)">'.&mt('End Date').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(14)">'.&mt('Enrollment Mode').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(15)">'.&mt('Enrolling User').'</a>'.
             '</td></tr>';
    $output.='<tr><th>&nbsp;</th><th>'.&mt('First Name').'</th><th>'.&mt('Middle Name').'</th><th>'.&mt('Last Name').'</th><th>'.&mt('Suffix').'</th><th>'.
               &mt('Username').'</th><th>'.&mt('Domain').'</th><th>'.&mt('ID Number').'</th><th>'.&mt('Role').'</th><th>'.&mt('Section/Group').'</th><th>'.
-              &mt('Start Date').'</th><th>&nbsp;</th><th>'.&mt('End Date').'</th><th>&nbsp;</th><th>'.&mt('Active').'</th></tr></thead><tbody>'."\n";
+              &mt('Start Date').'</th><th>&nbsp;</th><th>'.&mt('End Date').'</th><th>&nbsp;</th><th>'.&mt('Enrollment Mode').'</th><th>'.
+              &mt('Enrolling User').'</th><th>'.&mt('Active').'</th></tr></thead><tbody>'."\n";
    foreach my $record (@courselist) {
       my $display_startdate;
       my $sort_startdate;
@@ -118,6 +121,16 @@ sub courselist {
           $display_enddate=&mt('Never');
           $sort_enddate=0;
       }
+      my $enrollment_mode;
+      my $enrolling_user;
+      if (($record->{'manualenrollentity'}) && ($record->{'manualenrolldomain'})) {
+         $enrollment_mode=&mt('Manual');
+#FIXME
+         $enrolling_user='Somebody';
+      } else {
+         $enrollment_mode=&mt('Automatic');
+         $enrolling_user='';
+      }
       $output.='<tr><td>'.
                $record->{'entity'}.'</td><td>'.
                $record->{'firstname'}.'</td><td>'.
@@ -133,6 +146,7 @@ sub courselist {
                   $display_startdate.($sort_startdate?'</time>':'').'</td><td>'.$sort_startdate.'</td><td>'.
                ($sort_enddate?'<time datetime="'.$sort_enddate.'">':'').
                   $display_enddate.($sort_enddate?'</time>':'').'</td><td>'.$sort_enddate.'</td><td>'.
+               $enrollment_mode.'</td><td>'.$enrolling_user.'</td><td>'.
                (&Apache::lc_date_utils::in_date_range($sort_startdate,$sort_enddate)?'&#10004;':'&nbsp;').'</td></tr>'."\n";
    }
    $output.="</tbody>";

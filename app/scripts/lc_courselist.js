@@ -28,6 +28,8 @@ $(document).ready(function() {
          {"bVisible": false},
          {"iDataSort": 13,"bVisible": false},
          {"bVisible": false},
+         {"bVisible": false},
+         {"bVisible": false},
          null
       ]
     } );
