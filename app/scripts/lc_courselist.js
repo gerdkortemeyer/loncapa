@@ -78,12 +78,13 @@ function fnGetSelected() {
    var aTrs = oTable.fnGetNodes();	
    for ( var i=0 ; i<aTrs.length ; i++ ) {
       if ( $(aTrs[i]).hasClass('row_selected') ) {
-	 aReturn.push( aTrs[i] );
+	 aReturn.push( '{ entity: "'+oTable.fnGetData(aTrs[i],0)+'",domain: "'+oTable.fnGetData(aTrs[i],6)+'" }' );
       }
    }
-   return aReturn;
+   return '['+aReturn.join(',')+']';
 }
 
 function modify_selected() {
-   var rows=fnGetSelected();
+   var selectedUsers=fnGetSelected();
+   alert(selectedUsers);
 }
