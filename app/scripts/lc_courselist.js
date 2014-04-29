@@ -50,7 +50,7 @@ function fnShowHide( iCol ) {
 
 function select_filtered() {
    var oTable = $('#courseuserlist').dataTable();
-   var aTrs = oTable.fnGetNodes({"filter":"applied"});
+   var aTrs = oTable.$('tr', {"filter":"applied"});
    for ( var i=0 ; i<aTrs.length ; i++ ) {
       $(aTrs[i]).addClass('row_selected');
    }
