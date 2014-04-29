@@ -48,6 +48,14 @@ use utf8;
 
 'Add New Entry' => 'Neuen Eintrag hinzufügen',
 
+'Manually Enroll User' => 'Manuell Teilnehmer hinzufügen',
+
+'Manually Enroll' => 'Manuell einschreiben',
+
+'Upload List' => 'Liste hochladen',
+
+'Upload User List' => 'Teilnehmerliste hochladen',
+
 'Select All' => 'Alle auswählen',
 
 'Select Filtered' => 'Gefilterte auswählen',

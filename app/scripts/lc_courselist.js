@@ -35,23 +35,41 @@ $(document).ready(function() {
     $('#newbutton').click(function() {
         parent.add_to_courselist();
     });
+
+    $('#modifybutton').click(function() {
+        modify_selected();
+    });
 } );
 
 function fnShowHide( iCol ) {
    var oTable = $('#courseuserlist').dataTable();
    var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
    oTable.fnSetColumnVis( iCol, bVis ? false : true );
+   adjust_framesize();
 }
 
 function select_filtered() {
    var oTable = $('#courseuserlist').dataTable();
-   var myFilteredRows = oTable._('tr', {"filter":"applied"});
+   var aTrs = oTable.fnGetNodes({"filter":"applied"});
+   for ( var i=0 ; i<aTrs.length ; i++ ) {
+      $(aTrs[i]).addClass('row_selected');
+   }
 }
 
 function select_all() {
+   var oTable = $('#courseuserlist').dataTable();
+   var aTrs = oTable.fnGetNodes();
+   for ( var i=0 ; i<aTrs.length ; i++ ) {
+      $(aTrs[i]).addClass('row_selected');
+   }
 }
 
 function deselect_all() {
+   var oTable = $('#courseuserlist').dataTable();
+   var aTrs = oTable.fnGetNodes();
+   for ( var i=0 ; i<aTrs.length ; i++ ) {
+      $(aTrs[i]).removeClass('row_selected');
+   }
 }
 
 function fnGetSelected() {
@@ -66,3 +84,6 @@ function fnGetSelected() {
    return aReturn;
 }
 
+function modify_selected() {
+   var rows=fnGetSelected();
+}

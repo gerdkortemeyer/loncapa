@@ -118,6 +118,20 @@ function add_to_courselist() {
    breadcrumbbar();
 }
 
+function add_user_to_courselist() {
+   setbreadcrumbbar('fresh','addcourselist','Manually Enroll User','add_user_to_courselist()');
+   display_asset("/pages/lc_add_to_courselist.html");
+   menubar();
+   breadcrumbbar();
+}
+
+function upload_users_to_courselist() {
+   setbreadcrumbbar('fresh','uploadcourselist','Upload List','upload_users_to_courselist()');
+   display_asset("/pages/lc_upload_users_to_courselist.html");
+   menubar();
+   breadcrumbbar();
+}
+
 function grading() {
    setbreadcrumbbar('fresh','grading','Grading','grading()');
    display_asset("/pages/lc_grading.html");

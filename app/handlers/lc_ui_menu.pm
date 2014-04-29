@@ -63,7 +63,9 @@ sub handler {
          }
          if (&allowed_any_section('modify_role','student',&Apache::lc_entity_sessions::course_entity_domain())) {
             $admin_menu.=&submenu('Enrollment',
-                &menu_item('courselist','List','courselist()')).',';
+                &menu_item('courselist','List','courselist()').','.
+                &menu_item('add_user_to_courselist','Manually Enroll','add_user_to_courselist()').','.
+                &menu_item('upload_users_to_courselist','Upload List','upload_users_to_courselist()')).',';
          }
       }
 # Grade menu
