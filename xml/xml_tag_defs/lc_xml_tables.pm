@@ -125,11 +125,20 @@ sub courselist {
       my $enrolling_user;
       if (($record->{'manualenrollentity'}) && ($record->{'manualenrolldomain'})) {
          $enrollment_mode=&mt('Manual');
-#FIXME
-         $enrolling_user='Somebody';
+         my ($firstname,$middlename,$lastname,$suffix)=&Apache::lc_entity_users::full_name($record->{'manualenrollentity'},$record->{'manualenrolldomain'});
+         $enrolling_user=$firstname.' '.$lastname;
       } else {
          $enrollment_mode=&mt('Automatic');
          $enrolling_user='';
+      }
+      my $active_status;
+      my $status_code=&Apache::lc_date_utils::status_date_range($sort_startdate,$sort_enddate);
+      if ($status_code eq 'active') {
+         $active_status=&mt('Active');
+      } elsif ($status_code eq 'future') {
+         $active_status=&mt('Future');
+      } else {
+         $active_status=&mt('Past');
       }
       $output.='<tr><td>'.
                $record->{'entity'}.'</td><td>'.
@@ -147,7 +156,7 @@ sub courselist {
                ($sort_enddate?'<time datetime="'.$sort_enddate.'">':'').
                   $display_enddate.($sort_enddate?'</time>':'').'</td><td>'.$sort_enddate.'</td><td>'.
                $enrollment_mode.'</td><td>'.$enrolling_user.'</td><td>'.
-               (&Apache::lc_date_utils::in_date_range($sort_startdate,$sort_enddate)?'&#10004;':'&nbsp;').'</td></tr>'."\n";
+               $active_status.'</td></tr>'."\n";
    }
    $output.="</tbody>";
    return $output;

@@ -97,17 +97,21 @@ sub num2str {
 # ==== Check if we are within a date range
 # If comparedate not given, use current time
 # All in GMT
-sub in_date_range {
+sub status_date_range {
    my ($startdate,$enddate,$comparedate)=@_;
    my $now=time;
    if ($comparedate) {
       $now=&str2num($comparedate);
    }
    my $endnum=&str2num($enddate);
-   if (($endnum) && ($now>$endnum)) { return 0; }
+   if (($endnum) && ($now>$endnum)) { return 'past'; }
    my $startnum=&str2num($startdate);
-   if ($now<$startnum) { return 0; }
-   return 1;
+   if ($now<$startnum) { return 'future'; }
+   return 'active';
+}
+
+sub in_date_range {
+   return (&state_date_range(@_) eq 'active');
 }
 
 1;

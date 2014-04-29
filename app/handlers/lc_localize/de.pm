@@ -62,6 +62,18 @@ use utf8;
 
 'Deselect All' => 'Alle Auswahlen zurücksetzen',
 
+'Enrollment Mode' => 'Einschreibungsmodus',
+
+'Enrolling User' => 'Einschreibender Nutzer',
+
+'Manual' => 'Manuell',
+
+'Automatic' => 'Automatisch',
+
+'Future' => 'Zukünftig',
+
+'Past' => 'Vergangen',
+
 'Welcome!' => 'Willkommen!',
 
 'Welcome' => 'Willkommen',
