@@ -83,10 +83,20 @@ function fnGetSelected() {
 	 aReturn.push(oTable.fnGetData(aTrs[i],0));
       }
    }
-   return '{ selected_roles: ['+aReturn.join(',')+']}';
+   if (aReturn.length>0) {
+      return '['+aReturn.join(',')+']';
+   } else {
+      return '';
+   }
 }
 
 function modify_selected() {
    var selectedUsers=fnGetSelected();
-   alert(selectedUsers);
+   if (selectedUsers=='') { return; }
+   document.courseusers.postdata.value=selectedUsers;
+   document.courseusers.method="post";
+   document.courseusers.action="/pages/lc_modify_courselist.html";
+   parent.setbreadcrumbbar('add','modifycourselist','Modify Selected Entries','');
+   parent.breadcrumbbar();
+   document.courseusers.submit();
 }

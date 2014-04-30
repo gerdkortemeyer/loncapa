@@ -36,7 +36,9 @@ our @EXPORT = qw(start_lcform_html end_lcform_html start_lcformtable_html end_lc
 
 sub start_lcform_html {
    my ($p,$safe,$stack,$token)=@_;
-   return '<form class="lcform" id="'.$token->[2]->{'id'}.'">';
+   my $name=$token->[2]->{'name'};
+   unless ($name) { $name=$token->[2]->{'id'}; }
+   return '<form class="lcform" id="'.$token->[2]->{'id'}.'" name="'.$name.'"><input type="hidden" id="postdata" name="postdata" value="" />';
 }
 
 sub end_lcform_html {
