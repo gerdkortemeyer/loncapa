@@ -1,9 +1,12 @@
 <html>
 <head>
 <title>Upload User List</title>
-<script src="/scripts/lc_upload_users_to_classlist.js"></script>
+<script src="/scripts/lc_upload_users_to_courselist.js"></script>
 </head>
 <body>
 <h1><localize>Upload User List</localize></h1>
+<lcform name="enrollupload">
+<lcfileupload id="enrollfile" successcall="nextstep" failurecall="failure" />
+</lcform>
 </body>
 </html>

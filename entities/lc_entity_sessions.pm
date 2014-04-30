@@ -34,7 +34,7 @@ use Apache::lc_entity_authentication();
 use Apache::lc_entity_users();
 use Apache::lc_entity_courses();
 use Apache2::Const qw(:common :http);
-
+use CGI;
 use vars qw($lc_session);
 
 #
@@ -89,14 +89,15 @@ sub clear_session {
 #
 sub get_posted_content {
    my ($r)=@_;
-   my $content='';
-   if ($r->headers_in->{"Content-length"}>0) {
-      $r->read($content,$r->headers_in->{"Content-length"});
-   }
-   my %content=split(/[\&\=]/,$content);
-   foreach my $key (keys(%content)) {
-      $content{$key}=~s/\+/ /g;
-      $content{$key}=~s/%([a-fA-F0-9][a-fA-F0-9])/pack("C",hex($1))/eg;
+   my $query = new CGI($r);
+   my %content=();
+   if ($query->param('uploads')) {
+# Wow, uploaded a file. Do not put that into memory, just store it
+       $content{'remote_filename'}=$query->param('uploads');
+       $content{'local_filename'}=$query->tmpFileName($query->param('uploads'));
+   } else {
+# Normal POST
+       %content=$query->Vars;
    }
    $lc_session->{'content'}=\%content;
 }

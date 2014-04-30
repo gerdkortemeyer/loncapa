@@ -24,14 +24,13 @@ use strict;
 use Apache2::Const qw(:common);
 use Apache::lc_logs;
 use Apache::lc_parameters;
-use CGI;
+use Apache::lc_entity_sessions();
 
+use Data::Dumper;
 
 sub handler {
-   my $query = new CGI;
-   my $filename = $query->param("uploads");
-   my $tmpfilename = $query->tmpFileName($filename);
-   &logdebug($tmpfilename);
+   my %content=&Apache::lc_entity_sessions::posted_content();
+   &logdebug($content{'remote_filename'}.' - '.$content{'local_filename'});
    return OK;
 }
 

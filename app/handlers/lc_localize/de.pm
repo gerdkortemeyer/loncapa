@@ -70,6 +70,8 @@ use utf8;
 
 'Automatic' => 'Automatisch',
 
+'Modify Enrollment List' => 'Teilnehmerliste ändern',
+
 'Future' => 'Zukünftig',
 
 'Past' => 'Vergangen',
