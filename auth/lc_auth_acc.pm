@@ -32,6 +32,7 @@ use Apache::lc_ui_localize;
 sub get_session {
    my $r = shift;
    &Apache::lc_entity_sessions::clear_session();
+   &Apache::lc_entity_sessions::get_posted_content($r);
    my %cookie=CGI::Cookie->parse($r->headers_in->{'Cookie'});
 # Clean up the session token
    my ($token)=($cookie{'lcsession'}=~/\s*lcsession\s*\=\s*(\w+)\s*\;/);

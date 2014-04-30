@@ -24,7 +24,6 @@ use strict;
 use Apache::lc_logs;
 use Apache::lc_connection_handle();
 use Apache::lc_json_utils();
-
 use Apache::lc_memcached();
 use Apache::lc_mongodb();
 use Apache::lc_entity_utils();
@@ -86,6 +85,21 @@ sub clear_session {
    $lc_session=undef;
 }
 
+# Load POSTed parameters into session
+#
+sub get_posted_content {
+   my ($r)=@_;
+   my $content='';
+   if ($r->headers_in->{"Content-length"}>0) {
+      $r->read($content,$r->headers_in->{"Content-length"});
+   }
+   my %content=split(/[\&\=]/,$content);
+   foreach my $key (keys(%content)) {
+      $content{$key}=~s/\+/ /g;
+      $content{$key}=~s/%([a-fA-F0-9][a-fA-F0-9])/pack("C",hex($1))/eg;
+   }
+   $lc_session->{'content'}=\%content;
+}
 
 # Transfers the session to the environment,
 # returns 1 on sucess
@@ -187,6 +201,11 @@ sub roles {
    return $lc_session->{'data'}->{'roles'};
 }
 
+# Returns posted content
+#
+sub posted_content {
+   return %{$lc_session->{'content'}};
+}
 
 # Get rid of this session
 #

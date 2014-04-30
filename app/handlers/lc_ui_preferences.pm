@@ -22,7 +22,6 @@ package Apache::lc_ui_preferences;
 use strict;
 use Apache2::RequestRec();
 use Apache2::Const qw(:common :http);
-use Apache::lc_ui_utils;
 use Apache::lc_entity_sessions();
 use Apache::lc_entity_profile();
 
@@ -32,7 +31,7 @@ sub handler {
 # Get request object
    my $r = shift;
 # Extract posted content from AJAX
-   my %content=&get_content($r);
+   my %content=&Apache::lc_entity_sessions::posted_content();
 # Collect items that changed
    my $newprofile;
    if ($content{'language'} ne &Apache::lc_entity_sessions::userlanguage) {

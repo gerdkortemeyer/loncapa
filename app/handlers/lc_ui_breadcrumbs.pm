@@ -23,7 +23,6 @@ use strict;
 use Apache2::RequestRec();
 use Apache2::Const qw(:common);
 use Apache::lc_entity_sessions();
-use Apache::lc_ui_utils();
 use Apache::lc_ui_localize;
 
 sub breadcrumb_item {
@@ -51,7 +50,7 @@ sub handler {
 # Get request object
    my $r = shift;
    $r->content_type('application/json; charset=utf-8');
-   my %content=&Apache::lc_ui_utils::get_content($r);
+   my %content=&Apache::lc_entity_sessions::posted_content();
    if ($content{'mode'} eq 'fresh') {
 # Set fresh breadcrumbs ... mmm!
       &fresh_breadcrumbs($content{'title'},$content{'text'},$content{'function'});

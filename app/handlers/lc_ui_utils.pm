@@ -26,24 +26,7 @@ use Apache::lc_entity_sessions();
 require Exporter;
 
 our @ISA = qw (Exporter);
-our @EXPORT = qw(get_content clean_username clean_domain domain_choices domain_name language_choices timezone_choices);
-
-
-# ==== Get POSTed content
-#
-sub get_content {
-   my ($r)=@_;
-   my $content='';
-   if ($r->headers_in->{"Content-length"}>0) {
-      $r->read($content,$r->headers_in->{"Content-length"});
-   }
-   my %content=split(/[\&\=]/,$content);
-   foreach my $key (keys(%content)) {
-      $content{$key}=~s/\+/ /g;
-      $content{$key}=~s/%([a-fA-F0-9][a-fA-F0-9])/pack("C",hex($1))/eg;
-   }
-   return %content;
-}
+our @EXPORT = qw(clean_username clean_domain domain_choices domain_name language_choices timezone_choices);
 
 # ==== Clean up usernames and domains
 #

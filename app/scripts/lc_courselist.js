@@ -83,7 +83,7 @@ function fnGetSelected() {
 	 aReturn.push(oTable.fnGetData(aTrs[i],0));
       }
    }
-   return '['+aReturn.join(',')+']';
+   return '{ selected_roles: ['+aReturn.join(',')+']}';
 }
 
 function modify_selected() {

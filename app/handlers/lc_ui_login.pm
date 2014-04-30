@@ -32,7 +32,7 @@ sub handler {
 # Get request object
    my $r = shift;
 # Extract posted content from AJAX
-   my %content=&get_content($r);
+   my %content=&Apache::lc_entity_sessions::posted_content();
 # Clean up username and domain from unwanted or dangerous characters
    my $username=&clean_username($content{'username'});
    my $domain=&clean_domain($content{'domain'});
