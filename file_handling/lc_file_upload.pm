@@ -24,13 +24,12 @@ use strict;
 use Apache2::Const qw(:common);
 use Apache::lc_logs;
 use Apache::lc_parameters;
-use Apache::lc_entity_sessions();
+use Apache::lc_file_utils();
 
 use Data::Dumper;
 
 sub handler {
-   my %content=&Apache::lc_entity_sessions::posted_content();
-   &logdebug($content{'remote_filename'}.' - '.$content{'local_filename'});
+   &logdebug(&Apache::lc_file_utils::move_uploaded_into_place('/home/www/Desktop/test.txt'));
    return OK;
 }
 

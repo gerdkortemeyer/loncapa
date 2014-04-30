@@ -23,9 +23,10 @@ use strict;
 use File::Util;
 use Fcntl qw(:flock);
 use File::Touch;
-
+use File::Copy;
 use Apache::lc_logs;
 use Apache::lc_parameters;
+use Apache::lc_entity_sessions();
 
 # ==== Lock a file the hard way
 #
@@ -143,5 +144,20 @@ sub writeurl {
    return &writefile($filename,$data);
 }
 
+# ==== Filename of an uploaded file from client
+#
+sub uploaded_remote_filename {
+   my %content=&Apache::lc_entity_sessions::posted_content();
+   return $content{'remote_filename'};
+}
+
+# ==== Move an uploaded file into place
+#
+sub move_uploaded_into_place {
+   my ($dest_filename)=@_;
+   my %content=&Apache::lc_entity_sessions::posted_content();
+   return &copy($content{'local_filename'},$dest_filename);
+}
+   
 1;
 __END__
