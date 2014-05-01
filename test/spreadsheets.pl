@@ -1,6 +1,7 @@
 use strict;
 use Spreadsheet::ParseExcel;
 use Spreadsheet::XLSX;
+use Text::CSV_PP;
 
 sub parse_xls {
     my ($file)=@_;
@@ -60,7 +61,25 @@ sub parse_xlsx {
  }
 }
 
+sub parse_csv {
+   my ($file,$sep)=@_;
+   unless ($sep) { $sep=','; }
+   my $csv = Text::CSV_PP->new({ sep_char => $sep });
+   my $content='';
+   open(IN,$file);
+   while (my $line=<IN>) {
+      $content.=$line;
+   }
+   close(IN);
+   foreach my $row (split(/[\n\r]+/,$content)) {
+      $csv->parse($row);
+      print join(' - ',$csv->fields())."\n";
+   }
+}
+
+
 &parse_xls('/home/www/Desktop/classlist.xls');
 print "\n=========\n";
 &parse_xlsx('/home/www/Desktop/classlist.xlsx');
-
+print "\n=========\n";
+&parse_csv('/home/www/Desktop/classlist.csv');

@@ -53,3 +53,4 @@ cpan DateTime::Format::RFC3339
 cpan Hash::Merge
 cpan Spreadsheet::XLSX
 cpan Spreadsheet::ParseExcel
+cpan Text::CSV_PP
