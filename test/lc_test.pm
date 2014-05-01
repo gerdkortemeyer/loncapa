@@ -34,6 +34,7 @@ use Apache::lc_entity_assessments();
 use Apache::lc_asset_safeeval();
 use Apache::lc_authorize;
 use Apache::lc_entity_authentication();
+use Apache::lc_spreadsheets();
 
 use Data::Dumper;
 
@@ -44,6 +45,12 @@ sub handler {
    my $r = shift;
 
    $r->print("Test Handler\n");
+
+   $r->print("\n==========\n".Dumper(&Apache::lc_spreadsheets::parse_xls('/home/www/Desktop/classlist.xls')));
+   $r->print("\n==========\n".Dumper(&Apache::lc_spreadsheets::parse_xlsx('/home/www/Desktop/classlist.xlsx')));
+
+
+return OK;
 
 my $date='2015-01-20 04:05:06';
 
