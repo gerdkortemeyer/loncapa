@@ -36,7 +36,7 @@ sub parse_xls {
    my $workbook = $parser->parse($file);
    unless (defined($workbook)) { return undef; }
    foreach my $worksheet ( $workbook->worksheets() ) {
-      my $name=$worksheet>{'Name'};
+      my $name=$worksheet->{'Name'};
       my ( $row_min, $row_max ) = $worksheet->row_range();
       $sheets->{$name}->{'row_min'}=$row_min;
       $sheets->{$name}->{'row_max'}=$row_max;
@@ -86,12 +86,7 @@ sub parse_csv {
    unless ($sep) { $sep=','; }
    my $sheets;
    my $csv = Text::CSV_PP->new({ sep_char => $sep });
-   my $content='';
-   open(IN,$file);
-   while (my $line=<IN>) {
-      $content.=$line;
-   }
-   close(IN);
+   my $content=&Apache::lc_file_utils::readfile($file);
    my $name='default';
    $sheets->{$name}->{'row_min'}=0;
    $sheets->{$name}->{'col_min'}=0;
@@ -132,6 +127,11 @@ sub parse_spreadsheet {
       }
    }
    return $sheets;
+}
+
+sub parse_spreadsheet_to_jsonfile {
+   my ($file,$destfile)=@_;
+   return &Apache::lc_file_utils::writefile($destfile,&Apache::lc_json_utils::perl_to_json(&parse_spreadsheet($file)));
 }
 
 1;

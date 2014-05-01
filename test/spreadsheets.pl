@@ -2,6 +2,7 @@ use strict;
 use Spreadsheet::ParseExcel;
 use Spreadsheet::XLSX;
 use Text::CSV_PP;
+use ODF::lpOD;
 
 sub parse_xls {
     my ($file)=@_;

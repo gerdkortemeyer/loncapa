@@ -46,12 +46,6 @@ sub handler {
 
    $r->print("Test Handler\n");
 
-   $r->print("\n==========\n".Dumper(&Apache::lc_spreadsheets::parse_spreadsheet('/home/www/Desktop/classlist.xls')));
-   $r->print("\n==========\n".Dumper(&Apache::lc_spreadsheets::parse_spreadsheet('/home/www/Desktop/classlist.xlsx')));
-   $r->print("\n==========\n".Dumper(&Apache::lc_spreadsheets::parse_spreadsheet('/home/www/Desktop/classlist.csv')));
-
-
-return OK;
 
 my $date='2015-01-20 04:05:06';
 
