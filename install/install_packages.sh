@@ -51,3 +51,5 @@ cpan DateTime
 cpan DateTime::TimeZone
 cpan DateTime::Format::RFC3339
 cpan Hash::Merge
+cpan Spreadsheet::XLSX
+cpan Spreadsheet::ParseExcel
