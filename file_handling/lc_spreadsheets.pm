@@ -29,8 +29,6 @@ use Spreadsheet::ParseExcel;
 use Spreadsheet::XLSX;
 use Text::CSV_PP;
 
-use Data::Dumper;
-
 sub parse_xls {
    my ($file)=@_;
    my $sheets;
@@ -87,7 +85,6 @@ sub parse_csv {
    my ($file,$sep)=@_;
    unless ($sep) { $sep=','; }
    my $sheets;
-
    my $csv = Text::CSV_PP->new({ sep_char => $sep });
    my $content='';
    open(IN,$file);
@@ -95,13 +92,47 @@ sub parse_csv {
       $content.=$line;
    }
    close(IN);
-   foreach my $row (split(/[\n\r]+/,$content)) {
-      $csv->parse($row);
-   #   print join(' - ',$csv->fields())."\n";
+   my $name='default';
+   $sheets->{$name}->{'row_min'}=0;
+   $sheets->{$name}->{'col_min'}=0;
+   $sheets->{$name}->{'col_max'}=0;
+   my $row=0;
+   foreach my $rowdata (split(/[\n\r]+/,$content)) {
+      $csv->parse($rowdata);
+      my @cells=$csv->fields();
+      my $rowcols=$#cells;
+      if ($rowcols<0) { next; }
+      if ($rowcols>$sheets->{$name}->{'col_max'}) { $sheets->{$name}->{'col_max'}=$rowcols; }
+      foreach my $col (0 .. $rowcols) {
+         next unless $cells[$col];
+         $sheets->{$name}->{'cells'}->{$row}->{$col}->{'value'}=$cells[$col];
+            $sheets->{$name}->{'cells'}->{$row}->{$col}->{'unformatted'}=$cells[$col];
+            $sheets->{$name}->{'cells'}->{$row}->{$col}->{'type'}='Text';
+      }
+      $row++;
    }
+   $sheets->{$name}->{'row_max'}=$row-1;
+   return $sheets;
 }
 
-
+sub parse_spreadsheet {
+   my ($file)=@_;
+   my $sheets;
+   if ($file=~/\.xls\s*$/i) {
+      $sheets=&parse_xls($file);
+   } elsif ($file=~/\.xlsx\s*$/i) {
+      $sheets=&parse_xlsx($file);
+   } elsif ($file=~/\.csv\s*$/i) {
+      my $sheetscomma=&parse_csv($file,',');
+      my $sheetssemi=&parse_csv($file,';');
+      if ($sheetscomma->{'default'}->{'col_max'}>$sheetssemi->{'default'}->{'col_max'}) {
+         $sheets=$sheetscomma;
+      } else {
+         $sheets=$sheetssemi;
+      }
+   }
+   return $sheets;
+}
 
 1;
 __END__
