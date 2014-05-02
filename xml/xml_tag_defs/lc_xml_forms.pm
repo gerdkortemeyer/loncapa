@@ -26,6 +26,7 @@ use Apache::lc_ui_localize();
 use DateTime;
 use DateTime::TimeZone;
 use DateTime::Format::RFC3339;
+use Apache::lc_xml_utils();
 
 
 use Data::Dumper;
@@ -253,7 +254,22 @@ sub start_lcspreadsheetassign_html {
 
 sub end_lcspreadsheetassign_html {
    my ($p,$safe,$stack,$token)=@_;
-   return '<pre>'.Dumper($stack).'</pre>';
+   my $output='';
+# Attempt to read uploaded spreadsheet
+   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+   my $sheets=&Apache::lc_json_utils::json_to_perl(
+                &Apache::lc_file_utils::readfile(
+                   &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/uploaded_spreadsheet.json')));
+   unless ($sheets) {
+      return &Apache::lc_xml_utils::error_message('Could not interpret spreadsheet data. Please make sure your file has the proper extension (e.g., ".xls") or try another format.');
+   }
+   unless (($sheets->{'col_max'}>1) && ($sheets->{'row_max'}>1)) {
+      $output.='<p>'.
+        &Apache::lc_xml_utils::problem_message(
+               'The spreadsheet may have been misinterpreted. Please make sure your file has the proper extension (e.g., ".xls") or try another format.').
+               '</p>';
+   }
+   return '<pre>'.Dumper($stack).'</pre><hr /><pre>'.Dumper($sheets).'</pre>';
 }
 
 

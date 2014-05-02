@@ -180,6 +180,12 @@ use utf8;
 
 'A problem occurred while entering the community.' => 'Bei der Auswahl der Gemeinschaft trat ein Problem auf.',
 
+'Could not interpret spreadsheet data. Please make sure your file has the proper extension (e.g., ".xls") or try another format.'
+=> 'Das Spreadsheet konnte nicht interpretiert werden. Bitte stellen Sie sicher, dass Ihre Datei die richtige Extension (z.B. ".xls") hat, oder versuchen Sie, ein anderes Format zu verwenden.',
+
+'The spreadsheet may have been misinterpreted. Please make sure your file has the proper extension (e.g., ".xls") or try another format.'
+=> 'Das Spreadsheet ist möglicherweise nicht richtig interpretiert worden. Bitte stellen Sie sicher, dass Ihre Datei die richtige Extension (z.B. ".xls") hat, oder versuchen Sie, ein anderes Format zu verwenden.',
+
 'Course entered.' => 'Kurs ausgewählt.',
 
 'Community entered.' => 'Gemeinschaft ausgewählt.',
