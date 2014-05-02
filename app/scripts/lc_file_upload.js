@@ -1,4 +1,4 @@
-function do_upload (form,event,id,success,fail) {
+function do_upload (form,event,url,id,success,fail) {
    event.preventDefault();
    var file = form.elements[id].files[0];
    var oldtext=$('#'+id+'label').html();
@@ -14,7 +14,7 @@ function do_upload (form,event,id,success,fail) {
          $('#'+id+'label').html(file.name+': '+e.loaded);
       }
    }, false);
-   xhr.open('post','/upload_file', true);
+   xhr.open('post',url, true);
    xhr.onload = function () {
       $('#'+id+'label').html(oldtext);
       if (xhr.status === 200) {

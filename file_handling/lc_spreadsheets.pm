@@ -134,5 +134,11 @@ sub parse_spreadsheet_to_jsonfile {
    return &Apache::lc_file_utils::writefile($destfile,&Apache::lc_json_utils::perl_to_json(&parse_spreadsheet($file)));
 }
 
+sub handler {
+   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+   &logdebug(&Apache::lc_file_utils::move_uploaded_into_default_place());
+   return OK;
+}
+
 1;
 __END__
