@@ -38,6 +38,7 @@ sub perl_eval {
    my ($p,$safe,$stack,$token)=@_;
    my $text=$p->get_text('/perl');
    $p->get_token;
+   pop(@{$stack->{'tags'}});
    &Apache::lc_asset_safeeval::codeeval($safe,$text);
    return '';
 }

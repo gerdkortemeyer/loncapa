@@ -27,12 +27,16 @@ use DateTime;
 use DateTime::TimeZone;
 use DateTime::Format::RFC3339;
 
+
+use Data::Dumper;
+
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
 our @EXPORT = qw(start_lcform_html end_lcform_html start_lcformtable_html end_lcformtable_html start_lcformtableinput_html
                  start_lcforminput_html start_lcfileupload_html
-                 start_lcformtrigger_html start_lcformcancel_html);
+                 start_lcformtrigger_html start_lcformcancel_html
+                 start_lcspreadsheetassign_html end_lcspreadsheetassign_html start_lcselectoption_html);
 
 sub start_lcform_html {
    my ($p,$safe,$stack,$token)=@_;
@@ -234,6 +238,25 @@ sub datetimefield {
    $output.=$time_zone."</time></fieldset>";
    return $output;
 }
+
+sub start_lcselectoption_html {
+   my ($p,$safe,$stack,$token)=@_;
+   push(@{$stack->{'tags'}->[-2]->{'options'}},{value=>$token->[2]->{'value'},label=>$token->[2]->{'label'}});
+   return '';
+}
+
+sub start_lcspreadsheetassign_html {
+   my ($p,$safe,$stack,$token)=@_;
+   $stack->{'tags'}->[-1]->{'options'}=[];
+   return '';
+}
+
+sub end_lcspreadsheetassign_html {
+   my ($p,$safe,$stack,$token)=@_;
+   return '<pre>'.Dumper($stack).'</pre>';
+}
+
+
 
 1;
 __END__
