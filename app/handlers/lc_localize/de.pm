@@ -72,6 +72,8 @@ use utf8;
 
 'Modify Enrollment List' => 'Teilnehmerliste ändern',
 
+'Please upload a spreadsheet with enrollment information.' => 'Bitte laden Sie in Spreadsheet mit Teilnehmerinformation hoch.',
+
 'Future' => 'Zukünftig',
 
 'Past' => 'Vergangen',

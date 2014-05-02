@@ -3,6 +3,7 @@ function nextstep(name) {
 }
 
 function failure(name,code) {
-   alert("epic fail "+name+":"+code);
+   $('.lcstandard').hide();
+   $('.lcerror').show();
 }
 

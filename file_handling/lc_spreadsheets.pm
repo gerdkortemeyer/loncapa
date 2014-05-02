@@ -21,7 +21,7 @@ package Apache::lc_spreadsheets;
 
 use strict;
 
-use Apache2::Const qw(:common);
+use Apache2::Const qw(:common :http);
 use Apache::lc_logs;
 use Apache::lc_parameters;
 use Apache::lc_file_utils();
@@ -136,7 +136,15 @@ sub parse_spreadsheet_to_jsonfile {
 
 sub handler {
    my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
-   &logdebug(&Apache::lc_file_utils::move_uploaded_into_default_place());
+   my $file=&Apache::lc_file_utils::move_uploaded_into_default_place();
+   unless ($file) {
+      &logerror("Failed to upload spreadsheet file");
+      return HTTP_SERVICE_UNAVAILABLE;
+   }
+   unless (&parse_spreadsheet_to_jsonfile($file,&Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/uploaded_spreadsheet.json'))) {
+      &logwarning("Could not parse uploaded spreadsheet");
+      return HTTP_SERVICE_UNAVAILABLE;
+   }
    return OK;
 }
 
