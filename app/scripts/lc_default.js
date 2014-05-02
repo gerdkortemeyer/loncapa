@@ -228,6 +228,14 @@ function preferences() {
    breadcrumbbar();
 }
 
+function coursepreferences() {
+   setbreadcrumbbar('fresh','preferences','Preferences','coursepreferences()');
+   display_asset("/pages/lc_course_preferences.html");
+   menubar();
+   breadcrumbbar();
+}
+
+
 function help() {
    display_asset("/help/lc_help.html");
    breadcrumbbar();

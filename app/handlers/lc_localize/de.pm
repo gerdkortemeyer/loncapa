@@ -192,7 +192,9 @@ use utf8;
 
 'My Grades' => 'Meine Noten',
 
-'Administration' => 'Verwaltung',
+'Course' => 'Kurs',
+
+'Community' => 'Gemeinschaft',
 
 'Enrollment' => 'Teilnehmer',
 

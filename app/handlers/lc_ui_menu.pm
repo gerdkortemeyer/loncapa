@@ -43,7 +43,7 @@ sub handler {
    my $r = shift;
    $r->content_type('application/json; charset=utf-8');
    my $menu='{';
-   my $admin_menu='';
+   my $course_menu='';
    my $grade_menu='';
    if (&Apache::lc_entity_sessions::session_id()) {
       $menu.=&menu_item('dashboard','Dashboard','dashboard()').',';
@@ -61,8 +61,13 @@ sub handler {
                $grade_menu.=&menu_item('grading','Grading','grading()').',';
             }
          }
+# Course settings into course menu
+         if (&allowed_course('modify_settings',undef,&Apache::lc_entity_sessions::course_entity_domain())) {
+            $course_menu.= &menu_item('coursepreferences','Preferences','coursepreferences()').',';
+         }
+# Enrollment settings into Admin menu
          if (&allowed_any_section('modify_role','student',&Apache::lc_entity_sessions::course_entity_domain())) {
-            $admin_menu.=&submenu('Enrollment',
+            $course_menu.=&submenu('Enrollment',
                 &menu_item('courselist','List','courselist()').','.
                 &menu_item('add_user_to_courselist','Manually Enroll','add_user_to_courselist()').','.
                 &menu_item('upload_users_to_courselist','Upload List','upload_users_to_courselist()')).',';
@@ -73,10 +78,14 @@ sub handler {
         $grade_menu=~s/\s*\,\s*$//gs;
         $menu.=&submenu("Grades",$grade_menu).',';
      }
-# Can we administrate things? Fourth to last item with collected admin stuff
-     if ($admin_menu) {
-        $admin_menu=~s/\s*\,\s*$//gs;
-        $menu.=&submenu("Administration",$admin_menu).',';
+# Can we administrate course things? Fourth to last item with collected admin stuff
+     if ($course_menu) {
+        $course_menu=~s/\s*\,\s*$//gs;
+        my $course_menu_title='Community';
+        if (&Apache::lc_entity_courses::course_type(&Apache::lc_entity_sessions::course_entity_domain()) eq 'regular') {
+           $course_menu_title='Course';
+        }
+        $menu.=&submenu($course_menu_title,$course_menu).',';
      }
 # User submenu, third to last item when logged in
       $menu.=&submenu("User",

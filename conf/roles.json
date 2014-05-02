@@ -21,6 +21,7 @@
                                                              "teaching_assistant" : "1",
                                                              "student"            : "1"
                                                           },
+                                      "modify_settings": "1",
                                       "edit_toc"       : "1",
                                       "access_content" : {
                                                              "open"               : "1",
