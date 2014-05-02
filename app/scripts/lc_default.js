@@ -132,6 +132,14 @@ function upload_users_to_courselist() {
    breadcrumbbar();
 }
 
+function upload_users_to_courselist_columns() {
+   setbreadcrumbbar('add','uploadcourselistcolumns','Identify Columns','upload_users_to_courselist_columns()');
+   display_asset("/pages/lc_upload_users_to_courselist_columns.html");
+   menubar();
+   breadcrumbbar();
+}
+
+
 function grading() {
    setbreadcrumbbar('fresh','grading','Grading','grading()');
    display_asset("/pages/lc_grading.html");

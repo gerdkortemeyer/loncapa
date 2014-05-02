@@ -74,6 +74,8 @@ use utf8;
 
 'Please upload a spreadsheet with enrollment information.' => 'Bitte laden Sie in Spreadsheet mit Teilnehmerinformation hoch.',
 
+'Identify Columns' => 'Spalten zuordnen',
+
 'Future' => 'Zukünftig',
 
 'Past' => 'Vergangen',

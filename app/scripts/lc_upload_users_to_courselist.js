@@ -1,5 +1,5 @@
 function nextstep(name) {
-   alert("Success "+name);
+   parent.upload_users_to_courselist_columns();
 }
 
 function failure(name,code) {
