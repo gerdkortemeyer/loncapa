@@ -30,6 +30,19 @@ h1 {
    text-decoration: none;
 }
 
+.lcsorttablehead {
+   font-family: sans-serif;
+   background: #30a097;
+   padding: 2px;
+   color: #ffffff;
+}
+
+.lcsorttablebody {
+   font-family: sans-serif;
+   background: #cccccc;
+   padding: 2px;
+   color: #000000;
+}
 
 .lcfileuploadlabel {
    background: #cccccc;

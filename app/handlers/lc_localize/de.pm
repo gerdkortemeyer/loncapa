@@ -186,6 +186,22 @@ use utf8;
 'The spreadsheet may have been misinterpreted. Please make sure your file has the proper extension (e.g., ".xls") or try another format.'
 => 'Das Spreadsheet ist möglicherweise nicht richtig interpretiert worden. Bitte stellen Sie sicher, dass Ihre Datei die richtige Extension (z.B. ".xls") hat, oder versuchen Sie, ein anderes Format zu verwenden.',
 
+'Sample Entries' => 'Beispieleinträge',
+
+'Assignment' => 'Zuordnung',
+
+'Last Name, First Name Middle Name' => 'Nachname, Vorname Weitere Vornamen',
+
+'Username and ID Number' => 'Benutzerkennung und Matrikelnummer', 
+
+'Password and ID Number' => 'Passwort und Matrikelnummer',
+
+'Username and EMail' => 'Benutzerkennung und EMail',
+
+'EMail' => 'EMail',
+
+'-' => '-',
+
 'Course entered.' => 'Kurs ausgewählt.',
 
 'Community entered.' => 'Gemeinschaft ausgewählt.',

@@ -267,7 +267,7 @@ sub end_lcspreadsheetassign_html {
    my $choices;
    foreach my $option (@{$stack->{'tags'}->[-1]->{'options'}}) {
       push(@{$values},$option->{'value'});
-      push(@{$choices},$option->{'label'});
+      push(@{$choices},&mt($option->{'label'}));
    }
    foreach my $worksheet (keys(%{$sheets})) {
       unless (($sheets->{$worksheet}->{'col_max'}>1) && ($sheets->{$worksheet}->{'row_max'}>1)) {
@@ -276,7 +276,8 @@ sub end_lcspreadsheetassign_html {
                'The spreadsheet may have been misinterpreted. Please make sure your file has the proper extension (e.g., ".xls") or try another format.').
                '</p>';
       }
-      $output.='<table><thead><tr><th colspan="2">'.$worksheet.'</th></tr><tr><th>'.&mt('Sample Entries').'</th><th>'.&mt('Assignment').'</th></tr></thead></tbody>';
+      $output.='<table><thead class="lcsorttablehead"><tr><th colspan="2">'.$worksheet.'</th></tr><tr><th>'.&mt('Sample Entries').'</th><th>'.&mt('Assignment').
+               '</th></tr></thead><tbody class="lcsorttablebody">';
       foreach my $col ($sheets->{$worksheet}->{'col_min'} .. $sheets->{$worksheet}->{'col_max'}) {
          $output.="\n<tr><td><pre>";
          my $found=0;
