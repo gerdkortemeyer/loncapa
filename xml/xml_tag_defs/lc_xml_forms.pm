@@ -28,9 +28,6 @@ use DateTime::TimeZone;
 use DateTime::Format::RFC3339;
 use Apache::lc_xml_utils();
 
-
-use Data::Dumper;
-
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
@@ -137,8 +134,12 @@ sub inputfield {
 # ==== Generate a select field
 #
 sub selectfield {
-   my ($id,$name,$values,$choices,$default)=@_;
-   my $selectfield='<select class="lcformselectinput" id="'.$id.'" name="'.$name.'">';
+   my ($id,$name,$values,$choices,$default,$onchange)=@_;
+   my $changecall='';
+   if ($onchange) {
+      $changecall=' onChange="'.$onchange.'"';
+   }
+   my $selectfield='<select class="lcformselectinput" id="'.$id.'" name="'.$name.'"'.$changecall.'>';
    for (my $i=0;$i<=$#{$values};$i++) {
           $selectfield.='<option value="'.$values->[$i].'"'.($values->[$i] eq $default?' selected="selected"':'').'>'.
                          $choices->[$i].'</option>';
@@ -289,7 +290,7 @@ sub end_lcspreadsheetassign_html {
             if ($found>5) { last; }
          }
          $output.="</pre></td><td>\n";
-         $output.=&selectfield("col$col","col$col",$values,$choices,'nothing');
+         $output.=&selectfield("col$col","col$col",$values,$choices,'nothing',$stack->{'tags'}->[-1]->{'args'}->{'verify'});
          $output.="</td></tr>";
       }
       $output.='</tbody></table>';
