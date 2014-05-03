@@ -263,13 +263,37 @@ sub end_lcspreadsheetassign_html {
    unless ($sheets) {
       return &Apache::lc_xml_utils::error_message('Could not interpret spreadsheet data. Please make sure your file has the proper extension (e.g., ".xls") or try another format.');
    }
-   unless (($sheets->{'col_max'}>1) && ($sheets->{'row_max'}>1)) {
-      $output.='<p>'.
-        &Apache::lc_xml_utils::problem_message(
+   my $values;
+   my $choices;
+   foreach my $option (@{$stack->{'tags'}->[-1]->{'options'}}) {
+      push(@{$values},$option->{'value'});
+      push(@{$choices},$option->{'label'});
+   }
+   foreach my $worksheet (keys(%{$sheets})) {
+      unless (($sheets->{$worksheet}->{'col_max'}>1) && ($sheets->{$worksheet}->{'row_max'}>1)) {
+        $output.='<p>'.
+            &Apache::lc_xml_utils::problem_message(
                'The spreadsheet may have been misinterpreted. Please make sure your file has the proper extension (e.g., ".xls") or try another format.').
                '</p>';
+      }
+      $output.='<table><thead><tr><th colspan="2">'.$worksheet.'</th></tr><tr><th>'.&mt('Sample Entries').'</th><th>'.&mt('Assignment').'</th></tr></thead></tbody>';
+      foreach my $col ($sheets->{$worksheet}->{'col_min'} .. $sheets->{$worksheet}->{'col_max'}) {
+         $output.="\n<tr><td><pre>";
+         my $found=0;
+         foreach my $row ($sheets->{$worksheet}->{'row_min'} .. $sheets->{$worksheet}->{'row_max'}) {
+            if ($sheets->{$worksheet}->{'cells'}->{$row}->{$col}->{'value'}) {
+               $output.=$sheets->{$worksheet}->{'cells'}->{$row}->{$col}->{'value'}."\n";
+               $found++;
+            }
+            if ($found>5) { last; }
+         }
+         $output.="</pre></td><td>\n";
+         $output.=&selectfield("col$col","col$col",$values,$choices,'nothing');
+         $output.="</td></tr>";
+      }
+      $output.='</tbody></table>';
    }
-   return '<pre>'.Dumper($stack).'</pre><hr /><pre>'.Dumper($sheets).'</pre>';
+   return $output;
 }
 
 
