@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: tokenizer.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: tokenizer.js</h1>
+
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+
+Copyright (C) 2014  Michigan State University Board of Trustees
+
+The JavaScript code in this page is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+*/
+
+/**
+ * String tokenizer. Recognizes only names, numbers, and parser operators.
+ * @constructor
+ * @param {Definitions} defs - Operator definitions
+ * @param {string} text - The text to tokenize
+ */
+function Tokenizer(defs, text) {
+    this.defs = defs;
+    this.text = text;
+}
+
+/**
+ * Tokenizes the text.
+ * Can throw a ParseException.
+ * @returns {Array.&lt;Token>}
+ */
+Tokenizer.prototype.tokenize = function() {
+    var c, i, iop, from, tokens, value;
+    
+    i = 0;
+    c = this.text.charAt(i);
+    tokens = [];
+    
+main:
+    while (c) {
+        from = i;
+        
+        // ignore whitespace
+        if (c &lt;= ' ') {
+            i++;
+            c = this.text.charAt(i);
+            continue;
+        }
+        
+        // check for operators first (they could be confused with
+        // variables if they don't use special characters)
+        for (iop = 0; iop &lt; this.defs.operators.length; iop++) {
+            var op = this.defs.operators[iop];
+            if (this.text.substring(i, i+op.id.length) === op.id) {
+                i += op.id.length;
+                c = this.text.charAt(i);
+                tokens.push(new Token(Token.OPERATOR, from, i - 1, op.id, op));
+                continue main;
+            }
+        }
+        
+        // name
+        if ((c >= 'a' &amp;&amp; c &lt;= 'z') || (c >= 'A' &amp;&amp; c &lt;= 'Z')) {
+            value = c;
+            i++;
+            for (;;) {
+                c = this.text.charAt(i);
+                if ((c >= 'a' &amp;&amp; c &lt;= 'z') || (c >= 'A' &amp;&amp; c &lt;= 'Z') ||
+                        (c >= '0' &amp;&amp; c &lt;= '9') || c === '_') {
+                    value += c;
+                    i++;
+                } else {
+                    break;
+                }
+            }
+            tokens.push(new Token(Token.NAME, from, i - 1, value, null));
+            
+        // number.
+        } else if ((c >= '0' &amp;&amp; c &lt;= '9') || c === Definitions.DECIMAL_SIGN_1 || c === Definitions.DECIMAL_SIGN_2) {
+            value = '';
+            
+            if (c !== Definitions.DECIMAL_SIGN_1 &amp;&amp; c !== Definitions.DECIMAL_SIGN_2) {
+                i++;
+                value += c;
+                // Look for more digits.
+                for (;;) {
+                    c = this.text.charAt(i);
+                    if (c &lt; '0' || c > '9') {
+                        break;
+                    }
+                    i++;
+                    value += c;
+                }
+            }
+            
+            // Look for a decimal fraction part.
+            if (c === Definitions.DECIMAL_SIGN_1 || c === Definitions.DECIMAL_SIGN_2) {
+                i++;
+                value += c;
+                for (;;) {
+                    c = this.text.charAt(i);
+                    if (c &lt; '0' || c > '9') {
+                        break;
+                    }
+                    i += 1;
+                    value += c;
+                }
+            }
+            
+            // Look for an exponent part.
+            if (c === 'e' || c === 'E') {
+                i++;
+                value += c;
+                c = this.text.charAt(i);
+                if (c === '-' || c === '+') {
+                    i++;
+                    value += c;
+                    c = this.text.charAt(i);
+                }
+                if (c &lt; '0' || c > '9') {
+                    // syntax error in number exponent
+                    throw new ParseException("syntax error in number exponent", from, i);
+                }
+                do {
+                    i++;
+                    value += c;
+                    c = this.text.charAt(i);
+                } while (c >= '0' &amp;&amp; c &lt;= '9');
+            }
+            
+            // Make sure the next character is not a letter.
+            if ((c >= 'a' &amp;&amp; c &lt;= 'z') || (c >= 'A' &amp;&amp; c &lt;= 'Z')) {
+                // syntax error in number
+                throw new ParseException("syntax error in number", from, i);
+            }
+            
+            // Convert the string value to a number. If it is finite, then it is a good token.
+            var n = +value.replace(Definitions.DECIMAL_SIGN_1, '.').replace(Definitions.DECIMAL_SIGN_2, '.');
+            if (isFinite(n)) {
+                tokens.push(new Token(Token.NUMBER, from, i - 1, value, null));
+            } else {
+                // syntax error in number
+                throw new ParseException("syntax error in number", from, i);
+            }
+        
+        // unrecognized operator
+        } else {
+            throw new ParseException("unrecognized operator", from, i);
+        }
+    }
+    return tokens;
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Definitions.html">Definitions</a></li><li><a href="ENode.html">ENode</a></li><li><a href="Operator.html">Operator</a></li><li><a href="ParseException.html">ParseException</a></li><li><a href="Parser.html">Parser</a></li><li><a href="Token.html">Token</a></li><li><a href="Tokenizer.html">Tokenizer</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Mon May 05 2014 13:30:14 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
