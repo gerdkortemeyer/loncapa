@@ -51,6 +51,9 @@ cp app/scripts/ckeditor/config.js /home/httpd/html/scripts/ckeditor
 cp app/scripts/jquery* /home/httpd/html/scripts
 cp app/scripts/lc* /home/httpd/html/scripts
 cp -R app/scripts/jstree /home/httpd/html/scripts/
+cp -R app/scripts/maxima_editor /home/httpd/html/scripts/
+chown -R www:www /home/httpd/html/scripts/*
+chmod -R a+rx /home/httpd/html/scripts/*
 mkdir /home/httpd/html/css
 cp app/css/* /home/httpd/html/css
 mkdir /home/httpd/html/pages
