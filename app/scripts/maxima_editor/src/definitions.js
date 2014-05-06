@@ -91,7 +91,7 @@ Definitions.prototype.prefix = function(id, rbp, nud) {
  * Creates a new suffix operator.
  * @param {string} id - Operator id (text used to recognize it)
  * @param {number} lbp - Left binding power
- * @param {function} led - Left denotation function
+ * @param {ledFunction} led - Left denotation function
  */
 Definitions.prototype.suffix = function(id, lbp, led) {
     var arity, rbp, nud;
@@ -139,6 +139,8 @@ Definitions.prototype.define = function() {
         return e;
     }, function(p, left) {
         // led (for functions)
+        if (left.type != ENode.NAME)
+            throw new ParseException("Function name expected before a parenthesis.", p.tokens[p.token_nr - 1].from);
         var children = [];
         if (p.current_token == null || p.current_token.op == null || p.current_token.op.id !== ")") {
             while (true) {
