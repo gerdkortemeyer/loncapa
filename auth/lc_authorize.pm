@@ -36,10 +36,9 @@ sub allowed_system {
    my ($action,$item)=@_;
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'system'}})) {
+      if ($privileges->{$role}->{'system'}->{$action} eq '1') { return 1; }
       if ($item) {
          if ($privileges->{$role}->{'system'}->{$action}->{$item}) { return 1; }
-      } else {
-         if ($privileges->{$role}->{'system'}->{$action}) { return 1; }
       }
    }
    return 0;
@@ -52,11 +51,10 @@ sub allowed_domain {
    if (&allowed_system($action,$item)) { return 1; }
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'domain'}->{$domain}})) {
+      if ($privileges->{$role}->{'domain'}->{$action} eq '1') { return 1; }
       if ($item) {
          if ($privileges->{$role}->{'domain'}->{$action}->{$item}) { return 1; }
-      } else {
-         if ($privileges->{$role}->{'domain'}->{$action}) { return 1; }
-      } 
+      }
    }
    return 0;
 }
@@ -68,10 +66,9 @@ sub allowed_course {
    if (&allowed_domain($action,$item,$domain)) { return 1; }
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'any'}})) {
+      if ($privileges->{$role}->{'course'}->{$action} eq '1') { return 1; }
       if ($item) {
          if ($privileges->{$role}->{'course'}->{$action}->{$item}) { return 1; }
-      } else {
-         if ($privileges->{$role}->{'course'}->{$action}) { return 1; }
       }
    }
    return 0;
@@ -84,10 +81,9 @@ sub allowed_section {
    if (&allowed_course($action,$item,$entity,$domain)) { return 1; }
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'section'}->{$section}})) {
+      if ($privileges->{$role}->{'section'}->{$action} eq '1') { return 1; }
       if ($item) {
          if ($privileges->{$role}->{'section'}->{$action}->{$item}) { return 1; }
-      } else {
-         if ($privileges->{$role}->{'section'}->{$action}) { return 1; }
       }
    }
    return 0;
@@ -100,10 +96,9 @@ sub allowed_user {
    if (&allowed_domain($action,$item,$domain)) { return 1; }
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'user'}->{$domain}->{$entity}})) {
+      if ($privileges->{$role}->{'user'}->{$action} eq '1') { return 1; }
       if ($item) {
          if ($privileges->{$role}->{'user'}->{$action}->{$item}) { return 1; }
-      } else {
-         if ($privileges->{$role}->{'user'}->{$action}) { return 1; }
       }
    }
    return 0;
@@ -118,10 +113,9 @@ sub allowed_any_section {
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $section (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'section'}})) {
       foreach my $role (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'section'}->{$section}})) {
+         if ($privileges->{$role}->{'section'}->{$action} eq '1') { return 1; }
          if ($item) {
             if ($privileges->{$role}->{'section'}->{$action}->{$item}) { return 1; }
-         } else {
-            if ($privileges->{$role}->{'section'}->{$action}) { return 1; }
          }
       }
    }

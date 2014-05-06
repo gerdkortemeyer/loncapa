@@ -25,6 +25,7 @@ use Apache::lc_entity_roles();
 use Apache::lc_ui_localize;
 use Apache::lc_ui_utils;
 use Apache::lc_date_utils();
+use Apache::lc_authorize;
 
 our @ISA = qw(Exporter);
 
@@ -103,6 +104,9 @@ sub courselist {
               &mt('Start Date').'</th><th>&nbsp;</th><th>'.&mt('End Date').'</th><th>&nbsp;</th><th>'.&mt('Enrollment Mode').'</th><th>'.
               &mt('Enrolling User').'</th><th>'.&mt('Active').'</th></tr></thead><tbody>'."\n";
    foreach my $record (@courselist) {
+# Only show the roles that we are allowed to see
+      unless (&allowed_section('view_role',$record->{'role'},&Apache::lc_entity_sessions::course_entity_domain(),$record->{'section'})) { next; }
+# Translate date format for localized viewing and sorting
       my $display_startdate;
       my $sort_startdate;
       if ($record->{'startdate'}) {
@@ -121,6 +125,7 @@ sub courselist {
           $display_enddate=&mt('Never');
           $sort_enddate=0;
       }
+# Figure out who put this role into the classlist, and if it will be automatically maintained
       my $enrollment_mode;
       my $enrolling_user;
       if (($record->{'manualenrollentity'}) && ($record->{'manualenrolldomain'})) {
@@ -131,6 +136,7 @@ sub courselist {
          $enrollment_mode=&mt('Automatic');
          $enrolling_user='';
       }
+# What is the status of the role? Active now?
       my $active_status;
       my $status_code=&Apache::lc_date_utils::status_date_range($sort_startdate,$sort_enddate);
       if ($status_code eq 'active') {
@@ -140,6 +146,7 @@ sub courselist {
       } else {
          $active_status=&mt('Past');
       }
+# Actually produce output
       $output.='<tr><td>'.
                &Apache::lc_json_utils::perl_to_json({entity => $record->{'entity'}, domain => $record->{'domain'}, 
                                                      role => $record->{'role'}, section => $record->{'section'}}).'</td><td>'.

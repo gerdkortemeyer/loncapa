@@ -1,6 +1,7 @@
 {
 "superuser"          : {
                          "system" : {
+                                      "view_role"       : "1",
                                       "modify_role"     : {
                                                              "domain_coordinator" : "1"
                                                           }
@@ -8,6 +9,7 @@
                        },
 "domain_coordinator" : {
                          "domain" : {
+                                      "view_role"       : "1",
                                       "modify_role"     : {
                                                              "course_coordinator" : "1"
                                                           }
@@ -15,6 +17,7 @@
                        },
 "course_coordinator" : {
                          "course" : {
+                                      "view_role"       : "1",
                                       "modify_role"     : {
                                                              "course_coordinator" : "1",
                                                              "instructor"         : "1",
@@ -41,6 +44,7 @@
                                                          }
                                     },
                          "section": {
+                                      "view_role"      : "1",
                                       "modify_grade"   : "1",
                                       "notify"         : "1"
                                     }
@@ -52,6 +56,7 @@
                                                          }
                                     },
                          "section": {
+                                      "view_role"      : "1",
                                       "modify_grade"   : "1",
                                       "notify"         : "1"
                                     }
