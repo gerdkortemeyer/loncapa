@@ -114,6 +114,8 @@ sub inputfield {
    } elsif ($type eq 'password') {
       unless ($size) { $size=40; }
       return '<input class="lcformpasswordinput" type="password" id="'.$id.'" name="'.$name.'" size="'.$size.'" />';
+   } elsif ($type eq 'checkbox') {
+      return '<input class="lcformcheckbox" type="checkbox" id="'.$id.'" name="'.$name.'" />';
    } elsif ($type eq 'hosteddomain') {
       my ($defaultdomain,$domain_short,$domain_name)=&domain_choices('hosted');
       unless ($default) { $default=$defaultdomain; }

@@ -78,6 +78,8 @@ use utf8;
 
 'The spreadsheet must at minimum contain a username.' => 'Das Spreadsheet muss mindestens die Benutzerkennung enthalten.',
 
+'Ignore first row' => 'Erste Reihe ignorieren',
+
 'Identify Columns' => 'Spalten zuordnen',
 
 'Future' => 'Zukünftig',
