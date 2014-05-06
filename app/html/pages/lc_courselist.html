@@ -7,10 +7,12 @@
 <h1><localize>Enrollment List</localize></h1>
 <lcform id="courseusers">
 <lcdatatable id="courseuserlist" class="courselist" />
+<allowed action="modify_role" realm="course">
 <p>
 <lcformtrigger id="modifybutton" description="Modify Selected Entries" />
 <lcformtrigger id="newbutton" description="Add New Entry" />
 </p>
+</allowed>
 </lcform>
 </body>
 </html>
