@@ -2,7 +2,11 @@ $(document).ready(function() {
      $('#storebutton').click(function() {
         if (completed()) {
            $('.lcproblem').hide();
-           alert('okay');
+           document.spreadsheetassign.method="post";
+           document.spreadsheetassign.action="/pages/lc_upload_users_to_courselist_finalize.html";
+           parent.setbreadcrumbbar('add','finalizeuploadcourselist','Finalize','');
+           parent.breadcrumbbar();
+           document.spreadsheetassign.submit();
         } else {
            $('.lcproblem').show();
         }

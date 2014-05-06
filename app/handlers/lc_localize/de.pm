@@ -82,6 +82,8 @@ use utf8;
 
 'Identify Columns' => 'Spalten zuordnen',
 
+'Finalize' => 'Abschließen',
+
 'Future' => 'Zukünftig',
 
 'Past' => 'Vergangen',
