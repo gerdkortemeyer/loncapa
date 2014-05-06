@@ -74,6 +74,10 @@ use utf8;
 
 'Please upload a spreadsheet with enrollment information.' => 'Bitte laden Sie in Spreadsheet mit Teilnehmerinformation hoch.',
 
+'Please identify the columns in your spreadsheet.' => 'Bitte identifizieren Sie die Spalten in Ihrem Spreadsheet.',
+
+'The spreadsheet must at minimum contain a username.' => 'Das Spreadsheet muss mindestens die Benutzerkennung enthalten.',
+
 'Identify Columns' => 'Spalten zuordnen',
 
 'Future' => 'Zukünftig',

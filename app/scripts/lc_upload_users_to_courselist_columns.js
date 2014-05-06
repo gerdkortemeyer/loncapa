@@ -1,9 +1,10 @@
 $(document).ready(function() {
      $('#storebutton').click(function() {
         if (completed()) {
+           $('.lcproblem').hide();
            alert('okay');
         } else {
-           alert('problem!');
+           $('.lcproblem').show();
         }
      });
 });

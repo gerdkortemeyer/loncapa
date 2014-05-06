@@ -5,6 +5,7 @@
 </head>
 <body>
 <h1><localize>Upload User List</localize></h1>
+<span class="lcstandard"><localize>Please identify the columns in your spreadsheet.</localize></span>
 <lcform id="spreadsheetassign">
 <lcspreadsheetassign verify='verify(this)'>
 <lcselectoption value='nothing' label='-' />
@@ -27,6 +28,7 @@
 <lcselectoption value='passwordpid' label='Password and ID Number' />
 </lcspreadsheetassign>
 <lcformtrigger id="storebutton" description="Store" />
+<span class="lcproblem"><localize>The spreadsheet must at minimum contain a username.</localize></span>
 </lcform>
 </body>
 </html>
