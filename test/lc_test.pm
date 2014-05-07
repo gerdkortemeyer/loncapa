@@ -35,6 +35,7 @@ use Apache::lc_asset_safeeval();
 use Apache::lc_authorize;
 use Apache::lc_entity_authentication();
 use Apache::lc_spreadsheets();
+use Apache::lc_mongodb();
 
 use Data::Dumper;
 
@@ -45,6 +46,12 @@ sub handler {
    my $r = shift;
 
    $r->print("Test Handler\n");
+
+
+$r->print("\neeble:".Dumper(&Apache::lc_mongodb::query_user_profiles('eeble')));
+$r->print("\nrThur:".Dumper(&Apache::lc_mongodb::query_user_profiles('rThur')));
+$r->print("\ne:".Dumper(&Apache::lc_mongodb::query_user_profiles('e')));
+$r->print("\nx:".Dumper(&Apache::lc_mongodb::query_user_profiles('x'))."\n");
 
 
 my $date='2015-01-20 04:05:06';

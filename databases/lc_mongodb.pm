@@ -68,6 +68,19 @@ sub dump_profile {
 }
 
 #
+# Query for entry
+#
+sub query_user_profiles {
+   my ($term)=@_;
+   unless ($profiles) { &init_mongo(); }
+   return $profiles->find({ '$or' => [{'profile.firstname' => qr/\Q$term\E/i},{'profile.lastname' => qr/\Q$term\E/i}]})->all;
+}
+
+sub query_course_profiles {
+   my ($term)=@_;
+}
+
+#
 # Metadata
 #
 sub insert_metadata {

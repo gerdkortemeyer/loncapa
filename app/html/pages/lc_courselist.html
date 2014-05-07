@@ -6,7 +6,9 @@
 <body>
 <h1><localize>Enrollment List</localize></h1>
 <lcform id="courseusers">
+<allowed action="view_role" realm="course">
 <lcdatatable id="courseuserlist" class="courselist" />
+</allowed>
 <allowed action="modify_role" realm="course">
 <p>
 <lcformtrigger id="modifybutton" description="Modify Selected Entries" />

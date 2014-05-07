@@ -6,12 +6,14 @@
 <body>
 <h1><localize>Upload User List</localize></h1>
 <lcform name="enrollupload">
+<allowed action="modify_role" realm="course">
 <p>
 <span class="lcstandard"><localize>Please upload a spreadsheet with enrollment information.</localize></span>
 <span class="lcerror"><localize>A problem occured, please try again later.</localize></span>
 &nbsp;
 </p>
 <lcfileupload id="enrollfile" target='/upload_spreadsheet' successcall="nextstep" failurecall="failure" />
+</allowed>
 </lcform>
 </body>
 </html>
