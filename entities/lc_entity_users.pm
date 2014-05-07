@@ -154,6 +154,19 @@ sub assign_pid {
 }
 
 # ================================================================
+# Looking for names
+# ================================================================
+
+sub local_query_user_profiles {
+   my ($term)=@_;
+   $term=~s/^\s+//s;
+   $term=~s/\s+$//s;
+   my ($term1,$term2)=split(/[\s\,]+/,$term);
+   return &Apache::lc_mongodb::query_user_profiles($term1,$term2);
+}
+
+
+# ================================================================
 # Convert stuff to entities
 # ================================================================
 # ==== Usernames to entities

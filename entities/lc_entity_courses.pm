@@ -114,6 +114,17 @@ sub make_new_course {
 }
 
 # ================================================================
+# Looking for courses
+# ================================================================
+#
+sub local_query_course_profiles {
+   my ($term)=@_;
+   $term=~s/^\s+//s;
+   $term=~s/\s+$//s;
+   return &Apache::lc_mongodb::query_course_profiles($term);
+}
+
+# ================================================================
 # Convert stuff to entities
 # ================================================================
 # ==== Courseids to entities

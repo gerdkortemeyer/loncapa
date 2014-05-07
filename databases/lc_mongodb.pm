@@ -71,13 +71,25 @@ sub dump_profile {
 # Query for entry
 #
 sub query_user_profiles {
-   my ($term)=@_;
+   my ($term1,$term2)=@_;
+   unless ($term1) { $term1=''; }
+   unless ($term2) { $term2=''; }
    unless ($profiles) { &init_mongo(); }
-   return $profiles->find({ '$or' => [{'profile.firstname' => qr/\Q$term\E/i},{'profile.lastname' => qr/\Q$term\E/i}]})->all;
+   if ($term2) {
+      return $profiles->find({ '$or' => [{'profile.firstname' => qr/\Q$term1\E/i,
+                                          'profile.lastname'  => qr/\Q$term2\E/i},
+                                         {'profile.firstname' => qr/\Q$term2\E/i,
+                                          'profile.lastname'  => qr/\Q$term1\E/i}] })->all;
+   } else {
+      return $profiles->find({ '$or' => [{'profile.firstname' => qr/\Q$term1\E/i},
+                                         {'profile.lastname'  => qr/\Q$term1\E/i}] })->all;
+   }
 }
 
 sub query_course_profiles {
    my ($term)=@_;
+   unless ($profiles) { &init_mongo(); }
+   return $profiles->find({'profile.title' => qr/\Q$term\E/i})->all;
 }
 
 #

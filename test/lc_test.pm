@@ -48,10 +48,13 @@ sub handler {
    $r->print("Test Handler\n");
 
 
-$r->print("\neeble:".Dumper(&Apache::lc_mongodb::query_user_profiles('eeble')));
-$r->print("\nrThur:".Dumper(&Apache::lc_mongodb::query_user_profiles('rThur')));
-$r->print("\ne:".Dumper(&Apache::lc_mongodb::query_user_profiles('e')));
-$r->print("\nx:".Dumper(&Apache::lc_mongodb::query_user_profiles('x'))."\n");
+$r->print("\neeble zaphod:".Dumper(&Apache::lc_entity_users::local_query_user_profiles('eeble zaphod')));
+$r->print("\neeble arth:".Dumper(&Apache::lc_entity_users::local_query_user_profiles('eeble arth')));
+$r->print("\nrThur:".Dumper(&Apache::lc_entity_users::local_query_user_profiles('rThur')));
+$r->print("\ne:".Dumper(&Apache::lc_entity_users::local_query_user_profiles('e')));
+$r->print("\nx:".Dumper(&Apache::lc_entity_users::local_query_user_profiles('x'))."\n");
+
+$r->print("\nCourse advan:".Dumper(&Apache::lc_entity_courses::local_query_course_profiles('advan'))."\n");
 
 
 my $date='2015-01-20 04:05:06';
