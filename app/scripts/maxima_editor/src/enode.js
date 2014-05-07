@@ -23,8 +23,8 @@ through which recipients can access the Corresponding Source.
  * @constructor
  * @param {number} type - ENode.UNKNOWN | NAME | NUMBER | OPERATOR | FUNCTION | VECTOR
  * @param {Operator} op - The operator
- * @param {string} value - Node value as a string, null for type 5
- * @param {Array.<ENode>} children - The children nodes, only for types OPERATOR, FUNCTION, VECTOR
+ * @param {string} value - Node value as a string, null for type VECTOR
+ * @param {Array.<ENode>} children - The children nodes, only for types OPERATOR, FUNCTION, VECTOR, SUBSCRIPT
  */
 function ENode(type, op, value, children) {
     this.type = type;
@@ -92,7 +92,7 @@ ENode.prototype.toString = function() {
  * @returns {Element}
  */
 ENode.prototype.toMathML = function() {
-    var c0, c1, c2, c3, c4, i, j, el, par, mrow, mo, mtable, mfrac;
+    var c0, c1, c2, c3, c4, i, j, el, par, mrow, mo, mtable, mfrac, msub;
     if (this.children != null && this.children.length > 0)
         c0 = this.children[0];
     else
@@ -121,12 +121,18 @@ ENode.prototype.toMathML = function() {
             return(el);
         
         case ENode.NAME:
-            return(this.mi(this.value));
+            if (this.value.search(/^[a-zA-Z]+[0-9]+$/) >= 0) {
+                var ind = this.value.search(/[0-9]/);
+                msub = document.createElement('msub');
+                msub.appendChild(this.mi(this.value.substring(0,ind)));
+                msub.appendChild(this.mn(this.value.substring(ind)));
+                return(msub);
+            } else {
+                return(this.mi(this.value));
+            }
         
         case ENode.NUMBER:
-            el = document.createElement('mn');
-            el.appendChild(document.createTextNode(this.value));
-            return(el);
+            return(this.mn(this.value));
         
         case ENode.OPERATOR:
             if (this.value == "/") {
@@ -461,9 +467,9 @@ ENode.prototype.toMathML = function() {
             return(mrow);
             
         case ENode.SUBSCRIPT:
-            var msub = document.createElement('msub');
+            msub = document.createElement('msub');
             msub.appendChild(c0.toMathML());
-            if (this.children.length > 1) {
+            if (this.children.length > 2) {
                 mrow = document.createElement('mrow');
                 for (i=1; i<this.children.length; i++) {
                     mrow.appendChild(this.children[i].toMathML());
@@ -480,6 +486,7 @@ ENode.prototype.toMathML = function() {
 
 /**
  * Creates a MathML mi element with the given name
+ * @param {string} name
  * @returns {Element}
  */
 ENode.prototype.mi = function(name) {
@@ -491,7 +498,19 @@ ENode.prototype.mi = function(name) {
 };
 
 /**
+ * Creates a MathML mn element with the given number or string
+ * @param {string} n
+ * @returns {Element}
+ */
+ENode.prototype.mn = function(n) {
+    var mn = document.createElement('mn');
+    mn.appendChild(document.createTextNode(n));
+    return mn;
+};
+
+/**
  * Creates a MathML mo element with the given name
+ * @param {string} name
  * @returns {Element}
  */
 ENode.prototype.mo = function(name) {
