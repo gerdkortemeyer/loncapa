@@ -111,6 +111,11 @@ Definitions.prototype.suffix = function(id, lbp, led) {
 Definitions.prototype.define = function() {
     this.suffix("!", 160);
     this.infix("^", 140, 139);
+    this.infix(".", 130, 129);
+    this.infix("`", 125, 125); // units, this operator does not bind like in maxima :-/
+    // to improve the ` operator, we would need a very special led
+    // that would handle 2`a*b and 2`a*3 differently
+    // currently, more parenthesis are required than with maxima
     this.infix("*", 120, 120);
     this.infix("/", 120, 120);
     this.infix("+", 100, 100);
@@ -139,9 +144,9 @@ Definitions.prototype.define = function() {
         return e;
     }, function(p, left) {
         // led (for functions)
-        if (left.type != ENode.NAME)
+        if (left.type != ENode.NAME && left.type != ENode.SUBSCRIPT)
             throw new ParseException("Function name expected before a parenthesis.", p.tokens[p.token_nr - 1].from);
-        var children = [];
+        var children = [left];
         if (p.current_token == null || p.current_token.op == null || p.current_token.op.id !== ")") {
             while (true) {
                 children.push(p.expression(0));
@@ -152,11 +157,12 @@ Definitions.prototype.define = function() {
             }
         }
         p.advance(")");
-        return new ENode(ENode.FUNCTION, this, left.value, children);
+        return new ENode(ENode.FUNCTION, this, "(", children);
     });
     
     this.separator("]");
-    this.prefix("[", 70, function(p) {
+    this.operator("[", Operator.BINARY, 200, 70, function(p) {
+        // nud (for vectors)
         var children = [];
         if (p.current_token == null || p.current_token.op == null || p.current_token.op.id !== "]") {
             while (true) {
@@ -169,6 +175,22 @@ Definitions.prototype.define = function() {
         }
         p.advance("]");
         return new ENode(ENode.VECTOR, this, null, children);
+    }, function(p, left) {
+        // led (for subscript)
+        if (left.type != ENode.NAME && left.type != ENode.SUBSCRIPT)
+            throw new ParseException("Name expected before a square bracket.", p.tokens[p.token_nr - 1].from);
+        var children = [left];
+        if (p.current_token == null || p.current_token.op == null || p.current_token.op.id !== "]") {
+            while (true) {
+                children.push(p.expression(0));
+                if (p.current_token == null || p.current_token.op == null || p.current_token.op.id !== Definitions.ARG_SEPARATOR) {
+                    break;
+                }
+                p.advance(Definitions.ARG_SEPARATOR);
+            }
+        }
+        p.advance("]");
+        return new ENode(ENode.SUBSCRIPT, this, "[", children);
     });
 };
 
@@ -197,8 +219,8 @@ through which recipients can access the Corresponding Source.
  * @constructor
  * @param {number} type - ENode.UNKNOWN | NAME | NUMBER | OPERATOR | FUNCTION | VECTOR
  * @param {Operator} op - The operator
- * @param {string} value - Node value as a string or function name, null for type 5
- * @param {Array.<ENode>} children - The children nodes, only for types OPERATOR, FUNCTION, VECTOR
+ * @param {string} value - Node value as a string, null for type VECTOR
+ * @param {Array.<ENode>} children - The children nodes, only for types OPERATOR, FUNCTION, VECTOR, SUBSCRIPT
  */
 function ENode(type, op, value, children) {
     this.type = type;
@@ -213,6 +235,7 @@ ENode.NUMBER = 2;
 ENode.OPERATOR = 3;
 ENode.FUNCTION = 4;
 ENode.VECTOR = 5;
+ENode.SUBSCRIPT = 6;
 
 /**
  * Returns the node as a string, for debug
@@ -239,6 +262,9 @@ ENode.prototype.toString = function() {
         case ENode.VECTOR:
             s += 'VECTOR';
             break;
+        case ENode.SUBSCRIPT:
+            s += 'SUBSCRIPT';
+            break;
     }
     if (this.op)
         s += " '" + this.op.id + "'";
@@ -262,7 +288,7 @@ ENode.prototype.toString = function() {
  * @returns {Element}
  */
 ENode.prototype.toMathML = function() {
-    var c0, c1, c2, c3, i, j, el, par, mrow, mo, mtable, mfrac;
+    var c0, c1, c2, c3, c4, i, j, el, par, mrow, mo, mtable, mfrac, msub;
     if (this.children != null && this.children.length > 0)
         c0 = this.children[0];
     else
@@ -279,6 +305,10 @@ ENode.prototype.toMathML = function() {
         c3 = this.children[3];
     else
         c3 = null;
+    if (this.children != null && this.children.length > 4)
+        c4 = this.children[4];
+    else
+        c4 = null;
     
     switch (this.type) {
         case ENode.UNKNOWN:
@@ -287,12 +317,18 @@ ENode.prototype.toMathML = function() {
             return(el);
         
         case ENode.NAME:
-            return(this.mi(this.value));
+            if (this.value.search(/^[a-zA-Z]+[0-9]+$/) >= 0) {
+                var ind = this.value.search(/[0-9]/);
+                msub = document.createElement('msub');
+                msub.appendChild(this.mi(this.value.substring(0,ind)));
+                msub.appendChild(this.mn(this.value.substring(ind)));
+                return(msub);
+            } else {
+                return(this.mi(this.value));
+            }
         
         case ENode.NUMBER:
-            el = document.createElement('mn');
-            el.appendChild(document.createTextNode(this.value));
-            return(el);
+            return(this.mn(this.value));
         
         case ENode.OPERATOR:
             if (this.value == "/") {
@@ -319,13 +355,13 @@ ENode.prototype.toMathML = function() {
                 el.appendChild(c1.toMathML());
             } else if (this.value == "*") {
                 mrow = document.createElement('mrow');
-                if (c0.type == ENode.OPERATION && (c0.value == "+" || c0.value == "-"))
+                if (c0.type == ENode.OPERATOR && (c0.value == "+" || c0.value == "-"))
                     mrow.appendChild(this.addP(c0));
                 else
                     mrow.appendChild(c0.toMathML());
                 // should the x operator be visible ? We need to check if there is a number to the left of c1
                 var firstinc1 = c1;
-                while (firstinc1.type == ENode.OPERATION) {
+                while (firstinc1.type == ENode.OPERATOR) {
                     firstinc1 = firstinc1.children[0];
                 }
                 if (firstinc1.type == ENode.NUMBER)
@@ -381,6 +417,33 @@ ENode.prototype.toMathML = function() {
                 else
                     mrow.appendChild(c1.toMathML());
                 el = mrow;
+            } else if (this.value == ".") {
+                mrow = document.createElement('mrow');
+                if (c0.type == ENode.OPERATOR && (c0.value == "+" || c0.value == "-"))
+                    mrow.appendChild(this.addP(c0));
+                else
+                    mrow.appendChild(c0.toMathML());
+                mrow.appendChild(this.mo("\u22C5"));
+                if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
+                    mrow.appendChild(this.addP(c1));
+                else
+                    mrow.appendChild(c1.toMathML());
+                el = mrow;
+            } else if (this.value == "`") {
+                mrow = document.createElement('mrow');
+                if (c0.type == ENode.OPERATOR && (c0.value == "+" || c0.value == "-"))
+                    mrow.appendChild(this.addP(c0));
+                else
+                    mrow.appendChild(c0.toMathML());
+                // the units should not be in italics
+                var mstyle = document.createElement("mstyle");
+                mstyle.setAttribute("fontstyle", "normal");
+                if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
+                    mstyle.appendChild(this.addP(c1));
+                else
+                    mstyle.appendChild(c1.toMathML());
+                mrow.appendChild(mstyle);
+                el = mrow;
             } else {
                 // relational operators
                 mrow = document.createElement('mrow');
@@ -393,154 +456,155 @@ ENode.prototype.toMathML = function() {
             return(el);
         
         case ENode.FUNCTION: /* TODO: throw exceptions if wrong nb of args ? */
-            if (this.value == "sqrt" && c0 != null) {
+            // c0 contains the function name
+            if (c0.value == "sqrt" && c1 != null) {
                 el = document.createElement('msqrt');
-                el.appendChild(c0.toMathML());
-            } else if (this.value == "abs" && c0 != null) {
+                el.appendChild(c1.toMathML());
+            } else if (c0.value == "abs" && c1 != null) {
                 mrow = document.createElement('mrow');
                 mrow.appendChild(this.mo("|"));
-                mrow.appendChild(c0.toMathML());
+                mrow.appendChild(c1.toMathML());
                 mrow.appendChild(this.mo("|"));
                 el = mrow;
-            } else if (this.value == "exp" && c0 != null) {
+            } else if (c0.value == "exp" && c1 != null) {
                 el = document.createElement('msup');
                 el.appendChild(this.mi("e"));
-                el.appendChild(c0.toMathML());
-            } else if (this.value == "factorial") {
+                el.appendChild(c1.toMathML());
+            } else if (c0.value == "factorial") {
                 mrow = document.createElement('mrow');
                 mo = this.mo("!");
-                if (c0.type == ENode.OPERATOR && (c0.value == "+" || c0.value == "-"))
-                    mrow.appendChild(this.addP(c0));
+                if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
+                    mrow.appendChild(this.addP(c1));
                 else
-                    mrow.appendChild(c0.toMathML());
+                    mrow.appendChild(c1.toMathML());
                 mrow.appendChild(mo);
                 el = mrow;
-            } else if (this.value == "diff" && this.children != null && this.children.length == 2) {
+            } else if (c0.value == "diff" && this.children != null && this.children.length == 3) {
                 mrow = document.createElement('mrow');
                 mfrac = document.createElement('mfrac');
                 mfrac.appendChild(this.mi("d"));
                 var f2 = document.createElement('mrow');
                 f2.appendChild(this.mi("d"));
-                f2.appendChild(this.mi(c1.value));
+                f2.appendChild(this.mi(c2.value));
                 mfrac.appendChild(f2);
                 mrow.appendChild(mfrac);
-                if (c0.type == ENode.OPERATOR && (c0.value == "+" || c0.value == "-"))
-                    mrow.appendChild(this.addP(c0));
+                if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
+                    mrow.appendChild(this.addP(c1));
                 else
-                    mrow.appendChild(c0.toMathML());
+                    mrow.appendChild(c1.toMathML());
                 el = mrow;
-            } else if (this.value == "diff" && this.children != null && this.children.length == 3) {
+            } else if (c0.value == "diff" && this.children != null && this.children.length == 4) {
                 mrow = document.createElement('mrow');
                 mfrac = document.createElement('mfrac');
                 var msup = document.createElement('msup');
                 msup.appendChild(this.mi("d"));
-                msup.appendChild(c2.toMathML());
+                msup.appendChild(c3.toMathML());
                 mfrac.appendChild(msup);
                 var f2 = document.createElement('mrow');
                 f2.appendChild(this.mi("d"));
                 msup = document.createElement('msup');
-                msup.appendChild(c1.toMathML());
                 msup.appendChild(c2.toMathML());
+                msup.appendChild(c3.toMathML());
                 f2.appendChild(msup);
                 mfrac.appendChild(f2);
                 mrow.appendChild(mfrac);
-                if (c0.type == ENode.OPERATOR && (c0.value == "+" || c0.value == "-"))
-                    mrow.appendChild(this.addP(c0));
+                if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
+                    mrow.appendChild(this.addP(c1));
                 else
-                    mrow.appendChild(c0.toMathML());
+                    mrow.appendChild(c1.toMathML());
                 el = mrow;
-            } else if (this.value == "integrate" && this.children != null && this.children.length == 2) {
+            } else if (c0.value == "integrate" && this.children != null && this.children.length == 3) {
                 mrow = document.createElement('mrow');
                 var mo = this.mo("\u222B");
                 mo.setAttribute("stretchy", "true"); // doesn't work with MathJax
                 mrow.appendChild(mo);
-                if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
-                    mrow.appendChild(this.addP(c0));
+                if (c2.type == ENode.OPERATOR && (c2.value == "+" || c2.value == "-"))
+                    mrow.appendChild(this.addP(c1));
                 else
-                    mrow.appendChild(c0.toMathML());
+                    mrow.appendChild(c1.toMathML());
                 mrow.appendChild(this.mi("d"));
-                mrow.appendChild(c1.toMathML());
+                mrow.appendChild(c2.toMathML());
                 el = mrow;
-            } else if (this.value == "integrate" && this.children != null && this.children.length == 4) {
+            } else if (c0.value == "integrate" && this.children != null && this.children.length == 5) {
                 mrow = document.createElement('mrow');
                 var msubsup = document.createElement('msubsup');
                 var mo = this.mo("\u222B");
                 mo.setAttribute("stretchy", "true"); // doesn't work with MathJax
                 msubsup.appendChild(mo);
-                msubsup.appendChild(c2.toMathML());
                 msubsup.appendChild(c3.toMathML());
+                msubsup.appendChild(c4.toMathML());
                 mrow.appendChild(msubsup);
-                if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
-                    mrow.appendChild(this.addP(c0));
+                if (c2.type == ENode.OPERATOR && (c2.value == "+" || c2.value == "-"))
+                    mrow.appendChild(this.addP(c1));
                 else
-                    mrow.appendChild(c0.toMathML());
+                    mrow.appendChild(c1.toMathML());
                 mrow.appendChild(this.mi("d"));
-                mrow.appendChild(c1.toMathML());
+                mrow.appendChild(c2.toMathML());
                 el = mrow;
-            } else if (this.value == "sum" && this.children != null && this.children.length == 4) {
+            } else if (c0.value == "sum" && this.children != null && this.children.length == 5) {
                 mrow = document.createElement('mrow');
                 var munderover = document.createElement('munderover');
                 var mo = this.mo("\u2211");
                 mo.setAttribute("stretchy", "true"); // doesn't work with MathJax
                 munderover.appendChild(mo);
                 var mrow2 = document.createElement('mrow');
-                mrow2.appendChild(c1.toMathML());
-                mrow2.appendChild(this.mo("="));
                 mrow2.appendChild(c2.toMathML());
+                mrow2.appendChild(this.mo("="));
+                mrow2.appendChild(c3.toMathML());
                 munderover.appendChild(mrow2);
-                munderover.appendChild(c3.toMathML());
+                munderover.appendChild(c4.toMathML());
                 mrow.appendChild(munderover);
-                if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
-                    mrow.appendChild(this.addP(c0));
+                if (c2.type == ENode.OPERATOR && (c2.value == "+" || c2.value == "-"))
+                    mrow.appendChild(this.addP(c1));
                 else
-                    mrow.appendChild(c0.toMathML());
+                    mrow.appendChild(c1.toMathML());
                 el = mrow;
-            } else if (this.value == "product" && this.children != null && this.children.length == 4) {
+            } else if (c0.value == "product" && this.children != null && this.children.length == 5) {
                 mrow = document.createElement('mrow');
                 var munderover = document.createElement('munderover');
                 var mo = this.mo("\u220F");
                 mo.setAttribute("stretchy", "true"); // doesn't work with MathJax
                 munderover.appendChild(mo);
                 var mrow2 = document.createElement('mrow');
-                mrow2.appendChild(c1.toMathML());
-                mrow2.appendChild(this.mo("="));
                 mrow2.appendChild(c2.toMathML());
+                mrow2.appendChild(this.mo("="));
+                mrow2.appendChild(c3.toMathML());
                 munderover.appendChild(mrow2);
-                munderover.appendChild(c3.toMathML());
+                munderover.appendChild(c4.toMathML());
                 mrow.appendChild(munderover);
-                if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
-                    mrow.appendChild(this.addP(c0));
+                if (c2.type == ENode.OPERATOR && (c2.value == "+" || c2.value == "-"))
+                    mrow.appendChild(this.addP(c1));
                 else
-                    mrow.appendChild(c0.toMathML());
+                    mrow.appendChild(c1.toMathML());
                 el = mrow;
-            } else if (this.value == "limit") {
+            } else if (c0.value == "limit") {
                 mrow = document.createElement('mrow');
-                if (this.children.length < 3) {
+                if (this.children.length < 4) {
                     mrow.appendChild(this.mo("lim"));
                 } else {
                     var munder = document.createElement('munder');
                     munder.appendChild(this.mo("lim"));
                     var mrowunder = document.createElement('mrow');
-                    mrowunder.appendChild(c1.toMathML());
-                    mrowunder.appendChild(this.mo("\u2192"));
                     mrowunder.appendChild(c2.toMathML());
-                    if (c3 != null) {
-                        if (c3.value == "plus")
+                    mrowunder.appendChild(this.mo("\u2192"));
+                    mrowunder.appendChild(c3.toMathML());
+                    if (c4 != null) {
+                        if (c4.value == "plus")
                             mrowunder.appendChild(this.mo("+"));
-                        else if (c3.value == "minus")
+                        else if (c4.value == "minus")
                             mrowunder.appendChild(this.mo("-"));
                     }
                     munder.appendChild(mrowunder);
                     mrow.appendChild(munder);
                 }
-                mrow.appendChild(c0.toMathML());
+                mrow.appendChild(c1.toMathML());
                 el = mrow;
-            } else if (this.value == "binomial") {
+            } else if (c0.value == "binomial") {
                 // displayed like a vector
                 mrow = document.createElement('mrow');
                 mrow.appendChild(this.mo("("));
                 mtable = document.createElement('mtable');
-                for (i=0; i<this.children.length; i++) {
+                for (i=1; i<this.children.length; i++) {
                     var mtr = document.createElement('mtr');
                     mtr.appendChild(this.children[i].toMathML());
                     mtable.appendChild(mtr);
@@ -548,8 +612,8 @@ ENode.prototype.toMathML = function() {
                 mrow.appendChild(mtable);
                 mrow.appendChild(this.mo(")"));
                 el = mrow;
-            } else if (this.value == "matrix") {
-                for (i=0; i<this.children.length; i++) {
+            } else if (c0.value == "matrix") {
+                for (i=1; i<this.children.length; i++) {
                     // check that all children are vectors
                     if (this.children[i].type !== ENode.VECTOR) {
                         el = document.createElement('mtext');
@@ -560,7 +624,7 @@ ENode.prototype.toMathML = function() {
                 mrow = document.createElement('mrow');
                 mrow.appendChild(this.mo("("));
                 mtable = document.createElement('mtable');
-                for (i=0; i<this.children.length; i++) {
+                for (i=1; i<this.children.length; i++) {
                     var mtr = document.createElement('mtr');
                     for (j=0; j<this.children[i].children.length; j++) {
                         mtr.appendChild(this.children[i].children[j].toMathML());
@@ -573,9 +637,9 @@ ENode.prototype.toMathML = function() {
             } else {
                 // default display for a function
                 mrow = document.createElement('mrow');
-                mrow.appendChild(this.mi(this.value));
+                mrow.appendChild(c0.toMathML());
                 mrow.appendChild(this.mo("("));
-                for (i=0; i<this.children.length; i++) {
+                for (i=1; i<this.children.length; i++) {
                     mrow.appendChild(this.children[i].toMathML());
                     if (i < this.children.length - 1)
                         mrow.appendChild(this.mo(Definitions.ARG_SEPARATOR));
@@ -597,11 +661,28 @@ ENode.prototype.toMathML = function() {
             mrow.appendChild(mtable);
             mrow.appendChild(this.mo(")"));
             return(mrow);
+            
+        case ENode.SUBSCRIPT:
+            msub = document.createElement('msub');
+            msub.appendChild(c0.toMathML());
+            if (this.children.length > 2) {
+                mrow = document.createElement('mrow');
+                for (i=1; i<this.children.length; i++) {
+                    mrow.appendChild(this.children[i].toMathML());
+                    if (i < this.children.length - 1)
+                        mrow.appendChild(this.mo(Definitions.ARG_SEPARATOR));
+                }
+                msub.appendChild(mrow);
+            } else {
+                msub.appendChild(c1.toMathML());
+            }
+            return(msub);
     }
 };
 
 /**
  * Creates a MathML mi element with the given name
+ * @param {string} name
  * @returns {Element}
  */
 ENode.prototype.mi = function(name) {
@@ -613,7 +694,19 @@ ENode.prototype.mi = function(name) {
 };
 
 /**
+ * Creates a MathML mn element with the given number or string
+ * @param {string} n
+ * @returns {Element}
+ */
+ENode.prototype.mn = function(n) {
+    var mn = document.createElement('mn');
+    mn.appendChild(document.createTextNode(n));
+    return mn;
+};
+
+/**
  * Creates a MathML mo element with the given name
+ * @param {string} name
  * @returns {Element}
  */
 ENode.prototype.mo = function(name) {
@@ -965,36 +1058,11 @@ main:
             continue;
         }
         
-        // check for operators first (they could be confused with
-        // variables if they don't use special characters)
-        for (iop = 0; iop < this.defs.operators.length; iop++) {
-            var op = this.defs.operators[iop];
-            if (this.text.substring(i, i+op.id.length) === op.id) {
-                i += op.id.length;
-                c = this.text.charAt(i);
-                tokens.push(new Token(Token.OPERATOR, from, i - 1, op.id, op));
-                continue main;
-            }
-        }
-        
-        // name
-        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-            value = c;
-            i++;
-            for (;;) {
-                c = this.text.charAt(i);
-                if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
-                        (c >= '0' && c <= '9') || c === '_') {
-                    value += c;
-                    i++;
-                } else {
-                    break;
-                }
-            }
-            tokens.push(new Token(Token.NAME, from, i - 1, value, null));
-            
-        // number.
-        } else if ((c >= '0' && c <= '9') || c === Definitions.DECIMAL_SIGN_1 || c === Definitions.DECIMAL_SIGN_2) {
+        // check for numbers before operators
+        // (numbers starting with . will not be confused with the . operator)
+        if ((c >= '0' && c <= '9') ||
+                ((c === Definitions.DECIMAL_SIGN_1 || c === Definitions.DECIMAL_SIGN_2) &&
+                (this.text.charAt(i+1) >= '0' && this.text.charAt(i+1) <= '9'))) {
             value = '';
             
             if (c !== Definitions.DECIMAL_SIGN_1 && c !== Definitions.DECIMAL_SIGN_2) {
@@ -1056,15 +1124,45 @@ main:
             var n = +value.replace(Definitions.DECIMAL_SIGN_1, '.').replace(Definitions.DECIMAL_SIGN_2, '.');
             if (isFinite(n)) {
                 tokens.push(new Token(Token.NUMBER, from, i - 1, value, null));
+                continue;
             } else {
                 // syntax error in number
                 throw new ParseException("syntax error in number", from, i);
             }
+        }
+        
+        // check for operators before names (they could be confused with
+        // variables if they don't use special characters)
+        for (iop = 0; iop < this.defs.operators.length; iop++) {
+            var op = this.defs.operators[iop];
+            if (this.text.substring(i, i+op.id.length) === op.id) {
+                i += op.id.length;
+                c = this.text.charAt(i);
+                tokens.push(new Token(Token.OPERATOR, from, i - 1, op.id, op));
+                continue main;
+            }
+        }
+        
+        // names
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+            value = c;
+            i++;
+            for (;;) {
+                c = this.text.charAt(i);
+                if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+                        (c >= '0' && c <= '9') || c === '_') {
+                    value += c;
+                    i++;
+                } else {
+                    break;
+                }
+            }
+            tokens.push(new Token(Token.NAME, from, i - 1, value, null));
+            continue;
+        }
         
         // unrecognized operator
-        } else {
-            throw new ParseException("unrecognized operator", from, i);
-        }
+        throw new ParseException("unrecognized operator", from, i);
     }
     return tokens;
 };
@@ -1123,7 +1221,7 @@ var handleChange = function(maxima_object) {
                     output_div.appendChild(document.createTextNode(txt.substring(0, e.from)));
                     var span = document.createElement('span');
                     span.appendChild(document.createTextNode(txt.substring(e.from, e.to + 1)));
-                    span.className = 'error';
+                    span.className = 'maxima-error';
                     output_div.appendChild(span);
                     if (e.to < txt.length - 1) {
                         output_div.appendChild(document.createTextNode(txt.substring(e.to + 1)));
