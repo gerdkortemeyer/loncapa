@@ -130,3 +130,14 @@ h1 {
    color: #99cc00;
    display:none;
 }
+
+textarea.maxima {
+   font-family: monospace;
+   height: 3em;
+   width: 100%;
+}
+
+span.maxima-error {
+   border: solid 1px red;
+   min-width: 1px;
+}

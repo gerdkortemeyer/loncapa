@@ -53,7 +53,7 @@ var handleChange = function(maxima_object) {
                     output_div.appendChild(document.createTextNode(txt.substring(0, e.from)));
                     var span = document.createElement('span');
                     span.appendChild(document.createTextNode(txt.substring(e.from, e.to + 1)));
-                    span.className = 'error';
+                    span.className = 'maxima-error';
                     output_div.appendChild(span);
                     if (e.to < txt.length - 1) {
                         output_div.appendChild(document.createTextNode(txt.substring(e.to + 1)));
