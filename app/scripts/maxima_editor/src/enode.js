@@ -145,13 +145,13 @@ ENode.prototype.toMathML = function() {
                 el.appendChild(c1.toMathML());
             } else if (this.value == "*") {
                 mrow = document.createElement('mrow');
-                if (c0.type == ENode.OPERATION && (c0.value == "+" || c0.value == "-"))
+                if (c0.type == ENode.OPERATOR && (c0.value == "+" || c0.value == "-"))
                     mrow.appendChild(this.addP(c0));
                 else
                     mrow.appendChild(c0.toMathML());
                 // should the x operator be visible ? We need to check if there is a number to the left of c1
                 var firstinc1 = c1;
-                while (firstinc1.type == ENode.OPERATION) {
+                while (firstinc1.type == ENode.OPERATOR) {
                     firstinc1 = firstinc1.children[0];
                 }
                 if (firstinc1.type == ENode.NUMBER)
@@ -206,6 +206,33 @@ ENode.prototype.toMathML = function() {
                     mrow.appendChild(this.addP(c1));
                 else
                     mrow.appendChild(c1.toMathML());
+                el = mrow;
+            } else if (this.value == ".") {
+                mrow = document.createElement('mrow');
+                if (c0.type == ENode.OPERATOR && (c0.value == "+" || c0.value == "-"))
+                    mrow.appendChild(this.addP(c0));
+                else
+                    mrow.appendChild(c0.toMathML());
+                mrow.appendChild(this.mo("\u22C5"));
+                if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
+                    mrow.appendChild(this.addP(c1));
+                else
+                    mrow.appendChild(c1.toMathML());
+                el = mrow;
+            } else if (this.value == "`") {
+                mrow = document.createElement('mrow');
+                if (c0.type == ENode.OPERATOR && (c0.value == "+" || c0.value == "-"))
+                    mrow.appendChild(this.addP(c0));
+                else
+                    mrow.appendChild(c0.toMathML());
+                // the units should not be in italics
+                var mstyle = document.createElement("mstyle");
+                mstyle.setAttribute("fontstyle", "normal");
+                if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
+                    mstyle.appendChild(this.addP(c1));
+                else
+                    mstyle.appendChild(c1.toMathML());
+                mrow.appendChild(mstyle);
                 el = mrow;
             } else {
                 // relational operators

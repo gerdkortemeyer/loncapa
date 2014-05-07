@@ -111,6 +111,11 @@ Definitions.prototype.suffix = function(id, lbp, led) {
 Definitions.prototype.define = function() {
     this.suffix("!", 160);
     this.infix("^", 140, 139);
+    this.infix(".", 130, 129);
+    this.infix("`", 125, 125); // units, this operator does not bind like in maxima :-/
+    // to improve the ` operator, we would need a very special led
+    // that would handle 2`a*b and 2`a*3 differently
+    // currently, more parenthesis are required than with maxima
     this.infix("*", 120, 120);
     this.infix("/", 120, 120);
     this.infix("+", 100, 100);

@@ -52,36 +52,11 @@ main:
             continue;
         }
         
-        // check for operators first (they could be confused with
-        // variables if they don't use special characters)
-        for (iop = 0; iop < this.defs.operators.length; iop++) {
-            var op = this.defs.operators[iop];
-            if (this.text.substring(i, i+op.id.length) === op.id) {
-                i += op.id.length;
-                c = this.text.charAt(i);
-                tokens.push(new Token(Token.OPERATOR, from, i - 1, op.id, op));
-                continue main;
-            }
-        }
-        
-        // name
-        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-            value = c;
-            i++;
-            for (;;) {
-                c = this.text.charAt(i);
-                if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
-                        (c >= '0' && c <= '9') || c === '_') {
-                    value += c;
-                    i++;
-                } else {
-                    break;
-                }
-            }
-            tokens.push(new Token(Token.NAME, from, i - 1, value, null));
-            
-        // number.
-        } else if ((c >= '0' && c <= '9') || c === Definitions.DECIMAL_SIGN_1 || c === Definitions.DECIMAL_SIGN_2) {
+        // check for numbers before operators
+        // (numbers starting with . will not be confused with the . operator)
+        if ((c >= '0' && c <= '9') ||
+                ((c === Definitions.DECIMAL_SIGN_1 || c === Definitions.DECIMAL_SIGN_2) &&
+                (this.text.charAt(i+1) >= '0' && this.text.charAt(i+1) <= '9'))) {
             value = '';
             
             if (c !== Definitions.DECIMAL_SIGN_1 && c !== Definitions.DECIMAL_SIGN_2) {
@@ -143,15 +118,45 @@ main:
             var n = +value.replace(Definitions.DECIMAL_SIGN_1, '.').replace(Definitions.DECIMAL_SIGN_2, '.');
             if (isFinite(n)) {
                 tokens.push(new Token(Token.NUMBER, from, i - 1, value, null));
+                continue;
             } else {
                 // syntax error in number
                 throw new ParseException("syntax error in number", from, i);
             }
+        }
+        
+        // check for operators before names (they could be confused with
+        // variables if they don't use special characters)
+        for (iop = 0; iop < this.defs.operators.length; iop++) {
+            var op = this.defs.operators[iop];
+            if (this.text.substring(i, i+op.id.length) === op.id) {
+                i += op.id.length;
+                c = this.text.charAt(i);
+                tokens.push(new Token(Token.OPERATOR, from, i - 1, op.id, op));
+                continue main;
+            }
+        }
+        
+        // names
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+            value = c;
+            i++;
+            for (;;) {
+                c = this.text.charAt(i);
+                if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+                        (c >= '0' && c <= '9') || c === '_') {
+                    value += c;
+                    i++;
+                } else {
+                    break;
+                }
+            }
+            tokens.push(new Token(Token.NAME, from, i - 1, value, null));
+            continue;
+        }
         
         // unrecognized operator
-        } else {
-            throw new ParseException("unrecognized operator", from, i);
-        }
+        throw new ParseException("unrecognized operator", from, i);
     }
     return tokens;
 };
