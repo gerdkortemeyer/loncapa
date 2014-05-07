@@ -144,9 +144,9 @@ Definitions.prototype.define = function() {
         return e;
     }, function(p, left) {
         // led (for functions)
-        if (left.type != ENode.NAME)
+        if (left.type != ENode.NAME && left.type != ENode.SUBSCRIPT)
             throw new ParseException("Function name expected before a parenthesis.", p.tokens[p.token_nr - 1].from);
-        var children = [];
+        var children = [left];
         if (p.current_token == null || p.current_token.op == null || p.current_token.op.id !== ")") {
             while (true) {
                 children.push(p.expression(0));
@@ -157,11 +157,12 @@ Definitions.prototype.define = function() {
             }
         }
         p.advance(")");
-        return new ENode(ENode.FUNCTION, this, left.value, children);
+        return new ENode(ENode.FUNCTION, this, "(", children);
     });
     
     this.separator("]");
-    this.prefix("[", 70, function(p) {
+    this.operator("[", Operator.BINARY, 200, 70, function(p) {
+        // nud (for vectors)
         var children = [];
         if (p.current_token == null || p.current_token.op == null || p.current_token.op.id !== "]") {
             while (true) {
@@ -174,6 +175,22 @@ Definitions.prototype.define = function() {
         }
         p.advance("]");
         return new ENode(ENode.VECTOR, this, null, children);
+    }, function(p, left) {
+        // led (for subscript)
+        if (left.type != ENode.NAME && left.type != ENode.SUBSCRIPT)
+            throw new ParseException("Name expected before a square bracket.", p.tokens[p.token_nr - 1].from);
+        var children = [left];
+        if (p.current_token == null || p.current_token.op == null || p.current_token.op.id !== "]") {
+            while (true) {
+                children.push(p.expression(0));
+                if (p.current_token == null || p.current_token.op == null || p.current_token.op.id !== Definitions.ARG_SEPARATOR) {
+                    break;
+                }
+                p.advance(Definitions.ARG_SEPARATOR);
+            }
+        }
+        p.advance("]");
+        return new ENode(ENode.SUBSCRIPT, this, "[", children);
     });
 };
 
