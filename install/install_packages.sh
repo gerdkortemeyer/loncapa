@@ -42,6 +42,7 @@ cpan Lingua::Bork
 cpan Lingua::PigLatin
 cpan Data::Uniqid
 cpan Time::y2038
+cpan DateTime::Format::RFC3339
 cpan Digest::MD5
 cpan File::Util
 cpan File::Touch
