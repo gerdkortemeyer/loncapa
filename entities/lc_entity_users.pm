@@ -165,6 +165,13 @@ sub local_query_user_profiles {
    return &Apache::lc_mongodb::query_user_profiles($term1,$term2);
 }
 
+sub local_json_query_user_profiles {
+   return &Apache::lc_json_utils::perl_to_json(&local_query_user_profiles(@_));
+}
+
+sub query_user_profiles {
+   my ($domain,$term)=@_;
+} 
 
 # ================================================================
 # Convert stuff to entities
@@ -398,6 +405,7 @@ BEGIN {
    &Apache::lc_connection_handle::register('entity_to_username',undef,undef,undef,\&local_entity_to_username,'entity','domain');
    &Apache::lc_connection_handle::register('make_new_user',undef,undef,undef,\&local_make_new_user,'username','domain');
    &Apache::lc_connection_handle::register('assign_pid',undef,undef,undef,\&local_assign_pid,'entity','domain','pid');
+   &Apache::lc_connection_handle::register('query_user_profiles',undef,undef,undef,\&local_json_query_user_profiles,'term');
 }
 
 1;
