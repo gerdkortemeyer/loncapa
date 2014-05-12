@@ -108,11 +108,14 @@ main:
                 } while (c >= '0' && c <= '9');
             }
             
+            /* this is not necessary, as the parser will not recognize the tokens
+               if it is not accepted, and if bad syntax is accepted a * operator will be added
             // Make sure the next character is not a letter.
             if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
                 // syntax error in number
                 throw new ParseException("syntax error in number", from, i);
             }
+            */
             
             // Convert the string value to a number. If it is finite, then it is a good token.
             var n = +value.replace(Definitions.DECIMAL_SIGN_1, '.').replace(Definitions.DECIMAL_SIGN_2, '.');

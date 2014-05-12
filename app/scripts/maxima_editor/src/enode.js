@@ -19,7 +19,7 @@ through which recipients can access the Corresponding Source.
 */
 
 /**
- * Parsed tree node. ENode.toMathML() contains the code for the transformation into MathML.
+ * Parsed tree node. ENode.toMathML(hcolors) contains the code for the transformation into MathML.
  * @constructor
  * @param {number} type - ENode.UNKNOWN | NAME | NUMBER | OPERATOR | FUNCTION | VECTOR
  * @param {Operator} op - The operator
@@ -40,6 +40,9 @@ ENode.OPERATOR = 3;
 ENode.FUNCTION = 4;
 ENode.VECTOR = 5;
 ENode.SUBSCRIPT = 6;
+ENode.COLORS = ["#F00000", "#0000FF", "#009000", "#FF00FF", "#00C0C0", "#FFA000", 
+                "#800080", "#FF90B0", "#6090F0", "#902000", "#80B060", "#A07060",
+                "#4000FF", "#F07060", "#008080", "#808000"];
 
 /**
  * Returns the node as a string, for debug
@@ -88,11 +91,29 @@ ENode.prototype.toString = function() {
 };
 
 /**
+ * Returns the color for an identifier.
+ * @param {string} name
+ * @param {Object.<string, string>} hcolors
+ * @returns {string}
+ */
+ENode.prototype.getColorForIdentifier = function(name, hcolors) {
+    var res = hcolors[name];
+    if (!res) {
+        res = ENode.COLORS[Object.keys(hcolors).length % ENode.COLORS.length];
+        hcolors[name] = res;
+    }
+    return res;
+}
+
+/**
  * Transforms this ENode into a MathML HTML DOM element.
+ * @param {Object.<string, string>} [hcolors] - hash identifier->color
  * @returns {Element}
  */
-ENode.prototype.toMathML = function() {
+ENode.prototype.toMathML = function(hcolors) {
     var c0, c1, c2, c3, c4, i, j, el, par, mrow, mo, mtable, mfrac, msub;
+    if (typeof hcolors == "undefined")
+        hcolors = {};
     if (this.children != null && this.children.length > 0)
         c0 = this.children[0];
     else
@@ -126,10 +147,12 @@ ENode.prototype.toMathML = function() {
                 msub = document.createElement('msub');
                 msub.appendChild(this.mi(this.value.substring(0,ind)));
                 msub.appendChild(this.mn(this.value.substring(ind)));
-                return(msub);
+                el = msub;
             } else {
-                return(this.mi(this.value));
+                el = this.mi(this.value)
             }
+            el.setAttribute("mathcolor", this.getColorForIdentifier(this.value, hcolors));
+            return(el);
         
         case ENode.NUMBER:
             return(this.mn(this.value));
@@ -137,8 +160,8 @@ ENode.prototype.toMathML = function() {
         case ENode.OPERATOR:
             if (this.value == "/") {
                 mfrac = document.createElement('mfrac');
-                mfrac.appendChild(c0.toMathML());
-                mfrac.appendChild(c1.toMathML());
+                mfrac.appendChild(c0.toMathML(hcolors));
+                mfrac.appendChild(c1.toMathML(hcolors));
                 el = mfrac;
             } else if (this.value == "^") {
                 if (c0.type == ENode.FUNCTION) {
@@ -153,16 +176,16 @@ ENode.prototype.toMathML = function() {
                     par = false;
                 el = document.createElement('msup');
                 if (par)
-                    el.appendChild(this.addP(c0));
+                    el.appendChild(this.addP(c0, hcolors));
                 else
-                    el.appendChild(c0.toMathML());
-                el.appendChild(c1.toMathML());
+                    el.appendChild(c0.toMathML(hcolors));
+                el.appendChild(c1.toMathML(hcolors));
             } else if (this.value == "*") {
                 mrow = document.createElement('mrow');
                 if (c0.type == ENode.OPERATOR && (c0.value == "+" || c0.value == "-"))
-                    mrow.appendChild(this.addP(c0));
+                    mrow.appendChild(this.addP(c0, hcolors));
                 else
-                    mrow.appendChild(c0.toMathML());
+                    mrow.appendChild(c0.toMathML(hcolors));
                 // should the x operator be visible ? We need to check if there is a number to the left of c1
                 var firstinc1 = c1;
                 while (firstinc1.type == ENode.OPERATOR) {
@@ -171,37 +194,37 @@ ENode.prototype.toMathML = function() {
                 if (firstinc1.type == ENode.NUMBER)
                     mrow.appendChild(this.mo("\u22C5"));
                 if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
-                    mrow.appendChild(this.addP(c1));
+                    mrow.appendChild(this.addP(c1, hcolors));
                 else
-                    mrow.appendChild(c1.toMathML());
+                    mrow.appendChild(c1.toMathML(hcolors));
                 el = mrow;
             } else if (this.value == "-") {
                 mrow = document.createElement('mrow');
                 if (this.children.length == 1) {
                     mrow.appendChild(this.mo("-"));
-                    mrow.appendChild(c0.toMathML());
+                    mrow.appendChild(c0.toMathML(hcolors));
                 } else {
-                    mrow.appendChild(c0.toMathML());
+                    mrow.appendChild(c0.toMathML(hcolors));
                     mrow.appendChild(this.mo("-"));
                     if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
-                        mrow.appendChild(this.addP(c1));
+                        mrow.appendChild(this.addP(c1, hcolors));
                     else
-                        mrow.appendChild(c1.toMathML());
+                        mrow.appendChild(c1.toMathML(hcolors));
                 }
                 el = mrow;
             } else if (this.value == "!") {
                 mrow = document.createElement('mrow');
                 mo = this.mo(this.value);
                 if (c0.type == ENode.OPERATOR && (c0.value == "+" || c0.value == "-"))
-                    mrow.appendChild(this.addP(c0));
+                    mrow.appendChild(this.addP(c0, hcolors));
                 else
-                    mrow.appendChild(c0.toMathML());
+                    mrow.appendChild(c0.toMathML(hcolors));
                 mrow.appendChild(mo);
                 el = mrow;
             } else if (this.value == "+") {
                 mrow = document.createElement('mrow');
                 mo = this.mo(this.value);
-                mrow.appendChild(c0.toMathML());
+                mrow.appendChild(c0.toMathML(hcolors));
                 mrow.appendChild(mo);
                 // should we add parenthesis ? We need to check if there is a '-' to the left of c1
                 par = false;
@@ -217,44 +240,44 @@ ENode.prototype.toMathML = function() {
                     }
                 }
                 if (par)
-                    mrow.appendChild(this.addP(c1));
+                    mrow.appendChild(this.addP(c1, hcolors));
                 else
-                    mrow.appendChild(c1.toMathML());
+                    mrow.appendChild(c1.toMathML(hcolors));
                 el = mrow;
             } else if (this.value == ".") {
                 mrow = document.createElement('mrow');
                 if (c0.type == ENode.OPERATOR && (c0.value == "+" || c0.value == "-"))
-                    mrow.appendChild(this.addP(c0));
+                    mrow.appendChild(this.addP(c0, hcolors));
                 else
-                    mrow.appendChild(c0.toMathML());
+                    mrow.appendChild(c0.toMathML(hcolors));
                 mrow.appendChild(this.mo("\u22C5"));
                 if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
-                    mrow.appendChild(this.addP(c1));
+                    mrow.appendChild(this.addP(c1, hcolors));
                 else
-                    mrow.appendChild(c1.toMathML());
+                    mrow.appendChild(c1.toMathML(hcolors));
                 el = mrow;
             } else if (this.value == "`") {
                 mrow = document.createElement('mrow');
                 if (c0.type == ENode.OPERATOR && (c0.value == "+" || c0.value == "-"))
-                    mrow.appendChild(this.addP(c0));
+                    mrow.appendChild(this.addP(c0, hcolors));
                 else
-                    mrow.appendChild(c0.toMathML());
+                    mrow.appendChild(c0.toMathML(hcolors));
                 // the units should not be in italics
                 var mstyle = document.createElement("mstyle");
                 mstyle.setAttribute("fontstyle", "normal");
                 if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
-                    mstyle.appendChild(this.addP(c1));
+                    mstyle.appendChild(this.addP(c1, hcolors));
                 else
-                    mstyle.appendChild(c1.toMathML());
+                    mstyle.appendChild(c1.toMathML(hcolors));
                 mrow.appendChild(mstyle);
                 el = mrow;
             } else {
                 // relational operators
                 mrow = document.createElement('mrow');
                 mo = this.mo(this.value);
-                mrow.appendChild(c0.toMathML());
+                mrow.appendChild(c0.toMathML(hcolors));
                 mrow.appendChild(mo);
-                mrow.appendChild(c1.toMathML());
+                mrow.appendChild(c1.toMathML(hcolors));
                 el = mrow;
             }
             return(el);
@@ -263,24 +286,24 @@ ENode.prototype.toMathML = function() {
             // c0 contains the function name
             if (c0.value == "sqrt" && c1 != null) {
                 el = document.createElement('msqrt');
-                el.appendChild(c1.toMathML());
+                el.appendChild(c1.toMathML(hcolors));
             } else if (c0.value == "abs" && c1 != null) {
                 mrow = document.createElement('mrow');
                 mrow.appendChild(this.mo("|"));
-                mrow.appendChild(c1.toMathML());
+                mrow.appendChild(c1.toMathML(hcolors));
                 mrow.appendChild(this.mo("|"));
                 el = mrow;
             } else if (c0.value == "exp" && c1 != null) {
                 el = document.createElement('msup');
                 el.appendChild(this.mi("e"));
-                el.appendChild(c1.toMathML());
+                el.appendChild(c1.toMathML(hcolors));
             } else if (c0.value == "factorial") {
                 mrow = document.createElement('mrow');
                 mo = this.mo("!");
                 if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
-                    mrow.appendChild(this.addP(c1));
+                    mrow.appendChild(this.addP(c1, hcolors));
                 else
-                    mrow.appendChild(c1.toMathML());
+                    mrow.appendChild(c1.toMathML(hcolors));
                 mrow.appendChild(mo);
                 el = mrow;
             } else if (c0.value == "diff" && this.children != null && this.children.length == 3) {
@@ -293,29 +316,29 @@ ENode.prototype.toMathML = function() {
                 mfrac.appendChild(f2);
                 mrow.appendChild(mfrac);
                 if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
-                    mrow.appendChild(this.addP(c1));
+                    mrow.appendChild(this.addP(c1, hcolors));
                 else
-                    mrow.appendChild(c1.toMathML());
+                    mrow.appendChild(c1.toMathML(hcolors));
                 el = mrow;
             } else if (c0.value == "diff" && this.children != null && this.children.length == 4) {
                 mrow = document.createElement('mrow');
                 mfrac = document.createElement('mfrac');
                 var msup = document.createElement('msup');
                 msup.appendChild(this.mi("d"));
-                msup.appendChild(c3.toMathML());
+                msup.appendChild(c3.toMathML(hcolors));
                 mfrac.appendChild(msup);
                 var f2 = document.createElement('mrow');
                 f2.appendChild(this.mi("d"));
                 msup = document.createElement('msup');
-                msup.appendChild(c2.toMathML());
-                msup.appendChild(c3.toMathML());
+                msup.appendChild(c2.toMathML(hcolors));
+                msup.appendChild(c3.toMathML(hcolors));
                 f2.appendChild(msup);
                 mfrac.appendChild(f2);
                 mrow.appendChild(mfrac);
                 if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
-                    mrow.appendChild(this.addP(c1));
+                    mrow.appendChild(this.addP(c1, hcolors));
                 else
-                    mrow.appendChild(c1.toMathML());
+                    mrow.appendChild(c1.toMathML(hcolors));
                 el = mrow;
             } else if (c0.value == "integrate" && this.children != null && this.children.length == 3) {
                 mrow = document.createElement('mrow');
@@ -323,11 +346,11 @@ ENode.prototype.toMathML = function() {
                 mo.setAttribute("stretchy", "true"); // doesn't work with MathJax
                 mrow.appendChild(mo);
                 if (c2.type == ENode.OPERATOR && (c2.value == "+" || c2.value == "-"))
-                    mrow.appendChild(this.addP(c1));
+                    mrow.appendChild(this.addP(c1, hcolors));
                 else
-                    mrow.appendChild(c1.toMathML());
+                    mrow.appendChild(c1.toMathML(hcolors));
                 mrow.appendChild(this.mi("d"));
-                mrow.appendChild(c2.toMathML());
+                mrow.appendChild(c2.toMathML(hcolors));
                 el = mrow;
             } else if (c0.value == "integrate" && this.children != null && this.children.length == 5) {
                 mrow = document.createElement('mrow');
@@ -335,15 +358,15 @@ ENode.prototype.toMathML = function() {
                 var mo = this.mo("\u222B");
                 mo.setAttribute("stretchy", "true"); // doesn't work with MathJax
                 msubsup.appendChild(mo);
-                msubsup.appendChild(c3.toMathML());
-                msubsup.appendChild(c4.toMathML());
+                msubsup.appendChild(c3.toMathML(hcolors));
+                msubsup.appendChild(c4.toMathML(hcolors));
                 mrow.appendChild(msubsup);
                 if (c2.type == ENode.OPERATOR && (c2.value == "+" || c2.value == "-"))
-                    mrow.appendChild(this.addP(c1));
+                    mrow.appendChild(this.addP(c1, hcolors));
                 else
-                    mrow.appendChild(c1.toMathML());
+                    mrow.appendChild(c1.toMathML(hcolors));
                 mrow.appendChild(this.mi("d"));
-                mrow.appendChild(c2.toMathML());
+                mrow.appendChild(c2.toMathML(hcolors));
                 el = mrow;
             } else if (c0.value == "sum" && this.children != null && this.children.length == 5) {
                 mrow = document.createElement('mrow');
@@ -352,16 +375,16 @@ ENode.prototype.toMathML = function() {
                 mo.setAttribute("stretchy", "true"); // doesn't work with MathJax
                 munderover.appendChild(mo);
                 var mrow2 = document.createElement('mrow');
-                mrow2.appendChild(c2.toMathML());
+                mrow2.appendChild(c2.toMathML(hcolors));
                 mrow2.appendChild(this.mo("="));
-                mrow2.appendChild(c3.toMathML());
+                mrow2.appendChild(c3.toMathML(hcolors));
                 munderover.appendChild(mrow2);
-                munderover.appendChild(c4.toMathML());
+                munderover.appendChild(c4.toMathML(hcolors));
                 mrow.appendChild(munderover);
                 if (c2.type == ENode.OPERATOR && (c2.value == "+" || c2.value == "-"))
-                    mrow.appendChild(this.addP(c1));
+                    mrow.appendChild(this.addP(c1, hcolors));
                 else
-                    mrow.appendChild(c1.toMathML());
+                    mrow.appendChild(c1.toMathML(hcolors));
                 el = mrow;
             } else if (c0.value == "product" && this.children != null && this.children.length == 5) {
                 mrow = document.createElement('mrow');
@@ -370,16 +393,16 @@ ENode.prototype.toMathML = function() {
                 mo.setAttribute("stretchy", "true"); // doesn't work with MathJax
                 munderover.appendChild(mo);
                 var mrow2 = document.createElement('mrow');
-                mrow2.appendChild(c2.toMathML());
+                mrow2.appendChild(c2.toMathML(hcolors));
                 mrow2.appendChild(this.mo("="));
-                mrow2.appendChild(c3.toMathML());
+                mrow2.appendChild(c3.toMathML(hcolors));
                 munderover.appendChild(mrow2);
-                munderover.appendChild(c4.toMathML());
+                munderover.appendChild(c4.toMathML(hcolors));
                 mrow.appendChild(munderover);
                 if (c2.type == ENode.OPERATOR && (c2.value == "+" || c2.value == "-"))
-                    mrow.appendChild(this.addP(c1));
+                    mrow.appendChild(this.addP(c1, hcolors));
                 else
-                    mrow.appendChild(c1.toMathML());
+                    mrow.appendChild(c1.toMathML(hcolors));
                 el = mrow;
             } else if (c0.value == "limit") {
                 mrow = document.createElement('mrow');
@@ -389,9 +412,9 @@ ENode.prototype.toMathML = function() {
                     var munder = document.createElement('munder');
                     munder.appendChild(this.mo("lim"));
                     var mrowunder = document.createElement('mrow');
-                    mrowunder.appendChild(c2.toMathML());
+                    mrowunder.appendChild(c2.toMathML(hcolors));
                     mrowunder.appendChild(this.mo("\u2192"));
-                    mrowunder.appendChild(c3.toMathML());
+                    mrowunder.appendChild(c3.toMathML(hcolors));
                     if (c4 != null) {
                         if (c4.value == "plus")
                             mrowunder.appendChild(this.mo("+"));
@@ -401,7 +424,7 @@ ENode.prototype.toMathML = function() {
                     munder.appendChild(mrowunder);
                     mrow.appendChild(munder);
                 }
-                mrow.appendChild(c1.toMathML());
+                mrow.appendChild(c1.toMathML(hcolors));
                 el = mrow;
             } else if (c0.value == "binomial") {
                 // displayed like a vector
@@ -410,7 +433,7 @@ ENode.prototype.toMathML = function() {
                 mtable = document.createElement('mtable');
                 for (i=1; i<this.children.length; i++) {
                     var mtr = document.createElement('mtr');
-                    mtr.appendChild(this.children[i].toMathML());
+                    mtr.appendChild(this.children[i].toMathML(hcolors));
                     mtable.appendChild(mtr);
                 }
                 mrow.appendChild(mtable);
@@ -431,7 +454,7 @@ ENode.prototype.toMathML = function() {
                 for (i=1; i<this.children.length; i++) {
                     var mtr = document.createElement('mtr');
                     for (j=0; j<this.children[i].children.length; j++) {
-                        mtr.appendChild(this.children[i].children[j].toMathML());
+                        mtr.appendChild(this.children[i].children[j].toMathML(hcolors));
                     }
                     mtable.appendChild(mtr);
                 }
@@ -441,10 +464,10 @@ ENode.prototype.toMathML = function() {
             } else {
                 // default display for a function
                 mrow = document.createElement('mrow');
-                mrow.appendChild(c0.toMathML());
+                mrow.appendChild(c0.toMathML(hcolors));
                 mrow.appendChild(this.mo("("));
                 for (i=1; i<this.children.length; i++) {
-                    mrow.appendChild(this.children[i].toMathML());
+                    mrow.appendChild(this.children[i].toMathML(hcolors));
                     if (i < this.children.length - 1)
                         mrow.appendChild(this.mo(Definitions.ARG_SEPARATOR));
                 }
@@ -459,7 +482,7 @@ ENode.prototype.toMathML = function() {
             mtable = document.createElement('mtable');
             for (i=0; i<this.children.length; i++) {
                 var mtr = document.createElement('mtr');
-                mtr.appendChild(this.children[i].toMathML());
+                mtr.appendChild(this.children[i].toMathML(hcolors));
                 mtable.appendChild(mtr);
             }
             mrow.appendChild(mtable);
@@ -468,17 +491,17 @@ ENode.prototype.toMathML = function() {
             
         case ENode.SUBSCRIPT:
             msub = document.createElement('msub');
-            msub.appendChild(c0.toMathML());
+            msub.appendChild(c0.toMathML(hcolors));
             if (this.children.length > 2) {
                 mrow = document.createElement('mrow');
                 for (i=1; i<this.children.length; i++) {
-                    mrow.appendChild(this.children[i].toMathML());
+                    mrow.appendChild(this.children[i].toMathML(hcolors));
                     if (i < this.children.length - 1)
                         mrow.appendChild(this.mo(Definitions.ARG_SEPARATOR));
                 }
                 msub.appendChild(mrow);
             } else {
-                msub.appendChild(c1.toMathML());
+                msub.appendChild(c1.toMathML(hcolors));
             }
             return(msub);
     }
@@ -524,12 +547,13 @@ ENode.prototype.mo = function(name) {
 /**
  * Add parenthesis and returns a MathML element
  * @param {ENode} en
+ * @param {Object.<string, string>} [hcolors] - hash identifier->color
  * @returns {Element}
  */
-ENode.prototype.addP = function(en) {
+ENode.prototype.addP = function(en, hcolors) {
     var mrow = document.createElement('mrow');
     mrow.appendChild(this.mo("("));
-    mrow.appendChild(en.toMathML());
+    mrow.appendChild(en.toMathML(hcolors));
     mrow.appendChild(this.mo(")"));
     return mrow;
 };

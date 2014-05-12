@@ -36,7 +36,7 @@ var handleChange = function(maxima_object) {
             output_div.removeChild(output_div.firstChild);
         output_div.removeAttribute("title");
         if (txt != "") {
-            parser = new Parser();
+            parser = new Parser(true);
             try {
                 root = parser.parse(txt);
                 if (root != null) {

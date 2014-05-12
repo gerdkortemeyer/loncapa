@@ -106,6 +106,20 @@ Definitions.prototype.suffix = function(id, lbp, led) {
 };
 
 /**
+ * Returns the defined operator with the given id
+ * @param {string} id - Operator id (text used to recognize it)
+ * @returns {Operator}
+ */
+Definitions.prototype.findOperator = function(id) {
+    for (var i=0; i<this.operators.length; i++) {
+        if (this.operators[i].id == id) {
+            return(this.operators[i]);
+        }
+    }
+    return null;
+}
+
+/**
  * Defines all the operators.
  */
 Definitions.prototype.define = function() {

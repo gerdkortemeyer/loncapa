@@ -21,8 +21,13 @@ through which recipients can access the Corresponding Source.
 /**
  * Equation parser
  * @constructor
+ * @param {boolean} [accept_bad_syntax] - assume hidden multiplication operators in some cases (unlike maxima)
  */
-function Parser() {
+function Parser(accept_bad_syntax) {
+    if (typeof accept_bad_syntax == "undefined")
+        this.accept_bad_syntax = false;
+    else
+        this.accept_bad_syntax = true;
     this.defs = new Definitions();
     this.defs.define();
     this.operators = this.defs.operators;
@@ -82,6 +87,32 @@ Parser.prototype.advance = function(id) {
 };
 
 /**
+ * Adds hidden multiplication operators to the token stream
+ */
+Parser.prototype.addHiddenOperators = function() {
+    var multiplication = this.defs.findOperator("*");
+    for (var i=0; i<this.tokens.length - 1; i++) {
+        var token = this.tokens[i];
+        var next_token = this.tokens[i + 1];
+        if (
+                (token.type == Token.NAME && next_token.type == Token.NAME) ||
+                (token.type == Token.NUMBER && next_token.type == Token.NAME) ||
+                (token.type == Token.NUMBER && next_token.type == Token.NUMBER) ||
+                (token.type == Token.NUMBER && next_token.value == "(") ||
+                /*(token.type == Token.NAME && next_token.value == "(") ||*/
+                /* name ( could be a function call */
+                (token.value == ")" && next_token.type == Token.NAME) ||
+                (token.value == ")" && next_token.type == Token.NUMBER) ||
+                (token.value == ")" && next_token.value == "(")
+           ) {
+            var new_token = new Token(Token.OPERATOR, next_token.from,
+                next_token.from, multiplication.id, multiplication);
+            this.tokens.splice(i+1, 0, new_token);
+        }
+    }
+}
+
+/**
  * Parse the string, returning an ENode tree.
  * @param {string} text - The text to parse.
  * @returns {ENode}
@@ -91,6 +122,9 @@ Parser.prototype.parse = function(text) {
     this.tokens = tokenizer.tokenize();
     if (this.tokens.length == 0) {
         return null;
+    }
+    if (this.accept_bad_syntax) {
+        this.addHiddenOperators();
     }
     this.token_nr = 0;
     this.current_token = this.tokens[this.token_nr];
