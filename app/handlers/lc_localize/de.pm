@@ -204,6 +204,8 @@ use utf8;
 
 'Password and ID Number' => 'Passwort und Matrikelnummer',
 
+'Authentication Mode' => 'Authentifizierungsmodus',
+
 'Username and EMail' => 'Benutzerkennung und EMail',
 
 'EMail' => 'EMail',
