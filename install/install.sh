@@ -15,6 +15,7 @@ rm /home/httpd/lib/perl/Apache/*
 cp connections/*.pm /home/httpd/lib/perl/Apache
 cp xml/*pm /home/httpd/lib/perl/Apache
 cp xml/xml_tag_defs/*.pm /home/httpd/lib/perl/Apache
+cp xml/xml_includes/*.pm /home/httpd/lib/perl/Apache
 cp json/*.pm /home/httpd/lib/perl/Apache
 cp file_handling/*.pm /home/httpd/lib/perl/Apache
 cp conf/httpd.conf /etc/httpd/conf

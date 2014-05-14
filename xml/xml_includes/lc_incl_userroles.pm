@@ -1,5 +1,5 @@
 # The LearningOnline Network with CAPA - LON-CAPA
-# Catch-all tag for including raw handler output into pages
+# Include handlers for user roles
 #
 # Copyright (C) 2014 Michigan State University Board of Trustees
 #
@@ -16,32 +16,17 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-package Apache::lc_xml_include;
+package Apache::lc_incl_userroles;
 
 use strict;
-
-use Apache::lc_incl_userroles;
-use Apache::lc_logs;
 
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_lcinclude_html);
+our @EXPORT = qw(spreadsheet_finalize_items);
 
-sub start_lcinclude_html {
-   my ($p,$safe,$stack,$token)=@_;
-   my $id=$token->[2]->{'id'};
-   my $name=$token->[2]->{'name'};
-   unless ($id) { return ''; }
-   unless ($name) { $name=$id; }
-   my $output="<div id='$id' name='$name'>";
-   no strict 'refs';
-   if (defined(&$id)) {
-      $output.=&{$id}($p,$safe,$stack,$token);
-   }
-   use strict 'refs';
-   $output.='</div>';
-   return $output;
+sub spreadsheet_finalize_items {
+   return 'Well, hello there from deep down';
 }
 
 1;
