@@ -126,10 +126,20 @@ Definitions.prototype.define = function() {
     this.suffix("!", 160);
     this.infix("^", 140, 139);
     this.infix(".", 130, 129);
-    this.infix("`", 125, 125); // units, this operator does not bind like in maxima :-/
-    // to improve the ` operator, we would need a very special led
-    // that would handle 2`a*b and 2`a*3 differently
-    // currently, more parenthesis are required than with maxima
+    this.infix("`", 125, 125, function(p, left) {
+        // led (infix operator)
+        // this led for units gathers all the units in an ENode
+        var right = p.expression(125);
+        while (p.current_token != null && "*/".indexOf(p.current_token.value) != -1 &&
+                p.tokens[p.token_nr] != null && p.tokens[p.token_nr].type == Token.NAME &&
+                (p.tokens[p.token_nr+1] == null || p.tokens[p.token_nr+1].value != "(")) {
+            var t = p.current_token;
+            p.advance();
+            right = t.op.led(p, right);
+        }
+        var children = [left, right];
+        return new ENode(ENode.OPERATOR, this, "`", children);
+    });
     this.infix("*", 120, 120);
     this.infix("/", 120, 120);
     this.infix("+", 100, 100);
@@ -946,12 +956,17 @@ through which recipients can access the Corresponding Source.
  * Equation parser
  * @constructor
  * @param {boolean} [accept_bad_syntax] - assume hidden multiplication operators in some cases (unlike maxima)
+ * @param {boolean} [unit_mode] - handle only numerical expressions with units (no variable)
  */
-function Parser(accept_bad_syntax) {
+function Parser(accept_bad_syntax, unit_mode) {
     if (typeof accept_bad_syntax == "undefined")
         this.accept_bad_syntax = false;
     else
-        this.accept_bad_syntax = true;
+        this.accept_bad_syntax = accept_bad_syntax;
+    if (typeof unit_mode == "undefined")
+        this.unit_mode = false;
+    else
+        this.unit_mode = unit_mode;
     this.defs = new Definitions();
     this.defs.define();
     this.operators = this.defs.operators;
@@ -1015,6 +1030,7 @@ Parser.prototype.advance = function(id) {
  */
 Parser.prototype.addHiddenOperators = function() {
     var multiplication = this.defs.findOperator("*");
+    var unit_operator = this.defs.findOperator("`");
     for (var i=0; i<this.tokens.length - 1; i++) {
         var token = this.tokens[i];
         var next_token = this.tokens[i + 1];
@@ -1029,8 +1045,13 @@ Parser.prototype.addHiddenOperators = function() {
                 (token.value == ")" && next_token.type == Token.NUMBER) ||
                 (token.value == ")" && next_token.value == "(")
            ) {
-            var new_token = new Token(Token.OPERATOR, next_token.from,
-                next_token.from, multiplication.id, multiplication);
+            var new_token;
+            if (this.unit_mode && token.type == Token.NUMBER && next_token.type == Token.NAME)
+                new_token = new Token(Token.OPERATOR, next_token.from,
+                    next_token.from, unit_operator.id, unit_operator);
+            else
+                new_token = new Token(Token.OPERATOR, next_token.from,
+                    next_token.from, multiplication.id, multiplication);
             this.tokens.splice(i+1, 0, new_token);
         }
     }
@@ -1293,6 +1314,8 @@ through which recipients can access the Corresponding Source.
 var handleChange = function(maxima_object) {
     // maxima_object has 3 fields: ta, output_div, oldtxt
     // we need to pass this object instead of the values because oldtxt will change
+    var accept_bad_syntax = true;
+    var unit_mode = true;
     var ta, output_div, txt, parser, output, root;
     ta = maxima_object.ta;
     output_div = maxima_object.output_div;
@@ -1303,7 +1326,7 @@ var handleChange = function(maxima_object) {
             output_div.removeChild(output_div.firstChild);
         output_div.removeAttribute("title");
         if (txt != "") {
-            parser = new Parser(true);
+            parser = new Parser(accept_bad_syntax, unit_mode);
             try {
                 root = parser.parse(txt);
                 if (root != null) {

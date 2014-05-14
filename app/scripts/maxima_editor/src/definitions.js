@@ -126,10 +126,20 @@ Definitions.prototype.define = function() {
     this.suffix("!", 160);
     this.infix("^", 140, 139);
     this.infix(".", 130, 129);
-    this.infix("`", 125, 125); // units, this operator does not bind like in maxima :-/
-    // to improve the ` operator, we would need a very special led
-    // that would handle 2`a*b and 2`a*3 differently
-    // currently, more parenthesis are required than with maxima
+    this.infix("`", 125, 125, function(p, left) {
+        // led (infix operator)
+        // this led for units gathers all the units in an ENode
+        var right = p.expression(125);
+        while (p.current_token != null && "*/".indexOf(p.current_token.value) != -1 &&
+                p.tokens[p.token_nr] != null && p.tokens[p.token_nr].type == Token.NAME &&
+                (p.tokens[p.token_nr+1] == null || p.tokens[p.token_nr+1].value != "(")) {
+            var t = p.current_token;
+            p.advance();
+            right = t.op.led(p, right);
+        }
+        var children = [left, right];
+        return new ENode(ENode.OPERATOR, this, "`", children);
+    });
     this.infix("*", 120, 120);
     this.infix("/", 120, 120);
     this.infix("+", 100, 100);

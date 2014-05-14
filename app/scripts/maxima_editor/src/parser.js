@@ -22,12 +22,17 @@ through which recipients can access the Corresponding Source.
  * Equation parser
  * @constructor
  * @param {boolean} [accept_bad_syntax] - assume hidden multiplication operators in some cases (unlike maxima)
+ * @param {boolean} [unit_mode] - handle only numerical expressions with units (no variable)
  */
-function Parser(accept_bad_syntax) {
+function Parser(accept_bad_syntax, unit_mode) {
     if (typeof accept_bad_syntax == "undefined")
         this.accept_bad_syntax = false;
     else
-        this.accept_bad_syntax = true;
+        this.accept_bad_syntax = accept_bad_syntax;
+    if (typeof unit_mode == "undefined")
+        this.unit_mode = false;
+    else
+        this.unit_mode = unit_mode;
     this.defs = new Definitions();
     this.defs.define();
     this.operators = this.defs.operators;
@@ -91,6 +96,7 @@ Parser.prototype.advance = function(id) {
  */
 Parser.prototype.addHiddenOperators = function() {
     var multiplication = this.defs.findOperator("*");
+    var unit_operator = this.defs.findOperator("`");
     for (var i=0; i<this.tokens.length - 1; i++) {
         var token = this.tokens[i];
         var next_token = this.tokens[i + 1];
@@ -105,8 +111,13 @@ Parser.prototype.addHiddenOperators = function() {
                 (token.value == ")" && next_token.type == Token.NUMBER) ||
                 (token.value == ")" && next_token.value == "(")
            ) {
-            var new_token = new Token(Token.OPERATOR, next_token.from,
-                next_token.from, multiplication.id, multiplication);
+            var new_token;
+            if (this.unit_mode && token.type == Token.NUMBER && next_token.type == Token.NAME)
+                new_token = new Token(Token.OPERATOR, next_token.from,
+                    next_token.from, unit_operator.id, unit_operator);
+            else
+                new_token = new Token(Token.OPERATOR, next_token.from,
+                    next_token.from, multiplication.id, multiplication);
             this.tokens.splice(i+1, 0, new_token);
         }
     }
