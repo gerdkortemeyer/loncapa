@@ -206,6 +206,10 @@ use utf8;
 
 'Authentication Mode' => 'Authentifizierungsmodus',
 
+'Selections will not override existing account authentication settings.' => 'Die Auswahlen überschreiben nicht existierende Authentifizierungseinstellungen.',
+
+'Override existing account authentication settings' => 'Überschreibe existierende Authentifizierungseinstellungen',
+
 'Username and EMail' => 'Benutzerkennung und EMail',
 
 'EMail' => 'EMail',

@@ -32,8 +32,15 @@
 <lcformtableinput type="hosteddomain" description="Domain" id="defaultdomain" />
 <lcformtableinput type="password" size="20" description="Password" id="defaultpassword" />
 <lcformtableinput type="checkbox" description="Ignore first row" id="ignorefirstrow" />
+<allowed action="modify_auth" realm="course">
+<lcformtableinput type="checkbox" description="Override existing account authentication settings" id="overrideauth" />
+</allowed>
 </lcformtable>
-<span class="lcstandard"><localize>Selections will not override existing account settings.</localize></span>
+<notallowed action="modify_auth" realm="course">
+<p>
+<span class="lcstandard"><localize>Selections will not override existing account authentication settings.</localize></span>
+</p>
+</notallowed>
 <lcformtrigger id="storebutton" description="Store" />
 <span class="lcproblem"><localize>The spreadsheet must at minimum contain a username.</localize></span>
 </lcform>

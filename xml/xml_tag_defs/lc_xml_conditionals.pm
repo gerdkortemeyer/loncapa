@@ -26,7 +26,8 @@ use Apache::lc_entity_sessions();
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_allowed_html start_allowed_tex end_allowed_html end_allowed_tex);
+our @EXPORT = qw(start_allowed_html start_allowed_tex end_allowed_html end_allowed_tex
+                 start_notallowed_html start_notallowed_tex end_notallowed_html end_notallowed_tex);
 
 sub start_allowed_html {
    return &allowed_eval(@_);
@@ -44,6 +45,22 @@ sub end_allowed_tex {
    return '';
 }
 
+sub start_notallowed_html {
+   return &notallowed_eval(@_);
+}
+
+sub start_notallowed_tex {
+   return &notallowed_eval(@_);
+}
+
+sub end_notallowed_html {
+   return '';
+}
+
+sub end_notallowed_tex {
+   return '';
+}
+
 sub allowed_eval {
    my ($p,$safe,$stack,$token)=@_;
    my $realm=$token->[2]->{'realm'};
@@ -58,6 +75,26 @@ sub allowed_eval {
 # skip all the stuff in-between
 #FIXME: does not allow nested allows
       $p->get_text('/allowed');
+      $p->get_token;
+      pop(@{$stack->{'tags'}});
+   }
+   return '';
+}
+
+sub notallowed_eval {
+   my ($p,$safe,$stack,$token)=@_;
+   my $realm=$token->[2]->{'realm'};
+   my $action=$token->[2]->{'action'};
+   my $item=$token->[2]->{'item'};
+   my $allowed=0;
+#FIXME: currently only implements "course"
+   if ($realm eq 'course') {
+      $allowed=&allowed_course($action,$item,&Apache::lc_entity_sessions::course_entity_domain());
+   }
+   if ($allowed) {
+# skip all the stuff in-between
+#FIXME: does not allow nested notallows
+      $p->get_text('/notallowed');
       $p->get_token;
       pop(@{$stack->{'tags'}});
    }

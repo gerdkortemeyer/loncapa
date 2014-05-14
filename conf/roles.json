@@ -12,7 +12,8 @@
                                       "view_role"       : "1",
                                       "modify_role"     : {
                                                              "course_coordinator" : "1"
-                                                          }
+                                                          },
+                                      "modity_auth"     : "1"
                                     }
                        },
 "course_coordinator" : {
