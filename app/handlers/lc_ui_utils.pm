@@ -22,11 +22,13 @@ use strict;
 use Apache::lc_init_cluster_table();
 use Apache::lc_ui_localize;
 use Apache::lc_entity_sessions();
+use Apache::lc_entity_courses();
+use Apache::lc_authorize;
 
 require Exporter;
 
 our @ISA = qw (Exporter);
-our @EXPORT = qw(clean_username clean_domain domain_choices domain_name language_choices timezone_choices);
+our @EXPORT = qw(clean_username clean_domain domain_choices domain_name language_choices timezone_choices modifiable_role_choices);
 
 # ==== Clean up usernames and domains
 #
@@ -72,6 +74,24 @@ sub domain_name {
    return $connection_table->{'cluster_table'}->{'domains'}->{$domain}->{'name'};
 }
 
+# ==== Modifiable course role choices
+#
+sub modifiable_role_choices {
+   my ($type)=@_;
+   my $roles_short;
+   my $roles_name;
+#FIXME: more than just "course"
+   if ($type eq 'course') {
+      foreach my $thisrole (sort(&Apache::lc_authorize::all_roles(
+                             &Apache::lc_entity_courses::course_type(&Apache::lc_entity_sessions::course_entity_domain())))) {
+         if (&allowed_any_section('modify_role',$thisrole,&Apache::lc_entity_sessions::course_entity_domain())) {
+            push(@{$roles_short},$thisrole);
+            push(@{$roles_name},&mt($thisrole));
+         }
+      }
+   }
+   return ($roles_short,$roles_name);
+}
 
 # ==== Language choices
 #

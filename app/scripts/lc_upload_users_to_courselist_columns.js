@@ -30,6 +30,7 @@ function verify(changedentry) {
    var fieldvalue=$('#'+fieldname).val();
    var founddomain=false;
    var foundpassword=false;
+   var foundrole=false;
    $('.lcformselectinput').each(function() {
        if ($(this).attr('name')!=fieldname) {
           if ($(this).val()==fieldvalue) {
@@ -97,6 +98,9 @@ function verify(changedentry) {
            ($(this).val()=='passwordpid')) {
           foundpassword=true;
        }
+       if ($(this).val()=='role') {
+          foundrole=true;
+       }
    });
    if (founddomain) {
       $("#defaultdomain").prop("disabled",true);
@@ -108,4 +112,10 @@ function verify(changedentry) {
    } else {
       $("#defaultpassword").prop("disabled",false);
    }
+   if (foundrole) {
+      $("#defaultrole").prop("disabled",true);
+   } else {
+      $("#defaultrole").prop("disabled",false);
+   }
+
 }

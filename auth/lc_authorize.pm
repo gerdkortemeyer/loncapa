@@ -121,7 +121,25 @@ sub allowed_any_section {
    }
    return 0;
 }
-   
+
+#
+# Roles available in the system
+#
+sub all_roles {
+   my ($realm)=@_;
+   my @all_roles=();
+   foreach my $thisrole (keys(%{$privileges})) {
+      if ($realm) {
+         if ($privileges->{$thisrole}->{'realm'} eq $realm) {
+            push(@all_roles,$thisrole);
+         }
+      } else {
+         push(@all_roles,$thisrole);
+      }
+   }
+   return @all_roles;
+}
+
 BEGIN {
    unless ($privileges) {
       $privileges=&Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readfile(&lc_roles_defs()));

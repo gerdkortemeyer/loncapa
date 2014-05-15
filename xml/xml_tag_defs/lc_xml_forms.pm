@@ -130,6 +130,9 @@ sub inputfield {
 #FIXME: y2038?
       unless ($default) { $default=time; }
       return &datetimefield($id,$name,$default);
+   } elsif ($type eq 'modifiablecourseroles') {
+      my ($role_short,$role_name)=&modifiable_role_choices('course');
+      return &selectfield($id,$name,$role_short,$role_name,$default);
    }
 }
 
@@ -137,13 +140,14 @@ sub inputfield {
 #
 sub selectfield {
    my ($id,$name,$values,$choices,$default,$onchange)=@_;
+   $default=~s/[^\w\|]//gs;
    my $changecall='';
    if ($onchange) {
       $changecall=' onChange="'.$onchange.'"';
    }
    my $selectfield='<select class="lcformselectinput" id="'.$id.'" name="'.$name.'"'.$changecall.'>';
    for (my $i=0;$i<=$#{$values};$i++) {
-          $selectfield.='<option value="'.$values->[$i].'"'.($values->[$i] eq $default?' selected="selected"':'').'>'.
+          $selectfield.='<option value="'.$values->[$i].'"'.($values->[$i]=~/$default/?' selected="selected"':'').'>'.
                          $choices->[$i].'</option>';
    }
    $selectfield.='</select>';

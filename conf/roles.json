@@ -1,5 +1,5 @@
 {
-"superuser"          : {
+"superuser"          : { "realm"  : "system",
                          "system" : {
                                       "view_role"       : "1",
                                       "modify_role"     : {
@@ -7,7 +7,7 @@
                                                           }
                                     }
                        },
-"domain_coordinator" : {
+"domain_coordinator" : { "realm"  : "domain",
                          "domain" : {
                                       "view_role"       : "1",
                                       "modify_role"     : {
@@ -16,7 +16,7 @@
                                       "modity_auth"     : "1"
                                     }
                        },
-"course_coordinator" : {
+"course_coordinator" : { "realm"  : "regular",
                          "course" : {
                                       "view_role"       : "1",
                                       "modify_role"     : {
@@ -36,7 +36,7 @@
                                       "notify"         : "1"
                                     }
                        },
-"instructor"         : {
+"instructor"         : { "realm"  : "regular",
                          "course" : { 
                                       "access_content" : {
                                                              "open"               : "1",
@@ -50,7 +50,7 @@
                                       "notify"         : "1"
                                     }
                        },
-"teaching_assistant" : {
+"teaching_assistant" : { "realm"  : "regular",
                          "course" : { 
                                       "access_content" : {
                                                              "open"               : "1"
@@ -62,19 +62,19 @@
                                       "notify"         : "1"
                                     }
                        },
-"student"            : {
+"student"            : { "realm"  : "regular",
                          "course" : {
                                       "access_content" : {
                                                              "open"               : "1"
                                                          }
                                     }
                        },
-"community_organizer": {
+"community_organizer": { "realm"  : "community"
                        },
-"member"             : {
+"member"             : { "realm"  : "community"
                        },
-"author"             : {
+"author"             : { "realm"  : "user"
                        },
-"co_author"          : {
+"co_author"          : { "realm"  : "user"
                        }
 }
