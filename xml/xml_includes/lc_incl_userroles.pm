@@ -23,9 +23,9 @@ use strict;
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(spreadsheet_finalize_items);
+our @EXPORT = qw(incl_spreadsheet_finalize_items);
 
-sub spreadsheet_finalize_items {
+sub incl_spreadsheet_finalize_items {
    return 'Well, hello there from deep down';
 }
 

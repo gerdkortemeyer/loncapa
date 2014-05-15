@@ -35,9 +35,11 @@ sub start_lcinclude_html {
    unless ($id) { return ''; }
    unless ($name) { $name=$id; }
    my $output="<div id='$id' name='$name'>";
+   my $subroutine='incl_'.$id;
+   $subroutine=~s/\W//g;
    no strict 'refs';
-   if (defined(&$id)) {
-      $output.=&{$id}($p,$safe,$stack,$token);
+   if (defined(&$subroutine)) {
+      $output.=&{$subroutine}($p,$safe,$stack,$token);
    }
    use strict 'refs';
    $output.='</div>';
