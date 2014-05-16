@@ -210,7 +210,7 @@ sub datetimefield {
    foreach ('day','year','month') {
       $short_locale=~s/\$$_/eval('$'.$_)/gse;
    }
-   my $output="<fieldset><time datetime='".$f->format_datetime($dt)."'>";
+   my $output="<fieldset id='".$id."'><time datetime='".$f->format_datetime($dt)."'>";
    $output.=&hidden_label($dateid,'Date format month/day/year');
    $output.="<script>\$(function(){\$('#$dateid').datepick();\$('#$dateid').datepick('option',\$.datepick.regionalOptions['$lang']);})</script><input type='text' id='$dateid' name='$datename' value='$short_locale' size='10' />";
 # The time fields
