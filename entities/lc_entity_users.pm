@@ -154,6 +154,21 @@ sub assign_pid {
 }
 
 # ================================================================
+# Dealing with screen form defaults
+# ================================================================
+
+sub set_screen_form_defaults {
+   my ($entity,$domain,$screen,$defaults)=@_;
+   return &Apache::lc_entity_profile::modify_profile($entity,$domain,{ screen_form_defaults => { $screen => $defaults }});
+}
+
+sub screen_form_defaults {
+   my ($entity,$domain,$screen)=@_;
+   my $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
+   return $profile->{'screen_form_defaults'}->{$screen};
+}
+
+# ================================================================
 # Looking for names
 # ================================================================
 
