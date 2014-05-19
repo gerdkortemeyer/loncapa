@@ -73,7 +73,7 @@ Definitions.prototype.infix = function(id, lbp, rbp, led) {
  * Creates a new prefix operator.
  * @param {string} id - Operator id (text used to recognize it)
  * @param {number} rbp - Right binding power
- * @param {nudFunction} nud - Null denotation function
+ * @param {nudFunction} [nud] - Null denotation function
  */
 Definitions.prototype.prefix = function(id, rbp, nud) {
     var arity, lbp, led;
@@ -91,7 +91,7 @@ Definitions.prototype.prefix = function(id, rbp, nud) {
  * Creates a new suffix operator.
  * @param {string} id - Operator id (text used to recognize it)
  * @param {number} lbp - Left binding power
- * @param {ledFunction} led - Left denotation function
+ * @param {ledFunction} [led] - Left denotation function
  */
 Definitions.prototype.suffix = function(id, lbp, led) {
     var arity, rbp, nud;
@@ -131,8 +131,21 @@ Definitions.prototype.define = function() {
         // this led for units gathers all the units in an ENode
         var right = p.expression(125);
         while (p.current_token != null && "*/".indexOf(p.current_token.value) != -1 &&
-                p.tokens[p.token_nr] != null && p.tokens[p.token_nr].type == Token.NAME &&
+                p.tokens[p.token_nr] != null &&
+                (p.tokens[p.token_nr].type == Token.NAME || p.tokens[p.token_nr].value == "(" ) &&
                 (p.tokens[p.token_nr+1] == null || p.tokens[p.token_nr+1].value != "(")) {
+            if (p.unit_mode) {
+                var nv = p.tokens[p.token_nr].value;
+                var cst = false;
+                for (var i=0; i<p.constants.length; i++) {
+                    if (nv == p.constants[i]) {
+                        cst = true;
+                        break;
+                    }
+                }
+                if (cst)
+                    break;
+            }
             var t = p.current_token;
             p.advance();
             right = t.op.led(p, right);

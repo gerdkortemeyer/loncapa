@@ -73,7 +73,7 @@ Definitions.prototype.infix = function(id, lbp, rbp, led) {
  * Creates a new prefix operator.
  * @param {string} id - Operator id (text used to recognize it)
  * @param {number} rbp - Right binding power
- * @param {nudFunction} nud - Null denotation function
+ * @param {nudFunction} [nud] - Null denotation function
  */
 Definitions.prototype.prefix = function(id, rbp, nud) {
     var arity, lbp, led;
@@ -91,7 +91,7 @@ Definitions.prototype.prefix = function(id, rbp, nud) {
  * Creates a new suffix operator.
  * @param {string} id - Operator id (text used to recognize it)
  * @param {number} lbp - Left binding power
- * @param {ledFunction} led - Left denotation function
+ * @param {ledFunction} [led] - Left denotation function
  */
 Definitions.prototype.suffix = function(id, lbp, led) {
     var arity, rbp, nud;
@@ -131,8 +131,21 @@ Definitions.prototype.define = function() {
         // this led for units gathers all the units in an ENode
         var right = p.expression(125);
         while (p.current_token != null && "*/".indexOf(p.current_token.value) != -1 &&
-                p.tokens[p.token_nr] != null && p.tokens[p.token_nr].type == Token.NAME &&
+                p.tokens[p.token_nr] != null &&
+                (p.tokens[p.token_nr].type == Token.NAME || p.tokens[p.token_nr].value == "(" ) &&
                 (p.tokens[p.token_nr+1] == null || p.tokens[p.token_nr+1].value != "(")) {
+            if (p.unit_mode) {
+                var nv = p.tokens[p.token_nr].value;
+                var cst = false;
+                for (var i=0; i<p.constants.length; i++) {
+                    if (nv == p.constants[i]) {
+                        cst = true;
+                        break;
+                    }
+                }
+                if (cst)
+                    break;
+            }
             var t = p.current_token;
             p.advance();
             right = t.op.led(p, right);
@@ -957,8 +970,9 @@ through which recipients can access the Corresponding Source.
  * @constructor
  * @param {boolean} [accept_bad_syntax] - assume hidden multiplication operators in some cases (unlike maxima)
  * @param {boolean} [unit_mode] - handle only numerical expressions with units (no variable)
+ * @param {Array.<string>} [constants] - array of constant names for unit mode
  */
-function Parser(accept_bad_syntax, unit_mode) {
+function Parser(accept_bad_syntax, unit_mode, constants) {
     if (typeof accept_bad_syntax == "undefined")
         this.accept_bad_syntax = false;
     else
@@ -967,6 +981,10 @@ function Parser(accept_bad_syntax, unit_mode) {
         this.unit_mode = false;
     else
         this.unit_mode = unit_mode;
+    if (typeof constants == "undefined")
+        this.constants = [];
+    else
+        this.constants = constants;
     this.defs = new Definitions();
     this.defs.define();
     this.operators = this.defs.operators;
@@ -1045,13 +1063,33 @@ Parser.prototype.addHiddenOperators = function() {
                 (token.value == ")" && next_token.type == Token.NUMBER) ||
                 (token.value == ")" && next_token.value == "(")
            ) {
+            var units = (this.unit_mode && token.type == Token.NUMBER && next_token.type == Token.NAME);
+            if (units) {
+                for (var j=0; j<this.constants.length; j++) {
+                    if (next_token.value == this.constants[j]) {
+                        units = false;
+                        break;
+                    }
+                }
+                if (this.tokens.length > i + 2 && this.tokens[i + 2].value == "(") {
+                    var known_functions = ["sqrt", "abs", "exp", "factorial", "diff",
+                        "integrate", "sum", "product", "limit", "binomial", "matrix"];
+                    for (var j=0; j<known_functions.length; j++) {
+                        if (next_token.value == known_functions[j]) {
+                            units = false;
+                            break;
+                        }
+                    }
+                }
+            }
             var new_token;
-            if (this.unit_mode && token.type == Token.NUMBER && next_token.type == Token.NAME)
+            if (units) {
                 new_token = new Token(Token.OPERATOR, next_token.from,
                     next_token.from, unit_operator.id, unit_operator);
-            else
+            } else {
                 new_token = new Token(Token.OPERATOR, next_token.from,
                     next_token.from, multiplication.id, multiplication);
+            }
             this.tokens.splice(i+1, 0, new_token);
         }
     }
@@ -1314,8 +1352,6 @@ through which recipients can access the Corresponding Source.
 var handleChange = function(maxima_object) {
     // maxima_object has 3 fields: ta, output_div, oldtxt
     // we need to pass this object instead of the values because oldtxt will change
-    var accept_bad_syntax = true;
-    var unit_mode = true;
     var ta, output_div, txt, parser, output, root;
     ta = maxima_object.ta;
     output_div = maxima_object.output_div;
@@ -1326,7 +1362,7 @@ var handleChange = function(maxima_object) {
             output_div.removeChild(output_div.firstChild);
         output_div.removeAttribute("title");
         if (txt != "") {
-            parser = new Parser(accept_bad_syntax, unit_mode);
+            parser = maxima_object.parser;
             try {
                 root = parser.parse(txt);
                 if (root != null) {
@@ -1367,11 +1403,17 @@ window.addEventListener('load', function(e) {
             ta.parentNode.insertBefore(output_div, ta.nextSibling);
         else
             ta.parentNode.appendChild(output_div);
+        var accept_bad_syntax = (ta.getAttribute("data-accept_bad_syntax") === "true");
+        var unit_mode = (ta.getAttribute("data-unit_mode") === "true");
+        var constants = ta.getAttribute("data-constants");
+        if (constants)
+            constants = constants.split(/[\s,]+/);
         var oldtxt = "";
         maxima_objects[i] = {
             "ta": ta,
             "output_div": output_div,
-            "oldtxt": oldtxt
+            "oldtxt": oldtxt,
+            "parser": new Parser(accept_bad_syntax, unit_mode, constants)
         };
         var changeObjectN = function(n) {
             return function(e) { handleChange(maxima_objects[n]); };

@@ -23,8 +23,9 @@ through which recipients can access the Corresponding Source.
  * @constructor
  * @param {boolean} [accept_bad_syntax] - assume hidden multiplication operators in some cases (unlike maxima)
  * @param {boolean} [unit_mode] - handle only numerical expressions with units (no variable)
+ * @param {Array.<string>} [constants] - array of constant names for unit mode
  */
-function Parser(accept_bad_syntax, unit_mode) {
+function Parser(accept_bad_syntax, unit_mode, constants) {
     if (typeof accept_bad_syntax == "undefined")
         this.accept_bad_syntax = false;
     else
@@ -33,6 +34,10 @@ function Parser(accept_bad_syntax, unit_mode) {
         this.unit_mode = false;
     else
         this.unit_mode = unit_mode;
+    if (typeof constants == "undefined")
+        this.constants = [];
+    else
+        this.constants = constants;
     this.defs = new Definitions();
     this.defs.define();
     this.operators = this.defs.operators;
@@ -111,13 +116,33 @@ Parser.prototype.addHiddenOperators = function() {
                 (token.value == ")" && next_token.type == Token.NUMBER) ||
                 (token.value == ")" && next_token.value == "(")
            ) {
+            var units = (this.unit_mode && token.type == Token.NUMBER && next_token.type == Token.NAME);
+            if (units) {
+                for (var j=0; j<this.constants.length; j++) {
+                    if (next_token.value == this.constants[j]) {
+                        units = false;
+                        break;
+                    }
+                }
+                if (this.tokens.length > i + 2 && this.tokens[i + 2].value == "(") {
+                    var known_functions = ["sqrt", "abs", "exp", "factorial", "diff",
+                        "integrate", "sum", "product", "limit", "binomial", "matrix"];
+                    for (var j=0; j<known_functions.length; j++) {
+                        if (next_token.value == known_functions[j]) {
+                            units = false;
+                            break;
+                        }
+                    }
+                }
+            }
             var new_token;
-            if (this.unit_mode && token.type == Token.NUMBER && next_token.type == Token.NAME)
+            if (units) {
                 new_token = new Token(Token.OPERATOR, next_token.from,
                     next_token.from, unit_operator.id, unit_operator);
-            else
+            } else {
                 new_token = new Token(Token.OPERATOR, next_token.from,
                     next_token.from, multiplication.id, multiplication);
+            }
             this.tokens.splice(i+1, 0, new_token);
         }
     }

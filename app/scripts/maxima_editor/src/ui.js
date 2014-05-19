@@ -26,8 +26,6 @@ through which recipients can access the Corresponding Source.
 var handleChange = function(maxima_object) {
     // maxima_object has 3 fields: ta, output_div, oldtxt
     // we need to pass this object instead of the values because oldtxt will change
-    var accept_bad_syntax = true;
-    var unit_mode = true;
     var ta, output_div, txt, parser, output, root;
     ta = maxima_object.ta;
     output_div = maxima_object.output_div;
@@ -38,7 +36,7 @@ var handleChange = function(maxima_object) {
             output_div.removeChild(output_div.firstChild);
         output_div.removeAttribute("title");
         if (txt != "") {
-            parser = new Parser(accept_bad_syntax, unit_mode);
+            parser = maxima_object.parser;
             try {
                 root = parser.parse(txt);
                 if (root != null) {
@@ -79,11 +77,17 @@ window.addEventListener('load', function(e) {
             ta.parentNode.insertBefore(output_div, ta.nextSibling);
         else
             ta.parentNode.appendChild(output_div);
+        var accept_bad_syntax = (ta.getAttribute("data-accept_bad_syntax") === "true");
+        var unit_mode = (ta.getAttribute("data-unit_mode") === "true");
+        var constants = ta.getAttribute("data-constants");
+        if (constants)
+            constants = constants.split(/[\s,]+/);
         var oldtxt = "";
         maxima_objects[i] = {
             "ta": ta,
             "output_div": output_div,
-            "oldtxt": oldtxt
+            "oldtxt": oldtxt,
+            "parser": new Parser(accept_bad_syntax, unit_mode, constants)
         };
         var changeObjectN = function(n) {
             return function(e) { handleChange(maxima_objects[n]); };
