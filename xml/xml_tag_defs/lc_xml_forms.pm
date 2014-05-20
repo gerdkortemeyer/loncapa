@@ -36,11 +36,18 @@ our @EXPORT = qw(start_lcform_html end_lcform_html start_lcformtable_html end_lc
                  start_lcformtrigger_html start_lcformcancel_html
                  start_lcspreadsheetassign_html end_lcspreadsheetassign_html start_lcselectoption_html);
 
+#
+# LC's version of forms
+# takes name, id, and "screendefaults" which are used to load default value from previous submissions
+#
 sub start_lcform_html {
    my ($p,$safe,$stack,$token)=@_;
    my $name=$token->[2]->{'name'};
+   my $screendefaults=$token->[2]->{'screendefaults'};
    unless ($name) { $name=$token->[2]->{'id'}; }
-   return '<form class="lcform" id="'.$token->[2]->{'id'}.'" name="'.$name.'"><input type="hidden" id="postdata" name="postdata" value="" />';
+   return '<form class="lcform" id="'.$token->[2]->{'id'}.'" name="'.$name.'"'.
+   ($screendefaults?' onsubmit="screendefaults(\''.$screendefaults.'\')"':'').
+   '><input type="hidden" id="postdata" name="postdata" value="" />';
 }
 
 sub end_lcform_html {

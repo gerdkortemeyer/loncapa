@@ -8,3 +8,7 @@ function adjust_framesize() {
       var frameheight=document.body.offsetHeight + 50;
       $("#contentframe",window.parent.document).css({ height : frameheight + 'px' });
 }
+
+function screendefaults(name) {
+   alert(name);
+}
