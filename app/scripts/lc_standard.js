@@ -9,6 +9,12 @@ function adjust_framesize() {
       $("#contentframe",window.parent.document).css({ height : frameheight + 'px' });
 }
 
-function screendefaults(name) {
-   alert(name);
+function screendefaults(formname,storename) {
+   var data = $('#'.formname).serialize();
+   $.ajax({
+             url: '/screendefaults/'+storename,
+             data: data,
+             async: false,
+             type:'POST'
+          });
 }

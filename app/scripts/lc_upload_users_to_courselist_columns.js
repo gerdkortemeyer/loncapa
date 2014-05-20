@@ -6,8 +6,7 @@ $(document).ready(function() {
            document.spreadsheetassign.action="/pages/lc_upload_users_to_courselist_finalize.html";
            parent.setbreadcrumbbar('add','finalizeuploadcourselist','Finalize','');
            parent.breadcrumbbar();
-           screendefaults('spreadsheetassign');
-           document.spreadsheetassign.submit();
+           $('#spreadsheetassign').trigger('submit');
         } else {
            $('.lcproblem').show();
         }

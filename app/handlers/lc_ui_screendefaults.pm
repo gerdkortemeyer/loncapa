@@ -37,6 +37,7 @@ sub handler {
 # Extract posted content from AJAX
    my %content=&Apache::lc_entity_sessions::posted_content();
    &logdebug("Namespace $namespace Content ".&Apache::lc_json_utils::perl_to_json(\%content));
+   $r->print('ok');
    return OK;
 }
 1;

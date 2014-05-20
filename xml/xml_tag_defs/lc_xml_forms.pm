@@ -46,7 +46,7 @@ sub start_lcform_html {
    my $screendefaults=$token->[2]->{'screendefaults'};
    unless ($name) { $name=$token->[2]->{'id'}; }
    return '<form class="lcform" id="'.$token->[2]->{'id'}.'" name="'.$name.'"'.
-   ($screendefaults?' onsubmit="screendefaults(\''.$screendefaults.'\')"':'').
+   ($screendefaults?' onsubmit="screendefaults(\''.$token->[2]->{'id'}."','".$screendefaults.'\')"':'').
    '><input type="hidden" id="postdata" name="postdata" value="" />';
 }
 
