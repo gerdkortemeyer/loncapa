@@ -11,6 +11,7 @@ $(document).ready(function() {
            $('.lcproblem').show();
         }
      });
+     verify();
 });
 
 function completed() {
@@ -26,8 +27,12 @@ function completed() {
 }
 
 function verify(changedentry) {
-   var fieldname=changedentry.name;
-   var fieldvalue=$('#'+fieldname).val();
+   var fieldname='void';
+   var fieldvalue='';
+   if (!(typeof(changedentry)==='undefined')) {
+      fieldname=changedentry.name;
+      fieldvalue=$('#'+fieldname).val();
+   }
    var founddomain=false;
    var foundpassword=false;
    var foundrole=false;
