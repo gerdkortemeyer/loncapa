@@ -30,8 +30,10 @@ use Apache::lc_xml_utils();
 use Apache::lc_entity_sessions();
 use Apache::lc_entity_users();
 
-use Data::Dumper;
-use Apache::lc_logs;
+#
+# Screen defaults
+#
+my $screen_form_defaults;
 
 our @ISA = qw(Exporter);
 
@@ -47,16 +49,18 @@ our @EXPORT = qw(start_lcform_html end_lcform_html start_lcformtable_html end_lc
 #
 sub start_lcform_html {
    my ($p,$safe,$stack,$token)=@_;
+   my $id=$token->[2]->{'id'};
    my $name=$token->[2]->{'name'};
+   unless ($name) { $name=$id; }
+# Load screendefaults, if there are any
+   undef $screen_form_defaults;
    my $screendefaults=$token->[2]->{'screendefaults'};
-   unless ($name) { $name=$token->[2]->{'id'}; }
-
-if ($screendefaults) {
-   &logdebug("Found: ".Dumper(&Apache::lc_entity_users::screen_form_defaults(&Apache::lc_entity_sessions::user_entity_domain(),$screendefaults)));
-}
-
-   return '<form class="lcform" id="'.$token->[2]->{'id'}.'" name="'.$name.'"'.
-   ($screendefaults?' onsubmit="screendefaults(\''.$token->[2]->{'id'}."','".$screendefaults.'\')"':'').
+   if ($screendefaults) {
+      $screen_form_defaults=&Apache::lc_entity_users::screen_form_defaults(&Apache::lc_entity_sessions::user_entity_domain(),$screendefaults);
+   }
+# Actually start the form
+   return '<form class="lcform" id="'.$id.'" name="'.$name.'"'.
+   ($screendefaults?' onsubmit="screendefaults(\''.$id."','".$screendefaults.'\')"':'').
    '><input type="hidden" id="postdata" name="postdata" value="" />';
 }
 
@@ -158,6 +162,9 @@ sub inputfield {
 sub selectfield {
    my ($id,$name,$values,$choices,$default,$onchange)=@_;
    $default=~s/[^\w\|]//gs;
+   unless ($default) {
+      $default=$screen_form_defaults->{$id};
+   }
    my $changecall='';
    if ($onchange) {
       $changecall=' onChange="'.$onchange.'"';
@@ -313,7 +320,12 @@ sub end_lcspreadsheetassign_html {
             if ($found>5) { last; }
          }
          $output.="</pre></td><td>\n";
-         $output.=&selectfield("col$col","col$col",$values,$choices,'nothing',$stack->{'tags'}->[-1]->{'args'}->{'verify'});
+         my $default='nothing';
+         my $id="col$col";
+         if ($screen_form_defaults->{$id}) {
+            $default=$screen_form_defaults->{$id};
+         }
+         $output.=&selectfield($id,$id,$values,$choices,$default,$stack->{'tags'}->[-1]->{'args'}->{'verify'});
          $output.="</td></tr>";
       }
       $output.='</tbody></table>';
