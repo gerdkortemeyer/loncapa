@@ -27,6 +27,11 @@ use DateTime;
 use DateTime::TimeZone;
 use DateTime::Format::RFC3339;
 use Apache::lc_xml_utils();
+use Apache::lc_entity_sessions();
+use Apache::lc_entity_users();
+
+use Data::Dumper;
+use Apache::lc_logs;
 
 our @ISA = qw(Exporter);
 
@@ -45,6 +50,11 @@ sub start_lcform_html {
    my $name=$token->[2]->{'name'};
    my $screendefaults=$token->[2]->{'screendefaults'};
    unless ($name) { $name=$token->[2]->{'id'}; }
+
+if ($screendefaults) {
+   &logdebug("Found: ".Dumper(&Apache::lc_entity_users::screen_form_defaults(&Apache::lc_entity_sessions::user_entity_domain(),$screendefaults)));
+}
+
    return '<form class="lcform" id="'.$token->[2]->{'id'}.'" name="'.$name.'"'.
    ($screendefaults?' onsubmit="screendefaults(\''.$token->[2]->{'id'}."','".$screendefaults.'\')"':'').
    '><input type="hidden" id="postdata" name="postdata" value="" />';

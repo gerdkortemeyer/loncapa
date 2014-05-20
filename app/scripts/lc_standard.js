@@ -10,7 +10,7 @@ function adjust_framesize() {
 }
 
 function screendefaults(formname,storename) {
-   var data = $('#'.formname).serialize();
+   var data = $('#'+formname).serialize();
    $.ajax({
              url: '/screendefaults/'+storename,
              data: data,

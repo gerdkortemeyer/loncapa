@@ -27,6 +27,7 @@ use Apache::lc_entity_sessions();
 
 use Apache::lc_logs;
 use Apache::lc_json_utils();
+
 # ==== Main handler
 #
 sub handler {
@@ -36,8 +37,13 @@ sub handler {
    my ($namespace)=($uri=~/\/(\w+)$/);
 # Extract posted content from AJAX
    my %content=&Apache::lc_entity_sessions::posted_content();
-   &logdebug("Namespace $namespace Content ".&Apache::lc_json_utils::perl_to_json(\%content));
-   $r->print('ok');
+# Store
+   if (&Apache::lc_entity_users::set_screen_form_defaults(&Apache::lc_entity_sessions::user_entity_domain(),$namespace,\%content)) {
+      $r->print('ok');
+   } else {
+      &logwarning("Failed to store screen defaults for ($namespace) of (".join(',',&Apache::lc_entity_sessions::user_entity_domain()).")");
+      $r->print('error');
+   }
    return OK;
 }
 1;
