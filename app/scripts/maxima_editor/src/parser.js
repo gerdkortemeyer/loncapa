@@ -97,14 +97,32 @@ Parser.prototype.advance = function(id) {
 };
 
 /**
- * Adds hidden multiplication operators to the token stream
+ * Adds hidden multiplication and unit operators to the token stream
  */
 Parser.prototype.addHiddenOperators = function() {
     var multiplication = this.defs.findOperator("*");
     var unit_operator = this.defs.findOperator("`");
+    var in_units = false; // we check if we are already in the units to avoid adding two ` operators inside
+    var in_exp = false;
     for (var i=0; i<this.tokens.length - 1; i++) {
         var token = this.tokens[i];
         var next_token = this.tokens[i + 1];
+        if (this.unit_mode) {
+            if (token.value == "`")
+                in_units = true;
+            else if (in_units) {
+                if (token.value == "^")
+                    in_exp = true;
+                else if (in_exp && token.type == Token.NUMBER)
+                    in_exp = false;
+                else if (!in_exp && token.type == Token.NUMBER)
+                    in_units = false;
+                else if (token.type == Token.OPERATOR && "*/^()".indexOf(token.value) == -1)
+                    in_units = false;
+                else if (token.type == Token.NAME && next_token.value == "(")
+                    in_units = false;
+            }
+        }
         if (
                 (token.type == Token.NAME && next_token.type == Token.NAME) ||
                 (token.type == Token.NUMBER && next_token.type == Token.NAME) ||
@@ -116,19 +134,33 @@ Parser.prototype.addHiddenOperators = function() {
                 (token.value == ")" && next_token.type == Token.NUMBER) ||
                 (token.value == ")" && next_token.value == "(")
            ) {
-            var units = (this.unit_mode && token.type == Token.NUMBER && next_token.type == Token.NAME);
+            // support for things like "(1/2) (m/s)" is complex...
+            var units = (this.unit_mode && !in_units && (token.type == Token.NUMBER || token.value == ")") &&
+                (next_token.type == Token.NAME ||
+                    (next_token.value == "(" && this.tokens.length > i + 2 &&
+                    this.tokens[i + 2].type == Token.NAME)));
             if (units) {
+                var test_token, index_test;
+                if (next_token.type == Token.NAME) {
+                    test_token = next_token;
+                    index_test = i + 1;
+                } else {
+                    // for instance for "2 (m/s)"
+                    index_test = i + 2;
+                    test_token = this.tokens[index_test];
+                }
                 for (var j=0; j<this.constants.length; j++) {
-                    if (next_token.value == this.constants[j]) {
+                    if (test_token.value == this.constants[j]) {
                         units = false;
                         break;
                     }
                 }
-                if (this.tokens.length > i + 2 && this.tokens[i + 2].value == "(") {
+                if (this.tokens.length > index_test + 1 && this.tokens[index_test + 1].value == "(") {
                     var known_functions = ["sqrt", "abs", "exp", "factorial", "diff",
-                        "integrate", "sum", "product", "limit", "binomial", "matrix"];
+                        "integrate", "sum", "product", "limit", "binomial", "matrix",
+                        "ln", "log", "log10"];
                     for (var j=0; j<known_functions.length; j++) {
-                        if (next_token.value == known_functions[j]) {
+                        if (test_token.value == known_functions[j]) {
                             units = false;
                             break;
                         }
@@ -139,6 +171,7 @@ Parser.prototype.addHiddenOperators = function() {
             if (units) {
                 new_token = new Token(Token.OPERATOR, next_token.from,
                     next_token.from, unit_operator.id, unit_operator);
+                in_units = true;
             } else {
                 new_token = new Token(Token.OPERATOR, next_token.from,
                     next_token.from, multiplication.id, multiplication);
