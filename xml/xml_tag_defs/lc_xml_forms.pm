@@ -161,7 +161,6 @@ sub inputfield {
 #
 sub selectfield {
    my ($id,$name,$values,$choices,$default,$onchange)=@_;
-   $default=~s/[^\w\|]//gs;
    unless ($default) {
       $default=$screen_form_defaults->{$id};
    }

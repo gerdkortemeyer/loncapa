@@ -71,6 +71,10 @@ sub locallocaltime {
    return ($format." $time_zone",$f->format_datetime($dt));
 }
 
+sub inputdate_to_timestamp {
+   my ($date,$hour,$min,$sec,$ampm)=@_;
+}
+
 sub all_languages {
    return %known_languages;
 }
