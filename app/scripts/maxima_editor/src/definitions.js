@@ -130,11 +130,16 @@ Definitions.prototype.define = function() {
         // led (infix operator)
         // this led for units gathers all the units in an ENode
         var right = p.expression(125);
-        while (p.current_token != null && "*/".indexOf(p.current_token.value) != -1 &&
-                p.tokens[p.token_nr] != null &&
-                (p.tokens[p.token_nr].type == Token.NAME || p.tokens[p.token_nr].value == "(" ) &&
-                (p.tokens[p.token_nr+1] == null || p.tokens[p.token_nr+1].value != "(")) {
-            if (p.unit_mode) {
+        while (p.current_token != null && "*/".indexOf(p.current_token.value) != -1) {
+            var token2 = p.tokens[p.token_nr];
+            if (token2 == null)
+                break;
+            if (token2.type != Token.NAME && token2.value != "(")
+                break;
+            var token3 = p.tokens[p.token_nr+1];
+            if (token3 != null && (token3.value == "(" || token3.type == Token.NUMBER))
+                break;
+            if (p.unit_mode && p.tokens[p.token_nr].type == Token.NAME) {
                 var nv = p.tokens[p.token_nr].value;
                 var cst = false;
                 for (var i=0; i<p.constants.length; i++) {
