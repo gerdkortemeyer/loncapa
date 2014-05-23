@@ -154,7 +154,27 @@ sub inputfield {
    } elsif ($type eq 'modifiablecourseroles') {
       my ($role_short,$role_name)=&modifiable_role_choices('course');
       return &selectfield($id,$name,$role_short,$role_name,$default);
+   } elsif ($type eq 'symbolic') {
+      return &maxima_editor($id,$name,'symbolic',$default);
+   } elsif ($type eq 'numeric') {
+      return &maxima_editor($id,$name,'numerical',$default);
    }
+}
+
+# ==== Bring up a MAXIMA editor field
+# 
+sub maxima_editor {
+   my ($id,$name,$mode,$default)=@_;
+   unless ($name) {
+      $name=$id;
+   }
+   my $output='<div class="eqnbox">';
+   $output.='<textarea id="'.$id.'" name="'.$name.'" data-accept_bad_syntax="true" spellcheck="false" class="maxima"';
+   if ($mode eq 'numeric') {
+      $output.=' data-constants="c, pi, e, hbar, amu" data-unit_mode="true"';
+   }
+   $output.='>'.$default.'</textarea></div>';
+   return $output;
 }
 
 # ==== Generate a select field
