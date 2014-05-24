@@ -72,7 +72,36 @@ sub locallocaltime {
 }
 
 sub inputdate_to_timestamp {
-   my ($date,$hour,$min,$sec,$ampm)=@_;
+   my ($date,$hour,$min,$sec,$ampm,$timezone)=@_;
+   my $day;
+   my $month;
+   my $year;
+#FIXME: other formats?
+   if ($date=~/^(\d+)\.(\d+)\.(\d+)$/) {
+      $day=$1;
+      $month=$2;
+      $year=$3;
+   } elsif ($date=~/^(\d+)\/(\d+)\/(\d+)$/) {
+      $month=$1;
+      $day=$2;
+      $year=$3;
+   }
+   if (&mt('date_format') eq '12') {
+      if ($ampm eq 'pm') {
+         $hour+=12;
+      }
+   }
+   if ($hour<10) { $hour='0'.$hour; }
+   if ($min<10)  { $min='0'.$min;   }
+   if ($sec<10)  { $sec='0'.$sec;   }
+   return DateTime->new(
+      year       => $year,
+      month      => $month,
+      day        => $day,
+      hour       => $hour,
+      minute     => $min,
+      second     => $sec,
+      time_zone  => $timezone)->epoch();
 }
 
 sub all_languages {

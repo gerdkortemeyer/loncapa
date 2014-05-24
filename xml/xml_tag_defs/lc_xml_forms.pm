@@ -61,7 +61,7 @@ sub start_lcform_html {
 # Actually start the form
    return '<form class="lcform" id="'.$id.'" name="'.$name.'"'.
    ($screendefaults?' onsubmit="screendefaults(\''.$id."','".$screendefaults.'\')"':'').
-   '><input type="hidden" id="postdata" name="postdata" value="" />';
+   '>'.&hidden_field('postdata','');
 }
 
 sub end_lcform_html {
@@ -149,6 +149,17 @@ sub inputfield {
       return &selectfield($id,$name,$timezones,$timezones,$default);
    } elsif ($type eq 'datetime') {
 #FIXME: y2038?
+      unless ($default) { 
+         if (($screen_form_defaults->{$id.'_name'}) && ($screen_form_defaults->{$id.'_time_zone'})) {
+            $default=&Apache::lc_ui_localize::inputdate_to_timestamp(
+                  $screen_form_defaults->{$id.'_name'},
+                  $screen_form_defaults->{$id.'_time_hour'},
+                  $screen_form_defaults->{$id.'_time_min'},
+                  $screen_form_defaults->{$id.'_time_sec'},
+                  $screen_form_defaults->{$id.'_time_ampm'},
+                  $screen_form_defaults->{$id.'_time_zone'});
+         }
+      }
       unless ($default) { $default=time; }
       return &datetimefield($id,$name,$default);
    } elsif ($type eq 'modifiablecourseroles') {
@@ -190,7 +201,7 @@ sub selectfield {
    }
    my $selectfield='<select class="lcformselectinput" id="'.$id.'" name="'.$name.'"'.$changecall.'>';
    for (my $i=0;$i<=$#{$values};$i++) {
-          $selectfield.='<option value="'.$values->[$i].'"'.($values->[$i]=~/$default/?' selected="selected"':'').'>'.
+          $selectfield.='<option value="'.$values->[$i].'"'.($values->[$i]=~/^($default)$/?' selected="selected"':'').'>'.
                          $choices->[$i].'</option>';
    }
    $selectfield.='</select>';
@@ -210,6 +221,14 @@ sub hidden_label_selectfield {
 sub hidden_label {
    my ($id,$description)=@_;
    return  '<label for="'.$id.'" class="hidden">'.&mt($description).'</label>';
+}
+
+# ==== Hidden field
+#
+sub hidden_field {
+   my ($id,$value,$name)=@_;
+   unless ($name) { $name=$id; }
+   return "<input type='hidden' id='$id' name='$name' value='$value' />";
 }
 
 # ==== File upload
@@ -238,6 +257,7 @@ sub datetimefield {
                     ->set_time_zone($timezone);
    my $f=DateTime::Format::RFC3339->new();
    my $time_zone  = $dt->time_zone_short_name();
+   my $time_zone_long = $dt->time_zone_long_name();
    my $seconds    = $dt->second();
    my $minutes    = $dt->minute();
    my $twentyfour = $dt->hour();
@@ -286,7 +306,7 @@ sub datetimefield {
          $output.=&hidden_label_selectfield($id.'_time_ampm',$name.'_time_ampm',['am','pm'],[$am,$pm],$ampm,'Before/after midday');
       }
    }
-   $output.=$time_zone."</time></fieldset>";
+   $output.=&hidden_field($id.'_time_zone',$time_zone_long).$time_zone."</time></fieldset>";
    return $output;
 }
 
