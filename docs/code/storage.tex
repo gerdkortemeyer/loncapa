@@ -1,0 +1,17 @@
+\chapter{Storage}
+\section{Databases}
+The system uses two databases: PostgreSQL and MongoDB.
+\begin{itemize}
+\item PostgreSQL is a traditional relational database which is used for predictable data that can reside in tables. These are often lookup-tables that need fast search
+\item MongoDB is a noSQL database which is used for flexible, structured data. Searches are rare and not performance critical
+\end{itemize}
+\section{Caching}
+The system uses two caching mechanisms: in-memory and Memcached
+\begin{itemize}
+\item In-memory is occasionally used if a particular process needs to preserve variables, so they do not need to be reinitialized every time. Examples are database handles, etc.
+\item Memcached is the main caching mechanism, which caches data in memory across processes. The cache items have associated expiration times. The time to refresh these caches is distributed across processes and users.
+\end{itemize}
+\section{File system}
+Assets are stored on the file system in /home/loncapa/res
+\section{Programmatic access}
+Databases should not be touched by any higher order handlers. While drivers are located in the /databases GIT directory, e.g., lc\_memcached.pm  lc\_mongodb.pm  lc\_postgresql.pm, these should not be called. Instead, handlers should access the abstractions in the /entities GIT directory, and there only the routines that are not starting with ``remote'' or ``local''.

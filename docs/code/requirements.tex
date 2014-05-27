@@ -14,6 +14,10 @@ The interface must not depend on Java or Flash. Instead, JavaScript/HTML5/CSS ne
 The system needs to support Firefox, Safari, Opera, Chrome, and Internet Explorer. However, the minimum version of Internet Explorer to be considered is Version 11 (keeping in mind that development of the system will take some time, so IE will move on in the meantime). 
 \subsection{No complete screen rebuilds}
 The screen should never completely rebuild. Instead the URL of the screen should always be the server itself and interactivity achieved through AJAX or iframes. Deep-linking and single signon should be enabled but bounce the session back to the normal full screen setup. We are not subservient to other systems.
+\subsection{Easy things easy, hard things possible}
+The product should be able to directly compete with commercial course management solutions, which means that the 80\%-functionality must be as easy to accomplish as in commercial systems. Our heritage demands that we still make the 20\% possible.
+\subsection{Preventing users from shooting themselves into the foot}
+A powerful system will have ample opportunity to configure things in non-sensical ways (for example, having an opening date after the due date, etc). The system must warn students and instructions about potential problems and offer direct ways to remedy the conflict - however, we need to be careful with ``auto-correct'' or being obnoxiously helpful (``Are you writing a letter?'').
 \section{Assets}
 \subsection{Backward compatibility}
 The new LON-CAPA must be backward-compatible to old LON-CAPA using conversion and clean-up processes. Given the size of the LON-CAPA resource pool, more than 99\% of the conversion must be fully automatic. The remaining 1\% must be identified by the conversion process, so we do not have surprises, and must be fixable. Dynamic metadata from the last decade must be converted to the new system, so we do not lose this usage information.
@@ -26,8 +30,17 @@ Any changes to user roles, course tables of contents, due dates, portfolios, etc
 No content or interface handlers must directly touch local disks. All network functionality must be abstracted away beyond the ``entity'' level.
 \section{Network functionality}
 \subsection{SSL}
-All communication between servers is at least 4096-bit encrypted. LON-CAPA issues server and client certificates.
+All communication between servers is at least 4096-bit encrypted. LON-CAPA issues server and client certificates. Servers need full reverse DNS.
 \subsection{Predictable storage}
 To observe privacy and export rules, any permanent user data (beyond temporary session information) needs to be stored in a predictable location. The domain concept of LON-CAPA facilitates this.
 \subsection{Authentication}
-It is the responsibility of the homeserver of a user to authenticate the user
+It is the responsibility of the homeserver of a user to authenticate the user.
+\subsection{Run everywhere}
+All system functionality must be available on all servers, so that content, courses and users can be served from any machine in the cluster (subject to freely configurable limitations).
+\subsection{Servers}
+Servers need to be dedicated to LON-CAPA for security and privacy reasons. In the age of virtual machines, that should not be a problem.
+\section{Coding environment}
+\subsection{Linux Distributions}
+We are developing on CentOS/RedHat Enterprise. We do not have the time to support other distributions ourselves, and will only accept them if some individual guarantees to be their longterm curator. In the age of virtual machines, it should not be a problem to run a VM with a particular distribution, particularly since the machines are completely dedicated anyway.
+\subsection{Open source}
+The software is licensed under the GNU General Public License Version 3 or higher, copyright Michigan State University Board of Trustees. Only software components that are compatible with this license shall be used.
