@@ -5,9 +5,8 @@ use warnings;
 
 # note: we could use Try::Tiny to catch errors if we wanted
 
-use Parser;
-use ENode;
-use ParseException;
+use Apache::math::math_parser::Parser;
+use Apache::math::math_parser::ENode;
 
 
 my $accept_bad_syntax = 1;

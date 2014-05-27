@@ -20,13 +20,13 @@
 ##
 # Loads and converts units
 ##
-package Units;
+package Apache::math::math_parser::Units;
 
 use strict;
 use warnings;
 
-use Parser;
-use Quantity;
+use Apache::math::math_parser::Parser;
+use Apache::math::math_parser::Quantity;
 
 ##
 # Constructor
@@ -67,9 +67,7 @@ sub parser {
 ##
 sub loadUnits {
     my ( $self ) = @_;
-    #TODO: this might have to be changed to use lc_file_utils's readfile instead of File::Util
-    my $f = File::Util->new();
-    my $units_txt = $f->load_file("../../conf/units.json");
+    my $units_txt = Apache::lc_file_utils::readfile(Apache::lc_parameters::lc_conf_dir()."units.json");
     my $jsunits = Apache::lc_json_utils::json_to_perl($units_txt);
     for (my $i=0; $i < scalar(@{$jsunits->{"base"}}); $i++) {
         my $base = $jsunits->{"base"}->[$i];

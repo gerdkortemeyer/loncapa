@@ -20,14 +20,14 @@
 ##
 # A quantity (value and units)
 ##
-package Quantity;
+package Apache::math::math_parser::Quantity;
 
 use strict;
 use warnings;
 
 use Math::Complex;
 
-use QVector;
+use Apache::math::math_parser::QVector;
 
 use overload
     '""' => \&toString,

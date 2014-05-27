@@ -24,8 +24,8 @@ use warnings;
 
 # note: we could use Try::Tiny to catch errors if we wanted
 
-use Parser;
-use ENode;
+use Apache::math::math_parser::Parser;
+use Apache::math::math_parser::ENode;
 
 # please add your own !!!
 my %cases = (

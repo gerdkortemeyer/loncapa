@@ -20,7 +20,7 @@
 ##
 # Equation parser
 ##
-package Parser;
+package Apache::math::math_parser::Parser;
 
 use strict;
 use warnings;
@@ -28,12 +28,12 @@ use warnings;
 use File::Util;
 use lc_json_utils;
 
-use Definitions;
-use ENode;
-use Operator;
-use ParseException;
-use Token;
-use Tokenizer;
+use Apache::math::math_parser::Definitions;
+use Apache::math::math_parser::ENode;
+use Apache::math::math_parser::Operator;
+use Apache::math::math_parser::ParseException;
+use Apache::math::math_parser::Token;
+use Apache::math::math_parser::Tokenizer;
 
 ##
 # Constructor

@@ -20,16 +20,16 @@
 ##
 # Operator definitions (see function define() at the end).
 ##
-package Definitions;
+package Apache::math::math_parser::Definitions;
 
 use strict;
 use warnings;
 
-use ENode;
-use Operator;
-use ParseException;
-use Parser;
-use Token;
+use Apache::math::math_parser::ENode;
+use Apache::math::math_parser::Operator;
+use Apache::math::math_parser::ParseException;
+use Apache::math::math_parser::Parser;
+use Apache::math::math_parser::Token;
 
 use constant ARG_SEPARATOR => ";";
 use constant DECIMAL_SIGN_1 => ".";
@@ -43,9 +43,7 @@ sub new {
     my $self = {
         _operators => [], # Array of Operator
     };
-    #TODO: this might have to be changed to use lc_file_utils's readfile instead of File::Util
-    my $f = File::Util->new();
-    my $constants_txt = $f->load_file("../../conf/constants.json");
+    my $constants_txt = Apache::lc_file_utils::readfile(Apache::lc_parameters::lc_conf_dir()."constants.json");
     $self->{_constants} = Apache::lc_json_utils::json_to_perl($constants_txt);
     bless $self, $class;
     return $self;

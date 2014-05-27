@@ -20,12 +20,12 @@
 ##
 # String tokenizer. Recognizes only names, numbers, and parser operators.
 ##
-package Tokenizer;
+package Apache::math::math_parser::Tokenizer;
 
 use strict;
 use warnings;
 
-use Token;
+use Apache::math::math_parser::Token;
 
 ##
 # @constructor

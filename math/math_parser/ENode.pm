@@ -20,18 +20,18 @@
 ##
 # Parsed tree node. ENode.toMathML(hcolors) contains the code for the transformation into MathML.
 ##
-package ENode;
+package Apache::math::math_parser::ENode;
 
 use strict;
 use warnings;
 
 use feature "switch"; # Perl 5.10.1
 
-use Operator;
-use ParseException;
-use Quantity;
-use QVector;
-use Units;
+use Apache::math::math_parser::Operator;
+use Apache::math::math_parser::ParseException;
+use Apache::math::math_parser::Quantity;
+use Apache::math::math_parser::QVector;
+use Apache::math::math_parser::Units;
 
 use enum qw(UNKNOWN NAME NUMBER OPERATOR FUNCTION VECTOR SUBSCRIPT);
 

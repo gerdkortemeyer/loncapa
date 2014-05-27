@@ -20,12 +20,12 @@
 ##
 # A vector of quantities
 ##
-package QVector;
+package Apache::math::math_parser::QVector;
 
 use strict;
 use warnings;
 
-use Quantity;
+use Apache::math::math_parser::Quantity;
 
 use overload
     '+' => \&add,

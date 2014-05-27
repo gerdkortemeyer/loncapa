@@ -20,7 +20,7 @@
 ##
 # A token from the equation text
 ##
-package Token;
+package Apache::math::math_parser::Token;
 
 use strict;
 use warnings;

@@ -20,7 +20,7 @@
 ##
 # Parser operator, like "(".
 ##
-package Operator;
+package Apache::math::math_parser::Operator;
 
 use strict;
 use warnings;
