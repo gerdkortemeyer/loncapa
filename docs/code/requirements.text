@@ -1,0 +1,32 @@
+\chapter{Requirements}
+\section{Interface}
+\subsection{Fully accessible}
+All aspects of the interface need to be accessible to screen readers. They should not only function, but also explain themselves. For example, if a number of form fields are optically bundled on screen, they need a fieldset and hidden labels that screen readers can pick up. All interaction with the system needs to be possible by using only the keyboard, no functionality shall depend on only the mouse; if using mice input is convenient or desirable for seeing users, for example in a canvas element, at least an alternative viable textual input method must be provided.
+\subsection{Fully internationalized}
+The interface and all input elements need to be fully internationalized. This includes menus in helper applications, text direction (right to left), full unicode transparency, and number formats (e.g., comma versus decimal point).
+\subsection{System reacts in less than one second}
+Any user interaction needs to be acknowledged by the system in less than one second, and non-active interface elements disabled. If a user interaction requires more than one second of processing, progress indicators need to be provided.
+\subsection{Mobile support}
+Mobile devices, most notably iOS and Android, must be supported. Both instructors and students must be able to conduct everyday course business on mobile devices including smartphones. Some interface functions like MouseOver are not supported in some mobile operating systems, so alternatives must be provided.
+\subsection{No Java or Flash}
+The interface must not depend on Java or Flash. Instead, JavaScript/HTML5/CSS need to be used.
+\subsection{Cross-browser compatibility}
+The system needs to support Firefox, Safari, Opera, Chrome, and Internet Explorer. However, the minimum version of Internet Explorer to be considered is Version 11 (keeping in mind that development of the system will take some time, so IE will move on in the meantime). 
+\subsection{
+\section{Assets}
+\subsection{Backward compatibility}
+The new LON-CAPA must be backward-compatible to old LON-CAPA using conversion and clean-up processes. Given the size of the LON-CAPA resource pool, more than 99\% of the conversion must be fully automatic. The remaining 1\% must be identified by the conversion process, so we do not have surprises, and must be fixable. Dynamic metadata from the last decade must be converted to the new system, so we do not lose this usage information.
+\subsection{Printability}
+Assets have to be printable at different granularity (single, chapter, course) in high quality and compactly. This is essential for exam functionality.
+\section{Data}
+\subsection{All changes take effect after at most 10 minutes}
+Any changes to user roles, course tables of contents, due dates, portfolios, etc, must take effect all across the network in at most 10 minutes, and this includes running sessions.
+\subsection{Separation}
+No content or interface handlers must directly touch local disks. All network functionality must be abstracted away beyond the ``entity'' level.
+\section{Network functionality}
+\subsection{SSL}
+All communication between servers is at least 4096-bit encrypted. LON-CAPA issues server and client certificates.
+\subsection{Predictable storage}
+To observe privacy and export rules, any permanent user data (beyond temporary session information) needs to be stored in a predictable location. The domain concept of LON-CAPA facilitates this.
+\subsection{Authentication}
+It is the responsibility of the homeserver of a user to authenticate the user
