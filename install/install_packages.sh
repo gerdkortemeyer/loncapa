@@ -56,3 +56,5 @@ cpan Hash::Merge
 cpan Spreadsheet::XLSX
 cpan Spreadsheet::ParseExcel
 cpan Text::CSV_PP
+cpan enum
+cpan aliased

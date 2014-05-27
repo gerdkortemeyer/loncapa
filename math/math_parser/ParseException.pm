@@ -20,7 +20,7 @@
 ##
 # Parse exception
 ##
-package ParseException;
+package Apache::math::math_parser::ParseException;
 
 use strict;
 use warnings;

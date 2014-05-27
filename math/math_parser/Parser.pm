@@ -20,20 +20,19 @@
 ##
 # Equation parser
 ##
-package Parser;
+package Apache::math::math_parser::Parser;
 
 use strict;
 use warnings;
 
 use File::Util;
-use lc_json_utils;
 
-use Definitions;
-use ENode;
-use Operator;
-use ParseException;
-use Token;
-use Tokenizer;
+use aliased 'Apache::math::math_parser::Definitions';
+use aliased 'Apache::math::math_parser::ENode';
+use aliased 'Apache::math::math_parser::Operator';
+use aliased 'Apache::math::math_parser::ParseException';
+use aliased 'Apache::math::math_parser::Token';
+use aliased 'Apache::math::math_parser::Tokenizer';
 
 ##
 # Constructor
@@ -45,7 +44,7 @@ sub new {
     my $self = {
         _accept_bad_syntax => shift // 0,
         _unit_mode => shift // 0,
-        _defs => new Definitions(),
+        _defs => Definitions->new(),
         _operators => undef, # operator hash table
         _oph => {},
     };
@@ -102,14 +101,14 @@ sub expression {
     my $left; # ENode
     my $t = $self->current_token;
     if (! defined $t) {
-        die new ParseException("Expected something at the end",
+        die ParseException->new("Expected something at the end",
             $self->tokens->[scalar(@{$self->tokens}) - 1]->to + 1);
     }
     $self->advance();
     if (! defined $t->op) {
-        $left = new ENode($t->type, undef, $t->value, undef);
+        $left = ENode->new($t->type, undef, $t->value, undef);
     } elsif (! defined $t->op->nud) {
-        die new ParseException("Unexpected operator '" + $t->op->id + "'", $t->from);
+        die ParseException->new("Unexpected operator '" + $t->op->id + "'", $t->from);
     } else {
         $left = $t->op->nud->($t->op, $self);
     }
@@ -133,10 +132,10 @@ sub advance {
     if (defined $id && (!defined $self->current_token || !defined $self->current_token->op ||
             $self->current_token->op->id ne $id)) {
         if (!defined $self->current_token) {
-            die new ParseException("Expected '" . $id . "' at the end",
+            die ParseException->new("Expected '" . $id . "' at the end",
                 $self->tokens->[scalar(@{$self->tokens}) - 1]->to + 1);
         } else {
-            die new ParseException("Expected '" . $id . "'", $self->current_token->from);
+            die ParseException->new("Expected '" . $id . "'", $self->current_token->from);
         }
     }
     if ($self->token_nr >= scalar(@{$self->tokens})) {
@@ -166,37 +165,37 @@ sub addHiddenOperators {
             } elsif ($in_units) {
                 if ($token->value eq "^") {
                     $in_exp = 1;
-                } elsif ($in_exp && $token->type == Token::NUMBER) {
+                } elsif ($in_exp && $token->type == Token->NUMBER) {
                     $in_exp = 0;
-                } elsif (!$in_exp && $token->type == Token::NUMBER) {
+                } elsif (!$in_exp && $token->type == Token->NUMBER) {
                     $in_units = 0;
-                } elsif ($token->type == Token::OPERATOR && index("*/^()", $token->value) == -1) {
+                } elsif ($token->type == Token->OPERATOR && index("*/^()", $token->value) == -1) {
                     $in_units = 0;
-                } elsif ($token->type == Token::NAME && $next_token->value eq "(") {
+                } elsif ($token->type == Token->NAME && $next_token->value eq "(") {
                     $in_units = 0;
                 }
             }
         }
         if (
-                ($token->type == Token::NAME && $next_token->type == Token::NAME) ||
-                ($token->type == Token::NUMBER && $next_token->type == Token::NAME) ||
-                ($token->type == Token::NUMBER && $next_token->type == Token::NUMBER) ||
-                ($token->type == Token::NUMBER && $next_token->value eq "(") ||
-                # ($token->type == Token::NAME && $next_token->value eq "(") ||
+                ($token->type == Token->NAME && $next_token->type == Token->NAME) ||
+                ($token->type == Token->NUMBER && $next_token->type == Token->NAME) ||
+                ($token->type == Token->NUMBER && $next_token->type == Token->NUMBER) ||
+                ($token->type == Token->NUMBER && $next_token->value eq "(") ||
+                # ($token->type == Token->NAME && $next_token->value eq "(") ||
                 # name ( could be a function call
-                ($token->value eq ")" && $next_token->type == Token::NAME) ||
-                ($token->value eq ")" && $next_token->type == Token::NUMBER) ||
+                ($token->value eq ")" && $next_token->type == Token->NAME) ||
+                ($token->value eq ")" && $next_token->type == Token->NUMBER) ||
                 ($token->value eq ")" && $next_token->value eq "(")
            ) {
             # support for things like "(1/2) (m/s)" is complex...
             my $units = ($self->unit_mode && !$in_units &&
-                ($token->type == Token::NUMBER || $token->value eq ")") &&
-                ($next_token->type == Token::NAME ||
+                ($token->type == Token->NUMBER || $token->value eq ")") &&
+                ($next_token->type == Token->NAME ||
                     ($next_token->value eq "(" && scalar(@{$self->tokens}) > $i + 2 &&
-                    $self->tokens->[$i + 2]->type == Token::NAME)));
+                    $self->tokens->[$i + 2]->type == Token->NAME)));
             if ($units) {
                 my( $test_token, $index_test);
-                if ($next_token->type == Token::NAME) {
+                if ($next_token->type == Token->NAME) {
                     $test_token = $next_token;
                     $index_test = $i + 1;
                 } else {
@@ -218,10 +217,10 @@ sub addHiddenOperators {
             }
             my $new_token;
             if ($units) {
-                $new_token = new Token(Token::OPERATOR, $next_token->from,
+                $new_token = Token->new(Token->OPERATOR, $next_token->from,
                     $next_token->from, $unit_operator->id, $unit_operator);
             } else {
-                $new_token = new Token(Token::OPERATOR, $next_token->from,
+                $new_token = Token->new(Token->OPERATOR, $next_token->from,
                     $next_token->from, $multiplication->id, $multiplication);
             }
             splice(@{$self->{_tokens}}, $i+1, 0, $new_token);
@@ -237,7 +236,7 @@ sub addHiddenOperators {
 sub parse {
     my ( $self, $text ) = @_;
     
-    my $tokenizer = new Tokenizer($self->defs, $text);
+    my $tokenizer = Tokenizer->new($self->defs, $text);
     @{$self->{_tokens}} = $tokenizer->tokenize();
     if (scalar(@{$self->tokens}) == 0) {
         die "No token found";
@@ -250,7 +249,7 @@ sub parse {
     $self->advance();
     my $root = $self->expression(0);
     if (defined $self->current_token) {
-        die new ParseException("Expected the end", $self->current_token->from);
+        die ParseException->new("Expected the end", $self->current_token->from);
     }
     return $root;
 }

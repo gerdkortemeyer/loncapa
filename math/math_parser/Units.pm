@@ -20,13 +20,17 @@
 ##
 # Loads and converts units
 ##
-package Units;
+package Apache::math::math_parser::Units;
 
 use strict;
 use warnings;
 
-use Parser;
-use Quantity;
+use Apache::lc_file_utils;
+use Apache::lc_json_utils;
+use Apache::lc_parameters;
+
+use aliased 'Apache::math::math_parser::Parser';
+use aliased 'Apache::math::math_parser::Quantity';
 
 ##
 # Constructor
@@ -37,7 +41,7 @@ sub new {
         _base => [], # array with the names
         _prefix => {}, # hash symbol -> factor
         _derived => {}, # hash symbol -> convert
-        _parser => new Parser(1, 1),
+        _parser => Parser->new(1, 1),
     };
     bless $self, $class;
     $self->loadUnits();
@@ -67,9 +71,7 @@ sub parser {
 ##
 sub loadUnits {
     my ( $self ) = @_;
-    #TODO: this might have to be changed to use lc_file_utils's readfile instead of File::Util
-    my $f = File::Util->new();
-    my $units_txt = $f->load_file("../../conf/units.json");
+    my $units_txt = Apache::lc_file_utils::readfile(Apache::lc_parameters::lc_conf_dir()."units.json");
     my $jsunits = Apache::lc_json_utils::json_to_perl($units_txt);
     for (my $i=0; $i < scalar(@{$jsunits->{"base"}}); $i++) {
         my $base = $jsunits->{"base"}->[$i];
@@ -119,7 +121,7 @@ sub convertToSI {
                     if ($base2 eq "g") {
                         $v /= 1000;
                     }
-                    return $self->baseQuantity($base)->mult(new Quantity($v));
+                    return $self->baseQuantity($base)->mult(Quantity->new($v));
                 }
             }
         }
@@ -136,7 +138,7 @@ sub baseQuantity {
     my ( $self, $name ) = @_;
     my %h = (s => 0, m => 0, kg => 0, K => 0, A => 0, mol => 0, cd => 0);
     $h{$name} = 1;
-    return new Quantity(1, \%h);
+    return Quantity->new(1, \%h);
 }
 
 1;

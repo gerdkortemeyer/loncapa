@@ -20,14 +20,15 @@
 ##
 # A quantity (value and units)
 ##
-package Quantity;
+package Apache::math::math_parser::Quantity;
 
 use strict;
 use warnings;
 
 use Math::Complex;
 
-use QVector;
+use aliased 'Apache::math::math_parser::Quantity';
+use aliased 'Apache::math::math_parser::QVector';
 
 use overload
     '""' => \&toString,
@@ -154,7 +155,7 @@ sub add {
             die "addition: units don't match";
         }
     }
-    return new Quantity($v, $self->units);
+    return Quantity->new($v, $self->units);
 }
 
 ##
@@ -171,7 +172,7 @@ sub sub {
             die "substraction: units don't match";
         }
     }
-    return new Quantity($v, $self->units);
+    return Quantity->new($v, $self->units);
 }
 
 ##
@@ -182,7 +183,7 @@ sub neg {
     my ( $self ) = @_;
     my $v = - $self->value;
     my %units = %{$self->units};
-    return new Quantity($v, \%units);
+    return Quantity->new($v, \%units);
 }
 
 ##
@@ -192,21 +193,21 @@ sub neg {
 ##
 sub mult {
     my ( $self, $qv ) = @_;
-    if ($qv->isa("Quantity")) {
+    if ($qv->isa(Quantity)) {
         my $q = $qv;
         my $v = $self->value * $q->value;
         my %units = %{$self->units};
         foreach my $unit (keys %units) {
             $units{$unit} = $units{$unit} + $q->units->{$unit};
         }
-        return new Quantity($v, \%units);
+        return Quantity->new($v, \%units);
     } else { # QVector
         my $v = $qv;
         my @t = (); # array of Quantity
         for (my $i=0; $i < scalar(@{$v->quantities}); $i++) {
             $t[$i] = $v->quantities->[$i]->mult($self);
         }
-        return new QVector(\@t);
+        return QVector->new(\@t);
     }
 }
 
@@ -221,7 +222,7 @@ sub div {
     foreach my $unit (keys %units) {
         $units{$unit} = $units{$unit} - $q->units->{$unit};
     }
-    return new Quantity($v, \%units);
+    return Quantity->new($v, \%units);
 }
 
 ##
@@ -236,7 +237,7 @@ sub pow {
     foreach my $unit (keys %{$q->units}) {
         $units{$unit} = $units{$unit} * $q->value;
     }
-    return new Quantity($v, \%units);
+    return Quantity->new($v, \%units);
 }
 
 ##
@@ -251,7 +252,7 @@ sub qfact {
     for (my $i=$n - 1; $i > 1; $i--) {
         $v *= $i;
     }
-    return new Quantity($v, $self->units);
+    return Quantity->new($v, $self->units);
 }
 
 ##
@@ -265,7 +266,7 @@ sub qsqrt {
     foreach my $unit (keys %units) {
         $units{$unit} = $units{$unit} / 2;
     }
-    return new Quantity($v, \%units);
+    return Quantity->new($v, \%units);
 }
 
 ##
@@ -276,7 +277,7 @@ sub qabs {
     my ( $self ) = @_;
     my $v = abs($self->value);
     my %units = %{$self->units};
-    return new Quantity($v, \%units);
+    return Quantity->new($v, \%units);
 }
 
 ##
@@ -286,7 +287,7 @@ sub qabs {
 sub qexp {
     my ( $self ) = @_;
     $self->noUnits("exp");
-    return new Quantity(exp($self->value), $self->units);
+    return Quantity->new(exp($self->value), $self->units);
 }
 
 ##
@@ -296,7 +297,7 @@ sub qexp {
 sub qln {
     my ( $self ) = @_;
     $self->noUnits("ln");
-    return new Quantity(log($self->value), $self->units);
+    return Quantity->new(log($self->value), $self->units);
 }
 
 ##
@@ -306,7 +307,7 @@ sub qln {
 sub qlog10 {
     my ( $self ) = @_;
     $self->noUnits("log10");
-    return new Quantity(log10($self->value), $self->units);
+    return Quantity->new(log10($self->value), $self->units);
 }
 
 ##
@@ -316,7 +317,7 @@ sub qlog10 {
 sub qsin {
     my ( $self ) = @_;
     $self->noUnits("sin");
-    return new Quantity(sin($self->value), $self->units);
+    return Quantity->new(sin($self->value), $self->units);
 }
 
 ##
@@ -326,7 +327,7 @@ sub qsin {
 sub qcos {
     my ( $self ) = @_;
     $self->noUnits("cos");
-    return new Quantity(cos($self->value), $self->units);
+    return Quantity->new(cos($self->value), $self->units);
 }
 
 ##
@@ -336,7 +337,7 @@ sub qcos {
 sub qtan {
     my ( $self ) = @_;
     $self->noUnits("tan");
-    return new Quantity(tan($self->value), $self->units);
+    return Quantity->new(tan($self->value), $self->units);
 }
 
 ##
@@ -346,7 +347,7 @@ sub qtan {
 sub qasin {
     my ( $self ) = @_;
     $self->noUnits("asin");
-    return new Quantity(asin($self->value), $self->units);
+    return Quantity->new(asin($self->value), $self->units);
 }
 
 ##
@@ -356,7 +357,7 @@ sub qasin {
 sub qacos {
     my ( $self ) = @_;
     $self->noUnits("acos");
-    return new Quantity(acos($self->value), $self->units);
+    return Quantity->new(acos($self->value), $self->units);
 }
 
 ##
@@ -366,7 +367,7 @@ sub qacos {
 sub qatan {
     my ( $self ) = @_;
     $self->noUnits("atan");
-    return new Quantity(atan($self->value), $self->units);
+    return Quantity->new(atan($self->value), $self->units);
 }
 
 ##

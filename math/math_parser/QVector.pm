@@ -20,12 +20,13 @@
 ##
 # A vector of quantities
 ##
-package QVector;
+package Apache::math::math_parser::QVector;
 
 use strict;
 use warnings;
 
-use Quantity;
+use aliased 'Apache::math::math_parser::Quantity';
+use aliased 'Apache::math::math_parser::QVector';
 
 use overload
     '+' => \&add,
@@ -96,7 +97,7 @@ sub add {
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
         $t[$i] = $self->quantities->[$i] + $v->quantities->[$i];
     }
-    return new QVector(\@t);
+    return QVector->new(\@t);
 }
 
 ##
@@ -110,7 +111,7 @@ sub sub {
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
         $t[$i] = $self->quantities->[$i] - $v->quantities->[$i];
     }
-    return new QVector(\@t);
+    return QVector->new(\@t);
 }
 
 ##
@@ -123,7 +124,7 @@ sub neg {
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
         $t[$i] = $self->quantities->[$i]->neg();
     }
-    return new QVector(\@t);
+    return QVector->new(\@t);
 }
 
 ##
@@ -137,7 +138,7 @@ sub mult {
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
         $t[$i] = $self->quantities->[$i] * $q;
     }
-    return new QVector(\@t);
+    return QVector->new(\@t);
 }
 
 ##
@@ -152,7 +153,7 @@ sub pow {
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
         $t[$i] = $self->quantities->[$i] ^ $q;
     }
-    return new QVector(\@t);
+    return QVector->new(\@t);
 }
 
 ##
@@ -166,7 +167,7 @@ sub dot {
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
         $t[$i] = $self->quantities->[$i]->mult($v->quantities->[$i]);
     }
-    return new QVector(\@t);
+    return QVector->new(\@t);
 }
 
 1;
