@@ -24,6 +24,8 @@ cp conf/lc.conf /etc/httpd/conf.d
 cp conf/lc_startup.pl /etc/httpd/conf
 cp conf/lc_parameters.pm /home/httpd/lib/perl/Apache
 cp conf/roles.json /home/loncapa/conf
+cp conf/units.json /home/loncapa/conf
+cp conf/constants.json /home/loncapa/conf
 cp app/handlers/*pm /home/httpd/lib/perl/Apache
 mkdir /home/httpd/lib/perl/Apache/lc_localize
 rm /home/httpd/lib/perl/Apache/lc_localize/*
@@ -32,6 +34,9 @@ cp auth/*.pm /home/httpd/lib/perl/Apache
 cp databases/*.pm /home/httpd/lib/perl/Apache
 cp entities/*.pm /home/httpd/lib/perl/Apache
 cp test/lc_test.pm /home/httpd/lib/perl/Apache
+cp test/math_parser_manual_test.pl /home/httpd/lib/perl/Apache
+cp test/math_parser_test_cases.pl /home/httpd/lib/perl/Apache
+cp -r math /home/httpd/lib/perl/Apache/
 mkdir /home/httpd/html
 cp app/favicon.ico /home/httpd/html
 cp app/html/*.html /home/httpd/html
