@@ -117,7 +117,7 @@ sub convertToSI {
                     if ($base2 eq "g") {
                         $v /= 1000;
                     }
-                    return $self->baseQuantity($base)->mult(new Quantity($v));
+                    return $self->baseQuantity($base)->mult(Quantity->new($v));
                 }
             }
         }
@@ -134,7 +134,7 @@ sub baseQuantity {
     my ( $self, $name ) = @_;
     my %h = (s => 0, m => 0, kg => 0, K => 0, A => 0, mol => 0, cd => 0);
     $h{$name} = 1;
-    return new Quantity(1, \%h);
+    return Quantity->new(1, \%h);
 }
 
 1;

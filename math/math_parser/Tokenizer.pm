@@ -25,7 +25,8 @@ package Apache::math::math_parser::Tokenizer;
 use strict;
 use warnings;
 
-use Apache::math::math_parser::Token;
+use aliased Apache::math::math_parser::Definitions;
+use aliased Apache::math::math_parser::Token;
 
 ##
 # @constructor
@@ -83,11 +84,11 @@ main:
         # check for numbers before operators
         # (numbers starting with . will not be confused with the . operator)
         if (($c ge '0' && $c le '9') ||
-                (($c eq Definitions::DECIMAL_SIGN_1 || $c eq Definitions::DECIMAL_SIGN_2) &&
+                (($c eq Definitions->DECIMAL_SIGN_1 || $c eq Definitions->DECIMAL_SIGN_2) &&
                 (substr($text, $i+1, 1) ge '0' && substr($text, $i+1, 1) le '9'))) {
             $value = '';
             
-            if ($c ne Definitions::DECIMAL_SIGN_1 && $c ne Definitions::DECIMAL_SIGN_2) {
+            if ($c ne Definitions->DECIMAL_SIGN_1 && $c ne Definitions->DECIMAL_SIGN_2) {
                 $i++;
                 $value .= $c;
                 # Look for more digits.
@@ -102,7 +103,7 @@ main:
             }
             
             # Look for a decimal fraction part.
-            if ($c eq Definitions::DECIMAL_SIGN_1 || $c eq Definitions::DECIMAL_SIGN_2) {
+            if ($c eq Definitions->DECIMAL_SIGN_1 || $c eq Definitions->DECIMAL_SIGN_2) {
                 $i++;
                 $value .= $c;
                 for (;;) {
@@ -127,7 +128,7 @@ main:
                 }
                 if ($c lt '0' || $c gt '9') {
                     # syntax error in number exponent
-                    die new ParseException("syntax error in number exponent", $from, $i);
+                    die ParseException->new("syntax error in number exponent", $from, $i);
                 }
                 do {
                     $i++;
@@ -137,13 +138,13 @@ main:
             }
             
             # Convert the string value to a number. If it is finite, then it is a good token.
-            my $n = eval "\$value =~ tr/".Definitions::DECIMAL_SIGN_1.Definitions::DECIMAL_SIGN_2."/../";
+            my $n = eval "\$value =~ tr/".Definitions->DECIMAL_SIGN_1.Definitions->DECIMAL_SIGN_2."/../";
             if (!($n == 9**9**9 || $n == -9**9**9 || ! defined( $n <=> 9**9**9 ))) {
-                push(@tokens, new Token(Token::NUMBER, $from, $i - 1, $value));
+                push(@tokens, Token->new(Token->NUMBER, $from, $i - 1, $value));
                 next;
             } else {
                 # syntax error in number
-                die new ParseException("syntax error in number", $from, $i);
+                die ParseException->new("syntax error in number", $from, $i);
             }
         }
         
@@ -155,7 +156,7 @@ main:
             if (substr($text, $i, length($opid)) eq $opid) {
                 $i += length($op->id);
                 $c = $i < length($text) ? substr($text, $i, 1) : '';
-                push(@tokens, new Token(Token::OPERATOR, $from, $i - 1, $op->id, $op));
+                push(@tokens, Token->new(Token->OPERATOR, $from, $i - 1, $op->id, $op));
                 next main;
             }
         }
@@ -176,7 +177,7 @@ main:
             }
             # "i" is turned into a NUMBER token
             if ($value eq "i") {
-                push(@tokens, new Token(Token::NUMBER, $from, $i - 1, $value));
+                push(@tokens, Token->new(Token->NUMBER, $from, $i - 1, $value));
                 next;
             }
             # if it is a constant, replace it by its value instead of adding a NAME token
@@ -197,12 +198,12 @@ main:
                     next main;
                 }
             }
-            push(@tokens, new Token(Token::NAME, $from, $i - 1, $value));
+            push(@tokens, Token->new(Token->NAME, $from, $i - 1, $value));
             next;
         }
         
         # unrecognized operator
-        die new ParseException("unrecognized operator", $from, $i);
+        die ParseException->new("unrecognized operator", $from, $i);
     }
     return @tokens;
 }

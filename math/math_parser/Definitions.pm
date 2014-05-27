@@ -25,11 +25,11 @@ package Apache::math::math_parser::Definitions;
 use strict;
 use warnings;
 
-use Apache::math::math_parser::ENode;
-use Apache::math::math_parser::Operator;
+use aliased Apache::math::math_parser::ENode;
+use aliased Apache::math::math_parser::Operator;
 use Apache::math::math_parser::ParseException;
 use Apache::math::math_parser::Parser;
-use Apache::math::math_parser::Token;
+use aliased Apache::math::math_parser::Token;
 
 use constant ARG_SEPARATOR => ";";
 use constant DECIMAL_SIGN_1 => ".";
@@ -62,7 +62,7 @@ sub constants {
 ##
 # Creates a new operator.
 # @param {string} id - Operator id (text used to recognize it)
-# @param {integer} arity - Operator::UNARY, BINARY or TERNARY
+# @param {integer} arity - Operator->UNARY, BINARY or TERNARY
 # @param {integer} lbp - Left binding power
 # @param {integer} rbp - Right binding power
 # @param {function} nud - Null denotation function
@@ -70,7 +70,7 @@ sub constants {
 ##
 sub operator {
     my( $self, $id, $arity, $lbp, $rbp, $nud, $led ) = @_;
-    push(@{$self->{_operators}}, new Operator($id, $arity, $lbp, $rbp, $nud, $led));
+    push(@{$self->{_operators}}, Operator->new($id, $arity, $lbp, $rbp, $nud, $led));
 }
 
 ##
@@ -79,7 +79,7 @@ sub operator {
 ##
 sub separator {
     my( $self, $id ) = @_;
-    $self->operator($id, Operator::BINARY, 0, 0);
+    $self->operator($id, Operator->BINARY, 0, 0);
 }
 
 ##
@@ -92,7 +92,7 @@ sub separator {
 sub infixDefaultLed {
     my( $op, $p, $left ) = @_;
     my @children = ($left, $p->expression($op->rbp));
-    return new ENode(ENode::OPERATOR, $op, $op->id, \@children);
+    return ENode->new(ENode->OPERATOR, $op, $op->id, \@children);
 }
 
 ##
@@ -104,7 +104,7 @@ sub infixDefaultLed {
 ##
 sub infix {
     my( $self, $id, $lbp, $rbp, $led ) = @_;
-    my $arity = Operator::BINARY;
+    my $arity = Operator->BINARY;
     my $nud = undef;
     if (!defined $led) {
         $led = \&infixDefaultLed;
@@ -121,7 +121,7 @@ sub infix {
 sub prefixDefaultNud {
     my( $op, $p ) = @_;
     my @children = ($p->expression($op->rbp));
-    return new ENode(ENode::OPERATOR, $op, $op->id, \@children);
+    return ENode->new(ENode->OPERATOR, $op, $op->id, \@children);
 }
 
 ##
@@ -132,7 +132,7 @@ sub prefixDefaultNud {
 ##
 sub prefix {
     my( $self, $id, $rbp, $nud ) = @_;
-    my $arity = Operator::UNARY;
+    my $arity = Operator->UNARY;
     my $lbp = 0;
     if (!defined $nud) {
         $nud = \&prefixDefaultNud;
@@ -151,7 +151,7 @@ sub prefix {
 sub suffixDefaultLed {
     my( $op, $p, $left ) = @_;
     my @children = ($left);
-    return new ENode(ENode::OPERATOR, $op, $op->id, \@children);
+    return ENode->new(ENode->OPERATOR, $op, $op->id, \@children);
 }
 
 ##
@@ -162,7 +162,7 @@ sub suffixDefaultLed {
 ##
 sub suffix {
     my( $self, $id, $lbp, $led ) = @_;
-    my $arity = Operator::UNARY;
+    my $arity = Operator->UNARY;
     my $rbp = 0;
     my $nud = undef;
     if (!defined $led) {
@@ -202,11 +202,11 @@ sub unitsLed {
         if (!defined $token2) {
             last;
         }
-        if ($token2->type != Token::NAME && $token2->value ne "(") {
+        if ($token2->type != Token->NAME && $token2->value ne "(") {
             last;
         }
         my $token3 = $p->tokens->[$p->token_nr + 1];
-        if (defined $token3 && ($token3->value eq "(" || $token3->type == Token::NUMBER)) {
+        if (defined $token3 && ($token3->value eq "(" || $token3->type == Token->NUMBER)) {
             last;
         }
         # a check for constant names here is not needed because constant names are replaced in the tokenizer
@@ -215,7 +215,7 @@ sub unitsLed {
         $right = $t->op->led->($t->op, $p, $right);
     }
     my @children = ($left, $right);
-    return new ENode(ENode::OPERATOR, $op, $op->id, \@children);
+    return ENode->new(ENode->OPERATOR, $op, $op->id, \@children);
 }
 
 ##
@@ -240,21 +240,21 @@ sub parenthesisNud {
 ##
 sub parenthesisLed {
     my( $op, $p, $left ) = @_;
-    if ($left->type != ENode::NAME && $left->type != ENode::SUBSCRIPT) {
-        die new ParseException("Function name expected before a parenthesis.", $p->tokens->[$p->token_nr - 1]->from);
+    if ($left->type != ENode->NAME && $left->type != ENode->SUBSCRIPT) {
+        die ParseException->new("Function name expected before a parenthesis.", $p->tokens->[$p->token_nr - 1]->from);
     }
     my @children = ($left);
     if ((!defined $p->current_token) || (!defined $p->current_token->op) || ($p->current_token->op->id ne ")")) {
         while (1) {
             push(@children, $p->expression(0));
-            if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id ne Definitions::ARG_SEPARATOR) {
+            if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id ne ARG_SEPARATOR) {
                 last;
             }
-            $p->advance(Definitions::ARG_SEPARATOR);
+            $p->advance(ARG_SEPARATOR);
         }
     }
     $p->advance(")");
-    return new ENode(ENode::FUNCTION, $op, $op->id, \@children);
+    return ENode->new(ENode->FUNCTION, $op, $op->id, \@children);
 }
 
 ##
@@ -269,14 +269,14 @@ sub vectorNud {
     if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id ne "]") {
         while (1) {
             push(@children, $p->expression(0));
-            if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id ne Definitions::ARG_SEPARATOR) {
+            if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id ne ARG_SEPARATOR) {
                 last;
             }
-            $p->advance(Definitions::ARG_SEPARATOR);
+            $p->advance(ARG_SEPARATOR);
         }
     }
     $p->advance("]");
-    return new ENode(ENode::VECTOR, $op, undef, \@children);
+    return ENode->new(ENode->VECTOR, $op, undef, \@children);
 }
 
 ##
@@ -288,21 +288,21 @@ sub vectorNud {
 ##
 sub subscriptLed {
     my( $op, $p, $left ) = @_;
-    if ($left->type != ENode::NAME && $left->type != ENode::SUBSCRIPT) {
-        die new ParseException("Name expected before a square bracket.", $p->tokens->[$p->token_nr - 1]->from);
+    if ($left->type != ENode->NAME && $left->type != ENode->SUBSCRIPT) {
+        die ParseException->new("Name expected before a square bracket.", $p->tokens->[$p->token_nr - 1]->from);
     }
     my @children = ($left);
     if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id != "]") {
         while (1) {
             push(@children, $p->expression(0));
-            if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id ne Definitions::ARG_SEPARATOR) {
+            if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id ne ARG_SEPARATOR) {
                 last;
             }
-            $p->advance(Definitions::ARG_SEPARATOR);
+            $p->advance(ARG_SEPARATOR);
         }
     }
     $p->advance("]");
-    return new ENode(ENode::SUBSCRIPT, $op, "[", \@children);
+    return ENode->new(ENode->SUBSCRIPT, $op, "[", \@children);
 }
 
 ##
@@ -318,10 +318,10 @@ sub define {
     $self->infix("/", 120, 120);
     $self->infix("%", 120, 120);
     $self->infix("+", 100, 100);
-    $self->operator("-", Operator::BINARY, 100, 134, \&prefixDefaultNud, sub {
+    $self->operator("-", Operator->BINARY, 100, 134, \&prefixDefaultNud, sub {
         my( $op, $p, $left ) = @_;
         my @children = ($left, $p->expression(100));
-        return new ENode(ENode::OPERATOR, $op, $op->id, \@children);
+        return ENode->new(ENode->OPERATOR, $op, $op->id, \@children);
     });
     $self->infix("=", 80, 80);
     $self->infix("#", 80, 80);
@@ -331,11 +331,11 @@ sub define {
     $self->infix(">", 80, 80);
     
     $self->separator(")");
-    $self->separator(Definitions::ARG_SEPARATOR);
-    $self->operator("(", Operator::BINARY, 200, 200, \&parenthesisNud, \&parenthesisLed);
+    $self->separator(ARG_SEPARATOR);
+    $self->operator("(", Operator->BINARY, 200, 200, \&parenthesisNud, \&parenthesisLed);
     
     $self->separator("]");
-    $self->operator("[", Operator::BINARY, 200, 70, \&vectorNud, \&subscriptLed);
+    $self->operator("[", Operator->BINARY, 200, 70, \&vectorNud, \&subscriptLed);
 }
 
 

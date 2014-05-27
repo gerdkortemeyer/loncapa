@@ -38,7 +38,7 @@ use enum qw(UNKNOWN NAME NUMBER OPERATOR FUNCTION VECTOR SUBSCRIPT);
 our $units; # single units object that can be changed to add custom units
 
 ##
-# @param {integer} type - ENode::UNKNOWN | NAME | NUMBER | OPERATOR | FUNCTION | VECTOR
+# @param {integer} type - UNKNOWN | NAME | NUMBER | OPERATOR | FUNCTION | VECTOR
 # @param {Operator} op - The operator
 # @param {string} value - Node value as a string, undef for type VECTOR
 # @param {ENode[]} children - The children nodes, only for types OPERATOR, FUNCTION, VECTOR, SUBSCRIPT
@@ -81,13 +81,13 @@ sub toString {
     my ( $self ) = @_;
     my $s = '(';
     given ($self->type) {
-        when (ENode::UNKNOWN) { $s .= "UNKNOWN"; }
-        when (ENode::NAME) { $s .= "NAME"; }
-        when (ENode::NUMBER) { $s .= "NUMBER"; }
-        when (ENode::OPERATOR) { $s .= "OPERATOR"; }
-        when (ENode::FUNCTION) { $s .= "FUNCTION"; }
-        when (ENode::VECTOR) { $s .= "VECTOR"; }
-        when (ENode::SUBSCRIPT) { $s .= "SUBSCRIPT"; }
+        when (UNKNOWN) { $s .= "UNKNOWN"; }
+        when (NAME) { $s .= "NAME"; }
+        when (NUMBER) { $s .= "NUMBER"; }
+        when (OPERATOR) { $s .= "OPERATOR"; }
+        when (FUNCTION) { $s .= "FUNCTION"; }
+        when (VECTOR) { $s .= "VECTOR"; }
+        when (SUBSCRIPT) { $s .= "SUBSCRIPT"; }
     }
     if (defined $self->op) {
         $s .= " '" . $self->op->id . "'";
@@ -117,19 +117,19 @@ sub calc {
     my ( $self ) = @_;
     
     given ($self->type) {
-        when (ENode::UNKNOWN) {
+        when (UNKNOWN) {
             die "Unknown node type: ".$self->value;
         }
-        when (ENode::NAME) {
+        when (NAME) {
             if (!defined $units) {
-                $units = new Units();
+                $units = Units->new();
             }
             return $units->convertToSI($self->value);
         }
-        when (ENode::NUMBER) {
-            return new Quantity($self->value);
+        when (NUMBER) {
+            return Quantity->new($self->value);
         }
-        when (ENode::OPERATOR) {
+        when (OPERATOR) {
             my @children = @{$self->children};
             given ($self->value) {
                 when ("+") {
@@ -155,7 +155,7 @@ sub calc {
                     return $children[0]->calc()->qfact();
                 }
                 when ("%") {
-                    return(($children[0]->calc() / new Quantity(100)) * $children[1]->calc());
+                    return(($children[0]->calc() / Quantity->new(100)) * $children[1]->calc());
                 }
                 when (".") {
                     # scalar product for vectors
@@ -169,7 +169,7 @@ sub calc {
                 }
             }
         }
-        when (ENode::FUNCTION) {
+        when (FUNCTION) {
             my @children = @{$self->children};
             my $fname = $children[0]->value;
             
@@ -192,15 +192,15 @@ sub calc {
                 default {            die "Unknown function: ".$fname; }
             }
         }
-        when (ENode::VECTOR) {
+        when (VECTOR) {
             my @children = @{$self->children};
             my @t = (); # array of Quantity
             for (my $i=0; $i < scalar(@children); $i++) {
                 $t[$i] = $children[$i]->calc();
             }
-            return new QVector(\@t);
+            return QVector->new(\@t);
         }
-        when (ENode::SUBSCRIPT) {
+        when (SUBSCRIPT) {
             die "Subscript cannot be evaluated: ".$self->value;
         }
     }

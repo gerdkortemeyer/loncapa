@@ -15,7 +15,7 @@ print "Expression: ";
 $_ = <STDIN>;
 chomp;
 my $eqtxt = $_;
-my $p = new Parser($accept_bad_syntax, $unit_mode);
+my $p = Parser->new($accept_bad_syntax, $unit_mode);
 my $root = $p->parse($eqtxt);
 print "Parsing: ".$root->toString()."\n\n";
 print "Value: ".$root->calc()->toString()."\n";
