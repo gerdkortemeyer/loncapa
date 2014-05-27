@@ -27,11 +27,11 @@ use warnings;
 
 use feature "switch"; # Perl 5.10.1
 
-use Apache::math::math_parser::Operator;
-use Apache::math::math_parser::ParseException;
-use Apache::math::math_parser::Quantity;
-use Apache::math::math_parser::QVector;
-use Apache::math::math_parser::Units;
+use aliased 'Apache::math::math_parser::Operator';
+use aliased 'Apache::math::math_parser::ParseException';
+use aliased 'Apache::math::math_parser::Quantity';
+use aliased 'Apache::math::math_parser::QVector';
+use aliased 'Apache::math::math_parser::Units';
 
 use enum qw(UNKNOWN NAME NUMBER OPERATOR FUNCTION VECTOR SUBSCRIPT);
 

@@ -25,8 +25,8 @@ package Apache::math::math_parser::Tokenizer;
 use strict;
 use warnings;
 
-use aliased Apache::math::math_parser::Definitions;
-use aliased Apache::math::math_parser::Token;
+use aliased 'Apache::math::math_parser::Definitions';
+use aliased 'Apache::math::math_parser::Token';
 
 ##
 # @constructor

@@ -27,12 +27,12 @@ use warnings;
 
 use File::Util;
 
-use Apache::math::math_parser::Definitions;
-use Apache::math::math_parser::ENode;
-use Apache::math::math_parser::Operator;
-use Apache::math::math_parser::ParseException;
-use aliased Apache::math::math_parser::Token;
-use Apache::math::math_parser::Tokenizer;
+use aliased 'Apache::math::math_parser::Definitions';
+use aliased 'Apache::math::math_parser::ENode';
+use aliased 'Apache::math::math_parser::Operator';
+use aliased 'Apache::math::math_parser::ParseException';
+use aliased 'Apache::math::math_parser::Token';
+use aliased 'Apache::math::math_parser::Tokenizer';
 
 ##
 # Constructor

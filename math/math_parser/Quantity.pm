@@ -27,7 +27,7 @@ use warnings;
 
 use Math::Complex;
 
-use Apache::math::math_parser::QVector;
+use aliased 'Apache::math::math_parser::QVector';
 
 use overload
     '""' => \&toString,

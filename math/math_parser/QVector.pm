@@ -25,7 +25,7 @@ package Apache::math::math_parser::QVector;
 use strict;
 use warnings;
 
-use Apache::math::math_parser::Quantity;
+use aliased 'Apache::math::math_parser::Quantity';
 
 use overload
     '+' => \&add,

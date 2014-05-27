@@ -25,11 +25,11 @@ package Apache::math::math_parser::Definitions;
 use strict;
 use warnings;
 
-use aliased Apache::math::math_parser::ENode;
-use aliased Apache::math::math_parser::Operator;
-use Apache::math::math_parser::ParseException;
-use Apache::math::math_parser::Parser;
-use aliased Apache::math::math_parser::Token;
+use aliased 'Apache::math::math_parser::ENode';
+use aliased 'Apache::math::math_parser::Operator';
+use aliased 'Apache::math::math_parser::ParseException';
+use aliased 'Apache::math::math_parser::Parser';
+use aliased 'Apache::math::math_parser::Token';
 
 use constant ARG_SEPARATOR => ";";
 use constant DECIMAL_SIGN_1 => ".";

@@ -25,8 +25,8 @@ package Apache::math::math_parser::Units;
 use strict;
 use warnings;
 
-use Apache::math::math_parser::Parser;
-use Apache::math::math_parser::Quantity;
+use aliased 'Apache::math::math_parser::Parser';
+use aliased 'Apache::math::math_parser::Quantity';
 
 ##
 # Constructor
@@ -37,7 +37,7 @@ sub new {
         _base => [], # array with the names
         _prefix => {}, # hash symbol -> factor
         _derived => {}, # hash symbol -> convert
-        _parser => new Parser(1, 1),
+        _parser => Parser->new(1, 1),
     };
     bless $self, $class;
     $self->loadUnits();
