@@ -1,7 +1,7 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2014.5.27)  27 MAY 2014 16:01
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2014.5.27)  27 MAY 2014 18:26
 entering extended mode
  %&-line parsing enabled.
-**coding_manual
+**coding_manual.tex
 (./coding_manual.tex
 LaTeX2e <2005/12/01>
 Babel <v3.8h> and hyphenation patterns for english, usenglishmax, dumylang, noh
@@ -44,23 +44,28 @@ Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \Gm@odd@mp=\dimen105
 \Gm@even@mp=\dimen106
 \Gm@dimlist=\toks15
-) (./coding_manual.aux
-(./license.aux) (./requirements.aux) (./network.aux) (./entities.aux)
-(./storage.aux))
+)
+\@indexfile=\write3
+\openout3 = `coding_manual.idx'.
+
+
+Writing index file coding_manual.idx
+(./coding_manual.aux (./license.aux) (./requirements.aux) (./urltranslation.aux
+) (./network.aux) (./entities.aux) (./storage.aux))
 \openout1 = `coding_manual.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
 -------------------- Geometry parameters
 paper: class default
 landscape: --
@@ -101,19 +106,30 @@ driver: pdftex
 (1in=72.27pt, 1cm=28.45pt)
 -----------------------
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 7.
+(Font)              <12> on input line 10.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 7.
+(Font)              <8> on input line 10.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 7.
+(Font)              <6> on input line 10.
  [1
 
 
-{/usr/share/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+{/usr/share/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
+
+] (./coding_manual.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 3.
+ [3])
+\tf@toc=\write4
+\openout4 = `coding_manual.toc'.
+
+ [1]
 \openout2 = `license.aux'.
 
-
-(./license.tex [2
+ (./license.tex
+[2
 
 
 ]
@@ -128,57 +144,72 @@ Chapter 1.
 ]
 Chapter 2.
 [5] [6]) [7]
-\openout2 = `network.aux'.
+\openout2 = `urltranslation.aux'.
 
- (./network.tex [8
+ (./urltranslation.tex [8
 
 
 
 ]
 Chapter 3.
-[9] [10] [11]) [12]
-\openout2 = `entities.aux'.
-
- (./entities.tex
-Chapter 4.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 5.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 13.
 (/usr/share/texmf/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 5.
- [13
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 13.
+ [9]) [10]
+\openout2 = `network.aux'.
+
+ (./network.tex
+Chapter 4.
+[11
 
 
 
-]) [14]
+] [12] [13]) [14]
+\openout2 = `entities.aux'.
+
+ (./entities.tex
+Chapter 5.
+[15
+
+
+
+]) [16]
 \openout2 = `storage.aux'.
 
  (./storage.tex
-Chapter 5.
-) [15
+Chapter 6.
+) [17
 
 
 
-] (./coding_manual.aux (./license.aux) (./requirements.aux) (./network.aux) (./
-entities.aux) (./storage.aux)) ) 
+] (./coding_manual.ind [18
+
+
+
+]) (./coding_manual.aux (./license.aux)
+(./requirements.aux) (./urltranslation.aux) (./network.aux) (./entities.aux)
+(./storage.aux)) ) 
 Here is how much of TeX's memory you used:
- 669 strings out of 256216
- 8621 string characters out of 1917072
+ 689 strings out of 256216
+ 8916 string characters out of 1917072
  63834 words of memory out of 1500000
- 3980 multiletter control sequences out of 10000+200000
- 9367 words of font info for 33 fonts, out of 1200000 for 2000
+ 3985 multiletter control sequences out of 10000+200000
+ 9974 words of font info for 35 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 25i,6n,21p,611b,272s stack positions out of 5000i,500n,6000p,200000b,15000s
-</usr/share/texmf/fonts/type1/bluesky/cm/cmbx12
-.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts
-/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr17.pfb>
-</usr/share/texmf/fonts/type1/bluesky/cm/cmsl10.pfb></usr/share/texmf/fonts/typ
-e1/bluesky/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmti10.pfb></
-usr/share/texmf/fonts/type1/bluesky/cm/cmtt10.pfb>
-Output written on coding_manual.pdf (15 pages, 91966 bytes).
+ 25i,6n,21p,615b,272s stack positions out of 5000i,500n,6000p,200000b,15000s
+</usr/share/texmf/fonts/type1/bluesky/cm/cmbx10.pfb></usr/sha
+re/texmf/fonts/type1/bluesky/cm/cmbx12.pfb></usr/share/texmf/fonts/type1/bluesk
+y/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/t
+exmf/fonts/type1/bluesky/cm/cmr17.pfb></usr/share/texmf/fonts/type1/bluesky/cm/
+cmsl10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texm
+f/fonts/type1/bluesky/cm/cmti10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cm
+tt10.pfb>
+Output written on coding_manual.pdf (21 pages, 108111 bytes).
 PDF statistics:
- 83 PDF objects out of 1000 (max. 8388607)
+ 106 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 131072)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

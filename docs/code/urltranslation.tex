@@ -1,0 +1,65 @@
+\chapter{URL Translation}
+\section{Accessing handlers}
+Handlers are defined in lc.conf using Location and LocationMatch statements.\index{lc.conf} For example
+\begin{verbatim}
+<Location /menu>
+SetHandler perl-script
+PerlAccessHandler Apache::lc_auth_optional
+PerlHandler Apache::lc_ui_menu
+</Location>
+\end{verbatim}
+defines how the URL /menu is handled. During the Apache request cycle, first the PerlAccessHandler is called. There are two versions,
+\begin{itemize}
+\item lc\_auth\_acc, which requires a session and loads the session environment - otherwise, an error handler usually points to the login handler
+\item lc\_auth\_optional, which only loads a session environment if a session is active
+\end{itemize}
+The statement then defines lc\_ui\_menu as the response handler. Additional error handlers can be called, for example to route back to the login screen.
+
+Some handlers also have cleanup handlers, which may do the actual work, for example
+\begin{verbatim}
+<Location /async>
+SetHandler perl-script
+PerlAccessHandler Apache::lc_auth_acc
+PerlHandler Apache::lc_ui_async
+PerlCleanupHandler Apache::lc_ui_async::main_actions
+</Location>
+\end{verbatim}
+This handler can reply to the browser immediately and then do the actual work in the cleanup phase. This is most useful in connection with asynchronous AJAX requests.
+\section{Accessing assets}\index{assets}
+Access to assets is more complicated. They are caught in the global translation handler
+\begin{verbatim}
+PerlTransHandler Apache::lc_trans
+\end{verbatim}
+which (at some point) looks/looked like this:
+\begin{verbatim}
+sub handler {
+    my $r = shift;
+# We care about assets
+    if ($r->uri=~/^\/asset\//) {
+# First check if we can even find this
+       my $filepath=&Apache::lc_entity_urls::url_to_filepath($r->uri);
+       unless ($filepath) {
+# Nope, this does not exist anywhere
+          return HTTP_NOT_FOUND;
+       }
+# Is this locally present?
+       unless (-e $filepath) {
+# Nope, we don't have it yet, let's try to get it
+          unless (&Apache::lc_entity_urls::replicate($r->uri)) {
+# Wow, something went wrong, not sure why we can't get it
+             &logwarning("Failed to replicate ".$r->uri);
+             return HTTP_SERVICE_UNAVAILABLE; 
+          }
+       }
+# Bend the filepath to point to the asset entity
+       $r->filename($filepath);
+       return OK;
+    } elsif ($r->uri=~/^\/raw\//) {
+       $r->filename(&Apache::lc_entity_urls::raw_to_filepath($r->uri));
+       return OK;
+    } 
+# None of our business, no need to translate URL
+    return DECLINED; 
+}
+\end{verbatim}
+This deals with URLs of the type /asset and /raw, and does the translation of URL-paths to the asset entity:domain, as well as versioning and replication. By the time this handler is done, the asset is either present or we throw a NOT\_FOUND.\index{replication}\index{versions}

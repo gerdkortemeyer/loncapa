@@ -1,11 +1,11 @@
 \chapter{Storage}
 \section{Databases}
-The system uses two databases: PostgreSQL and MongoDB.
+The system uses two databases: PostgreSQL and MongoDB.\index{PostgreSQL}\index{MongoDB}
 \begin{itemize}
 \item PostgreSQL is a traditional relational database which is used for predictable data that can reside in tables. These are often lookup-tables that need fast search
 \item MongoDB is a noSQL database which is used for flexible, structured data. Searches are rare and not performance critical
 \end{itemize}
-\section{Caching}
+\section{Caching}\index{MongoDB}
 The system uses two caching mechanisms: in-memory and Memcached
 \begin{itemize}
 \item In-memory is occasionally used if a particular process needs to preserve variables, so they do not need to be reinitialized every time. Examples are database handles, etc.
