@@ -45,7 +45,7 @@ sub new {
     };
     #TODO: this might have to be changed to use lc_file_utils's readfile instead of File::Util
     my $f = File::Util->new();
-    my $constants_txt = $f->load_file("constants.json");
+    my $constants_txt = $f->load_file("../../conf/constants.json");
     $self->{_constants} = Apache::lc_json_utils::json_to_perl($constants_txt);
     bless $self, $class;
     return $self;
@@ -199,10 +199,19 @@ sub unitsLed {
     my( $op, $p, $left ) = @_;
     # this led for units gathers all the units in an ENode
     my $right = $p->expression(125);
-    while (defined $p->current_token && index("*/", $p->current_token->value) != -1 &&
-            (defined $p->tokens->[$p->token_nr]) &&
-            ($p->tokens->[$p->token_nr]->type == Token::NAME || $p->tokens->[$p->token_nr]->value eq "(" ) &&
-            (!defined $p->tokens->[$p->token_nr+1] || $p->tokens->[$p->token_nr+1]->value ne "(")) {
+    while (defined $p->current_token && index("*/", $p->current_token->value) != -1) {
+        my $token2 = $p->tokens->[$p->token_nr];
+        if (!defined $token2) {
+            last;
+        }
+        if ($token2->type != Token::NAME && $token2->value ne "(") {
+            last;
+        }
+        my $token3 = $p->tokens->[$p->token_nr + 1];
+        if (defined $token3 && ($token3->value eq "(" || $token3->type == Token::NUMBER)) {
+            last;
+        }
+        # a check for constant names here is not needed because constant names are replaced in the tokenizer
         my $t = $p->current_token;
         $p->advance();
         $right = $t->op->led->($t->op, $p, $right);

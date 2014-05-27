@@ -27,6 +27,12 @@ use warnings;
 
 use Quantity;
 
+use overload
+    '+' => \&add,
+    '-' => \&sub,
+    '*' => \&mult,
+    '^' => \&pow;
+
 ##
 # Constructor
 # @param {Quantity[]} quantities
@@ -64,6 +70,22 @@ sub toString {
 }
 
 ##
+# Equality test
+# @param {QVector}
+# @optional {string|float} tolerance
+# @returns {boolean}
+##
+sub equals {
+    my ( $self, $v, $tolerance ) = @_;
+    for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
+        if (!$self->quantities->[$i]->equals($v->quantities->[$i], $tolerance)) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+##
 # Addition
 # @param {QVector}
 # @returns {QVector}
@@ -72,7 +94,7 @@ sub add {
     my ( $self, $v ) = @_;
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
-        $t[$i] = $self->quantities->[$i]->add($v->quantities->[$i]);
+        $t[$i] = $self->quantities->[$i] + $v->quantities->[$i];
     }
     return new QVector(\@t);
 }
@@ -86,7 +108,7 @@ sub sub {
     my ( $self, $v ) = @_;
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
-        $t[$i] = $self->quantities->[$i]->sub($v->quantities->[$i]);
+        $t[$i] = $self->quantities->[$i] - $v->quantities->[$i];
     }
     return new QVector(\@t);
 }
@@ -106,19 +128,36 @@ sub neg {
 
 ##
 # Multiplication by a scalar
+# @param {Quantity}
 # @returns {QVector}
 ##
 sub mult {
     my ( $self, $q ) = @_;
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
-        $t[$i] = $self->quantities->[$i]->mult($q);
+        $t[$i] = $self->quantities->[$i] * $q;
+    }
+    return new QVector(\@t);
+}
+
+##
+# Power by a scalar
+# @param {Quantity}
+# @returns {QVector}
+##
+sub pow {
+    my ( $self, $q ) = @_;
+    $q->noUnits("Power");
+    my @t = (); # array of Quantity
+    for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
+        $t[$i] = $self->quantities->[$i] ^ $q;
     }
     return new QVector(\@t);
 }
 
 ##
 # Dot product
+# @param {QVector}
 # @returns {QVector}
 ##
 sub dot {
