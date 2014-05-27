@@ -31,8 +31,16 @@ use Apache::lc_logs;
 use Hash::Merge;
 use Data::Dumper;
 
-use vars qw($merge $client $database $roles $profiles $sessions $auth $metadata);
+# merge and client are handles that are being kept open
+# the rest are collections in mongo
+#
+use vars qw($merge $client $database $roles $profiles $namespaces $sessions $auth $metadata);
 
+
+#
+# Profiles
+# Users and courses have profiles
+# These are being cached and can be queried
 #
 # Make a new profile
 #
@@ -93,7 +101,50 @@ sub query_course_profiles {
 }
 
 #
+# Namespaces
+# This is a dumping ground for random information that only needs
+# to be stored and retrieved contextually, no need for querying
+#
+#
+sub namespace_document {
+   return join('_',@_);
+}
+
+sub insert_namespace {
+   my ($entity,$domain,$name,$data)=@_;
+   unless ($namespaces) { &init_mongo(); }
+   my $newdata->{'namespace'}=&namespace_document($entity,$domain,$name);
+   $newdata->{'data'}=$data;
+   return $namespaces->insert($newdata)->{'value'};
+}
+
+sub update_namespace {
+   my ($entity,$domain,$name,$data)=@_;
+   unless ($namespaces) { &init_mongo(); }
+   my $olddata=$namespaces->find_one({ 'namespace' => &namespace_document($entity,$domain,$name) });
+   unless ($olddata) {
+      return &insert_namespace($entity,$domain,$name,$data);
+   }
+   my $newdata->{'data'}=$merge->merge($data,$olddata->{'data'});
+   $newdata->{'namespace'}=&namespace_document($entity,$domain,$name);
+   delete($newdata->{'_id'});
+   return $namespaces->update({ 'namespace' => &namespace_document($entity,$domain,$name) },$newdata);
+}
+
+sub dump_namespace {
+   my ($entity,$domain,$name)=@_;
+   unless ($namespaces) { &init_mongo(); }
+   my $result=$namespaces->find_one({ 'namespace' => &namespace_document($entity,$domain,$name) });
+   if ($result) {
+      return $result->{'data'};
+   } else {
+      return undef;
+   }
+}
+
+#
 # Metadata
+# Assets have metadata, which includes searchable information
 #
 sub insert_metadata {
    my ($entity,$domain,$data)=@_;
@@ -265,6 +316,7 @@ sub init_mongo {
 # Get handles on all the collections we maintain
    $roles=$database->get_collection('roles');
    $profiles=$database->get_collection('profiles');
+   $namespaces=$database->get_collection('namespaces');
    $sessions=$database->get_collection('sessions');
    $auth=$database->get_collection('auth');
    $metadata=$database->get_collection('metadata');

@@ -36,6 +36,7 @@ use Apache::lc_authorize;
 use Apache::lc_entity_authentication();
 use Apache::lc_spreadsheets();
 use Apache::lc_mongodb();
+use Apache::lc_entity_namespace();
 
 use Data::Dumper;
 
@@ -55,7 +56,6 @@ $r->print("\ne:".Dumper(&Apache::lc_entity_users::local_query_user_profiles('e')
 $r->print("\nx:".Dumper(&Apache::lc_entity_users::local_query_user_profiles('x'))."\n");
 
 $r->print("\nCourse advan:".Dumper(&Apache::lc_entity_courses::local_query_course_profiles('advan'))."\n");
-
 
 my $date='2015-01-20 04:05:06';
 
@@ -113,6 +113,20 @@ my $comparedate='2014-04-16 01:00:01';
 
    $r->print("Profile: ".Dumper(&Apache::lc_entity_profile::dump_profile($courseentity,'msu'))."\n");
 
+# =====
+
+   $r->print("\nNamespaces\n");
+   $r->print(&Apache::lc_entity_namespace::modify_namespace($entity,'msu','stuff',{ color => 'green' })."\n");
+   $r->print(&Apache::lc_entity_namespace::modify_namespace($entity,'msu','stuff',{ color => 'blue' })."\n");
+   $r->print(&Apache::lc_entity_namespace::modify_namespace($entity,'msu','stuff',{ taste => 'sweet' })."\n");
+   $r->print("Namespace:".Dumper(&Apache::lc_entity_namespace::dump_namespace($entity,'msu','stuff'))."\n");
+
+   $r->print(&Apache::lc_entity_namespace::modify_namespace($entity,'msu','junk',{ color => 'red' })."\n");
+   $r->print(&Apache::lc_entity_namespace::modify_namespace($entity,'msu','junk',{ taste => 'salty' })."\n");
+   $r->print("Namespace:".Dumper(&Apache::lc_entity_namespace::dump_namespace($entity,'msu','junk'))."\n");
+
+
+#
 # =====
    $r->print(&Apache::lc_entity_courses::make_new_course('test206','msu')."\n");
    $courseentity=&Apache::lc_entity_courses::course_to_entity('test206','msu');
