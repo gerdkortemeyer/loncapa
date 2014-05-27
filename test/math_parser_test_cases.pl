@@ -84,9 +84,9 @@ foreach my $s (keys %cases) {
 }
 
 # now let's try to use custom units !
-ENode->units->{_derived}->{"peck"} = "2 gallon";
-ENode->units->{_derived}->{"bushel"} = "8 gallon";
-ENode->units->{_derived}->{"gallon"} = "4.4 L";
+$Apache::math::math_parser::ENode::units->{_derived}->{"peck"} = "2 gallon";
+$Apache::math::math_parser::ENode::units->{_derived}->{"bushel"} = "8 gallon";
+$Apache::math::math_parser::ENode::units->{_derived}->{"gallon"} = "4.4 L";
 test($p, "4 peck + 2 bushel", "106`L", "1%");
 
 print "All tests OK !\n";

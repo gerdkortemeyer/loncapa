@@ -193,7 +193,7 @@ sub neg {
 ##
 sub mult {
     my ( $self, $qv ) = @_;
-    if ($qv->isa("Quantity")) {
+    if ($qv->isa(Quantity)) {
         my $q = $qv;
         my $v = $self->value * $q->value;
         my %units = %{$self->units};

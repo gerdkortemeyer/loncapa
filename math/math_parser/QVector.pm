@@ -26,6 +26,7 @@ use strict;
 use warnings;
 
 use aliased 'Apache::math::math_parser::Quantity';
+use aliased 'Apache::math::math_parser::QVector';
 
 use overload
     '+' => \&add,
