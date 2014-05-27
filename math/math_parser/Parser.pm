@@ -26,7 +26,6 @@ use strict;
 use warnings;
 
 use File::Util;
-use lc_json_utils;
 
 use Apache::math::math_parser::Definitions;
 use Apache::math::math_parser::ENode;
