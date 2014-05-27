@@ -25,7 +25,7 @@ package ENode;
 use strict;
 use warnings;
 
-use Switch;
+use feature "switch"; # Perl 5.10.1
 
 use Operator;
 use ParseException;
@@ -35,7 +35,7 @@ use Units;
 
 use enum qw(UNKNOWN NAME NUMBER OPERATOR FUNCTION VECTOR SUBSCRIPT);
 
-my $units;
+our $units; # single units object that can be changed to add custom units
 
 ##
 # @param {integer} type - ENode::UNKNOWN | NAME | NUMBER | OPERATOR | FUNCTION | VECTOR
@@ -80,14 +80,14 @@ sub children {
 sub toString {
     my ( $self ) = @_;
     my $s = '(';
-    switch ($self->type) {
-        case ENode::UNKNOWN { $s .= "UNKNOWN"; }
-        case ENode::NAME { $s .= "NAME"; }
-        case ENode::NUMBER { $s .= "NUMBER"; }
-        case ENode::OPERATOR { $s .= "OPERATOR"; }
-        case ENode::FUNCTION { $s .= "FUNCTION"; }
-        case ENode::VECTOR { $s .= "VECTOR"; }
-        case ENode::SUBSCRIPT { $s .= "SUBSCRIPT"; }
+    given ($self->type) {
+        when (ENode::UNKNOWN) { $s .= "UNKNOWN"; }
+        when (ENode::NAME) { $s .= "NAME"; }
+        when (ENode::NUMBER) { $s .= "NUMBER"; }
+        when (ENode::OPERATOR) { $s .= "OPERATOR"; }
+        when (ENode::FUNCTION) { $s .= "FUNCTION"; }
+        when (ENode::VECTOR) { $s .= "VECTOR"; }
+        when (ENode::SUBSCRIPT) { $s .= "SUBSCRIPT"; }
     }
     if (defined $self->op) {
         $s .= " '" . $self->op->id . "'";
@@ -98,7 +98,7 @@ sub toString {
     if (defined $self->{_children}) {
         $s .= ' [';
         for (my $i = 0; $i < scalar(@{$self->children}); $i++) {
-            $s .= @{$self->children}[$i]->toString();
+            $s .= $self->children->[$i]->toString();
             if ($i != scalar(@{$self->children}) - 1) {
                 $s .= ',';
             }
@@ -111,87 +111,88 @@ sub toString {
 
 ##
 # Evaluates the node, returning either a number, a complex or a vector with associated units.
-# @returns {Quantity}
+# @returns {Quantity|QVector}
 ##
 sub calc {
     my ( $self ) = @_;
     
-    switch ($self->type) {
-        case ENode::UNKNOWN {
-            die new ParseException("unknown node type: ".$self->value, 0, 0);
+    given ($self->type) {
+        when (ENode::UNKNOWN) {
+            die "Unknown node type: ".$self->value;
         }
-        case ENode::NAME {
+        when (ENode::NAME) {
             if (!defined $units) {
                 $units = new Units();
             }
             return $units->convertToSI($self->value);
         }
-        case ENode::NUMBER {
+        when (ENode::NUMBER) {
             return new Quantity($self->value);
         }
-        case ENode::OPERATOR {
+        when (ENode::OPERATOR) {
             my @children = @{$self->children};
-            switch ($self->value) {
-                case "+" {
-                    return($children[0]->calc()->add($children[1]->calc()));
+            given ($self->value) {
+                when ("+") {
+                    return($children[0]->calc() + $children[1]->calc());
                 }
-                case "-" {
+                when ("-") {
                     if (!defined $children[1]) {
                         return($children[0]->calc()->neg());
                     } else {
-                        return($children[0]->calc()->sub($children[1]->calc()));
+                        return($children[0]->calc() - $children[1]->calc());
                     }
                 }
-                case "*" {
-                    return($children[0]->calc()->mult($children[1]->calc()));
+                when ("*") {
+                    return($children[0]->calc() * $children[1]->calc());
                 }
-                case "/" {
-                    return($children[0]->calc()->div($children[1]->calc()));
+                when ("/") {
+                    return($children[0]->calc() / $children[1]->calc());
                 }
-                case "^" {
-                    return($children[0]->calc()->pow($children[1]->calc()));
+                when ("^") {
+                    return($children[0]->calc() ^ $children[1]->calc());
                 }
-                case "!" {
-                    return $children[0]->calc()->fact();
+                when ("!") {
+                    return $children[0]->calc()->qfact();
                 }
-                case "%" {
-                    return($children[0]->calc()->div(new Quantity(100))->mult($children[1]->calc()));
+                when ("%") {
+                    return(($children[0]->calc() / new Quantity(100)) * $children[1]->calc());
                 }
-                case "." {
+                when (".") {
                     # scalar product for vectors
                     return($children[0]->calc()->dot($children[1]->calc()));
                 }
-                case "`" {
-                    return($children[0]->calc()->mult($children[1]->calc()));
+                when ("`") {
+                    return($children[0]->calc() * $children[1]->calc());
                 }
-                else {
-                    die new ParseException("unknown operator: ".$self->value, 0, 0);
+                default {
+                    die "Unknown operator: ".$self->value;
                 }
             }
         }
-        case ENode::FUNCTION {
+        when (ENode::FUNCTION) {
             my @children = @{$self->children};
             my $fname = $children[0]->value;
             
-            if ($fname eq "sqrt" && defined $children[1]) {
-                return $children[1]->calc()->qsqrt();
-                
-            } elsif ($fname eq "abs" && defined $children[1]) {
-                return $children[1]->calc()->abs();
-                
-            } elsif ($fname eq "exp" && defined $children[1]) {
-                return $children[1]->calc()->exp();
-                
-            } elsif ($fname eq "ln" && defined $children[1]) {
-                return $children[1]->calc()->qln();
-                
-            } elsif ($fname eq "factorial" && defined $children[1]) {
-                return $children[1]->calc()->fact();
-            } else {
-                die new ParseException("unknown function: ".$fname, 0, 0);
+            if (!defined $children[1]) {
+                die "Missing parameter for function $fname";
+            }
+            given ($fname) {
+                when ("sqrt") {      return $children[1]->calc()->qsqrt(); }
+                when ("abs") {       return $children[1]->calc()->qabs(); }
+                when ("exp") {       return $children[1]->calc()->qexp(); }
+                when ("ln") {        return $children[1]->calc()->qln(); }
+                when ("log10") {     return $children[1]->calc()->qlog10(); }
+                when ("factorial") { return $children[1]->calc()->qfact(); }
+                when ("sin") {       return $children[1]->calc()->qsin(); }
+                when ("cos") {       return $children[1]->calc()->qcos(); }
+                when ("tan") {       return $children[1]->calc()->qtan(); }
+                when ("asin") {      return $children[1]->calc()->qasin(); }
+                when ("acos") {      return $children[1]->calc()->qacos(); }
+                when ("atan") {      return $children[1]->calc()->qatan(); }
+                default {            die "Unknown function: ".$fname; }
             }
         }
-        case ENode::VECTOR {
+        when (ENode::VECTOR) {
             my @children = @{$self->children};
             my @t = (); # array of Quantity
             for (my $i=0; $i < scalar(@children); $i++) {
@@ -199,8 +200,8 @@ sub calc {
             }
             return new QVector(\@t);
         }
-        case ENode::SUBSCRIPT {
-            die new ParseException("subscript cannot be evaluated: ".$self->value, 0, 0);
+        when (ENode::SUBSCRIPT) {
+            die "Subscript cannot be evaluated: ".$self->value;
         }
     }
 }

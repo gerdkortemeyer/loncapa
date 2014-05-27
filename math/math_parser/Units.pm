@@ -25,8 +25,6 @@ package Units;
 use strict;
 use warnings;
 
-use Switch;
-
 use Parser;
 use Quantity;
 
@@ -71,7 +69,7 @@ sub loadUnits {
     my ( $self ) = @_;
     #TODO: this might have to be changed to use lc_file_utils's readfile instead of File::Util
     my $f = File::Util->new();
-    my $units_txt = $f->load_file("units.json");
+    my $units_txt = $f->load_file("../../conf/units.json");
     my $jsunits = Apache::lc_json_utils::json_to_perl($units_txt);
     for (my $i=0; $i < scalar(@{$jsunits->{"base"}}); $i++) {
         my $base = $jsunits->{"base"}->[$i];

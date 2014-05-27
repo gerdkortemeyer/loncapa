@@ -60,6 +60,7 @@ sub text {
 sub tokenize {
     my( $self ) = @_;
     my( $text, $c, $i, $from, @tokens, $value );
+    my @operators = @{$self->defs->operators};
     
     # Note: this could be speed-optimized by used something faster than substr($text, $i, 1)
     
@@ -148,9 +149,10 @@ main:
         
         # check for operators before names (they could be confused with
         # variables if they don't use special characters)
-        for (my $iop = 0; $iop < scalar(@{$self->defs->operators}); $iop++) {
-            my $op = $self->defs->operators->[$iop];
-            if (substr($text, $i, length($op->id)) eq $op->id) {
+        for (my $iop = 0; $iop < scalar(@operators); $iop++) {
+            my $op = $operators[$iop];
+            my $opid = $op->id;
+            if (substr($text, $i, length($opid)) eq $opid) {
                 $i += length($op->id);
                 $c = $i < length($text) ? substr($text, $i, 1) : '';
                 push(@tokens, new Token(Token::OPERATOR, $from, $i - 1, $op->id, $op));
@@ -172,6 +174,11 @@ main:
                     last;
                 }
             }
+            # "i" is turned into a NUMBER token
+            if ($value eq "i") {
+                push(@tokens, new Token(Token::NUMBER, $from, $i - 1, $value));
+                next;
+            }
             # if it is a constant, replace it by its value instead of adding a NAME token
             foreach my $cst_name (keys %{$self->defs->constants}) {
                 if ($value eq $cst_name) {
@@ -181,9 +188,9 @@ main:
                     $i = $i - length($value);
                     my $s;
                     if ($cst_units) {
-                        $s = $cst_value."`(".$cst_units.")";
+                        $s = "(".$cst_value."`(".$cst_units."))";
                     } else {
-                        $s = $cst_value;
+                        $s = "(".$cst_value.")";
                     }
                     substr($text, $i, length($value), $s);
                     $c = $i < length($text) ? substr($text, $i, 1) : '';

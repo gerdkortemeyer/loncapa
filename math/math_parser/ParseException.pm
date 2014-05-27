@@ -25,6 +25,7 @@ package ParseException;
 use strict;
 use warnings;
 
+use overload '""' => \&toString;
 
 ##
 # Constructor
@@ -52,7 +53,7 @@ sub new {
 ##
 sub toString {
     my $self = shift;
-    return $self->{_msg} . " at " . $self->{_from} . " - " . $self->{_to};
+    return "Parsing error: ".$self->{_msg} . " at " . $self->{_from} . " - " . $self->{_to};
 }
 
 1;

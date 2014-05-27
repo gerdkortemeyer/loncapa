@@ -149,15 +149,34 @@ sub advance {
 
 
 ##
-# Adds hidden multiplication operators to the token stream
+# Adds hidden multiplication and unit operators to the token stream
 ##
 sub addHiddenOperators {
     my ( $self ) = @_;
     my $multiplication = $self->defs->findOperator("*");
     my $unit_operator = $self->defs->findOperator("`");
+    my $in_units = 0; # we check if we are already in the units to avoid adding two ` operators inside
+    my $in_exp = 0;
     for (my $i=0; $i<scalar(@{$self->tokens}) - 1; $i++) {
         my $token = $self->tokens->[$i];
         my $next_token = $self->tokens->[$i + 1];
+        if ($self->unit_mode) {
+            if ($token->value eq "`") {
+                $in_units = 1;
+            } elsif ($in_units) {
+                if ($token->value eq "^") {
+                    $in_exp = 1;
+                } elsif ($in_exp && $token->type == Token::NUMBER) {
+                    $in_exp = 0;
+                } elsif (!$in_exp && $token->type == Token::NUMBER) {
+                    $in_units = 0;
+                } elsif ($token->type == Token::OPERATOR && index("*/^()", $token->value) == -1) {
+                    $in_units = 0;
+                } elsif ($token->type == Token::NAME && $next_token->value eq "(") {
+                    $in_units = 0;
+                }
+            }
+        }
         if (
                 ($token->type == Token::NAME && $next_token->type == Token::NAME) ||
                 ($token->type == Token::NUMBER && $next_token->type == Token::NAME) ||
@@ -169,13 +188,28 @@ sub addHiddenOperators {
                 ($token->value eq ")" && $next_token->type == Token::NUMBER) ||
                 ($token->value eq ")" && $next_token->value eq "(")
            ) {
-            my $units = ($self->unit_mode && $token->type == Token::NUMBER && $next_token->type == Token::NAME);
+            # support for things like "(1/2) (m/s)" is complex...
+            my $units = ($self->unit_mode && !$in_units &&
+                ($token->type == Token::NUMBER || $token->value eq ")") &&
+                ($next_token->type == Token::NAME ||
+                    ($next_token->value eq "(" && scalar(@{$self->tokens}) > $i + 2 &&
+                    $self->tokens->[$i + 2]->type == Token::NAME)));
             if ($units) {
-                if (scalar(@{$self->tokens}) > $i + 2 && $self->tokens->[$i + 2]->value eq "(") {
+                my( $test_token, $index_test);
+                if ($next_token->type == Token::NAME) {
+                    $test_token = $next_token;
+                    $index_test = $i + 1;
+                } else {
+                    # for instance for "2 (m/s)"
+                    $index_test = $i + 2;
+                    $test_token = $self->tokens->[$index_test];
+                }
+                if (scalar(@{$self->tokens}) > $index_test + 1 && $self->tokens->[$index_test + 1]->value eq "(") {
                     my @known_functions = ("sqrt", "abs", "exp", "factorial", "diff",
-                        "integrate", "sum", "product", "limit", "binomial", "matrix");
-                    for (my $j=0; $j<=scalar(@known_functions); $j++) {
-                        if ($next_token->value eq $known_functions[$j]) {
+                        "integrate", "sum", "product", "limit", "binomial", "matrix",
+                        "ln", "log10");
+                    for (my $j=0; $j<scalar(@known_functions); $j++) {
+                        if ($test_token->value eq $known_functions[$j]) {
                             $units = 0;
                             last;
                         }

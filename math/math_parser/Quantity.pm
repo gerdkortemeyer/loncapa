@@ -29,6 +29,15 @@ use Math::Complex;
 
 use QVector;
 
+use overload
+    '""' => \&toString,
+    '+' => \&add,
+    '-' => \&sub,
+    '*' => \&mult,
+    '/' => \&div,
+    '^' => \&pow;
+
+
 ##
 # Constructor
 # @param {complex} value
@@ -40,6 +49,9 @@ sub new {
         _value => shift,
         _units => shift,
     };
+    if ("".$self->{_value} eq "i") {
+        $self->{_value} = i;
+    }
     if (!defined $self->{_units}) {
         $self->{_units} = {
             s => 0,
@@ -71,7 +83,18 @@ sub units {
 ##
 sub toString {
     my ( $self ) = @_;
-    my $s = $self->value;
+    my $s;
+    # complex display in polar notation can be confused with vectors
+    # normally we should just have to call 	Math::Complex::display_format('cartesian');
+    # actually, it's supposed to be the default...
+    # but this is not working, so...
+    if ($self->value =~ /\[/) {
+        my $v = $self->value;
+        $v->display_format('cartesian');
+        $s = "".$v;
+    } else {
+        $s = $self->value;
+    }
     foreach my $unit (keys %{$self->units}) {
         my $e = $self->units->{$unit};
         if ($e != 0) {
@@ -85,6 +108,39 @@ sub toString {
 }
 
 ##
+# Equality test
+# @param {Quantity}
+# @optional {string|float} tolerance
+# @returns {boolean}
+##
+sub equals {
+    my ( $self, $q, $tolerance ) = @_;
+    if (!defined $tolerance) {
+        $tolerance = 0;
+    }
+    if ($tolerance =~ /%/) {
+        my $perc = $tolerance;
+        $perc =~ s/%//;
+        $perc /= 100;
+        if (abs($self->value - $q->value) > abs($self->value * $perc)) {
+            return 0;
+        }
+    } else {
+        if (abs($self->value - $q->value) > $tolerance) {
+            return 0;
+        }
+    }
+    my %units = %{$self->units};
+    foreach my $unit (keys %units) {
+        if ($units{$unit} != $q->units->{$unit}) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+
+##
 # Addition
 # @param {Quantity}
 # @returns {Quantity}
@@ -95,7 +151,7 @@ sub add {
     my %units = %{$self->units};
     foreach my $unit (keys %units) {
         if ($units{$unit} != $q->units->{$unit}) {
-            die "add: units don't match";
+            die "addition: units don't match";
         }
     }
     return new Quantity($v, $self->units);
@@ -112,7 +168,7 @@ sub sub {
     my %units = %{$self->units};
     foreach my $unit (keys %units) {
         if ($units{$unit} != $q->units->{$unit}) {
-            die "sub: units don't match";
+            die "substraction: units don't match";
         }
     }
     return new Quantity($v, $self->units);
@@ -175,11 +231,9 @@ sub div {
 sub pow {
     my ( $self, $q ) = @_;
     my $v = $self->value ** $q->value;
+    $q->noUnits("Power");
     my %units = %{$self->units};
     foreach my $unit (keys %{$q->units}) {
-        if ($q->units->{$unit} != 0) {
-            die "Power of something with units ???";
-        }
         $units{$unit} = $units{$unit} * $q->value;
     }
     return new Quantity($v, \%units);
@@ -189,7 +243,7 @@ sub pow {
 # Factorial
 # @returns {Quantity}
 ##
-sub fact {
+sub qfact {
     my ( $self ) = @_;
     # should check if integer
     my $v = $self->value;
@@ -218,7 +272,7 @@ sub qsqrt {
 # Absolute value
 # @returns {Quantity}
 ##
-sub abs {
+sub qabs {
     my ( $self ) = @_;
     my $v = abs($self->value);
     my %units = %{$self->units};
@@ -229,11 +283,10 @@ sub abs {
 # Exponential
 # @returns {Quantity}
 ##
-sub exp {
+sub qexp {
     my ( $self ) = @_;
-    my $v = exp($self->value);
-    my %units = %{$self->units}; # TODO: check ?
-    return new Quantity($v, \%units);
+    $self->noUnits("exp");
+    return new Quantity(exp($self->value), $self->units);
 }
 
 ##
@@ -242,9 +295,91 @@ sub exp {
 ##
 sub qln {
     my ( $self ) = @_;
-    my $v = log($self->value);
-    my %units = %{$self->units}; # TODO: check ?
-    return new Quantity($v, \%units);
+    $self->noUnits("ln");
+    return new Quantity(log($self->value), $self->units);
+}
+
+##
+# Decimal logarithm
+# @returns {Quantity}
+##
+sub qlog10 {
+    my ( $self ) = @_;
+    $self->noUnits("log10");
+    return new Quantity(log10($self->value), $self->units);
+}
+
+##
+# Sinus
+# @returns {Quantity}
+##
+sub qsin {
+    my ( $self ) = @_;
+    $self->noUnits("sin");
+    return new Quantity(sin($self->value), $self->units);
+}
+
+##
+# Cosinus
+# @returns {Quantity}
+##
+sub qcos {
+    my ( $self ) = @_;
+    $self->noUnits("cos");
+    return new Quantity(cos($self->value), $self->units);
+}
+
+##
+# Tangent
+# @returns {Quantity}
+##
+sub qtan {
+    my ( $self ) = @_;
+    $self->noUnits("tan");
+    return new Quantity(tan($self->value), $self->units);
+}
+
+##
+# Arcsinus
+# @returns {Quantity}
+##
+sub qasin {
+    my ( $self ) = @_;
+    $self->noUnits("asin");
+    return new Quantity(asin($self->value), $self->units);
+}
+
+##
+# Arccosinus
+# @returns {Quantity}
+##
+sub qacos {
+    my ( $self ) = @_;
+    $self->noUnits("acos");
+    return new Quantity(acos($self->value), $self->units);
+}
+
+##
+# Arctangent
+# @returns {Quantity}
+##
+sub qatan {
+    my ( $self ) = @_;
+    $self->noUnits("atan");
+    return new Quantity(atan($self->value), $self->units);
+}
+
+##
+# Dies if there are any unit.
+##
+sub noUnits {
+    my ( $self, $fct_name ) = @_;
+    my %units = %{$self->units};
+    foreach my $unit (keys %units) {
+        if ($units{$unit} != 0) {
+            die "$fct_name of something with units ???";
+        }
+    }
 }
 
 1;
