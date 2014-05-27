@@ -24,7 +24,7 @@ use warnings;
 
 # note: we could use Try::Tiny to catch errors if we wanted
 
-use Apache::math::math_parser::Parser;
+use aliased 'Apache::math::math_parser::Parser';
 use aliased 'Apache::math::math_parser::ENode';
 
 # please add your own !!!
