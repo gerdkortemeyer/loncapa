@@ -25,6 +25,10 @@ package Apache::math::math_parser::Units;
 use strict;
 use warnings;
 
+use Apache::lc_file_utils;
+use Apache::lc_json_utils;
+use Apache::lc_parameters;
+
 use aliased 'Apache::math::math_parser::Parser';
 use aliased 'Apache::math::math_parser::Quantity';
 
