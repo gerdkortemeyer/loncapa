@@ -206,7 +206,7 @@ sub addHiddenOperators {
                 if (scalar(@{$self->tokens}) > $index_test + 1 && $self->tokens->[$index_test + 1]->value eq "(") {
                     my @known_functions = ("sqrt", "abs", "exp", "factorial", "diff",
                         "integrate", "sum", "product", "limit", "binomial", "matrix",
-                        "ln", "log10");
+                        "ln", "log10", "sin", "cos", "tan", "asin", "acos", "atan");
                     for (my $j=0; $j<scalar(@known_functions); $j++) {
                         if ($test_token->value eq $known_functions[$j]) {
                             $units = 0;
