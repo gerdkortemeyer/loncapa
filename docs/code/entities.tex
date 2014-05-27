@@ -1,1 +1,46 @@
 \chapter{Entities}
+\section{Identification}
+Users, courses, and assets are entities in the system. Since the network has domains, an entity is identified by two components:
+\begin{itemize}
+\item An entity code (in the system internally often referred to as just ``entity'', e.g., ``qLLTNbdEhQaxQ8AZyYp''
+\item The domain (e.g., ``msu'')
+\end{itemize}
+Thus, entities should {\it always} be refered to by both, qLLTNbdEhQaxQ8AZyYp:msu. Just specifying the entity code is not enough!
+
+Entity codes are guaranteed to be unique within a domain, but not between domains.
+
+Entities do not change. An individual, course, or assets always keeps its entity:domain.
+\section{Storage and Interface}
+Information in the system is always stored by entity:domain, not by usernames or course codes. However, entity:domain is not exposed on the interface level, here we talk in terms of usernames, personal ID numbers, or course codes.
+\section{Users}
+Usernames and personal ID numbers (PIDs) are properties of the user entity. They need to be unique within a domain, thus to fully specify a user entity in this fashion, one needs to specify the username {\it and} domain. Just specifying the username is not enought!
+
+Usernames and PIDs can change. For example, username changes can happen due to live events or because the user wants a vanity ID. At most universities, usernames once given out are never recycled. Also, PIDs can change if a person changes from student to faculty/staff or vice versa. Once again, PIDs at most places are never recycled.
+
+The system should thus assume:
+\begin{itemize}
+\item At any given point in time, users have one primary username and PID.
+\item The system needs to still support the old usernames and PIDs, as particularly during mid-semester changes, uploadable grading lists or other spreadsheets may still include the old username/PID
+\end{itemize}
+
+Each username or PID points to one and only one user entity. However, a user entity can have more than one supported username or PID.
+\section{Courses}
+Courses are treated very similarily to users. They have course IDs such as ``phy231fs14'', which might have. These are treated the same way as usernames or PIDs.
+\section{Assets}
+Instead of usernames, PIDs, or couse IDs, assets have URLs. One asset can have more than one URL, however, the URL of published assets looks like
+\begin{center}
+{\tt /asset/n/3/msu/smith/...}
+\end{center}
+where the first two components after ``asset'' designate the version, followed by the domain and the publishing author.
+
+The above example explictly asks for version number 3 of the asset. Other ways are
+\begin{center}
+{\tt /asset/as\_of/2014-01-08\_04:05:06/msu/smith/...}
+\end{center}
+which asks for the version as-of a certain date. Finally,
+\begin{center}
+{\tt /asset/-/-/msu/smith/...}
+\end{center}
+asks for the most recent version.
+
+If at all possible, relative URLs should be used, so version arguments like ``as\_of'' get preserved to also get the right versions of dependent files.
