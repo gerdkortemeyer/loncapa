@@ -24,6 +24,9 @@ use warnings;
 
 # note: we could use Try::Tiny to catch errors if we wanted
 
+use lib '/home/httpd/lib/perl';
+use Apache::lc_connection_utils();
+
 use aliased 'Apache::math::math_parser::Parser';
 use aliased 'Apache::math::math_parser::ENode';
 
