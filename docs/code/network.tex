@@ -1,0 +1,56 @@
+\chapter{Network}
+\section{Nodes}
+LON-CAPA is built as a network of servers, which can host sessions and store data. LON-CAPA can have several independent clusters of such servers, but it is expected that in real operation, there is essentially one production cluster. In principle, any server in a cluster can host sessions for any user in the cluster, and any server in the network should be able serve any asset in the system. In practice, limitations may be put on this to preserve privacy and copyright.
+
+There are two classes of servers: access and library. The difference is that library servers permanently store data, and access servers to do. This means that library servers need to remain stable and have backup, which access servers can be added or removed on demand to absorb session loads.
+\section{Cluster Table}
+Clusters are established by cluster tables, see below for an example
+\begin{verbatim}
+{ domains   : { 'msu'      :    { name    : 'Michigan State University',
+                                  class   : 'university',
+                                  locale  : 'en-us', 
+                                  timezone: 'America/Detroit' },
+                'sfu'      :    { name    : 'Simon Fraser University',
+                                  class   : 'university',
+                                  locale  : 'en-ca',
+                                  timezone: 'America/Vancouver' },
+                'ostfalia' :    { name    : 'Ostfalia University of Applied Sciences',
+                                  class   : 'university',
+                                  locale  : 'de',
+                                  timezone: 'Europe/Berlin' },
+                'elps'     :    { name    : 'East Lansing Public Schools',
+                                  class   : 'k12',
+                                  locale  : 'en-us',
+                                  timezone: 'America/Detroit' }
+              },
+  hosts     : { 'zaphod'   :    { address : 'zaphod.localdomain',
+                                  default : 'msu',
+                                  domains : { 'msu'      : { function : 'library' },
+                                              'elps'     : { function : 'library' },
+                                              'sfu'      : { function : 'access'  }
+                                            }
+                                },
+                'marvin'   :    { address : 'marvin.localdomain',
+                                  default : 'msu',
+                                  domains : { 'msu'      : { function : 'library' },
+                                              'elps'     : { function : 'access'  },
+                                              'sfu'      : { function : 'access'  }
+                                            }
+                                },
+                'arthur'   :    { address : 'arthur.localdomain',
+                                  default : 'sfu',
+                                  domains : { 'msu'      : { function : 'access'  },
+                                              'elps'     : { function : 'access'  },
+                                              'sfu'      : { function : 'library' }
+                                            }
+                                },
+                'slarti'   :    { address : 'slartibartfast.localdomain',
+                                  default : 'ostfalia',
+                                  domains : { 'ostfalia' : { function : 'library' },
+                                              'elps'     : { function : 'access'  },
+                                              'sfu'      : { function : 'access'  }
+                                            }
+                                }
+              }
+}
+\end{verbatim}
