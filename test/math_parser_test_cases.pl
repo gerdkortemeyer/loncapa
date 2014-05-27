@@ -25,7 +25,7 @@ use warnings;
 # note: we could use Try::Tiny to catch errors if we wanted
 
 use Apache::math::math_parser::Parser;
-use aliased Apache::math::math_parser::ENode;
+use aliased 'Apache::math::math_parser::ENode';
 
 # please add your own !!!
 my %cases = (
@@ -81,9 +81,9 @@ foreach my $s (keys %cases) {
 }
 
 # now let's try to use custom units !
-$ENode->units->{_derived}->{"peck"} = "2 gallon";
-$ENode->units->{_derived}->{"bushel"} = "8 gallon";
-$ENode->units->{_derived}->{"gallon"} = "4.4 L";
+ENode->units->{_derived}->{"peck"} = "2 gallon";
+ENode->units->{_derived}->{"bushel"} = "8 gallon";
+ENode->units->{_derived}->{"gallon"} = "4.4 L";
 test($p, "4 peck + 2 bushel", "106`L", "1%");
 
 print "All tests OK !\n";
