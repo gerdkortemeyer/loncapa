@@ -1,0 +1,86 @@
+\chapter{Authorization}
+\section{Roles}\index{roles}\label{roles}
+Authorization is handled via roles. Each role has a certain set of privileges, which are defined within their realms\index{realms} through roles.json. Here's an excerpt:
+\begin{verbatim}
+{
+"superuser"          : { "realm"  : "system",
+                         "system" : {
+                                      "view_role"       : "1",
+                                      "modify_role"     : {
+                                                             "domain_coordinator" : "1"
+                                                          }
+                                    }
+                       },
+"domain_coordinator" : { "realm"  : "domain",
+                         "domain" : {
+                                      "view_role"       : "1",
+                                      "modify_role"     : {
+                                                             "course_coordinator" : "1"
+                                                          },
+                                      "modity_auth"     : "1"
+                                    }
+                       },
+"course_coordinator" : { "realm"  : "regular",
+                         "course" : {
+                                      "view_role"       : "1",
+                                      "modify_role"     : {
+                                                             "course_coordinator" : "1",
+                                                             "instructor"         : "1",
+                                                             "teaching_assistant" : "1",
+                                                             "student"            : "1"
+                                                          },
+                                      "modify_settings": "1",
+                                      "edit_toc"       : "1",
+                                      "access_content" : {
+                                                             "open"               : "1",
+                                                             "closed"             : "1",
+                                                             "hidden"             : "1"
+                                                         },
+                                      "modify_grade"   : "1",
+                                      "notify"         : "1"
+                                    }
+                       },
+"instructor"         : { "realm"  : "regular",
+                         "course" : { 
+                                      "access_content" : {
+                                                             "open"               : "1",
+                                                             "closed"             : "1",
+                                                             "hidden"             : "1"
+                                                         }
+                                    },
+                         "section": {
+                                      "view_role"      : "1",
+                                      "modify_grade"   : "1",
+                                      "notify"         : "1"
+                                    }
+                       },
+"teaching_assistant" : { "realm"  : "regular",
+                         "course" : { 
+                                      "access_content" : {
+                                                             "open"               : "1"
+                                                         }
+                                    },
+                         "section": {
+                                      "view_role"      : "1",
+                                      "modify_grade"   : "1",
+                                      "notify"         : "1"
+                                    }
+                       },
+"student"            : { "realm"  : "regular",
+                         "course" : {
+                                      "access_content" : {
+                                                             "open"               : "1"
+                                                         }
+                                    }
+                       },
+"community_organizer": { "realm"  : "community"
+                       },
+"member"             : { "realm"  : "community"
+                       },
+"author"             : { "realm"  : "user"
+                       },
+"co_author"          : { "realm"  : "user"
+                       }
+}
+
+\end{verbatim}
