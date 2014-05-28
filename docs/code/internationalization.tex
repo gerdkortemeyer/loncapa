@@ -1,0 +1,92 @@
+\chapter{Internationalization}\index{internationalization}
+\section{Encoding}\index{encoding}
+Unicode\index{unicode} UTF-8\index{utf-8} is used throughout. All assets, program code, translation files, stored data, etc, is stored in utf-8 in order to avoid encoding problems down the road.
+\section{Maketext}
+LON-CAPA uses Maketext for internationalization, both inside of documents and called programatically. For each language, a translation file needs to be written. The format is simple:
+\begin{verbatim}
+package Apache::lc_localize::de;
+use base qw(Apache::lc_localize);
+use utf8;
+
+%Lexicon=('_AUTO' => 1,
+'language_code'      => 'de',
+'language_direction' => 'ltr',
+'language_description' => 'Deutsch',
+'date_locale'  => '$weekday, $day. $month $year, $twentyfour:$minutes:$seconds Uhr',
+'date_short_locale' => '$day.$month.$year',
+'date_months'  => 'Jan.,Feb.,März,April,Mai,Juni,Juli,Aug.,Sep.,Okt.,Nov.,Dez.',
+'date_days'    => 'So.,Mo.,Di.,Mi.,Do.,Fr.,Sa.',
+'date_am' => 'vormittags',
+'date_pm' => 'nachmittags',
+'date_format' => '24',
+
+'superuser' => 'Superuser',
+'domain_coordinator' => 'Domänenkoordinator',
+'course_coordinator' => 'Kurskoordinator',
+'instructor' => 'Dozent',
+'teaching_assistant' => 'Tutor',
+'student' => 'Studierender',
+'community_organizer' => 'Gemeinschaftsorganisator',
+'member' => 'Mitglied',
+'author' => 'Autor',
+'co_author' => 'Co-Autor',
+
+'Modify Selected Entries' => 'Ausgewählte Einträge ändern',
+
+'Add New Entry' => 'Neuen Eintrag hinzufügen',
+
+"Showing [_1] to [_2] of [_3] entries" => "Einträge [_1] bis [_2] von [_3] insgesamt",
+
+...
+);
+
+1;
+__END__
+\end{verbatim}
+Some configuration entries such as date\_locale are mandatory. Where translations are missing, English is used. The [\_{\it n}] are placeholders for variables.
+\section{Invocation in documents}
+In documents, phrases can be translated using the $<$localize$>$-tag, e.g.
+\begin{verbatim}
+<span class="lcsuccess"><localize>Your preferences were saved.</localize></span>
+\end{verbatim}
+Placeholders can be defined using the parameter argument, e.g., $<$localize parameters="42,'Fred'"$>$.
+This tag is defined in module lc\_xml\_localize.
+\section{Invocation from Perl}
+Internationalization is available from Perl via the \%mt()-function. The first argument is the text, any following arguments come from the remaining arguments, e.g., 
+\begin{verbatim}
+&mt("Showing [_1] to [_2] of [_3] entries",$start,$finish,$total)
+\end{verbatim}
+\section{Special cases}
+Some Javascript utilities expect a configuration file. This can be generated dynamically like for example in lc\_ui\_datatable\_i14n, which is invoked by lc.conf:
+\begin{verbatim}
+sub handler {
+# Get request object
+   my $r = shift;
+   $r->content_type('application/json; charset=utf-8');
+   my $items={
+    "sEmptyTable"    => &mt("No data available in table"),
+    "sInfo"          => &mt("Showing [_1] to [_2] of [_3] entries",'_START_','_END_','_TOTAL_'),
+    "sInfoEmpty"     => &mt("Showing 0 to 0 of 0 entries"),
+    "sInfoFiltered"  => &mt("(filtered from [_1] total entries)",'_MAX_'),
+    "sInfoPostFix"   => "",
+    "sInfoThousands" => &mt(","),
+    "sLengthMenu"    => &mt("Show [_1] entries",'_MENU_'),
+    "sLoadingRecords"=> &mt("Loading..."),
+    "sProcessing"    => &mt("Processing..."),
+    "sSearch"        => &mt("Search:"),
+    "sZeroRecords"   => &mt("No matching records found"),
+    "oPaginate" => {
+        "sFirst"    => &mt("First"),
+        "sLast"     => &mt("Last"),
+        "sNext"     => &mt("Next"),
+        "sPrevious" => &mt("Previous")
+                   },
+    "oAria" => {
+        "sSortAscending"  => &mt(": activate to sort column ascending"),
+        "sSortDescending" => &mt(": activate to sort column descending")
+               }
+   };
+   $r->print(&Apache::lc_json_utils::perl_to_json($items));
+   return OK;
+}
+\end{verbatim}

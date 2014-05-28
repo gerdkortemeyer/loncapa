@@ -1,48 +1,78 @@
 \begin{theindex}
 
   \item access server, 11
-  \item assets, 9, 16
+  \item accessibility, 5
+  \item assessments, 19
+  \item assets, 9, 16, 19
 
   \indexspace
 
+  \item caching, 19
   \item certificates, 13
   \item cluster manager, 12
   \item cluster table, 11
-  \item courses, 15
+  \item course IDs, 18
+  \item courses, 15, 17
 
   \indexspace
 
+  \item encoding, 23
   \item entities, 15
 
   \indexspace
 
-  \item homeserver, 12
+  \item homeserver, 12, 17--19
+  \item HTML pages, 21
+
+  \indexspace
+
+  \item internationalization, 5, 23
 
   \indexspace
 
   \item lc.conf, 9
   \item library server, 11
+  \item Linux, 7
 
   \indexspace
 
-  \item MongoDB, 17
+  \item metadata, 16
+  \item MongoDB, 16, 17, 19
 
   \indexspace
 
-  \item PIDs, 15
+  \item open source, 3, 7
+
+  \indexspace
+
+  \item PIDs, 15, 17
   \item PostgreSQL, 17
+  \item problems, 21
+  \item profiles, 16
 
   \indexspace
 
-  \item replication, 10, 14
+  \item replication, 10, 14, 19
+  \item roles, 18
 
   \indexspace
 
-  \item usernames, 15
-  \item users, 15
+  \item safeeval, 22
+  \item SSL, 6
 
   \indexspace
 
-  \item versions, 10, 16
+  \item unicode, 23
+  \item usernames, 15, 17
+  \item users, 15, 17
+  \item utf-8, 23
+
+  \indexspace
+
+  \item versions, 10, 16, 19
+
+  \indexspace
+
+  \item XML parser, 10, 21
 
 \end{theindex}

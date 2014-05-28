@@ -1,0 +1,55 @@
+\chapter{XML Parser}\index{XML parser}
+\section{Invocation}
+The XML parser is at the heart of much of LON-CAPA's operation. As opposed to the original LON-CAPA, it does not distinguish between problems and non-problems, and it also serves system pages.\index{problems}\index{HTML pages} It is called via lc.conf:
+\begin{verbatim}
+<LocationMatch "\.(xml|html|htm|xhtml|xhtm)$">
+SetHandler perl-script
+PerlHandler Apache::lc_asset_xml
+</LocationMatch>
+\end{verbatim}
+The main handler is thus lc\_asset\_xml. All other modules need to register their tags with this parser.
+
+The XML parser actually uses a HTML parser,
+\begin{verbatim}
+use HTML::TokeParser();
+\end{verbatim}
+so it is more robust against trying to make sense of malformed XML, however, no malformed document should be stored. Documentation for this module is online.
+\section{Tag types}
+Tags are defined via subroutines. The name of these subroutines has three parts: start or end, tagname, and target. For example, here is lc\_xml\_localize, which defines the localize-tag:
+\begin{verbatim}
+package Apache::lc_xml_localize;
+
+use strict;
+use Apache::lc_ui_localize;
+
+our @ISA = qw(Exporter);
+
+# Export all tags that this module defines in the list below
+our @EXPORT = qw(start_localize_html start_localize_tex);
+
+sub start_localize_html {
+   my ($p,$safe,$stack,$token)=@_;
+   my $text=$p->get_text('/localize');
+   $p->get_token;
+   pop(@{$stack->{'tags'}});
+   return &mt($text,
+              split(/\s*\,\s*/,&Apache::lc_asset_safeeval::texteval($safe,$token->[2]->{'parameters'})));
+}
+
+sub start_localize_tex {
+   my ($p,$safe,$stack,$token)=@_;
+   return &mt($p->get_text('/localize'),
+              split(/\s*\,\s*/,&Apache::lc_asset_safeeval::texteval($safe,$token->[2]->{'parameters'})));
+}
+
+1;
+__END__
+\end{verbatim}
+Target html is for web, target tex for printing. Defined tags need to be exported. In lc\_asset\_xml, lc\_xml\_localize needs to be used (without parenthesis).
+
+If a tag is not defined, it is just printed to the screen on the web and ignored in print.
+
+\section{Stacks and safeeval}\index{safeeval}
+The stack is used to store the arguments of tags, so they can be retrieved later or inside of nested tags. The safeeval-space is a Perl safespace in which calculations and storage can happen (same as in the old LON-CAPA).
+
+

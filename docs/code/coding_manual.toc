@@ -28,6 +28,7 @@
 \contentsline {chapter}{\numberline {3}URL Translation}{9}
 \contentsline {section}{\numberline {3.1}Accessing handlers}{9}
 \contentsline {section}{\numberline {3.2}Accessing assets}{9}
+\contentsline {section}{\numberline {3.3}System Pages}{10}
 \contentsline {chapter}{\numberline {4}Network}{11}
 \contentsline {section}{\numberline {4.1}Nodes}{11}
 \contentsline {section}{\numberline {4.2}Cluster Table}{11}
@@ -45,8 +46,27 @@
 \contentsline {section}{\numberline {5.3}Users}{15}
 \contentsline {section}{\numberline {5.4}Courses}{15}
 \contentsline {section}{\numberline {5.5}Assets}{16}
+\contentsline {subsection}{\numberline {5.5.1}Profiles and metadata}{16}
 \contentsline {chapter}{\numberline {6}Storage}{17}
 \contentsline {section}{\numberline {6.1}Databases}{17}
-\contentsline {section}{\numberline {6.2}Caching}{17}
-\contentsline {section}{\numberline {6.3}File system}{17}
-\contentsline {section}{\numberline {6.4}Programmatic access}{17}
+\contentsline {subsection}{\numberline {6.1.1}PostgreSQL tables}{17}
+\contentsline {subsubsection}{URL table}{17}
+\contentsline {subsubsection}{User table}{17}
+\contentsline {subsubsection}{PID table}{17}
+\contentsline {subsubsection}{Course ID table}{18}
+\contentsline {subsubsection}{Homeserver table}{18}
+\contentsline {subsubsection}{Roles}{18}
+\contentsline {subsubsection}{Assessment table}{19}
+\contentsline {section}{\numberline {6.2}Caching}{19}
+\contentsline {section}{\numberline {6.3}File system}{19}
+\contentsline {section}{\numberline {6.4}Programmatic access}{19}
+\contentsline {chapter}{\numberline {7}XML Parser}{21}
+\contentsline {section}{\numberline {7.1}Invocation}{21}
+\contentsline {section}{\numberline {7.2}Tag types}{21}
+\contentsline {section}{\numberline {7.3}Stacks and safeeval}{22}
+\contentsline {chapter}{\numberline {8}Internationalization}{23}
+\contentsline {section}{\numberline {8.1}Encoding}{23}
+\contentsline {section}{\numberline {8.2}Maketext}{23}
+\contentsline {section}{\numberline {8.3}Invocation in documents}{24}
+\contentsline {section}{\numberline {8.4}Invocation from Perl}{24}
+\contentsline {section}{\numberline {8.5}Special cases}{24}

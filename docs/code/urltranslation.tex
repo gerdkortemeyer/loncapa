@@ -63,3 +63,30 @@ sub handler {
 }
 \end{verbatim}
 This deals with URLs of the type /asset and /raw, and does the translation of URL-paths to the asset entity:domain, as well as versioning and replication. By the time this handler is done, the asset is either present or we throw a NOT\_FOUND.\index{replication}\index{versions}
+\section{System Pages}
+System pages such as the dashboard or the preferences are actually HTML-pages, which include LON-CAPA XML. They use the same XML parser\index{XML parser} as for example homework pages. An example is lc\_preferences.html, the user preferences screen:
+\begin{verbatim}
+<html>
+<head>
+<title>Preferences</title>
+<script src="/scripts/lc_preferences.js"></script>
+</head>
+<body>
+<h1><localize>Preferences</localize></h1>
+<p>
+<span class="lcstandard"><localize>You can modify your user preferences below.</localize></span>
+<span class="lcerror"><localize>A problem occured, please try again later.</localize></span>
+<span class="lcproblem"><localize>A problem occurred while saving your preferences.</localize></span>
+<span class="lcsuccess"><localize>Your preferences were saved.</localize></span>
+&nbsp;
+</p>
+<lcform id="preferencesform">
+<lcformtable>
+<lcformtableinput type="language" description="Language" id="language" default="user" />
+<lcformtableinput type="timezone" description="Timezone" id="timezone" default="user" />
+</lcformtable>
+<lcformtrigger id="storebutton" description="Store" />
+</lcform>
+</body>
+</html>
+\end{verbatim}
