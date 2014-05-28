@@ -4,7 +4,7 @@
   \item accessibility, 5
   \item assessments, 21
   \item assets, 9, 16, 21
-  \item authorization, 6
+  \item authorization, 7
 
   \indexspace
 
@@ -55,7 +55,7 @@
   \item PIDs, 15, 19
   \item portfolio, 16
   \item PostgreSQL, 19
-  \item privileges, 6
+  \item privileges, 7
   \item problems, 23
   \item profiles, 16
 
@@ -63,7 +63,7 @@
 
   \item realms, 17
   \item replication, 10, 14, 21
-  \item roles, 6, 17, 20
+  \item roles, 7, 17, 20
 
   \indexspace
 

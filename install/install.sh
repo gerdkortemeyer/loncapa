@@ -37,6 +37,8 @@ cp test/lc_test.pm /home/httpd/lib/perl/Apache
 cp test/math_parser_manual_test.pl /home/httpd/lib/perl/Apache
 cp test/math_parser_test_cases.pl /home/httpd/lib/perl/Apache
 cp -r math /home/httpd/lib/perl/Apache/
+mkdir /home/httpd/lib/perl/Apache/xml_problem_tags
+cp xml/xml_problem_tags/*.pm /home/httpd/lib/perl/Apache/xml_problem_tags
 mkdir /home/httpd/html
 cp app/favicon.ico /home/httpd/html
 cp app/html/*.html /home/httpd/html

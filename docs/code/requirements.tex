@@ -28,6 +28,8 @@ Assets have to be printable at different granularity (single, chapter, course) i
 Any changes to user roles, course tables of contents, due dates, portfolios, etc, must take effect all across the network in at most 10 minutes, and this includes running sessions.
 \subsection{Separation}
 No content or interface handlers must directly touch local disks. All network functionality must be abstracted away beyond the ``entity'' level.
+\subsection{Times}
+All stored times are UTC. Conversion should only happen on input/output. We need to make sure we are not running into the Y2038-bug.
 \section{Network functionality}
 \subsection{SSL}\index{SSL}
 All communication between servers is at least 4096-bit encrypted. LON-CAPA issues server and client certificates. Servers need full reverse DNS.
