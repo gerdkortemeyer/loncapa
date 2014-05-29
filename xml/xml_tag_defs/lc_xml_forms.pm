@@ -339,6 +339,7 @@ sub end_lcspreadsheetassign_html {
       push(@{$values},$option->{'value'});
       push(@{$choices},&mt($option->{'label'}));
    }
+# Go through all worksheets
    foreach my $worksheet (keys(%{$sheets})) {
       unless (($sheets->{$worksheet}->{'col_max'}>1) && ($sheets->{$worksheet}->{'row_max'}>1)) {
         $output.='<p>'.
@@ -346,6 +347,7 @@ sub end_lcspreadsheetassign_html {
                'The spreadsheet may have been misinterpreted. Please make sure your file has the proper extension (e.g., ".xls") or try another format.').
                '</p>';
       }
+# Start a new table for each worksheet
       $output.='<table><thead class="lcsorttablehead"><tr><th colspan="2">'.$worksheet.'</th></tr><tr><th>'.&mt('Sample Entries').'</th><th>'.&mt('Assignment').
                '</th></tr></thead><tbody class="lcsorttablebody">';
       foreach my $col ($sheets->{$worksheet}->{'col_min'} .. $sheets->{$worksheet}->{'col_max'}) {
@@ -360,7 +362,7 @@ sub end_lcspreadsheetassign_html {
          }
          $output.="</pre></td><td>\n";
          my $default='nothing';
-         my $id="col$col";
+         my $id=&Apache::lc_xml_utils::form_escape($worksheet.'c'.$col);
          if ($screen_form_defaults->{$id}) {
             $default=$screen_form_defaults->{$id};
          }

@@ -16,15 +16,18 @@
 \contentsline {section}{\numberline {2.3}Data}{6}
 \contentsline {subsection}{\numberline {2.3.1}All changes take effect after at most 10 minutes}{6}
 \contentsline {subsection}{\numberline {2.3.2}Separation}{6}
+\contentsline {subsection}{\numberline {2.3.3}Times}{6}
 \contentsline {section}{\numberline {2.4}Network functionality}{6}
 \contentsline {subsection}{\numberline {2.4.1}SSL}{6}
 \contentsline {subsection}{\numberline {2.4.2}Predictable storage}{6}
 \contentsline {subsection}{\numberline {2.4.3}Authentication}{6}
-\contentsline {subsection}{\numberline {2.4.4}Run everywhere}{6}
-\contentsline {subsection}{\numberline {2.4.5}Servers}{7}
+\contentsline {subsection}{\numberline {2.4.4}Authorization}{7}
+\contentsline {subsection}{\numberline {2.4.5}Run everywhere}{7}
+\contentsline {subsection}{\numberline {2.4.6}Servers}{7}
 \contentsline {section}{\numberline {2.5}Coding environment}{7}
 \contentsline {subsection}{\numberline {2.5.1}Linux Distributions}{7}
 \contentsline {subsection}{\numberline {2.5.2}Open source}{7}
+\contentsline {subsection}{\numberline {2.5.3}Porting from LON-CAPA 2.x}{7}
 \contentsline {chapter}{\numberline {3}URL Translation}{9}
 \contentsline {section}{\numberline {3.1}Accessing handlers}{9}
 \contentsline {section}{\numberline {3.2}Accessing assets}{9}
@@ -47,26 +50,29 @@
 \contentsline {section}{\numberline {5.4}Courses}{15}
 \contentsline {section}{\numberline {5.5}Assets}{16}
 \contentsline {subsection}{\numberline {5.5.1}Profiles and metadata}{16}
-\contentsline {chapter}{\numberline {6}Storage}{17}
-\contentsline {section}{\numberline {6.1}Databases}{17}
-\contentsline {subsection}{\numberline {6.1.1}PostgreSQL tables}{17}
-\contentsline {subsubsection}{URL table}{17}
-\contentsline {subsubsection}{User table}{17}
-\contentsline {subsubsection}{PID table}{17}
-\contentsline {subsubsection}{Course ID table}{18}
-\contentsline {subsubsection}{Homeserver table}{18}
-\contentsline {subsubsection}{Roles}{18}
-\contentsline {subsubsection}{Assessment table}{19}
-\contentsline {section}{\numberline {6.2}Caching}{19}
-\contentsline {section}{\numberline {6.3}File system}{19}
-\contentsline {section}{\numberline {6.4}Programmatic access}{19}
-\contentsline {chapter}{\numberline {7}XML Parser}{21}
-\contentsline {section}{\numberline {7.1}Invocation}{21}
-\contentsline {section}{\numberline {7.2}Tag types}{21}
-\contentsline {section}{\numberline {7.3}Stacks and safeeval}{22}
-\contentsline {chapter}{\numberline {8}Internationalization}{23}
-\contentsline {section}{\numberline {8.1}Encoding}{23}
-\contentsline {section}{\numberline {8.2}Maketext}{23}
-\contentsline {section}{\numberline {8.3}Invocation in documents}{24}
-\contentsline {section}{\numberline {8.4}Invocation from Perl}{24}
-\contentsline {section}{\numberline {8.5}Special cases}{24}
+\contentsline {chapter}{\numberline {6}Authorization}{17}
+\contentsline {section}{\numberline {6.1}Roles}{17}
+\contentsline {chapter}{\numberline {7}Storage}{19}
+\contentsline {section}{\numberline {7.1}Databases}{19}
+\contentsline {subsection}{\numberline {7.1.1}PostgreSQL tables}{19}
+\contentsline {subsubsection}{URL table}{19}
+\contentsline {subsubsection}{User table}{19}
+\contentsline {subsubsection}{PID table}{19}
+\contentsline {subsubsection}{Course ID table}{20}
+\contentsline {subsubsection}{Homeserver table}{20}
+\contentsline {subsubsection}{Roles}{20}
+\contentsline {subsubsection}{Assessment table}{21}
+\contentsline {section}{\numberline {7.2}Caching}{21}
+\contentsline {section}{\numberline {7.3}File system}{21}
+\contentsline {section}{\numberline {7.4}Programmatic access}{21}
+\contentsline {chapter}{\numberline {8}XML Parser}{23}
+\contentsline {section}{\numberline {8.1}Invocation}{23}
+\contentsline {section}{\numberline {8.2}Tag types}{23}
+\contentsline {section}{\numberline {8.3}Stacks and safeeval}{24}
+\contentsline {chapter}{\numberline {9}Internationalization}{25}
+\contentsline {section}{\numberline {9.1}Encoding}{25}
+\contentsline {section}{\numberline {9.2}Maketext}{25}
+\contentsline {section}{\numberline {9.3}Invocation in documents}{26}
+\contentsline {section}{\numberline {9.4}Invocation from Perl}{26}
+\contentsline {section}{\numberline {9.5}Special cases}{26}
+\contentsline {chapter}{\numberline {10}Glossary}{27}

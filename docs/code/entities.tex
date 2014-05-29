@@ -1,5 +1,5 @@
 \chapter{Entities}
-\section{Identification}\index{entities}
+\section{Identification}\index{entities}\label{entities}
 Users, courses, and assets are entities in the system. Since the network has domains, an entity is identified by two components:
 \begin{itemize}
 \item An entity code (in the system internally often referred to as just ``entity'', e.g., ``qLLTNbdEhQaxQ8AZyYp''
@@ -26,7 +26,17 @@ The system should thus assume:
 Each username or PID points to one and only one user entity. However, a user entity can have more than one supported username or PID.
 \section{Courses}\index{courses}
 Courses are treated very similarily to users. They have course IDs such as ``phy231fs14'', which might have. These are treated the same way as usernames or PIDs.
-\section{Assets}\index{assets}
+
+Communities are special kinds of courses which do not have grade book, and which have different associated roles. Internally, they are distinguish by the ``type'' in the course profile being ``community'' instead of ``regular.''\index{communities}
+
+Courses can have sections and groups.\index{sections}\index{groups}
+\begin{itemize}
+\item Sections usually correspond to educational venues such as laboratories or recitations. A student can only be in one section at a time.
+\item Groups are more like teams, working together. A student can be in more than one group at a time
+\end{itemize}
+Internally the two are distinguished by ``type'' in the course/community profile.
+\section{Assets}\index{assets}\label{assets}
+Assets are HTML pages, problems, images, movies, etc, which are stored in user portfolios.\index{portfolio}
 Instead of usernames, PIDs, or couse IDs, assets have URLs. One asset can have more than one URL, however, the URL of published assets looks like
 \begin{center}
 {\tt /asset/n/3/msu/smith/...}

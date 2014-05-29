@@ -2,6 +2,9 @@
 \indexentry{accessibility}{5}
 \indexentry{internationalization}{5}
 \indexentry{SSL}{6}
+\indexentry{roles}{7}
+\indexentry{authorization}{7}
+\indexentry{privileges}{7}
 \indexentry{Linux}{7}
 \indexentry{open source}{7}
 \indexentry{lc.conf}{9}
@@ -21,33 +24,39 @@
 \indexentry{usernames}{15}
 \indexentry{PIDs}{15}
 \indexentry{courses}{15}
+\indexentry{communities}{15}
+\indexentry{sections}{15}
+\indexentry{groups}{15}
 \indexentry{assets}{16}
+\indexentry{portfolio}{16}
 \indexentry{versions}{16}
 \indexentry{profiles}{16}
 \indexentry{metadata}{16}
 \indexentry{MongoDB}{16}
-\indexentry{PostgreSQL}{17}
-\indexentry{MongoDB}{17}
-\indexentry{homeserver}{17}
-\indexentry{users}{17}
-\indexentry{courses}{17}
-\indexentry{usernames}{17}
-\indexentry{PIDs}{17}
-\indexentry{course IDs}{18}
-\indexentry{homeserver}{18}
-\indexentry{roles}{18}
-\indexentry{assessments}{19}
+\indexentry{roles}{17}
+\indexentry{realms}{17}
+\indexentry{PostgreSQL}{19}
 \indexentry{MongoDB}{19}
-\indexentry{caching}{19}
 \indexentry{homeserver}{19}
-\indexentry{replication}{19}
-\indexentry{versions}{19}
-\indexentry{assets}{19}
-\indexentry{XML parser}{21}
-\indexentry{problems}{21}
-\indexentry{HTML pages}{21}
-\indexentry{safeeval}{22}
-\indexentry{internationalization}{23}
-\indexentry{encoding}{23}
-\indexentry{unicode}{23}
-\indexentry{utf-8}{23}
+\indexentry{users}{19}
+\indexentry{courses}{19}
+\indexentry{usernames}{19}
+\indexentry{PIDs}{19}
+\indexentry{course IDs}{20}
+\indexentry{homeserver}{20}
+\indexentry{roles}{20}
+\indexentry{assessments}{21}
+\indexentry{memcached}{21}
+\indexentry{caching}{21}
+\indexentry{homeserver}{21}
+\indexentry{replication}{21}
+\indexentry{versions}{21}
+\indexentry{assets}{21}
+\indexentry{XML parser}{23}
+\indexentry{problems}{23}
+\indexentry{HTML pages}{23}
+\indexentry{safeeval}{24}
+\indexentry{internationalization}{25}
+\indexentry{encoding}{25}
+\indexentry{unicode}{25}
+\indexentry{utf-8}{25}

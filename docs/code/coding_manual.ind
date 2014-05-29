@@ -2,31 +2,37 @@
 
   \item access server, 11
   \item accessibility, 5
-  \item assessments, 19
-  \item assets, 9, 16, 19
+  \item assessments, 21
+  \item assets, 9, 16, 21
+  \item authorization, 7
 
   \indexspace
 
-  \item caching, 19
+  \item caching, 21
   \item certificates, 13
   \item cluster manager, 12
   \item cluster table, 11
-  \item course IDs, 18
-  \item courses, 15, 17
+  \item communities, 15
+  \item course IDs, 20
+  \item courses, 15, 19
 
   \indexspace
 
-  \item encoding, 23
+  \item encoding, 25
   \item entities, 15
 
   \indexspace
 
-  \item homeserver, 12, 17--19
-  \item HTML pages, 21
+  \item groups, 15
 
   \indexspace
 
-  \item internationalization, 5, 23
+  \item homeserver, 12, 19--21
+  \item HTML pages, 23
+
+  \indexspace
+
+  \item internationalization, 5, 25
 
   \indexspace
 
@@ -36,8 +42,9 @@
 
   \indexspace
 
+  \item memcached, 21
   \item metadata, 16
-  \item MongoDB, 16, 17, 19
+  \item MongoDB, 16, 19
 
   \indexspace
 
@@ -45,34 +52,38 @@
 
   \indexspace
 
-  \item PIDs, 15, 17
-  \item PostgreSQL, 17
-  \item problems, 21
+  \item PIDs, 15, 19
+  \item portfolio, 16
+  \item PostgreSQL, 19
+  \item privileges, 7
+  \item problems, 23
   \item profiles, 16
 
   \indexspace
 
-  \item replication, 10, 14, 19
-  \item roles, 18
+  \item realms, 17
+  \item replication, 10, 14, 21
+  \item roles, 7, 17, 20
 
   \indexspace
 
-  \item safeeval, 22
+  \item safeeval, 24
+  \item sections, 15
   \item SSL, 6
 
   \indexspace
 
-  \item unicode, 23
-  \item usernames, 15, 17
-  \item users, 15, 17
-  \item utf-8, 23
+  \item unicode, 25
+  \item usernames, 15, 19
+  \item users, 15, 19
+  \item utf-8, 25
 
   \indexspace
 
-  \item versions, 10, 16, 19
+  \item versions, 10, 16, 21
 
   \indexspace
 
-  \item XML parser, 10, 21
+  \item XML parser, 10, 23
 
 \end{theindex}

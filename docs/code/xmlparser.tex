@@ -9,11 +9,12 @@ PerlHandler Apache::lc_asset_xml
 \end{verbatim}
 The main handler is thus lc\_asset\_xml. All other modules need to register their tags with this parser.
 
-The XML parser actually uses a HTML parser,
+The XML parser actually since the early days of LON-CAPA used an HTML parser,
 \begin{verbatim}
 use HTML::TokeParser();
 \end{verbatim}
-so it is more robust against trying to make sense of malformed XML, however, no malformed document should be stored. Documentation for this module is online.
+so it is more robust against trying to make sense of malformed XML, however, no malformed document should be stored. As this is the same parser mechanism as
+is used in LON-CAPA 2.x, porting of the extensive homework functionality will be facilitated. Documentation for this module is online.
 \section{Tag types}
 Tags are defined via subroutines. The name of these subroutines has three parts: start or end, tagname, and target. For example, here is lc\_xml\_localize, which defines the localize-tag:
 \begin{verbatim}

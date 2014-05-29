@@ -28,6 +28,8 @@ Assets have to be printable at different granularity (single, chapter, course) i
 Any changes to user roles, course tables of contents, due dates, portfolios, etc, must take effect all across the network in at most 10 minutes, and this includes running sessions.
 \subsection{Separation}
 No content or interface handlers must directly touch local disks. All network functionality must be abstracted away beyond the ``entity'' level.
+\subsection{Times}
+All stored times are UTC. Conversion should only happen on input/output. We need to make sure we are not running into the Y2038-bug.
 \section{Network functionality}
 \subsection{SSL}\index{SSL}
 All communication between servers is at least 4096-bit encrypted. LON-CAPA issues server and client certificates. Servers need full reverse DNS.
@@ -35,12 +37,16 @@ All communication between servers is at least 4096-bit encrypted. LON-CAPA issue
 To observe privacy and export rules, any permanent user data (beyond temporary session information) needs to be stored in a predictable location. The domain concept of LON-CAPA facilitates this.
 \subsection{Authentication}
 It is the responsibility of the homeserver of a user to authenticate the user.
+\subsection{Authorization}\index{roles}\index{authorization}\index{privileges}
+Authorization in the system is based on roles. A user can have several (time-limited) roles, each of which provides a certain set of privileges within a particular realm.
 \subsection{Run everywhere}
 All system functionality must be available on all servers, so that content, courses and users can be served from any machine in the cluster (subject to freely configurable limitations).
 \subsection{Servers}
 Servers need to be dedicated to LON-CAPA for security and privacy reasons. In the age of virtual machines, that should not be a problem.
 \section{Coding environment}
 \subsection{Linux Distributions}\index{Linux}
-We are developing on CentOS/RedHat Enterprise. We do not have the time to support other distributions ourselves, and will only accept them if some individual guarantees to be their longterm curator. In the age of virtual machines, it should not be a problem to run a VM with a particular distribution, particularly since the machines are completely dedicated anyway.
+We are developing on CentOS/RedHat Enterprise. We do not have the time to support other distributions ourselves, and will only accept them if some individual guarantees to be their longterm curator. We will not accept short-life-cycle distributions, as only long-life-cycle distibution guarantee the required security and stability. In the age of virtual machines, it should not be a problem to run a VM with a particular distribution, particularly since the machines are completely dedicated anyway and if ready-to-run images are provided.
 \subsection{Open source}\index{open source}
 The software is licensed under the GNU General Public License Version 3 or higher, copyright Michigan State University Board of Trustees. Only software components that are compatible with this license shall be used.
+\subsection{Porting from LON-CAPA 2.x}
+The project will not succeed in a timely fashion if we do not port code from LON-CAPA 2.x. Eventually, program code will need to be cleaned up and moved over in order to keep timelines. This will mean that sometimes we need to sacrifice using the ``latest-greatest'' technology in order to facilitate portability of code or even just algorithms. 

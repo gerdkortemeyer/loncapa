@@ -1,5 +1,5 @@
 # The LearningOnline Network with CAPA - LON-CAPA
-# Same useful tags
+# Problem input tags 
 #
 # Copyright (C) 2014 Michigan State University Board of Trustees
 #
@@ -16,31 +16,22 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-package Apache::lc_xml_utils;
+package Apache::xml_problem_tags::inputtags;
 
 use strict;
 use Apache::lc_ui_localize;
-use HTML::Entities();
+use Apache::lc_ui_utils;
+use Apache::lc_date_utils;
+use Apache::lc_ui_localize();
+use Apache::lc_xml_utils();
+use Apache::lc_entity_sessions();
+use Apache::lc_entity_users();
+use Apache::lc_xml_forms();
 
-# Produces an error message with the right style and localization
-#
-sub error_message {
-   my ($message)=@_;
-   return '<span class="lcerror">'.&mt($message).'</span>';
-}
+our @ISA = qw(Exporter);
 
-# Produces the less severe problem message
-#
-sub problem_message {
-   my ($message)=@_;
-   return '<span class="lcproblem">'.&mt($message).'</span>';
-}
+# Export all tags that this module defines in the list below
+our @EXPORT = qw();
 
-# Escape characters for use in a web form or query string
-#
-sub form_escape {
-   return &HTML::Entities::encode(@_[0],'<>&"');
-}
-   
 1;
 __END__

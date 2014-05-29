@@ -57,7 +57,7 @@ Clusters are established by cluster tables, see below for an example
 }
 \end{verbatim}
 Thus a particular server can serve more than one domain in different functions. Internally, servers are identified by the internal ID, e.g. ``slarti'' --- this allows migrating nodes between hardware.
-\subsection{Homeservers}\index{homeserver}
+\subsection{Homeservers}\index{homeserver}\label{homeserver}
 Each entity in the system has a so-called homeserver within its domain which holds the authoritative and permanent copy of their data.
 \subsection{Cluster manager}\index{cluster manager}
 One server in any cluster is the cluster manager. This machine holds the authoritative copy of the cluster configuration table. 
@@ -163,7 +163,7 @@ The named arguments are sent as JSON.
 
 Most routines that register services are in /entities --- other handlers should use the routines provided in the entity-handlers and {\it never} directly access the disk, the databases, or the network. The routines to be called are the ones without ``local'' or ``remote.''
 
-\section{Replication}\index{replication}
+\section{Replication}\index{replication}\label{replication}
 Assets are replicated between servers. Any server in the network can serve any asset in the server under the same URL path. This is transparent, i.e., the same URL path can be requested from any server, regardless of whether or not that asset is already locally present. The server needs to locate the asset in the network and replicate it if needed.
 
 Assets are versioned. Replication works by copying a certain version of an asset from its homeserver using
