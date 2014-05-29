@@ -22,7 +22,7 @@
 use strict;
 use warnings;
 
-# note: we could use Try::Tiny to catch errors if we wanted
+use Try::Tiny;
 
 use lib '/home/httpd/lib/perl';
 use Apache::lc_connection_utils();
@@ -60,6 +60,13 @@ my %cases = (
     "2%c" => "2*c/100",
     "[1m;2m]+[3m;4m]" => "[4m;6m]",
     "[1;2].[3;4]" => "[3;8]",
+    "matrix([1;2];[3;4]) + matrix([5;6];[7;8])" => "matrix([6;8];[10;12])",
+    "[[5;6];[7;8]] - [[1;2];[3;4]]" => "[[4;4];[4;4]]",
+    "-[[1;2];[3;4]]" => "[[-1;-2];[-3;-4]]",
+    "[[1;2;3];[4;5;6]] . [7;8;9]" => "[50;122]",
+    "[[1;2;3];[4;5;6]] * [7;8]" => "[[7;14;21];[32;40;48]]",
+    "[[1;2;3];[4;5;6]] . [[7;8];[9;10];[11;12]]" => "[[58;64];[139;154]]",
+    "[[1;2];[3;4]]^2" => "[[1;4];[9;16]]",
     "13 + 1 + 20 + 8" => "42", # MATH
     "1/(1/2-1/3-1/7)" => "42",
 );
@@ -69,10 +76,14 @@ sub test {
     if (!defined $tolerance) {
         $tolerance = 1e-5;
     }
-    my $quantity = $parser->parse($expression)->calc();
-    my $expected_quantity = $parser->parse($expected)->calc();
-    if (!$quantity->equals($expected_quantity, $tolerance)) {
-        die "Incorrect result for $expression: ".$quantity." instead of ".$expected_quantity;
+    try {
+        my $quantity = $parser->parse($expression)->calc();
+        my $expected_quantity = $parser->parse($expected)->calc();
+        if (!$quantity->equals($expected_quantity, $tolerance)) {
+            die "Wrong result: ".$quantity." instead of ".$expected_quantity;
+        }
+    } catch {
+        die "Error for $expression: $_\n";
     }
 }
 

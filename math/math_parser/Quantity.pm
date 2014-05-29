@@ -116,6 +116,9 @@ sub toString {
 ##
 sub equals {
     my ( $self, $q, $tolerance ) = @_;
+    if (!$q->isa(Quantity)) {
+        return 0;
+    }
     if (!defined $tolerance) {
         $tolerance = 0;
     }
@@ -148,6 +151,9 @@ sub equals {
 ##
 sub add {
     my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die "Quantity addition: second member is not a Quantity.";
+    }
     my $v = $self->value + $q->value;
     my %units = %{$self->units};
     foreach my $unit (keys %units) {
@@ -165,6 +171,9 @@ sub add {
 ##
 sub sub {
     my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die "Quantity substraction: second member is not a Quantity.";
+    }
     my $v = $self->value - $q->value;
     my %units = %{$self->units};
     foreach my $unit (keys %units) {

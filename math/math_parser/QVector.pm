@@ -29,6 +29,7 @@ use aliased 'Apache::math::math_parser::Quantity';
 use aliased 'Apache::math::math_parser::QVector';
 
 use overload
+    '""' => \&toString,
     '+' => \&add,
     '-' => \&sub,
     '*' => \&mult,
@@ -78,6 +79,12 @@ sub toString {
 ##
 sub equals {
     my ( $self, $v, $tolerance ) = @_;
+    if (!$v->isa(QVector)) {
+        return 0;
+    }
+    if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
+        return 0;
+    }
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
         if (!$self->quantities->[$i]->equals($v->quantities->[$i], $tolerance)) {
             return 0;
@@ -93,6 +100,12 @@ sub equals {
 ##
 sub add {
     my ( $self, $v ) = @_;
+    if (!$v->isa(QVector)) {
+        die "Vector addition: second member is not a vector.";
+    }
+    if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
+        die "Vector addition: the vectors have different sizes.";
+    }
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
         $t[$i] = $self->quantities->[$i] + $v->quantities->[$i];
@@ -107,6 +120,12 @@ sub add {
 ##
 sub sub {
     my ( $self, $v ) = @_;
+    if (!$v->isa(QVector)) {
+        die "Vector substraction: second member is not a vector.";
+    }
+    if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
+        die "Vector substraction: the vectors have different sizes.";
+    }
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
         $t[$i] = $self->quantities->[$i] - $v->quantities->[$i];
@@ -134,6 +153,9 @@ sub neg {
 ##
 sub mult {
     my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die "Vector multiplication: second member is not a quantity.";
+    }
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
         $t[$i] = $self->quantities->[$i] * $q;
@@ -163,6 +185,9 @@ sub pow {
 ##
 sub dot {
     my ( $self, $v ) = @_;
+    if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
+        die "Vector dot product: the vectors have different sizes.";
+    }
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
         $t[$i] = $self->quantities->[$i]->mult($v->quantities->[$i]);

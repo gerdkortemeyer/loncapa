@@ -31,6 +31,7 @@ use aliased 'Apache::math::math_parser::Operator';
 use aliased 'Apache::math::math_parser::ParseException';
 use aliased 'Apache::math::math_parser::Quantity';
 use aliased 'Apache::math::math_parser::QVector';
+use aliased 'Apache::math::math_parser::QMatrix';
 use aliased 'Apache::math::math_parser::Units';
 
 use enum qw(UNKNOWN NAME NUMBER OPERATOR FUNCTION VECTOR SUBSCRIPT);
@@ -111,7 +112,7 @@ sub toString {
 
 ##
 # Evaluates the node, returning either a number, a complex or a vector with associated units.
-# @returns {Quantity|QVector}
+# @returns {Quantity|QVector|QMatrix}
 ##
 sub calc {
     my ( $self ) = @_;
@@ -158,7 +159,7 @@ sub calc {
                     return(($children[0]->calc() / Quantity->new(100)) * $children[1]->calc());
                 }
                 when (".") {
-                    # scalar product for vectors
+                    # scalar product for vectors, multiplication for matrices
                     return($children[0]->calc()->dot($children[1]->calc()));
                 }
                 when ("`") {
@@ -177,6 +178,7 @@ sub calc {
                 die "Missing parameter for function $fname";
             }
             given ($fname) {
+                when ("matrix") {    return $self->createVectorOrMatrix(); }
                 when ("sqrt") {      return $children[1]->calc()->qsqrt(); }
                 when ("abs") {       return $children[1]->calc()->qabs(); }
                 when ("exp") {       return $children[1]->calc()->qexp(); }
@@ -193,16 +195,55 @@ sub calc {
             }
         }
         when (VECTOR) {
-            my @children = @{$self->children};
-            my @t = (); # array of Quantity
-            for (my $i=0; $i < scalar(@children); $i++) {
-                $t[$i] = $children[$i]->calc();
-            }
-            return QVector->new(\@t);
+            return $self->createVectorOrMatrix();
         }
         when (SUBSCRIPT) {
             die "Subscript cannot be evaluated: ".$self->value;
         }
+    }
+}
+
+##
+# Creates a vector or a matrix with this node
+# @returns {QVector|QMatrix}
+##
+sub createVectorOrMatrix {
+    my ( $self ) = @_;
+    my @children = @{$self->children};
+    my @t = (); # 1d or 2d array of Quantity
+    my $start;
+    if ($self->type == FUNCTION) {
+        $start = 1;
+    } else {
+        $start = 0;
+    }
+    my $nb1;
+    for (my $i=0; $i < scalar(@children) - $start; $i++) {
+        my $qv = $children[$i+$start]->calc();
+        my $nb2;
+        if ($qv->isa(Quantity)) {
+            $nb2 = 1;
+        } else {
+            $nb2 = scalar(@{$qv->quantities});
+        }
+        if (!defined $nb1) {
+            $nb1 = $nb2;
+        } elsif ($nb2 != $nb1) {
+            die "Inconsistent number of elements in a matrix.";
+        }
+        if ($qv->isa(Quantity)) {
+            $t[$i] = $qv;
+        } else {
+            $t[$i] = [];
+            for (my $j=0; $j < scalar(@{$qv->quantities}); $j++) {
+                $t[$i][$j] = $qv->quantities->[$j];
+            }
+        }
+    }
+    if (ref($t[0]) eq 'ARRAY') {
+        return QMatrix->new(\@t);
+    } else {
+        return QVector->new(\@t);
     }
 }
 
