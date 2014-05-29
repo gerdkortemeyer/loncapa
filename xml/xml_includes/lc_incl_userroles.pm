@@ -19,6 +19,9 @@
 package Apache::lc_incl_userroles;
 
 use strict;
+use Apache::lc_json_utils();
+use Apache::lc_file_utils();
+use Apache::lc_xml_utils();
 
 our @ISA = qw(Exporter);
 
@@ -26,7 +29,34 @@ our @ISA = qw(Exporter);
 our @EXPORT = qw(incl_spreadsheet_finalize_items);
 
 sub incl_spreadsheet_finalize_items {
-   return 'Well, hello there from deep down';
+   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+   my $sheets=&Apache::lc_json_utils::json_to_perl(
+                &Apache::lc_file_utils::readfile(
+                   &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/uploaded_spreadsheet.json')));
+   unless ($sheets) {
+      return &Apache::lc_xml_utils::error_message('Could not interpret spreadsheet data. Please make sure your file has the proper extension (e.g., ".xls") or try another format.');
+   }
+# We have a valid spreadsheet. Now have to see if we have all the information we need
+#   foreach my $col ($sheets->{$worksheet}->{'col_min'} .. $sheets->{$worksheet}->{'col_max'}) {
+#      $output.="\n<tr><td><pre>";
+#      my $found=0;
+#      foreach my $row ($sheets->{$worksheet}->{'row_min'} .. $sheets->{$worksheet}->{'row_max'}) {
+#         if ($sheets->{$worksheet}->{'cells'}->{$row}->{$col}->{'value'}) {
+#            $output.=$sheets->{$worksheet}->{'cells'}->{$row}->{$col}->{'value'}."\n";
+#            $found++;
+#         }
+#         if ($found>5) { last; }
+#      }
+#      $output.="</pre></td><td>\n";
+#      my $default='nothing';
+#      my $id=&Apache::lc_xml_utils::form_escape($worksheet.'c'.$col);
+#      if ($screen_form_defaults->{$id}) {
+#         $default=$screen_form_defaults->{$id};
+#      }
+#      $output.=&selectfield($id,$id,$values,$choices,$default,$stack->{'tags'}->[-1]->{'args'}->{'verify'});
+#      $output.="</td></tr>";
+#   #}
+#   $output.='</tbody></table>';
 }
 
 1;
