@@ -144,7 +144,7 @@ sub calc {
                 }
                 when ("-") {
                     if (!defined $children[1]) {
-                        return($children[0]->calc($env)->neg());
+                        return($children[0]->calc($env)->qneg());
                     } else {
                         return($children[0]->calc($env) - $children[1]->calc($env));
                     }
@@ -185,19 +185,31 @@ sub calc {
             }
             given ($fname) {
                 when ("matrix") {    return $self->createVectorOrMatrix($env); }
+                when ("pow") {       return $children[1]->calc($env)->qpow($children[2]->calc($env)); }
                 when ("sqrt") {      return $children[1]->calc($env)->qsqrt(); }
                 when ("abs") {       return $children[1]->calc($env)->qabs(); }
                 when ("exp") {       return $children[1]->calc($env)->qexp(); }
                 when ("ln") {        return $children[1]->calc($env)->qln(); }
-                when ("log") {        return $children[1]->calc($env)->qln(); }
+                when ("log") {       return $children[1]->calc($env)->qln(); }
                 when ("log10") {     return $children[1]->calc($env)->qlog10(); }
                 when ("factorial") { return $children[1]->calc($env)->qfact(); }
+                when ("mod") {       return $children[1]->calc($env)->qmod($children[2]->calc($env)); }
+                when ("signum") {    return $children[1]->calc($env)->qsignum(); }
+                when ("ceiling") {    return $children[1]->calc($env)->qceiling(); }
+                when ("floor") {    return $children[1]->calc($env)->qfloor(); }
                 when ("sin") {       return $children[1]->calc($env)->qsin(); }
                 when ("cos") {       return $children[1]->calc($env)->qcos(); }
                 when ("tan") {       return $children[1]->calc($env)->qtan(); }
                 when ("asin") {      return $children[1]->calc($env)->qasin(); }
                 when ("acos") {      return $children[1]->calc($env)->qacos(); }
                 when ("atan") {      return $children[1]->calc($env)->qatan(); }
+                when ("atan2") {     return $children[1]->calc($env)->qatan2($children[2]->calc($env)); }
+                when ("sinh") {       return $children[1]->calc($env)->qsinh(); }
+                when ("cosh") {       return $children[1]->calc($env)->qcosh(); }
+                when ("tanh") {       return $children[1]->calc($env)->qtanh(); }
+                when ("asinh") {      return $children[1]->calc($env)->qasinh(); }
+                when ("acosh") {      return $children[1]->calc($env)->qacosh(); }
+                when ("atanh") {      return $children[1]->calc($env)->qatanh(); }
                 when (["sum","product"]) {
                     if ($env->unit_mode) {
                         die CalcException->new("$fname cannot work in unit mode.");

@@ -157,9 +157,11 @@ Parser.prototype.addHiddenOperators = function() {
                     }
                 }
                 if (this.tokens.length > index_test + 1 && this.tokens[index_test + 1].value == "(") {
-                    var known_functions = ["sqrt", "abs", "exp", "factorial", "diff",
+                    var known_functions = ["pow", "sqrt", "abs", "exp", "factorial", "diff",
                         "integrate", "sum", "product", "limit", "binomial", "matrix",
-                        "ln", "log", "log10", "sin", "cos", "tan", "asin", "acos", "atan"];
+                        "ln", "log", "log10", "mod", "signum", "ceiling", "floor",
+                        "sin", "cos", "tan", "asin", "acos", "atan", "atan2",
+                        "sinh", "cosh", "tanh", "asinh", "acosh", "atanh"];
                     for (var j=0; j<known_functions.length; j++) {
                         if (test_token.value == known_functions[j]) {
                             units = false;

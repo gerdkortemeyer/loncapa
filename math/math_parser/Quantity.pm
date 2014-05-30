@@ -26,6 +26,7 @@ use strict;
 use warnings;
 
 use Math::Complex;
+use POSIX;
 
 use aliased 'Apache::math::math_parser::CalcException';
 use aliased 'Apache::math::math_parser::Quantity';
@@ -33,11 +34,11 @@ use aliased 'Apache::math::math_parser::QVector';
 
 use overload
     '""' => \&toString,
-    '+' => \&add,
-    '-' => \&sub,
-    '*' => \&mult,
-    '/' => \&div,
-    '^' => \&pow;
+    '+' => \&qadd,
+    '-' => \&qsub,
+    '*' => \&qmult,
+    '/' => \&qdiv,
+    '^' => \&qpow;
 
 
 ##
@@ -150,7 +151,7 @@ sub equals {
 # @param {Quantity}
 # @returns {Quantity}
 ##
-sub add {
+sub qadd {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
         die CalcException->new("Quantity addition: second member is not a Quantity.");
@@ -170,7 +171,7 @@ sub add {
 # @param {Quantity}
 # @returns {Quantity}
 ##
-sub sub {
+sub qsub {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
         die CalcException->new("Quantity substraction: second member is not a Quantity.");
@@ -189,7 +190,7 @@ sub sub {
 # Negation
 # @returns {Quantity}
 ##
-sub neg {
+sub qneg {
     my ( $self ) = @_;
     my $v = - $self->value;
     my %units = %{$self->units};
@@ -201,7 +202,7 @@ sub neg {
 # @param {Quantity|QVector}
 # @returns {Quantity|QVector}
 ##
-sub mult {
+sub qmult {
     my ( $self, $qv ) = @_;
     if ($qv->isa(Quantity)) {
         my $q = $qv;
@@ -225,7 +226,7 @@ sub mult {
 # Division
 # @returns {Quantity}
 ##
-sub div {
+sub qdiv {
     my ( $self, $q ) = @_;
     if ($q->value == 0) {
         die CalcException->new("Division by 0");
@@ -242,7 +243,7 @@ sub div {
 # Power
 # @returns {Quantity}
 ##
-sub pow {
+sub qpow {
     my ( $self, $q ) = @_;
     my $v = $self->value ** $q->value;
     $q->noUnits("Power");
@@ -333,6 +334,54 @@ sub qlog10 {
 }
 
 ##
+# Modulo
+# @param {Quantity}
+# @returns {Quantity}
+##
+sub qmod {
+    my ( $self, $q ) = @_;
+    my $v = $self->value % $q->value;
+    return Quantity->new($v, $self->units);
+}
+
+##
+# Returns -1, 0 or 1 depending on the sign of the value
+# @returns {Quantity}
+##
+sub qsignum {
+    my ( $self ) = @_;
+    my $v;
+    if ($self->value < 0) {
+        $v = -1;
+    } elsif ($self->value > 0) {
+        $v = 1;
+    } else {
+        $v = 0;
+    }
+    return Quantity->new($v, $self->units);
+}
+
+##
+# Returns the least integer that is greater than or equal to the value.
+# @returns {Quantity}
+##
+sub qceiling {
+    my ( $self ) = @_;
+    my $v = ceil($self->value);
+    return Quantity->new($v, $self->units);
+}
+
+##
+# Returns the largest integer that is less than or equal to the value.
+# @returns {Quantity}
+##
+sub qfloor {
+    my ( $self ) = @_;
+    my $v = floor($self->value);
+    return Quantity->new($v, $self->units);
+}
+
+##
 # Sinus
 # @returns {Quantity}
 ##
@@ -390,6 +439,78 @@ sub qatan {
     my ( $self ) = @_;
     $self->noUnits("atan");
     return Quantity->new(atan($self->value), $self->units);
+}
+
+##
+# Arctangent of self/x in the range -pi to pi
+# @param {Quantity} x
+# @returns {Quantity}
+##
+sub qatan2 {
+    my ( $self, $q ) = @_;
+    $self->noUnits("atan2");
+    my $v = atan2($self->value, $q->value);
+    return Quantity->new($v, $self->units);
+}
+
+##
+# Hyperbolic sinus
+# @returns {Quantity}
+##
+sub qsinh {
+    my ( $self ) = @_;
+    $self->noUnits("sinh");
+    return Quantity->new(sinh($self->value), $self->units);
+}
+
+##
+# Hyperbolic cosinus
+# @returns {Quantity}
+##
+sub qcosh {
+    my ( $self ) = @_;
+    $self->noUnits("cosh");
+    return Quantity->new(cosh($self->value), $self->units);
+}
+
+##
+# Hyperbolic tangent
+# @returns {Quantity}
+##
+sub qtanh {
+    my ( $self ) = @_;
+    $self->noUnits("tanh");
+    return Quantity->new(tanh($self->value), $self->units);
+}
+
+##
+# Hyperbolic arcsinus
+# @returns {Quantity}
+##
+sub qasinh {
+    my ( $self ) = @_;
+    $self->noUnits("asinh");
+    return Quantity->new(asinh($self->value), $self->units);
+}
+
+##
+# Hyperbolic arccosinus
+# @returns {Quantity}
+##
+sub qacosh {
+    my ( $self ) = @_;
+    $self->noUnits("acosh");
+    return Quantity->new(acosh($self->value), $self->units);
+}
+
+##
+# Hyperbolic arctangent
+# @returns {Quantity}
+##
+sub qatanh {
+    my ( $self ) = @_;
+    $self->noUnits("atanh");
+    return Quantity->new(atanh($self->value), $self->units);
 }
 
 ##
