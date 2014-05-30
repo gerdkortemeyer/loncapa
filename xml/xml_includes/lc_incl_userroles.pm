@@ -22,6 +22,7 @@ use strict;
 use Apache::lc_json_utils();
 use Apache::lc_file_utils();
 use Apache::lc_xml_utils();
+use Apache::lc_xml_forms();
 
 our @ISA = qw(Exporter);
 
@@ -29,7 +30,12 @@ our @ISA = qw(Exporter);
 our @EXPORT = qw(incl_spreadsheet_finalize_items);
 
 sub incl_spreadsheet_finalize_items {
+   my %content=&Apache::lc_entity_sessions::posted_content();
+   my $output=&Apache::lc_xml_forms::hidden_vars(%content);
+   return $output;
+
    my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+
    my $sheets=&Apache::lc_json_utils::json_to_perl(
                 &Apache::lc_file_utils::readfile(
                    &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/uploaded_spreadsheet.json')));
@@ -57,6 +63,11 @@ sub incl_spreadsheet_finalize_items {
 #      $output.="</td></tr>";
 #   #}
 #   $output.='</tbody></table>';
+}
+
+sub handler {
+   my $r=shift;
+   $r->print(&incl_spreadsheet_finalize_items());
 }
 
 1;
