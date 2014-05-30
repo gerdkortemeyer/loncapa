@@ -127,17 +127,18 @@ Parser.prototype.addHiddenOperators = function() {
                 (token.type == Token.NAME && next_token.type == Token.NAME) ||
                 (token.type == Token.NUMBER && next_token.type == Token.NAME) ||
                 (token.type == Token.NUMBER && next_token.type == Token.NUMBER) ||
-                (token.type == Token.NUMBER && next_token.value == "(") ||
+                (token.type == Token.NUMBER && (next_token.value == "(" || next_token.value == "[")) ||
                 /*(token.type == Token.NAME && next_token.value == "(") ||*/
                 /* name ( could be a function call */
-                (token.value == ")" && next_token.type == Token.NAME) ||
-                (token.value == ")" && next_token.type == Token.NUMBER) ||
-                (token.value == ")" && next_token.value == "(")
+                ((token.value == ")" || token.value == "]") && next_token.type == Token.NAME) ||
+                ((token.value == ")" || token.value == "]") && next_token.type == Token.NUMBER) ||
+                ((token.value == ")" || token.value == "]") && next_token.value == "(")
            ) {
             // support for things like "(1/2) (m/s)" is complex...
-            var units = (this.unit_mode && !in_units && (token.type == Token.NUMBER || token.value == ")") &&
+            var units = (this.unit_mode && !in_units && (token.type == Token.NUMBER ||
+                (token.value == ")" || token.value == "]")) &&
                 (next_token.type == Token.NAME ||
-                    (next_token.value == "(" && this.tokens.length > i + 2 &&
+                    ((next_token.value == "(" || next_token.value == "[") && this.tokens.length > i + 2 &&
                     this.tokens[i + 2].type == Token.NAME)));
             if (units) {
                 var test_token, index_test;
@@ -158,7 +159,7 @@ Parser.prototype.addHiddenOperators = function() {
                 if (this.tokens.length > index_test + 1 && this.tokens[index_test + 1].value == "(") {
                     var known_functions = ["sqrt", "abs", "exp", "factorial", "diff",
                         "integrate", "sum", "product", "limit", "binomial", "matrix",
-                        "ln", "log", "log10"];
+                        "ln", "log", "log10", "sin", "cos", "tan", "asin", "acos", "atan"];
                     for (var j=0; j<known_functions.length; j++) {
                         if (test_token.value == known_functions[j]) {
                             units = false;

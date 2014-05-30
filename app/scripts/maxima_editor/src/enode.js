@@ -206,7 +206,12 @@ ENode.prototype.toMathML = function(context) {
                 while (firstinc1.type == ENode.OPERATOR) {
                     firstinc1 = firstinc1.children[0];
                 }
-                if (firstinc1.type == ENode.NUMBER)
+                // ... and if it's an operation between vectors/matrices, the * operator should be displayed
+                // (it is ambiguous otherwise)
+                // note: this will not work if the matrix is calculated, for instance with 2[1;2]*[3;4]
+                if (c0.type == ENode.VECTOR && c1.type == ENode.VECTOR)
+                    mrow.appendChild(this.mo("*"));
+                else if (firstinc1.type == ENode.NUMBER)
                     mrow.appendChild(this.mo("\u22C5"));
                 if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
                     mrow.appendChild(this.addP(c1, context));
@@ -492,12 +497,23 @@ ENode.prototype.toMathML = function(context) {
             return(el);
         
         case ENode.VECTOR:
+            var is_matrix = true;
+            for (i=0; i<this.children.length; i++) {
+                if (this.children[i].type !== ENode.VECTOR)
+                    is_matrix = false;
+            }
             mrow = document.createElement('mrow');
             mrow.appendChild(this.mo("("));
             mtable = document.createElement('mtable');
             for (i=0; i<this.children.length; i++) {
                 var mtr = document.createElement('mtr');
-                mtr.appendChild(this.children[i].toMathML(context));
+                if (is_matrix) {
+                    for (j=0; j<this.children[i].children.length; j++) {
+                        mtr.appendChild(this.children[i].children[j].toMathML(context));
+                    }
+                } else {
+                    mtr.appendChild(this.children[i].toMathML(context));
+                }
                 mtable.appendChild(mtr);
             }
             mrow.appendChild(mtable);
