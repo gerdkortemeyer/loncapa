@@ -228,7 +228,14 @@ sub hidden_label {
 sub hidden_field {
    my ($id,$value,$name)=@_;
    unless ($name) { $name=$id; }
-   return "<input type='hidden' id='$id' name='$name' value='$value' />";
+   return "<input type='hidden' id='$id' name='$name' value='".&Apache::lc_xml_utils::form_escape($value)."' />";
+}
+
+# ==== Turn a hash into hidden fields
+#
+sub hidden_vars {
+   my (%content)=@_;
+   return join("\n",map { &hidden_field($_,$_,$content{$_}) } keys(%content));
 }
 
 # ==== File upload

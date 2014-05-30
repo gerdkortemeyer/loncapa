@@ -39,7 +39,7 @@ sub problem_message {
 # Escape characters for use in a web form or query string
 #
 sub form_escape {
-   return &HTML::Entities::encode(@_[0],'<>&"');
+   return &HTML::Entities::encode_entities(@_[0]);
 }
    
 1;
