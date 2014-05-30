@@ -175,7 +175,7 @@ sub addHiddenOperators {
                 # name ( could be a function call
                 ($token_value ~~ [")","]"] && $next_token_type == Token->NAME) ||
                 ($token_value ~~ [")","]"] && $next_token_type == Token->NUMBER) ||
-                ($token_value eq ")" && $next_token_value eq "(")
+                ($token_value ~~ [")","]"] && $next_token_value eq "(")
            ) {
             # support for things like "(1/2) (m/s)" is complex...
             my $units = ($self->unit_mode && !$in_units &&
@@ -196,7 +196,7 @@ sub addHiddenOperators {
                 if (scalar(@{$self->tokens}) > $index_test + 1 && $self->tokens->[$index_test + 1]->value eq "(") {
                     my @known_functions = ("sqrt", "abs", "exp", "factorial", "diff",
                         "integrate", "sum", "product", "limit", "binomial", "matrix",
-                        "ln", "log10", "sin", "cos", "tan", "asin", "acos", "atan");
+                        "ln", "log", "log10", "sin", "cos", "tan", "asin", "acos", "atan");
                     for (my $j=0; $j<scalar(@known_functions); $j++) {
                         if ($test_token->value eq $known_functions[$j]) {
                             $units = 0;

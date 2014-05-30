@@ -189,6 +189,7 @@ sub calc {
                 when ("abs") {       return $children[1]->calc($env)->qabs(); }
                 when ("exp") {       return $children[1]->calc($env)->qexp(); }
                 when ("ln") {        return $children[1]->calc($env)->qln(); }
+                when ("log") {        return $children[1]->calc($env)->qln(); }
                 when ("log10") {     return $children[1]->calc($env)->qlog10(); }
                 when ("factorial") { return $children[1]->calc($env)->qfact(); }
                 when ("sin") {       return $children[1]->calc($env)->qsin(); }
