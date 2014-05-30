@@ -198,6 +198,43 @@ sub calc {
                 when ("asin") {      return $children[1]->calc($env)->qasin(); }
                 when ("acos") {      return $children[1]->calc($env)->qacos(); }
                 when ("atan") {      return $children[1]->calc($env)->qatan(); }
+                when (["sum","product"]) {
+                    if ($env->unit_mode) {
+                        die CalcException->new("$fname cannot work in unit mode.");
+                    }
+                    if (scalar(@children) != 5) {
+                        die CalcException->new("$fname: should have 4 parameters.");
+                    }
+                    my $var = "".$children[2]->value;
+                    if ($var eq "i") {
+                        die CalcException->new("$fname: please use another variable name, i is the imaginary number");
+                    }
+                    my $initial = $env->getVariable($var);
+                    my $var_value_1 = $children[3]->value;
+                    my $var_value_2 = $children[4]->value;
+                    if ($var_value_1 > $var_value_2) {
+                        die CalcException->new("$fname: are you trying to make me loop forever ???");
+                    }
+                    my $sum = Quantity->new($fname eq "sum" ? 0 : 1);
+                    for (my $var_value=$var_value_1; $var_value <= $var_value_2; $var_value++) {
+                        $env->setVariable($var, $var_value);
+                        if ($fname eq "sum") {
+                            $sum += $children[1]->calc($env);
+                        } else {
+                            $sum *= $children[1]->calc($env);
+                        }
+                    }
+                    $env->setVariable($var, $initial);
+                    return $sum;
+                }
+                when ("binomial") {
+                    if (scalar(@children) != 3) {
+                        die CalcException->new("$fname: should have 2 parameters.");
+                    }
+                    my $n = $children[1]->calc($env);
+                    my $p = $children[2]->calc($env);
+                    return $n->qfact() / ($p->qfact() * ($n - $p)->qfact());
+                }
                 default {            die CalcException->new("Unknown function: ".$fname); }
             }
         }
