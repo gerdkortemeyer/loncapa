@@ -49,6 +49,9 @@
         { "name": "mile",            "symbol": "mi",   "convert": "5280 ft",                 "comment": "length" },
         { "name": "yard",            "symbol": "yd",   "convert": "0.9144 m",                "comment": "length" },
         { "name": "nautical_mile",   "symbol": "n_mi", "convert": "6080 ft",                 "comment": "length, nautical mile (UK)" },
+        { "name": "astroUnit",       "symbol": "AU",   "convert": "1.49598E11 m",            "comment": "length, mean distance earth to sun" },
+        { "name": "parsec",          "symbol": "pc",   "convert": "3.08568025E16 m",         "comment": "length" },
+        { "name": "light-year",      "symbol": "ly",   "convert": "9460730472580800 m",      "comment": "length" },
         { "name": "rood",            "symbol": "rood", "convert": "1210 yd^2",               "comment": "area, rood" },
         { "name": "acre",            "symbol": "acre", "convert": "4840 yd^2",               "comment": "area, acre" },
         { "name": "hertz",           "symbol": "Hz",   "convert": "1/s",                     "comment": "frequency" },
@@ -90,19 +93,16 @@
         { "name": "curie",           "symbol": "Ci",   "convert": "3.70E10 Bq",              "comment": "activity (radioactive)" },
         { "name": "gray",            "symbol": "Gy",   "convert": "J/kg",                    "comment": "absorbed dose (of radiation)" },
         { "name": "sievert",         "symbol": "Sv",   "convert": "J/kg",                    "comment": "dose equivalent (dose equivalent index)" },
-        { "name": "astroUnit",       "symbol": "AU",   "convert": "1.49598E11 m",            "comment": "mean distance earth to sun" },
         { "name": "celcius",         "symbol": "degC", "convert": "1 K",                     "comment": "multiplicatively OK" },
         { "name": "fahrenheit",      "symbol": "degF", "convert": "0.555555555 K",           "comment": "multiplicatively OK" },
         { "name": "molarity",        "symbol": "M",    "convert": "mol/L",                   "comment": "chemisty" },
         { "name": "amu",             "symbol": "amu",  "convert": "1.66053873e-27 kg",       "comment": "atomic mass unit" },
         { "name": "amu",             "symbol": "u",    "convert": "1.66053873e-27 kg",       "comment": "atomic mass unit" },
-        { "name": "lightspeed",      "symbol": "c",    "convert": "299792458 m/s",           "comment": "speed of light" },
         { "name": "cubiccentimeter", "symbol": "cc",   "convert": "cm^3",                    "comment": "cubic centimeter" },
         { "name": "electroncharge",  "symbol": "e",    "convert": "1.6021892E-19 C",         "comment": "elementary charge" },
         { "name": "hbar",            "symbol": "hbar", "convert": "1.05457148E-34 m^2*kg/s", "comment": "Planck constant" },
         { "name": "milesperhour",    "symbol": "mph",  "convert": "0.44704 m/s",             "comment": "miles per hour" },
         { "name": "rpm",             "symbol": "rpm",  "convert": "0.0166666667/s",          "comment": "rounds per minute" },
-        { "name": "rpm",             "symbol": "rpms", "convert": "0.0166666667/s",          "comment": "rounds per minute" },
-        { "name": "parsec",          "symbol": "pc",   "convert": "3.08568025E16 m",         "comment": "parsec" }
+        { "name": "rpm",             "symbol": "rpms", "convert": "0.0166666667/s",          "comment": "rounds per minute" }
     ]
 }
