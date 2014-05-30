@@ -166,7 +166,7 @@ sub calc {
                 }
                 when (".") {
                     # scalar product for vectors, multiplication for matrices
-                    return($children[0]->calc($env)->dot($children[1]->calc($env)));
+                    return($children[0]->calc($env)->qdot($children[1]->calc($env)));
                 }
                 when ("`") {
                     return($children[0]->calc($env) * $children[1]->calc($env));

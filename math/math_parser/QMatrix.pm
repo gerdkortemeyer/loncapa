@@ -32,10 +32,10 @@ use aliased 'Apache::math::math_parser::QMatrix';
 
 use overload
     '""' => \&toString,
-    '+' => \&add,
-    '-' => \&sub,
-    '*' => \&mult,
-    '^' => \&pow;
+    '+' => \&qadd,
+    '-' => \&qsub,
+    '*' => \&qmult,
+    '^' => \&qpow;
 
 ##
 # Constructor
@@ -112,7 +112,7 @@ sub equals {
 # @param {QMatrix}
 # @returns {QMatrix}
 ##
-sub add {
+sub qadd {
     my ( $self, $m ) = @_;
     if (!$m->isa(QMatrix)) {
         die CalcException->new("Matrix addition: second member is not a matrix.");
@@ -136,7 +136,7 @@ sub add {
 # @param {QMatrix}
 # @returns {QMatrix}
 ##
-sub sub {
+sub qsub {
     my ( $self, $m ) = @_;
     if (!$m->isa(QMatrix)) {
         die CalcException->new("Matrix substraction: second member is not a matrix.");
@@ -159,13 +159,13 @@ sub sub {
 # Negation
 # @returns {QMatrix}
 ##
-sub neg {
+sub qneg {
     my ( $self ) = @_;
     my @t = (); # 2d array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
         $t[$i] = [];
         for (my $j=0; $j < scalar(@{$self->quantities->[$i]}); $j++) {
-            $t[$i][$j] = $self->quantities->[$i][$j]->neg();
+            $t[$i][$j] = $self->quantities->[$i][$j]->qneg();
         }
     }
     return QMatrix->new(\@t);
@@ -176,7 +176,7 @@ sub neg {
 # @param {Quantity|QVector|QMatrix}
 # @returns {QMatrix}
 ##
-sub mult {
+sub qmult {
     my ( $self, $m ) = @_;
     if ($m->isa(Quantity)) {
         my @t = (); # 2d array of Quantity
@@ -220,7 +220,7 @@ sub mult {
 # @param {QVector|QMatrix}
 # @returns {QVector|QMatrix}
 ##
-sub dot {
+sub qdot {
     my ( $self, $m ) = @_;
     if ($m->isa(Quantity)) {
         die CalcException->new("Dot product Matrix: Quantity is not defined.");
@@ -256,7 +256,7 @@ sub dot {
 # @param {Quantity}
 # @returns {QMatrix}
 ##
-sub pow {
+sub qpow {
     my ( $self, $q ) = @_;
     $q->noUnits("Power");
     # note: this could be optimized, see "exponentiating by squaring"

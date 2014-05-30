@@ -31,10 +31,10 @@ use aliased 'Apache::math::math_parser::QVector';
 
 use overload
     '""' => \&toString,
-    '+' => \&add,
-    '-' => \&sub,
-    '*' => \&mult,
-    '^' => \&pow;
+    '+' => \&qadd,
+    '-' => \&qsub,
+    '*' => \&qmult,
+    '^' => \&qpow;
 
 ##
 # Constructor
@@ -99,7 +99,7 @@ sub equals {
 # @param {QVector}
 # @returns {QVector}
 ##
-sub add {
+sub qadd {
     my ( $self, $v ) = @_;
     if (!$v->isa(QVector)) {
         die CalcException->new("Vector addition: second member is not a vector.");
@@ -119,7 +119,7 @@ sub add {
 # @param {QVector}
 # @returns {QVector}
 ##
-sub sub {
+sub qsub {
     my ( $self, $v ) = @_;
     if (!$v->isa(QVector)) {
         die CalcException->new("Vector substraction: second member is not a vector.");
@@ -138,11 +138,11 @@ sub sub {
 # Negation
 # @returns {QVector}
 ##
-sub neg {
+sub qneg {
     my ( $self ) = @_;
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
-        $t[$i] = $self->quantities->[$i]->neg();
+        $t[$i] = $self->quantities->[$i]->qneg();
     }
     return QVector->new(\@t);
 }
@@ -152,7 +152,7 @@ sub neg {
 # @param {Quantity}
 # @returns {QVector}
 ##
-sub mult {
+sub qmult {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
         die CalcException->new("Vector multiplication: second member is not a quantity.");
@@ -169,7 +169,7 @@ sub mult {
 # @param {Quantity}
 # @returns {QVector}
 ##
-sub pow {
+sub qpow {
     my ( $self, $q ) = @_;
     $q->noUnits("Power");
     my @t = (); # array of Quantity
@@ -184,14 +184,14 @@ sub pow {
 # @param {QVector}
 # @returns {QVector}
 ##
-sub dot {
+sub qdot {
     my ( $self, $v ) = @_;
     if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
         die CalcException->new("Vector dot product: the vectors have different sizes.");
     }
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
-        $t[$i] = $self->quantities->[$i]->mult($v->quantities->[$i]);
+        $t[$i] = $self->quantities->[$i]->qmult($v->quantities->[$i]);
     }
     return QVector->new(\@t);
 }

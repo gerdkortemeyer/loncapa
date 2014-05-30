@@ -126,7 +126,7 @@ sub convertToSI {
                     if ($base2 eq "g") {
                         $v /= 1000;
                     }
-                    return $self->baseQuantity($base)->mult(Quantity->new($v));
+                    return $self->baseQuantity($base) * Quantity->new($v);
                 }
             }
         }

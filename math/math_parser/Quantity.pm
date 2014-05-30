@@ -216,7 +216,7 @@ sub qmult {
         my $v = $qv;
         my @t = (); # array of Quantity
         for (my $i=0; $i < scalar(@{$v->quantities}); $i++) {
-            $t[$i] = $v->quantities->[$i]->mult($self);
+            $t[$i] = $v->quantities->[$i]->qmult($self);
         }
         return QVector->new(\@t);
     }
