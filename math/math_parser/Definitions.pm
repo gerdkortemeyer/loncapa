@@ -69,8 +69,8 @@ sub constants {
 # @param {integer} arity - Operator->UNARY, BINARY or TERNARY
 # @param {integer} lbp - Left binding power
 # @param {integer} rbp - Right binding power
-# @param {function} nud - Null denotation function
-# @param {function} led - Left denotation function
+# @param {function} nud - Null denotation function. Parameters: Operator, Parser. Returns: ENode.
+# @param {function} led - Left denotation function. Parameters: Operator, Parser, ENode. Returns: ENode.
 ##
 sub operator {
     my( $self, $id, $arity, $lbp, $rbp, $nud, $led ) = @_;
@@ -87,19 +87,6 @@ sub separator {
 }
 
 ##
-# Default led function for infix.
-# @param {Operator} op
-# @param {Parser} p
-# @param {ENode} left
-# @returns {ENode}
-##
-sub infixDefaultLed {
-    my( $op, $p, $left ) = @_;
-    my @children = ($left, $p->expression($op->rbp));
-    return ENode->new(ENode->OPERATOR, $op, $op->id, \@children);
-}
-
-##
 # Creates a new infix operator.
 # @param {string} id - Operator id (text used to recognize it)
 # @param {integer} lbp - Left binding power
@@ -111,21 +98,13 @@ sub infix {
     my $arity = Operator->BINARY;
     my $nud = undef;
     if (!defined $led) {
-        $led = \&infixDefaultLed;
+        $led = sub {
+            my( $op, $p, $left ) = @_;
+            my @children = ($left, $p->expression($rbp));
+            return ENode->new(ENode->OPERATOR, $op, $id, \@children);
+        }
     }
     $self->operator($id, $arity, $lbp, $rbp, $nud, $led);
-}
-
-##
-# Default nud function for prefix.
-# @param {Operator} op
-# @param {Parser} p
-# @returns {ENode}
-##
-sub prefixDefaultNud {
-    my( $op, $p ) = @_;
-    my @children = ($p->expression($op->rbp));
-    return ENode->new(ENode->OPERATOR, $op, $op->id, \@children);
 }
 
 ##
@@ -139,23 +118,14 @@ sub prefix {
     my $arity = Operator->UNARY;
     my $lbp = 0;
     if (!defined $nud) {
-        $nud = \&prefixDefaultNud;
+        $nud = sub {
+            my( $op, $p ) = @_;
+            my @children = ($p->expression($rbp));
+            return ENode->new(ENode->OPERATOR, $op, $id, \@children);
+        }
     }
     my $led = undef;
     $self->operator($id, $arity, $lbp, $rbp, $nud, $led);
-}
-
-##
-# Default led function for suffix.
-# @param {Operator} op
-# @param {Parser} p
-# @param {ENode} left
-# @returns {ENode}
-##
-sub suffixDefaultLed {
-    my( $op, $p, $left ) = @_;
-    my @children = ($left);
-    return ENode->new(ENode->OPERATOR, $op, $op->id, \@children);
 }
 
 ##
@@ -170,7 +140,11 @@ sub suffix {
     my $rbp = 0;
     my $nud = undef;
     if (!defined $led) {
-        $led = \&suffixDefaultLed;
+        $led = sub {
+            my( $op, $p, $left ) = @_;
+            my @children = ($left);
+            return ENode->new(ENode->OPERATOR, $op, $id, \@children);
+        }
     }
     $self->operator($id, $arity, $lbp, $rbp, $nud, $led);
 }
@@ -322,7 +296,11 @@ sub define {
     $self->infix("/", 120, 120);
     $self->infix("%", 120, 120);
     $self->infix("+", 100, 100);
-    $self->operator("-", Operator->BINARY, 100, 134, \&prefixDefaultNud, sub {
+    $self->operator("-", Operator->BINARY, 100, 134, sub {
+        my( $op, $p ) = @_;
+        my @children = ($p->expression($op->rbp));
+        return ENode->new(ENode->OPERATOR, $op, $op->id, \@children);
+    }, sub {
         my( $op, $p, $left ) = @_;
         my @children = ($left, $p->expression(100));
         return ENode->new(ENode->OPERATOR, $op, $op->id, \@children);
