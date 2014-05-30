@@ -88,17 +88,21 @@ sub loadUnits {
 }
 
 ##
-# Converts a unit name into a Quantity
+# Converts a unit name into a Quantity. Throws an exception if the unit is not known.
+# @param {CalcEnv} env - Calculation environment
 # @param {string} name - the unit name
 # @returns {Quantity}
 ##
 sub convertToSI {
-    my ( $self, $name ) = @_;
+    my ( $self, $env, $name ) = @_;
+    
+    # possible speed optimization: we could cache the result
+    
     # check derived units first
     my $convert = $self->derived->{$name};
     if (defined $convert) {
         my $root = $self->parser->parse($convert);
-        return $root->calc();
+        return $root->calc($env);
     }
     # then check base units
     for (my $i=0; $i < scalar(@{$self->base}); $i++) {
@@ -126,7 +130,7 @@ sub convertToSI {
             }
         }
     }
-    die "Unit not found: $name";
+    die CalcException->new("Unit not found: $name");
 }
 
 ##

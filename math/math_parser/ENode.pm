@@ -27,16 +27,15 @@ use warnings;
 
 use feature "switch"; # Perl 5.10.1
 
+use aliased 'Apache::math::math_parser::CalcException';
 use aliased 'Apache::math::math_parser::Operator';
 use aliased 'Apache::math::math_parser::ParseException';
+use aliased 'Apache::math::math_parser::QMatrix';
 use aliased 'Apache::math::math_parser::Quantity';
 use aliased 'Apache::math::math_parser::QVector';
-use aliased 'Apache::math::math_parser::QMatrix';
 use aliased 'Apache::math::math_parser::Units';
 
 use enum qw(UNKNOWN NAME NUMBER OPERATOR FUNCTION VECTOR SUBSCRIPT);
-
-our $units; # single units object that can be changed to add custom units
 
 ##
 # @param {integer} type - UNKNOWN | NAME | NUMBER | OPERATOR | FUNCTION | VECTOR
@@ -112,20 +111,27 @@ sub toString {
 
 ##
 # Evaluates the node, returning either a number, a complex or a vector with associated units.
+# @param {CalcEnv} env - Calculation environment.
 # @returns {Quantity|QVector|QMatrix}
 ##
 sub calc {
-    my ( $self ) = @_;
+    my ( $self, $env ) = @_;
     
     given ($self->type) {
         when (UNKNOWN) {
-            die "Unknown node type: ".$self->value;
+            die CalcException->new("Unknown node type: ".$self->value);
         }
         when (NAME) {
-            if (!defined $units) {
-                $units = Units->new();
+            if ($env->unit_mode) {
+                return $env->convertToSI($self->value);
+            } else {
+                my $name = $self->value;
+                my $value = $env->getVariable($name);
+                if (!defined $value) {
+                    die CalcException->new("Variable has undefined value: ".$name);
+                }
+                return Quantity->new($value);
             }
-            return $units->convertToSI($self->value);
         }
         when (NUMBER) {
             return Quantity->new($self->value);
@@ -134,39 +140,39 @@ sub calc {
             my @children = @{$self->children};
             given ($self->value) {
                 when ("+") {
-                    return($children[0]->calc() + $children[1]->calc());
+                    return($children[0]->calc($env) + $children[1]->calc($env));
                 }
                 when ("-") {
                     if (!defined $children[1]) {
-                        return($children[0]->calc()->neg());
+                        return($children[0]->calc($env)->neg());
                     } else {
-                        return($children[0]->calc() - $children[1]->calc());
+                        return($children[0]->calc($env) - $children[1]->calc($env));
                     }
                 }
                 when ("*") {
-                    return($children[0]->calc() * $children[1]->calc());
+                    return($children[0]->calc($env) * $children[1]->calc($env));
                 }
                 when ("/") {
-                    return($children[0]->calc() / $children[1]->calc());
+                    return($children[0]->calc($env) / $children[1]->calc($env));
                 }
                 when ("^") {
-                    return($children[0]->calc() ^ $children[1]->calc());
+                    return($children[0]->calc($env) ^ $children[1]->calc($env));
                 }
                 when ("!") {
-                    return $children[0]->calc()->qfact();
+                    return $children[0]->calc($env)->qfact();
                 }
                 when ("%") {
-                    return(($children[0]->calc() / Quantity->new(100)) * $children[1]->calc());
+                    return(($children[0]->calc($env) / Quantity->new(100)) * $children[1]->calc($env));
                 }
                 when (".") {
                     # scalar product for vectors, multiplication for matrices
-                    return($children[0]->calc()->dot($children[1]->calc()));
+                    return($children[0]->calc($env)->dot($children[1]->calc($env)));
                 }
                 when ("`") {
-                    return($children[0]->calc() * $children[1]->calc());
+                    return($children[0]->calc($env) * $children[1]->calc($env));
                 }
                 default {
-                    die "Unknown operator: ".$self->value;
+                    die CalcException->new("Unknown operator: ".$self->value);
                 }
             }
         }
@@ -175,40 +181,41 @@ sub calc {
             my $fname = $children[0]->value;
             
             if (!defined $children[1]) {
-                die "Missing parameter for function $fname";
+                die CalcException->new("Missing parameter for function $fname");
             }
             given ($fname) {
-                when ("matrix") {    return $self->createVectorOrMatrix(); }
-                when ("sqrt") {      return $children[1]->calc()->qsqrt(); }
-                when ("abs") {       return $children[1]->calc()->qabs(); }
-                when ("exp") {       return $children[1]->calc()->qexp(); }
-                when ("ln") {        return $children[1]->calc()->qln(); }
-                when ("log10") {     return $children[1]->calc()->qlog10(); }
-                when ("factorial") { return $children[1]->calc()->qfact(); }
-                when ("sin") {       return $children[1]->calc()->qsin(); }
-                when ("cos") {       return $children[1]->calc()->qcos(); }
-                when ("tan") {       return $children[1]->calc()->qtan(); }
-                when ("asin") {      return $children[1]->calc()->qasin(); }
-                when ("acos") {      return $children[1]->calc()->qacos(); }
-                when ("atan") {      return $children[1]->calc()->qatan(); }
-                default {            die "Unknown function: ".$fname; }
+                when ("matrix") {    return $self->createVectorOrMatrix($env); }
+                when ("sqrt") {      return $children[1]->calc($env)->qsqrt(); }
+                when ("abs") {       return $children[1]->calc($env)->qabs(); }
+                when ("exp") {       return $children[1]->calc($env)->qexp(); }
+                when ("ln") {        return $children[1]->calc($env)->qln(); }
+                when ("log10") {     return $children[1]->calc($env)->qlog10(); }
+                when ("factorial") { return $children[1]->calc($env)->qfact(); }
+                when ("sin") {       return $children[1]->calc($env)->qsin(); }
+                when ("cos") {       return $children[1]->calc($env)->qcos(); }
+                when ("tan") {       return $children[1]->calc($env)->qtan(); }
+                when ("asin") {      return $children[1]->calc($env)->qasin(); }
+                when ("acos") {      return $children[1]->calc($env)->qacos(); }
+                when ("atan") {      return $children[1]->calc($env)->qatan(); }
+                default {            die CalcException->new("Unknown function: ".$fname); }
             }
         }
         when (VECTOR) {
-            return $self->createVectorOrMatrix();
+            return $self->createVectorOrMatrix($env);
         }
         when (SUBSCRIPT) {
-            die "Subscript cannot be evaluated: ".$self->value;
+            die CalcException->new("Subscript cannot be evaluated: ".$self->value);
         }
     }
 }
 
 ##
 # Creates a vector or a matrix with this node
+# @param {CalcEnv} env - Calculation environment.
 # @returns {QVector|QMatrix}
 ##
 sub createVectorOrMatrix {
-    my ( $self ) = @_;
+    my ( $self, $env ) = @_;
     my @children = @{$self->children};
     my @t = (); # 1d or 2d array of Quantity
     my $start;
@@ -219,7 +226,7 @@ sub createVectorOrMatrix {
     }
     my $nb1;
     for (my $i=0; $i < scalar(@children) - $start; $i++) {
-        my $qv = $children[$i+$start]->calc();
+        my $qv = $children[$i+$start]->calc($env);
         my $nb2;
         if ($qv->isa(Quantity)) {
             $nb2 = 1;
@@ -229,7 +236,7 @@ sub createVectorOrMatrix {
         if (!defined $nb1) {
             $nb1 = $nb2;
         } elsif ($nb2 != $nb1) {
-            die "Inconsistent number of elements in a matrix.";
+            die CalcException->new("Inconsistent number of elements in a matrix.");
         }
         if ($qv->isa(Quantity)) {
             $t[$i] = $qv;

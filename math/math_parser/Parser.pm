@@ -45,14 +45,8 @@ sub new {
         _accept_bad_syntax => shift // 0,
         _unit_mode => shift // 0,
         _defs => Definitions->new(),
-        _operators => undef, # operator hash table
-        _oph => {},
     };
     $self->{_defs}->define();
-    $self->{_operators} = $self->{_defs}->operators;
-    foreach my $op (@{$self->{_operators}}) {
-        $self->{_oph}{$op->{_id}} = $op;
-    }
     bless $self, $class;
     return $self;
 }
@@ -69,14 +63,6 @@ sub unit_mode {
 sub defs {
     my $self = shift;
     return $self->{_defs};
-}
-sub operators {
-    my $self = shift;
-    return $self->{_operators};
-}
-sub oph {
-    my $self = shift;
-    return $self->{_oph};
 }
 sub tokens {
     my $self = shift;
@@ -176,26 +162,30 @@ sub addHiddenOperators {
                 }
             }
         }
+        my $token_type = $token->type;
+        my $next_token_type = $next_token->type;
+        my $token_value = $token->value;
+        my $next_token_value = $next_token->value;
         if (
-                ($token->type == Token->NAME && $next_token->type == Token->NAME) ||
-                ($token->type == Token->NUMBER && $next_token->type == Token->NAME) ||
-                ($token->type == Token->NUMBER && $next_token->type == Token->NUMBER) ||
-                ($token->type == Token->NUMBER && $next_token->value ~~ ["(","["]) ||
-                # ($token->type == Token->NAME && $next_token->value eq "(") ||
+                ($token_type == Token->NAME && $next_token_type == Token->NAME) ||
+                ($token_type == Token->NUMBER && $next_token_type == Token->NAME) ||
+                ($token_type == Token->NUMBER && $next_token_type == Token->NUMBER) ||
+                ($token_type == Token->NUMBER && $next_token_value ~~ ["(","["]) ||
+                # ($token_type == Token->NAME && $next_token_value eq "(") ||
                 # name ( could be a function call
-                ($token->value ~~ [")","]"] && $next_token->type == Token->NAME) ||
-                ($token->value ~~ [")","]"] && $next_token->type == Token->NUMBER) ||
-                ($token->value eq ")" && $next_token->value eq "(")
+                ($token_value ~~ [")","]"] && $next_token_type == Token->NAME) ||
+                ($token_value ~~ [")","]"] && $next_token_type == Token->NUMBER) ||
+                ($token_value eq ")" && $next_token_value eq "(")
            ) {
             # support for things like "(1/2) (m/s)" is complex...
             my $units = ($self->unit_mode && !$in_units &&
-                ($token->type == Token->NUMBER || $token->value ~~ [")","]"]) &&
-                ($next_token->type == Token->NAME ||
-                    ($next_token->value ~~ ["(","["] && scalar(@{$self->tokens}) > $i + 2 &&
+                ($token_type == Token->NUMBER || $token_value ~~ [")","]"]) &&
+                ($next_token_type == Token->NAME ||
+                    ($next_token_value ~~ ["(","["] && scalar(@{$self->tokens}) > $i + 2 &&
                     $self->tokens->[$i + 2]->type == Token->NAME)));
             if ($units) {
                 my( $test_token, $index_test);
-                if ($next_token->type == Token->NAME) {
+                if ($next_token_type == Token->NAME) {
                     $test_token = $next_token;
                     $index_test = $i + 1;
                 } else {

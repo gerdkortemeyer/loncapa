@@ -62,8 +62,8 @@ sub tokenize {
     my( $self ) = @_;
     my( $text, $c, $i, $from, @tokens, $value );
     my @operators = @{$self->defs->operators};
-    
-    # Note: this could be speed-optimized by used something faster than substr($text, $i, 1)
+    my $dec1 = Definitions->DECIMAL_SIGN_1;
+    my $dec2 = Definitions->DECIMAL_SIGN_2;
     
     $text = $self->text;
     $i = 0;
@@ -84,11 +84,11 @@ main:
         # check for numbers before operators
         # (numbers starting with . will not be confused with the . operator)
         if (($c ge '0' && $c le '9') ||
-                (($c eq Definitions->DECIMAL_SIGN_1 || $c eq Definitions->DECIMAL_SIGN_2) &&
+                (($c eq $dec1 || $c eq $dec2) &&
                 (substr($text, $i+1, 1) ge '0' && substr($text, $i+1, 1) le '9'))) {
             $value = '';
             
-            if ($c ne Definitions->DECIMAL_SIGN_1 && $c ne Definitions->DECIMAL_SIGN_2) {
+            if ($c ne $dec1 && $c ne $dec2) {
                 $i++;
                 $value .= $c;
                 # Look for more digits.
@@ -103,7 +103,7 @@ main:
             }
             
             # Look for a decimal fraction part.
-            if ($c eq Definitions->DECIMAL_SIGN_1 || $c eq Definitions->DECIMAL_SIGN_2) {
+            if ($c eq $dec1 || $c eq $dec2) {
                 $i++;
                 $value .= $c;
                 for (;;) {
@@ -138,7 +138,7 @@ main:
             }
             
             # Convert the string value to a number. If it is finite, then it is a good token.
-            my $n = eval "\$value =~ tr/".Definitions->DECIMAL_SIGN_1.Definitions->DECIMAL_SIGN_2."/../";
+            my $n = eval "\$value =~ tr/".$dec1.$dec2."/../";
             if (!($n == 9**9**9 || $n == -9**9**9 || ! defined( $n <=> 9**9**9 ))) {
                 push(@tokens, Token->new(Token->NUMBER, $from, $i - 1, $value));
                 next;

@@ -1,5 +1,5 @@
 # The LearningOnline Network with CAPA - LON-CAPA
-# QVector
+# QMatrix
 #
 # Copyright (C) 2014 Michigan State University Board of Trustees
 #
@@ -25,6 +25,7 @@ package Apache::math::math_parser::QMatrix;
 use strict;
 use warnings;
 
+use aliased 'Apache::math::math_parser::CalcException';
 use aliased 'Apache::math::math_parser::Quantity';
 use aliased 'Apache::math::math_parser::QVector';
 use aliased 'Apache::math::math_parser::QMatrix';
@@ -114,11 +115,11 @@ sub equals {
 sub add {
     my ( $self, $m ) = @_;
     if (!$m->isa(QMatrix)) {
-        die "Matrix addition: second member is not a matrix.";
+        die CalcException->new("Matrix addition: second member is not a matrix.");
     }
     if (scalar(@{$self->quantities}) != scalar(@{$m->quantities}) || 
             scalar(@{$self->quantities->[0]}) != scalar(@{$m->quantities->[0]})) {
-        die "Matrix addition: the matrices have different sizes.";
+        die CalcException->new("Matrix addition: the matrices have different sizes.");
     }
     my @t = (); # 2d array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -138,11 +139,11 @@ sub add {
 sub sub {
     my ( $self, $m ) = @_;
     if (!$m->isa(QMatrix)) {
-        die "Matrix substraction: second member is not a matrix.";
+        die CalcException->new("Matrix substraction: second member is not a matrix.");
     }
     if (scalar(@{$self->quantities}) != scalar(@{$m->quantities}) || 
             scalar(@{$self->quantities->[0]}) != scalar(@{$m->quantities->[0]})) {
-        die "Matrix substraction: the matrices have different sizes.";
+        die CalcException->new("Matrix substraction: the matrices have different sizes.");
     }
     my @t = (); # 2d array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -189,7 +190,7 @@ sub mult {
     }
     if ($m->isa(QVector)) {
         if (scalar(@{$self->quantities}) != scalar(@{$m->quantities})) {
-            die "Matrix-Vector element-by-element multiplication: the sizes do not match (use the dot product for matrix product).";
+            die CalcException->new("Matrix-Vector element-by-element multiplication: the sizes do not match (use the dot product for matrix product).");
         }
         my @t = (); # 2d array of Quantity
         for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -202,7 +203,7 @@ sub mult {
     }
     if (scalar(@{$self->quantities}) != scalar(@{$m->quantities}) || 
             scalar(@{$self->quantities->[0]}) != scalar(@{$m->quantities->[0]})) {
-        die "Matrix element-by-element multiplication: the matrices have different sizes (use the dot product for matrix product).";
+        die CalcException->new("Matrix element-by-element multiplication: the matrices have different sizes (use the dot product for matrix product).");
     }
     my @t = (); # 2d array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -222,10 +223,10 @@ sub mult {
 sub dot {
     my ( $self, $m ) = @_;
     if ($m->isa(Quantity)) {
-        die "Dot product Matrix: Quantity is not defined.";
+        die CalcException->new("Dot product Matrix: Quantity is not defined.");
     }
     if (scalar(@{$self->quantities->[0]}) != scalar(@{$m->quantities})) {
-        die "Matrix product: the matrices sizes do not match.";
+        die CalcException->new("Matrix product: the matrices sizes do not match.");
     }
     if ($m->isa(QVector)) {
         my @t = (); # array of Quantity

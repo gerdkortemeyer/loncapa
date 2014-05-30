@@ -25,6 +25,7 @@ package Apache::math::math_parser::QVector;
 use strict;
 use warnings;
 
+use aliased 'Apache::math::math_parser::CalcException';
 use aliased 'Apache::math::math_parser::Quantity';
 use aliased 'Apache::math::math_parser::QVector';
 
@@ -101,10 +102,10 @@ sub equals {
 sub add {
     my ( $self, $v ) = @_;
     if (!$v->isa(QVector)) {
-        die "Vector addition: second member is not a vector.";
+        die CalcException->new("Vector addition: second member is not a vector.");
     }
     if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
-        die "Vector addition: the vectors have different sizes.";
+        die CalcException->new("Vector addition: the vectors have different sizes.");
     }
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -121,10 +122,10 @@ sub add {
 sub sub {
     my ( $self, $v ) = @_;
     if (!$v->isa(QVector)) {
-        die "Vector substraction: second member is not a vector.";
+        die CalcException->new("Vector substraction: second member is not a vector.");
     }
     if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
-        die "Vector substraction: the vectors have different sizes.";
+        die CalcException->new("Vector substraction: the vectors have different sizes.");
     }
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -154,7 +155,7 @@ sub neg {
 sub mult {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die "Vector multiplication: second member is not a quantity.";
+        die CalcException->new("Vector multiplication: second member is not a quantity.");
     }
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -186,7 +187,7 @@ sub pow {
 sub dot {
     my ( $self, $v ) = @_;
     if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
-        die "Vector dot product: the vectors have different sizes.";
+        die CalcException->new("Vector dot product: the vectors have different sizes.");
     }
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
