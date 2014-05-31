@@ -378,6 +378,7 @@ sub end_lcspreadsheetassign_html {
       }
       $output.='</tbody></table>';
    }
+   $output.=&hidden_field('flush_associations',1);
    return $output;
 }
 

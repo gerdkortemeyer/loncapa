@@ -33,6 +33,14 @@ our @ISA = qw(Exporter);
 # Export all tags that this module defines in the list below
 our @EXPORT = qw(incl_spreadsheet_finalize_items);
 
+sub sheet_column {
+   if (@_[0]=~/^(.+)c(\d+)$/) {
+      return ($1,$2);
+   } else {
+      return undef;
+   }
+}
+
 sub incl_spreadsheet_finalize_items {
 # Get posted content
    my %content=&Apache::lc_entity_sessions::posted_content();
@@ -43,7 +51,92 @@ sub incl_spreadsheet_finalize_items {
                 &Apache::lc_file_utils::readfile(
                    &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/uploaded_spreadsheet_associations.json')));
 
-   my $output="Assoc: ".Dumper($associations);
+   my $output="Assoc: <pre>".Dumper($associations)."</pre>\n";
+# See if we can learn anything new
+# If we are getting fresh information, we need to flush old associations
+   if ($content{'flush_associations'}) {
+      $associations->{'record'}=undef;
+      foreach my $key (keys(%content)) {
+         if (($content{$key} eq 'username') ||
+             ($content{$key} eq 'userpid') ||
+             ($content{$key} eq 'useremail')) {
+            ($associations->{'record'}->{'username'}->{'sheet'},
+             $associations->{'record'}{'username'}->{'column'})=&sheet_column($key);
+         }
+         if ($content{$key} eq 'firstname') {
+            ($associations->{'record'}->{'firstname'}->{'sheet'},
+             $associations->{'record'}->{'firstname'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'name_mode'}='individual';
+         }
+         if ($content{$key} eq 'middlename') {
+            ($associations->{'record'}->{'middlename'}->{'sheet'},
+             $associations->{'record'}->{'middlename'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'name_mode'}='individual';
+         }
+         if ($content{$key} eq 'lastname') {
+            ($associations->{'record'}->{'lastname'}->{'sheet'},
+             $associations->{'record'}->{'lastname'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'name_mode'}='individual';
+         }
+         if ($content{$key} eq 'suffix') {
+            ($associations->{'record'}->{'suffix'}->{'sheet'},
+             $associations->{'record'}->{'suffix'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'name_mode'}='individual';
+         }
+         if ($content{$key} eq 'namecombi') {
+            ($associations->{'record'}->{'namecombi'}->{'sheet'},
+             $associations->{'record'}->{'namecombi'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'name_mode'}='combi';
+         }
+         if (($content{$key} eq 'email') ||
+             ($content{$key} eq 'useremail')) {
+            ($associations->{'record'}->{'email'}->{'sheet'},
+             $associations->{'record'}->{'email'}->{'column'})=&sheet_column($key);
+         }
+         if (($content{$key} eq 'pid') ||
+             ($content{$key} eq 'userpid') ||
+             ($content{$key} eq 'passwordpid')) {
+            ($associations->{'record'}->{'pid'}->{'sheet'},
+             $associations->{'record'}->{'pid'}->{'column'})=&sheet_column($key);
+         }
+         if ($content{$key} eq 'section') {
+            ($associations->{'record'}->{'section'}->{'sheet'},
+             $associations->{'record'}->{'section'}->{'column'})=&sheet_column($key);
+         }
+         if ($content{$key} eq 'domain') {
+            ($associations->{'record'}->{'domain'}->{'sheet'},
+             $associations->{'record'}->{'domain'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'domain_mode'}='individual'
+         }
+         if ($content{$key} eq 'startdate') {
+            ($associations->{'record'}->{'startdate'}->{'sheet'},
+             $associations->{'record'}->{'startdate'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'startdate_mode'}='individual'
+         }
+         if ($content{$key} eq 'enddate') {
+            ($associations->{'record'}->{'enddate'}->{'sheet'},
+             $associations->{'record'}->{'enddate'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'enddate_mode'}='individual'
+         }
+         if ($content{$key} eq 'authmode') {
+            ($associations->{'record'}->{'authmode'}->{'sheet'},
+             $associations->{'record'}->{'authmode'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'authmode_mode'}='individual'
+         }
+         if (($content{$key} eq 'password') ||
+             ($content{$key} eq 'passwordpid')) {
+            ($associations->{'record'}->{'password'}->{'sheet'},
+             $associations->{'record'}->{'password'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'password_mode'}='individual'
+         }
+         if ($content{$key} eq 'role') {
+            ($associations->{'record'}->{'role'}->{'sheet'},
+             $associations->{'record'}->{'role'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'role_mode'}='individual'
+         }
+      }
+   }
+   my $output.="Assoc now: <pre>".Dumper($associations)."</pre>\n";
 
    my $sheets=&Apache::lc_json_utils::json_to_perl(
                 &Apache::lc_file_utils::readfile(
