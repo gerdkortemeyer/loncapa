@@ -235,7 +235,7 @@ sub hidden_field {
 #
 sub hidden_vars {
    my (%content)=@_;
-   return join("\n",map { &hidden_field($_,$_,$content{$_}) } keys(%content));
+   return join("\n",map { &hidden_field($_,$content{$_},$_) } keys(%content));
 }
 
 # ==== File upload

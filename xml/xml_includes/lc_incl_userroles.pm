@@ -25,27 +25,57 @@ use Apache::lc_xml_utils();
 use Apache::lc_xml_forms();
 use Apache2::Const qw(:common);
 
+
+use Data::Dumper;
+
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
 our @EXPORT = qw(incl_spreadsheet_finalize_items);
 
 sub incl_spreadsheet_finalize_items {
+# Get posted content
    my %content=&Apache::lc_entity_sessions::posted_content();
-   my $output=&Apache::lc_xml_forms::hidden_vars(%content);
-   $output.=localtime();
-   return $output;
-
+# Who are we?
    my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+# See what we all learned
+   my $associations==&Apache::lc_json_utils::json_to_perl(
+                &Apache::lc_file_utils::readfile(
+                   &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/uploaded_spreadsheet_associations.json')));
+
+   my $output="Assoc: ".Dumper($associations);
 
    my $sheets=&Apache::lc_json_utils::json_to_perl(
                 &Apache::lc_file_utils::readfile(
                    &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/uploaded_spreadsheet.json')));
-   unless ($sheets) {
-      return &Apache::lc_xml_utils::error_message('Could not interpret spreadsheet data. Please make sure your file has the proper extension (e.g., ".xls") or try another format.');
+# Keep moving through all sheets, in order, so we can pick up where we left off
+   my $found_corrected=0;
+   foreach my $worksheet (sort(keys(%{$sheets}))) {
+# ... and all rows, each of them representing a user
+      foreach my $row ($sheets->{$worksheet}->{'row_min'} .. $sheets->{$worksheet}->{'row_max'}) {
+         if (($content{'corrected_record'}) && (!$found_corrected)) {
+# We need to pick up where we left off
+            if (($content{'corrected_record_sheet'} eq $worksheet) &&
+                ($content{'corrected_record_row'} eq $row)) { 
+# Deal with it
+
+# Remember that we found it
+               $found_corrected=1; 
+            }
+# Whatever it is, we need to move one further
+            next;
+         }
+# This will now be an uncorrected record (which may or may not be fine as it is)
+# Gather all of the information we have about this user and see if we have enough to do the enrollment
+# If not, we need to ask
+# Username/domain?
+
+# First, see if we already know this user
+      }
    }
-# We have a valid spreadsheet. Now have to see if we have all the information we need
-#   foreach my $col ($sheets->{$worksheet}->{'col_min'} .. $sheets->{$worksheet}->{'col_max'}) {
+   return $output;
+
+
 #      $output.="\n<tr><td><pre>";
 #      my $found=0;
 #      foreach my $row ($sheets->{$worksheet}->{'row_min'} .. $sheets->{$worksheet}->{'row_max'}) {
