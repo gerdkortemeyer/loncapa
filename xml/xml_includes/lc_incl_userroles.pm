@@ -23,6 +23,7 @@ use Apache::lc_json_utils();
 use Apache::lc_file_utils();
 use Apache::lc_xml_utils();
 use Apache::lc_xml_forms();
+use Apache2::Const qw(:common);
 
 our @ISA = qw(Exporter);
 
@@ -32,6 +33,7 @@ our @EXPORT = qw(incl_spreadsheet_finalize_items);
 sub incl_spreadsheet_finalize_items {
    my %content=&Apache::lc_entity_sessions::posted_content();
    my $output=&Apache::lc_xml_forms::hidden_vars(%content);
+   $output.=localtime();
    return $output;
 
    my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
@@ -68,6 +70,7 @@ sub incl_spreadsheet_finalize_items {
 sub handler {
    my $r=shift;
    $r->print(&incl_spreadsheet_finalize_items());
+   return OK;
 }
 
 1;
