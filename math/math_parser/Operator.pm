@@ -52,6 +52,7 @@ sub new {
 }
 
 # Attribute helpers
+
 sub id {
     my $self = shift;
     return $self->{_id};

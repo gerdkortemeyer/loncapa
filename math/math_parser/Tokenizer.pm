@@ -47,6 +47,7 @@ sub new {
 }
 
 # Attribute helpers
+
 sub defs {
     my $self = shift;
     return $self->{_defs};

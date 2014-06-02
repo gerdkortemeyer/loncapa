@@ -55,6 +55,7 @@ sub new {
 }
 
 # Attribute helpers
+
 sub accept_bad_syntax {
     my $self = shift;
     return $self->{_accept_bad_syntax};

@@ -56,6 +56,7 @@ sub new {
 }
 
 # Attribute helpers
+
 sub operators {
     my $self = shift;
     return $self->{_operators};

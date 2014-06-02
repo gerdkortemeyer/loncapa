@@ -47,6 +47,7 @@ sub new {
 }
 
 # Attribute helpers
+
 sub unit_mode {
     my $self = shift;
     return $self->{_unit_mode};

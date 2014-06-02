@@ -74,6 +74,7 @@ sub new {
 }
 
 # Attribute helpers
+
 sub value {
     my $self = shift;
     return $self->{_value};

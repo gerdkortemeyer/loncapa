@@ -53,6 +53,7 @@ sub new {
 }
 
 # Attribute helpers
+
 sub quantities {
     my $self = shift;
     return $self->{_quantities};

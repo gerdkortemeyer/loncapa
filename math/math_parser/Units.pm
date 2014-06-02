@@ -52,6 +52,7 @@ sub new {
 }
 
 # Attribute helpers
+
 sub base {
     my $self = shift;
     return $self->{_base};

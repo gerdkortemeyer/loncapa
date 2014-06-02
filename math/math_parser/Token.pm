@@ -50,6 +50,7 @@ sub new {
 }
 
 # Attribute helpers
+
 sub type {
     my $self = shift;
     return $self->{_type};
