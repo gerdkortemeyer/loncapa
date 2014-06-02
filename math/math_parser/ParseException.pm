@@ -24,6 +24,9 @@ package Apache::math::math_parser::ParseException;
 
 use strict;
 use warnings;
+use utf8;
+
+use Apache::lc_ui_localize;
 
 use overload '""' => \&toString;
 
@@ -53,7 +56,7 @@ sub new {
 ##
 sub toString {
     my $self = shift;
-    return "Parsing error: ".$self->{_msg} . " at " . $self->{_from} . " - " . $self->{_to};
+    return mt("Parsing error: [_1] at [_2] - [_3]", $self->{_msg}, $self->{_from}, $self->{_to});
 }
 
 1;

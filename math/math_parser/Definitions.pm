@@ -24,10 +24,12 @@ package Apache::math::math_parser::Definitions;
 
 use strict;
 use warnings;
+use utf8;
 
 use Apache::lc_file_utils;
 use Apache::lc_json_utils;
 use Apache::lc_parameters;
+use Apache::lc_ui_localize;
 
 use aliased 'Apache::math::math_parser::ENode';
 use aliased 'Apache::math::math_parser::Operator';
@@ -219,7 +221,7 @@ sub parenthesisNud {
 sub parenthesisLed {
     my( $op, $p, $left ) = @_;
     if ($left->type != ENode->NAME && $left->type != ENode->SUBSCRIPT) {
-        die ParseException->new("Function name expected before a parenthesis.", $p->tokens->[$p->token_nr - 1]->from);
+        die ParseException->new(mt("Function name expected before a parenthesis."), $p->tokens->[$p->token_nr - 1]->from);
     }
     my @children = ($left);
     if ((!defined $p->current_token) || (!defined $p->current_token->op) || ($p->current_token->op->id ne ")")) {
@@ -267,7 +269,7 @@ sub vectorNud {
 sub subscriptLed {
     my( $op, $p, $left ) = @_;
     if ($left->type != ENode->NAME && $left->type != ENode->SUBSCRIPT) {
-        die ParseException->new("Name expected before a square bracket.", $p->tokens->[$p->token_nr - 1]->from);
+        die ParseException->new(mt("Name expected before a square bracket."), $p->tokens->[$p->token_nr - 1]->from);
     }
     my @children = ($left);
     if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id != "]") {

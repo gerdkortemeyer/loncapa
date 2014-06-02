@@ -24,10 +24,12 @@ package Apache::math::math_parser::Units;
 
 use strict;
 use warnings;
+use utf8;
 
 use Apache::lc_file_utils;
 use Apache::lc_json_utils;
 use Apache::lc_parameters;
+use Apache::lc_ui_localize;
 
 use aliased 'Apache::math::math_parser::CalcException';
 use aliased 'Apache::math::math_parser::Parser';
@@ -131,7 +133,7 @@ sub convertToSI {
             }
         }
     }
-    die CalcException->new("Unit not found: $name");
+    die CalcException->new(mt("Unit not found: [_1]", $name));
 }
 
 ##

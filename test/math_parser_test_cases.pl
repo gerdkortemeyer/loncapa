@@ -21,11 +21,13 @@
 
 use strict;
 use warnings;
+use utf8;
 
 use Try::Tiny;
 
 use lib '/home/httpd/lib/perl';
 use Apache::lc_connection_utils(); # to avoid a circular reference problem
+use Apache::lc_ui_localize;
 
 use aliased 'Apache::math::math_parser::Parser';
 use aliased 'Apache::math::math_parser::ENode';
@@ -98,6 +100,7 @@ sub test {
     }
 }
 
+Apache::lc_ui_localize::set_language('en');
 # unit mode
 my $accept_bad_syntax = 1;
 my $unit_mode = 1;

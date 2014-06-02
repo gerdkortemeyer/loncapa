@@ -24,6 +24,7 @@ package Apache::math::math_parser::Token;
 
 use strict;
 use warnings;
+use utf8;
 
 use enum qw(UNKNOWN NAME NUMBER OPERATOR);
 

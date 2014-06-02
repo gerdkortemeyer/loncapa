@@ -24,8 +24,11 @@ package Apache::math::math_parser::ENode;
 
 use strict;
 use warnings;
+use utf8;
 
 use feature "switch"; # Perl 5.10.1
+
+use Apache::lc_ui_localize;
 
 use aliased 'Apache::math::math_parser::CalcException';
 use aliased 'Apache::math::math_parser::Operator';
@@ -119,7 +122,7 @@ sub calc {
     
     given ($self->type) {
         when (UNKNOWN) {
-            die CalcException->new("Unknown node type: ".$self->value);
+            die CalcException->new(mt("Unknown node type: [_1]", $self->value));
         }
         when (NAME) {
             if ($env->unit_mode) {
@@ -128,7 +131,7 @@ sub calc {
                 my $name = $self->value;
                 my $value = $env->getVariable($name);
                 if (!defined $value) {
-                    die CalcException->new("Variable has undefined value: ".$name);
+                    die CalcException->new(mt("Variable has undefined value: [_1]", $name));
                 }
                 return Quantity->new($value);
             }
@@ -172,7 +175,7 @@ sub calc {
                     return($children[0]->calc($env) * $children[1]->calc($env));
                 }
                 default {
-                    die CalcException->new("Unknown operator: ".$self->value);
+                    die CalcException->new(mt("Unknown operator: [_1]", $self->value));
                 }
             }
         }
@@ -181,7 +184,7 @@ sub calc {
             my $fname = $children[0]->value;
             
             if (!defined $children[1]) {
-                die CalcException->new("Missing parameter for function $fname");
+                die CalcException->new(mt("Missing parameter for function [_1]", $fname));
             }
             given ($fname) {
                 when ("matrix") {    return $self->createVectorOrMatrix($env); }
@@ -212,20 +215,20 @@ sub calc {
                 when ("atanh") {      return $children[1]->calc($env)->qatanh(); }
                 when (["sum","product"]) {
                     if ($env->unit_mode) {
-                        die CalcException->new("$fname cannot work in unit mode.");
+                        die CalcException->new(mt("[_1] cannot work in unit mode.", $fname));
                     }
                     if (scalar(@children) != 5) {
-                        die CalcException->new("$fname: should have 4 parameters.");
+                        die CalcException->new(mt("[_1]: should have 4 parameters.", $fname));
                     }
                     my $var = "".$children[2]->value;
                     if ($var eq "i") {
-                        die CalcException->new("$fname: please use another variable name, i is the imaginary number");
+                        die CalcException->new(mt("[_1]: please use another variable name, i is the imaginary number", $fname));
                     }
                     my $initial = $env->getVariable($var);
                     my $var_value_1 = $children[3]->value;
                     my $var_value_2 = $children[4]->value;
                     if ($var_value_1 > $var_value_2) {
-                        die CalcException->new("$fname: are you trying to make me loop forever ???");
+                        die CalcException->new(mt("[_1]: are you trying to make me loop forever ???", $fname));
                     }
                     my $sum = Quantity->new($fname eq "sum" ? 0 : 1);
                     for (my $var_value=$var_value_1; $var_value <= $var_value_2; $var_value++) {
@@ -241,20 +244,20 @@ sub calc {
                 }
                 when ("binomial") {
                     if (scalar(@children) != 3) {
-                        die CalcException->new("$fname: should have 2 parameters.");
+                        die CalcException->new(mt("[_1]: should have 2 parameters.", $fname));
                     }
                     my $n = $children[1]->calc($env);
                     my $p = $children[2]->calc($env);
                     return $n->qfact() / ($p->qfact() * ($n - $p)->qfact());
                 }
-                default {            die CalcException->new("Unknown function: ".$fname); }
+                default {            die CalcException->new(mt("Unknown function: [_1]",$fname)); }
             }
         }
         when (VECTOR) {
             return $self->createVectorOrMatrix($env);
         }
         when (SUBSCRIPT) {
-            die CalcException->new("Subscript cannot be evaluated: ".$self->value);
+            die CalcException->new(mt("Subscript cannot be evaluated: [_1]", $self->value));
         }
     }
 }
@@ -286,7 +289,7 @@ sub createVectorOrMatrix {
         if (!defined $nb1) {
             $nb1 = $nb2;
         } elsif ($nb2 != $nb1) {
-            die CalcException->new("Inconsistent number of elements in a matrix.");
+            die CalcException->new(mt("Inconsistent number of elements in a matrix."));
         }
         if ($qv->isa(Quantity)) {
             $t[$i] = $qv;

@@ -24,6 +24,7 @@ package Apache::math::math_parser::Operator;
 
 use strict;
 use warnings;
+use utf8;
 
 use enum qw(UNKNOWN UNARY BINARY TERNARY);
 

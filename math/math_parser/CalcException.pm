@@ -24,6 +24,9 @@ package Apache::math::math_parser::CalcException;
 
 use strict;
 use warnings;
+use utf8;
+
+use Apache::lc_ui_localize;
 
 use overload '""' => \&toString;
 
@@ -46,7 +49,7 @@ sub new {
 ##
 sub toString {
     my $self = shift;
-    return "Calculation error: ".$self->{_msg};
+    return mt("Calculation error: ").$self->{_msg};
 }
 
 1;

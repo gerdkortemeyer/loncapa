@@ -24,6 +24,7 @@ package Apache::math::math_parser::CalcEnv;
 
 use strict;
 use warnings;
+use utf8;
 
 use aliased 'Apache::math::math_parser::Units';
 

@@ -24,8 +24,11 @@ package Apache::math::math_parser::Parser;
 
 use strict;
 use warnings;
+use utf8;
 
 use File::Util;
+
+use Apache::lc_ui_localize;
 
 use aliased 'Apache::math::math_parser::Definitions';
 use aliased 'Apache::math::math_parser::ENode';
@@ -87,14 +90,14 @@ sub expression {
     my $left; # ENode
     my $t = $self->current_token;
     if (! defined $t) {
-        die ParseException->new("Expected something at the end",
+        die ParseException->new(mt("Expected something at the end"),
             $self->tokens->[scalar(@{$self->tokens}) - 1]->to + 1);
     }
     $self->advance();
     if (! defined $t->op) {
         $left = ENode->new($t->type, undef, $t->value, undef);
     } elsif (! defined $t->op->nud) {
-        die ParseException->new("Unexpected operator '" + $t->op->id + "'", $t->from);
+        die ParseException->new(mt("Unexpected operator '[_1]'", $t->op->id), $t->from);
     } else {
         $left = $t->op->nud->($t->op, $self);
     }
@@ -118,10 +121,10 @@ sub advance {
     if (defined $id && (!defined $self->current_token || !defined $self->current_token->op ||
             $self->current_token->op->id ne $id)) {
         if (!defined $self->current_token) {
-            die ParseException->new("Expected '" . $id . "' at the end",
+            die ParseException->new(mt("Expected '[_1]' at the end", $id),
                 $self->tokens->[scalar(@{$self->tokens}) - 1]->to + 1);
         } else {
-            die ParseException->new("Expected '" . $id . "'", $self->current_token->from);
+            die ParseException->new(mt("Expected '[_1]'", $id), $self->current_token->from);
         }
     }
     if ($self->token_nr >= scalar(@{$self->tokens})) {
@@ -231,7 +234,7 @@ sub parse {
     my $tokenizer = Tokenizer->new($self->defs, $text);
     @{$self->{_tokens}} = $tokenizer->tokenize();
     if (scalar(@{$self->tokens}) == 0) {
-        die "No token found";
+        die mt("No token found");
     }
     if ($self->accept_bad_syntax) {
         $self->addHiddenOperators();
@@ -241,7 +244,7 @@ sub parse {
     $self->advance();
     my $root = $self->expression(0);
     if (defined $self->current_token) {
-        die ParseException->new("Expected the end", $self->current_token->from);
+        die ParseException->new(mt("Expected the end"), $self->current_token->from);
     }
     return $root;
 }
