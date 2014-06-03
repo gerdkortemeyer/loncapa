@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2014.5.27)  28 MAY 2014 17:33
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2014.5.27)  3 JUN 2014 11:10
 entering extended mode
  %&-line parsing enabled.
 **coding_manual
@@ -440,16 +440,16 @@ Chapter 9.
 
 
 
-]) [26]
+] [26]) [27]
 \openout2 = `glossary.aux'.
 
- (./glossary.tex
+ (./glossary.tex [28
+
+
+
+]
 Chapter 10.
-) [27
-
-
-
-] (./coding_manual.ind [28
+) [29] (./coding_manual.ind [30
 
 
 ]) (./coding_manual.aux (./license.aux)
@@ -477,9 +477,9 @@ s/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/www/.texlive2007/texmf-var/fonts
 /pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/www/.texlive2007/texmf-var/fonts/
 pk/ljfour/jknappen/ec/ecrm1728.600pk></usr/share/texmf/fonts/type1/bluesky/cm/c
 mmi10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb>
-Output written on coding_manual.pdf (31 pages, 220152 bytes).
+Output written on coding_manual.pdf (33 pages, 222131 bytes).
 PDF statistics:
- 622 PDF objects out of 1000 (max. 8388607)
+ 627 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 131072)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

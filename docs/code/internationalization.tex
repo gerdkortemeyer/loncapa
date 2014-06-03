@@ -58,7 +58,33 @@ Internationalization is available from Perl via the \%mt()-function. The first a
 \begin{verbatim}
 &mt("Showing [_1] to [_2] of [_3] entries",$start,$finish,$total)
 \end{verbatim}
+\section{Internal codes}
+Translation should happen as close to the interface level as possible. If server-side functionality needs to store or generate things that need to be used both by humans and by other application components, those should not be translated too early. A good way are internal codes, and an example are roles.\index{roles} They are stored by codes and translated on the way out.
+
+The file lc\_localize.pm has such Code to English ``translations,'' e.g.,
+\begin{verbatim}
+package Apache::lc_localize::en;
+use base qw(Apache::lc_localize);
+%Lexicon=('_AUTO' => 1, 
+'language_code'      => 'en',
+'language_direction' => 'ltr',
+'language_description' => 'English',
+'date_short_locale' => '$month/$day/$year',
+
+'superuser' => 'Superuser',
+'domain_coordinator' => 'Domain Coordinator',
+'course_coordinator' => 'Course Coordinator',
+'instructor' => 'Instructor',
+'teaching_assistant' => 'Teaching Assistant',
+'student' => 'Student',
+'community_organizer' => 'Community Organizer',
+'member' => 'Member',
+'author' => 'Author',
+'co_author' => 'Co-Author'
+);
+\end{verbatim}
 \section{Special cases}
+\subsection{JavaScript configuration files}
 Some Javascript utilities expect a configuration file. This can be generated dynamically like for example in lc\_ui\_datatable\_i14n, which is invoked by lc.conf:
 \begin{verbatim}
 sub handler {
@@ -92,3 +118,32 @@ sub handler {
    return OK;
 }
 \end{verbatim}
+This corresponds to the code on the page,
+\begin{verbatim}
+$('#courselist').dataTable( {
+      "bStateSave": true,
+      "oLanguage" : {
+         "sUrl" : "/datatable_i14n"
+      },
+      "aoColumns" : [
+         { "bSortable": false },
+         null,
+         null,
+         {"iDataSort": 4},
+         {"bVisible": false}
+      ]
+    } );
+\end{verbatim}
+which loads it.
+\subsection{Loading locatilization files}
+Some client-side JavaScript has its own localization files as part of the distibution. Here, the LON-CAPA localization file can be used to pick the right one. For example, the CKeditor gets its language from the HTML tag
+\begin{verbatim}
+<html lang="de" dir="ltr">
+\end{verbatim}
+which is based of the German translation file
+\begin{verbatim}
+'language_code'      => 'de',
+'language_direction' => 'ltr',
+\end{verbatim}
+--- but it could also take a separate language parameter, if ever these languages need to differ.
+
