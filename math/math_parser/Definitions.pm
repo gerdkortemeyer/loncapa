@@ -222,7 +222,7 @@ sub parenthesisNud {
 sub parenthesisLed {
     my( $op, $p, $left ) = @_;
     if ($left->type != ENode->NAME && $left->type != ENode->SUBSCRIPT) {
-        die ParseException->new(mt("Function name expected before a parenthesis."), $p->tokens->[$p->token_nr - 1]->from);
+        die ParseException->new("Function name expected before a parenthesis.", $p->tokens->[$p->token_nr - 1]->from);
     }
     my @children = ($left);
     if ((!defined $p->current_token) || (!defined $p->current_token->op) || ($p->current_token->op->id ne ")")) {
@@ -270,7 +270,7 @@ sub vectorNud {
 sub subscriptLed {
     my( $op, $p, $left ) = @_;
     if ($left->type != ENode->NAME && $left->type != ENode->SUBSCRIPT) {
-        die ParseException->new(mt("Name expected before a square bracket."), $p->tokens->[$p->token_nr - 1]->from);
+        die ParseException->new("Name expected before a square bracket.", $p->tokens->[$p->token_nr - 1]->from);
     }
     my @children = ($left);
     if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id != "]") {

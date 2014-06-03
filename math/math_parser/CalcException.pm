@@ -32,24 +32,53 @@ use overload '""' => \&toString;
 
 ##
 # Constructor
-# @param {string} msg - Error message
+# @param {string} msg - error message, using [_1] for the first parameter
+# @param {...string} param - parameters for the message
 ##
 sub new {
     my $class = shift;
     my $self = {
         _msg => shift,
+        _params => [],
     };
+    while (@_) {
+        push(@{$self->{_params}}, shift);
+    }
     bless $self, $class;
     return $self;
 }
 
+# Attribute helpers
+
+sub msg {
+    my $self = shift;
+    return $self->{_msg};
+}
+sub params {
+    my $self = shift;
+    return $self->{_params};
+}
+
 ##
-# Returns the exception as a string, for debug
+# Returns the exception as a string, for debug only.
 # @returns {string}
 ##
 sub toString {
     my $self = shift;
-    return mt("Calculation error: ").$self->{_msg};
+    my $s = "Calculation error: ".$self->msg;
+    if (scalar(@{$self->params}) > 0) {
+        $s .= ", ".join(", ", @{$self->params});
+    }
+    return $s;
+}
+
+##
+# Returns the error message localized for the user interface.
+# @returns {string}
+##
+sub getLocalizedMessage {
+    my $self = shift;
+    return mt("Calculation error: [_1]", mt($self->msg, @{$self->params}));
 }
 
 1;

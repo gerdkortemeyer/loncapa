@@ -29,6 +29,8 @@ use lib '/home/httpd/lib/perl';
 use Apache::lc_connection_utils(); # to avoid a circular reference problem
 use Apache::lc_ui_localize;
 
+use aliased 'Apache::math::math_parser::CalcException';
+use aliased 'Apache::math::math_parser::ParseException';
 use aliased 'Apache::math::math_parser::Parser';
 use aliased 'Apache::math::math_parser::ENode';
 use aliased 'Apache::math::math_parser::CalcEnv';
@@ -96,7 +98,11 @@ sub test {
             die "Wrong result: ".$quantity." instead of ".$expected_quantity;
         }
     } catch {
-        die "Error for $expression: $_\n";
+        if (UNIVERSAL::isa($_,CalcException) || UNIVERSAL::isa($_,ParseException)) {
+            die "Error for $expression: ".$_->getLocalizedMessage()."\n";
+        } else {
+            die "Internal error for $expression: $_\n";
+        }
     }
 }
 

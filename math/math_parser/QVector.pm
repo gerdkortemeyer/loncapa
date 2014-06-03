@@ -106,10 +106,10 @@ sub equals {
 sub qadd {
     my ( $self, $v ) = @_;
     if (!$v->isa(QVector)) {
-        die CalcException->new(mt("Vector addition: second member is not a vector."));
+        die CalcException->new("Vector addition: second member is not a vector.");
     }
     if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
-        die CalcException->new(mt("Vector addition: the vectors have different sizes."));
+        die CalcException->new("Vector addition: the vectors have different sizes.");
     }
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -126,10 +126,10 @@ sub qadd {
 sub qsub {
     my ( $self, $v ) = @_;
     if (!$v->isa(QVector)) {
-        die CalcException->new(mt("Vector substraction: second member is not a vector."));
+        die CalcException->new("Vector substraction: second member is not a vector.");
     }
     if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
-        die CalcException->new(mt("Vector substraction: the vectors have different sizes."));
+        die CalcException->new("Vector substraction: the vectors have different sizes.");
     }
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -159,7 +159,7 @@ sub qneg {
 sub qmult {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new(mt("Vector multiplication: second member is not a quantity."));
+        die CalcException->new("Vector multiplication: second member is not a quantity.");
     }
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -191,7 +191,7 @@ sub qpow {
 sub qdot {
     my ( $self, $v ) = @_;
     if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
-        die CalcException->new(mt("Vector dot product: the vectors have different sizes."));
+        die CalcException->new("Vector dot product: the vectors have different sizes.");
     }
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {

@@ -32,9 +32,10 @@ use overload '""' => \&toString;
 
 ##
 # Constructor
-# @param {string} msg - Error message
+# @param {string} msg - error message, using [_1] for the first parameter
 # @param {integer} from - Character index
 # @optional {string} to - Character index to (inclusive)
+# @optional {...string} param - parameters for the message
 ##
 sub new {
     my $class = shift;
@@ -42,7 +43,11 @@ sub new {
         _msg => shift,
         _from => shift,
         _to => shift,
+        _params => [],
     };
+    while (@_) {
+        push(@{$self->{_params}}, shift);
+    }
     if (! defined $self->{_to}) {
         $self->{_to} = $self->{_from};
     }
@@ -50,13 +55,46 @@ sub new {
     return $self;
 }
 
+# Attribute helpers
+
+sub msg {
+    my $self = shift;
+    return $self->{_msg};
+}
+sub from {
+    my $self = shift;
+    return $self->{_from};
+}
+sub to {
+    my $self = shift;
+    return $self->{_to};
+}
+sub params {
+    my $self = shift;
+    return $self->{_params};
+}
+
 ##
-# Returns the exception as a string, for debug
+# Returns the exception as a string, for debug only.
 # @returns {string}
 ##
 sub toString {
     my $self = shift;
-    return mt("Parsing error: [_1] at [_2] - [_3]", $self->{_msg}, $self->{_from}, $self->{_to});
+    my $s = "Parsing error: ".$self->msg." at ".$self->from." - ".$self->to;
+    if (scalar(@{$self->params}) > 0) {
+        $s .= ", ".join(", ", @{$self->params});
+    }
+    return $s;
+}
+
+##
+# Returns the error message localized for the user interface.
+# @returns {string}
+##
+sub getLocalizedMessage {
+    my $self = shift;
+    my $locmsg = mt($self->msg, @{$self->params});
+    return mt("Parsing error: [_1] at [_2] - [_3]", $locmsg, $self->from, $self->to);
 }
 
 1;

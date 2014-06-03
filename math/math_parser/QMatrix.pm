@@ -119,11 +119,11 @@ sub equals {
 sub qadd {
     my ( $self, $m ) = @_;
     if (!$m->isa(QMatrix)) {
-        die CalcException->new(mt("Matrix addition: second member is not a matrix."));
+        die CalcException->new("Matrix addition: second member is not a matrix.");
     }
     if (scalar(@{$self->quantities}) != scalar(@{$m->quantities}) || 
             scalar(@{$self->quantities->[0]}) != scalar(@{$m->quantities->[0]})) {
-        die CalcException->new(mt("Matrix addition: the matrices have different sizes."));
+        die CalcException->new("Matrix addition: the matrices have different sizes.");
     }
     my @t = (); # 2d array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -143,11 +143,11 @@ sub qadd {
 sub qsub {
     my ( $self, $m ) = @_;
     if (!$m->isa(QMatrix)) {
-        die CalcException->new(mt("Matrix substraction: second member is not a matrix."));
+        die CalcException->new("Matrix substraction: second member is not a matrix.");
     }
     if (scalar(@{$self->quantities}) != scalar(@{$m->quantities}) || 
             scalar(@{$self->quantities->[0]}) != scalar(@{$m->quantities->[0]})) {
-        die CalcException->new(mt("Matrix substraction: the matrices have different sizes."));
+        die CalcException->new("Matrix substraction: the matrices have different sizes.");
     }
     my @t = (); # 2d array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -194,8 +194,8 @@ sub qmult {
     }
     if ($m->isa(QVector)) {
         if (scalar(@{$self->quantities}) != scalar(@{$m->quantities})) {
-            die CalcException->new(mt(
-"Matrix-Vector element-by-element multiplication: the sizes do not match (use the dot product for matrix product)."));
+            die CalcException->new(
+"Matrix-Vector element-by-element multiplication: the sizes do not match (use the dot product for matrix product).");
         }
         my @t = (); # 2d array of Quantity
         for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -208,8 +208,8 @@ sub qmult {
     }
     if (scalar(@{$self->quantities}) != scalar(@{$m->quantities}) || 
             scalar(@{$self->quantities->[0]}) != scalar(@{$m->quantities->[0]})) {
-        die CalcException->new(mt(
-"Matrix element-by-element multiplication: the matrices have different sizes (use the dot product for matrix product)."));
+        die CalcException->new(
+"Matrix element-by-element multiplication: the matrices have different sizes (use the dot product for matrix product).");
     }
     my @t = (); # 2d array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -229,10 +229,10 @@ sub qmult {
 sub qdot {
     my ( $self, $m ) = @_;
     if ($m->isa(Quantity)) {
-        die CalcException->new(mt("Dot product Matrix: Quantity is not defined."));
+        die CalcException->new("Dot product Matrix: Quantity is not defined.");
     }
     if (scalar(@{$self->quantities->[0]}) != scalar(@{$m->quantities})) {
-        die CalcException->new(mt("Matrix product: the matrices sizes do not match."));
+        die CalcException->new("Matrix product: the matrices sizes do not match.");
     }
     if ($m->isa(QVector)) {
         my @t = (); # array of Quantity
