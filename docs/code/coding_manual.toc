@@ -74,5 +74,8 @@
 \contentsline {section}{\numberline {9.2}Maketext}{25}
 \contentsline {section}{\numberline {9.3}Invocation in documents}{26}
 \contentsline {section}{\numberline {9.4}Invocation from Perl}{26}
-\contentsline {section}{\numberline {9.5}Special cases}{26}
-\contentsline {chapter}{\numberline {10}Glossary}{27}
+\contentsline {section}{\numberline {9.5}Internal codes}{26}
+\contentsline {section}{\numberline {9.6}Special cases}{26}
+\contentsline {subsection}{\numberline {9.6.1}JavaScript configuration files}{26}
+\contentsline {subsection}{\numberline {9.6.2}Loading locatilization files}{27}
+\contentsline {chapter}{\numberline {10}Glossary}{29}
