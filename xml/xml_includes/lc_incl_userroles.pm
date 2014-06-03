@@ -64,29 +64,29 @@ sub incl_spreadsheet_finalize_items {
              $associations->{'record'}{'username'}->{'column'})=&sheet_column($key);
          }
          if ($content{$key} eq 'firstname') {
-            ($associations->{'record'}->{'firstname'}->{'sheet'},
-             $associations->{'record'}->{'firstname'}->{'column'})=&sheet_column($key);
-            $associations->{'record'}->{'name_mode'}='individual';
+            ($associations->{'record'}->{'name'}->{'firstname'}->{'sheet'},
+             $associations->{'record'}->{'name'}->{'firstname'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'name'}->{'mode'}='individual';
          }
          if ($content{$key} eq 'middlename') {
-            ($associations->{'record'}->{'middlename'}->{'sheet'},
-             $associations->{'record'}->{'middlename'}->{'column'})=&sheet_column($key);
-            $associations->{'record'}->{'name_mode'}='individual';
+            ($associations->{'record'}->{'name'}->{'middlename'}->{'sheet'},
+             $associations->{'record'}->{'name'}->{'middlename'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'name'}->{'mode'}='individual';
          }
          if ($content{$key} eq 'lastname') {
-            ($associations->{'record'}->{'lastname'}->{'sheet'},
-             $associations->{'record'}->{'lastname'}->{'column'})=&sheet_column($key);
-            $associations->{'record'}->{'name_mode'}='individual';
+            ($associations->{'record'}->{'name'}->{'lastname'}->{'sheet'},
+             $associations->{'record'}->{'name'}->{'lastname'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'name'}->{'mode'}='individual';
          }
          if ($content{$key} eq 'suffix') {
-            ($associations->{'record'}->{'suffix'}->{'sheet'},
-             $associations->{'record'}->{'suffix'}->{'column'})=&sheet_column($key);
-            $associations->{'record'}->{'name_mode'}='individual';
+            ($associations->{'record'}->{'name'}->{'suffix'}->{'sheet'},
+             $associations->{'record'}->{'name'}->{'suffix'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'name'}->{'mode'}='individual';
          }
          if ($content{$key} eq 'namecombi') {
-            ($associations->{'record'}->{'namecombi'}->{'sheet'},
-             $associations->{'record'}->{'namecombi'}->{'column'})=&sheet_column($key);
-            $associations->{'record'}->{'name_mode'}='combi';
+            ($associations->{'record'}->{'name'}->{'namecombi'}->{'sheet'},
+             $associations->{'record'}->{'name'}->{'namecombi'}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'name'}->{'mode'}='combi';
          }
          if (($content{$key} eq 'email') ||
              ($content{$key} eq 'useremail')) {
@@ -106,38 +106,68 @@ sub incl_spreadsheet_finalize_items {
          if ($content{$key} eq 'domain') {
             ($associations->{'record'}->{'domain'}->{'sheet'},
              $associations->{'record'}->{'domain'}->{'column'})=&sheet_column($key);
-            $associations->{'record'}->{'domain_mode'}='individual'
+            $associations->{'record'}->{'domain'}->{'mode'}='individual'
          }
          if ($content{$key} eq 'startdate') {
             ($associations->{'record'}->{'startdate'}->{'sheet'},
              $associations->{'record'}->{'startdate'}->{'column'})=&sheet_column($key);
-            $associations->{'record'}->{'startdate_mode'}='individual'
+            $associations->{'record'}->{'startdate'}->{'mode'}='individual'
          }
          if ($content{$key} eq 'enddate') {
             ($associations->{'record'}->{'enddate'}->{'sheet'},
              $associations->{'record'}->{'enddate'}->{'column'})=&sheet_column($key);
-            $associations->{'record'}->{'enddate_mode'}='individual'
+            $associations->{'record'}->{'enddate'}->{'mode'}='individual'
          }
          if ($content{$key} eq 'authmode') {
             ($associations->{'record'}->{'authmode'}->{'sheet'},
              $associations->{'record'}->{'authmode'}->{'column'})=&sheet_column($key);
-            $associations->{'record'}->{'authmode_mode'}='individual'
+            $associations->{'record'}->{'authmode'}->{'mode'}='individual'
          }
          if (($content{$key} eq 'password') ||
              ($content{$key} eq 'passwordpid')) {
             ($associations->{'record'}->{'password'}->{'sheet'},
              $associations->{'record'}->{'password'}->{'column'})=&sheet_column($key);
-            $associations->{'record'}->{'password_mode'}='individual'
+            $associations->{'record'}->{'password'}->{'mode'}='individual'
          }
          if ($content{$key} eq 'role') {
             ($associations->{'record'}->{'role'}->{'sheet'},
              $associations->{'record'}->{'role'}->{'column'})=&sheet_column($key);
-            $associations->{'record'}->{'role_mode'}='individual'
+            $associations->{'record'}->{'role'}->{'mode'}='individual'
          }
       }
-      unless ($associations->{'record'}->{'domain_mode'}) {
+      unless ($associations->{'record'}->{'domain'}->{'mode'}) {
          $associations->{'record'}->{'domain'}->{'default'}=$content{'defaultdomain'};
-         $associations->{'record'}->{'domain_mode'}='default';
+         $associations->{'record'}->{'domain'}->{'mode'}='default';
+      }
+      unless ($associations->{'record'}->{'password'}->{'mode'}) {
+         $associations->{'record'}->{'password'}->{'default'}=$content{'defaultpassword'};
+         $associations->{'record'}->{'password'}->{'mode'}='default';
+      }
+      unless ($associations->{'record'}->{'role'}->{'mode'}) {
+         $associations->{'record'}->{'role'}->{'default'}=$content{'defaultrole'};
+         $associations->{'record'}->{'role'}->{'mode'}='default';
+      }
+      unless ($associations->{'record'}->{'startdate'}->{'mode'}) {
+         $associations->{'record'}->{'startdate'}->{'default'}=
+             &Apache::lc_ui_localize::inputdate_to_timestamp(
+                 $content{'defaultstartdate_date'},
+                 $content{'defaultstartdate_time_hour'},
+                 $content{'defaultstartdate_time_min'},
+                 $content{'defaultstartdate_time_sec'},
+                 $content{'defaultstartdate_time_ampm'},
+                 $content{'defaultstartdate_time_zone'});
+         $associations->{'record'}->{'startdate'}->{'mode'}='default';
+      }
+      unless ($associations->{'record'}->{'enddate'}->{'mode'}) {
+         $associations->{'record'}->{'enddate'}->{'default'}=
+             &Apache::lc_ui_localize::inputdate_to_timestamp(
+                 $content{'defaultenddate_date'},
+                 $content{'defaultenddate_time_hour'},
+                 $content{'defaultenddate_time_min'},
+                 $content{'defaultenddate_time_sec'},
+                 $content{'defaultenddate_time_ampm'},
+                 $content{'defaultenddate_time_zone'});
+         $associations->{'record'}->{'enddate'}->{'mode'}='default';
       }
    }
    my $output.="Assoc now: <pre>".Dumper($associations)."</pre>\n";

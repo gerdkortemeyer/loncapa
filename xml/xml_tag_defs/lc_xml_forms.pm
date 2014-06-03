@@ -273,7 +273,7 @@ sub datetimefield {
    my $year       = $dt->year();
 # The date field
    my $dateid=$id.'_date';
-   my $datename=$name.'_name';
+   my $datename=$name.'_date';
    my $lang=&mt('language_code');
    if ($lang eq 'en') { $lang=''; }
    my $short_locale=&mt('date_short_locale');
