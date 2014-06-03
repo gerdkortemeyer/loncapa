@@ -352,7 +352,7 @@ sub qmod {
 # Returns -1, 0 or 1 depending on the sign of the value
 # @returns {Quantity}
 ##
-sub qsignum {
+sub qsgn {
     my ( $self ) = @_;
     my $v;
     if ($self->value < 0) {
@@ -369,7 +369,7 @@ sub qsignum {
 # Returns the least integer that is greater than or equal to the value.
 # @returns {Quantity}
 ##
-sub qceiling {
+sub qceil {
     my ( $self ) = @_;
     my $v = ceil($self->value);
     return Quantity->new($v, $self->units);

@@ -26,4 +26,5 @@ my $p = Parser->new($accept_bad_syntax, $unit_mode);
 my $root = $p->parse($eqtxt);
 print "Parsing: ".$root->toString()."\n\n";
 my $env = CalcEnv->new($unit_mode);
+print "Maxima syntax: ".$root->toMaxima()."\n";
 print "Value: ".$root->calc($env)->toString()."\n";
