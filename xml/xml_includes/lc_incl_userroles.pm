@@ -135,6 +135,10 @@ sub incl_spreadsheet_finalize_items {
             $associations->{'record'}->{'role_mode'}='individual'
          }
       }
+      unless ($associations->{'record'}->{'domain_mode'}) {
+         $associations->{'record'}->{'domain'}->{'default'}=$content{'defaultdomain'};
+         $associations->{'record'}->{'domain_mode'}='default';
+      }
    }
    my $output.="Assoc now: <pre>".Dumper($associations)."</pre>\n";
 
