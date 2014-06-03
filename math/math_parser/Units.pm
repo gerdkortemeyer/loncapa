@@ -134,7 +134,7 @@ sub convertToSI {
             }
         }
     }
-    die CalcException->new(mt("Unit not found: [_1]", $name));
+    die CalcException->new("Unit not found: [_1]", $name);
 }
 
 ##

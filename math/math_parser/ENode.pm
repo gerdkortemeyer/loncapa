@@ -123,7 +123,7 @@ sub calc {
     
     given ($self->type) {
         when (UNKNOWN) {
-            die CalcException->new(mt("Unknown node type: [_1]", $self->value));
+            die CalcException->new("Unknown node type: [_1]", $self->value);
         }
         when (NAME) {
             if ($env->unit_mode) {
@@ -132,7 +132,7 @@ sub calc {
                 my $name = $self->value;
                 my $value = $env->getVariable($name);
                 if (!defined $value) {
-                    die CalcException->new(mt("Variable has undefined value: [_1]", $name));
+                    die CalcException->new("Variable has undefined value: [_1]", $name);
                 }
                 return Quantity->new($value);
             }
@@ -176,7 +176,7 @@ sub calc {
                     return($children[0]->calc($env) * $children[1]->calc($env));
                 }
                 default {
-                    die CalcException->new(mt("Unknown operator: [_1]", $self->value));
+                    die CalcException->new("Unknown operator: [_1]", $self->value);
                 }
             }
         }
@@ -185,11 +185,16 @@ sub calc {
             my $fname = $children[0]->value;
             
             if (!defined $children[1]) {
-                die CalcException->new(mt("Missing parameter for function [_1]", $fname));
+                die CalcException->new("Missing parameter for function [_1]", $fname);
             }
             given ($fname) {
                 when ("matrix") {    return $self->createVectorOrMatrix($env); }
-                when ("pow") {       return $children[1]->calc($env)->qpow($children[2]->calc($env)); }
+                when ("pow") {
+                    if (!defined $children[2]) {
+                        die CalcException->new("Missing parameter for function [_1]", $fname);
+                    }
+                    return $children[1]->calc($env)->qpow($children[2]->calc($env));
+                }
                 when ("sqrt") {      return $children[1]->calc($env)->qsqrt(); }
                 when ("abs") {       return $children[1]->calc($env)->qabs(); }
                 when ("exp") {       return $children[1]->calc($env)->qexp(); }
@@ -197,39 +202,49 @@ sub calc {
                 when ("log") {       return $children[1]->calc($env)->qln(); }
                 when ("log10") {     return $children[1]->calc($env)->qlog10(); }
                 when ("factorial") { return $children[1]->calc($env)->qfact(); }
-                when ("mod") {       return $children[1]->calc($env)->qmod($children[2]->calc($env)); }
-                when ("sgn") {    return $children[1]->calc($env)->qsgn(); }
-                when ("ceil") {    return $children[1]->calc($env)->qceil(); }
-                when ("floor") {    return $children[1]->calc($env)->qfloor(); }
+                when ("mod") {
+                    if (!defined $children[2]) {
+                        die CalcException->new("Missing parameter for function [_1]", $fname);
+                    }
+                    return $children[1]->calc($env)->qmod($children[2]->calc($env));
+                }
+                when ("sgn") {       return $children[1]->calc($env)->qsgn(); }
+                when ("ceil") {      return $children[1]->calc($env)->qceil(); }
+                when ("floor") {     return $children[1]->calc($env)->qfloor(); }
                 when ("sin") {       return $children[1]->calc($env)->qsin(); }
                 when ("cos") {       return $children[1]->calc($env)->qcos(); }
                 when ("tan") {       return $children[1]->calc($env)->qtan(); }
                 when ("asin") {      return $children[1]->calc($env)->qasin(); }
                 when ("acos") {      return $children[1]->calc($env)->qacos(); }
                 when ("atan") {      return $children[1]->calc($env)->qatan(); }
-                when ("atan2") {     return $children[1]->calc($env)->qatan2($children[2]->calc($env)); }
-                when ("sinh") {       return $children[1]->calc($env)->qsinh(); }
-                when ("cosh") {       return $children[1]->calc($env)->qcosh(); }
-                when ("tanh") {       return $children[1]->calc($env)->qtanh(); }
-                when ("asinh") {      return $children[1]->calc($env)->qasinh(); }
-                when ("acosh") {      return $children[1]->calc($env)->qacosh(); }
-                when ("atanh") {      return $children[1]->calc($env)->qatanh(); }
+                when ("atan2") {
+                    if (!defined $children[2]) {
+                        die CalcException->new("Missing parameter for function [_1]", $fname);
+                    }
+                    return $children[1]->calc($env)->qatan2($children[2]->calc($env));
+                }
+                when ("sinh") {      return $children[1]->calc($env)->qsinh(); }
+                when ("cosh") {      return $children[1]->calc($env)->qcosh(); }
+                when ("tanh") {      return $children[1]->calc($env)->qtanh(); }
+                when ("asinh") {     return $children[1]->calc($env)->qasinh(); }
+                when ("acosh") {     return $children[1]->calc($env)->qacosh(); }
+                when ("atanh") {     return $children[1]->calc($env)->qatanh(); }
                 when (["sum","product"]) {
                     if ($env->unit_mode) {
-                        die CalcException->new(mt("[_1] cannot work in unit mode.", $fname));
+                        die CalcException->new("[_1] cannot work in unit mode.", $fname);
                     }
                     if (scalar(@children) != 5) {
-                        die CalcException->new(mt("[_1]: should have 4 parameters.", $fname));
+                        die CalcException->new("[_1]: should have 4 parameters.", $fname);
                     }
                     my $var = "".$children[2]->value;
                     if ($var eq "i") {
-                        die CalcException->new(mt("[_1]: please use another variable name, i is the imaginary number", $fname));
+                        die CalcException->new("[_1]: please use another variable name, i is the imaginary number", $fname);
                     }
                     my $initial = $env->getVariable($var);
                     my $var_value_1 = $children[3]->value;
                     my $var_value_2 = $children[4]->value;
                     if ($var_value_1 > $var_value_2) {
-                        die CalcException->new(mt("[_1]: are you trying to make me loop forever ???", $fname));
+                        die CalcException->new("[_1]: are you trying to make me loop forever ???", $fname);
                     }
                     my $sum = Quantity->new($fname eq "sum" ? 0 : 1);
                     for (my $var_value=$var_value_1; $var_value <= $var_value_2; $var_value++) {
@@ -245,20 +260,20 @@ sub calc {
                 }
                 when ("binomial") {
                     if (scalar(@children) != 3) {
-                        die CalcException->new(mt("[_1]: should have 2 parameters.", $fname));
+                        die CalcException->new("[_1]: should have 2 parameters.", $fname);
                     }
                     my $n = $children[1]->calc($env);
                     my $p = $children[2]->calc($env);
                     return $n->qfact() / ($p->qfact() * ($n - $p)->qfact());
                 }
-                default {            die CalcException->new(mt("Unknown function: [_1]",$fname)); }
+                default {            die CalcException->new("Unknown function: [_1]",$fname); }
             }
         }
         when (VECTOR) {
             return $self->createVectorOrMatrix($env);
         }
         when (SUBSCRIPT) {
-            die CalcException->new(mt("Subscript cannot be evaluated: [_1]", $self->value));
+            die CalcException->new("Subscript cannot be evaluated: [_1]", $self->value);
         }
     }
 }
@@ -272,7 +287,7 @@ sub toMaxima {
     
     given ($self->type) {
         when (UNKNOWN) {
-            die CalcException->new(mt("Unknown node type: [_1]", $self->value));
+            die CalcException->new("Unknown node type: [_1]", $self->value);
         }
         when (NAME) {
             # constants have already been transformed, so this should be a variable (no % necessary)
@@ -322,7 +337,7 @@ sub toMaxima {
                     return("(".$children[0]->toMaxima()."`".$children[1]->toMaxima().")");
                 }
                 default {
-                    die CalcException->new(mt("Unknown operator: [_1]", $self->value));
+                    die CalcException->new("Unknown operator: [_1]", $self->value);
                 }
             }
         }
@@ -331,9 +346,9 @@ sub toMaxima {
             my $fname = $children[0]->value;
             
             given ($fname) {
-                when ("log10") {   return "log(".$children[1]->toMaxima().")/log(10)"; }
+                when ("log10") {  return "log(".$children[1]->toMaxima().")/log(10)"; }
                 when ("sgn") {    return "signum(".$children[1]->toMaxima().")"; }
-                when ("ceil") {    return "ceiling(".$children[1]->toMaxima().")"; }
+                when ("ceil") {   return "ceiling(".$children[1]->toMaxima().")"; }
                 default {
                     my $s = $fname."(";
                     for (my $i=1; $i<scalar(@children); $i++) {
@@ -402,7 +417,7 @@ sub createVectorOrMatrix {
         if (!defined $nb1) {
             $nb1 = $nb2;
         } elsif ($nb2 != $nb1) {
-            die CalcException->new(mt("Inconsistent number of elements in a matrix."));
+            die CalcException->new("Inconsistent number of elements in a matrix.");
         }
         if ($qv->isa(Quantity)) {
             $t[$i] = $qv;

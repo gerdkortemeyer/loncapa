@@ -158,13 +158,13 @@ sub equals {
 sub qadd {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new(mt("Quantity addition: second member is not a Quantity."));
+        die CalcException->new("Quantity addition: second member is not a Quantity.");
     }
     my $v = $self->value + $q->value;
     my %units = %{$self->units};
     foreach my $unit (keys %units) {
         if ($units{$unit} != $q->units->{$unit}) {
-            die CalcException->new(mt("addition: units don't match"));
+            die CalcException->new("addition: units don't match");
         }
     }
     return Quantity->new($v, $self->units);
@@ -178,13 +178,13 @@ sub qadd {
 sub qsub {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new(mt("Quantity substraction: second member is not a Quantity."));
+        die CalcException->new("Quantity substraction: second member is not a Quantity.");
     }
     my $v = $self->value - $q->value;
     my %units = %{$self->units};
     foreach my $unit (keys %units) {
         if ($units{$unit} != $q->units->{$unit}) {
-            die CalcException->new(mt("substraction: units don't match"));
+            die CalcException->new("substraction: units don't match");
         }
     }
     return Quantity->new($v, $self->units);
@@ -233,7 +233,7 @@ sub qmult {
 sub qdiv {
     my ( $self, $q ) = @_;
     if ($q->value == 0) {
-        die CalcException->new(mt("Division by 0"));
+        die CalcException->new("Division by 0");
     }
     my $v = $self->value / $q->value;
     my %units = %{$self->units};
@@ -266,7 +266,7 @@ sub qfact {
     my ( $self ) = @_;
     my $v = $self->value;
     if ($v < 0) {
-        die CalcException->new(mt("Factorial of number < 0"));
+        die CalcException->new("Factorial of number < 0");
     }
     # should check if integer
     my $n = $v;
@@ -319,7 +319,7 @@ sub qln {
     my ( $self ) = @_;
     $self->noUnits("ln");
     if ($self->value < 0) {
-        die CalcException->new(mt("Ln of number < 0"));
+        die CalcException->new("Ln of number < 0");
     }
     return Quantity->new(log($self->value), $self->units);
 }
@@ -332,7 +332,7 @@ sub qlog10 {
     my ( $self ) = @_;
     $self->noUnits("log10");
     if ($self->value < 0) {
-        die CalcException->new(mt("Log10 of number < 0"));
+        die CalcException->new("Log10 of number < 0");
     }
     return Quantity->new(log10($self->value), $self->units);
 }
@@ -525,7 +525,7 @@ sub noUnits {
     my %units = %{$self->units};
     foreach my $unit (keys %units) {
         if ($units{$unit} != 0) {
-            die CalcException->new(mt("[_1] of something with units ???", $fct_name));
+            die CalcException->new("[_1] of something with units ???", $fct_name);
         }
     }
 }

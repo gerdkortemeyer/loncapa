@@ -132,7 +132,7 @@ main:
                 }
                 if ($c lt '0' || $c gt '9') {
                     # syntax error in number exponent
-                    die ParseException->new(mt("syntax error in number exponent"), $from, $i);
+                    die ParseException->new("syntax error in number exponent", $from, $i);
                 }
                 do {
                     $i++;
@@ -148,7 +148,7 @@ main:
                 next;
             } else {
                 # syntax error in number
-                die ParseException->new(mt("syntax error in number"), $from, $i);
+                die ParseException->new("syntax error in number", $from, $i);
             }
         }
         
@@ -207,7 +207,7 @@ main:
         }
         
         # unrecognized operator
-        die ParseException->new(mt("unrecognized operator"), $from, $i);
+        die ParseException->new("unrecognized operator", $from, $i);
     }
     return @tokens;
 }
