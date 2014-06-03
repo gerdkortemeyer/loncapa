@@ -198,8 +198,8 @@ sub calc {
                 when ("log10") {     return $children[1]->calc($env)->qlog10(); }
                 when ("factorial") { return $children[1]->calc($env)->qfact(); }
                 when ("mod") {       return $children[1]->calc($env)->qmod($children[2]->calc($env)); }
-                when ("signum") {    return $children[1]->calc($env)->qsignum(); }
-                when ("ceiling") {    return $children[1]->calc($env)->qceiling(); }
+                when ("sgn") {    return $children[1]->calc($env)->qsgn(); }
+                when ("ceil") {    return $children[1]->calc($env)->qceil(); }
                 when ("floor") {    return $children[1]->calc($env)->qfloor(); }
                 when ("sin") {       return $children[1]->calc($env)->qsin(); }
                 when ("cos") {       return $children[1]->calc($env)->qcos(); }
@@ -259,6 +259,118 @@ sub calc {
         }
         when (SUBSCRIPT) {
             die CalcException->new(mt("Subscript cannot be evaluated: [_1]", $self->value));
+        }
+    }
+}
+
+##
+# Returns the equation as a string with the Maxima syntax.
+# @returns {string}
+##
+sub toMaxima {
+    my ( $self ) = @_;
+    
+    given ($self->type) {
+        when (UNKNOWN) {
+            die CalcException->new(mt("Unknown node type: [_1]", $self->value));
+        }
+        when (NAME) {
+            # constants have already been transformed, so this should be a variable (no % necessary)
+            my $name = $self->value;
+            return($name);
+        }
+        when (NUMBER) {
+            if ($self->value eq "i") {
+                return "%i";
+            } else {
+                return $self->value;
+            }
+        }
+        when (OPERATOR) {
+            my @children = @{$self->children};
+            given ($self->value) {
+                when ("+") {
+                    return("(".$children[0]->toMaxima()."+".$children[1]->toMaxima().")");
+                }
+                when ("-") {
+                    if (!defined $children[1]) {
+                        return("(-".$children[0]->toMaxima().")");
+                    } else {
+                        return("(".$children[0]->toMaxima()."-".$children[1]->toMaxima().")");
+                    }
+                }
+                when ("*") {
+                    return("(".$children[0]->toMaxima()."*".$children[1]->toMaxima().")");
+                }
+                when ("/") {
+                    return("(".$children[0]->toMaxima()."/".$children[1]->toMaxima().")");
+                }
+                when ("^") {
+                    return("(".$children[0]->toMaxima()."^".$children[1]->toMaxima().")");
+                }
+                when ("!") {
+                    return("factorial(".$children[0]->toMaxima().")");
+                }
+                when ("%") {
+                    return("((".$children[0]->toMaxima()."/100)*".$children[1]->toMaxima().")");
+                }
+                when (".") {
+                    # scalar product for vectors, multiplication for matrices
+                    return("(".$children[0]->toMaxima().".".$children[1]->toMaxima().")");
+                }
+                when ("`") {
+                    return("(".$children[0]->toMaxima()."`".$children[1]->toMaxima().")");
+                }
+                default {
+                    die CalcException->new(mt("Unknown operator: [_1]", $self->value));
+                }
+            }
+        }
+        when (FUNCTION) {
+            my @children = @{$self->children};
+            my $fname = $children[0]->value;
+            
+            given ($fname) {
+                when ("log10") {   return "log(".$children[1]->toMaxima().")/log(10)"; }
+                when ("sgn") {    return "signum(".$children[1]->toMaxima().")"; }
+                when ("ceil") {    return "ceiling(".$children[1]->toMaxima().")"; }
+                default {
+                    my $s = $fname."(";
+                    for (my $i=1; $i<scalar(@children); $i++) {
+                        if ($i != 1) {
+                            $s .= ", ";
+                        }
+                        $s .= $children[$i]->toMaxima();
+                    }
+                    $s .= ")";
+                    return($s);
+                }
+            }
+        }
+        when (VECTOR) {
+            my @children = @{$self->children};
+            my $s;
+            if ($children[0]->type == VECTOR) {
+                $s = "matrix(";
+            } else {
+                $s = "[";
+            }
+            for (my $i=0; $i<scalar(@children); $i++) {
+                if ($i != 0) {
+                    $s .= ", ";
+                }
+                $s .= $children[$i]->toMaxima();
+            }
+            if ($children[0]->type == VECTOR) {
+                $s .= ")";
+            } else {
+                $s .= "]";
+            }
+            return($s);
+        }
+        when (SUBSCRIPT) {
+            my @children = @{$self->children};
+            return("(".$children[0]->toMaxima()."_".$children[1]->toMaxima().")");
         }
     }
 }
