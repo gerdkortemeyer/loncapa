@@ -20,6 +20,9 @@
 
   \item encoding, 25
   \item entities, 15
+  \item equation editor, 29
+  \item equation parser, 30
+  \item equation syntax, 31
 
   \indexspace
 
@@ -42,6 +45,7 @@
 
   \indexspace
 
+  \item math, 29
   \item memcached, 21
   \item metadata, 16
   \item MongoDB, 16, 19
@@ -63,7 +67,7 @@
 
   \item realms, 17
   \item replication, 10, 14, 21
-  \item roles, 7, 17, 20
+  \item roles, 7, 17, 20, 26
 
   \indexspace
 

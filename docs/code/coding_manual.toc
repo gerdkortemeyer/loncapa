@@ -78,4 +78,26 @@
 \contentsline {section}{\numberline {9.6}Special cases}{26}
 \contentsline {subsection}{\numberline {9.6.1}JavaScript configuration files}{26}
 \contentsline {subsection}{\numberline {9.6.2}Loading locatilization files}{27}
-\contentsline {chapter}{\numberline {10}Glossary}{29}
+\contentsline {chapter}{\numberline {10}Math editor, parser and equation syntax}{29}
+\contentsline {section}{\numberline {10.1}Introduction}{29}
+\contentsline {section}{\numberline {10.2}A new user interface}{29}
+\contentsline {subsection}{\numberline {10.2.1}Usage}{30}
+\contentsline {section}{\numberline {10.3}The server-side parser}{30}
+\contentsline {subsection}{\numberline {10.3.1}Usage}{30}
+\contentsline {subsection}{\numberline {10.3.2}Calculation environment}{30}
+\contentsline {subsection}{\numberline {10.3.3}Conversion to Maxima syntax}{30}
+\contentsline {subsection}{\numberline {10.3.4}Catching errors}{30}
+\contentsline {subsection}{\numberline {10.3.5}Example with unit node}{30}
+\contentsline {subsection}{\numberline {10.3.6}Example with symbolic node}{30}
+\contentsline {section}{\numberline {10.4}Equation syntax}{31}
+\contentsline {subsection}{\numberline {10.4.1}Spaces}{31}
+\contentsline {subsection}{\numberline {10.4.2}Decimal separators and function parameter separators}{31}
+\contentsline {subsection}{\numberline {10.4.3}Constants}{31}
+\contentsline {subsection}{\numberline {10.4.4}Units}{31}
+\contentsline {subsection}{\numberline {10.4.5}Parenthesis}{31}
+\contentsline {subsection}{\numberline {10.4.6}Complex numbers}{31}
+\contentsline {subsection}{\numberline {10.4.7}Operators}{31}
+\contentsline {subsection}{\numberline {10.4.8}Implicit operators}{31}
+\contentsline {subsection}{\numberline {10.4.9}Vectors and matrices}{31}
+\contentsline {subsection}{\numberline {10.4.10}Functions}{32}
+\contentsline {chapter}{\numberline {11}Glossary}{33}

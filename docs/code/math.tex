@@ -1,0 +1,214 @@
+\chapter{Math editor, parser and equation syntax}\index{math}
+
+\section{Introduction}
+
+Historically, LON-CAPA has used several syntaxes for equations, such as Maxima and R.
+These syntaxes have evolved on the client side to be easier to write, in particular with implicit operators.
+Yet, many students have struggled to enter equations correctly. The consequences for incorrectly
+writing an equation vary depending on the context, from a simple admonition to a loss of points in an exam.
+
+It is essentially a user interface problem, but the interpretation of a complex syntax can require
+a lot of code, and with implicit operators a correct interpretation actually depends on the context.
+For evaluations, LON-CAPA 2 uses some Perl transformations, Maxima, R,
+and some old C/lex\&yacc code based on CAPA.
+It has become difficult to make this system evolve or even to maintain it.
+
+To improve the user interface, limit the risk of misinterpretation and allow for future customization,
+the following decisions were made:
+\begin{itemize}
+\item The user interface needs a real-time feedback, so that users never send an equation with a syntax error.
+It should also help them to learn the syntax.
+\item Users should use a single, well-defined syntax
+(other syntaxes might be kept running for backward-compatibility).
+\item New server-side code should be written to replace everything that does not require a CAS.
+It should be flexible to allow for changes in the syntax, and easier to maintain.
+\item On the client and server sides, the equation parser has to understand mathematical expressions with units,
+variables and constants.
+\end{itemize}
+
+
+\section{A new user interface}\index{equation editor}
+
+LON-CAPA 2 provides 2 user interfaces to write equations: one with a simple text field
+(users need to know the syntax), and one with a WYSIWYG Java applet. Due to new system
+and browser incompatibilities with Java, the applet does not work anymore in many environments.
+
+A WYSIWYG editor is a popular demand today, but we have not found a libre, easy to use and reliable
+implementation in Javascript. Also, it might not be the best interface for end users: while it is
+nice to be able to input equations without having to know the syntax, using a WYSIWYG editor
+is not very easy for users who will have to enter many equations, and it hides some mathematical information.
+Writing a new WYSIWYG editor from scratch would be too long given our current developer team.
+This situation could change in the future, as a libre Javascript WYSIWYG editor will probably be
+created eventually.
+
+An alternative today is to use a real-time preview for the equation, showing how the equation is interpreted
+as it is typed. The preview also needs to show the position of a syntax error.
+The text field + real-time preview solution helps to avoid sending an equation with a bad syntax, or
+an equation that would be misinterpreted. It also helps to learn operator precedence,
+as \texttt{1+2/3} will not show up like \texttt{(1+2)/3}.
+
+This solution was chosen for the new user interface. The implementation uses MathJax to display
+equations, reducing the Javascript code to a parser exporting equations to MathML.
+As with LON-CAPA 2, equations may use implicit operators. Since it is not always possible to
+guess automatically if a name is representing a variable or a unit, two separate modes
+are used to interpret equations: \textit{unit}, for expressions with units and constants,
+and \textit{symbolic}, for expressions with variables and constants.
+A short list of constants is used to recognize them.
+
+The editor can be tried from the git by opening the following file in a web browser
+(it does not require a LON-CAPA install):
+\begin{verbatim}
+loncapa/app/scripts/maxima_editor/test.html
+\end{verbatim}
+
+\subsection{Usage}
+In an HTML, script elements are used to reference the editor minimized version and MathJax.
+A new text area with automatic equation preview can then be inserted in the document with the math class:
+\begin{verbatim}
+<textarea class="math" data-implicit_operators="true" data-unit_mode="true"
+    data-constants="c, pi, e, hbar, amu, G" spellcheck="false" autofocus="autofocus"></textarea>
+\end{verbatim}
+
+
+\section{The server-side parser}\index{equation parser}
+
+The server-side parser is similar to the one written in Javascript, and in fact is a direct translation of it
+in Perl to make it easier to maintain.
+The MathML export is replaced by a calculation code and CAS exports. It also uses the unit and
+symbolic modes.
+The parser is located in the git at \texttt{math/math\_parser}.
+Two test scripts can be used to try it, make sure it works well, and learn usage:
+\texttt{test/math\_parser\_test\_cases.pl} and \texttt{test/math\_parser\_manual\_test.pl}
+(they require a LON-CAPA install to work).
+
+\subsection{Usage}
+The parser constructor takes 2 parameters: \texttt{implicit\_operators}, a boolean (1 or 0) that
+tells if implicit operators are allowed, and
+\texttt{unit\_mode}, another boolean to specify the mode (unit or symbolic).
+The parser's parse takes an equation string as a parameter, and returns an \texttt{ENode} representing
+a parsed tree for the equation. This \texttt{ENode} object can then be used for conversion or calculation.
+
+\subsection{Calculation environment}
+An object of the class \texttt{CalcEnv} is used to specify the mode (unit or symbolic), additional units,
+and variable values. It is passed to the \texttt{calc} method of \texttt{ENode} for calculation.
+
+\subsection{Conversion to Maxima syntax}
+An \texttt{ENode} can be used for a Maxima syntax export, with the \texttt{toMaxima()} method.
+
+\subsection{Catching errors}
+Exceptions are thrown whenever a problem occurs.
+\texttt{ParseException} and \texttt{CalcException} can be caught with try/catch,
+and it is possible to get the raw error message or a localized one.
+
+\subsection{Example with unit node}
+\begin{verbatim}
+    my $implicit_operators = 1;
+    my $unit_mode = 1;
+    my $equation = "4 peck + 2 bushel";
+    my $p = Parser->new($implicit_operators, $unit_mode);
+    my $root = $p->parse($equation);
+    my $env = CalcEnv->new($unit_mode);
+    $env->setUnit("peck", "2 gallon");
+    $env->setUnit("bushel", "8 gallon");
+    $env->setUnit("gallon", "4.4 L");
+    print "Maxima syntax: ".$root->toMaxima()."\n";
+    print "Value: ".$root->calc($env)->toString()."\n";
+\end{verbatim}
+
+\subsection{Example with symbolic node}
+\begin{verbatim}
+    my $implicit_operators = 1;
+    my $unit_mode = 0;
+    my $equation = "1/(x-y-z)";
+    my $p = Parser->new($implicit_operators, $unit_mode);
+    my $root = $p->parse($equation);
+    my $env = CalcEnv->new($unit_mode);
+    $env->setVariable("x", 1/2);
+    $env->setVariable("y", 1/3);
+    $env->setVariable("z", 1/7);
+    print "Maxima syntax: ".$root->toMaxima()."\n";
+    print "Value: ".$root->calc($env)->toString()."\n";
+\end{verbatim}
+
+
+\section{Equation syntax}\index{equation syntax}
+
+\subsection{Spaces}
+Spaces are always ignored.
+
+\subsection{Decimal separators and function parameter separators}
+By default, \texttt{","} and \texttt{"."} can be used as decimal separators.
+\texttt{";"} is used to separate function and vector/matrix parameters.
+
+Variables
+Variable names are used directly, without any special character before.
+
+\subsection{Constants}
+Constant names are used directly. LON-CAPA has a list of known constants.
+
+\subsection{Units}
+Unit names are used directly. LON-CAPA has a list of known units.
+
+\subsection{Parenthesis}
+Parenthesis can be used to specify evaluation order.
+
+\subsection{Complex numbers}
+Complex numbers are understood, and will be used in calculations.
+This means that \texttt{"i"} should never be used as a variable.
+
+\subsection{Operators}
+\begin{itemize}
+\item arithmetic: \texttt{+ - * / \^}
+\item factorial: \texttt{!}
+\item relational: \texttt{= \# < <= >= >}
+\item percent of a constant: \texttt{\%}
+Example: \texttt{2\%c = 2/100*c}
+\item units: \texttt{`}
+Example: \texttt{2`m + 3`m = 5`m}
+\end{itemize}
+
+\subsection{Implicit operators}
+\texttt{*} and \texttt{`} are implicit in LON-CAPA.
+The parser will try to guess which operator is missing whenever possible.
+The choice between \texttt{*} and \texttt{`} depends on the mode for interpreting equations.
+Example: \texttt{2c+3m/s} is understood in unit mode to be \texttt{2*c + 3`(m/s)}.
+In symbolic mode, it would be interpreted \texttt{2*c + (3*m)/s} (\texttt{m} and \texttt{s} being variables).
+
+\subsection{Vectors and matrices}
+Vectors and matrices are defined with square brackets. A matrix is made of a list of row vectors.
+\begin{itemize}
+\item vectors: \texttt{[1;2;3]}
+\item matrices: \texttt{[[1;2];[3,4;5,6]]}
+(remember the comma is a decimal separator)
+\end{itemize}
+
+\subsection{Functions}
+Functions use the syntax \texttt{f(a;b)}.
+\begin{itemize}
+\item basic:
+\begin{verbatim}
+    pow(x;y)=x^y, sqrt(x), abs(x), exp(x)=e^x, factorial(x)=x!,
+    ln(x), log(x)=ln(x), log10(x)=ln(x)/ln(10)
+\end{verbatim}
+\item less common functions:
+\begin{verbatim}
+    mod(x;y) (modulo), sgn(x) (sign of x), ceil(x) (ceiling), floor(x),
+    binomial(n;p)=n!/(p!*(n-p)!);
+\end{verbatim}
+\item requiring symbolic mode:
+\begin{verbatim}
+    sum(f(x);x;x1;x2), product(f(x);x;x1;x2)
+\end{verbatim}
+"i" cannot be used as a variable name because it can be confused with the imaginary number.
+Example: \texttt{sum(a\^2; a; 1; 5)}
+\item requiring a CAS like Maxima for calculation:
+\begin{verbatim}
+    diff(expr; x; n), integrate(expr; x; a; b), limit(expr; x; val; dir)
+\end{verbatim}
+The syntax is the same as Maxima.
+\item trigonometry:
+\begin{verbatim}
+sin(x), cos(x), tan(x), asin(x), acos(x), atan(x), atan2(x;y),
+sinh(x), cosh(x), tanh(x), asinh(x), acosh(x), atanh(x)
+\end{verbatim}
+\end{itemize}
