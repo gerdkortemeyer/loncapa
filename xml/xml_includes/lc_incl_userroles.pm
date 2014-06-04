@@ -188,7 +188,7 @@ sub incl_spreadsheet_finalize_items {
 # We need to pick up where we left off
             if (($content{'corrected_record_sheet'} eq $worksheet) &&
                 ($content{'corrected_record_row'} eq $row)) { 
-# Deal with it
+# Deal with it, evaluate corrections and enroll
 
 # Remember that we found it
                $found_corrected=1; 
@@ -200,7 +200,8 @@ sub incl_spreadsheet_finalize_items {
 # Gather all of the information we have about this user and see if we have enough to do the enrollment
 # If not, we need to ask
 # Username/domain?
-
+         my $username=$sheets->{$worksheet}->{'cells'}->{$row};
+         $output.="Record:".Dumper($username);
 # First, see if we already know this user
       }
    }
