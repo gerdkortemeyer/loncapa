@@ -77,7 +77,7 @@ window.addEventListener('load', function(e) {
             ta.parentNode.insertBefore(output_div, ta.nextSibling);
         else
             ta.parentNode.appendChild(output_div);
-        var accept_bad_syntax = (ta.getAttribute("data-accept_bad_syntax") === "true");
+        var implicit_operators = (ta.getAttribute("data-implicit_operators") === "true");
         var unit_mode = (ta.getAttribute("data-unit_mode") === "true");
         var constants = ta.getAttribute("data-constants");
         if (constants)
@@ -87,7 +87,7 @@ window.addEventListener('load', function(e) {
             "ta": ta,
             "output_div": output_div,
             "oldtxt": oldtxt,
-            "parser": new Parser(accept_bad_syntax, unit_mode, constants)
+            "parser": new Parser(implicit_operators, unit_mode, constants)
         };
         var changeObjectN = function(n) {
             return function(e) { handleChange(maxima_objects[n]); };

@@ -108,9 +108,9 @@ sub test {
 
 Apache::lc_ui_localize::set_language('en');
 # unit mode
-my $accept_bad_syntax = 1;
+my $implicit_operators = 1;
 my $unit_mode = 1;
-my $p = Parser->new($accept_bad_syntax, $unit_mode);
+my $p = Parser->new($implicit_operators, $unit_mode);
 my $env = CalcEnv->new($unit_mode);
 foreach my $s (keys %unit_mode_cases) {
     test($p, $env, $s, $unit_mode_cases{$s});
@@ -124,10 +124,10 @@ test($p, $env, "4 peck + 2 bushel", "106`L", "1%");
 
 # symbolic mode
 $unit_mode = 0;
-$p = Parser->new($accept_bad_syntax, $unit_mode);
+$p = Parser->new($implicit_operators, $unit_mode);
 $env = CalcEnv->new($unit_mode);
-$env->setVariable("x", "42");
-$env->setVariable("y", "2.3e-1");
+$env->setVariable("x", 42);
+$env->setVariable("y", 2.3e-1);
 foreach my $s (keys %symbolic_mode_cases) {
     test($p, $env, $s, $symbolic_mode_cases{$s});
 }

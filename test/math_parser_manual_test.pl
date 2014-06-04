@@ -18,14 +18,14 @@ use aliased 'Apache::math::math_parser::CalcEnv';
 
 
 Apache::lc_ui_localize::set_language('en');
-my $accept_bad_syntax = 1;
+my $implicit_operators = 1;
 my $unit_mode = 1;
 print "Expression: ";
 $_ = <STDIN>;
 chomp;
 my $eqtxt = $_;
 try {
-    my $p = Parser->new($accept_bad_syntax, $unit_mode);
+    my $p = Parser->new($implicit_operators, $unit_mode);
     my $root = $p->parse($eqtxt);
     print "Parsing: ".$root->toString()."\n\n";
     my $env = CalcEnv->new($unit_mode);

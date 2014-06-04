@@ -39,13 +39,13 @@ use aliased 'Apache::math::math_parser::Tokenizer';
 
 ##
 # Constructor
-# @optional {boolean} accept_bad_syntax - assume hidden multiplication operators in some cases (unlike maxima)
+# @optional {boolean} implicit_operators - assume hidden multiplication and unit operators in some cases (unlike maxima)
 # @optional {boolean} unit_mode - handle only numerical expressions with units (no variable)
 ##
 sub new {
     my $class = shift;
     my $self = {
-        _accept_bad_syntax => shift // 0,
+        _implicit_operators => shift // 0,
         _unit_mode => shift // 0,
         _defs => Definitions->new(),
     };
@@ -56,9 +56,9 @@ sub new {
 
 # Attribute helpers
 
-sub accept_bad_syntax {
+sub implicit_operators {
     my $self = shift;
-    return $self->{_accept_bad_syntax};
+    return $self->{_implicit_operators};
 }
 sub unit_mode {
     my $self = shift;
@@ -237,7 +237,7 @@ sub parse {
     if (scalar(@{$self->tokens}) == 0) {
         die ParseException->new("No token found");
     }
-    if ($self->accept_bad_syntax) {
+    if ($self->implicit_operators) {
         $self->addHiddenOperators();
     }
     $self->{_token_nr} = 0;
