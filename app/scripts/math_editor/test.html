@@ -2,29 +2,29 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Maxima editor test</title>
+    <title>Math editor test</title>
     <style>
         div.eqnbox { margin: 1em }
-        textarea.maxima { font-family: monospace; height: 3em; width: 100%; }
-        span.maxima-error { border: solid 1px red; min-width: 1px; }
+        textarea.math { font-family: monospace; height: 3em; width: 100%; }
+        span.math-error { border: solid 1px red; min-width: 1px; }
     </style>
 </head>
 <body>
     <p>Strict syntax, symbolic mode:</p>
     <div class="eqnbox">
-        <textarea class="maxima" spellcheck="false" autofocus="autofocus"></textarea>
+        <textarea class="math" spellcheck="false" autofocus="autofocus"></textarea>
     </div>
     <p>Strict syntax, unit mode (no variable):</p>
     <div class="eqnbox">
-        <textarea class="maxima" data-unit_mode="true" data-constants="c, pi, e, hbar, amu" spellcheck="false" autofocus="autofocus"></textarea>
+        <textarea class="math" data-unit_mode="true" data-constants="c, pi, e, hbar, amu" spellcheck="false" autofocus="autofocus"></textarea>
     </div>
     <p>Lax syntax, symbolic mode:</p>
     <div class="eqnbox">
-        <textarea class="maxima" data-implicit_operators="true" spellcheck="false" autofocus="autofocus"></textarea>
+        <textarea class="math" data-implicit_operators="true" spellcheck="false" autofocus="autofocus"></textarea>
     </div>
     <p>Lax syntax, unit mode:</p>
     <div class="eqnbox">
-        <textarea class="maxima" data-implicit_operators="true" data-unit_mode="true" data-constants="c, pi, e, hbar, amu" spellcheck="false" autofocus="autofocus"></textarea>
+        <textarea class="math" data-implicit_operators="true" data-unit_mode="true" data-constants="c, pi, e, hbar, amu" spellcheck="false" autofocus="autofocus"></textarea>
     </div>
     <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML"></script>
     <script src="src/definitions.js"></script>
