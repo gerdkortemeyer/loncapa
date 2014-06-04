@@ -178,8 +178,12 @@ sub incl_spreadsheet_finalize_items {
 # Keep moving through all sheets, in order, so we can pick up where we left off
    my $found_corrected=0;
    foreach my $worksheet (sort(keys(%{$sheets}))) {
+      my $minrow=$sheets->{$worksheet}->{'row_min'};
+      if ($content{'ignorefirstrow'}) {
+         $minrow++;
+      }
 # ... and all rows, each of them representing a user
-      foreach my $row ($sheets->{$worksheet}->{'row_min'} .. $sheets->{$worksheet}->{'row_max'}) {
+      foreach my $row ($minrow .. $sheets->{$worksheet}->{'row_max'}) {
          if (($content{'corrected_record'}) && (!$found_corrected)) {
 # We need to pick up where we left off
             if (($content{'corrected_record_sheet'} eq $worksheet) &&
