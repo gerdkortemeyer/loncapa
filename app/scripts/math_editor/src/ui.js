@@ -72,31 +72,33 @@ window.addEventListener('load', function(e) {
     var math_inputs = document.getElementsByClassName('math');
     for (var i=0; i<math_inputs.length; i++) {
         var ta = math_inputs[i];
-        var output_div = document.createElement("div");
-        if (ta.nextSibling)
-            ta.parentNode.insertBefore(output_div, ta.nextSibling);
-        else
-            ta.parentNode.appendChild(output_div);
-        var implicit_operators = (ta.getAttribute("data-implicit_operators") === "true");
-        var unit_mode = (ta.getAttribute("data-unit_mode") === "true");
-        var constants = ta.getAttribute("data-constants");
-        if (constants)
-            constants = constants.split(/[\s,]+/);
-        var oldtxt = "";
-        math_objects[i] = {
-            "ta": ta,
-            "output_div": output_div,
-            "oldtxt": oldtxt,
-            "parser": new Parser(implicit_operators, unit_mode, constants)
-        };
-        var changeObjectN = function(n) {
-            return function(e) { handleChange(math_objects[n]); };
+        if (ta.nodeName == "TEXTAREA" || ta.nodeName == "INPUT") {
+            var output_div = document.createElement("div");
+            if (ta.nextSibling)
+                ta.parentNode.insertBefore(output_div, ta.nextSibling);
+            else
+                ta.parentNode.appendChild(output_div);
+            var implicit_operators = (ta.getAttribute("data-implicit_operators") === "true");
+            var unit_mode = (ta.getAttribute("data-unit_mode") === "true");
+            var constants = ta.getAttribute("data-constants");
+            if (constants)
+                constants = constants.split(/[\s,]+/);
+            var oldtxt = "";
+            math_objects[i] = {
+                "ta": ta,
+                "output_div": output_div,
+                "oldtxt": oldtxt,
+                "parser": new Parser(implicit_operators, unit_mode, constants)
+            };
+            var changeObjectN = function(n) {
+                return function(e) { handleChange(math_objects[n]); };
+            }
+            var startChange = changeObjectN(i);
+            if (ta.value != oldtxt)
+                startChange();
+            ta.addEventListener('change', startChange , false);
+            ta.addEventListener('keyup', startChange , false);
         }
-        var startChange = changeObjectN(i);
-        if (ta.value != oldtxt)
-            startChange();
-        ta.addEventListener('change', startChange , false);
-        ta.addEventListener('keyup', startChange , false);
     }
     
 }, false);
