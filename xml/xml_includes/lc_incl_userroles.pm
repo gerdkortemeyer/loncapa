@@ -61,7 +61,7 @@ sub incl_spreadsheet_finalize_items {
              ($content{$key} eq 'userpid') ||
              ($content{$key} eq 'useremail')) {
             ($associations->{'record'}->{'username'}->{'sheet'},
-             $associations->{'record'}{'username'}->{'column'})=&sheet_column($key);
+             $associations->{'record'}->{'username'}->{'column'})=&sheet_column($key);
          }
          if ($content{$key} eq 'firstname') {
             ($associations->{'record'}->{'name'}->{'firstname'}->{'sheet'},
@@ -200,8 +200,16 @@ sub incl_spreadsheet_finalize_items {
 # Gather all of the information we have about this user and see if we have enough to do the enrollment
 # If not, we need to ask
 # Username/domain?
-         my $username=$sheets->{$worksheet}->{'cells'}->{$row};
-         $output.="Record:".Dumper($username);
+         my $username=
+              $sheets->{$worksheet}->{'cells'}->{$row}->{$associations->{'record'}->{'username'}->{'column'}}->{'unformatted'};
+         my $domain;
+         if ($associations->{'record'}->{'domain'}->{'mode'} eq 'default') {
+            $domain=$associations->{'record'}->{'domain'}->{'default'};
+         } else {
+            $domain=$sheets->{$worksheet}->{'cells'}->{$row}->{$associations->{'record'}->{'domain'}->{'column'}}->{'unformatted'};
+         }
+# Try to load profile
+         $output.="<br />Record: $username domain $domain";
 # First, see if we already know this user
       }
    }
