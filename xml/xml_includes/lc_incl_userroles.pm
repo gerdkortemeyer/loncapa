@@ -23,6 +23,7 @@ use Apache::lc_json_utils();
 use Apache::lc_file_utils();
 use Apache::lc_xml_utils();
 use Apache::lc_xml_forms();
+use Apache::lc_entity_users();
 use Apache2::Const qw(:common);
 
 
@@ -208,8 +209,10 @@ sub incl_spreadsheet_finalize_items {
          } else {
             $domain=$sheets->{$worksheet}->{'cells'}->{$row}->{$associations->{'record'}->{'domain'}->{'column'}}->{'unformatted'};
          }
-# Try to load profile
-         $output.="<br />Record: $username domain $domain";
+         unless (($username) && ($domain)) { next; }
+# Try to determine entity to see if username exists
+         my $entity=&Apache::lc_entity_users::username_to_entity($username,$domain);
+         $output.="<br />Record: $username domain $domain entity $entity";
 # First, see if we already know this user
       }
    }
