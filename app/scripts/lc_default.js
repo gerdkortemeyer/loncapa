@@ -23,7 +23,7 @@ function display_modal(newuri) {
                       width: '400px',
                       height: '300px',
                       backgroundColor: '#ffffff',
-                      'border-radius': '10px',
+                      'border-radius': '10px'
                       }
                  });
     $("#lcmodal").focus();
