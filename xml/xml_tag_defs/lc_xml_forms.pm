@@ -109,16 +109,23 @@ sub start_lcforminput_html {
 
 sub start_lcformtrigger_html {
    my ($p,$safe,$stack,$token)=@_;
-   return '<span class="lcformtrigger"><a href="#" id="'.$token->[2]->{'id'}.'">'.
-          &mt($token->[2]->{'description'}).'</a></span>';
+   return &triggerbutton($token->[2]->{'id'},$token->[2]->{'description'});
+}
+
+sub triggerbutton {
+   my ($id,$text)=@_;
+   return '<span class="lcformtrigger"><a href="#" id="'.$id.'">'.&mt($text).'</a></span>';
 }
 
 sub start_lcformcancel_html {
    my ($p,$safe,$stack,$token)=@_;
-   return '<span class="lcformcancel"><a href="#" id="'.$token->[2]->{'id'}.'">'.
-          &mt('Cancel').'</a></span>';
+   return &cancelbutton($token->[2]->{'id'},'Cancel');
 }
 
+sub cancelbutton {
+   my ($id,$text)=@_;
+   return '<span class="lcformcancel"><a href="#" id="'.$id.'">'.&mt($text).'</a></span>';
+}
 
 # === Generate a single input field
 

@@ -130,6 +130,10 @@ use utf8;
 
 'Store' => 'Speichern',
 
+'Skip' => 'Überspringen',
+
+'Continue' => 'Weiter',
+
 'Language' => 'Sprache',
 
 'German' => 'Deutsch',

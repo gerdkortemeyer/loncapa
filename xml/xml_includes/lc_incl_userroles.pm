@@ -50,15 +50,10 @@ sub incl_spreadsheet_finalize_items {
 # Who are we?
    my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
 # See what we all learned
-   my $associations==&Apache::lc_json_utils::json_to_perl(
-                &Apache::lc_file_utils::readfile(
-                   &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/uploaded_spreadsheet_associations.json')));
-
-   my $output="Assoc: <pre>".Dumper($associations)."</pre>\n";
-# See if we can learn anything new
+   my $associations;
 # If we are getting fresh information, we need to flush old associations
    if ($content{'flush_associations'}) {
-      $associations->{'record'}=undef;
+      $associations=undef;
       foreach my $key (keys(%content)) {
          if (($content{$key} eq 'username') ||
              ($content{$key} eq 'userpid') ||
@@ -172,9 +167,13 @@ sub incl_spreadsheet_finalize_items {
                  $content{'defaultenddate_time_zone'});
          $associations->{'record'}->{'enddate'}->{'mode'}='default';
       }
+   } else {
+# Load the old stuff
+      $associations=&Apache::lc_json_utils::json_to_perl(
+                &Apache::lc_file_utils::readfile(
+                   &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/uploaded_spreadsheet_associations.json')));
    }
-   my $output.="Assoc now: <pre>".Dumper($associations)."</pre>\n";
-
+# Load the spreadsheet itself
    my $sheets=&Apache::lc_json_utils::json_to_perl(
                 &Apache::lc_file_utils::readfile(
                    &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/uploaded_spreadsheet.json')));
@@ -186,7 +185,9 @@ sub incl_spreadsheet_finalize_items {
          $minrow++;
       }
 # ... and all rows, each of them representing a user
+# This is the big loop going through all users
       foreach my $row ($minrow .. $sheets->{$worksheet}->{'row_max'}) {
+         my $output='';
          if (($content{'corrected_record'}) && (!$found_corrected)) {
 # We need to pick up where we left off
             if (($content{'corrected_record_sheet'} eq $worksheet) &&
@@ -221,32 +222,33 @@ sub incl_spreadsheet_finalize_items {
             $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
             $roles=&Apache::lc_entity_roles::dump_roles($entity,$domain);
          }
+#FIXME: debug
          $output.="<br />Record: $username domain $domain entity $entity <pre>".Dumper($profile)."\n".Dumper($roles)."</pre>";
-# First, see if we already know this user
+# Flags if fixups are needed
+         my $fixup_flag=0;
+# Build the output, even if we might not need it
+         $output.='<h3>'.join(' ',$profile->{'firstname'},$profile->{'middlename'},$profile->{'lastname'},$profile->{'suffix'}).'</h3>';
+#FIXME: debug
+         if ($entity) { $fixup_flag=1; }
+         if ($fixup_flag) {
+# Wow, there is a problem, we need to ask the user
+# Okay, remember where we were, and we are out of here
+            $output.=&Apache::lc_xml_forms::hidden_field('corrected_record_sheet',$worksheet).
+                     &Apache::lc_xml_forms::hidden_field('corrected_record_row',$row);
+            $output.='<br />'.
+                     &Apache::lc_xml_forms::cancelbutton('cancel','Cancel').'&nbsp;'.
+                     &Apache::lc_xml_forms::cancelbutton('skip','Skip').'&nbsp;'.
+                     &Apache::lc_xml_forms::triggerbutton('continue','Continue');
+            return $output;
+         } else {
+# Cool, we have everything we need, let's store and then more on
+#FIXME           &store_record($username,$domain,$newroles,$newprofile); 
+         }
       }
    }
-   return $output;
-
-
-#      $output.="\n<tr><td><pre>";
-#      my $found=0;
-#      foreach my $row ($sheets->{$worksheet}->{'row_min'} .. $sheets->{$worksheet}->{'row_max'}) {
-#         if ($sheets->{$worksheet}->{'cells'}->{$row}->{$col}->{'value'}) {
-#            $output.=$sheets->{$worksheet}->{'cells'}->{$row}->{$col}->{'value'}."\n";
-#            $found++;
-#         }
-#         if ($found>5) { last; }
-#      }
-#      $output.="</pre></td><td>\n";
-#      my $default='nothing';
-#      my $id=&Apache::lc_xml_utils::form_escape($worksheet.'c'.$col);
-#      if ($screen_form_defaults->{$id}) {
-#         $default=$screen_form_defaults->{$id};
-#      }
-#      $output.=&selectfield($id,$id,$values,$choices,$default,$stack->{'tags'}->[-1]->{'args'}->{'verify'});
-#      $output.="</td></tr>";
-#   #}
-#   $output.='</tbody></table>';
+# Successfully finished everything!
+# FIXME: better output
+   return "<h1>Okay!</h1>";
 }
 
 sub handler {

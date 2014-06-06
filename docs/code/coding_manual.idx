@@ -35,33 +35,33 @@
 \indexentry{MongoDB}{16}
 \indexentry{roles}{17}
 \indexentry{realms}{17}
-\indexentry{PostgreSQL}{19}
-\indexentry{MongoDB}{19}
-\indexentry{homeserver}{19}
-\indexentry{users}{19}
-\indexentry{courses}{19}
-\indexentry{usernames}{19}
-\indexentry{PIDs}{19}
-\indexentry{course IDs}{20}
-\indexentry{homeserver}{20}
-\indexentry{roles}{20}
-\indexentry{assessments}{21}
-\indexentry{memcached}{21}
-\indexentry{caching}{21}
+\indexentry{PostgreSQL}{21}
+\indexentry{MongoDB}{21}
 \indexentry{homeserver}{21}
-\indexentry{replication}{21}
-\indexentry{versions}{21}
-\indexentry{assets}{21}
-\indexentry{XML parser}{23}
-\indexentry{problems}{23}
-\indexentry{HTML pages}{23}
-\indexentry{safeeval}{24}
-\indexentry{internationalization}{25}
-\indexentry{encoding}{25}
-\indexentry{unicode}{25}
-\indexentry{utf-8}{25}
-\indexentry{roles}{26}
-\indexentry{math}{29}
-\indexentry{equation editor}{29}
-\indexentry{equation parser}{30}
-\indexentry{equation syntax}{31}
+\indexentry{users}{21}
+\indexentry{courses}{21}
+\indexentry{usernames}{21}
+\indexentry{PIDs}{21}
+\indexentry{course IDs}{22}
+\indexentry{homeserver}{22}
+\indexentry{roles}{22}
+\indexentry{assessments}{23}
+\indexentry{memcached}{23}
+\indexentry{caching}{23}
+\indexentry{homeserver}{23}
+\indexentry{replication}{23}
+\indexentry{versions}{23}
+\indexentry{assets}{23}
+\indexentry{XML parser}{25}
+\indexentry{problems}{25}
+\indexentry{HTML pages}{25}
+\indexentry{safeeval}{26}
+\indexentry{internationalization}{27}
+\indexentry{encoding}{27}
+\indexentry{unicode}{27}
+\indexentry{utf-8}{27}
+\indexentry{roles}{28}
+\indexentry{math}{31}
+\indexentry{equation editor}{31}
+\indexentry{equation parser}{32}
+\indexentry{equation syntax}{33}

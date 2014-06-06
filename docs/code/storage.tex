@@ -71,8 +71,8 @@ domain text not null,
 homeserver text not null,
 primary key (entity,domain))
 \end{verbatim}
-\subsubsection{Roles}\index{roles}
-This is for looking up who has certain roles. It is not the authoritative version.
+\subsubsection{Roles}\index{roles}\label{rolelookup}
+This is for looking up who has certain roles. It is not the authoritative version, the authoritative record is stored with the user (see Section~\ref{rolerecord} on page~\pageref{rolerecord}).
 \begin{verbatim}
 #
 # The role table

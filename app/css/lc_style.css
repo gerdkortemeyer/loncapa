@@ -3,6 +3,16 @@ h1 {
    color: #30a097;
 }
 
+h2 {
+   font-family: sans-serif;
+   color: #30a097;
+}
+
+h3 {
+   font-family: sans-serif;
+   color: #30a097;
+}
+
 .hidden {
    position:absolute;
    left:-10000px;
