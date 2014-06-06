@@ -24,6 +24,8 @@ use Apache::lc_file_utils();
 use Apache::lc_xml_utils();
 use Apache::lc_xml_forms();
 use Apache::lc_entity_users();
+use Apache::lc_entity_roles();
+use Apache::lc_entity_profile();
 use Apache2::Const qw(:common);
 
 
@@ -212,7 +214,14 @@ sub incl_spreadsheet_finalize_items {
          unless (($username) && ($domain)) { next; }
 # Try to determine entity to see if username exists
          my $entity=&Apache::lc_entity_users::username_to_entity($username,$domain);
-         $output.="<br />Record: $username domain $domain entity $entity";
+# Load roles and profiles, if existing
+         my $profile=undef;
+         my $roles=undef;
+         if ($entity) {
+            $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
+            $roles=&Apache::lc_entity_roles::dump_roles($entity,$domain);
+         }
+         $output.="<br />Record: $username domain $domain entity $entity <pre>".Dumper($profile)."\n".Dumper($roles)."</pre>";
 # First, see if we already know this user
       }
    }
