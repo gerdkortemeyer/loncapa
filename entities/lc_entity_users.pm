@@ -29,6 +29,7 @@ use Apache::lc_memcached();
 use Apache::lc_date_utils();
 use Apache::lc_dispatcher();
 use Apache::lc_date_utils();
+use Apache::lc_entity_namespace();
 
 use Apache2::Const qw(:common :http);
 
@@ -159,13 +160,13 @@ sub assign_pid {
 
 sub set_screen_form_defaults {
    my ($entity,$domain,$screen,$defaults)=@_;
-   return &Apache::lc_entity_profile::modify_profile($entity,$domain,{ screen_form_defaults => { $screen => $defaults }});
+   return &Apache::lc_entity_namespace::modify_namespace($entity,$domain,'screen_form_defaults',{ $screen => $defaults });
 }
 
 sub screen_form_defaults {
    my ($entity,$domain,$screen)=@_;
-   my $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
-   return $profile->{'screen_form_defaults'}->{$screen};
+   my $screen_defaults=&Apache::lc_entity_namespace::dump_namespace($entity,$domain,'screen_form_defaults');
+   return $screen_defaults->{$screen};
 }
 
 # ================================================================
