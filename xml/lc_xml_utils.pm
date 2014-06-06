@@ -36,6 +36,16 @@ sub problem_message {
    return '<span class="lcproblem">'.&mt($message).'</span>';
 }
 
+sub standard_message {
+   my ($message)=@_;
+   return '<span class="lcstandard">'.&mt($message).'</span>';
+}
+
+sub success_message {
+   my ($message)=@_;
+   return '<span class="lcsuccess">'.&mt($message).'</span>';
+}
+
 # Escape characters for use in a web form or query string
 #
 sub form_escape {

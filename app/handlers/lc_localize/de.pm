@@ -134,6 +134,8 @@ use utf8;
 
 'Continue' => 'Weiter',
 
+'Upload complete.' => 'Hochladen beendet.',
+
 'Language' => 'Sprache',
 
 'German' => 'Deutsch',
