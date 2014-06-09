@@ -187,9 +187,9 @@ sub math_editor {
       $name=$id;
    }
    my $output='<div class="eqnbox">';
-   $output.='<textarea id="'.$id.'" name="'.$name.'" data-accept_bad_syntax="true" spellcheck="false" class="math"';
+   $output.='<textarea id="'.$id.'" name="'.$name.'" data-implicit_operators="true" spellcheck="false" class="math"';
    if ($mode eq 'numeric') {
-      $output.=' data-constants="c, pi, e, hbar, amu" data-unit_mode="true"';
+      $output.=' data-constants="c, pi, e, hbar, amu, G" data-unit_mode="true"';
    }
    $output.='>'.$default.'</textarea></div>';
    return $output;

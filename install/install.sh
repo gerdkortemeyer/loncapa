@@ -49,9 +49,9 @@ if [ ! -d /home/httpd/html/scripts/mathjax ]; then
    unzip app/scripts/v2.3-latest -d /home/httpd/html/scripts
    mv /home/httpd/html/scripts/mathjax* /home/httpd/html/scripts/mathjax 
 fi
-if [ ! -d /home/httpd/html/scripts/ckeditor ]; then
+#if [ ! -d /home/httpd/html/scripts/ckeditor ]; then
    unzip app/scripts/ckeditor.zip -d /home/httpd/html/scripts
-fi
+#fi
 if [ ! -d /home/httpd/html/scripts/datepick ]; then
    unzip app/scripts/datepick.zip -d /home/httpd/html/scripts/datepick
 fi
