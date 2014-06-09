@@ -19,6 +19,9 @@
 package Apache::lc_xml_forms;
 
 use strict;
+use Apache::lc_file_utils;
+use Apache::lc_json_utils;
+use Apache::lc_parameters;
 use Apache::lc_ui_localize;
 use Apache::lc_ui_utils;
 use Apache::lc_date_utils;
@@ -179,7 +182,7 @@ sub inputfield {
    }
 }
 
-# ==== Bring up a MAXIMA editor field
+# ==== Bring up a math editor field
 # 
 sub math_editor {
    my ($id,$name,$mode,$default)=@_;
@@ -189,7 +192,9 @@ sub math_editor {
    my $output='<div class="eqnbox">';
    $output.='<textarea id="'.$id.'" name="'.$name.'" data-implicit_operators="true" spellcheck="false" class="math"';
    if ($mode eq 'numeric') {
-      $output.=' data-constants="c, pi, e, hbar, amu, G" data-unit_mode="true"';
+      my $constants_txt = Apache::lc_file_utils::readfile(Apache::lc_parameters::lc_conf_dir()."constants.json");
+      my $constants = Apache::lc_json_utils::json_to_perl($constants_txt);
+      $output.=' data-constants="'.join(',', keys %{$constants}).'" data-unit_mode="true"';
    }
    $output.='>'.$default.'</textarea></div>';
    return $output;
