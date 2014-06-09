@@ -50,7 +50,7 @@ sub start_head_html {
 <script src="/scripts/math_editor.min.js"></script>
 <script>
     window.addEventListener('load', function(e) {
-        LCMATH.init_editors();
+        LCMATH.initEditors();
     }, false);
 </script>
 <script src="/scripts/lc_file_upload.js"></script>
