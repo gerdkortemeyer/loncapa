@@ -391,6 +391,289 @@ sub toMaxima {
 }
 
 ##
+# Returns the equation as a string with the TeX syntax.
+# @returns {string}
+##
+sub toTeX {
+    my ( $self ) = @_;
+    
+    given ($self->type) {
+        when (UNKNOWN) {
+            die CalcException->new("Unknown node type: [_1]", $self->value);
+        }
+        when (NAME) {
+            my $name = $self->value;
+            if ($name =~ /^([a-zA-Z]+)([0-9]+)$/) {
+                return($1."_{".$2."}");
+            }
+            my @greek = (
+                "alpha", "beta", "gamma", "delta", "epsilon", "zeta",
+                "eta", "theta", "iota", "kappa", "lambda", "mu",
+                "nu", "xi", "omicron", "pi", "rho", "sigma",
+                "tau", "upsilon", "phi", "chi", "psi", "omega",
+                "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta",
+                "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu",
+                "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma",
+                "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega",
+            );
+            if ($name ~~ @greek) {
+                return('\\'.$name);
+            } elsif ($name eq "hbar") {
+                return("\\hbar");
+            } elsif ($name eq "inf") {
+                return("\\infty");
+            } elsif ($name eq "minf") {
+                return("-\\infty");
+            } else {
+                return($name);
+            }
+        }
+        when (NUMBER) {
+            return $self->value;
+        }
+        when (OPERATOR) {
+            my @children = @{$self->children};
+            my $c0 = $children[0];
+            my $c1 = $children[1];
+            given ($self->value) {
+                when ("+") {
+                    # should we add parenthesis ? We need to check if there is a '-' to the left of c1
+                    my $par = 0;
+                    my $first = $c1;
+                    while ($first->type == OPERATOR) {
+                        if ($first->value eq "-" && scalar(@{$first->children}) == 1) {
+                            $par = 1;
+                            last;
+                        } elsif ($first->value eq "+" || $first->value eq "-" || $first->value eq "*") {
+                            $first = $first->children->[0];
+                        } else {
+                            last;
+                        }
+                    }
+                    my $s = $c0->toTeX()." + ".$c1->toTeX();
+                    if ($par) {
+                        $s = "(".$s.")";
+                    }
+                    return $s;
+                }
+                when ("-") {
+                    if (!defined $c1) {
+                        return("-".$c0->toTeX());
+                    } else {
+                        my $s = $c0->toTeX()." - ";
+                        my $par = ($c1->type == OPERATOR &&
+                            ($c1->value eq "+" || $c1->value eq "-"));
+                        if ($par) {
+                            $s .= "(".$c1->toTeX().")";
+                        } else {
+                            $s .= $c1->toTeX();
+                        }
+                        return $s;
+                    }
+                }
+                when ("*") {
+                    my $par = ($c0->type == OPERATOR && ($c0->value eq "+" || $c0->value eq "-"));
+                    my $s = $c0->toTeX();
+                    if ($par) {
+                        $s = "(".$s.")";
+                    }
+                    # should the x operator be visible ? We need to check if there is a number to the left of c1
+                    my $firstinc1 = $c1;
+                    while ($firstinc1->type == OPERATOR) {
+                        $firstinc1 = $firstinc1->children->[0];
+                    }
+                    # ... and if it's an operation between vectors/matrices, the * operator should be displayed
+                    # (it is ambiguous otherwise)
+                    # note: this will not work if the matrix is calculated, for instance with 2[1;2]*[3;4]
+                    if ($c0->type == VECTOR && $c1->type == VECTOR) {
+                        $s .= " * ";
+                    } elsif ($firstinc1->type == NUMBER) {
+                        $s .= " \\times ";
+                    } else {
+                        $s .= " ";
+                    }
+                    $par = ($c1->type == OPERATOR && ($c1->value eq "+" || $c1->value eq "-"));
+                    if ($par) {
+                        $s .= "(".$c1->toTeX().")";
+                    } else {
+                        $s .= $c1->toTeX();
+                    }
+                    return $s;
+                }
+                when ("/") {
+                    return("cfrac{".$c0->toTeX()."}{".$c1->toTeX()."}");
+                }
+                when ("^") {
+                    my $par;
+                    if ($c0->type == FUNCTION) {
+                        if ($c0->value eq "sqrt" || $c0->value eq "abs" || $c0->value eq "matrix" ||
+                                $c0->value eq "diff") {
+                            $par = 0;
+                        } else {
+                            $par = 1;
+                        }
+                    } elsif ($c0->type == OPERATOR) {
+                        $par = 1;
+                    } else {
+                        $par = 0;
+                    }
+                    if ($par) {
+                        return("(".$c0->toTeX().")^{".$c1->toTeX()."}");
+                    } else {
+                        return($c0->toTeX()."^{".$c1->toTeX()."}");
+                    }
+                }
+                when ("!") {
+                    return($c0->toTeX()." !");
+                }
+                when ("%") {
+                    return($c0->toTeX()." \\% ".$c1->toTeX());
+                }
+                when (".") {
+                    # scalar product for vectors, multiplication for matrices
+                    my $par = ($c0->type == OPERATOR && ($c0->value eq "+" || $c0->value eq "-"));
+                    my $s = $c0->toTeX();
+                    if ($par) {
+                        $s = "(".$s.")";
+                    }
+                    $s .= " \\cdot ";
+                    $par = ($c1->type == OPERATOR && ($c1->value eq "+" || $c1->value eq "-"));
+                    if ($par) {
+                        $s .= "(".$c1->toTeX().")";
+                    } else {
+                        $s .= $c1->toTeX();
+                    }
+                    return $s;
+                }
+                when ("`") {
+                    return($c0->toTeX()." \\textrm{".$c1->toTeX()."}");
+                }
+                when ("=") {
+                    return($c0->toTeX()." = ".$c1->toTeX());
+                }
+                when ("#") {
+                    return($c0->toTeX()." \\not ".$c1->toTeX());
+                }
+                when ("<") {
+                    return($c0->toTeX()." < ".$c1->toTeX());
+                }
+                when (">") {
+                    return($c0->toTeX()." > ".$c1->toTeX());
+                }
+                when ("<=") {
+                    return($c0->toTeX()." \\leq ".$c1->toTeX());
+                }
+                when (">=") {
+                    return($c0->toTeX()." \\geq ".$c1->toTeX());
+                }
+                default {
+                    die CalcException->new("Unknown operator: [_1]", $self->value);
+                }
+            }
+        }
+        when (FUNCTION) {
+            my @children = @{$self->children};
+            my $fname = $children[0]->value;
+            my $c1 = $children[1];
+            my $c2 = $children[2];
+            my $c3 = $children[3];
+            my $c4 = $children[4];
+            
+            given ($fname) {
+                when ("sqrt") {   return "\\sqrt{".$c1->toTeX()."}"; }
+                when ("abs") {    return "|".$c1->toTeX()."|"; }
+                when ("exp") {    return "\\mathrm{e}^{".$c1->toTeX()."}"; }
+                when ("diff") {
+                    if (scalar(@children) == 3) {
+                        return "\\frac{d}{d".$c2->toTeX()."} ".$c1->toTeX();
+                    } else {
+                        return "\\frac{d^{".$c3->toTeX()."}}{d ".$c2->toTeX().
+                            "^{".$c3->toTeX()."}} ".$c1->toTeX();
+                    }
+                }
+                when ("integrate") {
+                    if (scalar(@children) == 3) {
+                        return "\\int ".$c1->toTeX()." \\ d ".$c2->toTeX();
+                    } else {
+                        return "\\int_{".$c3->toTeX()."}^{".$c4->toTeX()."} ".
+                            $c1->toTeX()." \\ d ".$c2->toTeX();
+                    }
+                }
+                when ("sum") {
+                    return "\\sum_{".$c2->toTeX()."=".$c3->toTeX().
+                        "}^{".$c4->toTeX()."} ".$c1->toTeX();
+                }
+                when ("product") {
+                    return "\\prod_{".$c2->toTeX()."=".$c3->toTeX().
+                        "}^{".$c4->toTeX()."} ".$c1->toTeX();
+                }
+                when ("limit") {
+                    if (scalar(@children) < 4) {
+                        return "\\lim ".$c1->toTeX();
+                    } elsif (scalar(@children) == 4) {
+                        return "\\lim_{".$c2->toTeX()." \\to ".$c3->toTeX().
+                        "}".$c1->toTeX();
+                    } else {
+                        return "\\lim_{".$c2->toTeX()." \\to ".$c3->toTeX().
+                        (($c4->value eq "plus") ? "+" : "-").
+                        "}".$c1->toTeX();
+                    }
+                }
+                when ("binomial") {
+                    return "\\binom{".$c1->toTeX()."}{".$c2->toTeX()."}";
+                }
+                when ("sin") {     return "\\sin ".$c1->toTeX(); }
+                when ("cos") {     return "\\cos ".$c1->toTeX(); }
+                when ("tan") {     return "\\tan ".$c1->toTeX(); }
+                when ("asin") {    return "\\arcsin ".$c1->toTeX(); }
+                when ("acos") {    return "\\arccos ".$c1->toTeX(); }
+                when ("atan") {    return "\\arctan ".$c1->toTeX(); }
+                when ("sinh") {    return "\\sinh ".$c1->toTeX(); }
+                when ("cosh") {    return "\\cosh ".$c1->toTeX(); }
+                when ("tanh") {    return "\\tanh ".$c1->toTeX(); }
+                default {
+                    my $s = $fname."(";
+                    for (my $i=1; $i<scalar(@children); $i++) {
+                        if ($i != 1) {
+                            $s .= ", ";
+                        }
+                        $s .= $children[$i]->toTeX();
+                    }
+                    $s .= ")";
+                    return($s);
+                }
+            }
+        }
+        when (VECTOR) {
+            my @children = @{$self->children};
+            my $s = "\\begin{pmatrix}";
+            for (my $i=0; $i<scalar(@children); $i++) {
+                if ($i != 0) {
+                    $s .= " \\\\ ";
+                }
+                if ($children[0]->type == VECTOR) {
+                    # matrix
+                    for (my $j=0; $j<scalar(@{$children[$i]->children}); $j++) {
+                        if ($j != 0) {
+                            $s .= " & ";
+                        }
+                        $s .= $children[$i]->children->[$j]->toTeX();
+                    }
+                } else {
+                    # vector
+                    $s .= $children[$i]->toTeX();
+                }
+            }
+            $s .= "\\end{pmatrix}";
+            return($s);
+        }
+        when (SUBSCRIPT) {
+            my @children = @{$self->children};
+            return($children[0]->toTeX()."_{".$children[1]->toTeX()."}");
+        }
+    }
+}
+##
 # Creates a vector or a matrix with this node
 # @param {CalcEnv} env - Calculation environment.
 # @returns {QVector|QMatrix}

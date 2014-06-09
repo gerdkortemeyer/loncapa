@@ -29,6 +29,7 @@ try {
     my $root = $p->parse($eqtxt);
     print "Parsing: ".$root->toString()."\n\n";
     my $env = CalcEnv->new($unit_mode);
+    print "TeX syntax: ".$root->toTeX()."\n";
     print "Maxima syntax: ".$root->toMaxima()."\n";
     print "Value: ".$root->calc($env)->toString()."\n";
 } catch {
