@@ -52,52 +52,56 @@
 \contentsline {subsection}{\numberline {5.5.1}Profiles and metadata}{16}
 \contentsline {chapter}{\numberline {6}Authorization}{17}
 \contentsline {section}{\numberline {6.1}Roles}{17}
-\contentsline {chapter}{\numberline {7}Storage}{19}
-\contentsline {section}{\numberline {7.1}Databases}{19}
-\contentsline {subsection}{\numberline {7.1.1}PostgreSQL tables}{19}
-\contentsline {subsubsection}{URL table}{19}
-\contentsline {subsubsection}{User table}{19}
-\contentsline {subsubsection}{PID table}{19}
-\contentsline {subsubsection}{Course ID table}{20}
-\contentsline {subsubsection}{Homeserver table}{20}
-\contentsline {subsubsection}{Roles}{20}
-\contentsline {subsubsection}{Assessment table}{21}
-\contentsline {section}{\numberline {7.2}Caching}{21}
-\contentsline {section}{\numberline {7.3}File system}{21}
-\contentsline {section}{\numberline {7.4}Programmatic access}{21}
-\contentsline {chapter}{\numberline {8}XML Parser}{23}
-\contentsline {section}{\numberline {8.1}Invocation}{23}
-\contentsline {section}{\numberline {8.2}Tag types}{23}
-\contentsline {section}{\numberline {8.3}Stacks and safeeval}{24}
-\contentsline {chapter}{\numberline {9}Internationalization}{25}
-\contentsline {section}{\numberline {9.1}Encoding}{25}
-\contentsline {section}{\numberline {9.2}Maketext}{25}
-\contentsline {section}{\numberline {9.3}Invocation in documents}{26}
-\contentsline {section}{\numberline {9.4}Invocation from Perl}{26}
-\contentsline {section}{\numberline {9.5}Internal codes}{26}
-\contentsline {section}{\numberline {9.6}Special cases}{26}
-\contentsline {subsection}{\numberline {9.6.1}JavaScript configuration files}{26}
-\contentsline {subsection}{\numberline {9.6.2}Loading locatilization files}{27}
-\contentsline {chapter}{\numberline {10}Math editor, parser and equation syntax}{29}
-\contentsline {section}{\numberline {10.1}Introduction}{29}
-\contentsline {section}{\numberline {10.2}A new user interface}{29}
-\contentsline {subsection}{\numberline {10.2.1}Usage}{30}
-\contentsline {section}{\numberline {10.3}The server-side parser}{30}
-\contentsline {subsection}{\numberline {10.3.1}Usage}{30}
-\contentsline {subsection}{\numberline {10.3.2}Calculation environment}{30}
-\contentsline {subsection}{\numberline {10.3.3}Conversion to Maxima syntax}{30}
-\contentsline {subsection}{\numberline {10.3.4}Catching errors}{30}
-\contentsline {subsection}{\numberline {10.3.5}Example with unit node}{30}
-\contentsline {subsection}{\numberline {10.3.6}Example with symbolic node}{30}
-\contentsline {section}{\numberline {10.4}Equation syntax}{31}
-\contentsline {subsection}{\numberline {10.4.1}Spaces}{31}
-\contentsline {subsection}{\numberline {10.4.2}Decimal separators and function parameter separators}{31}
-\contentsline {subsection}{\numberline {10.4.3}Constants}{31}
-\contentsline {subsection}{\numberline {10.4.4}Units}{31}
-\contentsline {subsection}{\numberline {10.4.5}Parenthesis}{31}
-\contentsline {subsection}{\numberline {10.4.6}Complex numbers}{31}
-\contentsline {subsection}{\numberline {10.4.7}Operators}{31}
-\contentsline {subsection}{\numberline {10.4.8}Implicit operators}{31}
-\contentsline {subsection}{\numberline {10.4.9}Vectors and matrices}{31}
-\contentsline {subsection}{\numberline {10.4.10}Functions}{32}
-\contentsline {chapter}{\numberline {11}Glossary}{33}
+\contentsline {subsection}{\numberline {6.1.1}Role definition}{17}
+\contentsline {subsection}{\numberline {6.1.2}Role storage}{18}
+\contentsline {subsubsection}{With user}{18}
+\contentsline {subsubsection}{With domain or system}{20}
+\contentsline {chapter}{\numberline {7}Storage}{21}
+\contentsline {section}{\numberline {7.1}Databases}{21}
+\contentsline {subsection}{\numberline {7.1.1}PostgreSQL tables}{21}
+\contentsline {subsubsection}{URL table}{21}
+\contentsline {subsubsection}{User table}{21}
+\contentsline {subsubsection}{PID table}{21}
+\contentsline {subsubsection}{Course ID table}{22}
+\contentsline {subsubsection}{Homeserver table}{22}
+\contentsline {subsubsection}{Roles}{22}
+\contentsline {subsubsection}{Assessment table}{23}
+\contentsline {section}{\numberline {7.2}Caching}{23}
+\contentsline {section}{\numberline {7.3}File system}{23}
+\contentsline {section}{\numberline {7.4}Programmatic access}{23}
+\contentsline {chapter}{\numberline {8}XML Parser}{25}
+\contentsline {section}{\numberline {8.1}Invocation}{25}
+\contentsline {section}{\numberline {8.2}Tag types}{25}
+\contentsline {section}{\numberline {8.3}Stacks and safeeval}{26}
+\contentsline {chapter}{\numberline {9}Internationalization}{27}
+\contentsline {section}{\numberline {9.1}Encoding}{27}
+\contentsline {section}{\numberline {9.2}Maketext}{27}
+\contentsline {section}{\numberline {9.3}Invocation in documents}{28}
+\contentsline {section}{\numberline {9.4}Invocation from Perl}{28}
+\contentsline {section}{\numberline {9.5}Internal codes}{28}
+\contentsline {section}{\numberline {9.6}Special cases}{28}
+\contentsline {subsection}{\numberline {9.6.1}JavaScript configuration files}{28}
+\contentsline {subsection}{\numberline {9.6.2}Loading locatilization files}{29}
+\contentsline {chapter}{\numberline {10}Math editor, parser and equation syntax}{31}
+\contentsline {section}{\numberline {10.1}Introduction}{31}
+\contentsline {section}{\numberline {10.2}A new user interface}{31}
+\contentsline {subsection}{\numberline {10.2.1}Usage}{32}
+\contentsline {section}{\numberline {10.3}The server-side parser}{32}
+\contentsline {subsection}{\numberline {10.3.1}Usage}{32}
+\contentsline {subsection}{\numberline {10.3.2}Calculation environment}{32}
+\contentsline {subsection}{\numberline {10.3.3}Conversion to Maxima syntax}{32}
+\contentsline {subsection}{\numberline {10.3.4}Catching errors}{32}
+\contentsline {subsection}{\numberline {10.3.5}Example with unit node}{32}
+\contentsline {subsection}{\numberline {10.3.6}Example with symbolic node}{32}
+\contentsline {section}{\numberline {10.4}Equation syntax}{33}
+\contentsline {subsection}{\numberline {10.4.1}Spaces}{33}
+\contentsline {subsection}{\numberline {10.4.2}Decimal separators and function parameter separators}{33}
+\contentsline {subsection}{\numberline {10.4.3}Constants}{33}
+\contentsline {subsection}{\numberline {10.4.4}Units}{33}
+\contentsline {subsection}{\numberline {10.4.5}Parenthesis}{33}
+\contentsline {subsection}{\numberline {10.4.6}Complex numbers}{33}
+\contentsline {subsection}{\numberline {10.4.7}Operators}{33}
+\contentsline {subsection}{\numberline {10.4.8}Implicit operators}{33}
+\contentsline {subsection}{\numberline {10.4.9}Vectors and matrices}{33}
+\contentsline {subsection}{\numberline {10.4.10}Functions}{34}
+\contentsline {chapter}{\numberline {11}Glossary}{35}

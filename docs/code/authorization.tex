@@ -1,5 +1,6 @@
 \chapter{Authorization}
 \section{Roles}\index{roles}\label{roles}
+\subsection{Role definition}
 Authorization is handled via roles. Each role has a certain set of privileges, which are defined within their realms\index{realms} through roles.json. Here's an excerpt:
 \begin{verbatim}
 {
@@ -85,5 +86,75 @@ Authorization is handled via roles. Each role has a certain set of privileges, w
 
 \end{verbatim}
 Internally, the role names like course\_coordinator are used everywhere and also sent to the interface. The localization is used to make these human-readable like ``Course Coordinator'' or ``Kurskoordinator.''
-
-
+\subsection{Role storage}
+Roles are stored in two places: with the user (authoritative) and in lookup tables. The module lc\_entity\_roles manages both and no manipulation of roles should happen below this level.
+\subsubsection{With user}\label{rolerecord}
+A role record of a user might look like this:
+\begin{verbatim}
+ {
+'course' => {
+            'msu' => {
+                      'N41nvoxGJ9NvZxuIrD3' => {
+                                               'any' => {
+                                                      'member' => {
+                                                                 'enddate' => '2018-01-08 04:05:06',
+                                                                 'manualenrolldomain' => 'msu',
+                                                                 'startdate' => '1998-01-08 04:05:06',
+                                                                 'manualenrollentity' => 'ggf21wqffas'
+                                                                  }
+                                                        }
+                                              },
+                      'Kk5vRpSiCp63Wu46Mox' => {
+                                               'any' => {
+                                                       'course_coordinator' => {
+                                                                  'enddate' => '2018-01-08 04:05:06',
+                                                                  'startdate' => '1998-01-08 04:05:06',
+                                                                  'manualenrolldomain' => 'msu',
+                                                                  'manualenrollentity' => 'ggf21wqffas'
+                                                         }
+                                                       }
+                                               },
+                      'ISz8egcz03Uyyr8LAdz' => {
+                                               'section' => {
+                                                            '006' => {
+                                                               'instructor' => {
+                                                                  'enddate' => '2015-01-08 04:05:06',
+                                                                  'startdate' => '1998-01-08 04:05:06',
+                                                                  'manualenrolldomain' => 'msu',
+                                                                  'manualenrollentity' => 'ggf21wqffas'
+                                                                      }
+                                                              },
+                                                             '010' => {
+                                                                'teaching_assistant' => {
+                                                                  'enddate' => '2017-01-08 04:05:06',
+                                                                  'manualenrolldomain' => 'msu',
+                                                                  'startdate' => '1998-01-08 04:05:06',
+                                                                  'manualenrollentity' => 'ggf21wqffas'
+                                                                       }
+                                                               }
+                                                             }
+                                             },
+                    },
+             }
+'domain' => {
+             'msu' => {
+                      'domain_coordinator' => {
+                                             'enddate' => '2016-01-08 04:05:06',
+                                             'manualenrolldomain' => 'msu',
+                                             'startdate' => '1299-01-08 04:05:06',
+                                             'manualenrollentity' => 'qhhhf21wqffas'
+                                          }
+                    }
+         },
+'system' => {
+        'superuser' => {
+                        'enddate' => '2016-01-08 04:05:06',
+                        'startdate' => '1299-01-08 04:05:06',
+                        'manualenrolldomain' => 'msu',
+                        'manualenrollentity' => 'qhhhf21wqffas'
+                      }
+       }
+}
+\end{verbatim}
+\subsubsection{With domain or system}
+There are also lookup tables to see who all has a certain role. These are shown in Section~\ref{rolelookup} on page~\pageref{rolelookup}.
