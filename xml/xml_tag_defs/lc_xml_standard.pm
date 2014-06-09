@@ -38,7 +38,7 @@ sub start_head_html {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width; initial-scale=1.0;">
 <script src="/scripts/jquery-2.0.3.min.js"></script>
-<script src="/scripts/mathjax/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+<script src="/scripts/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script src="/scripts/jquery.blockUI.js"></script>
 <script src="/scripts/jstree/jstree.min.js"></script>
 <script src="/scripts/ckeditor/ckeditor.js"></script>

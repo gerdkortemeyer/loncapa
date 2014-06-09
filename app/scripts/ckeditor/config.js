@@ -40,4 +40,6 @@ CKEDITOR.editorConfig = function( config ) {
         config.language=document.documentElement.lang;
 
         config.extraPlugins = 'lcmath';
+        
+        config.mathJaxLib = '/scripts/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
 };
