@@ -192,7 +192,6 @@ sub math_editor {
       $output.=' data-constants="c, pi, e, hbar, amu" data-unit_mode="true"';
    }
    $output.='>'.$default.'</textarea></div>';
-   $output.='<script>LCMATH.initEditors();</script>';
    return $output;
 }
 

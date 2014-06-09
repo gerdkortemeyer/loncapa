@@ -48,6 +48,11 @@ sub start_head_html {
 <script src="/scripts/datepick/jquery.datepick.lang.js"></script>
 <script src="/scripts/jquery.dataTables.min.js"></script>
 <script src="/scripts/math_editor.min.js"></script>
+<script>
+    window.addEventListener('load', function(e) {
+        LCMATH.init_editors();
+    }, false);
+</script>
 <script src="/scripts/lc_file_upload.js"></script>
 <script src="/scripts/lc_standard.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/lc_style.css" />
