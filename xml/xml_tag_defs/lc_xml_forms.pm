@@ -175,7 +175,7 @@ sub inputfield {
    } elsif ($type eq 'symbolic') {
       return &math_editor($id,$name,'symbolic',$default);
    } elsif ($type eq 'numeric') {
-      return &math_editor($id,$name,'numerical',$default);
+      return &math_editor($id,$name,'numeric',$default);
    }
 }
 
