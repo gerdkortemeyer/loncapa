@@ -39,4 +39,5 @@ CKEDITOR.editorConfig = function( config ) {
         // Use the document language
         config.language=document.documentElement.lang;
 
+        config.extraPlugins = 'lcmath';
 };
