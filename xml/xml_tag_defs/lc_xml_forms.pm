@@ -173,25 +173,26 @@ sub inputfield {
       my ($role_short,$role_name)=&modifiable_role_choices('course');
       return &selectfield($id,$name,$role_short,$role_name,$default);
    } elsif ($type eq 'symbolic') {
-      return &maxima_editor($id,$name,'symbolic',$default);
+      return &math_editor($id,$name,'symbolic',$default);
    } elsif ($type eq 'numeric') {
-      return &maxima_editor($id,$name,'numerical',$default);
+      return &math_editor($id,$name,'numerical',$default);
    }
 }
 
 # ==== Bring up a MAXIMA editor field
 # 
-sub maxima_editor {
+sub math_editor {
    my ($id,$name,$mode,$default)=@_;
    unless ($name) {
       $name=$id;
    }
    my $output='<div class="eqnbox">';
-   $output.='<textarea id="'.$id.'" name="'.$name.'" data-accept_bad_syntax="true" spellcheck="false" class="maxima"';
+   $output.='<textarea id="'.$id.'" name="'.$name.'" data-accept_bad_syntax="true" spellcheck="false" class="math"';
    if ($mode eq 'numeric') {
       $output.=' data-constants="c, pi, e, hbar, amu" data-unit_mode="true"';
    }
    $output.='>'.$default.'</textarea></div>';
+   $output.='<script>LCMATH.initEditors();</script>';
    return $output;
 }
 
