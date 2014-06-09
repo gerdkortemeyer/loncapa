@@ -18,11 +18,6 @@ through which recipients can access the Corresponding Source.
 
 */
 
-/*
-  This script looks for elements with the "math" class, and
-  adds a preview div afterward which is updated automatically.
-*/
-
 var handleChange = function(math_object) {
     // math_object has 3 fields: ta, output_div, oldtxt
     // we need to pass this object instead of the values because oldtxt will change
@@ -67,7 +62,16 @@ var handleChange = function(math_object) {
     }
 }
 
-window.addEventListener('load', function(e) {
+var init_done = false;
+
+/*
+  Looks for elements with the "math" class, and
+  adds a preview div afterward which is updated automatically.
+*/
+var initEditors = function() {
+    if (init_done)
+        return;
+    init_done = true;
     var math_objects = [];
     var math_inputs = document.getElementsByClassName('math');
     for (var i=0; i<math_inputs.length; i++) {
@@ -100,6 +104,5 @@ window.addEventListener('load', function(e) {
             ta.addEventListener('keyup', startChange , false);
         }
     }
-    
-}, false);
+}
 

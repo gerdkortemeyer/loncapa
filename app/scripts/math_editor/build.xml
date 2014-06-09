@@ -5,9 +5,22 @@
     
     <target name="concatjs" description="concat src .js files">
         <concat destfile="dist/math_editor.js">
-            <header>(function () {</header>
+            <!-- encapsulate and export some classes in the namespace LCMATH -->
+            <header>
+var LCMATH = function () {
+            </header>
             <fileset dir="." includes="src/**/*.js"/>
-            <footer>}());</footer>
+            <footer>
+    return({
+        "Definitions": Definitions,
+        "ENode": ENode,
+        "Operator": Operator,
+        "ParseException": ParseException,
+        "Parser": Parser,
+        "initEditors": initEditors
+    });
+}();
+            </footer>
         </concat>
     </target>
     

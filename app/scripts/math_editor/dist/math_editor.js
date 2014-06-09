@@ -1,4 +1,6 @@
-(function () {/*
+
+var LCMATH = function () {
+            /*
 
 Copyright (C) 2014  Michigan State University Board of Trustees
 
@@ -1403,11 +1405,6 @@ through which recipients can access the Corresponding Source.
 
 */
 
-/*
-  This script looks for elements with the "math" class, and
-  adds a preview div afterward which is updated automatically.
-*/
-
 var handleChange = function(math_object) {
     // math_object has 3 fields: ta, output_div, oldtxt
     // we need to pass this object instead of the values because oldtxt will change
@@ -1452,38 +1449,58 @@ var handleChange = function(math_object) {
     }
 }
 
-window.addEventListener('load', function(e) {
+var init_done = false;
+
+/*
+  Looks for elements with the "math" class, and
+  adds a preview div afterward which is updated automatically.
+*/
+var initEditors = function() {
+    if (init_done)
+        return;
+    init_done = true;
     var math_objects = [];
     var math_inputs = document.getElementsByClassName('math');
     for (var i=0; i<math_inputs.length; i++) {
         var ta = math_inputs[i];
-        var output_div = document.createElement("div");
-        if (ta.nextSibling)
-            ta.parentNode.insertBefore(output_div, ta.nextSibling);
-        else
-            ta.parentNode.appendChild(output_div);
-        var implicit_operators = (ta.getAttribute("data-implicit_operators") === "true");
-        var unit_mode = (ta.getAttribute("data-unit_mode") === "true");
-        var constants = ta.getAttribute("data-constants");
-        if (constants)
-            constants = constants.split(/[\s,]+/);
-        var oldtxt = "";
-        math_objects[i] = {
-            "ta": ta,
-            "output_div": output_div,
-            "oldtxt": oldtxt,
-            "parser": new Parser(implicit_operators, unit_mode, constants)
-        };
-        var changeObjectN = function(n) {
-            return function(e) { handleChange(math_objects[n]); };
+        if (ta.nodeName == "TEXTAREA" || ta.nodeName == "INPUT") {
+            var output_div = document.createElement("div");
+            if (ta.nextSibling)
+                ta.parentNode.insertBefore(output_div, ta.nextSibling);
+            else
+                ta.parentNode.appendChild(output_div);
+            var implicit_operators = (ta.getAttribute("data-implicit_operators") === "true");
+            var unit_mode = (ta.getAttribute("data-unit_mode") === "true");
+            var constants = ta.getAttribute("data-constants");
+            if (constants)
+                constants = constants.split(/[\s,]+/);
+            var oldtxt = "";
+            math_objects[i] = {
+                "ta": ta,
+                "output_div": output_div,
+                "oldtxt": oldtxt,
+                "parser": new Parser(implicit_operators, unit_mode, constants)
+            };
+            var changeObjectN = function(n) {
+                return function(e) { handleChange(math_objects[n]); };
+            }
+            var startChange = changeObjectN(i);
+            if (ta.value != oldtxt)
+                startChange();
+            ta.addEventListener('change', startChange , false);
+            ta.addEventListener('keyup', startChange , false);
         }
-        var startChange = changeObjectN(i);
-        if (ta.value != oldtxt)
-            startChange();
-        ta.addEventListener('change', startChange , false);
-        ta.addEventListener('keyup', startChange , false);
     }
-    
-}, false);
+}
 
-}());
+
+    return({
+        "Definitions": Definitions,
+        "ENode": ENode,
+        "Operator": Operator,
+        "ParseException": ParseException,
+        "Parser": Parser,
+        "initEditors": initEditors
+    });
+}();
+            
