@@ -49,7 +49,10 @@
 \contentsline {section}{\numberline {5.3}Users}{15}
 \contentsline {section}{\numberline {5.4}Courses}{15}
 \contentsline {section}{\numberline {5.5}Assets}{16}
-\contentsline {subsection}{\numberline {5.5.1}Profiles and metadata}{16}
+\contentsline {subsection}{\numberline {5.5.1}URLs}{16}
+\contentsline {subsection}{\numberline {5.5.2}Profiles and metadata}{16}
+\contentsline {subsection}{\numberline {5.5.3}Storage}{16}
+\contentsline {subsection}{\numberline {5.5.4}Publication and Versioning}{16}
 \contentsline {chapter}{\numberline {6}Authorization}{17}
 \contentsline {section}{\numberline {6.1}Roles}{17}
 \contentsline {subsection}{\numberline {6.1.1}Role definition}{17}

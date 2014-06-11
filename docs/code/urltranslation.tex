@@ -25,7 +25,7 @@ PerlCleanupHandler Apache::lc_ui_async::main_actions
 </Location>
 \end{verbatim}
 This handler can reply to the browser immediately and then do the actual work in the cleanup phase. This is most useful in connection with asynchronous AJAX requests.
-\section{Accessing assets}\index{assets}
+\section{Accessing assets}\index{assets}\label{accassets}
 Access to assets is more complicated. They are caught in the global translation handler
 \begin{verbatim}
 PerlTransHandler Apache::lc_trans

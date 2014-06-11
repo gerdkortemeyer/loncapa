@@ -2,27 +2,27 @@
 
   \item access server, 11
   \item accessibility, 5
-  \item assessments, 21
-  \item assets, 9, 16, 21
+  \item assessments, 23
+  \item assets, 9, 16, 23
   \item authorization, 7
 
   \indexspace
 
-  \item caching, 21
+  \item caching, 23
   \item certificates, 13
   \item cluster manager, 12
   \item cluster table, 11
   \item communities, 15
-  \item course IDs, 20
-  \item courses, 15, 19
+  \item course IDs, 22
+  \item courses, 15, 21
 
   \indexspace
 
-  \item encoding, 25
+  \item encoding, 27
   \item entities, 15
-  \item equation editor, 29
-  \item equation parser, 30
-  \item equation syntax, 31
+  \item equation editor, 31
+  \item equation parser, 32
+  \item equation syntax, 33
 
   \indexspace
 
@@ -30,12 +30,12 @@
 
   \indexspace
 
-  \item homeserver, 12, 19--21
-  \item HTML pages, 23
+  \item homeserver, 12, 16, 21--23
+  \item HTML pages, 25
 
   \indexspace
 
-  \item internationalization, 5, 25
+  \item internationalization, 5, 27
 
   \indexspace
 
@@ -45,10 +45,10 @@
 
   \indexspace
 
-  \item math, 29
-  \item memcached, 21
+  \item math, 31
+  \item memcached, 23
   \item metadata, 16
-  \item MongoDB, 16, 19
+  \item MongoDB, 16, 21
 
   \indexspace
 
@@ -56,38 +56,39 @@
 
   \indexspace
 
-  \item PIDs, 15, 19
+  \item PIDs, 15, 21
   \item portfolio, 16
-  \item PostgreSQL, 19
+  \item PostgreSQL, 21
   \item privileges, 7
-  \item problems, 23
+  \item problems, 25
   \item profiles, 16
+  \item publication, 16
 
   \indexspace
 
   \item realms, 17
-  \item replication, 10, 14, 21
-  \item roles, 7, 17, 20, 26
+  \item replication, 10, 14, 23
+  \item roles, 7, 17, 22, 28
 
   \indexspace
 
-  \item safeeval, 24
+  \item safeeval, 26
   \item sections, 15
   \item SSL, 6
 
   \indexspace
 
-  \item unicode, 25
-  \item usernames, 15, 19
-  \item users, 15, 19
-  \item utf-8, 25
+  \item unicode, 27
+  \item usernames, 15, 21
+  \item users, 15, 21
+  \item utf-8, 27
 
   \indexspace
 
-  \item versions, 10, 16, 21
+  \item versions, 10, 16, 23
 
   \indexspace
 
-  \item XML parser, 10, 23
+  \item XML parser, 10, 25
 
 \end{theindex}

@@ -122,7 +122,7 @@ The system uses two caching mechanisms: in-memory and Memcached
 \item In-memory is occasionally used if a particular process needs to preserve variables, so they do not need to be reinitialized every time. Examples are database handles, etc.
 \item Memcached is the main caching mechanism, which caches data in memory across processes. The cache items have associated expiration times. The time to refresh these caches is distributed across processes and users.
 \end{itemize}
-\section{File system}
+\section{File system}\label{resfilesystem}
 Assets are stored on the file system in /home/loncapa/res. The authoritative copy of assets is on the author's homeserver (see section~\ref{homeserver} on page~\pageref{homeserver}), but they are copied through replication (see section~\ref{replication} on page~\pageref{replication}) to other servers.\index{homeserver}\index{replication}
 
 The filesystem uses the entity code as part of the location. For example,
@@ -130,6 +130,11 @@ The filesystem uses the entity code as part of the location. For example,
 /home/loncapa/res/msu/M/4/O/W/M4OWjvPTQCIE6o8RTMJ_3
 \end{verbatim}
 is version 3\index{versions} of the asset with entity code M4OWjvPTQCIE6o8RTMJ in domain msu.\index{assets}
+
+Before publication, assets have the extension \_wrk,
+\begin{verbatim}
+/home/loncapa/res/msu/M/4/O/W/M4OWjvPTQCIE6o8RTMJ_wrk
+\end{verbatim}
 
 \section{Programmatic access}
 Databases should not be touched by any higher order handlers. While drivers are located in the /databases GIT directory, e.g., lc\_memcached.pm  lc\_mongodb.pm  lc\_postgresql.pm, these should not be called. Instead, handlers should access the abstractions in the /entities GIT directory, and there only the routines that are not starting with ``remote'' or ``local''.
