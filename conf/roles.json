@@ -76,5 +76,7 @@
 "author"             : { "realm"  : "user"
                        },
 "co_author"          : { "realm"  : "user"
+                       },
+"guest"		     : { "realm"  : "user"
                        }
 }
