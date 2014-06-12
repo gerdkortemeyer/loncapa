@@ -24,6 +24,7 @@ while (my $line=<IN>) {
    chomp($line);
    if ($line=~/\.\d+\.\w+$/) { next; }
    $error='';
+   $stack=undef;
    &parse($line);
    if ($error) {
       print "\n====> $line\n$error\n";
@@ -43,7 +44,7 @@ sub parse {
          }
 # Should this be here?
          if ($stack->{'tags'}->[-1]) {
-            unless ($defs->{$stack->{'tags'}->[-1]->{'name'}}->{$token->[1]}) {
+            unless ($defs->{$stack->{'tags'}->[-1]->{'name'}}->{'encloses'}->{$token->[1]}) {
                &error('unexpected_embedded',$token->[1],$stack->{'tags'}->[-1]->{'name'});
             }
          }
