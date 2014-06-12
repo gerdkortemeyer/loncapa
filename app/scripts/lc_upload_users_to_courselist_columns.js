@@ -36,6 +36,7 @@ function verify(changedentry) {
    var founddomain=false;
    var foundpassword=false;
    var foundrole=false;
+   var foundsection=false;
    var foundstartdate=false;
    var foundenddate=false;
    $('.lcformselectinput').each(function() {
@@ -114,6 +115,9 @@ function verify(changedentry) {
        if ($(this).val()=='enddate') {
           foundenddate=true;
        }
+       if ($(this).val()=='section') {
+          foundsection=true;
+       }
    });
    if (founddomain) {
       $("#defaultdomain").prop("disabled",true);
@@ -129,6 +133,11 @@ function verify(changedentry) {
       $("#defaultrole").prop("disabled",true);
    } else {
       $("#defaultrole").prop("disabled",false);
+   }
+   if (foundsection) {
+      $("#defaultsection").prop("disabled",true);
+   } else {
+      $("#defaultsection").prop("disabled",false);
    }
    if (foundstartdate) {
       $("#defaultstartdate").prop("disabled",true);

@@ -82,24 +82,22 @@ sub incl_spreadsheet_finalize_items {
          unless ($username) { next; }
 # Try to determine the entity. Existing users would have this
          my $entity=&Apache::lc_entity_users::username_to_entity($username,$domain);
-# Load roles and profiles, if existing
+# Load profile, if existing
          my $profile=undef;
-         my $roles=undef;
          if ($entity) {
             $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
-            $roles=&Apache::lc_entity_roles::dump_roles($entity,$domain);
          }
 #FIXME: debug
-         $output.="<br />Record: $username domain $domain entity $entity <pre>".Dumper($profile)."\n".Dumper($roles)."</pre>";
+         $output.="<br />Record: $username domain $domain entity $entity <pre>".Dumper($profile)."\n".Dumper($associations)."</pre>";
 # Flags if fixups are needed
-         my $fixup_flag=0;
+         my $problems='';
 # Collect all we know
          my $userrecord=&evaluate_row($sheets->{$worksheet}->{'cells'}->{$row},$associations);
-
 #FIXME: debug
-         if ($entity) { $fixup_flag=1; }
-         if ($fixup_flag) {
+         $problems.="<pre>".Dumper($userrecord)."</pre>\n";
+         if ($problems) {
 # Wow, there is a problem, we need to ask the user
+            $output.=$problems;
 # Okay, remember where we were, and we are out of here
             $output.=&Apache::lc_xml_forms::hidden_field('corrected_record_sheet',$worksheet).
                      &Apache::lc_xml_forms::hidden_field('corrected_record_row',$row);
@@ -197,6 +195,7 @@ sub evaluate_associations {
       if ($content{$key} eq 'section') {
          ($associations->{'record'}->{'section'}->{'sheet'},
           $associations->{'record'}->{'section'}->{'column'})=&sheet_column($key);
+         $associations->{'record'}->{'section'}->{'mode'}='individual';
       }
       if ($content{$key} eq 'domain') {
          ($associations->{'record'}->{'domain'}->{'sheet'},
@@ -242,6 +241,10 @@ sub evaluate_associations {
       $associations->{'record'}->{'role'}->{'default'}=$content{'defaultrole'};
       $associations->{'record'}->{'role'}->{'mode'}='default';
    }
+   unless ($associations->{'record'}->{'section'}->{'mode'}) {
+      $associations->{'record'}->{'section'}->{'default'}=$content{'defaultsection'};
+      $associations->{'record'}->{'section'}->{'mode'}='default';
+   }
    unless ($associations->{'record'}->{'startdate'}->{'mode'}) {
       $associations->{'record'}->{'startdate'}->{'default'}=
           &Apache::lc_ui_localize::inputdate_to_timestamp(
@@ -284,7 +287,28 @@ sub evaluate_row {
    }
 # If we do not have at least a username and domain, we give up
    unless (($username) && ($domain)) { return undef }
-
+# Get the name, individual or combi
+   if ($associations->{'record'}->{'name'}->{'mode'} eq 'individual') {
+      $userrecord->{'firstname'}=$row->{$associations->{'record'}->{'name'}->{'firstname'}->{'column'}}->{'unformatted'};
+      $userrecord->{'middlename'}=$row->{$associations->{'record'}->{'name'}->{'middlename'}->{'column'}}->{'unformatted'};
+      $userrecord->{'lastname'}=$row->{$associations->{'record'}->{'name'}->{'lastname'}->{'column'}}->{'unformatted'};
+      $userrecord->{'suffix'}=$row->{$associations->{'record'}->{'name'}->{'suffix'}->{'column'}}->{'unformatted'};
+   } else {
+      ($userrecord->{'lastname'},$userrecord->{'firstname'},$userrecord->{'middlename'})
+      =($row->{$associations->{'record'}->{'name'}->{'namecombi'}->{'column'}}->{'unformatted'}=~/^\s*(.+)\s*\,\s*(\S+)\s*(.*)$/);
+   }
+# Get section
+   if ($associations->{'record'}->{'section'}->{'mode'} eq 'default') {
+      $userrecord->{'section'}=$associations->{'record'}->{'section'}->{'default'};
+   } else {
+      $userrecord->{'section'}=$row->{$associations->{'record'}->{'section'}->{'column'}}->{'unformatted'};
+   }
+# Get startdate
+   if ($associations->{'record'}->{'startdate'}->{'mode'} eq 'default') {
+      $userrecord->{'startdate'}=$associations->{'record'}->{'startdate'}->{'default'};
+   } else {
+   }
+# Get enddate
    return ($username,$domain,$userrecord);
 }
 
