@@ -48,7 +48,7 @@ sub parse {
          push(@{$stack->{'tags'}},{ 'name' => $token->[1], 'args' => $token->[2] });
       } elsif ($token->[0] eq 'E') {
 # Unexpected ending tags
-         if ($stack->{'tags'}->[-1]->{'name'} ne $token->[1]) {
+         if (($stack->{'tags'}->[-1]) && ($stack->{'tags'}->[-1]->{'name'} ne $token->[1])) {
             &error('unexpected_ending',$stack->{'tags'}->[-1]->{'name'},$token->[1]);
          }
 # Pop the stack again
