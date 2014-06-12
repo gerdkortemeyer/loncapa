@@ -17,12 +17,17 @@ if ($error) {
 }
 
 my $stack;
-my $output;
+my $error;
 
 open(IN,"all_files.txt");
 while (my $line=<IN>) {
    chomp($line);
+   if ($line=~/\.\d+\.\w+$/) { next; }
+   $error='';
    &parse($line);
+   if ($error) {
+      print "\n====> $line\n$error\n";
+   }
 }
 close(IN);
 
@@ -33,21 +38,34 @@ sub parse {
    while (my $token = $p->get_token) {
       if ($token->[0] eq 'T') {
       } elsif ($token->[0] eq 'S') {
+         unless ($defs->{$token->[1]}) {
+            &error('undefined_start_tag',$token->[1]);
+         }
+# Should this be here?
+         if ($stack->{'tags'}->[-1]) {
+            unless ($defs->{$stack->{'tags'}->[-1]->{'name'}}->{$token->[1]}) {
+               &error('unexpected_embedded',$token->[1],$stack->{'tags'}->[-1]->{'name'});
+            }
+         }
 # A start tag - evaluate the attributes in here
          foreach my $key (keys(%{$token->[2]})) {
+            unless ($defs->{$token->[1]}->{'args'}->{$key}) {
+               &error('undefined_argument',$token->[1],$key);
+            }
             my $value=$token->[2]->{$key};
          } 
 # - remember for embedded tags and for the end tag
          push(@{$stack->{'tags'}},{ 'name' => $token->[1], 'args' => $token->[2] });
       } elsif ($token->[0] eq 'E') {
+         unless ($defs->{$token->[1]}) {
+            &error('undefined_end_tag',$token->[1]);
+         }
 # Unexpected ending tags
          if ($stack->{'tags'}->[-1]->{'name'} ne $token->[1]) {
             &error('unexpected_ending',$stack->{'tags'}->[-1]->{'name'},$token->[1]);
          }
 # Pop the stack again
          pop(@{$stack->{'tags'}});
-      } else {
-         $output.=$token->[-1];
       }
    }
 # The stack should be empty again
@@ -58,6 +76,6 @@ sub parse {
 
 sub error {
    my ($code,$expected,$found)=@_;
-   print "$code - $expected - $found\n";
+   $error.= "$code - $expected - $found\n";
 }
 
