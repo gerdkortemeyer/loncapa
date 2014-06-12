@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:lang="en">
+<?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:lang="en">
   <xs:complexType name="caparesponse--answergroup">
     <xs:annotation>
       <xs:documentation>Collection of Answers</xs:documentation>
@@ -16,11 +16,13 @@
       <xs:element name="value" type="caparesponse--value"/>
     </xs:choice>
   </xs:complexType>
-  <xs:complexType name="caparesponse--value">
+  <xs:simpleType name="caparesponse--value">
     <xs:annotation>
       <xs:documentation>Value</xs:documentation>
     </xs:annotation>
-  </xs:complexType>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="caparesponse--vector">
     <xs:annotation>
       <xs:documentation>Vector</xs:documentation>
@@ -30,6 +32,7 @@
     <xs:annotation>
       <xs:documentation>Hint algorithm</xs:documentation>
     </xs:annotation>
+    <xs:attribute name="type" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="mathhint--answer">
     <xs:annotation>
@@ -79,7 +82,7 @@
       <xs:documentation>Polygonal area in image</xs:documentation>
     </xs:annotation>
   </xs:complexType>
-  <xs:complexType name="imageresponse--text">
+  <xs:complexType name="imageresponse--text" mixed="true">
     <xs:annotation>
       <xs:documentation>Text to describe option</xs:documentation>
     </xs:annotation>
@@ -97,6 +100,7 @@
       <xs:element ref="script"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="startouttext"/>
+      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
@@ -107,6 +111,7 @@
     <xs:annotation>
       <xs:documentation>Answer algorithm</xs:documentation>
     </xs:annotation>
+    <xs:attribute name="type" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="mathresponse--answer">
     <xs:annotation>
@@ -120,13 +125,14 @@
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="foil" type="optionresponse--foil"/>
     </xs:choice>
+    <xs:attribute name="concept" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="optionresponse--drawoptionlist">
     <xs:annotation>
       <xs:documentation>Draw Option List</xs:documentation>
     </xs:annotation>
   </xs:complexType>
-  <xs:complexType name="optionresponse--foil">
+  <xs:complexType name="optionresponse--foil" mixed="true">
     <xs:annotation>
       <xs:documentation>Option response foil</xs:documentation>
     </xs:annotation>
@@ -144,12 +150,15 @@
       <xs:element ref="script"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="startouttext"/>
+      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
       <xs:element ref="window"/>
       <xs:element name="drawoptionlist" type="optionresponse--drawoptionlist"/>
     </xs:choice>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="optionresponse--foilgroup">
     <xs:annotation>
@@ -159,6 +168,7 @@
       <xs:element name="conceptgroup" type="optionresponse--conceptgroup"/>
       <xs:element name="foil" type="optionresponse--foil"/>
     </xs:choice>
+    <xs:attribute name="options" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="radiobuttonresponse--conceptgroup">
     <xs:annotation>
@@ -167,8 +177,9 @@
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="foil" type="radiobuttonresponse--foil"/>
     </xs:choice>
+    <xs:attribute name="concept" type="xs:string"/>
   </xs:complexType>
-  <xs:complexType name="radiobuttonresponse--foil">
+  <xs:complexType name="radiobuttonresponse--foil" mixed="true">
     <xs:annotation>
       <xs:documentation>Foil</xs:documentation>
     </xs:annotation>
@@ -186,11 +197,14 @@
       <xs:element ref="script"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="startouttext"/>
+      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
       <xs:element ref="window"/>
     </xs:choice>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="radiobuttonresponse--foilgroup">
     <xs:annotation>
@@ -208,8 +222,9 @@
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="foil" type="rankresponse--foil"/>
     </xs:choice>
+    <xs:attribute name="concept" type="xs:string"/>
   </xs:complexType>
-  <xs:complexType name="rankresponse--foil">
+  <xs:complexType name="rankresponse--foil" mixed="true">
     <xs:annotation>
       <xs:documentation>Foil</xs:documentation>
     </xs:annotation>
@@ -227,11 +242,14 @@
       <xs:element ref="script"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="startouttext"/>
+      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
       <xs:element ref="window"/>
     </xs:choice>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="rankresponse--foilgroup">
     <xs:annotation>
@@ -241,6 +259,7 @@
       <xs:element name="conceptgroup" type="rankresponse--conceptgroup"/>
       <xs:element name="foil" type="rankresponse--foil"/>
     </xs:choice>
+    <xs:attribute name="options" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="matchresponse--conceptgroup">
     <xs:annotation>
@@ -249,8 +268,9 @@
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="foil" type="matchresponse--foil"/>
     </xs:choice>
+    <xs:attribute name="concept" type="xs:string"/>
   </xs:complexType>
-  <xs:complexType name="matchresponse--foil">
+  <xs:complexType name="matchresponse--foil" mixed="true">
     <xs:annotation>
       <xs:documentation>Foil</xs:documentation>
     </xs:annotation>
@@ -268,11 +288,14 @@
       <xs:element ref="script"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="startouttext"/>
+      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
       <xs:element ref="window"/>
     </xs:choice>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="matchresponse--foilgroup">
     <xs:annotation>
@@ -282,8 +305,9 @@
       <xs:element name="conceptgroup" type="matchresponse--conceptgroup"/>
       <xs:element name="foil" type="matchresponse--foil"/>
     </xs:choice>
+    <xs:attribute name="options" type="xs:string"/>
   </xs:complexType>
-  <xs:complexType name="matchresponse--item">
+  <xs:complexType name="matchresponse--item" mixed="true">
     <xs:annotation>
       <xs:documentation>Item</xs:documentation>
     </xs:annotation>
@@ -301,11 +325,13 @@
       <xs:element ref="script"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="startouttext"/>
+      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
       <xs:element ref="window"/>
     </xs:choice>
+    <xs:attribute name="name" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="matchresponse--itemgroup">
     <xs:annotation>
@@ -329,7 +355,7 @@
       <xs:documentation>Label Location</xs:documentation>
     </xs:annotation>
   </xs:complexType>
-  <xs:complexType name="randomlabel--label">
+  <xs:complexType name="randomlabel--label" mixed="true">
     <xs:annotation>
       <xs:documentation>Label Text</xs:documentation>
     </xs:annotation>
@@ -347,6 +373,7 @@
       <xs:element ref="scriptlib"/>
       <xs:element ref="solved"/>
       <xs:element ref="startouttext"/>
+      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
@@ -356,31 +383,198 @@
     <xs:annotation>
       <xs:documentation>Plot Label</xs:documentation>
     </xs:annotation>
+    <xs:attribute default="0" name="xpos" type="xs:decimal">
+      <xs:annotation>
+        <xs:documentation>
+          X position of label (graph coordinates)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="0" name="ypos" type="xs:decimal">
+      <xs:annotation>
+        <xs:documentation>
+          Y position of label (graph coordinates)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="left" name="justify">
+      <xs:annotation>
+        <xs:documentation>
+          justification of the label text on the plot
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="left"/>
+          <xs:enumeration value="right"/>
+          <xs:enumeration value="center"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="0" name="rotate" type="xs:decimal">
+      <xs:annotation>
+        <xs:documentation>
+          Rotation of label (degrees)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
-  <xs:complexType name="lonplot--title">
+  <xs:simpleType name="lonplot--title">
     <xs:annotation>
       <xs:documentation>Plot Title</xs:documentation>
     </xs:annotation>
-  </xs:complexType>
-  <xs:complexType name="lonplot--xlabel">
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="lonplot--xlabel">
     <xs:annotation>
       <xs:documentation>Plot x-label</xs:documentation>
     </xs:annotation>
-  </xs:complexType>
-  <xs:complexType name="lonplot--ylabel">
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="lonplot--ylabel">
     <xs:annotation>
       <xs:documentation>Plot y-label</xs:documentation>
     </xs:annotation>
-  </xs:complexType>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="lonplot--axis">
     <xs:annotation>
       <xs:documentation>Plot axes</xs:documentation>
     </xs:annotation>
+    <xs:attribute default="x000000" name="color" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Color of grid lines
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="-10.0" name="xmin" type="xs:decimal">
+      <xs:annotation>
+        <xs:documentation>
+          Minimum x-value shown in plot
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="10.0" name="xmax" type="xs:decimal">
+      <xs:annotation>
+        <xs:documentation>
+          Maximum x-value shown in plot
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="-10.0" name="ymin" type="xs:decimal">
+      <xs:annotation>
+        <xs:documentation>
+          Minimum y-value shown in plot
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="10.0" name="ymax" type="xs:decimal">
+      <xs:annotation>
+        <xs:documentation>
+          Maximum y-value shown in plot
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="on" name="xformat">
+      <xs:annotation>
+        <xs:documentation>
+          X-axis number formatting
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="on"/>
+          <xs:enumeration value="off"/>
+          <xs:enumeration value="2e"/>
+          <xs:enumeration value="2f"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="on" name="yformat">
+      <xs:annotation>
+        <xs:documentation>
+          Y-axis number formatting
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="on"/>
+          <xs:enumeration value="off"/>
+          <xs:enumeration value="2e"/>
+          <xs:enumeration value="2f"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="off" name="xzero">
+      <xs:annotation>
+        <xs:documentation>
+          Show x-zero (y=0) axis
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="off"/>
+          <xs:enumeration value="line"/>
+          <xs:enumeration value="thick-line"/>
+          <xs:enumeration value="dotted"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="off" name="yzero">
+      <xs:annotation>
+        <xs:documentation>
+          Show y-zero (x=0) axis
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="off"/>
+          <xs:enumeration value="line"/>
+          <xs:enumeration value="thick-line"/>
+          <xs:enumeration value="dotted"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="lonplot--key">
     <xs:annotation>
       <xs:documentation>Plot Key</xs:documentation>
     </xs:annotation>
+    <xs:attribute name="title" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Title of key
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="off" name="box" type="onoff">
+      <xs:annotation>
+        <xs:documentation>
+          Draw a box around the key?
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="top right" name="pos">
+      <xs:annotation>
+        <xs:documentation>
+          Position of the key on the plot
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="top left"/>
+          <xs:enumeration value="top right"/>
+          <xs:enumeration value="bottom left"/>
+          <xs:enumeration value="bottom right"/>
+          <xs:enumeration value="outside"/>
+          <xs:enumeration value="below"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="lonplot--curve">
     <xs:annotation>
@@ -390,31 +584,241 @@
       <xs:element name="data" type="lonplot--data"/>
       <xs:element name="function" type="lonplot--function"/>
     </xs:choice>
+    <xs:attribute default="x000000" name="color" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Color of curve
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="name" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Name of curve to appear in key
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="lines" name="linestyle">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="lines"/>
+          <xs:enumeration value="linespoints"/>
+          <xs:enumeration value="dots"/>
+          <xs:enumeration value="points"/>
+          <xs:enumeration value="steps"/>
+          <xs:enumeration value="fsteps"/>
+          <xs:enumeration value="histeps"/>
+          <xs:enumeration value="errorbars"/>
+          <xs:enumeration value="xerrorbars"/>
+          <xs:enumeration value="yerrorbars"/>
+          <xs:enumeration value="xyerrorbars"/>
+          <xs:enumeration value="boxes"/>
+          <xs:enumeration value="filledcurves"/>
+          <xs:enumeration value="vector"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="1" name="linewidth">
+      <xs:annotation>
+        <xs:documentation>
+          Line width (may not apply to all plot styles)
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:int">
+          <xs:minInclusive value="1"/>
+          <xs:maxInclusive value="10"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="solid" name="linetype">
+      <xs:annotation>
+        <xs:documentation>
+          Line type (may not apply to all plot styles)
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="solid"/>
+          <xs:enumeration value="dashed"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="1" name="pointsize" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>
+          Point size (may not apply to all plot styles)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="1" name="pointtype">
+      <xs:annotation>
+        <xs:documentation>
+          Point type (may not apply to all plot styles)
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:int">
+          <xs:minInclusive value="0"/>
+          <xs:maxInclusive value="6"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="closed" name="limit">
+      <xs:annotation>
+        <xs:documentation>
+          Point to fill -- for filledcurves
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="above"/>
+          <xs:enumeration value="below"/>
+          <xs:enumeration value="closed"/>
+          <xs:enumeration value="x1"/>
+          <xs:enumeration value="x2"/>
+          <xs:enumeration value="y1"/>
+          <xs:enumeration value="y2"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="head" name="arrowhead">
+      <xs:annotation>
+        <xs:documentation>
+          Vector arrow head type
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="nohead"/>
+          <xs:enumeration value="head"/>
+          <xs:enumeration value="heads"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="filled" name="arrowstyle">
+      <xs:annotation>
+        <xs:documentation>
+          Vector arrow head style
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="filled"/>
+          <xs:enumeration value="empty"/>
+          <xs:enumeration value="nofilled"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="0.02" name="arrowlength" type="xs:decimal">
+      <xs:annotation>
+        <xs:documentation>
+          Length of vector arrow (only applies to vector plots)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="10.0" name="arrowangle" type="xs:decimal">
+      <xs:annotation>
+        <xs:documentation>
+          Angle of arrow branches to arrow body (only applies to vector plots)
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="90.0" name="arrowbackangle" type="xs:decimal">
+      <xs:annotation>
+        <xs:documentation>
+          Angle of arrow back lines to branches.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
-  <xs:complexType name="lonplot--function">
+  <xs:complexType mixed="true" name="lonplot--function">
     <xs:annotation>
       <xs:documentation>Curve function</xs:documentation>
     </xs:annotation>
   </xs:complexType>
-  <xs:complexType name="lonplot--data">
+  <xs:complexType mixed="true" name="lonplot--data">
     <xs:annotation>
       <xs:documentation>Curve data</xs:documentation>
     </xs:annotation>
   </xs:complexType>
-  <xs:complexType name="lonplot--tics">
+  <xs:complexType abstract="true" name="lonplot--tics">
     <xs:annotation>
       <xs:documentation>Plot tics</xs:documentation>
     </xs:annotation>
+    <xs:attribute default="border" name="location">
+      <xs:annotation>
+        <xs:documentation>
+          Location of major tic marks
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="border"/>
+          <xs:enumeration value="axis"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="on" name="mirror" type="onoff">
+      <xs:annotation>
+        <xs:documentation>
+          Mirror tics on opposite axis?
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="-10.0" name="start" type="xs:decimal">
+      <xs:annotation>
+        <xs:documentation>
+          Start major tics at
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="1.0" name="increment" type="xs:decimal">
+      <xs:annotation>
+        <xs:documentation>
+          Place a major tic every
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="10.0" name="end" type="xs:decimal">
+      <xs:annotation>
+        <xs:documentation>
+          Stop major tics at
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="0" name="minorfreq" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>
+          Number of minor tics per major tic mark
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="off" name="rotate" type="onoff">
+      <xs:annotation>
+        <xs:documentation>
+          Rotate tic label by 90 degrees if on
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="lonplot--xtics">
     <xs:annotation>
       <xs:documentation>Plot xtics</xs:documentation>
     </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="lonplot--tics">
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="lonplot--ytics">
     <xs:annotation>
       <xs:documentation>Plot ytics</xs:documentation>
     </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="lonplot--tics">
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:element name="parameter">
     <xs:annotation>
@@ -432,6 +836,7 @@
         <xs:element ref="textline"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
       </xs:choice>
+      <xs:attribute name="answer" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="formularesponse">
@@ -445,6 +850,8 @@
         <xs:element ref="textline"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
       </xs:choice>
+      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="samples" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="functionplotresponse">
@@ -541,6 +948,8 @@
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
       </xs:choice>
+      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="type" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="essayresponse">
@@ -566,13 +975,17 @@
         <xs:element ref="textline"/>
         <xs:element ref="textfield"/>
       </xs:choice>
+      <xs:attribute name="url" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="answerdisplay" type="xs:string"/>
+      <xs:attribute name="form" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="hintgroup">
     <xs:annotation>
       <xs:documentation>Hint</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="customhint"/>
         <xs:element ref="formulahint"/>
@@ -584,6 +997,7 @@
         <xs:element ref="reactionhint"/>
         <xs:element ref="organichint"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="stringhint"/>
       </xs:choice>
     </xs:complexType>
@@ -592,7 +1006,7 @@
     <xs:annotation>
       <xs:documentation>Conditional Hint</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="display"/>
@@ -607,11 +1021,13 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
+      <xs:attribute name="on" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="formulahint">
@@ -716,6 +1132,7 @@
         <xs:element name="foilgroup" type="imageresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="max" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="datasubmission">
@@ -755,18 +1172,23 @@
     <xs:annotation>
       <xs:documentation>Large Text Entry Area</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
       </xs:choice>
+      <xs:attribute name="spellcheck" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="textline">
     <xs:annotation>
       <xs:documentation>Single Line Text Entry Area</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="size" type="xs:int"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="optionresponse">
     <xs:annotation>
@@ -778,6 +1200,7 @@
         <xs:element name="foilgroup" type="optionresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="max" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="displayduedate">
@@ -800,6 +1223,7 @@
         <xs:element name="foilgroup" type="radiobuttonresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="max" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="rankresponse">
@@ -812,6 +1236,7 @@
         <xs:element name="foilgroup" type="rankresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="max" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="matchresponse">
@@ -824,6 +1249,7 @@
         <xs:element ref="matchresponse"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="max" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="organicresponse">
@@ -859,6 +1285,12 @@
     <xs:annotation>
       <xs:documentation>Parameters for a response</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="type" type="xs:string"/>
+      <xs:attribute name="default" type="xs:string"/>
+      <xs:attribute name="description" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="display">
     <xs:annotation>
@@ -879,6 +1311,9 @@
     <xs:annotation>
       <xs:documentation>Perl Script Block</xs:documentation>
     </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="type" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="scriptlib">
     <xs:annotation>
@@ -899,7 +1334,7 @@
     <xs:annotation>
       <xs:documentation>Text In Separate Window</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="display"/>
@@ -918,6 +1353,7 @@
         <xs:element ref="script"/>
         <xs:element ref="solved"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
         <xs:element ref="while"/>
@@ -929,7 +1365,7 @@
     <xs:annotation>
       <xs:documentation>Conditional Block</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="customresponse"/>
@@ -965,6 +1401,7 @@
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
@@ -977,7 +1414,7 @@
     <xs:annotation>
       <xs:documentation>Start of Library</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="customresponse"/>
         <xs:element ref="display"/>
@@ -1012,6 +1449,7 @@
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
@@ -1024,7 +1462,7 @@
     <xs:annotation>
       <xs:documentation>Block For When Not Solved</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="customresponse"/>
@@ -1057,6 +1495,7 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
@@ -1069,7 +1508,7 @@
     <xs:annotation>
       <xs:documentation>Problem Part</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="customresponse"/>
@@ -1105,6 +1544,7 @@
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
         <xs:element ref="while"/>
@@ -1126,7 +1566,7 @@
     <xs:annotation>
       <xs:documentation>After Answer Date Block</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="display"/>
@@ -1145,6 +1585,7 @@
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="while"/>
         <xs:element ref="window"/>
@@ -1155,7 +1596,7 @@
     <xs:annotation>
       <xs:documentation>Before Due Date Block</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="customresponse"/>
@@ -1188,6 +1629,7 @@
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
         <xs:element ref="while"/>
@@ -1199,7 +1641,7 @@
     <xs:annotation>
       <xs:documentation>Start of Homework</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="allow"/>
         <xs:element ref="block"/>
@@ -1239,6 +1681,7 @@
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="startpartmarker"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
@@ -1256,7 +1699,7 @@
     <xs:annotation>
       <xs:documentation>Problem Type Block</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="customresponse"/>
@@ -1291,6 +1734,7 @@
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
@@ -1356,7 +1800,7 @@
     <xs:annotation>
       <xs:documentation>Block For After Solved</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="display"/>
@@ -1374,6 +1818,7 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="while"/>
         <xs:element ref="window"/>
@@ -1382,7 +1827,12 @@
   </xs:element>
   <xs:element name="startouttext">
     <xs:annotation>
-      <xs:documentation>Text/HTML Block</xs:documentation>
+      <xs:documentation>Text/HTML Block start</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="endouttext">
+    <xs:annotation>
+      <xs:documentation>Text/HTML Block end</xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:element name="tex">
@@ -1399,7 +1849,7 @@
     <xs:annotation>
       <xs:documentation>While Loop Block</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="display"/>
@@ -1419,6 +1869,7 @@
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
         <xs:element ref="while"/>
@@ -1426,6 +1877,12 @@
       </xs:choice>
     </xs:complexType>
   </xs:element>
+  <xs:simpleType name="onoff">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="on"/>
+      <xs:enumeration value="off"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:element name="gnuplot">
     <xs:annotation>
       <xs:documentation>GnuPlot</xs:documentation>
@@ -1436,11 +1893,288 @@
         <xs:element name="curve" type="lonplot--curve"/>
         <xs:element name="key" type="lonplot--key"/>
         <xs:element name="label" type="lonplot--label"/>
-        <xs:element name="tics" type="lonplot--tics"/>
+        <xs:element name="xtics" type="lonplot--xtics"/>
+        <xs:element name="ytics" type="lonplot--ytics"/>
         <xs:element name="title" type="lonplot--title"/>
         <xs:element name="xlabel" type="lonplot--xlabel"/>
         <xs:element name="ylabel" type="lonplot--ylabel"/>
       </xs:choice>
+      <xs:attribute default="dynamically generated plot" name="alttag" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Brief description of the plot
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="300" name="height" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Height of image (pixels)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="400" name="width" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Width of image (pixels)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="xffffff" name="bgcolor" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Background color of image
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="x000000" name="fgcolor" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Foreground color of image
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="off" name="transparent" type="onoff">
+        <xs:annotation>
+          <xs:documentation>
+            Transparent image
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="on" name="grid" type="onoff">
+        <xs:annotation>
+          <xs:documentation>
+            Display grid
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="off" name="gridlayer" type="onoff">
+        <xs:annotation>
+          <xs:documentation>
+            Display grid front layer over filled boxes or filled curves
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="noborder" name="box_border">
+        <xs:annotation>
+          <xs:documentation>
+            Draw border for boxes
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="border"/>
+            <xs:enumeration value="noborder"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="on" name="border" type="onoff">
+        <xs:annotation>
+          <xs:documentation>
+            Draw border around plot
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="9" name="font">
+        <xs:annotation>
+          <xs:documentation>
+            Font size to use in web output (pts)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="5"/>
+            <xs:maxInclusive value="15"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="sans-serif" name="fontface">
+        <xs:annotation>
+          <xs:documentation>
+            Type of font to use
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="sans-serif"/>
+            <xs:enumeration value="serif"/>
+            <xs:enumeration value="classic"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="100" name="samples">
+        <xs:annotation>
+          <xs:documentation>
+            Number of samples for non-data plots
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="100"/>
+            <xs:maxInclusive value="5000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="middle" name="align">
+        <xs:annotation>
+          <xs:documentation>
+            Alignment for image in HTML
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="right"/>
+            <xs:enumeration value="middle"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="93" name="texwidth" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Width of plot when printed (mm)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="22" name="texfont">
+        <xs:annotation>
+          <xs:documentation>
+            Font size to use in TeX output (pts)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="8"/>
+            <xs:maxInclusive value="36"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="monochrome" name="plotcolor">
+        <xs:annotation>
+          <xs:documentation>
+            Color setting for printing
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="monochrome"/>
+            <xs:enumeration value="color"/>
+            <xs:enumeration value="colour"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="pattern">
+        <xs:annotation>
+          <xs:documentation>
+            Pattern value for boxes
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="6"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="0" name="solid" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            The density of fill style for boxes
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="empty" name="fillstyle">
+        <xs:annotation>
+          <xs:documentation>
+            Filled style for boxes
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="empty"/>
+            <xs:enumeration value="solid"/>
+            <xs:enumeration value="pattern"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="Cartesian" name="plottype">
+        <xs:annotation>
+          <xs:documentation>
+            Plot type
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Cartesian"/>
+            <xs:enumeration value="Polar"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="Cartesian" name="gridtype">
+        <xs:annotation>
+          <xs:documentation>
+            Grid type
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Cartesian"/>
+            <xs:enumeration value="Polar"/>
+            <xs:enumeration value="Linear-Log"/>
+            <xs:enumeration value="Log-Linear"/>
+            <xs:enumeration value="Log-Log"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="default" name="lmargin" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Left margin width (pts)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="default" name="rmargin" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Right margin width (pts)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="default" name="tmargin" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Top margin width (pts)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="default" name="bmargin" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Bottom margin width (pts)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="boxwidth" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Width of boxes, default is auto
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="1" name="major_ticscale" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation>
+            Size of major tic marks (plot coordinates)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="0.5" name="minor_ticscale" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation>
+            Size of minor tic mark (plot coordinates)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="Task">
@@ -1461,7 +2195,7 @@
     <xs:annotation>
       <xs:documentation>Introductory Information</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="display"/>
@@ -1476,6 +2210,7 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
         <xs:element ref="while"/>
@@ -1487,7 +2222,7 @@
     <xs:annotation>
       <xs:documentation>Closing Information</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="display"/>
@@ -1502,6 +2237,7 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
         <xs:element ref="while"/>
@@ -1526,7 +2262,7 @@
     <xs:annotation>
       <xs:documentation>Question Information</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="display"/>
@@ -1541,6 +2277,7 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
         <xs:element ref="while"/>
@@ -1573,7 +2310,7 @@
     <xs:annotation>
       <xs:documentation>Information for the Instance</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="display"/>
@@ -1588,6 +2325,7 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
         <xs:element ref="while"/>
@@ -1610,7 +2348,7 @@
     <xs:annotation>
       <xs:documentation>Criteria Information</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="display"/>
@@ -1625,6 +2363,7 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
         <xs:element ref="while"/>
@@ -1636,7 +2375,7 @@
     <xs:annotation>
       <xs:documentation>Text to display to Grader</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="block"/>
         <xs:element ref="display"/>
@@ -1651,6 +2390,7 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
         <xs:element ref="while"/>
