@@ -160,9 +160,9 @@ sub inputfield {
    } elsif ($type eq 'datetime') {
 #FIXME: y2038?
       unless ($default) { 
-         if (($screen_form_defaults->{$id.'_name'}) && ($screen_form_defaults->{$id.'_time_zone'})) {
+         if (($screen_form_defaults->{$id.'_date'}) && ($screen_form_defaults->{$id.'_time_zone'})) {
             $default=&Apache::lc_ui_localize::inputdate_to_timestamp(
-                  $screen_form_defaults->{$id.'_name'},
+                  $screen_form_defaults->{$id.'_date'},
                   $screen_form_defaults->{$id.'_time_hour'},
                   $screen_form_defaults->{$id.'_time_min'},
                   $screen_form_defaults->{$id.'_time_sec'},
