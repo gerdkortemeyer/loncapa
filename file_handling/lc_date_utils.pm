@@ -19,6 +19,7 @@
 package Apache::lc_date_utils;
 
 use strict;
+
 use Time::y2038;
 use Time::HiRes;
 
@@ -87,6 +88,18 @@ sub str2num {
    }
 }
 
+sub guess_str2num {
+   my ($datestr)=@_;
+   my $time=&str2num($datestr);
+   unless ($time) {
+      my ($day,$month,$year)=&str2date($datestr);
+      if ($year<2000) { $year+=2000; }
+      $time=&str2num("$year-$month-$day 00:00:00");
+   }
+   return $time;
+}
+
+
 # ==== Turn (extended) epoch seconds into string
 #
 sub num2str {
@@ -112,6 +125,26 @@ sub status_date_range {
 
 sub in_date_range {
    return (&status_date_range(@_) eq 'active');
+}
+
+# ==== Turn date strings into day,month,year
+#
+sub str2date {
+   my ($date)=@_;
+   my $day;
+   my $month;
+   my $year;
+#FIXME: other formats?
+   if ($date=~/^(\d+)\.(\d+)\.(\d+)$/) {
+      $day=$1;
+      $month=$2;
+      $year=$3;
+   } elsif ($date=~/^(\d+)\/(\d+)\/(\d+)$/) {
+      $month=$1;
+      $day=$2;
+      $year=$3;
+   }
+   return($day,$month,$year);
 }
 
 1;

@@ -20,6 +20,7 @@ package Apache::lc_ui_localize;
 
 use strict;
 use Apache::lc_localize;
+use Apache::lc_date_utils();
 use Apache::lc_entity_sessions();
 use DateTime;
 use DateTime::TimeZone;
@@ -73,19 +74,7 @@ sub locallocaltime {
 
 sub inputdate_to_timestamp {
    my ($date,$hour,$min,$sec,$ampm,$timezone)=@_;
-   my $day;
-   my $month;
-   my $year;
-#FIXME: other formats?
-   if ($date=~/^(\d+)\.(\d+)\.(\d+)$/) {
-      $day=$1;
-      $month=$2;
-      $year=$3;
-   } elsif ($date=~/^(\d+)\/(\d+)\/(\d+)$/) {
-      $month=$1;
-      $day=$2;
-      $year=$3;
-   }
+   my ($day,$month,$year)=&Apache::lc_date_utils::str2date($date);
    if (&mt('date_format') eq '12') {
       if ($ampm eq 'pm') {
          $hour+=12;
@@ -94,7 +83,9 @@ sub inputdate_to_timestamp {
    if ($hour<10) { $hour='0'.$hour; }
    if ($min<10)  { $min='0'.$min;   }
    if ($sec<10)  { $sec='0'.$sec;   }
-   return DateTime->new(
+   my $datetime;
+   eval {
+      $datetime=DateTime->new(
       year       => $year,
       month      => $month,
       day        => $day,
@@ -102,6 +93,8 @@ sub inputdate_to_timestamp {
       minute     => $min,
       second     => $sec,
       time_zone  => $timezone)->epoch();
+   };
+   return $datetime;
 }
 
 sub all_languages {

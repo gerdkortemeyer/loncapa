@@ -307,8 +307,22 @@ sub evaluate_row {
    if ($associations->{'record'}->{'startdate'}->{'mode'} eq 'default') {
       $userrecord->{'startdate'}=$associations->{'record'}->{'startdate'}->{'default'};
    } else {
+      $userrecord->{'startdate'}=&Apache::lc_date_utils::guess_str2num(
+           (($row->{$associations->{'record'}->{'startdate'}->{'column'}}->{'type'}=~/date/i)?
+            $row->{$associations->{'record'}->{'startdate'}->{'column'}}->{'value'}:
+            $row->{$associations->{'record'}->{'startdate'}->{'column'}}->{'unformatted'}));
    }
 # Get enddate
+   if ($associations->{'record'}->{'enddate'}->{'mode'} eq 'default') {
+      $userrecord->{'enddate'}=$associations->{'record'}->{'enddate'}->{'default'};
+   } else {
+      $userrecord->{'enddate'}=&Apache::lc_date_utils::guess_str2num(
+           (($row->{$associations->{'record'}->{'enddate'}->{'column'}}->{'type'}=~/date/i)?
+            $row->{$associations->{'record'}->{'enddate'}->{'column'}}->{'value'}:
+            $row->{$associations->{'record'}->{'enddate'}->{'column'}}->{'unformatted'}));
+
+   }
+
    return ($username,$domain,$userrecord);
 }
 
