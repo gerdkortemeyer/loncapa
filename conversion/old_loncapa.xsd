@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:lang="en">
+  <xs:simpleType name="yesno">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="yes"/>
+      <xs:enumeration value="no"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="onoff">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="on"/>
+      <xs:enumeration value="off"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="caparesponse--answergroup">
     <xs:annotation>
       <xs:documentation>Collection of Answers</xs:documentation>
@@ -6,6 +18,14 @@
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="answer" type="caparesponse--answer"/>
     </xs:choice>
+    <xs:attribute default="ordered" name="type">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ordered"/>
+          <xs:enumeration value="unordered"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="caparesponse--answer">
     <xs:annotation>
@@ -15,29 +35,41 @@
       <xs:element name="vector" type="caparesponse--vector"/>
       <xs:element name="value" type="caparesponse--value"/>
     </xs:choice>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute default="ordered" name="type">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ordered"/>
+          <xs:enumeration value="unordered"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:simpleType name="caparesponse--value">
     <xs:annotation>
       <xs:documentation>Value</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-    </xs:restriction>
+        </xs:restriction>
   </xs:simpleType>
-  <xs:complexType name="caparesponse--vector">
+  <xs:simpleType name="caparesponse--vector">
     <xs:annotation>
       <xs:documentation>Vector</xs:documentation>
     </xs:annotation>
-  </xs:complexType>
-  <xs:complexType name="customhint--answer">
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType mixed="true" name="customhint--answer">
     <xs:annotation>
       <xs:documentation>Hint algorithm</xs:documentation>
     </xs:annotation>
     <xs:attribute name="type" type="xs:string"/>
   </xs:complexType>
-  <xs:complexType name="mathhint--answer">
+  <xs:complexType mixed="true" name="mathhint--answer">
     <xs:annotation>
       <xs:documentation>Hint algorithm</xs:documentation>
     </xs:annotation>
+    <xs:attribute name="type" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="imageresponse--conceptgroup">
     <xs:annotation>
@@ -57,6 +89,7 @@
       <xs:element name="rectangle" type="imageresponse--rectangle"/>
       <xs:element name="text" type="imageresponse--text"/>
     </xs:choice>
+    <xs:attribute name="name" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="imageresponse--foilgroup">
     <xs:annotation>
@@ -67,22 +100,22 @@
       <xs:element name="foil" type="imageresponse--foil"/>
     </xs:choice>
   </xs:complexType>
-  <xs:complexType name="imageresponse--image">
+  <xs:complexType mixed="true" name="imageresponse--image">
     <xs:annotation>
       <xs:documentation>Imageresponse Image</xs:documentation>
     </xs:annotation>
   </xs:complexType>
-  <xs:complexType name="imageresponse--rectangle">
+  <xs:complexType mixed="true" name="imageresponse--rectangle">
     <xs:annotation>
       <xs:documentation>Rectangular area in image</xs:documentation>
     </xs:annotation>
   </xs:complexType>
-  <xs:complexType name="imageresponse--polygon">
+  <xs:complexType mixed="true" name="imageresponse--polygon">
     <xs:annotation>
       <xs:documentation>Polygonal area in image</xs:documentation>
     </xs:annotation>
   </xs:complexType>
-  <xs:complexType name="imageresponse--text" mixed="true">
+  <xs:complexType mixed="true" name="imageresponse--text">
     <xs:annotation>
       <xs:documentation>Text to describe option</xs:documentation>
     </xs:annotation>
@@ -107,16 +140,17 @@
       <xs:element ref="window"/>
     </xs:choice>
   </xs:complexType>
-  <xs:complexType name="customresponse--answer">
+  <xs:complexType mixed="true" name="customresponse--answer">
     <xs:annotation>
       <xs:documentation>Answer algorithm</xs:documentation>
     </xs:annotation>
     <xs:attribute name="type" type="xs:string"/>
   </xs:complexType>
-  <xs:complexType name="mathresponse--answer">
+  <xs:complexType mixed="true" name="mathresponse--answer">
     <xs:annotation>
       <xs:documentation>Answer algorithm</xs:documentation>
     </xs:annotation>
+    <xs:attribute name="type" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="optionresponse--conceptgroup">
     <xs:annotation>
@@ -132,7 +166,7 @@
       <xs:documentation>Draw Option List</xs:documentation>
     </xs:annotation>
   </xs:complexType>
-  <xs:complexType name="optionresponse--foil" mixed="true">
+  <xs:complexType mixed="true" name="optionresponse--foil">
     <xs:annotation>
       <xs:documentation>Option response foil</xs:documentation>
     </xs:annotation>
@@ -159,6 +193,17 @@
     </xs:choice>
     <xs:attribute name="name" type="xs:string"/>
     <xs:attribute name="value" type="xs:string"/>
+    <xs:attribute name="options" type="xs:string"/>
+    <xs:attribute default="no" name="randomize" type="xs:string"/>
+    <xs:attribute default="random" name="location">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="random"/>
+          <xs:enumeration value="top"/>
+          <xs:enumeration value="bottom"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="optionresponse--foilgroup">
     <xs:annotation>
@@ -169,6 +214,9 @@
       <xs:element name="foil" type="optionresponse--foil"/>
     </xs:choice>
     <xs:attribute name="options" type="xs:string"/>
+    <xs:attribute name="texoptions" type="xs:string"/>
+    <xs:attribute name="checkboxvalue" type="xs:string"/>
+    <xs:attribute name="checkboxoptions" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="radiobuttonresponse--conceptgroup">
     <xs:annotation>
@@ -179,7 +227,7 @@
     </xs:choice>
     <xs:attribute name="concept" type="xs:string"/>
   </xs:complexType>
-  <xs:complexType name="radiobuttonresponse--foil" mixed="true">
+  <xs:complexType mixed="true" name="radiobuttonresponse--foil">
     <xs:annotation>
       <xs:documentation>Foil</xs:documentation>
     </xs:annotation>
@@ -205,6 +253,16 @@
     </xs:choice>
     <xs:attribute name="name" type="xs:string"/>
     <xs:attribute name="value" type="xs:string"/>
+    <xs:attribute name="randomize" type="xs:string"/>
+    <xs:attribute default="random" name="location">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="random"/>
+          <xs:enumeration value="top"/>
+          <xs:enumeration value="bottom"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="radiobuttonresponse--foilgroup">
     <xs:annotation>
@@ -224,7 +282,7 @@
     </xs:choice>
     <xs:attribute name="concept" type="xs:string"/>
   </xs:complexType>
-  <xs:complexType name="rankresponse--foil" mixed="true">
+  <xs:complexType mixed="true" name="rankresponse--foil">
     <xs:annotation>
       <xs:documentation>Foil</xs:documentation>
     </xs:annotation>
@@ -250,6 +308,16 @@
     </xs:choice>
     <xs:attribute name="name" type="xs:string"/>
     <xs:attribute name="value" type="xs:string"/>
+    <xs:attribute name="randomize" type="xs:string"/>
+    <xs:attribute default="random" name="location">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="random"/>
+          <xs:enumeration value="top"/>
+          <xs:enumeration value="bottom"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="rankresponse--foilgroup">
     <xs:annotation>
@@ -270,7 +338,7 @@
     </xs:choice>
     <xs:attribute name="concept" type="xs:string"/>
   </xs:complexType>
-  <xs:complexType name="matchresponse--foil" mixed="true">
+  <xs:complexType mixed="true" name="matchresponse--foil">
     <xs:annotation>
       <xs:documentation>Foil</xs:documentation>
     </xs:annotation>
@@ -296,6 +364,16 @@
     </xs:choice>
     <xs:attribute name="name" type="xs:string"/>
     <xs:attribute name="value" type="xs:string"/>
+    <xs:attribute name="randomize" type="xs:string"/>
+    <xs:attribute default="random" name="location">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="random"/>
+          <xs:enumeration value="top"/>
+          <xs:enumeration value="bottom"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="matchresponse--foilgroup">
     <xs:annotation>
@@ -307,7 +385,7 @@
     </xs:choice>
     <xs:attribute name="options" type="xs:string"/>
   </xs:complexType>
-  <xs:complexType name="matchresponse--item" mixed="true">
+  <xs:complexType mixed="true" name="matchresponse--item">
     <xs:annotation>
       <xs:documentation>Item</xs:documentation>
     </xs:annotation>
@@ -332,6 +410,16 @@
       <xs:element ref="window"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="randomize" type="xs:string"/>
+    <xs:attribute default="random" name="location">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="random"/>
+          <xs:enumeration value="top"/>
+          <xs:enumeration value="bottom"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="matchresponse--itemgroup">
     <xs:annotation>
@@ -340,6 +428,35 @@
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="item" type="matchresponse--item"/>
     </xs:choice>
+    <xs:attribute default="yes" name="randomize" type="yesno"/>
+    <xs:attribute default="top" name="location">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="top"/>
+          <xs:enumeration value="bottom"/>
+          <xs:enumeration value="left"/>
+          <xs:enumeration value="right"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="vertical" name="direction">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="vertical"/>
+          <xs:enumeration value="horizontal"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="columns">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="1"/>
+          <xs:enumeration value="2"/>
+          <xs:enumeration value="3"/>
+          <xs:enumeration value="4"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="randomlabel--labelgroup">
     <xs:annotation>
@@ -349,13 +466,41 @@
       <xs:element name="label" type="randomlabel--label"/>
       <xs:element name="location" type="randomlabel--location"/>
     </xs:choice>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute default="text" name="type">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="text"/>
+          <xs:enumeration value="image"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="\normalsize" name="TeXsize">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="\tiny"/>
+          <xs:enumeration value="\scriptsize"/>
+          <xs:enumeration value="\footnotesize"/>
+          <xs:enumeration value="\small"/>
+          <xs:enumeration value="\normalsize"/>
+          <xs:enumeration value="\large"/>
+          <xs:enumeration value="\Large"/>
+          <xs:enumeration value="\LARGE"/>
+          <xs:enumeration value="\huge"/>
+          <xs:enumeration value="\Huge"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="randomlabel--location">
     <xs:annotation>
       <xs:documentation>Label Location</xs:documentation>
     </xs:annotation>
+    <xs:attribute name="x" type="xs:int" use="required"/>
+    <xs:attribute name="y" type="xs:int" use="required"/>
+    <xs:attribute name="value" type="xs:string"/>
   </xs:complexType>
-  <xs:complexType name="randomlabel--label" mixed="true">
+  <xs:complexType mixed="true" name="randomlabel--label">
     <xs:annotation>
       <xs:documentation>Label Text</xs:documentation>
     </xs:annotation>
@@ -378,8 +523,9 @@
       <xs:element ref="web"/>
       <xs:element ref="while"/>
     </xs:choice>
+    <xs:attribute name="description" type="xs:string"/>
   </xs:complexType>
-  <xs:complexType name="lonplot--label">
+  <xs:complexType mixed="true" name="lonplot--label">
     <xs:annotation>
       <xs:documentation>Plot Label</xs:documentation>
     </xs:annotation>
@@ -424,21 +570,21 @@
       <xs:documentation>Plot Title</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-    </xs:restriction>
+        </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="lonplot--xlabel">
     <xs:annotation>
       <xs:documentation>Plot x-label</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-    </xs:restriction>
+        </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="lonplot--ylabel">
     <xs:annotation>
       <xs:documentation>Plot y-label</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-    </xs:restriction>
+        </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="lonplot--axis">
     <xs:annotation>
@@ -808,7 +954,7 @@
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="lonplot--tics">
-      </xs:extension>
+            </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="lonplot--ytics">
@@ -817,13 +963,19 @@
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="lonplot--tics">
-      </xs:extension>
+            </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="parameter">
     <xs:annotation>
       <xs:documentation>Parameters for a part</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="type" type="xs:string"/>
+      <xs:attribute name="description" type="xs:string"/>
+      <xs:attribute name="default" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="numericalresponse">
     <xs:annotation>
@@ -836,7 +988,11 @@
         <xs:element ref="textline"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="incorrect" type="xs:string"/>
+      <xs:attribute name="unit" type="xs:string"/>
+      <xs:attribute name="format" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="formularesponse">
@@ -850,8 +1006,10 @@
         <xs:element ref="textline"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
       <xs:attribute name="samples" type="xs:string"/>
+      <xs:attribute name="preprocess" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="functionplotresponse">
@@ -864,32 +1022,87 @@
         <xs:element ref="functionplotruleset"/>
         <xs:element ref="hintgroup"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="width" type="xs:int"/>
+      <xs:attribute name="height" type="xs:int"/>
+      <xs:attribute name="xlabel" type="xs:string"/>
+      <xs:attribute name="xmin" type="xs:decimal"/>
+      <xs:attribute name="xmax" type="xs:decimal"/>
+      <xs:attribute default="yes" name="xaxisvisible" type="yesno"/>
+      <xs:attribute name="ylabel" type="xs:string"/>
+      <xs:attribute name="ymin" type="xs:decimal"/>
+      <xs:attribute name="ymax" type="xs:decimal"/>
+      <xs:attribute default="yes" name="yaxisvisible" type="yesno"/>
+      <xs:attribute default="yes" name="gridvisible" type="yesno"/>
+      <xs:attribute name="answerdisplay" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="spline">
     <xs:annotation>
       <xs:documentation>Spline</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="index" type="xs:int"/>
+      <xs:attribute name="order">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="2"/>
+            <xs:maxInclusive value="8"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="initx" type="xs:decimal"/>
+      <xs:attribute name="inity" type="xs:decimal"/>
+      <xs:attribute name="scalex" type="xs:decimal"/>
+      <xs:attribute name="scaley" type="xs:decimal"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="backgroundplot">
     <xs:annotation>
       <xs:documentation>Background Function Plot</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="function" type="xs:string"/>
+      <xs:attribute name="xinitial" type="xs:decimal"/>
+      <xs:attribute name="xfinal" type="xs:decimal"/>
+      <xs:attribute name="label" type="xs:string"/>
+      <xs:attribute name="color" type="xs:string"/>
+      <xs:attribute default="yes" name="fixed" type="yesno"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="plotobject">
     <xs:annotation>
       <xs:documentation>Plot Object</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="label" type="xs:string"/>
+      <xs:attribute name="x" type="xs:decimal"/>
+      <xs:attribute name="y" type="xs:decimal"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="plotvector">
     <xs:annotation>
       <xs:documentation>Plot Vector</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="label" type="xs:string"/>
+      <xs:attribute name="tailx" type="xs:decimal"/>
+      <xs:attribute name="taily" type="xs:decimal"/>
+      <xs:attribute name="tipx" type="xs:decimal"/>
+      <xs:attribute name="tipy" type="xs:decimal"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="drawvectorsum">
     <xs:annotation>
       <xs:documentation>Draw Vector Sum</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="label" type="xs:string"/>
+      <xs:attribute name="tailx" type="xs:decimal"/>
+      <xs:attribute name="taily" type="xs:decimal"/>
+      <xs:attribute default="yes" name="showvalue" type="yesno"/>
+      <xs:attribute name="vectorlist" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="functionplotruleset">
     <xs:annotation>
@@ -922,21 +1135,56 @@
     <xs:annotation>
       <xs:documentation>Function Plot Graph Rule</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="index" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="functionplotvectorrule">
     <xs:annotation>
       <xs:documentation>Function Plot Vector Rule</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="index" type="xs:string"/>
+      <xs:attribute name="vector" type="xs:string"/>
+      <xs:attribute name="attachpoint" type="xs:string"/>
+      <xs:attribute name="notattachpoint" type="xs:string"/>
+      <xs:attribute name="tailpoint" type="xs:string"/>
+      <xs:attribute name="tippoint" type="xs:string"/>
+      <xs:attribute name="nottailpoint" type="xs:string"/>
+      <xs:attribute name="nottippoint" type="xs:string"/>
+      <xs:attribute name="length" type="xs:string"/>
+      <xs:attribute name="lengtherror" type="xs:string"/>
+      <xs:attribute name="angle" type="xs:string"/>
+      <xs:attribute name="angleerror" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="functionplotvectorsumrule">
     <xs:annotation>
       <xs:documentation>Function Plot Vector Sum Rule</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="index" type="xs:string"/>
+      <xs:attribute name="vectors" type="xs:string"/>
+      <xs:attribute name="length" type="xs:string"/>
+      <xs:attribute name="lengtherror" type="xs:string"/>
+      <xs:attribute name="angle" type="xs:string"/>
+      <xs:attribute name="angleerror" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="functionplotcustomrule">
     <xs:annotation>
       <xs:documentation>Function Plot Custom Rule</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element name="answer">
+          <xs:complexType mixed="true">
+            <xs:attribute name="type" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+      <xs:attribute name="index" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="stringresponse">
     <xs:annotation>
@@ -949,7 +1197,19 @@
         <xs:element ref="textline"/>
       </xs:choice>
       <xs:attribute name="answer" type="xs:string"/>
-      <xs:attribute name="type" type="xs:string"/>
+      <xs:attribute default="cs" name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="cs"/>
+            <xs:enumeration value="ci"/>
+            <xs:enumeration value="mc"/>
+            <xs:enumeration value="re"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="answerdisplay" type="xs:string"/>
+      <xs:attribute name="preprocess" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="essayresponse">
@@ -963,6 +1223,7 @@
         <xs:element ref="textfield"/>
         <xs:element ref="textline"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="externalresponse">
@@ -975,10 +1236,11 @@
         <xs:element ref="textline"/>
         <xs:element ref="textfield"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="url" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
-      <xs:attribute name="answerdisplay" type="xs:string"/>
       <xs:attribute name="form" type="xs:string"/>
+      <xs:attribute name="answerdisplay" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="hintgroup">
@@ -1000,6 +1262,7 @@
         <xs:element ref="endouttext"/>
         <xs:element ref="stringhint"/>
       </xs:choice>
+      <xs:attribute default="no" name="showoncorrect" type="yesno"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="hintpart">
@@ -1038,6 +1301,10 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="samples" type="xs:string"/>
+      <xs:attribute name="preprocess" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="numericalhint">
@@ -1048,6 +1315,11 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="unit" type="xs:string"/>
+      <xs:attribute name="format" type="xs:string"/>
+      <xs:attribute name="preprocess" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="reactionhint">
@@ -1058,6 +1330,8 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="organichint">
@@ -1068,6 +1342,8 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="optionhint">
@@ -1078,6 +1354,9 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="concept" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="radiobuttonhint">
@@ -1088,6 +1367,8 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="stringhint">
@@ -1098,6 +1379,19 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute default="cs" name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="cs"/>
+            <xs:enumeration value="ci"/>
+            <xs:enumeration value="mc"/>
+            <xs:enumeration value="re"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="preprocess" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="customhint">
@@ -1109,6 +1403,7 @@
         <xs:element ref="responseparam"/>
         <xs:element name="answer" type="customhint--answer"/>
       </xs:choice>
+      <xs:attribute name="name" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="mathhint">
@@ -1120,6 +1415,16 @@
         <xs:element ref="responseparam"/>
         <xs:element name="answer" type="mathhint--answer"/>
       </xs:choice>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute default="maxima" name="cas">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="maxima"/>
+            <xs:enumeration value="R"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="args" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="imageresponse">
@@ -1152,6 +1457,8 @@
         <xs:element ref="textfield"/>
         <xs:element ref="textline"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="answerdisplay" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="mathresponse">
@@ -1166,6 +1473,18 @@
         <xs:element ref="textfield"/>
         <xs:element ref="textline"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="answerdisplay" type="xs:string"/>
+      <xs:attribute default="maxima" name="cas">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="maxima"/>
+            <xs:enumeration value="R"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="args" type="xs:string"/>
+      <xs:attribute name="libraries" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="textfield">
@@ -1179,6 +1498,9 @@
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
       </xs:choice>
+      <xs:attribute name="rows" type="xs:int"/>
+      <xs:attribute name="cols" type="xs:int"/>
+      <xs:attribute name="addchars" type="xs:string"/>
       <xs:attribute name="spellcheck" type="xs:string"/>
     </xs:complexType>
   </xs:element>
@@ -1188,6 +1510,9 @@
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="size" type="xs:int"/>
+      <xs:attribute name="addchars" type="xs:string"/>
+      <xs:attribute default="no" name="readonly" type="yesno"/>
+      <xs:attribute name="spellcheck" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="optionresponse">
@@ -1200,13 +1525,27 @@
         <xs:element name="foilgroup" type="optionresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="max" type="xs:int"/>
+      <xs:attribute default="yes" name="randomize" type="yesno"/>
+      <xs:attribute default="horizontal" name="TeXlayout">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="horizontal"/>
+            <xs:enumeration value="vertical"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="displayduedate">
     <xs:annotation>
       <xs:documentation>Display Due Date</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="style" type="xs:string"/>
+      <xs:attribute name="format" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="displaytitle">
     <xs:annotation>
@@ -1223,7 +1562,17 @@
         <xs:element name="foilgroup" type="radiobuttonresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="max" type="xs:int"/>
+      <xs:attribute default="yes" name="randomize" type="yesno"/>
+      <xs:attribute default="vertical" name="direction">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="vertical"/>
+            <xs:enumeration value="horizontal"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="rankresponse">
@@ -1236,7 +1585,9 @@
         <xs:element name="foilgroup" type="rankresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="max" type="xs:int"/>
+      <xs:attribute default="yes" name="randomize" type="yesno"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="matchresponse">
@@ -1249,7 +1600,9 @@
         <xs:element ref="matchresponse"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="max" type="xs:int"/>
+      <xs:attribute default="yes" name="randomize" type="yesno"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="organicresponse">
@@ -1262,6 +1615,22 @@
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute default="autoez" name="options">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="autoez"/>
+            <xs:enumeration value="multipart"/>
+            <xs:enumeration value="nostereo"/>
+            <xs:enumeration value="reaction"/>
+            <xs:enumeration value="number"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="molecule" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="jmeanswer" type="xs:string"/>
+      <xs:attribute name="width" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="reactionresponse">
@@ -1274,12 +1643,28 @@
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="initial" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="organicstructure">
     <xs:annotation>
       <xs:documentation>Organic Structure</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="width" type="xs:int"/>
+      <xs:attribute name="texwidth" type="xs:decimal"/>
+      <xs:attribute name="molecule" type="xs:string"/>
+      <xs:attribute default="reaction" name="options">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="reaction"/>
+            <xs:enumeration value="border"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
   </xs:element>
   <xs:element name="responseparam">
     <xs:annotation>
@@ -1292,7 +1677,7 @@
       <xs:attribute name="description" type="xs:string"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="display">
+  <xs:element name="display" type="xs:string">
     <xs:annotation>
       <xs:documentation>Display Script Result Block</xs:documentation>
     </xs:annotation>
@@ -1301,8 +1686,12 @@
     <xs:annotation>
       <xs:documentation>Import a File</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="importmode" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
-  <xs:element name="parserlib">
+  <xs:element name="parserlib" type="xs:string">
     <xs:annotation>
       <xs:documentation>Import Tag Definitions</xs:documentation>
     </xs:annotation>
@@ -1315,7 +1704,7 @@
       <xs:attribute name="type" type="xs:string"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="scriptlib">
+  <xs:element name="scriptlib" type="xs:string">
     <xs:annotation>
       <xs:documentation>Import Script Library</xs:documentation>
     </xs:annotation>
@@ -1324,11 +1713,45 @@
     <xs:annotation>
       <xs:documentation>Image</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="src" type="xs:string"/>
+      <xs:attribute name="alt" type="xs:string"/>
+      <xs:attribute name="width" type="xs:int"/>
+      <xs:attribute name="height" type="xs:int"/>
+      <xs:attribute name="TeXwidth" type="xs:decimal"/>
+      <xs:attribute name="TeXheight" type="xs:decimal"/>
+      <xs:attribute name="align">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="bottom"/>
+            <xs:enumeration value="middle"/>
+            <xs:enumeration value="top"/>
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="right"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="TeXwrap">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="none"/>
+            <xs:enumeration value="parbox"/>
+            <xs:enumeration value="parpic"/>
+            <xs:enumeration value="wrapfigure"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="no" name="encrypturl" type="yesno"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="meta">
     <xs:annotation>
       <xs:documentation>Custom Metadata</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="content" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="window">
     <xs:annotation>
@@ -1359,6 +1782,10 @@
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
+      <xs:attribute name="linktext" type="xs:string"/>
+      <xs:attribute name="height" type="xs:int"/>
+      <xs:attribute name="width" type="xs:int"/>
+      <xs:attribute name="printtext" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="block">
@@ -1408,6 +1835,7 @@
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
+      <xs:attribute name="condition" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="library">
@@ -1550,6 +1978,8 @@
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="display" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="startpartmarker">
@@ -1694,6 +2124,9 @@
     <xs:annotation>
       <xs:documentation>File Dependencies</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="src" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="problemtype">
     <xs:annotation>
@@ -1741,6 +2174,28 @@
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
+      <xs:attribute default="show" name="mode">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="show"/>
+            <xs:enumeration value="hide"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="exam" name="for">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="exam"/>
+            <xs:enumeration value="survey"/>
+            <xs:enumeration value="surveycred"/>
+            <xs:enumeration value="anonsurvey"/>
+            <xs:enumeration value="anonsurveycred"/>
+            <xs:enumeration value="problem"/>
+            <xs:enumeration value="practice"/>
+            <xs:enumeration value="randomizetry"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="randomlabel">
@@ -1752,6 +2207,10 @@
         <xs:element ref="imageresponse"/>
         <xs:element name="labelgroup" type="randomlabel--labelgroup"/>
       </xs:choice>
+      <xs:attribute name="bgimg" type="xs:string"/>
+      <xs:attribute name="width" type="xs:int"/>
+      <xs:attribute name="height" type="xs:int"/>
+      <xs:attribute name="texwidth" type="xs:decimal"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="randomlist">
@@ -1794,6 +2253,7 @@
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
+      <xs:attribute name="show" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="solved">
@@ -1835,12 +2295,12 @@
       <xs:documentation>Text/HTML Block end</xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:element name="tex">
+  <xs:element name="tex" type="xs:string">
     <xs:annotation>
       <xs:documentation>TeX Only Block</xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:element name="web">
+  <xs:element name="web" type="xs:string">
     <xs:annotation>
       <xs:documentation>Web Only Block</xs:documentation>
     </xs:annotation>
@@ -1875,14 +2335,9 @@
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
+      <xs:attribute name="condition" type="xs:string"/>
     </xs:complexType>
   </xs:element>
-  <xs:simpleType name="onoff">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="on"/>
-      <xs:enumeration value="off"/>
-    </xs:restriction>
-  </xs:simpleType>
   <xs:element name="gnuplot">
     <xs:annotation>
       <xs:documentation>GnuPlot</xs:documentation>
@@ -2189,6 +2644,7 @@
         <xs:element ref="Criteria"/>
         <xs:element ref="ClosingParagraph"/>
       </xs:choice>
+      <xs:attribute name="OptionalRequired" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="IntroParagraph">
@@ -2256,6 +2712,16 @@
         <xs:element ref="Question"/>
         <xs:element ref="Criteria"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute default="Y" name="Mandatory">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Y"/>
+            <xs:enumeration value="N"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="OptionalRequired" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="QuestionText">
@@ -2293,6 +2759,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="Instance"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="Instance">
@@ -2304,6 +2771,9 @@
         <xs:element ref="InstanceText"/>
         <xs:element ref="Criteria"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute default="no" name="Disabled" type="yesno"/>
+      <xs:attribute name="OptionalRequired" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="InstanceText">
@@ -2342,6 +2812,15 @@
         <xs:element ref="GraderNote"/>
         <xs:element ref="CriteriaText"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute default="Y" name="Mandatory">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Y"/>
+            <xs:enumeration value="N"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="CriteriaText">
