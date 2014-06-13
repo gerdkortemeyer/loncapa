@@ -216,6 +216,14 @@ use utf8;
 
 'Override existing account authentication settings' => 'Überschreibe existierende Authentifizierungseinstellungen',
 
+'Selections will not override existing ID numbers.' => 'Die Auswahlen überschreiben nicht existierende Matrikelnummern.',
+
+'Override existing ID numbers' => 'Überschreibe existierende Matrikelnummern',
+
+'Selections will not override existing names.' => 'Die Auswahlen überschreiben nicht existierende Namen.',
+
+'Override existing names' => 'Überschreibe existierende Namen',
+
 'Username and EMail' => 'Benutzerkennung und EMail',
 
 'EMail' => 'EMail',

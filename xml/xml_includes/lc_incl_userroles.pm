@@ -90,12 +90,41 @@ sub incl_spreadsheet_finalize_items {
 #FIXME: debug
          $output.="<br />Record: $username domain $domain entity $entity <pre>".Dumper($profile)."\n".Dumper($associations)."</pre>";
 # Flags if fixups are needed
+         my $fixup_flag=0;
          my $problems='';
 # Collect all we know
          my $userrecord=&evaluate_row($sheets->{$worksheet}->{'cells'}->{$row},$associations);
 #FIXME: debug
          $problems.="<pre>".Dumper($userrecord)."</pre>\n";
-         if ($problems) {
+# Now check if between profile and spreadsheet we have all we need
+         my $firstname=(($profile->{'firstname'})?$profile->{'firstname'}:$userrecord->{'firstname'});
+         my $middlename=(($profile->{'middlename'})?$profile->{'middlename'}:$userrecord->{'middlename'});
+         my $lastname=(($profile->{'lastname'})?$profile->{'lastname'}:$userrecord->{'lastname'});
+         my $suffix=(($profile->{'suffix'})?$profile->{'suffix'}:$userrecord->{'suffix'});
+         my $pid=(($profile->{'pid'})?$profile->{'pid'}:$userrecord->{'pid'});
+         my $section=$userrecord->{'section'};
+         my $role=$userrecord->{'role'};
+         my $startdate=$userrecord->{'startdate'};
+         my $enddate=$userrecord->{'enddate'};
+         my $password=$userrecord->{'password'};
+# Prepare problem output, even though we might not need it
+         $problems.="<h2>$username $domain $firstname $lastname</h2>";
+         unless ($lastname) {
+            $problems.='lastnameinput';
+            $fixup_flag=1;
+         }
+         unless ($firstname) {
+            $problems.='firstnameinput';
+            $fixup_flag=1;
+         }
+         unless ($entity) {
+            unless ($password) {
+               $problems.='passwordinput';
+               $fixup_flag=1;
+            }
+         }
+
+         if ($fixup_flag) {
 # Wow, there is a problem, we need to ask the user
             $output.=$problems;
 # Okay, remember where we were, and we are out of here
@@ -322,7 +351,6 @@ sub evaluate_row {
             $row->{$associations->{'record'}->{'enddate'}->{'column'}}->{'unformatted'}));
 
    }
-
    return ($username,$domain,$userrecord);
 }
 

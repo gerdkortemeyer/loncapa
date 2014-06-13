@@ -39,10 +39,26 @@
 <allowed action="modify_auth" realm="course">
 <lcformtableinput type="checkbox" description="Override existing account authentication settings" id="overrideauth" />
 </allowed>
+<allowed action="modify_pid" realm="course">
+<lcformtableinput type="checkbox" description="Override existing ID numbers" id="overridepid" />
+</allowed>
+<allowed action="modify_name" realm="course">
+<lcformtableinput type="checkbox" description="Override existing names" id="overridename" />
+</allowed>
 </lcformtable>
 <notallowed action="modify_auth" realm="course">
 <p>
 <span class="lcstandard"><localize>Selections will not override existing account authentication settings.</localize></span>
+</p>
+</notallowed>
+<notallowed action="modify_pid" realm="course">
+<p>
+<span class="lcstandard"><localize>Selections will not override existing ID numbers.</localize></span>
+</p>
+</notallowed>
+<notallowed action="modify_name" realm="course">
+<p>
+<span class="lcstandard"><localize>Selections will not override existing names.</localize></span>
 </p>
 </notallowed>
 <lcformtrigger id="storebutton" description="Store" />
