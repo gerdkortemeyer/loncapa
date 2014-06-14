@@ -80,45 +80,42 @@ sub incl_spreadsheet_finalize_items {
          my ($username,$domain,$userrecord)=&evaluate_row($sheets->{$worksheet}->{'cells'}->{$row},$associations);
 # No username? Bad, skip this
          unless ($username) { next; }
-# Try to determine the entity. Existing users would have this
-         my $entity=&Apache::lc_entity_users::username_to_entity($username,$domain);
-# Load profile, if existing
-         my $profile=undef;
-         if ($entity) {
-            $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
-         }
-#FIXME: debug
-         $output.="<br />Record: $username domain $domain entity $entity <pre>".Dumper($profile)."\n".Dumper($associations)."</pre>";
 # Flags if fixups are needed
          my $fixup_flag=0;
          my $problems='';
-# Collect all we know
+# Collect all we know from the spreadsheet
          my $userrecord=&evaluate_row($sheets->{$worksheet}->{'cells'}->{$row},$associations);
-#FIXME: debug
-         $problems.="<pre>".Dumper($userrecord)."</pre>\n";
-# Now check if between profile and spreadsheet we have all we need
-         my $firstname=(($profile->{'firstname'})?$profile->{'firstname'}:$userrecord->{'firstname'});
-         my $middlename=(($profile->{'middlename'})?$profile->{'middlename'}:$userrecord->{'middlename'});
-         my $lastname=(($profile->{'lastname'})?$profile->{'lastname'}:$userrecord->{'lastname'});
-         my $suffix=(($profile->{'suffix'})?$profile->{'suffix'}:$userrecord->{'suffix'});
-         my $pid=(($profile->{'pid'})?$profile->{'pid'}:$userrecord->{'pid'});
-         my $section=$userrecord->{'section'};
-         my $role=$userrecord->{'role'};
-         my $startdate=$userrecord->{'startdate'};
-         my $enddate=$userrecord->{'enddate'};
-         my $password=$userrecord->{'password'};
+# Collect what we already know, if anything
+         my $entity=&Apache::lc_entity_users::username_to_entity($username,$domain);
+         if ($entity) {
+            my $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
+# Merge, according to settings and privileges
+            foreach my $namepart ('firstname','middlename','lastname','suffix') {
+               if ($userrecord->{$namepart}) {
+                  unless (&allowed_course('modify_name',undef,&Apache::lc_entity_sessions::course_entity_domain())) {
+                     $userrecord->{$namepart}=$profile->{$namepart};
+                  }
+               } else {
+                  $userrecord->{$namepart}=$profile->{$namepart};
+               }
+            }
+            
+$content{'overrideauth'};
+$content{'overridepid'};
+$content{'overridename'};
+         }
 # Prepare problem output, even though we might not need it
-         $problems.="<h2>$username $domain $firstname $lastname</h2>";
-         unless ($lastname) {
+         $problems.="<h2>$username $domain ".$userrecord->{'firstname'}.' '.$userrecord->{'lastname'}."</h2>";
+         unless ($userrecord->{'lastname'}) {
             $problems.='lastnameinput';
             $fixup_flag=1;
          }
-         unless ($firstname) {
+         unless ($userrecord->{'firstname'}) {
             $problems.='firstnameinput';
             $fixup_flag=1;
          }
          unless ($entity) {
-            unless ($password) {
+            unless ($userrecord->{'$password'}) {
                $problems.='passwordinput';
                $fixup_flag=1;
             }
@@ -185,25 +182,12 @@ sub evaluate_associations {
          ($associations->{'record'}->{'username'}->{'sheet'},
          $associations->{'record'}->{'username'}->{'column'})=&sheet_column($key);
       }
-      if ($content{$key} eq 'firstname') {
-         ($associations->{'record'}->{'name'}->{'firstname'}->{'sheet'},
-          $associations->{'record'}->{'name'}->{'firstname'}->{'column'})=&sheet_column($key);
-         $associations->{'record'}->{'name'}->{'mode'}='individual';
-      }
-      if ($content{$key} eq 'middlename') {
-         ($associations->{'record'}->{'name'}->{'middlename'}->{'sheet'},
-          $associations->{'record'}->{'name'}->{'middlename'}->{'column'})=&sheet_column($key);
-         $associations->{'record'}->{'name'}->{'mode'}='individual';
-      }
-      if ($content{$key} eq 'lastname') {
-         ($associations->{'record'}->{'name'}->{'lastname'}->{'sheet'},
-          $associations->{'record'}->{'name'}->{'lastname'}->{'column'})=&sheet_column($key);
-         $associations->{'record'}->{'name'}->{'mode'}='individual';
-      }
-      if ($content{$key} eq 'suffix') {
-         ($associations->{'record'}->{'name'}->{'suffix'}->{'sheet'},
-          $associations->{'record'}->{'name'}->{'suffix'}->{'column'})=&sheet_column($key);
-         $associations->{'record'}->{'name'}->{'mode'}='individual';
+      foreach my $namepart ('firstname','middlename','lastname','suffix') {
+         if ($content{$key} eq $namepart) {
+            ($associations->{'record'}->{'name'}->{$namepart}->{'sheet'},
+             $associations->{'record'}->{'name'}->{$namepart}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{'name'}->{'mode'}='individual';
+         }
       }
       if ($content{$key} eq 'namecombi') {
          ($associations->{'record'}->{'name'}->{'namecombi'}->{'sheet'},
@@ -221,30 +205,12 @@ sub evaluate_associations {
          ($associations->{'record'}->{'pid'}->{'sheet'},
           $associations->{'record'}->{'pid'}->{'column'})=&sheet_column($key);
       }
-      if ($content{$key} eq 'section') {
-         ($associations->{'record'}->{'section'}->{'sheet'},
-          $associations->{'record'}->{'section'}->{'column'})=&sheet_column($key);
-         $associations->{'record'}->{'section'}->{'mode'}='individual';
-      }
-      if ($content{$key} eq 'domain') {
-         ($associations->{'record'}->{'domain'}->{'sheet'},
-          $associations->{'record'}->{'domain'}->{'column'})=&sheet_column($key);
-         $associations->{'record'}->{'domain'}->{'mode'}='individual'
-      }
-      if ($content{$key} eq 'startdate') {
-         ($associations->{'record'}->{'startdate'}->{'sheet'},
-          $associations->{'record'}->{'startdate'}->{'column'})=&sheet_column($key);
-         $associations->{'record'}->{'startdate'}->{'mode'}='individual'
-      }
-      if ($content{$key} eq 'enddate') {
-         ($associations->{'record'}->{'enddate'}->{'sheet'},
-          $associations->{'record'}->{'enddate'}->{'column'})=&sheet_column($key);
-         $associations->{'record'}->{'enddate'}->{'mode'}='individual'
-      }
-      if ($content{$key} eq 'authmode') {
-         ($associations->{'record'}->{'authmode'}->{'sheet'},
-          $associations->{'record'}->{'authmode'}->{'column'})=&sheet_column($key);
-         $associations->{'record'}->{'authmode'}->{'mode'}='individual'
+      foreach my $param ('section','domain','startdate','enddate','authmode','role') { 
+         if ($content{$key} eq $param) {
+            ($associations->{'record'}->{$param}->{'sheet'},
+             $associations->{'record'}->{$param}->{'column'})=&sheet_column($key);
+            $associations->{'record'}->{$param}->{'mode'}='individual';
+         }
       }
       if (($content{$key} eq 'password') ||
           ($content{$key} eq 'passwordpid')) {
@@ -252,27 +218,12 @@ sub evaluate_associations {
           $associations->{'record'}->{'password'}->{'column'})=&sheet_column($key);
          $associations->{'record'}->{'password'}->{'mode'}='individual'
       }
-      if ($content{$key} eq 'role') {
-         ($associations->{'record'}->{'role'}->{'sheet'},
-          $associations->{'record'}->{'role'}->{'column'})=&sheet_column($key);
-         $associations->{'record'}->{'role'}->{'mode'}='individual'
+   }
+   foreach my $param ('domain','password','role','section') {
+      unless ($associations->{'record'}->{$param}->{'mode'}) {
+         $associations->{'record'}->{$param}->{'default'}=$content{'default'.$param};
+         $associations->{'record'}->{$param}->{'mode'}='default';
       }
-   }
-   unless ($associations->{'record'}->{'domain'}->{'mode'}) {
-      $associations->{'record'}->{'domain'}->{'default'}=$content{'defaultdomain'};
-      $associations->{'record'}->{'domain'}->{'mode'}='default';
-   }
-   unless ($associations->{'record'}->{'password'}->{'mode'}) {
-      $associations->{'record'}->{'password'}->{'default'}=$content{'defaultpassword'};
-      $associations->{'record'}->{'password'}->{'mode'}='default';
-   }
-   unless ($associations->{'record'}->{'role'}->{'mode'}) {
-      $associations->{'record'}->{'role'}->{'default'}=$content{'defaultrole'};
-      $associations->{'record'}->{'role'}->{'mode'}='default';
-   }
-   unless ($associations->{'record'}->{'section'}->{'mode'}) {
-      $associations->{'record'}->{'section'}->{'default'}=$content{'defaultsection'};
-      $associations->{'record'}->{'section'}->{'mode'}='default';
    }
    unless ($associations->{'record'}->{'startdate'}->{'mode'}) {
       $associations->{'record'}->{'startdate'}->{'default'}=
