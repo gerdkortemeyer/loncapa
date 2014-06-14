@@ -85,24 +85,47 @@ sub incl_spreadsheet_finalize_items {
          my $problems='';
 # Collect all we know from the spreadsheet
          my $userrecord=&evaluate_row($sheets->{$worksheet}->{'cells'}->{$row},$associations);
-# Collect what we already know, if anything
+# Collect what we already know, if anything: profile and PID
+#FIXME: also need authmode
+         my $profile=undef;
          my $entity=&Apache::lc_entity_users::username_to_entity($username,$domain);
          if ($entity) {
-            my $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
+            $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
+            $profile->{'pid'}=&Apache::lc_entity_users::entity_to_pid($entity,$domain);
 # Merge, according to settings and privileges
             foreach my $namepart ('firstname','middlename','lastname','suffix') {
                if ($userrecord->{$namepart}) {
-                  unless (&allowed_course('modify_name',undef,&Apache::lc_entity_sessions::course_entity_domain())) {
-                     $userrecord->{$namepart}=$profile->{$namepart};
+# The spreadsheet contains a name, but will we respect it?
+                  unless (($content{'overridename'}) && 
+                          (&allowed_course('modify_name',undef,&Apache::lc_entity_sessions::course_entity_domain()))) {
+# No, we ignore it and use the existing profile instead
+                     if ($profile->{$namepart}) {
+                        $userrecord->{$namepart}=$profile->{$namepart};
+                     }
                   }
                } else {
+# There was no name in the spreadsheet, use the profile instead
                   $userrecord->{$namepart}=$profile->{$namepart};
                }
             }
-            
-$content{'overrideauth'};
-$content{'overridepid'};
-$content{'overridename'};
+#FIXME: authentication modes still missing!
+            if ($userrecord->{'password'}) {
+               unless (($content{'overrideauth'}) &&
+                       (&allowed_course('modify_auth',undef,&Apache::lc_entity_sessions::course_entity_domain()))) {
+# We don't even want to know
+                  $userrecord->{'password'}=undef;
+               }
+            }
+            if ($userrecord->{'pid'}) {
+               unless (($content{'overridepid'}) &&
+                       (&allowed_course('modify_pid',undef,&Apache::lc_entity_sessions::course_entity_domain()))) {
+                  if ($profile->{'pid'}) {
+                     $userrecord->{'password'}=$profile->{'pid'};
+                  }
+               }
+            } else {
+                $userrecord->{'pid'}=$profile->{'pid'};
+            }
          }
 # Prepare problem output, even though we might not need it
          $problems.="<h2>$username $domain ".$userrecord->{'firstname'}.' '.$userrecord->{'lastname'}."</h2>";
