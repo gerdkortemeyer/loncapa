@@ -13,7 +13,7 @@
                                       "modify_role"     : {
                                                              "course_coordinator" : "1"
                                                           },
-                                      "modity_auth"     : "1",
+                                      "modify_auth"     : "1",
                                       "modify_pid"      : "1",
                                       "modify_name"     : "1"
                                     }
