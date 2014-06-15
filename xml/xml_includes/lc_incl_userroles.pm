@@ -129,6 +129,7 @@ sub incl_spreadsheet_finalize_items {
          }
 # Prepare problem output, even though we might not need it
          $problems.="<h2>$username $domain ".$userrecord->{'firstname'}.' '.$userrecord->{'lastname'}."</h2>";
+         $problems.="Userrecord:<pre>".Dumper($userrecord)."</pre>";
          unless ($userrecord->{'lastname'}) {
             $problems.='lastnameinput';
             $fixup_flag=1;

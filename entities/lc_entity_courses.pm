@@ -28,6 +28,7 @@ use Apache::lc_mongodb();
 use Apache::lc_memcached();
 use Apache::lc_parameters;
 use Apache::lc_date_utils();
+use Apache::lc_entity_roles();
 
 use Data::Dumper;
 
@@ -390,7 +391,7 @@ sub courselist {
                         domain => $userdomain,
                         pid => &Apache::lc_entity_users::entity_to_pid($userentity,$userdomain),
                         role => $role,
-                        section => $rolesection,
+                        section => &Apache::lc_entity_roles::norm_section($rolesection),
                         startdate => $startdate,
                         enddate => $enddate,
                         manualenrollentity => $manualenrollentity,

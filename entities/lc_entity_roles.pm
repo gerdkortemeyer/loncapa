@@ -34,6 +34,14 @@ use Apache::lc_ui_localize;
 
 use Apache2::Const qw(:common :http);
 
+
+sub norm_section {
+   my ($section)=@_;
+   $section=~s/\s//gs;
+   $section=~s/^0+//gs;
+   return lc($section);
+}
+
 #
 # We are the homeserver of the user that gets the role
 # This would also be the routine that's called remotely
@@ -162,23 +170,24 @@ sub modify_role {
        $manualenrollentity,$manualenrolldomain # if done manually, who did this?
       )=@_;
 # === This is a big deal, so do sanity testing
-unless ($entity) {
-   &logerror("Modify role must provide entity");
-   return undef;
-}
-unless ($domain) {
-   &logerror("Modify role must provide domain");
-   return undef;
-}
-unless (($type eq 'system') || ($type eq 'domain') || ($type eq 'course') || ($type eq 'user')) {
-   &logerror("Type ($type) not supported for modifying roles of entity ($entity) domain ($domain)");
-   return undef;
-}
-unless ($roledomain) { $roledomain=''; }
-unless ($roleentity) { $roleentity=''; }
-unless ($rolesection) { $rolesection=''; }
-unless ($manualenrollentity) { $manualenrollentity=''; }
-unless ($manualenrolldomain) { $manualenrolldomain=''; }
+   unless ($entity) {
+      &logerror("Modify role must provide entity");
+      return undef;
+   }
+   unless ($domain) {
+      &logerror("Modify role must provide domain");
+      return undef;
+   }
+   unless (($type eq 'system') || ($type eq 'domain') || ($type eq 'course') || ($type eq 'user')) {
+      &logerror("Type ($type) not supported for modifying roles of entity ($entity) domain ($domain)");
+      return undef;
+   }
+   unless ($roledomain) { $roledomain=''; }
+   unless ($roleentity) { $roleentity=''; }
+   $rolesection=&norm_section($rolesection);
+   unless ($rolesection) { $rolesection=''; }
+   unless ($manualenrollentity) { $manualenrollentity=''; }
+   unless ($manualenrolldomain) { $manualenrolldomain=''; }
 # === Deal with the user's record
 # Role itself
    my $thisrole;

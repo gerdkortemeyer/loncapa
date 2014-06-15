@@ -119,6 +119,12 @@ sub make_new_user {
 # PID assignment
 # ================================================================
 
+sub norm_pid {
+   my ($pid)=@_;
+   $pid=~s/\s//gs;
+   return lc($pid);
+}
+
 sub local_assign_pid {
    my ($entity,$domain,$pid)=@_;
    my $existing=&pid_to_entity($pid,$domain);
@@ -147,6 +153,7 @@ sub remote_assign_pid {
 
 sub assign_pid {
    my ($entity,$domain,$pid)=@_;
+   $pid=&norm_pid($pid);
    if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
       return &local_assign_pid($entity,$domain,$pid);
    } else {
@@ -320,6 +327,7 @@ sub remote_pid_to_entity {
 #
 sub pid_to_entity {
    my ($pid,$domain)=@_;
+   $pid=&norm_pid($pid);
 # Look locally
    my $entity=&local_pid_to_entity($pid,$domain);
    if ($entity) { return $entity; }
@@ -339,7 +347,7 @@ sub local_entity_to_pid {
    my ($entity,$domain)=@_;
    my $pid=&Apache::lc_memcached::lookup_entity_pid($entity,$domain);
    if ($pid) { return $pid; }
-   $pid=&Apache::lc_postgresql::lookup_entity_pid($entity,$domain);
+   $pid=&norm_pid(&Apache::lc_postgresql::lookup_entity_pid($entity,$domain));
    if ($pid) {
       &Apache::lc_memcached::insert_pid($pid,$domain,$entity);
    }
