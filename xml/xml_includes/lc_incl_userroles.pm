@@ -93,6 +93,7 @@ sub incl_spreadsheet_finalize_items {
             $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
             $profile->{'pid'}=&Apache::lc_entity_users::entity_to_pid($entity,$domain);
 # Merge, according to settings and privileges
+# Are we overriding names?
             foreach my $namepart ('firstname','middlename','lastname','suffix') {
                if ($userrecord->{$namepart}) {
 # The spreadsheet contains a name, but will we respect it?
@@ -108,6 +109,7 @@ sub incl_spreadsheet_finalize_items {
                   $userrecord->{$namepart}=$profile->{$namepart};
                }
             }
+# Are we overriding passwords?
 #FIXME: authentication modes still missing!
             if ($userrecord->{'password'}) {
                unless (($content{'overrideauth'}) &&
@@ -116,6 +118,7 @@ sub incl_spreadsheet_finalize_items {
                   $userrecord->{'password'}=undef;
                }
             }
+# Are we overriding PIDs?
             if ($userrecord->{'pid'}) {
                unless (($content{'overridepid'}) &&
                        (&allowed_course('modify_pid',undef,&Apache::lc_entity_sessions::course_entity_domain()))) {
@@ -128,23 +131,35 @@ sub incl_spreadsheet_finalize_items {
             }
          }
 # Prepare problem output, even though we might not need it
-         $problems.="\n<h2>$username $domain ".$userrecord->{'firstname'}.' '.$userrecord->{'lastname'}."</h2>";
+         $problems.=
+            "\n<h2>$username $domain ".$userrecord->{'firstname'}.' '.$userrecord->{'lastname'}."</h2>";
          $problems.="Userrecord:<pre>".Dumper($userrecord)."</pre>";
 # Open the table (again, this may all not be needed if we have everything we need)
          $problems.="\n".&Apache::lc_xml_forms::form_table_start();
-         unless ($userrecord->{'lastname'}) {
-            $problems.='lastnameinput';
+         unless ($userrecord->{'firstname'}) {
+            $problems.=&Apache::lc_xml_forms::table_input_field('corrected_firstname',
+                                                                'corrected_firstname',
+                                                                'First Name',
+                                                                'text',20);
             $fixup_flag=1;
          }
-         unless ($userrecord->{'firstname'}) {
-            $problems.='firstnameinput';
+         unless ($userrecord->{'lastname'}) {
+            $problems.=&Apache::lc_xml_forms::table_input_field('corrected_lastname',
+                                                                'corrected_lastname',
+                                                                'Last Name',
+                                                                'text',20);
             $fixup_flag=1;
          }
          unless ($entity) {
             unless ($userrecord->{'$password'}) {
-               $problems.='passwordinput';
+               $problems.=&Apache::lc_xml_forms::table_input_field('corrected_password',
+                                                                   'corrected_password',
+                                                                   'Password',
+                                                                   'text',20);
+
                $fixup_flag=1;
             }
+#FIXME: authentication mode
          }
 # Close the table
          $problems.=&Apache::lc_xml_forms::form_table_end()."\n";
@@ -321,6 +336,10 @@ sub evaluate_row {
             $row->{$associations->{'record'}->{'startdate'}->{'column'}}->{'value'}:
             $row->{$associations->{'record'}->{'startdate'}->{'column'}}->{'unformatted'}));
    }
+# We have no startdate? Then it's now or never.
+   unless ($userrecord->{'startdate'}) {
+      $userrecord->{'startdate'}=&Apache::lc_date_utils::now2num();
+   }
 # Get enddate
    if ($associations->{'record'}->{'enddate'}->{'mode'} eq 'default') {
       $userrecord->{'enddate'}=$associations->{'record'}->{'enddate'}->{'default'};
@@ -330,6 +349,10 @@ sub evaluate_row {
             $row->{$associations->{'record'}->{'enddate'}->{'column'}}->{'value'}:
             $row->{$associations->{'record'}->{'enddate'}->{'column'}}->{'unformatted'}));
 
+   }
+# We have no enddate? Add a year to startdate
+   unless ($userrecord->{'enddate'}) {
+      $userrecord->{'enddate'}=$userrecord->{'startdate'}+365*24*60*60;
    }
    return ($username,$domain,$userrecord);
 }

@@ -65,6 +65,13 @@ sub endtimer {
 # ================================================================
 # All stored times should be GMT.
 #
+# ==== Now in GMT since epoch (extended)
+#
+sub now2num {
+   return &str2num(&now2str());
+}
+
+#
 # ==== Give current time as string
 #
 sub now2str {

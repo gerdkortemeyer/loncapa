@@ -81,7 +81,9 @@ sub form_end {
    return '</form>';
 }
 
-
+#
+# Starting a table inside a form
+#
 sub start_lcformtable_html {
    my ($p,$safe,$stack,$token)=@_;
    return &form_table_start();
@@ -91,7 +93,9 @@ sub form_table_start {
    return '<table class="lcformtable">';
 }
 
-
+#
+# Closing a table inside a form
+#
 sub end_lcformtable_html {
    my ($p,$safe,$stack,$token)=@_;
    return &form_table_end();
@@ -101,22 +105,36 @@ sub form_table_end {
    return '</table>';
 }
 
+#
+# An input field inside of a table inside of a form
+#
 sub start_lcformtableinput_html {
    my ($p,$safe,$stack,$token)=@_;
    my $id=$token->[2]->{'id'};
    my $name=$token->[2]->{'name'};
    unless ($name) { $name=$id; }
+   return &table_input_field($id,$name,$token->[2]->{'description'},
+                                       $token->[2]->{'type'},
+                                       $token->[2]->{'size'},
+                                       $token->[2]->{'default'});
+}
+
+sub table_input_field {
+   my ($id,$name,$description,$type,$size,$default)=@_; 
    my $output='<tr><td class="lcformtabledescription"><label for="'.$id.'">'.
-                  &mt($token->[2]->{'description'}).
+                  &mt($description).
                   '</label></td><td class="lcformtablefield">'.
-                  &inputfield($token->[2]->{'type'},
+                  &inputfield($type,
                               $id,$name,
-                              $token->[2]->{'size'},
-                              $token->[2]->{'default'}).
+                              $size,
+                              $default).
                   '</td></tr>';
    return $output;
 }
 
+#
+# An input field (not inside a table)
+#
 sub start_lcforminput_html {
    my ($p,$safe,$stack,$token)=@_;
    my $id=$token->[2]->{'id'};
@@ -189,7 +207,7 @@ sub inputfield {
                   $screen_form_defaults->{$id.'_time_zone'});
          }
       }
-      unless ($default) { $default=time; }
+      unless ($default) { $default=&Apache::lc_date_utils::now2num(); }
       return &datetimefield($id,$name,$default);
    } elsif ($type eq 'modifiablecourseroles') {
       my ($role_short,$role_name)=&modifiable_role_choices('course');
