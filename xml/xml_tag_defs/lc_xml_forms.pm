@@ -62,6 +62,11 @@ sub start_lcform_html {
       $screen_form_defaults=&Apache::lc_entity_users::screen_form_defaults(&Apache::lc_entity_sessions::user_entity_domain(),$screendefaults);
    }
 # Actually start the form
+   &form_start($id,$name,$screendefaults);
+}
+
+sub form_start {
+   my ($id,$name,$screendefaults)=@_;
    return '<form class="lcform" id="'.$id.'" name="'.$name.'"'.
    ($screendefaults?' onsubmit="screendefaults(\''.$id."','".$screendefaults.'\')"':'').
    '>'.&hidden_field('postdata','');
@@ -69,16 +74,30 @@ sub start_lcform_html {
 
 sub end_lcform_html {
    my ($p,$safe,$stack,$token)=@_;
+   return &form_end();
+}
+
+sub form_end {
    return '</form>';
 }
 
+
 sub start_lcformtable_html {
    my ($p,$safe,$stack,$token)=@_;
+   return &form_table_start();
+}
+
+sub form_table_start {
    return '<table class="lcformtable">';
 }
 
+
 sub end_lcformtable_html {
    my ($p,$safe,$stack,$token)=@_;
+   return &form_table_end();
+}
+
+sub form_table_end {
    return '</table>';
 }
 

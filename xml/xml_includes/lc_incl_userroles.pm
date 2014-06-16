@@ -128,8 +128,10 @@ sub incl_spreadsheet_finalize_items {
             }
          }
 # Prepare problem output, even though we might not need it
-         $problems.="<h2>$username $domain ".$userrecord->{'firstname'}.' '.$userrecord->{'lastname'}."</h2>";
+         $problems.="\n<h2>$username $domain ".$userrecord->{'firstname'}.' '.$userrecord->{'lastname'}."</h2>";
          $problems.="Userrecord:<pre>".Dumper($userrecord)."</pre>";
+# Open the table (again, this may all not be needed if we have everything we need)
+         $problems.="\n".&Apache::lc_xml_forms::form_table_start();
          unless ($userrecord->{'lastname'}) {
             $problems.='lastnameinput';
             $fixup_flag=1;
@@ -144,17 +146,20 @@ sub incl_spreadsheet_finalize_items {
                $fixup_flag=1;
             }
          }
-
+# Close the table
+         $problems.=&Apache::lc_xml_forms::form_table_end()."\n";
+# Remember where we were
+         $problems.=&Apache::lc_xml_forms::hidden_field('corrected_record_sheet',$worksheet).
+                    &Apache::lc_xml_forms::hidden_field('corrected_record_row',$row);
+# Render buttons
+         $problems.='<br />'.
+                    &Apache::lc_xml_forms::cancelbutton('cancel','Cancel').'&nbsp;'.
+                    &Apache::lc_xml_forms::cancelbutton('skip','Skip').'&nbsp;'.
+                    &Apache::lc_xml_forms::triggerbutton('continue','Continue');
          if ($fixup_flag) {
 # Wow, there is a problem, we need to ask the user
             $output.=$problems;
-# Okay, remember where we were, and we are out of here
-            $output.=&Apache::lc_xml_forms::hidden_field('corrected_record_sheet',$worksheet).
-                     &Apache::lc_xml_forms::hidden_field('corrected_record_row',$row);
-            $output.='<br />'.
-                     &Apache::lc_xml_forms::cancelbutton('cancel','Cancel').'&nbsp;'.
-                     &Apache::lc_xml_forms::cancelbutton('skip','Skip').'&nbsp;'.
-                     &Apache::lc_xml_forms::triggerbutton('continue','Continue');
+# And we are out of here
             return $output;
          } else {
 # Cool, we have everything we need, let's store and then more on
