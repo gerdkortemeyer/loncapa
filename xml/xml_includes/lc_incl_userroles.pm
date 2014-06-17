@@ -84,7 +84,7 @@ sub incl_spreadsheet_finalize_items {
                      }
                   }
 # Attempt to enroll
-                  &enroll($corrected_record);
+                  &Apache::lc_entity_roles::enroll($corrected_record);
                }
 # Remember that we found it
                $found_corrected=1; 
@@ -193,23 +193,16 @@ sub incl_spreadsheet_finalize_items {
 # Wow, there is a problem, we need to ask the user
             $output.=$problems;
 # And we are out of here
-            return $output;
+            return $output.'<script>followup=1</script>';
          } else {
 # Cool, we have everything we need, let's store and then more on
-            &enroll($userrecord); 
+            &Apache::lc_entity_roles::enroll($userrecord); 
          }
       }
    }
 # Successfully finished everything!
-   return &Apache::lc_xml_utils::success_message('Upload complete.');
-}
-
 #
-# Actually enroll
-#
-sub enroll {
-   my ($userrecord)=@_;
-   &logdebug("Will enroll: ".Dumper($userrecord));
+   return &Apache::lc_xml_utils::success_message('Upload complete.').'<script>followup=0;</script>';
 }
 
 #

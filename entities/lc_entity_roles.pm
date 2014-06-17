@@ -32,6 +32,8 @@ use Apache::lc_date_utils();
 use Apache::lc_init_cluster_table();
 use Apache::lc_ui_localize;
 
+use Data::Dumper;
+
 use Apache2::Const qw(:common :http);
 
 
@@ -262,6 +264,16 @@ sub modify_role {
    }
    return 1;
 }
+
+#
+# Enroll routine
+# - takes care of a lot of stuff according to privileges
+#
+sub enroll {
+   my ($userrecord)=@_;
+   &logdebug("Will enroll: ".Dumper($userrecord));
+}
+
 
 #
 # Get a rolelist for an entity, for example a list of all users in a course
