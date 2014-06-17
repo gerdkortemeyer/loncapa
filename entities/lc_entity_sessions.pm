@@ -208,6 +208,36 @@ sub posted_content {
    return %{$lc_session->{'content'}};
 }
 
+
+# Progress indicator
+#
+sub get_progress {
+   my ($which)=@_;
+   my $data=&Apache::lc_memcached::lookup_progress(
+           $lc_session->{'data'}->{'current_course'}->{'entity'},
+           $lc_session->{'data'}->{'current_course'}->{'domain'},
+           $which);
+   unless ($data) {
+      $data='{total:1,success:0,skip:0,fail:0}';
+   }
+   return $data;
+}
+
+sub put_progress {
+   my ($which,$total,$success,$skip,$fail)=@_;
+   unless ($total) { $total=1; }
+   unless ($success) { $success=0; }
+   unless ($skip) { $skip=0; }
+   unless ($fail) { $fail=0; }
+   if ($success>$total) { $success=$total; }
+   if ($success+$skip+$fail>$total) { $fail=0; $skip=0; }
+   &Apache::lc_memcached::insert_progress(
+           $lc_session->{'data'}->{'current_course'}->{'entity'},
+           $lc_session->{'data'}->{'current_course'}->{'domain'},
+           $which,"{total:$total,success:$success,skip:$skip,fail:$fail}");
+}
+
+
 # Get rid of this session
 #
 sub close_session {

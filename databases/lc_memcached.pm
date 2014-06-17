@@ -192,7 +192,18 @@ sub lookup_profile {
    return &mget("profile:$entity:$domain");
 }
 
+#
+# Caching progress indicators
+#
+sub insert_progress {
+   my ($entity,$domain,$which,$data)=@_;
+   &mset("progress:$entity:$domain:$which",$data,&lc_long_expire());
+}
 
+sub lookup_progress {
+   my ($entity,$domain,$which)=@_;
+   return &mget("progress:$entity:$domain:$which");
+}
 
 # === Direct access
 # You don't want to call these from outside
