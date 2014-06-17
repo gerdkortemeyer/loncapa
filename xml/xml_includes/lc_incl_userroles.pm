@@ -40,7 +40,6 @@ our @EXPORT = qw(incl_spreadsheet_finalize_items);
 sub incl_spreadsheet_finalize_items {
 # Get posted content
    my %content=&Apache::lc_entity_sessions::posted_content();
-&logdebug(Dumper(\%content));
 # See what we all learned
    my $associations;
 # If we are getting fresh information, we need to flush old associations
@@ -66,13 +65,26 @@ sub incl_spreadsheet_finalize_items {
 # This is the big loop going through all users
       foreach my $row ($minrow .. $sheets->{$worksheet}->{'row_max'}) {
          my $output='';
-         if (($content{'corrected_record'}) && (!$found_corrected)) {
+         if (($content{'corrected_record_sheet'}) && (!$found_corrected)) {
 # We need to pick up where we left off
             if (($content{'corrected_record_sheet'} eq $worksheet) &&
                 ($content{'corrected_record_row'} eq $row)) { 
 # Deal with it, evaluate corrections and enroll
-               if ($content{'skip'}) {
-                  $output.='SKIPPING';
+               unless ($content{'skip'}) {
+                  my $corrected_record;
+# Get the known old stuff
+                  foreach my $key (keys(%content)) {
+                     $corrected_record->{$key}=$content{$key};
+                  }
+# Try to get the new corrected stuff
+#FIXME: authmode
+                  foreach my $key ('firstname','lastname','password') {
+                     if ($content{'corrected_'.$key}) {
+                        $corrected_record->{$key}=$content{'corrected_'.$key};
+                     }
+                  }
+# Attempt to enroll
+                  &enroll($corrected_record);
                }
 # Remember that we found it
                $found_corrected=1; 
@@ -137,13 +149,16 @@ sub incl_spreadsheet_finalize_items {
                 $userrecord->{'pid'}=$profile->{'pid'};
             }
          }
+         $userrecord->{'username'}=$username;
+         $userrecord->{'domain'}=$domain;
 # Prepare problem output, even though we might not need it
          $problems.=
             "\n<h2>$username $domain ".$userrecord->{'firstname'}.' '.$userrecord->{'lastname'}."</h2>";
-#FIXME: debug
-         $problems.="Userrecord: ".localtime()."<pre>".Dumper($userrecord)."</pre>";
 # Open the table (again, this may all not be needed if we have everything we need)
          $problems.="\n".&Apache::lc_xml_forms::form_table_start();
+# Save everything that we do know
+         $problems.=&Apache::lc_xml_forms::hidden_vars(%{$userrecord});
+# Ask for everything we don't know
          unless ($userrecord->{'firstname'}) {
             $problems.=&Apache::lc_xml_forms::table_input_field('corrected_firstname',
                                                                 'corrected_firstname',
@@ -159,7 +174,7 @@ sub incl_spreadsheet_finalize_items {
             $fixup_flag=1;
          }
          unless ($entity) {
-            unless ($userrecord->{'$password'}) {
+            unless ($userrecord->{'password'}) {
                $problems.=&Apache::lc_xml_forms::table_input_field('corrected_password',
                                                                    'corrected_password',
                                                                    'Password',
@@ -181,12 +196,20 @@ sub incl_spreadsheet_finalize_items {
             return $output;
          } else {
 # Cool, we have everything we need, let's store and then more on
-#FIXME           &store_record($username,$domain,$newroles,$newprofile); 
+            &enroll($userrecord); 
          }
       }
    }
 # Successfully finished everything!
    return &Apache::lc_xml_utils::success_message('Upload complete.');
+}
+
+#
+# Actually enroll
+#
+sub enroll {
+   my ($userrecord)=@_;
+   &logdebug("Will enroll: ".Dumper($userrecord));
 }
 
 #
