@@ -162,6 +162,8 @@ use utf8;
 
 'Cancel' => 'Abbrechen',
 
+'Canceled.' => 'Abgebrochen.',
+
 'Do you really want to logout?' => 'Wollen Sie sich wirklich abmelden?',
 
 'Please enter your user information.' => 'Bitte geben Sie Ihre Benutzerinformation ein.',

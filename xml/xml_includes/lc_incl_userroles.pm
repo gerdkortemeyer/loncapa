@@ -40,6 +40,10 @@ our @EXPORT = qw(incl_spreadsheet_finalize_items);
 sub incl_spreadsheet_finalize_items {
 # Get posted content
    my %content=&Apache::lc_entity_sessions::posted_content();
+# Canceling?
+   if ($content{'cancel'}) {
+      return &Apache::lc_xml_utils::success_message('Canceled.').'<script>followup=0;</script>';
+   }
 # See what we all learned
    my $associations;
 # If we are getting fresh information, we need to flush old associations
@@ -100,8 +104,8 @@ sub incl_spreadsheet_finalize_items {
 # No username? Bad, skip this
          unless ($username) { next; }
 # Flags if fixups are needed
-         my $fixup_flag=0;
          my $problems='';
+         my @fixer_uppers=();
 # Collect all we know from the spreadsheet
          my $userrecord=&evaluate_row($sheets->{$worksheet}->{'cells'}->{$row},$associations);
 # Collect what we already know, if anything: profile and PID
@@ -153,7 +157,7 @@ sub incl_spreadsheet_finalize_items {
          $userrecord->{'domain'}=$domain;
 # Prepare problem output, even though we might not need it
          $problems.=
-            "\n<h2>$username $domain ".$userrecord->{'firstname'}.' '.$userrecord->{'lastname'}."</h2>";
+            "\n<h2>$username:$domain - ".$userrecord->{'firstname'}.' '.$userrecord->{'lastname'}."</h2>";
 # Open the table (again, this may all not be needed if we have everything we need)
          $problems.="\n".&Apache::lc_xml_forms::form_table_start();
 # Save everything that we do know
@@ -164,14 +168,14 @@ sub incl_spreadsheet_finalize_items {
                                                                 'corrected_firstname',
                                                                 'First Name',
                                                                 'text',20);
-            $fixup_flag=1;
+            push(@fixer_uppers,'corrected_firstname');
          }
          unless ($userrecord->{'lastname'}) {
             $problems.=&Apache::lc_xml_forms::table_input_field('corrected_lastname',
                                                                 'corrected_lastname',
                                                                 'Last Name',
                                                                 'text',20);
-            $fixup_flag=1;
+            push(@fixer_uppers,'corrected_lastname');
          }
          unless ($entity) {
             unless ($userrecord->{'password'}) {
@@ -180,7 +184,7 @@ sub incl_spreadsheet_finalize_items {
                                                                    'Password',
                                                                    'text',20);
 
-               $fixup_flag=1;
+               push(@fixer_uppers,'corrected_password');
             }
 #FIXME: authentication mode
          }
@@ -189,11 +193,11 @@ sub incl_spreadsheet_finalize_items {
 # Remember where we were
          $problems.=&Apache::lc_xml_forms::hidden_field('corrected_record_sheet',$worksheet).
                     &Apache::lc_xml_forms::hidden_field('corrected_record_row',$row);
-         if ($fixup_flag) {
+         if ($#fixer_uppers>=0) {
 # Wow, there is a problem, we need to ask the user
             $output.=$problems;
 # And we are out of here
-            return $output.'<script>followup=1</script>';
+            return $output.'<script>followup=1;require="'.join(',',@fixer_uppers).'";</script>';
          } else {
 # Cool, we have everything we need, let's store and then more on
             &Apache::lc_entity_roles::enroll($userrecord); 

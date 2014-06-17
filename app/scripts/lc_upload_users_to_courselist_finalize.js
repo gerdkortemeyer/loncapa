@@ -1,4 +1,5 @@
 var followup=0;
+var require='';
 
 $(document).ready(function() {
     showhide();
