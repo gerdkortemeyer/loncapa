@@ -159,7 +159,9 @@ sub triggerbutton {
 
 sub start_lcformcancel_html {
    my ($p,$safe,$stack,$token)=@_;
-   return &cancelbutton($token->[2]->{'id'},'Cancel');
+   my $text=$token->[2]->{'description'};
+   unless ($text=~/\w/) { $text='Cancel'; }
+   return &cancelbutton($token->[2]->{'id'},$text);
 }
 
 sub cancelbutton {

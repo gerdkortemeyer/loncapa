@@ -26,6 +26,7 @@ use Apache::lc_xml_forms();
 use Apache::lc_entity_users();
 use Apache::lc_entity_roles();
 use Apache::lc_entity_profile();
+use Apache::lc_logs;
 use Apache2::Const qw(:common);
 
 
@@ -39,14 +40,18 @@ our @EXPORT = qw(incl_spreadsheet_finalize_items);
 sub incl_spreadsheet_finalize_items {
 # Get posted content
    my %content=&Apache::lc_entity_sessions::posted_content();
+&logdebug(Dumper(\%content));
 # See what we all learned
    my $associations;
 # If we are getting fresh information, we need to flush old associations
    if ($content{'flush_associations'}) {
       $associations=&evaluate_associations(%content);
+      if ($associations) {
+         &save_associations(&Apache::lc_entity_sessions::user_entity_domain(),$associations);
+      }
    } else {
 # Load the old stuff
-      $associations=&load_associations();
+      $associations=&load_associations(&Apache::lc_entity_sessions::user_entity_domain());
    }
 # Load the spreadsheet itself
    my $sheets=&load_sheets();
@@ -66,7 +71,9 @@ sub incl_spreadsheet_finalize_items {
             if (($content{'corrected_record_sheet'} eq $worksheet) &&
                 ($content{'corrected_record_row'} eq $row)) { 
 # Deal with it, evaluate corrections and enroll
-#FIXME
+               if ($content{'skip'}) {
+                  $output.='SKIPPING';
+               }
 # Remember that we found it
                $found_corrected=1; 
             }
@@ -133,7 +140,8 @@ sub incl_spreadsheet_finalize_items {
 # Prepare problem output, even though we might not need it
          $problems.=
             "\n<h2>$username $domain ".$userrecord->{'firstname'}.' '.$userrecord->{'lastname'}."</h2>";
-         $problems.="Userrecord:<pre>".Dumper($userrecord)."</pre>";
+#FIXME: debug
+         $problems.="Userrecord: ".localtime()."<pre>".Dumper($userrecord)."</pre>";
 # Open the table (again, this may all not be needed if we have everything we need)
          $problems.="\n".&Apache::lc_xml_forms::form_table_start();
          unless ($userrecord->{'firstname'}) {
@@ -166,11 +174,6 @@ sub incl_spreadsheet_finalize_items {
 # Remember where we were
          $problems.=&Apache::lc_xml_forms::hidden_field('corrected_record_sheet',$worksheet).
                     &Apache::lc_xml_forms::hidden_field('corrected_record_row',$row);
-# Render buttons
-         $problems.='<br />'.
-                    &Apache::lc_xml_forms::cancelbutton('cancel','Cancel').'&nbsp;'.
-                    &Apache::lc_xml_forms::cancelbutton('skip','Skip').'&nbsp;'.
-                    &Apache::lc_xml_forms::triggerbutton('continue','Continue');
          if ($fixup_flag) {
 # Wow, there is a problem, we need to ask the user
             $output.=$problems;
@@ -194,6 +197,16 @@ sub load_associations {
    return &Apache::lc_json_utils::json_to_perl(
           &Apache::lc_file_utils::readfile(
           &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/uploaded_spreadsheet_associations.json')));
+}
+
+#
+# Save associations to disk
+#
+sub save_associations {
+   my ($entity,$domain,$associations)=@_;
+   return &Apache::lc_file_utils::writefile(
+          &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/uploaded_spreadsheet_associations.json'),
+          &Apache::lc_json_utils::perl_to_json($associations));
 }
 
 #
