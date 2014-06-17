@@ -3,7 +3,7 @@ $(document).ready(function() {
         $.ajax({
         url : '/finalize_userroles',
         type: "POST",
-        data : $('spreadsheetfinalize').serialize(),
+        data : $('#spreadsheetfinalize').serialize(),
         success: function(data){
             $('#spreadsheet_finalize_items').html(data);
         }
@@ -23,7 +23,7 @@ $(document).ready(function() {
         $.ajax({
         url : '/finalize_userroles',
         type: "POST",
-        data : $('spreadsheetfinalize').serialize()+"&skip=1",
+        data : $('#spreadsheetfinalize').serialize()+"&skip=1",
         success: function(data){
             $('#spreadsheet_finalize_items').html(data);
         }
