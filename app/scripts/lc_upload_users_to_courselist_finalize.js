@@ -8,11 +8,23 @@ $(document).ready(function() {
         url : '/finalize_userroles',
         type: "POST",
         data : $('#spreadsheetfinalize').serialize(),
+        beforeSend: function() {
+           var checkon=require.split(',');
+           for (var i=0; i<checkon.length; i++) {
+              if ($('#'+checkon[i]).val()=='') {
+                 $('.lcerror').show();
+                 return false;
+              }
+           }
+           $('.lcerror').hide();
+           return true;
+        },
         success: function(data){
             $('#spreadsheet_finalize_items').html(data);
         },
         complete: function() {
             showhide();
+            adjust_framesize();
         }
       });
     });
@@ -22,11 +34,13 @@ $(document).ready(function() {
         type: "POST",
         data : {cancel:1},
         success: function(data){
+            $('.lcerror').hide();
             $('#spreadsheet_finalize_items').html(data);
         },
         complete: function() {
             followup=0;
             showhide();
+            adjust_framesize();
          }
       });
     });
@@ -36,10 +50,12 @@ $(document).ready(function() {
         type: "POST",
         data : $('#spreadsheetfinalize').serialize()+"&skip=1",
         success: function(data){
+            $('.lcerror').hide();
             $('#spreadsheet_finalize_items').html(data);
         },
         complete: function() {
             showhide();
+            adjust_framesize();
         }
       });
     });

@@ -164,6 +164,8 @@ use utf8;
 
 'Canceled.' => 'Abgebrochen.',
 
+'Some required items were not specified.' => 'Einige benötigte Informationen wurden nicht ausgefüllt.',
+
 'Do you really want to logout?' => 'Wollen Sie sich wirklich abmelden?',
 
 'Please enter your user information.' => 'Bitte geben Sie Ihre Benutzerinformation ein.',
