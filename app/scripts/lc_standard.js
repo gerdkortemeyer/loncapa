@@ -21,13 +21,12 @@ function screendefaults(formname,storename) {
 
 function progressbar(id,process) {
    var noCache = parent.no_cache_value();
-//   $.getJSON( "/progress/"+process, { "noCache": noCache }, function( data ) {
-//      var newtext='';
-//      $.each( data, function( key, val ) {
-//         newtext+=" "+ key + "=" + val;
-//      });
-//alert(newtext);
-      $('#'+id).html('Stuff');
-//      setTimeout('progressbar',1000,id,process);
-//   });
+   $.getJSON( "/progress/"+process, { "noCache": noCache }, function( data ) {
+      var newtext='';
+      $.each( data, function( key, val ) {
+         newtext+=" "+ key + "=" + val;
+      });
+      $('#'+id).html(newtext);
+      setTimeout(progressbar,1000,id,process);
+   });
 }

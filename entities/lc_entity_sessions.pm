@@ -219,7 +219,7 @@ sub get_progress {
            $lc_session->{'data'}->{'current_course'}->{'domain'},
            $which);
    unless ($data) {
-      $data="{'total':'1','success':'0','skip':'0','fail':'0'}";
+      $data='{"total":"1","success":"0","skip":"0","fail":"0"}';
    }
    return $data;
 }
@@ -237,7 +237,7 @@ sub put_progress {
    &Apache::lc_memcached::insert_progress(
            $lc_session->{'data'}->{'current_course'}->{'entity'},
            $lc_session->{'data'}->{'current_course'}->{'domain'},
-           $which,"{'total':'$total','success':'$success','skip':'$skip','fail':'$fail'}");
+           $which,'{"total":"'.$total.'","success":"'.$success.'","skip":"'.$skip.'","fail":"'.$fail.'"}');
 }
 
 # Set the total (probably the first thing you want to do)
