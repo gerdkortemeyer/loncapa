@@ -100,7 +100,7 @@ sub incl_spreadsheet_finalize_items {
                      }
                   }
 # Attempt to enroll
-                  if (&Apache::lc_entity_roles::enroll($corrected_record)) {
+                  if (&Apache::lc_entity_roles::enroll($corrected_record,$content{'overridename'},$content{'overrideauth'},$content{'overridepid'})) {
                      &Apache::lc_entity_sessions::inc_progress('spreadsheetfinalize','success');
                   } else {
                      &Apache::lc_entity_sessions::inc_progress('spreadsheetfinalize','fail');
@@ -208,7 +208,10 @@ sub incl_spreadsheet_finalize_items {
          $problems.=&Apache::lc_xml_forms::form_table_end()."\n";
 # Remember where we were
          $problems.=&Apache::lc_xml_forms::hidden_field('corrected_record_sheet',$worksheet).
-                    &Apache::lc_xml_forms::hidden_field('corrected_record_row',$row);
+                    &Apache::lc_xml_forms::hidden_field('corrected_record_row',$row).
+                    &Apache::lc_xml_forms::hidden_field('overridename',$content{'overridename'}).
+                    &Apache::lc_xml_forms::hidden_field('overrideauth',$content{'overrideauth'}).
+                    &Apache::lc_xml_forms::hidden_field('overridepid',$content{'overridepid'});
          if ($#fixer_uppers>=0) {
 # Wow, there is a problem, we need to ask the user
             $output.=$problems;
@@ -216,7 +219,7 @@ sub incl_spreadsheet_finalize_items {
             return $output.'<script>followup=1;require="'.join(',',@fixer_uppers).'";</script>';
          } else {
 # Cool, we have everything we need, let's store and then more on
-            if (&Apache::lc_entity_roles::enroll($userrecord)) {
+            if (&Apache::lc_entity_roles::enroll($userrecord,$content{'overridename'},$content{'overrideauth'},$content{'overridepid'})) {
                &Apache::lc_entity_sessions::inc_progress('spreadsheetfinalize','success');
             } else {
                &Apache::lc_entity_sessions::inc_progress('spreadsheetfinalize','fail');

@@ -270,9 +270,9 @@ sub modify_role {
 # - takes care of a lot of stuff according to privileges
 #
 sub enroll {
-   my ($userrecord)=@_;
+   my ($userrecord,$overridename,$overrideauth,$overridepid)=@_;
 #FIXME: debug
-   &logdebug("Will enroll: ".Dumper($userrecord));
+   &logdebug("Will enroll: ".Dumper($userrecord)."\nname ".$overridename."\nauth ".$overrideauth."\npid ".$overridepid);
    return (rand()>0.3);
 }
 
