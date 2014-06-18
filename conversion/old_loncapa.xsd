@@ -11,6 +11,16 @@
       <xs:enumeration value="off"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="color">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[x#][\da-fA-F]{6}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="real">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[+-]?\d*\.?\d*([eE][+-]?\d+)?"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="caparesponse--answergroup">
     <xs:annotation>
       <xs:documentation>Collection of Answers</xs:documentation>
@@ -57,7 +67,7 @@
       <xs:documentation>Vector</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-    </xs:restriction>
+        </xs:restriction>
   </xs:simpleType>
   <xs:complexType mixed="true" name="customhint--answer">
     <xs:annotation>
@@ -102,17 +112,17 @@
   </xs:complexType>
   <xs:complexType mixed="true" name="imageresponse--image">
     <xs:annotation>
-      <xs:documentation>Imageresponse Image</xs:documentation>
+      <xs:documentation>Imageresponse Image (contains the image source file)</xs:documentation>
     </xs:annotation>
   </xs:complexType>
   <xs:complexType mixed="true" name="imageresponse--rectangle">
     <xs:annotation>
-      <xs:documentation>Rectangular area in image</xs:documentation>
+      <xs:documentation>Rectangular area in image (contains coordinate pairs)</xs:documentation>
     </xs:annotation>
   </xs:complexType>
   <xs:complexType mixed="true" name="imageresponse--polygon">
     <xs:annotation>
-      <xs:documentation>Polygonal area in image</xs:documentation>
+      <xs:documentation>Polygonal area in image (contains coordinate list)</xs:documentation>
     </xs:annotation>
   </xs:complexType>
   <xs:complexType mixed="true" name="imageresponse--text">
@@ -192,9 +202,13 @@
       <xs:element name="drawoptionlist" type="optionresponse--drawoptionlist"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="value" type="xs:string"/>
-    <xs:attribute name="options" type="xs:string"/>
-    <xs:attribute default="no" name="randomize" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Correct Option
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute default="random" name="location">
       <xs:simpleType>
         <xs:restriction base="xs:string">
@@ -213,10 +227,44 @@
       <xs:element name="conceptgroup" type="optionresponse--conceptgroup"/>
       <xs:element name="foil" type="optionresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="options" type="xs:string"/>
-    <xs:attribute name="texoptions" type="xs:string"/>
-    <xs:attribute name="checkboxvalue" type="xs:string"/>
-    <xs:attribute name="checkboxoptions" type="xs:string"/>
+    <xs:attribute name="options" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          List of options
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="texoptions">
+      <xs:annotation>
+        <xs:documentation>
+          Print options
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="nochoice"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="checkboxvalue" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Two-option checkboxes for
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="checkboxoptions">
+      <xs:annotation>
+        <xs:documentation>
+          Checkbox options
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="nochoice"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="radiobuttonresponse--conceptgroup">
     <xs:annotation>
@@ -252,8 +300,13 @@
       <xs:element ref="window"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="value" type="xs:string"/>
-    <xs:attribute name="randomize" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Correct Option
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute default="random" name="location">
       <xs:simpleType>
         <xs:restriction base="xs:string">
@@ -307,8 +360,13 @@
       <xs:element ref="window"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="value" type="xs:string"/>
-    <xs:attribute name="randomize" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Rank Value
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute default="random" name="location">
       <xs:simpleType>
         <xs:restriction base="xs:string">
@@ -327,7 +385,6 @@
       <xs:element name="conceptgroup" type="rankresponse--conceptgroup"/>
       <xs:element name="foil" type="rankresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="options" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="matchresponse--conceptgroup">
     <xs:annotation>
@@ -363,8 +420,13 @@
       <xs:element ref="window"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="value" type="xs:string"/>
-    <xs:attribute name="randomize" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Correct Option
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute default="random" name="location">
       <xs:simpleType>
         <xs:restriction base="xs:string">
@@ -380,10 +442,10 @@
       <xs:documentation>Collection of Foils</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element name="itemgroup" type="matchresponse--itemgroup"/>
       <xs:element name="conceptgroup" type="matchresponse--conceptgroup"/>
       <xs:element name="foil" type="matchresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="options" type="xs:string"/>
   </xs:complexType>
   <xs:complexType mixed="true" name="matchresponse--item">
     <xs:annotation>
@@ -410,7 +472,6 @@
       <xs:element ref="window"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="randomize" type="xs:string"/>
     <xs:attribute default="random" name="location">
       <xs:simpleType>
         <xs:restriction base="xs:string">
@@ -428,8 +489,19 @@
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="item" type="matchresponse--item"/>
     </xs:choice>
-    <xs:attribute default="yes" name="randomize" type="yesno"/>
+    <xs:attribute default="yes" name="randomize" type="yesno">
+      <xs:annotation>
+        <xs:documentation>
+          Randomize Order
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute default="top" name="location">
+      <xs:annotation>
+        <xs:documentation>
+          Items Display Location
+        </xs:documentation>
+      </xs:annotation>
       <xs:simpleType>
         <xs:restriction base="xs:string">
           <xs:enumeration value="top"/>
@@ -440,6 +512,11 @@
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="vertical" name="direction">
+      <xs:annotation>
+        <xs:documentation>
+          Items Display Direction
+        </xs:documentation>
+      </xs:annotation>
       <xs:simpleType>
         <xs:restriction base="xs:string">
           <xs:enumeration value="vertical"/>
@@ -448,6 +525,11 @@
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute name="columns">
+      <xs:annotation>
+        <xs:documentation>
+          Items Columns
+        </xs:documentation>
+      </xs:annotation>
       <xs:simpleType>
         <xs:restriction base="xs:string">
           <xs:enumeration value="1"/>
@@ -476,6 +558,11 @@
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="\normalsize" name="TeXsize">
+      <xs:annotation>
+        <xs:documentation>
+          TeX font size
+        </xs:documentation>
+      </xs:annotation>
       <xs:simpleType>
         <xs:restriction base="xs:string">
           <xs:enumeration value="\tiny"/>
@@ -502,7 +589,7 @@
   </xs:complexType>
   <xs:complexType mixed="true" name="randomlabel--label">
     <xs:annotation>
-      <xs:documentation>Label Text</xs:documentation>
+      <xs:documentation>Label Text or Path to image</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element ref="block"/>
@@ -529,14 +616,14 @@
     <xs:annotation>
       <xs:documentation>Plot Label</xs:documentation>
     </xs:annotation>
-    <xs:attribute default="0" name="xpos" type="xs:decimal">
+    <xs:attribute default="0" name="xpos" type="real">
       <xs:annotation>
         <xs:documentation>
           X position of label (graph coordinates)
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="0" name="ypos" type="xs:decimal">
+    <xs:attribute default="0" name="ypos" type="real">
       <xs:annotation>
         <xs:documentation>
           Y position of label (graph coordinates)
@@ -557,7 +644,7 @@
         </xs:restriction>
       </xs:simpleType>
     </xs:attribute>
-    <xs:attribute default="0" name="rotate" type="xs:decimal">
+    <xs:attribute default="0" name="rotate" type="real">
       <xs:annotation>
         <xs:documentation>
           Rotation of label (degrees)
@@ -570,55 +657,55 @@
       <xs:documentation>Plot Title</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-        </xs:restriction>
+                            </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="lonplot--xlabel">
     <xs:annotation>
       <xs:documentation>Plot x-label</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-        </xs:restriction>
+                            </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="lonplot--ylabel">
     <xs:annotation>
       <xs:documentation>Plot y-label</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-        </xs:restriction>
+                            </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="lonplot--axis">
     <xs:annotation>
       <xs:documentation>Plot axes</xs:documentation>
     </xs:annotation>
-    <xs:attribute default="x000000" name="color" type="xs:string">
+    <xs:attribute default="x000000" name="color" type="color">
       <xs:annotation>
         <xs:documentation>
           Color of grid lines
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="-10.0" name="xmin" type="xs:decimal">
+    <xs:attribute default="-10.0" name="xmin" type="real">
       <xs:annotation>
         <xs:documentation>
           Minimum x-value shown in plot
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="10.0" name="xmax" type="xs:decimal">
+    <xs:attribute default="10.0" name="xmax" type="real">
       <xs:annotation>
         <xs:documentation>
           Maximum x-value shown in plot
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="-10.0" name="ymin" type="xs:decimal">
+    <xs:attribute default="-10.0" name="ymin" type="real">
       <xs:annotation>
         <xs:documentation>
           Minimum y-value shown in plot
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="10.0" name="ymax" type="xs:decimal">
+    <xs:attribute default="10.0" name="ymax" type="real">
       <xs:annotation>
         <xs:documentation>
           Maximum y-value shown in plot
@@ -730,7 +817,7 @@
       <xs:element name="data" type="lonplot--data"/>
       <xs:element name="function" type="lonplot--function"/>
     </xs:choice>
-    <xs:attribute default="x000000" name="color" type="xs:string">
+    <xs:attribute default="x000000" name="color" type="color">
       <xs:annotation>
         <xs:documentation>
           Color of curve
@@ -856,21 +943,21 @@
         </xs:restriction>
       </xs:simpleType>
     </xs:attribute>
-    <xs:attribute default="0.02" name="arrowlength" type="xs:decimal">
+    <xs:attribute default="0.02" name="arrowlength" type="real">
       <xs:annotation>
         <xs:documentation>
           Length of vector arrow (only applies to vector plots)
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="10.0" name="arrowangle" type="xs:decimal">
+    <xs:attribute default="10.0" name="arrowangle" type="real">
       <xs:annotation>
         <xs:documentation>
           Angle of arrow branches to arrow body (only applies to vector plots)
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="90.0" name="arrowbackangle" type="xs:decimal">
+    <xs:attribute default="90.0" name="arrowbackangle" type="real">
       <xs:annotation>
         <xs:documentation>
           Angle of arrow back lines to branches.
@@ -912,21 +999,21 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="-10.0" name="start" type="xs:decimal">
+    <xs:attribute default="-10.0" name="start" type="real">
       <xs:annotation>
         <xs:documentation>
           Start major tics at
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="1.0" name="increment" type="xs:decimal">
+    <xs:attribute default="1.0" name="increment" type="real">
       <xs:annotation>
         <xs:documentation>
           Place a major tic every
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="10.0" name="end" type="xs:decimal">
+    <xs:attribute default="10.0" name="end" type="real">
       <xs:annotation>
         <xs:documentation>
           Stop major tics at
@@ -990,9 +1077,22 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
-      <xs:attribute name="incorrect" type="xs:string"/>
+      <xs:attribute name="incorrect" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Incorrect Answers
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="unit" type="xs:string"/>
       <xs:attribute name="format" type="xs:string"/>
+      <xs:attribute name="preprocess" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Pre-Processor Subroutine
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="formularesponse">
@@ -1008,8 +1108,20 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
-      <xs:attribute name="samples" type="xs:string"/>
-      <xs:attribute name="preprocess" type="xs:string"/>
+      <xs:attribute name="samples" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Sample Points
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="preprocess" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Pre-Processor Subroutine
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="functionplotresponse">
@@ -1023,18 +1135,90 @@
         <xs:element ref="hintgroup"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="width" type="xs:int"/>
-      <xs:attribute name="height" type="xs:int"/>
-      <xs:attribute name="xlabel" type="xs:string"/>
-      <xs:attribute name="xmin" type="xs:decimal"/>
-      <xs:attribute name="xmax" type="xs:decimal"/>
-      <xs:attribute default="yes" name="xaxisvisible" type="yesno"/>
-      <xs:attribute name="ylabel" type="xs:string"/>
-      <xs:attribute name="ymin" type="xs:decimal"/>
-      <xs:attribute name="ymax" type="xs:decimal"/>
-      <xs:attribute default="yes" name="yaxisvisible" type="yesno"/>
-      <xs:attribute default="yes" name="gridvisible" type="yesno"/>
-      <xs:attribute name="answerdisplay" type="xs:string"/>
+      <xs:attribute name="width" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Width (pixels)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="height" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Height (pixels)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="xlabel" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Label x-axis
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="xmin" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Minimum x-value
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="xmax" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Maximum x-value
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="yes" name="xaxisvisible" type="yesno">
+        <xs:annotation>
+          <xs:documentation>
+            x-axis visible
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="ylabel" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Label y-axis
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="ymin" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Minimum y-value
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="ymax" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Maximum y-value
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="yes" name="yaxisvisible" type="yesno">
+        <xs:annotation>
+          <xs:documentation>
+            y-axis visible
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="yes" name="gridvisible" type="yesno">
+        <xs:annotation>
+          <xs:documentation>
+            Grid visible
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="answerdisplay" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Background plot(s) for answer (function(x):xmin:xmax,function(x):xmin:xmax,x1:y1:sx1:sy1:x2:y2:sx2:sy2,...)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="spline">
@@ -1051,10 +1235,34 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="initx" type="xs:decimal"/>
-      <xs:attribute name="inity" type="xs:decimal"/>
-      <xs:attribute name="scalex" type="xs:decimal"/>
-      <xs:attribute name="scaley" type="xs:decimal"/>
+      <xs:attribute name="initx" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Initial x-value
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="inity" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Initial y-value
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="scalex" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Scale x
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="scaley" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Scale y
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="backgroundplot">
@@ -1063,11 +1271,46 @@
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="function" type="xs:string"/>
-      <xs:attribute name="xinitial" type="xs:decimal"/>
-      <xs:attribute name="xfinal" type="xs:decimal"/>
-      <xs:attribute name="label" type="xs:string"/>
-      <xs:attribute name="color" type="xs:string"/>
-      <xs:attribute default="yes" name="fixed" type="yesno"/>
+      <xs:attribute name="xinitial" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Initial x-value (optional)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="xfinal" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Final x-value (optional)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="label" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Label on Plot
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="color">
+        <xs:annotation>
+          <xs:documentation>
+            Color (hex code)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[\da-fA-F]{6}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="yes" name="fixed" type="yesno">
+        <xs:annotation>
+          <xs:documentation>
+            Fixed location
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="plotobject">
@@ -1075,9 +1318,15 @@
       <xs:documentation>Plot Object</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="label" type="xs:string"/>
-      <xs:attribute name="x" type="xs:decimal"/>
-      <xs:attribute name="y" type="xs:decimal"/>
+      <xs:attribute name="label" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Label on Plot
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="x" type="real"/>
+      <xs:attribute name="y" type="real"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="plotvector">
@@ -1085,11 +1334,17 @@
       <xs:documentation>Plot Vector</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="label" type="xs:string"/>
-      <xs:attribute name="tailx" type="xs:decimal"/>
-      <xs:attribute name="taily" type="xs:decimal"/>
-      <xs:attribute name="tipx" type="xs:decimal"/>
-      <xs:attribute name="tipy" type="xs:decimal"/>
+      <xs:attribute name="label" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Label on Plot
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="tailx" type="real"/>
+      <xs:attribute name="taily" type="real"/>
+      <xs:attribute name="tipx" type="real"/>
+      <xs:attribute name="tipy" type="real"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="drawvectorsum">
@@ -1097,9 +1352,15 @@
       <xs:documentation>Draw Vector Sum</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="label" type="xs:string"/>
-      <xs:attribute name="tailx" type="xs:decimal"/>
-      <xs:attribute name="taily" type="xs:decimal"/>
+      <xs:attribute name="label" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Label on Plot
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="tailx" type="real"/>
+      <xs:attribute name="taily" type="real"/>
       <xs:attribute default="yes" name="showvalue" type="yesno"/>
       <xs:attribute name="vectorlist" type="xs:string"/>
     </xs:complexType>
@@ -1136,7 +1397,95 @@
       <xs:documentation>Function Plot Graph Rule</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="index" type="xs:string"/>
+      <xs:attribute name="index" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Index/Name
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="0" name="derivativeorder">
+        <xs:annotation>
+          <xs:documentation>
+            Function
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="-1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="xinitial" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Initial x-value
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="xinitiallabel">
+        <xs:annotation>
+          <xs:documentation>
+            Initial x-value label
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="start"/>
+            <xs:enumeration value="end"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="xfinal" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Final x-value (optional)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="xfinallabel">
+        <xs:annotation>
+          <xs:documentation>
+            Final x-value label (optional)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="end"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="minimumlength" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Minimum length for range (optional)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="maximumlength" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Maximum length for range (optional)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="eq" name="relationship">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="eq"/>
+            <xs:enumeration value="ne"/>
+            <xs:enumeration value="ge"/>
+            <xs:enumeration value="gt"/>
+            <xs:enumeration value="lt"/>
+            <xs:enumeration value="le"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="undef" name="value" type="xs:string"/>
+      <xs:attribute name="percenterror" type="real"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="functionplotvectorrule">
@@ -1144,18 +1493,72 @@
       <xs:documentation>Function Plot Vector Rule</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="index" type="xs:string"/>
+      <xs:attribute name="index" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Index/Name
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="vector" type="xs:string"/>
-      <xs:attribute name="attachpoint" type="xs:string"/>
-      <xs:attribute name="notattachpoint" type="xs:string"/>
-      <xs:attribute name="tailpoint" type="xs:string"/>
-      <xs:attribute name="tippoint" type="xs:string"/>
-      <xs:attribute name="nottailpoint" type="xs:string"/>
-      <xs:attribute name="nottippoint" type="xs:string"/>
-      <xs:attribute name="length" type="xs:string"/>
-      <xs:attribute name="lengtherror" type="xs:string"/>
-      <xs:attribute name="angle" type="xs:string"/>
-      <xs:attribute name="angleerror" type="xs:string"/>
+      <xs:attribute name="attachpoint" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Attached to object
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="notattachpoint" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Not attached to object
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="tailpoint" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Tail attached to object
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="tippoint" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Tip attached to object
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="nottailpoint" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Tail not attached to object
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="nottippoint" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Tip not attached to object
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="length" type="real"/>
+      <xs:attribute name="lengtherror" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Absolute error length
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="angle" type="real"/>
+      <xs:attribute name="angleerror" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Absolute error angle
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="functionplotvectorsumrule">
@@ -1163,12 +1566,48 @@
       <xs:documentation>Function Plot Vector Sum Rule</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="index" type="xs:string"/>
-      <xs:attribute name="vectors" type="xs:string"/>
-      <xs:attribute name="length" type="xs:string"/>
-      <xs:attribute name="lengtherror" type="xs:string"/>
-      <xs:attribute name="angle" type="xs:string"/>
-      <xs:attribute name="angleerror" type="xs:string"/>
+      <xs:attribute name="index" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Index/Name
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="vectors" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Comma-separated list of vectors
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="length" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Sum vector length
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="lengtherror" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Absolute error length
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="angle" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Sum vector angle
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="angleerror" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            Absolute error angle
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="functionplotcustomrule">
@@ -1183,7 +1622,13 @@
           </xs:complexType>
         </xs:element>
       </xs:choice>
-      <xs:attribute name="index" type="xs:string"/>
+      <xs:attribute name="index" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Index/Name
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="stringresponse">
@@ -1196,6 +1641,7 @@
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
       <xs:attribute default="cs" name="type">
         <xs:simpleType>
@@ -1207,9 +1653,20 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="answerdisplay" type="xs:string"/>
-      <xs:attribute name="preprocess" type="xs:string"/>
+      <xs:attribute name="answerdisplay" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            String to display for answer
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="preprocess" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Pre-Processor Subroutine
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="essayresponse">
@@ -1262,7 +1719,13 @@
         <xs:element ref="endouttext"/>
         <xs:element ref="stringhint"/>
       </xs:choice>
-      <xs:attribute default="no" name="showoncorrect" type="yesno"/>
+      <xs:attribute default="no" name="showoncorrect" type="yesno">
+        <xs:annotation>
+          <xs:documentation>
+            Show hint even if problem Correct
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="hintpart">
@@ -1301,10 +1764,23 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
-      <xs:attribute name="samples" type="xs:string"/>
-      <xs:attribute name="preprocess" type="xs:string"/>
+      <xs:attribute name="samples" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Sample Points
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="preprocess" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Pre-Processor Subroutine
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="numericalhint">
@@ -1315,11 +1791,18 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
       <xs:attribute name="unit" type="xs:string"/>
       <xs:attribute name="format" type="xs:string"/>
-      <xs:attribute name="preprocess" type="xs:string"/>
+      <xs:attribute name="preprocess" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Pre-Processor Subroutine
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="reactionhint">
@@ -1330,6 +1813,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
     </xs:complexType>
@@ -1342,6 +1826,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
     </xs:complexType>
@@ -1354,6 +1839,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
       <xs:attribute name="concept" type="xs:string"/>
@@ -1367,6 +1853,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
     </xs:complexType>
@@ -1379,6 +1866,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="responseparam"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
       <xs:attribute default="cs" name="type">
@@ -1391,7 +1879,13 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="preprocess" type="xs:string"/>
+      <xs:attribute name="preprocess" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Pre-Processor Subroutine
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="customhint">
@@ -1403,6 +1897,7 @@
         <xs:element ref="responseparam"/>
         <xs:element name="answer" type="customhint--answer"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
     </xs:complexType>
   </xs:element>
@@ -1415,8 +1910,14 @@
         <xs:element ref="responseparam"/>
         <xs:element name="answer" type="mathhint--answer"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute default="maxima" name="cas">
+        <xs:annotation>
+          <xs:documentation>
+            Algebra System
+          </xs:documentation>
+        </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="maxima"/>
@@ -1424,7 +1925,13 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="args" type="xs:string"/>
+      <xs:attribute name="args" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Argument Array
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="imageresponse">
@@ -1437,7 +1944,14 @@
         <xs:element name="foilgroup" type="imageresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
-      <xs:attribute name="max" type="xs:int"/>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="max" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Max Number Of Shown Foils
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="datasubmission">
@@ -1458,7 +1972,13 @@
         <xs:element ref="textline"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="answerdisplay" type="xs:string"/>
+      <xs:attribute name="answerdisplay" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            String to display for answer
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="mathresponse">
@@ -1474,8 +1994,19 @@
         <xs:element ref="textline"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="answerdisplay" type="xs:string"/>
+      <xs:attribute name="answerdisplay" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            String to display for answer
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute default="maxima" name="cas">
+        <xs:annotation>
+          <xs:documentation>
+            Algebra System
+          </xs:documentation>
+        </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="maxima"/>
@@ -1483,13 +2014,19 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="args" type="xs:string"/>
+      <xs:attribute name="args" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Argument Array
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="libraries" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="textfield">
     <xs:annotation>
-      <xs:documentation>Large Text Entry Area</xs:documentation>
+      <xs:documentation>Large Text Entry Area, contains the text that appears by default</xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -1499,9 +2036,39 @@
         <xs:element ref="web"/>
       </xs:choice>
       <xs:attribute name="rows" type="xs:int"/>
-      <xs:attribute name="cols" type="xs:int"/>
-      <xs:attribute name="addchars" type="xs:string"/>
-      <xs:attribute name="spellcheck" type="xs:string"/>
+      <xs:attribute name="cols" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Columns
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="addchars" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Click-On Texts (comma sep)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="spellcheck">
+        <xs:annotation>
+          <xs:documentation>
+            Spellcheck for
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="none"/>
+            <xs:enumeration value="en"/>
+            <xs:enumeration value="de"/>
+            <xs:enumeration value="he"/>
+            <xs:enumeration value="es"/>
+            <xs:enumeration value="fr"/>
+            <xs:enumeration value="pt"/>
+            <xs:enumeration value="tr"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="textline">
@@ -1510,9 +2077,28 @@
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="size" type="xs:int"/>
-      <xs:attribute name="addchars" type="xs:string"/>
+      <xs:attribute name="addchars" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Click-On Texts (comma sep)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute default="no" name="readonly" type="yesno"/>
-      <xs:attribute name="spellcheck" type="xs:string"/>
+      <xs:attribute name="spellcheck">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="none"/>
+            <xs:enumeration value="en"/>
+            <xs:enumeration value="de"/>
+            <xs:enumeration value="he"/>
+            <xs:enumeration value="es"/>
+            <xs:enumeration value="fr"/>
+            <xs:enumeration value="pt"/>
+            <xs:enumeration value="tr"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="optionresponse">
@@ -1526,9 +2112,26 @@
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="max" type="xs:int"/>
-      <xs:attribute default="yes" name="randomize" type="yesno"/>
+      <xs:attribute name="max" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Max Number Of Shown Foils
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="yes" name="randomize" type="yesno">
+        <xs:annotation>
+          <xs:documentation>
+            Randomize Foil Order
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute default="horizontal" name="TeXlayout">
+        <xs:annotation>
+          <xs:documentation>
+            Display of options when printed
+          </xs:documentation>
+        </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="horizontal"/>
@@ -1551,6 +2154,9 @@
     <xs:annotation>
       <xs:documentation>Title</xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="style" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="radiobuttonresponse">
     <xs:annotation>
@@ -1563,9 +2169,26 @@
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="max" type="xs:int"/>
-      <xs:attribute default="yes" name="randomize" type="yesno"/>
+      <xs:attribute name="max" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Max Number Of Shown Foils
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="yes" name="randomize" type="yesno">
+        <xs:annotation>
+          <xs:documentation>
+            Randomize Foil Order
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute default="vertical" name="direction">
+        <xs:annotation>
+          <xs:documentation>
+            Display Direction
+          </xs:documentation>
+        </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="vertical"/>
@@ -1586,8 +2209,20 @@
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="max" type="xs:int"/>
-      <xs:attribute default="yes" name="randomize" type="yesno"/>
+      <xs:attribute name="max" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Max Number Of Shown Foils
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="yes" name="randomize" type="yesno">
+        <xs:annotation>
+          <xs:documentation>
+            Randomize Foil Order
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="matchresponse">
@@ -1596,13 +2231,26 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element name="foilgroup" type="matchresponse--foilgroup"/>
         <xs:element ref="hintgroup"/>
         <xs:element ref="matchresponse"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="max" type="xs:int"/>
-      <xs:attribute default="yes" name="randomize" type="yesno"/>
+      <xs:attribute name="max" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Max Number Of Shown Foils
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="yes" name="randomize" type="yesno">
+        <xs:annotation>
+          <xs:documentation>
+            Randomize Foil Order
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="organicresponse">
@@ -1627,10 +2275,34 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="molecule" type="xs:string"/>
-      <xs:attribute name="answer" type="xs:string"/>
-      <xs:attribute name="jmeanswer" type="xs:string"/>
-      <xs:attribute name="width" type="xs:int"/>
+      <xs:attribute name="molecule" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Starting Molecule
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="answer" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Correct Answer
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="jmeanswer" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            JME string of the answer
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="width" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Width of correct answer image
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="reactionresponse">
@@ -1645,7 +2317,13 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
-      <xs:attribute name="initial" type="xs:string"/>
+      <xs:attribute name="initial" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Initial Reaction
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="organicstructure">
@@ -1653,8 +2331,20 @@
       <xs:documentation>Organic Structure</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="width" type="xs:int"/>
-      <xs:attribute name="texwidth" type="xs:decimal"/>
+      <xs:attribute name="width" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Width (pixels)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="texwidth" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation>
+            TeXwidth (mm)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="molecule" type="xs:string"/>
       <xs:attribute default="reaction" name="options">
         <xs:simpleType>
@@ -1686,9 +2376,21 @@
     <xs:annotation>
       <xs:documentation>Import a File</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="importmode" type="xs:string"/>
+      <xs:attribute name="importmode">
+        <xs:annotation>
+          <xs:documentation>
+            Import as
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="problem"/>
+            <xs:enumeration value="part"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="parserlib" type="xs:string">
@@ -1714,12 +2416,42 @@
       <xs:documentation>Image</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="src" type="xs:string"/>
+      <xs:attribute name="src" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            Image Url
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="alt" type="xs:string"/>
-      <xs:attribute name="width" type="xs:int"/>
-      <xs:attribute name="height" type="xs:int"/>
-      <xs:attribute name="TeXwidth" type="xs:decimal"/>
-      <xs:attribute name="TeXheight" type="xs:decimal"/>
+      <xs:attribute name="width" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            width (pixel)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="height" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            height (pixel)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="TeXwidth" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation>
+            TeXwidth (mm)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="TeXheight" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation>
+            TeXheight (mm)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="align">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -1782,10 +2514,22 @@
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
-      <xs:attribute name="linktext" type="xs:string"/>
+      <xs:attribute name="linktext" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Text of Link
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="height" type="xs:int"/>
       <xs:attribute name="width" type="xs:int"/>
-      <xs:attribute name="printtext" type="xs:string"/>
+      <xs:attribute name="printtext" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Printed text (optional)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="block">
@@ -1835,7 +2579,13 @@
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
-      <xs:attribute name="condition" type="xs:string"/>
+      <xs:attribute name="condition" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Test Condition
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="library">
@@ -1978,8 +2728,20 @@
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="display" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Part ID
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="display" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Displayed Part Description
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="startpartmarker">
@@ -2125,7 +2887,13 @@
       <xs:documentation>File Dependencies</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="src" type="xs:string"/>
+      <xs:attribute name="src" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            File Spec
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="problemtype">
@@ -2183,6 +2951,11 @@
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute default="exam" name="for">
+        <xs:annotation>
+          <xs:documentation>
+            When used as type(s)
+          </xs:documentation>
+        </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="exam"/>
@@ -2208,9 +2981,27 @@
         <xs:element name="labelgroup" type="randomlabel--labelgroup"/>
       </xs:choice>
       <xs:attribute name="bgimg" type="xs:string"/>
-      <xs:attribute name="width" type="xs:int"/>
-      <xs:attribute name="height" type="xs:int"/>
-      <xs:attribute name="texwidth" type="xs:decimal"/>
+      <xs:attribute name="width" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Width(pixel)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="height" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Height(pixel)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="texwidth" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation>
+            TeXWidth(mm)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="randomlist">
@@ -2253,7 +3044,13 @@
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
-      <xs:attribute name="show" type="xs:int"/>
+      <xs:attribute name="show" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Maximum Tags to Show
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="solved">
@@ -2335,7 +3132,13 @@
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
-      <xs:attribute name="condition" type="xs:string"/>
+      <xs:attribute name="condition" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Test Condition
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="gnuplot">
@@ -2375,14 +3178,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="xffffff" name="bgcolor" type="xs:string">
+      <xs:attribute default="xffffff" name="bgcolor" type="color">
         <xs:annotation>
           <xs:documentation>
             Background color of image
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="x000000" name="fgcolor" type="xs:string">
+      <xs:attribute default="x000000" name="fgcolor" type="color">
         <xs:annotation>
           <xs:documentation>
             Foreground color of image
@@ -2437,10 +3240,21 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:int">
-            <xs:minInclusive value="5"/>
-            <xs:maxInclusive value="15"/>
-          </xs:restriction>
+          <xs:union>
+            <xs:simpleType>
+              <xs:restriction base="xs:int">
+                <xs:minInclusive value="5"/>
+                <xs:maxInclusive value="15"/>
+              </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="small"/>
+                <xs:enumeration value="medium"/>
+                <xs:enumeration value="large"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute default="sans-serif" name="fontface">
@@ -2481,6 +3295,7 @@
             <xs:enumeration value="left"/>
             <xs:enumeration value="right"/>
             <xs:enumeration value="middle"/>
+            <xs:enumeration value="center"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
@@ -2581,33 +3396,69 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute default="default" name="lmargin" type="xs:string">
+      <xs:attribute default="default" name="lmargin">
         <xs:annotation>
           <xs:documentation>
             Left margin width (pts)
           </xs:documentation>
         </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="xs:int">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="default"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
       </xs:attribute>
-      <xs:attribute default="default" name="rmargin" type="xs:string">
+      <xs:attribute default="default" name="rmargin">
         <xs:annotation>
           <xs:documentation>
             Right margin width (pts)
           </xs:documentation>
         </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="xs:int">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="default"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
       </xs:attribute>
-      <xs:attribute default="default" name="tmargin" type="xs:string">
+      <xs:attribute default="default" name="tmargin">
         <xs:annotation>
           <xs:documentation>
             Top margin width (pts)
           </xs:documentation>
         </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="xs:int">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="default"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
       </xs:attribute>
-      <xs:attribute default="default" name="bmargin" type="xs:string">
+      <xs:attribute default="default" name="bmargin">
         <xs:annotation>
           <xs:documentation>
             Bottom margin width (pts)
           </xs:documentation>
         </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="xs:int">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="default"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="boxwidth" type="xs:string">
         <xs:annotation>
@@ -2616,14 +3467,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="1" name="major_ticscale" type="xs:decimal">
+      <xs:attribute default="1" name="major_ticscale" type="real">
         <xs:annotation>
           <xs:documentation>
             Size of major tic marks (plot coordinates)
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="0.5" name="minor_ticscale" type="xs:decimal">
+      <xs:attribute default="0.5" name="minor_ticscale" type="real">
         <xs:annotation>
           <xs:documentation>
             Size of minor tic mark (plot coordinates)
@@ -2636,7 +3487,7 @@
     <xs:annotation>
       <xs:documentation>Start of Task</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="IntroParagraph"/>
         <xs:element ref="Setup"/>
@@ -2644,7 +3495,13 @@
         <xs:element ref="Criteria"/>
         <xs:element ref="ClosingParagraph"/>
       </xs:choice>
-      <xs:attribute name="OptionalRequired" type="xs:int"/>
+      <xs:attribute name="OptionalRequired" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Required number of passed optional elements to pass the Task
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="IntroParagraph">
@@ -2714,6 +3571,11 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute default="Y" name="Mandatory">
+        <xs:annotation>
+          <xs:documentation>
+            Passing is Mandatory
+          </xs:documentation>
+        </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="Y"/>
@@ -2721,7 +3583,13 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="OptionalRequired" type="xs:int"/>
+      <xs:attribute name="OptionalRequired" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Required number of passed optional elements to pass
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="QuestionText">
@@ -2772,8 +3640,20 @@
         <xs:element ref="Criteria"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute default="no" name="Disabled" type="yesno"/>
-      <xs:attribute name="OptionalRequired" type="xs:int"/>
+      <xs:attribute default="no" name="Disabled" type="yesno">
+        <xs:annotation>
+          <xs:documentation>
+            Instance is Disabled
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="OptionalRequired" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            Required number of passed optional elements to pass the Instance
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="InstanceText">
@@ -2807,13 +3687,18 @@
     <xs:annotation>
       <xs:documentation>Question Criteria</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="GraderNote"/>
         <xs:element ref="CriteriaText"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute default="Y" name="Mandatory">
+        <xs:annotation>
+          <xs:documentation>
+            Passing is Mandatory
+          </xs:documentation>
+        </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="Y"/>
