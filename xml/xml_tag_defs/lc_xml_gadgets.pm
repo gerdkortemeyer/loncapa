@@ -29,7 +29,8 @@ sub start_lcprogressbar_html {
    my ($p,$safe,$stack,$token)=@_;
    my $id=$token->[2]->{'id'};
    my $process=$token->[2]->{'process'};
-   return "<div id='$id'></div><script>progressbar('$id','$process')</script>";
+   return "<div id='lcprogressbar'><div id='lcprogresssuccess'></div><div id='lcprogressskip'></div><div id='lcprogressfail'></div></div>\n".
+          "<script>progressbar('$id','$process')</script>";
 }
 
 

@@ -22,11 +22,27 @@ function screendefaults(formname,storename) {
 function progressbar(id,process) {
    var noCache = parent.no_cache_value();
    $.getJSON( "/progress/"+process, { "noCache": noCache }, function( data ) {
-      var newtext='';
+      var total=1;
+      var success=0;
+      var skip=0;
+      var fail=0;
       $.each( data, function( key, val ) {
-         newtext+=" "+ key + "=" + val;
+         if (key=='total') { total=val; }
+         if (key=='success') { success=val; }
+         if (key=='skip') { skip=val; }
+         if (key=='fail') { fail=val; }
       });
-      $('#'+id).html(newtext);
+      var percsuccess=0;
+      var percskip=0;
+      var percfail=0;
+      if (total>0) {
+         percsuccess=100*success/total;
+         percskip=100*skip/total;
+         percfail=100*fail/total;
+      }
+      $('#lcprogresssuccess').css('width',percsuccess+'%');
+      $('#lcprogressskip').css('width',percskip+'%');
+      $('#lcprogressfail').css('width',percfail+'%');
       setTimeout(progressbar,1000,id,process);
    });
 }

@@ -271,7 +271,9 @@ sub modify_role {
 #
 sub enroll {
    my ($userrecord)=@_;
+#FIXME: debug
    &logdebug("Will enroll: ".Dumper($userrecord));
+   return (rand()>0.3);
 }
 
 
