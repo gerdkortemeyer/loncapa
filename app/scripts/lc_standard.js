@@ -18,3 +18,7 @@ function screendefaults(formname,storename) {
              type:'POST'
           });
 }
+
+function progressbar(id,process) {
+   $('#'+id).html(process);
+}

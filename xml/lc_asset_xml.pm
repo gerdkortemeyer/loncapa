@@ -36,6 +36,7 @@ use Apache::lc_xml_trees;
 use Apache::lc_xml_tables;
 use Apache::lc_xml_conditionals;
 use Apache::lc_xml_include;
+use Apache::lc_xml_gadgets;
 
 sub error {
    my ($stack,$type,$notes)=@_;
