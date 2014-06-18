@@ -271,6 +271,19 @@ sub modify_role {
 #
 sub enroll {
    my ($userrecord,$overridename,$overrideauth,$overridepid)=@_;
+   unless (($userrecord->{'username'}) && ($userrecord->{'domain'})) {
+      &logwarning("Call to enroll without username or domain");
+      return 0;
+   }
+# Does this user exist?
+   my $entity=&Apache::lc_entity_users::username_to_entity($userrecord-{'username'},$userrecord->{'domain'});
+   if ($entity) {
+# The user exists. Have we learned anything new or do we override anything?
+      my $profile=&Apache::lc_entity_profile::dump_profile($entity,$userrecord->{'domain'});
+      my $pid=&Apache::lc_entity_users::entity_to_pid($entity,$userrecord->{'domain'});
+   } else {
+# The user does not exist yet
+   }
 #FIXME: debug
    &logdebug("Will enroll: ".Dumper($userrecord)."\nname ".$overridename."\nauth ".$overrideauth."\npid ".$overridepid);
    return (rand()>0.3);

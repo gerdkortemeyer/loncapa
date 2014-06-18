@@ -22,6 +22,8 @@ use strict;
 use Apache::lc_json_utils();
 use Apache::lc_file_utils();
 use Apache::lc_xml_utils();
+use Apache::lc_ui_utils;
+use Apache::lc_ui_localize;
 use Apache::lc_xml_forms();
 use Apache::lc_entity_users();
 use Apache::lc_entity_roles();
@@ -118,7 +120,10 @@ sub incl_spreadsheet_finalize_items {
 # First, gather everything we can from the spreadsheet row
          my ($username,$domain,$userrecord)=&evaluate_row($sheets->{$worksheet}->{'cells'}->{$row},$associations);
 # No username? Bad, skip this
-         unless ($username) { next; }
+         unless ($username) { 
+            &Apache::lc_entity_sessions::inc_progress('spreadsheetfinalize','fail');
+            next; 
+         }
 # Flags if fixups are needed
          my $problems='';
          my @fixer_uppers=();
@@ -174,11 +179,16 @@ sub incl_spreadsheet_finalize_items {
 # Prepare problem output, even though we might not need it
          $problems.=
             "\n<h2>$username:$domain - ".$userrecord->{'firstname'}.' '.$userrecord->{'lastname'}."</h2>";
+         unless ($entity) {
+            $problems.=&Apache::lc_xml_utils::standard_message("The user does not yet exist.")."\n";
+         }
+         $problems.=&Apache::lc_xml_utils::standard_message("Some additional information is needed.")."<br />\n";
 # Open the table (again, this may all not be needed if we have everything we need)
          $problems.="\n".&Apache::lc_xml_forms::form_table_start();
 # Save everything that we do know
          $problems.=&Apache::lc_xml_forms::hidden_vars(%{$userrecord});
 # Ask for everything we don't know
+# Users need first names
          unless ($userrecord->{'firstname'}) {
             $problems.=&Apache::lc_xml_forms::table_input_field('corrected_firstname',
                                                                 'corrected_firstname',
@@ -186,6 +196,7 @@ sub incl_spreadsheet_finalize_items {
                                                                 'text',20);
             push(@fixer_uppers,'corrected_firstname');
          }
+# Users need last names
          unless ($userrecord->{'lastname'}) {
             $problems.=&Apache::lc_xml_forms::table_input_field('corrected_lastname',
                                                                 'corrected_lastname',
@@ -193,6 +204,28 @@ sub incl_spreadsheet_finalize_items {
                                                                 'text',20);
             push(@fixer_uppers,'corrected_lastname');
          }
+# We need to recognize the role
+         my ($role_short,$role_name)=&modifiable_role_choices('course');
+         my $foundrole=0;
+         foreach my $thisrole (@{$role_short}) {
+            if ($userrecord->{'role'} eq $thisrole) { $foundrole=1; }
+         }
+         unless ($foundrole) {
+# We do not recognize the role!
+            my $guess=lc($userrecord->{'role'});
+            $guess=~s/^\s*//gs;
+            $guess=~s/\s*$//gs;
+            $guess=~s/\s+/\_/gs;
+            $problems.='<tr><td class="lcformtabledescription"><label for="corrected_role">'.
+                       &mt('Unrecognized role "[_1]"',$userrecord->{'role'}).'</label>'.
+                       &Apache::lc_xml_forms::hidden_field('tobecorrectedrole',$userrecord->{'role'}).
+                       '</td><td>'.
+                       &Apache::lc_xml_forms::inputfield('modifiablecourseroles',
+                              'corrected_role','corrected_role',undef,$guess).
+                       '</td></tr>';
+            push(@fixer_uppers,'corrected_role');
+         }
+# Password (or authentication mode) must be given for new users
          unless ($entity) {
             unless ($userrecord->{'password'}) {
                $problems.=&Apache::lc_xml_forms::table_input_field('corrected_password',
@@ -382,6 +415,13 @@ sub evaluate_row {
       $userrecord->{'section'}=$associations->{'record'}->{'section'}->{'default'};
    } else {
       $userrecord->{'section'}=$row->{$associations->{'record'}->{'section'}->{'column'}}->{'unformatted'};
+   }
+# Get role
+#FIXME: adjust according to associations
+   if ($associations->{'record'}->{'role'}->{'mode'} eq 'default') {
+      $userrecord->{'role'}=$associations->{'record'}->{'role'}->{'default'};
+   } else {
+      $userrecord->{'role'}=$row->{$associations->{'record'}->{'role'}->{'column'}}->{'unformatted'};
    }
 # Get startdate
    if ($associations->{'record'}->{'startdate'}->{'mode'} eq 'default') {

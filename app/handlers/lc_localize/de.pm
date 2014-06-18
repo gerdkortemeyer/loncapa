@@ -166,6 +166,12 @@ use utf8;
 
 'Some required items were not specified.' => 'Einige benötigte Informationen wurden nicht ausgefüllt.',
 
+'The user does not yet exist.' => 'Der Benutzer existiert noch nicht.',
+
+'Some additional information is needed.' => 'Zusätzliche Information wird benötigt.',
+
+'Unrecognized role "[_1]"' => 'Unbekannte Rolle "[_1]"',
+
 'Do you really want to logout?' => 'Wollen Sie sich wirklich abmelden?',
 
 'Please enter your user information.' => 'Bitte geben Sie Ihre Benutzerinformation ein.',
