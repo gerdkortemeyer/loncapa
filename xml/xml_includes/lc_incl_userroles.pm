@@ -96,10 +96,16 @@ sub incl_spreadsheet_finalize_items {
                   }
 # Try to get the new corrected stuff
 #FIXME: authmode
-                  foreach my $key ('firstname','lastname','password') {
+                  foreach my $key ('firstname','lastname','password','role') {
                      if ($content{'corrected_'.$key}) {
                         $corrected_record->{$key}=$content{'corrected_'.$key};
                      }
+                  }
+# Any role fixes to remember?
+                  if ($content{'corrected_role'}) {
+                     my $associations=&load_associations();
+                     $associations->{'rolefixes'}->{$content{'tobecorrectedrole'}}=$content{'corrected_role'};
+                     &save_associations(&Apache::lc_entity_sessions::user_entity_domain(),$associations);
                   }
 # Attempt to enroll
                   if (&Apache::lc_entity_roles::enroll($corrected_record,$content{'overridename'},$content{'overrideauth'},$content{'overridepid'})) {
@@ -417,11 +423,13 @@ sub evaluate_row {
       $userrecord->{'section'}=$row->{$associations->{'record'}->{'section'}->{'column'}}->{'unformatted'};
    }
 # Get role
-#FIXME: adjust according to associations
    if ($associations->{'record'}->{'role'}->{'mode'} eq 'default') {
       $userrecord->{'role'}=$associations->{'record'}->{'role'}->{'default'};
    } else {
       $userrecord->{'role'}=$row->{$associations->{'record'}->{'role'}->{'column'}}->{'unformatted'};
+      if ($associations->{'rolefixes'}->{$userrecord->{'role'}}) {
+         $userrecord->{'role'}=$associations->{'rolefixes'}->{$userrecord->{'role'}};
+      }
    }
 # Get startdate
    if ($associations->{'record'}->{'startdate'}->{'mode'} eq 'default') {
