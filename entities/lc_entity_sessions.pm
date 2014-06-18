@@ -210,6 +210,7 @@ sub posted_content {
 
 
 # Progress indicator
+# $which is the name of the progress indicator
 #
 sub get_progress {
    my ($which)=@_;
@@ -223,6 +224,8 @@ sub get_progress {
    return $data;
 }
 
+# Set everything on the progress $which
+#
 sub put_progress {
    my ($which,$total,$success,$skip,$fail)=@_;
    unless ($total) { $total=1; }
@@ -237,6 +240,29 @@ sub put_progress {
            $which,"{total:$total,success:$success,skip:$skip,fail:$fail}");
 }
 
+# Set the total (probably the first thing you want to do)
+#
+sub set_progress_total {
+   my ($which,$total)=@_;
+   my $progress=&Apache::lc_json_utils::json_to_perl(&get_progress($which));
+   $progress->{'total'}=$total;
+   &put_progress($which,$progress->{'total'},$progress->{'success'},$progress->{'skip'},$progress->{'fail'});
+}
+
+
+# $which is the name of the progress counter
+# $what is success, skip, or fail
+sub inc_progress {
+   my ($which,$what)=@_;
+   my $progress=&Apache::lc_json_utils::json_to_perl(&get_progress($which));
+   $progress->{$what}++;
+   &put_progress($which,$progress->{'total'},$progress->{'success'},$progress->{'skip'},$progress->{'fail'});
+}
+
+sub reset_progress {
+   my ($which)=@_;
+   &put_progress($which,1,0,0,0);
+}
 
 # Get rid of this session
 #

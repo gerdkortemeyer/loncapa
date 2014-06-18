@@ -58,6 +58,16 @@ sub incl_spreadsheet_finalize_items {
    }
 # Load the spreadsheet itself
    my $sheets=&load_sheets();
+# Get total for progress
+   unless ($content{'corrected_record_sheet'}) {
+      &Apache::lc_entity_sessions::reset_progress('spreadsheetfinalize');
+      my $total=0;
+      foreach my $worksheet (sort(keys(%{$sheets}))) {
+         $total+=$sheets->{$worksheet}->{'row_max'}-$sheets->{$worksheet}->{'row_min'}+1;
+         if ($content{'ignorefirstrow'}) { $total--; }
+      }
+      &Apache::lc_entity_sessions::set_progress_total('spreadsheetfinalize',$total);
+   }
 # Keep moving through all sheets, in order, so we can pick up where we left off
    my $found_corrected=0;
    foreach my $worksheet (sort(keys(%{$sheets}))) {
@@ -74,7 +84,9 @@ sub incl_spreadsheet_finalize_items {
             if (($content{'corrected_record_sheet'} eq $worksheet) &&
                 ($content{'corrected_record_row'} eq $row)) { 
 # Deal with it, evaluate corrections and enroll
-               unless ($content{'skip'}) {
+               if ($content{'skip'}) {
+                  &Apache::lc_entity_sessions::inc_progress('spreadsheetfinalize','skip');
+               } else {
                   my $corrected_record;
 # Get the known old stuff
                   foreach my $key (keys(%content)) {
@@ -88,7 +100,11 @@ sub incl_spreadsheet_finalize_items {
                      }
                   }
 # Attempt to enroll
-                  &Apache::lc_entity_roles::enroll($corrected_record);
+                  if (&Apache::lc_entity_roles::enroll($corrected_record)) {
+                     &Apache::lc_entity_sessions::inc_progress('spreadsheetfinalize','success');
+                  } else {
+                     &Apache::lc_entity_sessions::inc_progress('spreadsheetfinalize','fail');
+                  }
                }
 # Remember that we found it
                $found_corrected=1; 
@@ -200,7 +216,11 @@ sub incl_spreadsheet_finalize_items {
             return $output.'<script>followup=1;require="'.join(',',@fixer_uppers).'";</script>';
          } else {
 # Cool, we have everything we need, let's store and then more on
-            &Apache::lc_entity_roles::enroll($userrecord); 
+            if (&Apache::lc_entity_roles::enroll($userrecord)) {
+               &Apache::lc_entity_sessions::inc_progress('spreadsheetfinalize','success');
+            } else {
+               &Apache::lc_entity_sessions::inc_progress('spreadsheetfinalize','fail');
+            } 
          }
       }
    }
