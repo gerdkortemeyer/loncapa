@@ -22,7 +22,7 @@ use strict;
 use Apache::lc_json_utils();
 use Apache::lc_file_utils();
 use Apache::lc_xml_utils();
-use Apache::lc_ui_utils;
+use Apache::lc_authorize();
 use Apache::lc_ui_localize;
 use Apache::lc_xml_forms();
 use Apache::lc_entity_users();
@@ -211,12 +211,8 @@ sub incl_spreadsheet_finalize_items {
             push(@fixer_uppers,'corrected_lastname');
          }
 # We need to recognize the role
-         my ($role_short,$role_name)=&modifiable_role_choices('course');
-         my $foundrole=0;
-         foreach my $thisrole (@{$role_short}) {
-            if ($userrecord->{'role'} eq $thisrole) { $foundrole=1; }
-         }
-         unless ($foundrole) {
+         my %modifiable_roles=&Apache::lc_authorize::modifiable_course_roles();
+         unless ($modifiable_roles{$userrecord->{'role'}}) {
 # We do not recognize the role!
             my $guess=lc($userrecord->{'role'});
             $guess=~s/^\s*//gs;
