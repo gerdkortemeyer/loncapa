@@ -31,6 +31,7 @@ use Apache::lc_entity_utils();
 use Apache::lc_date_utils();
 use Apache::lc_init_cluster_table();
 use Apache::lc_ui_localize;
+use Apache::lc_authorize;
 
 use Data::Dumper;
 
@@ -271,22 +272,48 @@ sub modify_role {
 #
 sub enroll {
    my ($userrecord,$overridename,$overrideauth,$overridepid)=@_;
+# Sanity tests
+# Basics: do we have a username and domain?
    unless (($userrecord->{'username'}) && ($userrecord->{'domain'})) {
-      &logwarning("Call to enroll without username or domain");
+      &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Call to enroll without username or domain");
       return 0;
+   }
+# Can this role even be given out?
+   my %modifiable_roles=&Apache::lc_authorize::modifiable_course_roles();
+   unless ($modifiable_roles{$userrecord->{'role'}}) {
+      &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Enrolling user not authorized for ".$userrecord->{'role'});
+      return 0;
+   }
+# Can this user give out this role for this section?
+   if ($userrecord->{'section'}) {
+      unless (&Apache::lc_authorize::allowed_section('modify_role',$userrecord->{'role'},
+                                                     &Apache::lc_entity_sessions::course_entity_domain(),$userrecord->{'section'})) {
+         &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Enrolling user not authorized for ".$userrecord->{'role'}.
+                                                                           " in section ".$userrecord->{'section'});
+         return 0;
+      }
    }
 # Does this user exist?
    my $entity=&Apache::lc_entity_users::username_to_entity($userrecord-{'username'},$userrecord->{'domain'});
    if ($entity) {
 # The user exists. Have we learned anything new or do we override anything?
-      my $profile=&Apache::lc_entity_profile::dump_profile($entity,$userrecord->{'domain'});
-      my $pid=&Apache::lc_entity_users::entity_to_pid($entity,$userrecord->{'domain'});
+      if ($overridename) {
+         my $profile=&Apache::lc_entity_profile::dump_profile($entity,$userrecord->{'domain'});
+      }
+      if (($overridepid) && (&allowed_course('modify_pid',undef,&Apache::lc_entity_sessions::course_entity_domain()))) {
+         my $pid=&Apache::lc_entity_users::entity_to_pid($entity,$userrecord->{'domain'});
+      }
    } else {
-# The user does not exist yet
+# Cannot do it if we don't have some minimal information
+#FIXME: authmode missing
+      unless (($userrecord->{'firstname'}) && ($userrecord->{'lastname'}) && ($userrecord->{'password'})) {
+         &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Insufficient information to generate user");
+         return 0;
+      }
    }
 #FIXME: debug
    &logdebug("Will enroll: ".Dumper($userrecord)."\nname ".$overridename."\nauth ".$overrideauth."\npid ".$overridepid);
-   return (rand()>0.3);
+   return 1;
 }
 
 

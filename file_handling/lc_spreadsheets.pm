@@ -25,6 +25,7 @@ use Apache2::Const qw(:common :http);
 use Apache::lc_logs;
 use Apache::lc_parameters;
 use Apache::lc_file_utils();
+use Apache::lc_file_upload();
 use Spreadsheet::ParseExcel;
 use Spreadsheet::XLSX;
 use Text::CSV_PP;
@@ -136,7 +137,7 @@ sub parse_spreadsheet_to_jsonfile {
 
 sub handler {
    my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
-   my $file=&Apache::lc_file_utils::move_uploaded_into_default_place();
+   my $file=&Apache::lc_file_upload::move_uploaded_into_default_place();
    unless ($file) {
       &logerror("Failed to upload spreadsheet file");
       return HTTP_SERVICE_UNAVAILABLE;

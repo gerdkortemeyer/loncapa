@@ -25,11 +25,46 @@ use Apache2::Const qw(:common);
 use Apache::lc_logs;
 use Apache::lc_parameters;
 use Apache::lc_file_utils();
+use File::Copy;
+use Apache::lc_entity_sessions();
 
-use Data::Dumper;
+# The filename on the client side
+# 
+sub uploaded_remote_filename {
+   my %content=&Apache::lc_entity_sessions::posted_content();
+   return $content{'remote_filename'};
+}
+
+# Moving the uploaded file into place
+#
+sub move_uploaded_into_place {
+   my ($dest_filename)=@_;
+   unless (&Apache::lc_file_utils::ensuresubdir($dest_filename)) { 
+      &logerror("Unable to generate filepath for ($dest_filename) to move uploaded file");
+      return undef; 
+   }
+   my %content=&Apache::lc_entity_sessions::posted_content();
+   return &copy($content{'local_filename'},$dest_filename);
+}
+
+# Move the uploaded file into the default place in the user's wrk-directory
+#
+sub move_uploaded_into_default_place {
+   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+   my %content=&Apache::lc_entity_sessions::posted_content();
+   my $dest_filename=&Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/'.$content{'remote_filename'});
+   if (&move_uploaded_into_place($dest_filename)) {
+      return $dest_filename;
+   } else {
+      &logerror("Unable to move uploaded ($content{'remote_filename'}) to ($dest_filename)");
+      return undef;
+   }
+}
+
+
 
 sub handler {
-   &logdebug(&Apache::lc_file_utils::move_uploaded_into_place('/home/www/Desktop/test.txt'));
+   &logdebug(&move_uploaded_into_place('/home/www/Desktop/test.txt'));
    return OK;
 }
 

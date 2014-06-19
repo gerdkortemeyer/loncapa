@@ -26,7 +26,6 @@ use File::Touch;
 use File::Copy;
 use Apache::lc_logs;
 use Apache::lc_parameters;
-use Apache::lc_entity_sessions();
 use Apache::lc_entity_urls();
 
 # ==== Lock a file the hard way
@@ -145,36 +144,5 @@ sub writeurl {
    return &writefile($filename,$data);
 }
 
-# ==== Filename of an uploaded file from client
-#
-sub uploaded_remote_filename {
-   my %content=&Apache::lc_entity_sessions::posted_content();
-   return $content{'remote_filename'};
-}
-
-# ==== Move an uploaded file into place
-#
-sub move_uploaded_into_place {
-   my ($dest_filename)=@_;
-   unless (&ensuresubdir($dest_filename)) { 
-      &logerror("Unable to generate filepath for ($dest_filename) to move uploaded file");
-      return undef; 
-   }
-   my %content=&Apache::lc_entity_sessions::posted_content();
-   return &copy($content{'local_filename'},$dest_filename);
-}
-
-sub move_uploaded_into_default_place {
-   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
-   my %content=&Apache::lc_entity_sessions::posted_content();
-   my $dest_filename=&Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/'.$content{'remote_filename'});
-   if (&move_uploaded_into_place($dest_filename)) {
-      return $dest_filename;
-   } else {
-      &logerror("Unable to move uploaded ($content{'remote_filename'}) to ($dest_filename)");
-      return undef;
-   }
-}
- 
 1;
 __END__
