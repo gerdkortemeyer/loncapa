@@ -294,11 +294,40 @@ sub enroll {
       }
    }
 # Does this user exist?
-   my $entity=&Apache::lc_entity_users::username_to_entity($userrecord-{'username'},$userrecord->{'domain'});
+   my $entity=&Apache::lc_entity_users::username_to_entity($userrecord->{'username'},$userrecord->{'domain'});
    if ($entity) {
 # The user exists. Have we learned anything new or do we override anything?
-      if ($overridename) {
+      my $newprofile=undef;
+# Do we have any name information?
+      if (($userrecord->{'firstname'}) || 
+          ($userrecord->{'middlename'}) || 
+          ($userrecord->{'lastname'}) || 
+          ($userrecord->{'suffix'})) {
          my $profile=&Apache::lc_entity_profile::dump_profile($entity,$userrecord->{'domain'});
+# Firstname and lastname can be overwritten, but not set to undef
+         foreach my $namepart ('firstname','lastname') {
+            if ((($userrecord->{$namepart}) && (!$profile->{$namepart})) || ($overridename)) {
+               if ($userrecord->{$namepart}) {
+                  $newprofile->{$namepart}=$userrecord->{$namepart};
+               }
+            }
+         }
+# Middlenames and suffixes can be completely reset
+         foreach my $namepart ('middlename','suffix') {
+            if ((($userrecord->{$namepart}) && (!$profile->{$namepart})) || ($overridename)) {
+               $newprofile->{$namepart}=$userrecord->{$namepart};
+            }
+         }
+      }
+#FIXME: authmode
+# We have new profile data that we need to store
+      if ($newprofile) {
+         &lognotice($userrecord->{'username'}.':'.$userrecord->{'domain'}.": New profile data ".
+                    join(',',map {$_.'='.$newprofile->{$_}} (keys(%{$newprofile}))));
+         unless (&Apache::lc_entity_profile::modify_profile($entity,$userrecord->{'domain'},$newprofile)) {
+            &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Failed to store profile");
+            return 0;
+         }
       }
       if (($overridepid) && (&allowed_course('modify_pid',undef,&Apache::lc_entity_sessions::course_entity_domain()))) {
          my $pid=&Apache::lc_entity_users::entity_to_pid($entity,$userrecord->{'domain'});
