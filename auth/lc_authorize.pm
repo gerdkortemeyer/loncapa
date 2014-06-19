@@ -24,6 +24,7 @@ use Apache::lc_json_utils();
 use Apache::lc_parameters;
 use Apache::lc_logs;
 use Apache::lc_entity_sessions();
+use Apache::lc_entity_courses();
 
 use vars qw($privileges);
 require Exporter;
@@ -139,6 +140,21 @@ sub all_roles {
    }
    return @all_roles;
 }
+
+#
+# Course roles that this user can modify 
+# Returns a hash with "1" for allowed roles
+#
+sub modifiable_course_roles {
+   my %roles=();
+   foreach my $thisrole (sort(&all_roles(&Apache::lc_entity_courses::course_type(&Apache::lc_entity_sessions::course_entity_domain())))) {
+      if (&allowed_any_section('modify_role',$thisrole,&Apache::lc_entity_sessions::course_entity_domain())) {
+         $roles{$thisrole}=1;
+      }
+   }
+   return %roles;
+}
+
 
 BEGIN {
    unless ($privileges) {

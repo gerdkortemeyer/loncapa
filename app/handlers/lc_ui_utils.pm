@@ -82,12 +82,10 @@ sub modifiable_role_choices {
    my $roles_name;
 #FIXME: more than just "course"
    if ($type eq 'course') {
-      foreach my $thisrole (sort(&Apache::lc_authorize::all_roles(
-                             &Apache::lc_entity_courses::course_type(&Apache::lc_entity_sessions::course_entity_domain())))) {
-         if (&allowed_any_section('modify_role',$thisrole,&Apache::lc_entity_sessions::course_entity_domain())) {
-            push(@{$roles_short},$thisrole);
-            push(@{$roles_name},&mt($thisrole));
-         }
+      my %modifiable_roles=&Apache::lc_authorize::modifiable_course_roles();
+      foreach my $thisrole (sort(keys(%modifiable_roles))) {
+         push(@{$roles_short},$thisrole);
+         push(@{$roles_name},&mt($thisrole));
       }
    }
    return ($roles_short,$roles_name);
