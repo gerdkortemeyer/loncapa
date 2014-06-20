@@ -23,6 +23,7 @@ use strict;
 
 use Apache::lc_logs;
 use Apache::lc_connection_handle();
+use Apache::lc_entity_users();
 use Apache::lc_json_utils();
 use Apache::lc_dispatcher();
 use Apache::lc_postgresql();
@@ -337,6 +338,17 @@ sub enroll {
 #FIXME: authmode missing
       unless (($userrecord->{'firstname'}) && ($userrecord->{'lastname'}) && ($userrecord->{'password'})) {
          &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Insufficient information to generate user");
+         return 0;
+      }
+# Actually make the user
+      unless (&Apache::lc_entity_users::make_new_user($userrecord->{'username'},$userrecord->{'domain'})) {
+         &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Failed to make entity.");
+         return 0;
+      }
+# See if we can get an entity
+      $entity=&Apache::lc_entity_users::username_to_entity($userrecord->{'username'},$userrecord->{'domain'});
+      unless ($entity) {
+         &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not get an entity.");
          return 0;
       }
    }
