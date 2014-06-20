@@ -297,6 +297,7 @@ sub enroll {
 # Does this user exist?
    my $entity=&Apache::lc_entity_users::username_to_entity($userrecord->{'username'},$userrecord->{'domain'});
    if ($entity) {
+      &lognotice($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Initiating enrollment action on existing user");
 # The user exists. Have we learned anything new or do we override anything?
       my $newprofile=undef;
 # Do we have any name information?
@@ -307,7 +308,8 @@ sub enroll {
          my $profile=&Apache::lc_entity_profile::dump_profile($entity,$userrecord->{'domain'});
 # Firstname and lastname can be overwritten, but not set to undef
          foreach my $namepart ('firstname','lastname') {
-            if ((($userrecord->{$namepart}) && (!$profile->{$namepart})) || ($overridename)) {
+            if ((($userrecord->{$namepart}) && (!$profile->{$namepart})) ||
+                (($overridename) && (&allowed_course('modify_name',undef,&Apache::lc_entity_sessions::course_entity_domain())))) {
                if ($userrecord->{$namepart}) {
                   $newprofile->{$namepart}=$userrecord->{$namepart};
                }
@@ -315,7 +317,8 @@ sub enroll {
          }
 # Middlenames and suffixes can be completely reset
          foreach my $namepart ('middlename','suffix') {
-            if ((($userrecord->{$namepart}) && (!$profile->{$namepart})) || ($overridename)) {
+            if ((($userrecord->{$namepart}) && (!$profile->{$namepart})) || 
+                (($overridename) && (&allowed_course('modify_name',undef,&Apache::lc_entity_sessions::course_entity_domain())))) {
                $newprofile->{$namepart}=$userrecord->{$namepart};
             }
          }
@@ -334,6 +337,7 @@ sub enroll {
          my $pid=&Apache::lc_entity_users::entity_to_pid($entity,$userrecord->{'domain'});
       }
    } else {
+      &lognotice($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Initiating enrollment action on new user");
 # Cannot do it if we don't have some minimal information
 #FIXME: authmode missing
       unless (($userrecord->{'firstname'}) && ($userrecord->{'lastname'}) && ($userrecord->{'password'})) {
@@ -349,6 +353,13 @@ sub enroll {
       $entity=&Apache::lc_entity_users::username_to_entity($userrecord->{'username'},$userrecord->{'domain'});
       unless ($entity) {
          &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not get an entity.");
+         return 0;
+      }
+# Set password
+#FIXME: authmode missing
+      unless (&Apache::lc_entity_authentication::set_authentication($entity,$userrecord->{'domain'},
+              { mode => 'internal', 'password' => $userrecord->{'password'} })) {
+         &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not set authentication.");
          return 0;
       }
    }
