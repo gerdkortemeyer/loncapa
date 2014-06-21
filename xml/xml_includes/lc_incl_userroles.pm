@@ -22,7 +22,7 @@ use strict;
 use Apache::lc_json_utils();
 use Apache::lc_file_utils();
 use Apache::lc_xml_utils();
-use Apache::lc_authorize();
+use Apache::lc_authorize;
 use Apache::lc_ui_localize;
 use Apache::lc_xml_forms();
 use Apache::lc_entity_users();
@@ -417,6 +417,13 @@ sub evaluate_row {
       $userrecord->{'section'}=$associations->{'record'}->{'section'}->{'default'};
    } else {
       $userrecord->{'section'}=$row->{$associations->{'record'}->{'section'}->{'column'}}->{'unformatted'};
+   }
+# Get password
+#FIXME: authmode
+   if ($associations->{'record'}->{'password'}->{'mode'} eq 'default') {
+      $userrecord->{'password'}=$associations->{'record'}->{'password'}->{'default'};
+   } else {
+      $userrecord->{'password'}=$row->{$associations->{'record'}->{'password'}->{'column'}}->{'unformatted'};
    }
 # Get role
    if ($associations->{'record'}->{'role'}->{'mode'} eq 'default') {

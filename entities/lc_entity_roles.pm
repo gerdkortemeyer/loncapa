@@ -323,7 +323,6 @@ sub enroll {
             }
          }
       }
-#FIXME: authmode
 # We have new profile data that we need to store
       if ($newprofile) {
          &lognotice($userrecord->{'username'}.':'.$userrecord->{'domain'}.": New profile data ".
@@ -333,10 +332,26 @@ sub enroll {
             return 0;
          }
       }
+# New PID - do we override?
       if (($overridepid) && (&allowed_course('modify_pid',undef,&Apache::lc_entity_sessions::course_entity_domain()))) {
-         my $pid=&Apache::lc_entity_users::entity_to_pid($entity,$userrecord->{'domain'});
+         if ($userrecord->{'pid'}) {
+         }
       }
+# New authentication information?
+     if (($overrideauth) && (&allowed_course('modify_auth',undef,&Apache::lc_entity_sessions::course_entity_domain()))) {
+        if ($userrecord->{'password'}) {
+#FIXME: authmode
+           if (&Apache::lc_entity_authentication::set_authentication($entity,$userrecord->{'domain'},
+                           { mode => 'internal', 'password' => $userrecord->{'password'} })) {
+              &lognotice($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Changed authentication");
+           } else {
+              &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not set authentication.");
+              return 0;
+           }
+        }
+     }
    } else {
+# This is a new user
       &lognotice($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Initiating enrollment action on new user");
 # Cannot do it if we don't have some minimal information
 #FIXME: authmode missing
