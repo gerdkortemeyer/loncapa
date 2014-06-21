@@ -378,8 +378,28 @@ sub enroll {
          return 0;
       }
    }
-#FIXME: debug
-   &logdebug("Will enroll: ".Dumper($userrecord)."\nname ".$overridename."\nauth ".$overrideauth."\npid ".$overridepid);
+   $userrecord->{'section'}=&norm_section($userrecord->{'section'});
+   unless ($userrecord->{'section'}=~/\w/) {
+      $userrecord->{'section'}=undef;
+   }
+   my $startdate=&Apache::lc_date_utils::num2str($userrecord->{'startdate'});
+   my $enddate=&Apache::lc_date_utils::num2str($userrecord->{'enddate'});
+   unless (($startdate=~/\:/) && ($enddate=~/\:/)) {
+      &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Invalid start or end date.");
+      return 0;
+   }
+# We definitely have a user now, time to assign the role
+   unless (&modify_role(
+         $entity,$userrecord->{'domain'}, # who gets the role?
+         'course', # system, domain, course, user
+         &Apache::lc_entity_sessions::course_entity_domain(),$userrecord->{'section'}, # what's the realm?
+         $userrecord->{'role'}, # what role is this?
+         $startdate,$enddate, # duration
+         &Apache::lc_entity_sessions::user_entity_domain() # who did this?
+                       )) {
+      &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not get an entity.");
+      return 0;
+   }
    return 1;
 }
 
