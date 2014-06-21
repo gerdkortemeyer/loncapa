@@ -402,6 +402,8 @@ sub evaluate_row {
    }
 # If we do not have at least a username and domain, we give up
    unless (($username) && ($domain)) { return undef }
+# Get PID
+   $userrecord->{'pid'}=$row->{$associations->{'record'}->{'pid'}->{'column'}}->{'unformatted'};
 # Get the name, individual or combi
    if ($associations->{'record'}->{'name'}->{'mode'} eq 'individual') {
       $userrecord->{'firstname'}=$row->{$associations->{'record'}->{'name'}->{'firstname'}->{'column'}}->{'unformatted'};

@@ -333,8 +333,16 @@ sub enroll {
          }
       }
 # New PID - do we override?
-      if (($overridepid) && (&allowed_course('modify_pid',undef,&Apache::lc_entity_sessions::course_entity_domain()))) {
-         if ($userrecord->{'pid'}) {
+      $userrecord->{'pid'}=&Apache::lc_entity_users::norm_pid($userrecord->{'pid'});
+      if ($userrecord->{'pid'}) {
+         my $oldpid=&Apache::lc_entity_users::entity_to_pid($entity,$userrecord->{'domain'});
+         if ((!$oldpid) || (($overridepid) && (&allowed_course('modify_pid',undef,&Apache::lc_entity_sessions::course_entity_domain())))) {
+            if (&Apache::lc_entity_users::assign_pid($entity,$userrecord->{'domain'},$userrecord->{'pid'})) {
+               &lognotice($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Assigned new PID.");
+            } else {
+               &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not assign new PID.");
+               return 0;
+            }
          }
       }
 # New authentication information?
@@ -369,6 +377,14 @@ sub enroll {
       unless ($entity) {
          &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not get an entity.");
          return 0;
+      }
+# Assign PID
+      $userrecord->{'pid'}=&Apache::lc_entity_users::norm_pid($userrecord->{'pid'});
+      if ($userrecord->{'pid'}) {
+         unless (&Apache::lc_entity_users::assign_pid($entity,$userrecord->{'domain'},$userrecord->{'pid'})) {
+            &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not assign PID.");
+            return 0;
+         }
       }
 # Set password
 #FIXME: authmode missing
