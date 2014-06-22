@@ -54,6 +54,8 @@ sub incl_spreadsheet_finalize_items {
       if ($associations) {
          &save_associations(&Apache::lc_entity_sessions::user_entity_domain(),$associations);
       }
+# First load, nothing to say yet
+      return ""; 
    } else {
 # Load the old stuff
       $associations=&load_associations(&Apache::lc_entity_sessions::user_entity_domain());

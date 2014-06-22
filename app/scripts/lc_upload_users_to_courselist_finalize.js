@@ -3,6 +3,16 @@ var require='';
 
 $(document).ready(function() {
     showhide();
+    $.ajax({
+        url : '/finalize_userroles',
+        success: function(data){
+            $('#spreadsheet_finalize_items').html(data);
+        },
+        complete: function() {
+            showhide();
+            adjust_framesize();
+        }
+    });
     $("#continue").click(function() {
         $.ajax({
         url : '/finalize_userroles',
