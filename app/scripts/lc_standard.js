@@ -4,6 +4,10 @@ CKEDITOR.on('instanceReady', function(){
    }
 });
 
+window.addEventListener('load', function(e) {
+        LCMATH.initEditors();
+}, false);
+
 function adjust_framesize() {
       var frameheight=document.body.offsetHeight + 50;
       $("#contentframe",window.parent.document).css({ height : frameheight + 'px' });

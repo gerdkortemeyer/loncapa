@@ -97,6 +97,24 @@ $.getJSON( "menu", { "noCache": noCache }, function( data ) {
 });
 }
 
+function busy_block() {
+   $.blockUI({
+                 message: '<img src="/images/processing.gif" />',
+                 css: {
+                      border: 'none',
+                      padding: '15px',
+                      backgroundColor: '#ffffff',
+                      'border-radius': '10px',
+                      opacity: .5
+                      }
+              });
+}
+
+function busy_unblock() {
+   $.unblockUI();
+}
+
+
 function content() {
    setbreadcrumbbar('fresh','content','Content','content()');
    display_asset("/pages/lc_content.html");
