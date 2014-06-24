@@ -35,10 +35,12 @@ function hide_modal() {
 
 function display_asset(newuri) {
    var newcontent='<div id="content"><iframe id="contentframe" src="'+newuri+'"></iframe></div>';
+   $('#contentframeload').css("visibility","visible");
    $('#content').replaceWith(newcontent);
    $('#contentframe').load(function() {
       var frameheight=this.contentWindow.document.body.offsetHeight + 50;
       this.style.height = frameheight + 'px';
+      $('#contentframeload').css("visibility","hidden");
    });
 }
 

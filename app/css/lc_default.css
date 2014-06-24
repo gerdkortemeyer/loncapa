@@ -80,6 +80,13 @@ section {
    width: 100%;
 }
 
+#contentframeload {
+   position: absolute;
+   visibility:hidden;
+   top: 24px;
+   left: 10px;
+}
+
 nav {
    background-color: rgba(40,40,40,0.5);
    position: fixed;
