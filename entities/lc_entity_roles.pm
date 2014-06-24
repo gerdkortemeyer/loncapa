@@ -294,12 +294,13 @@ sub enroll {
          return 0;
       }
    }
+# For any profile information that we might collect along the way
+   my $newprofile=undef;
 # Does this user exist?
    my $entity=&Apache::lc_entity_users::username_to_entity($userrecord->{'username'},$userrecord->{'domain'});
    if ($entity) {
       &lognotice($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Initiating enrollment action on existing user");
 # The user exists. Have we learned anything new or do we override anything?
-      my $newprofile=undef;
 # Do we have any name information?
       if (($userrecord->{'firstname'}) || 
           ($userrecord->{'middlename'}) || 
@@ -321,15 +322,6 @@ sub enroll {
                 (($overridename) && (&allowed_course('modify_name',undef,&Apache::lc_entity_sessions::course_entity_domain())))) {
                $newprofile->{$namepart}=$userrecord->{$namepart};
             }
-         }
-      }
-# We have new profile data that we need to store
-      if ($newprofile) {
-         &lognotice($userrecord->{'username'}.':'.$userrecord->{'domain'}.": New profile data ".
-                    join(',',map {$_.'='.$newprofile->{$_}} (keys(%{$newprofile}))));
-         unless (&Apache::lc_entity_profile::modify_profile($entity,$userrecord->{'domain'},$newprofile)) {
-            &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Failed to store profile");
-            return 0;
          }
       }
 # New PID - do we override?
@@ -393,7 +385,24 @@ sub enroll {
          &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not set authentication.");
          return 0;
       }
+# Collect name data
+      foreach my $namepart ('firstname','middlename','lastname','suffix') {
+         if ($userrecord->{$namepart}) {
+             $newprofile->{$namepart}=$userrecord->{$namepart};
+         }
+      }
    }
+# Moving right along for any user (old or new)
+# Profile data
+   if ($newprofile) {
+      &lognotice($userrecord->{'username'}.':'.$userrecord->{'domain'}.": New profile data ".
+                 join(',',map {$_.'='.$newprofile->{$_}} (keys(%{$newprofile}))));
+      unless (&Apache::lc_entity_profile::modify_profile($entity,$userrecord->{'domain'},$newprofile)) {
+         &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Failed to store profile");
+         return 0;
+      }
+   }
+# Deal with sections
    $userrecord->{'section'}=&norm_section($userrecord->{'section'});
    unless ($userrecord->{'section'}=~/\w/) {
       $userrecord->{'section'}=undef;

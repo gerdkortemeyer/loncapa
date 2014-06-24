@@ -30,8 +30,8 @@ Major differences to classic LON-CAPA are:
 \end{itemize}
 \item CDATA or entities are used on disk, e.g.,
 \begin{itemize}
-\item $<$perl$>[$CDATA$[$if (\$a<\$b) \{ \$a=42; \}$]]<$/perl$>$
-\item $<$latex$>[$CDATA$[$\$a<b\$$]]<$/latex$>$
+\item $<$perl$><![$CDATA$[$if (\$a<\$b) \{ \$a=42; \}$]]><$/perl$>$
+\item $<$latex$><![$CDATA$[$\$a<b\$$]]><$/latex$>$
 \end{itemize}
 \item All tags are lowercase
 \end{itemize}

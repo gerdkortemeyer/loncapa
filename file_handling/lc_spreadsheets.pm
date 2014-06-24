@@ -100,6 +100,10 @@ sub parse_csv {
       if ($rowcols<0) { next; }
       if ($rowcols>$sheets->{$name}->{'col_max'}) { $sheets->{$name}->{'col_max'}=$rowcols; }
       foreach my $col (0 .. $rowcols) {
+         if ($cells[$col]=~/^\'.*\'$/) {
+            $cells[$col]=~s/^\'//;
+            $cells[$col]=~s/\'$//;
+         }
          next unless $cells[$col];
          $sheets->{$name}->{'cells'}->{$row}->{$col}->{'value'}=$cells[$col];
             $sheets->{$name}->{'cells'}->{$row}->{$col}->{'unformatted'}=$cells[$col];
