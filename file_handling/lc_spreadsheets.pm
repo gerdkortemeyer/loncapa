@@ -86,7 +86,7 @@ sub parse_csv {
    my ($file,$sep)=@_;
    unless ($sep) { $sep=','; }
    my $sheets;
-   my $csv = Text::CSV_PP->new({ sep_char => $sep });
+   my $csv = Text::CSV_PP->new({ sep_char => $sep, allow_whitespace => 1 });
    my $content=&Apache::lc_file_utils::readfile($file);
    my $name='default';
    $sheets->{$name}->{'row_min'}=0;
