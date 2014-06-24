@@ -18,11 +18,11 @@
 
   \indexspace
 
-  \item encoding, 27
+  \item encoding, 29
   \item entities, 15
-  \item equation editor, 31
-  \item equation parser, 32
-  \item equation syntax, 33
+  \item equation editor, 33
+  \item equation parser, 34
+  \item equation syntax, 35
 
   \indexspace
 
@@ -31,11 +31,11 @@
   \indexspace
 
   \item homeserver, 12, 16, 21--23
-  \item HTML pages, 25
+  \item HTML pages, 27
 
   \indexspace
 
-  \item internationalization, 5, 27
+  \item internationalization, 5, 29
 
   \indexspace
 
@@ -45,7 +45,7 @@
 
   \indexspace
 
-  \item math, 31
+  \item math, 33
   \item memcached, 23
   \item metadata, 16
   \item MongoDB, 16, 21
@@ -60,7 +60,7 @@
   \item portfolio, 16
   \item PostgreSQL, 21
   \item privileges, 7
-  \item problems, 25
+  \item problems, 27
   \item profiles, 16
   \item publication, 16
 
@@ -68,20 +68,21 @@
 
   \item realms, 17
   \item replication, 10, 14, 23
-  \item roles, 7, 17, 22, 28
+  \item roles, 7, 17, 22, 30
 
   \indexspace
 
-  \item safeeval, 26
+  \item safeeval, 28
+  \item scalability, 7
   \item sections, 15
   \item SSL, 6
 
   \indexspace
 
-  \item unicode, 27
+  \item unicode, 29
   \item usernames, 15, 21
   \item users, 15, 21
-  \item utf-8, 27
+  \item utf-8, 29
 
   \indexspace
 
@@ -89,6 +90,7 @@
 
   \indexspace
 
-  \item XML parser, 10, 25
+  \item XML, 25
+  \item XML parser, 10, 27
 
 \end{theindex}

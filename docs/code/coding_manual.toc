@@ -28,6 +28,7 @@
 \contentsline {subsection}{\numberline {2.5.1}Linux Distributions}{7}
 \contentsline {subsection}{\numberline {2.5.2}Open source}{7}
 \contentsline {subsection}{\numberline {2.5.3}Porting from LON-CAPA 2.x}{7}
+\contentsline {section}{\numberline {2.6}Scalability testing}{7}
 \contentsline {chapter}{\numberline {3}URL Translation}{9}
 \contentsline {section}{\numberline {3.1}Accessing handlers}{9}
 \contentsline {section}{\numberline {3.2}Accessing assets}{9}
@@ -72,39 +73,46 @@
 \contentsline {section}{\numberline {7.2}Caching}{23}
 \contentsline {section}{\numberline {7.3}File system}{23}
 \contentsline {section}{\numberline {7.4}Programmatic access}{23}
-\contentsline {chapter}{\numberline {8}XML Parser}{25}
-\contentsline {section}{\numberline {8.1}Invocation}{25}
-\contentsline {section}{\numberline {8.2}Tag types}{25}
-\contentsline {section}{\numberline {8.3}Stacks and safeeval}{26}
-\contentsline {chapter}{\numberline {9}Internationalization}{27}
-\contentsline {section}{\numberline {9.1}Encoding}{27}
-\contentsline {section}{\numberline {9.2}Maketext}{27}
-\contentsline {section}{\numberline {9.3}Invocation in documents}{28}
-\contentsline {section}{\numberline {9.4}Invocation from Perl}{28}
-\contentsline {section}{\numberline {9.5}Internal codes}{28}
-\contentsline {section}{\numberline {9.6}Special cases}{28}
-\contentsline {subsection}{\numberline {9.6.1}JavaScript configuration files}{28}
-\contentsline {subsection}{\numberline {9.6.2}Loading locatilization files}{29}
-\contentsline {chapter}{\numberline {10}Math editor, parser and equation syntax}{31}
-\contentsline {section}{\numberline {10.1}Introduction}{31}
-\contentsline {section}{\numberline {10.2}A new user interface}{31}
-\contentsline {subsection}{\numberline {10.2.1}Usage}{32}
-\contentsline {section}{\numberline {10.3}The server-side parser}{32}
-\contentsline {subsection}{\numberline {10.3.1}Usage}{32}
-\contentsline {subsection}{\numberline {10.3.2}Calculation environment}{32}
-\contentsline {subsection}{\numberline {10.3.3}Conversion to Maxima syntax}{32}
-\contentsline {subsection}{\numberline {10.3.4}Catching errors}{32}
-\contentsline {subsection}{\numberline {10.3.5}Example with unit node}{32}
-\contentsline {subsection}{\numberline {10.3.6}Example with symbolic node}{32}
-\contentsline {section}{\numberline {10.4}Equation syntax}{33}
-\contentsline {subsection}{\numberline {10.4.1}Spaces}{33}
-\contentsline {subsection}{\numberline {10.4.2}Decimal separators and function parameter separators}{33}
-\contentsline {subsection}{\numberline {10.4.3}Constants}{33}
-\contentsline {subsection}{\numberline {10.4.4}Units}{33}
-\contentsline {subsection}{\numberline {10.4.5}Parenthesis}{33}
-\contentsline {subsection}{\numberline {10.4.6}Complex numbers}{33}
-\contentsline {subsection}{\numberline {10.4.7}Operators}{33}
-\contentsline {subsection}{\numberline {10.4.8}Implicit operators}{33}
-\contentsline {subsection}{\numberline {10.4.9}Vectors and matrices}{33}
-\contentsline {subsection}{\numberline {10.4.10}Functions}{34}
-\contentsline {chapter}{\numberline {11}Glossary}{35}
+\contentsline {chapter}{\numberline {8}XML}{25}
+\contentsline {section}{\numberline {8.1}Structure of Documents}{25}
+\contentsline {subsection}{\numberline {8.1.1}Classic LON-CAPA Content}{25}
+\contentsline {subsection}{\numberline {8.1.2}Overview of differences to classic LON-CAPA}{25}
+\contentsline {section}{\numberline {8.2}Editing}{26}
+\contentsline {subsection}{\numberline {8.2.1}Main editors}{26}
+\contentsline {subsection}{\numberline {8.2.2}Emergency editor}{26}
+\contentsline {chapter}{\numberline {9}XML Parser}{27}
+\contentsline {section}{\numberline {9.1}Invocation}{27}
+\contentsline {section}{\numberline {9.2}Tag types}{27}
+\contentsline {section}{\numberline {9.3}Stacks and safeeval}{28}
+\contentsline {chapter}{\numberline {10}Internationalization}{29}
+\contentsline {section}{\numberline {10.1}Encoding}{29}
+\contentsline {section}{\numberline {10.2}Maketext}{29}
+\contentsline {section}{\numberline {10.3}Invocation in documents}{30}
+\contentsline {section}{\numberline {10.4}Invocation from Perl}{30}
+\contentsline {section}{\numberline {10.5}Internal codes}{30}
+\contentsline {section}{\numberline {10.6}Special cases}{30}
+\contentsline {subsection}{\numberline {10.6.1}JavaScript configuration files}{30}
+\contentsline {subsection}{\numberline {10.6.2}Loading locatilization files}{31}
+\contentsline {chapter}{\numberline {11}Math editor, parser and equation syntax}{33}
+\contentsline {section}{\numberline {11.1}Introduction}{33}
+\contentsline {section}{\numberline {11.2}A new user interface}{33}
+\contentsline {subsection}{\numberline {11.2.1}Usage}{34}
+\contentsline {section}{\numberline {11.3}The server-side parser}{34}
+\contentsline {subsection}{\numberline {11.3.1}Usage}{34}
+\contentsline {subsection}{\numberline {11.3.2}Calculation environment}{34}
+\contentsline {subsection}{\numberline {11.3.3}Conversion to Maxima syntax}{34}
+\contentsline {subsection}{\numberline {11.3.4}Catching errors}{34}
+\contentsline {subsection}{\numberline {11.3.5}Example with unit node}{34}
+\contentsline {subsection}{\numberline {11.3.6}Example with symbolic node}{34}
+\contentsline {section}{\numberline {11.4}Equation syntax}{35}
+\contentsline {subsection}{\numberline {11.4.1}Spaces}{35}
+\contentsline {subsection}{\numberline {11.4.2}Decimal separators and function parameter separators}{35}
+\contentsline {subsection}{\numberline {11.4.3}Constants}{35}
+\contentsline {subsection}{\numberline {11.4.4}Units}{35}
+\contentsline {subsection}{\numberline {11.4.5}Parenthesis}{35}
+\contentsline {subsection}{\numberline {11.4.6}Complex numbers}{35}
+\contentsline {subsection}{\numberline {11.4.7}Operators}{35}
+\contentsline {subsection}{\numberline {11.4.8}Implicit operators}{35}
+\contentsline {subsection}{\numberline {11.4.9}Vectors and matrices}{35}
+\contentsline {subsection}{\numberline {11.4.10}Functions}{36}
+\contentsline {chapter}{\numberline {12}Glossary}{37}

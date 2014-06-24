@@ -50,3 +50,11 @@ We are developing on CentOS/RedHat Enterprise. We do not have the time to suppor
 The software is licensed under the GNU General Public License Version 3 or higher, copyright Michigan State University Board of Trustees. Only software components that are compatible with this license shall be used.
 \subsection{Porting from LON-CAPA 2.x}
 The project will not succeed in a timely fashion if we do not port code from LON-CAPA 2.x. Eventually, program code will need to be cleaned up and moved over in order to keep timelines. This will mean that sometimes we need to sacrifice using the ``latest-greatest'' technology in order to facilitate portability of code or even just algorithms. 
+\section{Scalability testing}\index{scalability}
+During development, all course management functionality needs to be tested with
+\begin{itemize}
+\item Courses of 5000 students or more
+\item Courses with 2000 assets or more
+\item Courses with 1500 assessment items or more
+\end{itemize}
+The systems needs to remain responsive.

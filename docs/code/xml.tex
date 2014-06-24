@@ -1,0 +1,47 @@
+\chapter{XML}\index{XML}
+\section{Structure of Documents}
+XML documents in LON-CAPA will be a mixture of (X)HTMl and tags that LON-CAPA defines. Using the built-in parser (see chapter~\ref{xmlparser} on page~\pageref{xmlparser}), the rendering of any tag can be defined or modified.
+\subsection{Classic LON-CAPA Content}
+More than 99\% of the classic LON-CAPA content needs to be automatically convertable into the new format.
+\subsection{Overview of differences to classic LON-CAPA}
+Major differences to classic LON-CAPA are:
+\begin{itemize}
+\item There are no different ``MIME''-types for HTML and problem documents, the top-level tag is always $<$html$>$.
+\item There are no more ``parted'' and ``unparted'' problems. Instead, $<$problem$>$ becomes what a part used to be:
+\begin{verbatim}
+<html>
+<h1>Electrical Current</h1>
+<h2>Charge per Time</h2>
+... (random HTML) ...
+<problem>
+...
+</problem>
+<h2>Measuring Current</h2>
+...
+<problem>
+...
+</problem>
+</html>
+\end{verbatim}
+\item Several tags get renamed, e.g.,
+\begin{itemize}
+\item $<$script type='loncapa/perl'$>$ becomes $<$perl$>$
+\item $<$m$>$ becomes $<$latex$>$
+\end{itemize}
+\item CDATA or entities are used on disk, e.g.,
+\begin{itemize}
+\item $<$perl$>[$CDATA$[$if (\$a<\$b) \{ \$a=42; \}$]]<$/perl$>$
+\item $<$latex$>[$CDATA$[$\$a<b\$$]]<$/latex$>$
+\end{itemize}
+\item All tags are lowercase
+\end{itemize}
+\section{Editing}
+\subsection{Main editors}
+Editors will be client-side. There will be two edit modes:
+\begin{itemize}
+\item Graphical editor
+\item Source code editor
+\end{itemize}
+Both editors will only recognize and produce valid structures. The source code editor will be ``pseudo source code,'' in that it will not expose CDATA and entity encoding.
+\subsection{Emergency editor}
+There will be an emergency raw source code editor, to which the system will fall back if the main editors do not recognize the XML structure. This editor can be used to rescue files that become corrupted, or to clean up imported code. Files that only work in the emergency editor cannot be published.

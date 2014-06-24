@@ -7,6 +7,7 @@
 \indexentry{privileges}{7}
 \indexentry{Linux}{7}
 \indexentry{open source}{7}
+\indexentry{scalability}{7}
 \indexentry{lc.conf}{9}
 \indexentry{assets}{9}
 \indexentry{replication}{10}
@@ -56,16 +57,17 @@
 \indexentry{replication}{23}
 \indexentry{versions}{23}
 \indexentry{assets}{23}
-\indexentry{XML parser}{25}
-\indexentry{problems}{25}
-\indexentry{HTML pages}{25}
-\indexentry{safeeval}{26}
-\indexentry{internationalization}{27}
-\indexentry{encoding}{27}
-\indexentry{unicode}{27}
-\indexentry{utf-8}{27}
-\indexentry{roles}{28}
-\indexentry{math}{31}
-\indexentry{equation editor}{31}
-\indexentry{equation parser}{32}
-\indexentry{equation syntax}{33}
+\indexentry{XML}{25}
+\indexentry{XML parser}{27}
+\indexentry{problems}{27}
+\indexentry{HTML pages}{27}
+\indexentry{safeeval}{28}
+\indexentry{internationalization}{29}
+\indexentry{encoding}{29}
+\indexentry{unicode}{29}
+\indexentry{utf-8}{29}
+\indexentry{roles}{30}
+\indexentry{math}{33}
+\indexentry{equation editor}{33}
+\indexentry{equation parser}{34}
+\indexentry{equation syntax}{35}
