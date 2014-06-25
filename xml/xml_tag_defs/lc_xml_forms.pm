@@ -214,11 +214,29 @@ sub inputfield {
    } elsif ($type eq 'modifiablecourseroles') {
       my ($role_short,$role_name)=&modifiable_role_choices('course');
       return &selectfield($id,$name,$role_short,$role_name,$default);
+   } elsif ($type eq 'rolemodifiabledomains') {
+      my ($defaultdomain,$domain_short,$domain_name)=&domain_choices('rolemodifiable');
+      unless ($default) { $default=$defaultdomain; }
+      return &selectfield($id,$name,$domain_short,$domain_name,$default);
+   } elsif ($type eq 'usersearch') {
+      return &usersearch($id,$name,$default);
    } elsif ($type eq 'symbolic') {
       return &math_editor($id,$name,'symbolic',$default);
    } elsif ($type eq 'numeric') {
       return &math_editor($id,$name,'numeric',$default);
    }
+}
+
+
+# ==== Bring up a username search field
+#
+sub usersearch {
+   my ($id,$name,$default)=@_;
+   unless ($name) {
+      $name=$id;
+   }
+   my $output="<fieldset id='$id' name='$name' class='lcusersearch'>";
+   $output.='</fieldset>';
 }
 
 # ==== Bring up a math editor field

@@ -25,6 +25,10 @@ use Apache::lc_entity_sessions();
 use Apache::lc_entity_courses();
 use Apache::lc_authorize;
 
+
+use Apache::lc_logs;
+use Data::Dumper;
+
 require Exporter;
 
 our @ISA = qw (Exporter);
@@ -53,9 +57,48 @@ sub domain_choices {
    my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
    my @shorts;
    my %names;
-   foreach my $key (keys(%{$connection_table->{'cluster_table'}->{'hosts'}->{$connection_table->{'self'}}->{'domains'}})) {
-      push(@shorts,$key);
-      $names{$key}=$connection_table->{'cluster_table'}->{'domains'}->{$key}->{'name'};
+   if ($type eq 'hosted') {
+# Return all domains that are hosted on this server
+      foreach my $key (keys(%{$connection_table->{'cluster_table'}->{'hosts'}->{$connection_table->{'self'}}->{'domains'}})) {
+         push(@shorts,$key);
+         $names{$key}=$connection_table->{'cluster_table'}->{'domains'}->{$key}->{'name'};
+      }
+   } elsif ($type eq 'rolemodifiable') {
+# Return all domains in which this user can modify any roles
+#      if (&allowed_system('modify_role')) {
+#FIXME: debug
+if (0) {
+# Systemwide - so all domains!
+         foreach my $key (keys(%{$connection_table->{'cluster_table'}->{'domains'}})) {
+            push(@shorts,$key);
+            $names{$key}=$connection_table->{'cluster_table'}->{'domains'}->{$key}->{'name'};
+         }
+      } else {
+# Not so privileged, go through actual roles
+      my $roles=&Apache::lc_entity_sessions::roles();
+# Domain-level
+      foreach my $key (keys(%{$roles->{'domain'}})) {
+         if (&allowed_domain('modify_role'),$key) {
+            push(@shorts,$key);
+            $names{$key}=$connection_table->{'cluster_table'}->{'domains'}->{$key}->{'name'};
+         }
+      }
+# Course-level
+      foreach my $domain_key (keys(%{$roles->{'course'}})) {
+         foreach my $course_key (keys(%{$roles->{'course'}->{$domain_key}})) {
+&logdebug("Checking $course_key:$domain_key");
+            if (&allowed_any_section('modify_role',undef,$course_key,$domain_key)) {
+               push(@shorts,$domain_key);
+               $names{$domain_key}=$connection_table->{'cluster_table'}->{'domains'}->{$domain_key}->{'name'};
+            }
+         }
+      }
+
+
+#FIXME
+&logdebug(Dumper($roles));
+&logdebug("Not system, only above");
+      }
    }
    my $domain_short;
    my $domain_name;

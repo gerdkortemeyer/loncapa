@@ -66,6 +66,8 @@ use utf8;
 
 'Enrolling User' => 'Einschreibender Nutzer',
 
+'New or existing user' => 'Neuer oder existierender Nutzer',
+
 'Manual' => 'Manuell',
 
 'Automatic' => 'Automatisch',
