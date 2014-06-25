@@ -55,55 +55,41 @@ sub clean_domain {
 sub domain_choices {
    my ($type)=@_;
    my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
-   my @shorts;
    my %names;
    if ($type eq 'hosted') {
 # Return all domains that are hosted on this server
       foreach my $key (keys(%{$connection_table->{'cluster_table'}->{'hosts'}->{$connection_table->{'self'}}->{'domains'}})) {
-         push(@shorts,$key);
          $names{$key}=$connection_table->{'cluster_table'}->{'domains'}->{$key}->{'name'};
       }
    } elsif ($type eq 'rolemodifiable') {
 # Return all domains in which this user can modify any roles
-#      if (&allowed_system('modify_role')) {
-#FIXME: debug
-if (0) {
+      if (&allowed_system('modify_role')) {
 # Systemwide - so all domains!
          foreach my $key (keys(%{$connection_table->{'cluster_table'}->{'domains'}})) {
-            push(@shorts,$key);
             $names{$key}=$connection_table->{'cluster_table'}->{'domains'}->{$key}->{'name'};
          }
       } else {
 # Not so privileged, go through actual roles
-      my $roles=&Apache::lc_entity_sessions::roles();
+         my $roles=&Apache::lc_entity_sessions::roles();
 # Domain-level
-      foreach my $key (keys(%{$roles->{'domain'}})) {
-         if (&allowed_domain('modify_role'),$key) {
-            push(@shorts,$key);
-            $names{$key}=$connection_table->{'cluster_table'}->{'domains'}->{$key}->{'name'};
-         }
-      }
-# Course-level
-      foreach my $domain_key (keys(%{$roles->{'course'}})) {
-         foreach my $course_key (keys(%{$roles->{'course'}->{$domain_key}})) {
-&logdebug("Checking $course_key:$domain_key");
-            if (&allowed_any_section('modify_role',undef,$course_key,$domain_key)) {
-               push(@shorts,$domain_key);
-               $names{$domain_key}=$connection_table->{'cluster_table'}->{'domains'}->{$domain_key}->{'name'};
+         foreach my $key (keys(%{$roles->{'domain'}})) {
+            if (&allowed_domain('modify_role'),$key) {
+               $names{$key}=$connection_table->{'cluster_table'}->{'domains'}->{$key}->{'name'};
             }
          }
-      }
-
-
-#FIXME
-&logdebug(Dumper($roles));
-&logdebug("Not system, only above");
+# Course-level
+         foreach my $domain_key (keys(%{$roles->{'course'}})) {
+            foreach my $course_key (keys(%{$roles->{'course'}->{$domain_key}})) {
+               if (&allowed_any_section('modify_role',undef,$course_key,$domain_key)) {
+                  $names{$domain_key}=$connection_table->{'cluster_table'}->{'domains'}->{$domain_key}->{'name'};
+               }
+            }
+         }
       }
    }
    my $domain_short;
    my $domain_name;
-   @shorts=sort(@shorts);
-   foreach my $key (@shorts) {
+   foreach my $key (sort(keys(%names))) {
        push(@{$domain_short},$key);
        push(@{$domain_name},$names{$key});
    }
