@@ -236,6 +236,10 @@ sub usersearch {
       $name=$id;
    }
    my $output="<fieldset id='$id' name='$name' class='lcusersearch'>";
+   $output.=&Apache::lc_xml_utils::standard_message("Username: [_1]","<span id='".$id."_resultdisplay'>---</span>")."<br />\n";
+   $output.=&hidden_label($id.'_search','Search').&inputfield('text',$id.'_search',$name.'_search',40);
+   $output.=&hidden_label($id.'_domain','Domain').&inputfield('rolemodifiabledomains',$id.'_domain',$name.'_domain',undef,$default);
+   $output.=&hidden_field($id.'_username','');
    $output.='</fieldset>';
 }
 

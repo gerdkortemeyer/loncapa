@@ -96,6 +96,8 @@ use utf8;
 
 'Username' => 'Benutzerkennung',
 
+'Username: [_1]' => 'Benutzerkennnung: [_1]',
+
 'Password' => 'Passwort',
 
 'Domain' => 'Domäne',
@@ -305,6 +307,8 @@ use utf8;
 "Processing..." => "Verarbeiten ...",
 
 "Search:" => "Suche:",
+
+"Search" => 'Suche',
 
 "No matching records found" => "Keine entsprechenden Einträge gefunden",
 

@@ -25,25 +25,25 @@ use HTML::Entities();
 # Produces an error message with the right style and localization
 #
 sub error_message {
-   my ($message)=@_;
-   return '<span class="lcerror">'.&mt($message).'</span>';
+   my ($message,@args)=@_;
+   return '<span class="lcerror">'.&mt($message,@args).'</span>';
 }
 
 # Produces the less severe problem message
 #
 sub problem_message {
-   my ($message)=@_;
-   return '<span class="lcproblem">'.&mt($message).'</span>';
+   my ($message,@args)=@_;
+   return '<span class="lcproblem">'.&mt($message,@args).'</span>';
 }
 
 sub standard_message {
-   my ($message)=@_;
-   return '<span class="lcstandard">'.&mt($message).'</span>';
+   my ($message,@args)=@_;
+   return '<span class="lcstandard">'.&mt($message,@args).'</span>';
 }
 
 sub success_message {
-   my ($message)=@_;
-   return '<span class="lcsuccess">'.&mt($message).'</span>';
+   my ($message,@args)=@_;
+   return '<span class="lcsuccess">'.&mt($message,@args).'</span>';
 }
 
 # Escape characters for use in a web form or query string
