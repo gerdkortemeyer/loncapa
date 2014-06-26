@@ -30,6 +30,9 @@ use Apache::lc_date_utils();
 use Apache::lc_dispatcher();
 use Apache::lc_date_utils();
 use Apache::lc_entity_namespace();
+use Apache::lc_init_cluster_table();
+
+use Data::Dumper;
 
 use Apache2::Const qw(:common :http);
 
@@ -181,11 +184,19 @@ sub screen_form_defaults {
 # ================================================================
 
 sub local_query_user_profiles {
-   my ($term)=@_;
+   my ($domain,$term)=@_;
    $term=~s/^\s+//s;
    $term=~s/\s+$//s;
    my ($term1,$term2)=split(/[\s\,]+/,$term);
-   return &Apache::lc_mongodb::query_user_profiles($term1,$term2);
+   my @rawdata=&Apache::lc_mongodb::query_user_profiles($term1,$term2);
+   my $data=undef;
+   foreach my $user (@rawdata) {
+      unless ($user->{'domain'} eq $domain) { next; }
+      foreach my $namepart ('firstname','middlename','lastname','suffix') {
+         $data->{$user->{'domain'}}->{$user->{'entity'}}->{$namepart}=$user->{'profile'}->{$namepart};
+      }
+   }
+   return $data;
 }
 
 sub local_json_query_user_profiles {
@@ -194,6 +205,23 @@ sub local_json_query_user_profiles {
 
 sub query_user_profiles {
    my ($domain,$term)=@_;
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
+   foreach my $host (split(/\,/,$connection_table->{'libraries'}->{$domain})) {
+      unless ($host) { next; }
+      my $data=undef;
+      if ($host eq $connection_table->{'self'}) {
+         $data=&local_query_user_profiles($term);
+      } else {
+         my ($code,$response)=&command_dispatch($host,'query_user_profiles',
+                                &Apache::lc_json_utils::perl_to_json({ domain => $domain, term => $term }));
+         if ($code eq HTTP_OK) {
+            $data=&Apache::lc_json_utils::json_to_perl($response);
+         }
+      }
+      if ($data) {
+      }
+   }
+   return 1;
 } 
 
 # ================================================================
@@ -429,7 +457,7 @@ BEGIN {
    &Apache::lc_connection_handle::register('entity_to_username',undef,undef,undef,\&local_entity_to_username,'entity','domain');
    &Apache::lc_connection_handle::register('make_new_user',undef,undef,undef,\&local_make_new_user,'username','domain');
    &Apache::lc_connection_handle::register('assign_pid',undef,undef,undef,\&local_assign_pid,'entity','domain','pid');
-   &Apache::lc_connection_handle::register('query_user_profiles',undef,undef,undef,\&local_json_query_user_profiles,'term');
+   &Apache::lc_connection_handle::register('query_user_profiles',undef,undef,undef,\&local_json_query_user_profiles,'domain','term');
 }
 
 1;
