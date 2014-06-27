@@ -188,13 +188,19 @@ sub local_query_user_profiles {
    $term=~s/^\s+//s;
    $term=~s/\s+$//s;
    my ($term1,$term2)=split(/[\s\,]+/,$term);
+   unless ($term2) {
+      if (length($term1)<2) { return undef; }
+   }
    my @rawdata=&Apache::lc_mongodb::query_user_profiles($term1,$term2);
    my $data=undef;
+   my $count=0;
    foreach my $user (@rawdata) {
       unless ($user->{'domain'} eq $domain) { next; }
       foreach my $namepart ('firstname','middlename','lastname','suffix') {
          $data->{$user->{'domain'}}->{$user->{'entity'}}->{$namepart}=$user->{'profile'}->{$namepart};
       }
+      $count++;
+      if ($count>100) { last; }
    }
    return $data;
 }
