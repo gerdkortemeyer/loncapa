@@ -1,5 +1,5 @@
 # The LearningOnline Network with CAPA - LON-CAPA
-# Start asyncronous transactions 
+# Get the results from asyncronous transactions 
 #
 # Copyright (C) 2014 Michigan State University Board of Trustees
 #
@@ -17,7 +17,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #
-package Apache::lc_ui_async;
+package Apache::lc_ui_asyncresults;
 
 use strict;
 use Apache2::RequestRec();
@@ -36,6 +36,7 @@ my $job;
 sub handler {
 # Get request object
    my $r = shift;
+   $r->content_type('application/json; charset=utf-8');
    my %content=&Apache::lc_entity_sessions::posted_content();
 # The job must include the command and all needed parameters
    $job=undef;
@@ -43,28 +44,13 @@ sub handler {
       $job->{$key}=$content{$key};
    }
 # Did we get anything?
-   if ($job->{'command'}) {
-      $r->print("ok");
+   if ($job->{'command'} eq 'usersearch') {
+      $r->print(&Apache::lc_entity_users::query_user_profiles_result($job->{'domain'},$job->{'term'})); 
    } else {
       $r->print("error");
    }
    return OK;
 }
-
-#
-# ==== The actual business logic
-# This gets called as a cleanup action, so it will run in the background
-#
-sub main_actions {
-# Pick up the job ticket and see if we can do it
-   if ($job->{'command'} eq 'usersearch') {
-      &Apache::lc_entity_users::query_user_profiles($job->{'domain'},$job->{'term'});
-   } else {
-      &logwarning("Unknown asynchronous job command: [".$job->{'command'}."]");
-   }
-}
-
-
 
 1;
 __END__

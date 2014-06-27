@@ -233,6 +233,11 @@ sub query_user_profiles {
    return 1;
 } 
 
+sub query_user_profiles_result {
+   my ($domain,$term)=@_;
+   return Dumper(&Apache::lc_mongodb::query_user_profiles_cache($term));
+}
+
 # ================================================================
 # Convert stuff to entities
 # ================================================================
