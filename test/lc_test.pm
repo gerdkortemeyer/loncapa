@@ -49,14 +49,13 @@ sub handler {
    $r->print("Test Handler\n");
 
 
-$r->print("\neeble zaphod:".Dumper(&Apache::lc_entity_users::local_query_user_profiles('msu','eeble zaphod')));
-$r->print("\neeble arth:".Dumper(&Apache::lc_entity_users::local_query_user_profiles('msu','eeble arth')));
-$r->print("\nrThur:".Dumper(&Apache::lc_entity_users::local_query_user_profiles('msu','rThur')));
-$r->print("\ne:".Dumper(&Apache::lc_entity_users::local_query_user_profiles('msu','e')));
-$r->print("\nx:".Dumper(&Apache::lc_entity_users::local_query_user_profiles('msu','x'))."\n");
-
+$r->print("\neeble zaphod:".Dumper(&Apache::lc_entity_users::query_user_profiles('msu','eeble zaphod')));
+$r->print("\neeble arth:".Dumper(&Apache::lc_entity_users::query_user_profiles('msu','eeble arth')));
+$r->print("\nrThur:".Dumper(&Apache::lc_entity_users::query_user_profiles('msu','rThur')));
 $r->print("\ne:".Dumper(&Apache::lc_entity_users::query_user_profiles('msu','e')));
+$r->print("\nx:".Dumper(&Apache::lc_entity_users::query_user_profiles('msu','x'))."\n");
 
+$r->print("\nIn cache: ".Dumper(&Apache::lc_mongodb::query_user_profiles_cache('e')));
 
 
 $r->print("\nCourse advan:".Dumper(&Apache::lc_entity_courses::local_query_course_profiles('advan'))."\n");

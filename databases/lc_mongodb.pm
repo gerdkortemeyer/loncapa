@@ -34,7 +34,7 @@ use Data::Dumper;
 # merge and client are handles that are being kept open
 # the rest are collections in mongo
 #
-use vars qw($merge $client $database $roles $profiles $namespaces $sessions $auth $metadata);
+use vars qw($merge $client $database $roles $profiles $profiles_cache $namespaces $sessions $auth $metadata);
 
 
 #
@@ -98,6 +98,39 @@ sub query_course_profiles {
    my ($term)=@_;
    unless ($profiles) { &init_mongo(); }
    return $profiles->find({'profile.title' => qr/\Q$term\E/i})->all;
+}
+
+#
+# Profile cache for searches
+#
+sub update_profiles_cache {
+   my ($entity,$domain,$data)=@_;
+   unless ($profiles_cache) { &init_mongo(); }
+   my $newdata->{'entity'}=$entity;
+   $newdata->{'domain'}=$domain;
+   $newdata->{'profile'}=$data;
+   my $olddata=$profiles_cache->find_one({ entity => $entity, domain => $domain });
+   if ($olddata) {
+      return $profiles_cache->update({ entity => $entity, domain => $domain },$newdata);
+   } else {
+      return $profiles_cache->insert($newdata)->{'value'};
+   }
+}
+
+sub query_user_profiles_cache {
+   my ($term1,$term2)=@_;
+   unless ($term1) { $term1=''; }
+   unless ($term2) { $term2=''; }
+   unless ($profiles_cache) { &init_mongo(); }
+   if ($term2) {
+      return $profiles_cache->find({ '$or' => [{'profile.firstname' => qr/\Q$term1\E/i,
+                                                'profile.lastname'  => qr/\Q$term2\E/i},
+                                               {'profile.firstname' => qr/\Q$term2\E/i,
+                                                'profile.lastname'  => qr/\Q$term1\E/i}] })->all;
+   } else {
+      return $profiles_cache->find({ '$or' => [{'profile.firstname' => qr/\Q$term1\E/i},
+                                               {'profile.lastname'  => qr/\Q$term1\E/i}] })->all;
+   }
 }
 
 #
@@ -320,6 +353,7 @@ sub init_mongo {
    $sessions=$database->get_collection('sessions');
    $auth=$database->get_collection('auth');
    $metadata=$database->get_collection('metadata');
+   $profiles_cache=$database->get_collection('profiles_cache');
 }
 
 BEGIN {

@@ -210,7 +210,7 @@ sub query_user_profiles {
       unless ($host) { next; }
       my $data=undef;
       if ($host eq $connection_table->{'self'}) {
-         $data=&local_query_user_profiles($term);
+         $data=&local_query_user_profiles($domain,$term);
       } else {
          my ($code,$response)=&command_dispatch($host,'query_user_profiles',
                                 &Apache::lc_json_utils::perl_to_json({ domain => $domain, term => $term }));
@@ -219,6 +219,9 @@ sub query_user_profiles {
          }
       }
       if ($data) {
+         foreach my $entity (keys(%{$data->{$domain}})) {
+            &Apache::lc_mongodb::update_profiles_cache($entity,$domain,$data->{$domain}->{$entity});
+         }
       }
    }
    return 1;
