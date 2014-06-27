@@ -54,9 +54,11 @@ $r->print("\neeble arth:".Dumper(&Apache::lc_entity_users::query_user_profiles('
 $r->print("\nrThur:".Dumper(&Apache::lc_entity_users::query_user_profiles('msu','rThur')));
 $r->print("\ne:".Dumper(&Apache::lc_entity_users::query_user_profiles('msu','e')));
 $r->print("\nx:".Dumper(&Apache::lc_entity_users::query_user_profiles('msu','x'))."\n");
-$r->print("\nIn cache: ".Dumper(&Apache::lc_mongodb::query_user_profiles_cache('e')));
+$r->print("\nIn cache: ".Dumper(&Apache::lc_mongodb::query_user_profiles_cache('msu','e')));
 $r->print("\nfirst:".Dumper(&Apache::lc_entity_users::query_user_profiles('msu','first')));
-$r->print("\nIn cache: ".Dumper(&Apache::lc_mongodb::query_user_profiles_cache('first')));
+$r->print("\nIn cache: ".Dumper(&Apache::lc_mongodb::query_user_profiles_cache('msu','first')));
+$r->print("\nIn cache fail: ".Dumper(&Apache::lc_mongodb::query_user_profiles_cache('sfu','first')));
+
 
 
 

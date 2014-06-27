@@ -191,11 +191,10 @@ sub local_query_user_profiles {
    unless ($term2) {
       if (length($term1)<2) { return undef; }
    }
-   my @rawdata=&Apache::lc_mongodb::query_user_profiles($term1,$term2);
+   my @rawdata=&Apache::lc_mongodb::query_user_profiles($domain,$term1,$term2);
    my $data=undef;
    my $count=0;
    foreach my $user (@rawdata) {
-      unless ($user->{'domain'} eq $domain) { next; }
       foreach my $namepart ('firstname','middlename','lastname','suffix') {
          $data->{$user->{'domain'}}->{$user->{'entity'}}->{$namepart}=$user->{'profile'}->{$namepart};
       }
@@ -235,7 +234,22 @@ sub query_user_profiles {
 
 sub query_user_profiles_result {
    my ($domain,$term)=@_;
-   return Dumper(&Apache::lc_mongodb::query_user_profiles_cache($term));
+   $term=~s/^\s+//s;
+   $term=~s/\s+$//s;
+   my ($term1,$term2)=split(/[\s\,]+/,$term);
+   my @rawdata=&Apache::lc_mongodb::query_user_profiles_cache($domain,$term1,$term2);
+   my $data=undef;
+   my $count=0;
+   foreach my $user (@rawdata) {
+      foreach my $namepart ('firstname','middlename','lastname','suffix') {
+         $data->{'records'}->{$user->{'domain'}}->{$user->{'entity'}}->{$namepart}=$user->{'profile'}->{$namepart};
+      }
+      $data->{'records'}->{$user->{'domain'}}->{$user->{'entity'}}->{'username'}=&entity_to_username($user->{'entity'},$user->{'domain'});
+      $count++;
+      if ($count>100) { last; }
+   }
+   $data->{'count'}=$count;
+   return $data;
 }
 
 # ================================================================

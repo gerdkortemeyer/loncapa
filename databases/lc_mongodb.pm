@@ -79,17 +79,19 @@ sub dump_profile {
 # Query for entry
 #
 sub query_user_profiles {
-   my ($term1,$term2)=@_;
+   my ($domain,$term1,$term2)=@_;
    unless ($term1) { $term1=''; }
    unless ($term2) { $term2=''; }
    unless ($profiles) { &init_mongo(); }
    if ($term2) {
-      return $profiles->find({ '$or' => [{'profile.firstname' => qr/\Q$term1\E/i,
+      return $profiles->find({ 'domain' => $domain,
+                               '$or' => [{'profile.firstname' => qr/\Q$term1\E/i,
                                           'profile.lastname'  => qr/\Q$term2\E/i},
                                          {'profile.firstname' => qr/\Q$term2\E/i,
                                           'profile.lastname'  => qr/\Q$term1\E/i}] })->all;
    } else {
-      return $profiles->find({ '$or' => [{'profile.firstname' => qr/\Q$term1\E/i},
+      return $profiles->find({ 'domain' => $domain,
+                               '$or' => [{'profile.firstname' => qr/\Q$term1\E/i},
                                          {'profile.lastname'  => qr/\Q$term1\E/i}] })->all;
    }
 }
@@ -118,17 +120,19 @@ sub update_profiles_cache {
 }
 
 sub query_user_profiles_cache {
-   my ($term1,$term2)=@_;
+   my ($domain,$term1,$term2)=@_;
    unless ($term1) { $term1=''; }
    unless ($term2) { $term2=''; }
    unless ($profiles_cache) { &init_mongo(); }
    if ($term2) {
-      return $profiles_cache->find({ '$or' => [{'profile.firstname' => qr/\Q$term1\E/i,
+      return $profiles_cache->find({ 'domain' => $domain,
+                                     '$or' => [{'profile.firstname' => qr/\Q$term1\E/i,
                                                 'profile.lastname'  => qr/\Q$term2\E/i},
                                                {'profile.firstname' => qr/\Q$term2\E/i,
                                                 'profile.lastname'  => qr/\Q$term1\E/i}] })->all;
    } else {
-      return $profiles_cache->find({ '$or' => [{'profile.firstname' => qr/\Q$term1\E/i},
+      return $profiles_cache->find({ 'domain' => $domain,
+                                     '$or' => [{'profile.firstname' => qr/\Q$term1\E/i},
                                                {'profile.lastname'  => qr/\Q$term1\E/i}] })->all;
    }
 }

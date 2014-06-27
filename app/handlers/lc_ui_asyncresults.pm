@@ -24,7 +24,7 @@ use Apache2::RequestRec();
 use Apache2::Const qw(:common);
 use Apache::lc_entity_sessions();
 use Apache::lc_entity_users();
-
+use Apache::lc_json_utils();
 use Apache::lc_logs;
 
 my $job;
@@ -45,9 +45,9 @@ sub handler {
    }
 # Did we get anything?
    if ($job->{'command'} eq 'usersearch') {
-      $r->print(&Apache::lc_entity_users::query_user_profiles_result($job->{'domain'},$job->{'term'})); 
+      $r->print(&Apache::lc_json_utils::perl_to_json(&Apache::lc_entity_users::query_user_profiles_result($job->{'domain'},$job->{'term'}))); 
    } else {
-      $r->print("error");
+      $r->print('{ "error" : "1"} ');
    }
    return OK;
 }
