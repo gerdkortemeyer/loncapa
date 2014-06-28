@@ -26,6 +26,7 @@ use Apache::lc_entity_sessions();
 use Apache::lc_entity_users();
 use Apache::lc_json_utils();
 use Apache::lc_logs;
+use Apache::lc_authorize;
 
 my $job;
 
@@ -45,7 +46,11 @@ sub handler {
    }
 # Did we get anything?
    if ($job->{'command'} eq 'usersearch') {
-      $r->print(&Apache::lc_json_utils::perl_to_json(&Apache::lc_entity_users::query_user_profiles_result($job->{'domain'},$job->{'term'}))); 
+      if (&allowed_domain('search_users',undef,$job->{'domain'})) {
+         $r->print(&Apache::lc_json_utils::perl_to_json(&Apache::lc_entity_users::query_user_profiles_result($job->{'domain'},$job->{'term'}))); 
+      } else {
+         $r->print('{ "count" : "0" }');
+      }
    } else {
       $r->print('{ "error" : "1"} ');
    }

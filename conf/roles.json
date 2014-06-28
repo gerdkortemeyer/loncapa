@@ -2,6 +2,7 @@
 "superuser"          : { "realm"  : "system",
                          "system" : {
                                       "view_role"       : "1",
+                                      "search_users"    : "1",
                                       "modify_role"     : {
                                                              "domain_coordinator" : "1"
                                                           }
@@ -10,6 +11,7 @@
 "domain_coordinator" : { "realm"  : "domain",
                          "domain" : {
                                       "view_role"       : "1",
+                                      "search_users"    : "1",
                                       "modify_role"     : {
                                                              "course_coordinator" : "1"
                                                           },
@@ -19,6 +21,9 @@
                                     }
                        },
 "course_coordinator" : { "realm"  : "regular",
+                         "domain" : { 
+                                      "search_users"    : "1"
+                                    },
                          "course" : {
                                       "view_role"       : "1",
                                       "modify_role"     : {
