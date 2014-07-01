@@ -105,11 +105,13 @@ h3 {
 
 .lcformtabledescription {
    font-family: sans-serif;
+   vertical-align: top;
    color: #000000;
 }
 
 .lcformusernameinput {
    font-family: monospace;
+   vertical-align: top;
    color: #000000;
 }
 
@@ -180,12 +182,10 @@ h3 {
 }
 
 .lcautocompleteresults {
-      background-color: white;
-      border-style: solid;
-      border-color: black;
-      border-radius: 3px;
-      z-index: 10000;
+      z-index: 1000;
       padding: 3px;
+      overflow-y: scroll;
+      height:0px;
       visibility: hidden;
 }
 
