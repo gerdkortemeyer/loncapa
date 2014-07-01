@@ -54,21 +54,29 @@ function progressbar(id,process) {
 }
 
 function usersearch(id) {
-     $.ajax({
+   clearTimeout(searchrepeat);
+   if ($("#"+id+"_search").val().length>0) {
+      $.ajax({
              url: '/async?command=usersearch&domain='+$("#"+id+"_domain").val()+'&term='+$("#"+id+"_search").val(),
              type:'GET'
-           });
-     clearTimeout(searchrepeat);
-     searchdisplay($("#"+id+"_domain").val(),$("#"+id+"_search").val());
+             });
+      searchdisplay(id);
+   }
 }
 
-function searchdisplay(domain,term) {
-   var noCache = parent.no_cache_value();
-   $.getJSON( "/asyncresults", { "noCache": noCache, "domain" : domain, "term" : term, "command" : "usersearch" }, function( data ) {
-      $.each( data, function( key, val ) {
-         console.log(key+":"+val);
-      });
-      searchrepeat=setTimeout(searchdisplay,1000,domain,term);
-   });
+function searchdisplay(id) {
+   if ($("#"+id+"_search").val().length>0) {
+      var noCache = parent.no_cache_value();
+      $.getJSON( "/asyncresults", { "noCache": noCache, 
+                                 "domain" : $("#"+id+"_domain").val(), 
+                                 "term"   : $("#"+id+"_search").val(), 
+                                 "command" : "usersearch" }, 
+       function( data ) {
+           $.each( data, function( key, val ) {
+            console.log(key+":"+val);
+           });
+           searchrepeat=setTimeout(searchdisplay,1000,id);
+       });
+   }
 }
 
