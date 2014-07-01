@@ -75,8 +75,12 @@ function searchdisplay(id) {
            $.each( data, function( key, val ) {
             console.log(key+":"+val);
            });
+           $('#'+id+'_results').html('<h1>Hello World!</h1>');
+           $('#'+id+'_results').css('visibility','visible');
            searchrepeat=setTimeout(searchdisplay,1000,id);
        });
+   } else {
+      $('#'+id+'_results').css('visibility','hidden');
    }
 }
 

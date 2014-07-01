@@ -240,6 +240,7 @@ sub usersearch {
    $output.=&hidden_label($id.'_search','Search').'<input type="text" id="'.$id.'_search" size="40" onkeyup="usersearch(\''.$id.'\')" />';
    $output.=&hidden_label($id.'_domain','Domain').&inputfield('rolemodifiabledomains',$id.'_domain',$name.'_domain',undef,$default);
    $output.=&hidden_field($id.'_username','');
+   $output.='<br /><div id="'.$id.'_results" class="lcautocompleteresults"></div>';
    $output.='</fieldset>';
 }
 
