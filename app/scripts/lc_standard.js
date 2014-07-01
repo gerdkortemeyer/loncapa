@@ -1,3 +1,5 @@
+var searchrepeat;
+
 CKEDITOR.on('instanceReady', function(){
    if (window.parent.document) {
       adjust_framesize();
@@ -52,5 +54,21 @@ function progressbar(id,process) {
 }
 
 function usersearch(id) {
-   alert($("#"+id+"_search").val());
+     $.ajax({
+             url: '/async?command=usersearch&domain='+$("#"+id+"_domain").val()+'&term='+$("#"+id+"_search").val(),
+             type:'GET'
+           });
+     clearTimeout(searchrepeat);
+     searchdisplay($("#"+id+"_domain").val(),$("#"+id+"_search").val());
 }
+
+function searchdisplay(domain,term) {
+   var noCache = parent.no_cache_value();
+   $.getJSON( "/asyncresults", { "noCache": noCache, "domain" : domain, "term" : term, "command" : "usersearch" }, function( data ) {
+      $.each( data, function( key, val ) {
+         console.log(key+":"+val);
+      });
+      searchrepeat=setTimeout(searchdisplay,1000,domain,term);
+   });
+}
+
