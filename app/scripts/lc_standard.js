@@ -50,3 +50,7 @@ function progressbar(id,process) {
       setTimeout(progressbar,1000,id,process);
    });
 }
+
+function usersearch(id) {
+   alert($("#"+id+"_search").val());
+}
