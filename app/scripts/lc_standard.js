@@ -75,11 +75,25 @@ function searchdisplay(id) {
                                  "term"   : $("#"+id+"_search").val(), 
                                  "command" : "usersearch" }, 
        function( data ) {
-           var content='';
+           var content='<ul>';
            $.each( data, function( key, val ) {
-             content+=key+":"+val;
+               if (key=='count') {
+                  content+='<li>'+val+'</li>';
+               }
+               if ((key=='records') && (typeof(val)=='object'))  {
+                  $.each(val, function( domain, subval ) {
+                      $.each(subval, function( entity, subsubval ) {
+                         content+='<li>'+entity+':'+domain+': ';
+                         $.each(subsubval, function ( subsubsubkey,subsubsubval ) {
+                             content+=' '+subsubsubkey+" = "+subsubsubval+' ';
+                         });
+                         content+='</li>';
+                      });
+                  });
+               }
            });
-           $('#'+id+'_results').html(content+"<br />fada<br />fada<br />fada<br />fada<br />fada<br />fada<br />fada<br />fada<br />fada");
+           content+='</ul>';
+           $('#'+id+'_results').html(content);
            $('#'+id+'_results').css('height','200px');
            $('#'+id+'_results').css('visibility','visible');
            adjust_framesize();
