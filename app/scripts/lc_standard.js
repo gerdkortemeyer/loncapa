@@ -67,6 +67,10 @@ function usersearch(id) {
    }
 }
 
+function autocompleteselect(username,firstname,lastname) {
+   alert(username);
+}
+
 function searchdisplay(id) {
    if ($("#"+id+"_search").val().length>0) {
       var noCache = parent.no_cache_value();
@@ -87,11 +91,21 @@ function searchdisplay(id) {
                if ((key=='records') && (typeof(val)=='object'))  {
                   $.each(val, function( domain, subval ) {
                       $.each(subval, function( entity, subsubval ) {
-                         content+='<li class="lcautocompleteentry">'+entity+':'+domain+': ';
+                         var firstname='';
+                         var middlename='';
+                         var lastname='';
+                         var suffix='';
+                         var username='';
                          $.each(subsubval, function ( subsubsubkey,subsubsubval ) {
-                             content+=' '+subsubsubkey+" = "+subsubsubval+' ';
+                             if (subsubsubkey=='firstname')  { firstname=subsubsubval; }
+                             if (subsubsubkey=='middlename') { middlename=subsubsubval; }
+                             if (subsubsubkey=='lastname')   { lastname=subsubsubval; }
+                             if (subsubsubkey=='username')   { username=subsubsubval; }
                          });
-                         content+='</li>';
+                         content+='<li class="lcautocompleteentry"><a href="#" class="lcautocompleteselect" onclick="autocompleteselect(\''
+                                 +escape(username)+"','"+escape(firstname)+"','"+escape(lastname)+'\')">';
+                         content+=firstname+' '+middlename+' '+lastname+' '+suffix;
+                         content+='</a></li>';
                       });
                   });
                }

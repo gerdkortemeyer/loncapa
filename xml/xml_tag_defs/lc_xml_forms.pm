@@ -239,6 +239,7 @@ sub usersearch {
    $output.=&Apache::lc_xml_utils::standard_message("Username: [_1]","<span id='".$id."_resultdisplay'>---</span>")."<br />\n";
    $output.=&hidden_label($id.'_search','Search').'<input type="text" id="'.$id.'_search" size="40" onkeyup="usersearch(\''.$id.'\')" />';
    $output.=&hidden_label($id.'_domain','Domain').&inputfield('rolemodifiabledomains',$id.'_domain',$name.'_domain',undef,$default);
+   $output.='<script>$("#'.$id.'_domain").change(usersearch("'.$id.'"));</script>';
    $output.=&hidden_field($id.'_username','');
    $output.='<br /><div id="'.$id.'_results" class="lcautocompleteresults"></div>';
    $output.='</fieldset>';

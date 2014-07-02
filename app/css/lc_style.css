@@ -189,6 +189,10 @@ h3 {
       visibility: hidden;
 }
 
+.lcautocompleteselect {
+     text-decoration: none;
+}
+
 .lcautocompletecount {
      display: block;
      font-family: sans-serif;
