@@ -1,5 +1,5 @@
 # The LearningOnline Network with CAPA - LON-CAPA
-# Catch-all tag for including raw handler output into pages
+# Include handler modifying course users
 #
 # Copyright (C) 2014 Michigan State University Board of Trustees
 #
@@ -16,35 +16,39 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-package Apache::lc_xml_include;
+package Apache::lc_incl_modify_courseusers;
 
 use strict;
-
-use Apache::lc_incl_userroles;
-use Apache::lc_incl_modify_courseusers;
+use Apache::lc_json_utils();
+use Apache::lc_file_utils();
+use Apache::lc_xml_utils();
+use Apache::lc_authorize;
+use Apache::lc_ui_localize;
+use Apache::lc_xml_forms();
+use Apache::lc_entity_users();
+use Apache::lc_entity_roles();
+use Apache::lc_entity_profile();
 use Apache::lc_logs;
+use Apache2::Const qw(:common);
+
+
+use Data::Dumper;
 
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_lcinclude_html);
+our @EXPORT = qw(incl_modify_courseusers_finalize);
 
-sub start_lcinclude_html {
-   my ($p,$safe,$stack,$token)=@_;
-   my $id=$token->[2]->{'id'};
-   my $name=$token->[2]->{'name'};
-   unless ($id) { return ''; }
-   unless ($name) { $name=$id; }
-   my $output="<div id='$id' name='$name'>";
-   my $subroutine='incl_'.$id;
-   $subroutine=~s/\W//g;
-   no strict 'refs';
-   if (defined(&$subroutine)) {
-      $output.=&{$subroutine}($p,$safe,$stack,$token);
-   }
-   use strict 'refs';
-   $output.='</div>';
-   return $output;
+sub incl_modify_courseusers_finalize {
+# Get posted content
+   my %content=&Apache::lc_entity_sessions::posted_content();
+   return join("\n<br />",map { $_.'='.$content{$_} } keys(%content));
+}
+
+sub handler {
+   my $r=shift;
+   $r->print(&incl_modify_courseusers_finalize());
+   return OK;
 }
 
 1;

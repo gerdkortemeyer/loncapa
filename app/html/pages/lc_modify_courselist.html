@@ -6,11 +6,15 @@
 <body>
 <h1><localize>Modify Enrollment List</localize></h1>
 <lcform id="modify_courseusers">
-<lcmodifycourselisttable />
-<p>
-<lcformcancel id="cancelbutton" />
-<lcformtrigger id="storebutton" description="Store" />
-</p>
+<lcinclude id="modify_courseusers_finalize" />
+<br />
+<span class="lcerror"><localize>Some required items were not specified.</localize></span>
+<div id="buttons" class="lcproblem">
+<lcformcancel id="cancel" description="Cancel" />
+<lcformcancel id="skip" description="Skip" />
+<lcformtrigger id="continue" description="Continue" />
+</div>
 </lcform>
+<p>&nbsp;</p>
 </body>
 </html>
