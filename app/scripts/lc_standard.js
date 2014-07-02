@@ -78,12 +78,16 @@ function searchdisplay(id) {
            var content='<ul>';
            $.each( data, function( key, val ) {
                if (key=='count') {
-                  content+='<li>'+val+'</li>';
+                  if (val<100) {
+                     content+='<li class="lcautocompletecount">'+val+'</li>';
+                  } else {
+                     content+='<li class="lcautocompletecount">&gt;100</li>';
+                  }
                }
                if ((key=='records') && (typeof(val)=='object'))  {
                   $.each(val, function( domain, subval ) {
                       $.each(subval, function( entity, subsubval ) {
-                         content+='<li>'+entity+':'+domain+': ';
+                         content+='<li class="lcautocompleteentry">'+entity+':'+domain+': ';
                          $.each(subsubval, function ( subsubsubkey,subsubsubval ) {
                              content+=' '+subsubsubkey+" = "+subsubsubval+' ';
                          });

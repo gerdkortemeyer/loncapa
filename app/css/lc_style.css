@@ -189,6 +189,21 @@ h3 {
       visibility: hidden;
 }
 
+.lcautocompletecount {
+     display: block;
+     font-family: sans-serif;
+     color: #30a097;
+}
+
+.lcautocompleteentry {
+     display: block;
+     font-family: sans-serif;
+}
+
+.lcautocompleteentry:hover {
+     background:#02fae9; 
+}
+
 textarea.math {
    font-family: monospace;
    height: 3em;
