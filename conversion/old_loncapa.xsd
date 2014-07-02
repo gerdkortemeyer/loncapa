@@ -59,15 +59,13 @@
     <xs:annotation>
       <xs:documentation>Value</xs:documentation>
     </xs:annotation>
-    <xs:restriction base="xs:string">
-            </xs:restriction>
+    <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="caparesponse--vector">
     <xs:annotation>
       <xs:documentation>Vector</xs:documentation>
     </xs:annotation>
-    <xs:restriction base="xs:string">
-            </xs:restriction>
+    <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:complexType mixed="true" name="customhint--answer">
     <xs:annotation>
@@ -663,22 +661,19 @@
     <xs:annotation>
       <xs:documentation>Plot Title</xs:documentation>
     </xs:annotation>
-    <xs:restriction base="xs:string">
-    </xs:restriction>
+    <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="lonplot--xlabel">
     <xs:annotation>
       <xs:documentation>Plot x-label</xs:documentation>
     </xs:annotation>
-    <xs:restriction base="xs:string">
-    </xs:restriction>
+    <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:simpleType name="lonplot--ylabel">
     <xs:annotation>
       <xs:documentation>Plot y-label</xs:documentation>
     </xs:annotation>
-    <xs:restriction base="xs:string">
-    </xs:restriction>
+    <xs:restriction base="xs:string"/>
   </xs:simpleType>
   <xs:complexType name="lonplot--axis">
     <xs:annotation>
@@ -1047,8 +1042,7 @@
       <xs:documentation>Plot xtics</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
-      <xs:extension base="lonplot--tics">
-                  </xs:extension>
+      <xs:extension base="lonplot--tics"/>
     </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="lonplot--ytics">
@@ -1056,8 +1050,7 @@
       <xs:documentation>Plot ytics</xs:documentation>
     </xs:annotation>
     <xs:complexContent>
-      <xs:extension base="lonplot--tics">
-                  </xs:extension>
+      <xs:extension base="lonplot--tics"/>
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="parameter">
@@ -3801,6 +3794,7 @@
       <xs:element ref="div"/>
       <xs:element ref="p"/>
       <xs:element ref="ul"/>
+      <xs:element ref="table"/>
     </xs:choice>
   </xs:group>
   <xs:group name="inlinehtml">
@@ -3815,7 +3809,7 @@
   </xs:group>
   <xs:element name="div">
     <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="blockhtml"/>
         <xs:group ref="inlinehtml"/>
       </xs:choice>
@@ -3825,7 +3819,7 @@
   </xs:element>
   <xs:element name="p">
     <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlinehtml"/>
       </xs:choice>
     </xs:complexType>
@@ -3846,35 +3840,92 @@
   </xs:element>
   <xs:element name="li">
     <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlinehtml"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
+  <xs:element name="table">
+    <xs:complexType>
+      <xs:sequence maxOccurs="unbounded">
+        <xs:element ref="tr"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tr">
+    <xs:complexType>
+      <xs:choice>
+        <xs:sequence maxOccurs="unbounded">
+          <xs:element ref="th"/>
+        </xs:sequence>
+        <xs:sequence maxOccurs="unbounded">
+          <xs:element ref="td"/>
+        </xs:sequence>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="html-align">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="left"/>
+      <xs:enumeration value="center"/>
+      <xs:enumeration value="right"/>
+      <xs:enumeration value="justify"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="td">
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="html"/>
+      </xs:choice>
+      <xs:attribute name="colspan" type="xs:int"/>
+      <xs:attribute name="rowspan" type="xs:int"/>
+      <xs:attribute name="align" type="html-align"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="th">
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="html"/>
+      </xs:choice>
+      <xs:attribute name="colspan" type="xs:int"/>
+      <xs:attribute name="rowspan" type="xs:int"/>
+      <xs:attribute name="align" type="html-align"/>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="span">
     <xs:complexType mixed="true">
-      <xs:group ref="inlinehtml"/>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="inlinehtml"/>
+      </xs:choice>
       <xs:attribute name="style" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="b">
     <xs:complexType mixed="true">
-      <xs:group ref="inlinehtml"/>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="inlinehtml"/>
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="i">
     <xs:complexType mixed="true">
-      <xs:group ref="inlinehtml"/>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="inlinehtml"/>
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="sup">
     <xs:complexType mixed="true">
-      <xs:group ref="inlinehtml"/>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="inlinehtml"/>
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="sub">
     <xs:complexType mixed="true">
-      <xs:group ref="inlinehtml"/>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="inlinehtml"/>
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="a">
