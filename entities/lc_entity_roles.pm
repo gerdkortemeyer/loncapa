@@ -268,13 +268,36 @@ sub modify_role {
 }
 
 #
+# Cleaning up usernames and domains
+#
+sub cleaned_up_username {
+   my ($username)=@_;
+   $username=~s/\s//gs;
+   $username=~s/\///gs;
+   $username=~s/\"//gs;
+   $username=~s/\'//gs;
+   return $username;
+}
+
+sub cleaned_up_domain {
+   my ($domain)=@_;
+   $domain=~s/\s//gs;
+   $domain=~s/\///gs;
+   $domain=~s/\"//gs;
+   $domain=~s/\'//gs;
+   return $domain;
+}
+
+#
 # Enroll routine
 # - takes care of a lot of stuff according to privileges
 #
 sub enroll {
    my ($userrecord,$overridename,$overrideauth,$overridepid)=@_;
 # Sanity tests
-# Basics: do we have a username and domain?
+# Basics: do we still have a username and domain after cleaning up?
+   $userrecord->{'username'}=&cleaned_up_username($userrecord->{'username'});
+   $userrecord->{'domain'}=&cleaned_up_domain($userrecord->{'domain'});
    unless (($userrecord->{'username'}) && ($userrecord->{'domain'})) {
       &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Call to enroll without username or domain");
       return 0;

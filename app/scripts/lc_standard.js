@@ -53,8 +53,18 @@ function progressbar(id,process) {
    });
 }
 
+function setsearchusername(id,username) {
+   if (username.length>0) {
+      $('#'+id+'_resultdisplay').html(username);
+   } else {
+      $('#'+id+'_resultdisplay').html('---');
+   }
+   $("#"+id+"_username").val(username);
+}
+
 function usersearch(id) {
    clearTimeout(searchrepeat);
+   setsearchusername(id,$("#"+id+"_search").val());
    if ($("#"+id+"_search").val().length>0) {
       $.ajax({
              url: '/async?command=usersearch&domain='+$("#"+id+"_domain").val()+'&term='+$("#"+id+"_search").val(),
@@ -67,8 +77,9 @@ function usersearch(id) {
    }
 }
 
-function autocompleteselect(username,firstname,lastname) {
-   alert(username);
+function autocompleteselect(id,username,firstname,lastname) {
+   setsearchusername(id,unescape(username));
+   $('#'+id+'_search').val(unescape(firstname)+' '+unescape(lastname));
 }
 
 function searchdisplay(id) {
@@ -103,7 +114,7 @@ function searchdisplay(id) {
                              if (subsubsubkey=='username')   { username=subsubsubval; }
                          });
                          content+='<li class="lcautocompleteentry"><a href="#" class="lcautocompleteselect" onclick="autocompleteselect(\''
-                                 +escape(username)+"','"+escape(firstname)+"','"+escape(lastname)+'\')">';
+                                 +escape(id)+"','"+escape(username)+"','"+escape(firstname)+"','"+escape(lastname)+'\')">';
                          content+=firstname+' '+middlename+' '+lastname+' '+suffix;
                          content+='</a></li>';
                       });
