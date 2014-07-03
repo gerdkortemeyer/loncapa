@@ -86,10 +86,11 @@
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="foil" type="imageresponse--foil"/>
     </xs:choice>
+    <xs:attribute name="concept" type="xs:string" use="required"/>
   </xs:complexType>
   <xs:complexType name="imageresponse--foil">
     <xs:annotation>
-      <xs:documentation>Image response foil</xs:documentation>
+      <xs:documentation>Image response foil. image and rectangle are required.</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="image" type="imageresponse--image"/>
@@ -110,12 +111,21 @@
   </xs:complexType>
   <xs:complexType mixed="true" name="imageresponse--image">
     <xs:annotation>
-      <xs:documentation>Imageresponse Image (contains the image source file)</xs:documentation>
+      <xs:documentation>
+        Imageresponse Image (contains the image source file).
+        
+        The delimited text should correspond to a published image resource.
+        Example: &lt;image&gt;/res/adm/includes/templates/man1.jpg&lt;/image&gt;. The following image formats are recommended - gif, jpg or png. Other formats may work, but there may be printing or display issues. The image should only appear once per foil.
+      </xs:documentation>
     </xs:annotation>
   </xs:complexType>
   <xs:complexType mixed="true" name="imageresponse--rectangle">
     <xs:annotation>
-      <xs:documentation>Rectangular area in image (contains coordinate pairs)</xs:documentation>
+      <xs:documentation>
+        Rectangular area in image (contains coordinate pairs).
+        
+        The delimited text specifies a rectangular area that is correct, specified as (x1,y1)-(x2,y2), where x1, x2, y1, and y2 are number corresponding to the x and y coordinates of two corners that define a rectangle which specifies where the right answer for this foil is located on the image. For example, (0,0)-(100,200) will specify that a rectangle 100 pixels wide and 200 pixels tall, situated in the upper left of the image, is correct. At least one rectangle is required; multiple rectangles may be specified.
+      </xs:documentation>
     </xs:annotation>
   </xs:complexType>
   <xs:complexType mixed="true" name="imageresponse--polygon">
@@ -125,7 +135,12 @@
   </xs:complexType>
   <xs:complexType mixed="true" name="imageresponse--text">
     <xs:annotation>
-      <xs:documentation>Text to describe option</xs:documentation>
+      <xs:documentation>
+        Text to describe option
+        
+        The delimited text is printed before the image is shown on the screen.
+        This text is typically used to describe to the student what they are expected to click on.
+      </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="html"/>
@@ -168,7 +183,7 @@
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="foil" type="optionresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="concept" type="xs:string"/>
+    <xs:attribute name="concept" type="xs:string" use="required"/>
   </xs:complexType>
   <xs:complexType name="optionresponse--drawoptionlist">
     <xs:annotation>
@@ -227,7 +242,7 @@
       <xs:element name="conceptgroup" type="optionresponse--conceptgroup"/>
       <xs:element name="foil" type="optionresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="options" type="xs:string">
+    <xs:attribute name="options" type="xs:string" use="required">
       <xs:annotation>
         <xs:documentation>
           List of options
@@ -273,7 +288,7 @@
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="foil" type="radiobuttonresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="concept" type="xs:string"/>
+    <xs:attribute name="concept" type="xs:string" use="required"/>
   </xs:complexType>
   <xs:complexType mixed="true" name="radiobuttonresponse--foil">
     <xs:annotation>
@@ -301,12 +316,19 @@
       <xs:element ref="window"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="value" type="xs:string">
+    <xs:attribute name="value">
       <xs:annotation>
         <xs:documentation>
           Correct Option
         </xs:documentation>
       </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="true"/>
+          <xs:enumeration value="false"/>
+          <xs:enumeration value="unused"/>
+        </xs:restriction>
+      </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="random" name="location">
       <xs:simpleType>
@@ -334,7 +356,7 @@
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="foil" type="rankresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="concept" type="xs:string"/>
+    <xs:attribute name="concept" type="xs:string" use="required"/>
   </xs:complexType>
   <xs:complexType mixed="true" name="rankresponse--foil">
     <xs:annotation>
@@ -395,7 +417,7 @@
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="foil" type="matchresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="concept" type="xs:string"/>
+    <xs:attribute name="concept" type="xs:string" use="required"/>
   </xs:complexType>
   <xs:complexType mixed="true" name="matchresponse--foil">
     <xs:annotation>
@@ -550,10 +572,27 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="label" type="randomlabel--label"/>
-      <xs:element name="location" type="randomlabel--location"/>
+      <xs:element name="location" type="randomlabel--location">
+        <xs:annotation>
+          <xs:documentation>
+            declares a location on the image that a label should appear at
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:choice>
-    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="name" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          This is the name of the group.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute default="text" name="type">
+      <xs:annotation>
+        <xs:documentation>
+          the type of labels in this group
+        </xs:documentation>
+      </xs:annotation>
       <xs:simpleType>
         <xs:restriction base="xs:string">
           <xs:enumeration value="text"/>
@@ -1055,11 +1094,25 @@
   </xs:complexType>
   <xs:element name="parameter">
     <xs:annotation>
-      <xs:documentation>Parameters for a part</xs:documentation>
+      <xs:documentation>
+        Parameters for a part
+        
+        parameter is exactly the same as responseparam, but should appear outside of a response tag.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="type" type="xs:string"/>
+      <xs:attribute name="type" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="tolerance"/>
+            <xs:enumeration value="int"/>
+            <xs:enumeration value="float"/>
+            <xs:enumeration value="string"/>
+            <xs:enumeration value="date"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
       <xs:attribute name="description" type="xs:string"/>
       <xs:attribute name="default" type="xs:string"/>
     </xs:complexType>
@@ -1074,8 +1127,12 @@
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
+        <xs:element name="array" type="xs:string"/>
+        <xs:element name="unit" type="xs:string"/>
+        <xs:element ref="hiddenline"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
       <xs:attribute name="incorrect" type="xs:string">
         <xs:annotation>
@@ -1105,8 +1162,10 @@
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
+        <xs:element ref="hiddenline"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
       <xs:attribute name="samples" type="xs:string">
         <xs:annotation>
@@ -1135,6 +1194,7 @@
         <xs:element ref="hintgroup"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="width" type="xs:int">
         <xs:annotation>
           <xs:documentation>
@@ -1633,17 +1693,35 @@
   </xs:element>
   <xs:element name="stringresponse">
     <xs:annotation>
-      <xs:documentation>Response: String</xs:documentation>
+      <xs:documentation>
+        stringresponse implements a string answer. An internal textline tag is necessary for the student’s response to go in. It can check the string for either case or order.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
+        <xs:element ref="hiddenline"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            the correct answer, either a perl list or scalar
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute default="cs" name="type">
+        <xs:annotation>
+          <xs:documentation>
+            Specifies how the string is checked (like the CAPA styles). Possible values are:
+            – cs: case sensitive, order important.
+            – ci: case insensitive, order important.
+            – mc: case insensitive, order unimportant.
+          </xs:documentation>
+        </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="cs"/>
@@ -1679,24 +1757,50 @@
         <xs:element ref="responseparam"/>
         <xs:element ref="textfield"/>
         <xs:element ref="textline"/>
+        <xs:element ref="hiddensubmission"/>
+        <xs:element ref="hiddenline"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="externalresponse">
     <xs:annotation>
-      <xs:documentation>Response: External</xs:documentation>
+      <xs:documentation>
+        externalresponse is an advanced type of response tag that implements the ability to have an external program grade a response. It expects either a textline or textfield inside the tag.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="textline"/>
         <xs:element ref="textfield"/>
+        <xs:element ref="hiddensubmission"/>
+        <xs:element ref="hiddenline"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="url" type="xs:string"/>
-      <xs:attribute name="answer" type="xs:string"/>
-      <xs:attribute name="form" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="url" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            url to submit the answer form to. It does not need to be a LON-CAPA machine.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="answer" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            data to post in the form element LONCAPA correct answer to the remote site.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="form" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            hash variable name that will be submitted to the remote site as a HTTP form.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="answerdisplay" type="xs:string"/>
     </xs:complexType>
   </xs:element>
@@ -1731,7 +1835,12 @@
   </xs:element>
   <xs:element name="hintpart">
     <xs:annotation>
-      <xs:documentation>Conditional Hint</xs:documentation>
+      <xs:documentation>
+        Conditional Hint
+        
+        When a hint tag named the same as the on attribute evaluates to be correct, the hintpart will show.
+        If no other hintpart is to show then all hintparts with an on value set to “default” will show.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -1755,7 +1864,7 @@
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
-      <xs:attribute name="on" type="xs:string"/>
+      <xs:attribute name="on" type="xs:string" use="required"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="formulahint">
@@ -1767,7 +1876,13 @@
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            should be set to the value of which hintpart will be shown
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="answer" type="xs:string"/>
       <xs:attribute name="samples" type="xs:string">
         <xs:annotation>
@@ -1794,7 +1909,13 @@
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            should be set to the value of which hintpart will be shown
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="answer" type="xs:string"/>
       <xs:attribute name="unit" type="xs:string"/>
       <xs:attribute name="format" type="xs:string"/>
@@ -1842,7 +1963,13 @@
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            should be set to the value of which hintpart will be shown
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="answer" type="xs:string"/>
       <xs:attribute name="concept" type="xs:string"/>
     </xs:complexType>
@@ -1856,8 +1983,20 @@
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            should be set to the value of which hintpart will be shown
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="answer" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            should be at least a two element list: first the type (foil or concept) and then either the foil name(s) or the concept string(s), e.g., “(’foil’,’greaterthan’,’equal’)” if the condition should be triggered by the foils named “greaterthan” or “equal”
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="stringhint">
@@ -1869,8 +2008,20 @@
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            should be set to the value of which hintpart will be shown
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="answer" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            should be set to the value of which hintpart will be shown
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute default="cs" name="type">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -1892,7 +2043,11 @@
   </xs:element>
   <xs:element name="customhint">
     <xs:annotation>
-      <xs:documentation>Custom Hint Condition</xs:documentation>
+      <xs:documentation>
+        Custom Hint Condition
+        
+        Define the hint condition within an answer block inside of the customhint block. The condition is defined like how an answer is defined in customresponse where you need to return EXACT ANS to indicate when customhint criteria are met.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -1900,7 +2055,13 @@
         <xs:element name="answer" type="customhint--answer"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            should be set to the value of which hintpart will be shown
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="mathhint">
@@ -1938,7 +2099,9 @@
   </xs:element>
   <xs:element name="imageresponse">
     <xs:annotation>
-      <xs:documentation>Response: Click on Image</xs:documentation>
+      <xs:documentation>
+        imageresponse implements a image-click answer. imageresponse tags should contain a foilgroup tag, which contain foil tags.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -1947,6 +2110,7 @@
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="max" type="xs:int">
         <xs:annotation>
           <xs:documentation>
@@ -1972,8 +2136,11 @@
         <xs:element ref="responseparam"/>
         <xs:element ref="textfield"/>
         <xs:element ref="textline"/>
+        <xs:element ref="hiddensubmission"/>
+        <xs:element ref="hiddenline"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="answerdisplay" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -1994,8 +2161,11 @@
         <xs:element ref="responseparam"/>
         <xs:element ref="textfield"/>
         <xs:element ref="textline"/>
+        <xs:element ref="hiddensubmission"/>
+        <xs:element ref="hiddenline"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="answerdisplay" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -2028,7 +2198,12 @@
   </xs:element>
   <xs:element name="textfield">
     <xs:annotation>
-      <xs:documentation>Large Text Entry Area, contains the text that appears by default</xs:documentation>
+      <xs:documentation>
+        Large Text Entry Area, contains the text that appears by default
+        
+        Creates a large text input box. If data appears between the start and end tags, the data will appear in the textfield if the student has not yet made a submission.
+        Additionally, it takes two attributes: rows and cols, which control the height and width of the text area respectively.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2038,8 +2213,8 @@
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
       </xs:choice>
-      <xs:attribute name="rows" type="xs:int"/>
-      <xs:attribute name="cols" type="xs:int">
+      <xs:attribute default="10" name="rows" type="xs:int"/>
+      <xs:attribute default="80" name="cols" type="xs:int">
         <xs:annotation>
           <xs:documentation>
             Columns
@@ -2076,10 +2251,18 @@
   </xs:element>
   <xs:element name="textline">
     <xs:annotation>
-      <xs:documentation>Single Line Text Entry Area</xs:documentation>
+      <xs:documentation>
+        Single Line Text Entry Area
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="size" type="xs:int"/>
+      <xs:attribute default="20" name="size" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            controls the width of the textline
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="addchars" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -2104,9 +2287,31 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
+  <xs:element name="hiddensubmission">
+    <xs:annotation>
+      <xs:documentation>
+        ???
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="value" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="hiddenline">
+    <xs:annotation>
+      <xs:documentation>
+        ???
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
   <xs:element name="optionresponse">
     <xs:annotation>
-      <xs:documentation>Response: Select from Options</xs:documentation>
+      <xs:documentation>
+        Response: Select from Options
+        
+        optionresponse implements a “select from these choices” style question. The choices are specified by the instructor and use the foil structure tags, with this additional addition:
+        foilgroup is required to have an options attribute which should be a perl list of possible options for the student.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2115,6 +2320,7 @@
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="max" type="xs:int">
         <xs:annotation>
           <xs:documentation>
@@ -2146,16 +2352,27 @@
   </xs:element>
   <xs:element name="displayduedate">
     <xs:annotation>
-      <xs:documentation>Display Due Date</xs:documentation>
+      <xs:documentation>
+        This will insert the current due date if one is set in the document.
+        It is generated to be inside a table of 1x1 elements.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="style" type="xs:string"/>
+      <xs:attribute name="style" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            style=“plain” Makes the due date appear without any boxing. If the parameter value is other than “plain”, or if the style parameter is omitted, the due date will be displayed within a box.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="format" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="displaytitle">
     <xs:annotation>
-      <xs:documentation>Title</xs:documentation>
+      <xs:documentation>
+        This will insert the title of the problem from the metadata of the problem. Only the first displaytitle in a problem will show the title; this allows clean usage of displaytitle in LON-CAPA style files.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="style" type="xs:string"/>
@@ -2163,7 +2380,11 @@
   </xs:element>
   <xs:element name="radiobuttonresponse">
     <xs:annotation>
-      <xs:documentation>Response: One of N statements</xs:documentation>
+      <xs:documentation>
+        Response: One of N statements
+        
+        radiobuttonresponse implements a true/false question with one correct answer. It uses the foil structure tags, but the value of a foil can only be true, false, or unused.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2172,6 +2393,7 @@
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="max" type="xs:int">
         <xs:annotation>
           <xs:documentation>
@@ -2212,6 +2434,7 @@
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="max" type="xs:int">
         <xs:annotation>
           <xs:documentation>
@@ -2240,6 +2463,7 @@
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="max" type="xs:int">
         <xs:annotation>
           <xs:documentation>
@@ -2265,8 +2489,10 @@
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
+        <xs:element ref="hiddenline"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
       <xs:attribute default="autoez" name="options">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -2317,8 +2543,10 @@
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
+        <xs:element ref="hiddenline"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="answer" type="xs:string"/>
       <xs:attribute name="initial" type="xs:string">
         <xs:annotation>
@@ -2361,23 +2589,51 @@
   </xs:element>
   <xs:element name="responseparam">
     <xs:annotation>
-      <xs:documentation>Parameters for a response</xs:documentation>
+      <xs:documentation>
+        Parameters for a response
+        
+        Defines an externally adjustable parameter for the question, which the question can then use to allow other users to customize the problem for their courses without changing the source code of the problem.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="type" type="xs:string"/>
-      <xs:attribute name="default" type="xs:string"/>
+      <xs:attribute name="type" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="tolerance"/>
+            <xs:enumeration value="int"/>
+            <xs:enumeration value="float"/>
+            <xs:enumeration value="string"/>
+            <xs:enumeration value="date"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="default" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            default value
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="description" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="display" type="xs:string">
     <xs:annotation>
-      <xs:documentation>Display Script Result Block</xs:documentation>
+      <xs:documentation>
+        Display Script Result Block
+        
+        The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
+      </xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:element name="import">
     <xs:annotation>
-      <xs:documentation>Import a File</xs:documentation>
+      <xs:documentation>
+        Import a File
+        
+        This causes the parse to read in the file named in the body of the tag and parse it as if the entire text of the file had existed at the location of the tag.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:attribute name="id" type="xs:string"/>
@@ -2398,12 +2654,20 @@
   </xs:element>
   <xs:element name="parserlib" type="xs:string">
     <xs:annotation>
-      <xs:documentation>Import Tag Definitions</xs:documentation>
+      <xs:documentation>
+        Import Tag Definitions
+        
+        The enclosed filename contains definitions for new tags.
+      </xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:element name="script">
     <xs:annotation>
-      <xs:documentation>Perl Script Block</xs:documentation>
+      <xs:documentation>
+        Perl Script Block
+        
+        If the attribute type is set to “loncapa/perl” the enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:attribute name="type" type="xs:string"/>
@@ -2411,7 +2675,11 @@
   </xs:element>
   <xs:element name="scriptlib" type="xs:string">
     <xs:annotation>
-      <xs:documentation>Import Script Library</xs:documentation>
+      <xs:documentation>
+        Import Script Library
+        
+        The enclosed filename contains Perl code to run in the safe space.
+      </xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:element name="img">
@@ -2490,7 +2758,12 @@
   </xs:element>
   <xs:element name="window">
     <xs:annotation>
-      <xs:documentation>Text In Separate Window</xs:documentation>
+      <xs:documentation>
+        Text In Separate Window
+        
+        This creates a link that when clicked shows the intervening information in a pop-up window. By default the window will be 500 pixels wide and 200 pixels tall, and the link text will be a superscript * (so as to look like a footnote). These can be changed using the attributes.
+        When printing, the included text will get turned into a real footnote.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2525,8 +2798,8 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="height" type="xs:int"/>
-      <xs:attribute name="width" type="xs:int"/>
+      <xs:attribute default="200" name="height" type="xs:int"/>
+      <xs:attribute default="500" name="width" type="xs:int"/>
       <xs:attribute name="printtext" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -2538,7 +2811,11 @@
   </xs:element>
   <xs:element name="block">
     <xs:annotation>
-      <xs:documentation>Conditional Block</xs:documentation>
+      <xs:documentation>
+        Conditional Block
+        
+        This has a required argument condition that is evaluated. If the condition is true, everything inside the tag is evaluated; otherwise, everything inside the block tag is skipped.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2593,6 +2870,59 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
+  <xs:element name="languageblock">
+    <xs:annotation>
+      <xs:documentation>
+        This declares the intent to provide content that can be rendered in the set of languages in the include specification but not in the exclude specification. If a currently preferred language is in the include list the content in the &lt;languageblock&gt;...&lt;/languageblock&gt; is rendered If the currently preferred language is in the exclude list, the content in the &lt;languageblock&gt;..&lt;/languageblock is not rendered.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="html"/>
+      </xs:choice>
+      <xs:attribute name="include" type="xs:string"/>
+      <xs:attribute name="exclude" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="translated">
+    <xs:annotation>
+      <xs:documentation>
+        &lt;translated&gt; starts a block of a resource that has multiple translations.
+        See the &lt;lang&gt; tag as well.
+        When &lt;/translated&gt; is encountered if there is a translation for the currently preferred language, that is rendered inthe web/tex/webgrade targets. Otherwise, the default text is rendered.
+        Note that &lt;lang&gt; is only registered for the duration of the &lt;translated&gt;...&lt;/translated&gt; block.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="html"/>
+        <xs:element ref="lang"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="lang">
+    <xs:annotation>
+      <xs:documentation>
+        Specifies that the block contained within it is a translation for a specific language specified by the 'which' attribute. The 'other' attribute can be used by itself or in conjunction with which to specify this tag _may_ be used as a translation for some list of languages. e.g.:
+        &lt;lang which='senisoUS' other='senisoCA,senisoAU,seniso'&gt;
+        specifying that the block provides a translation for US (primary) Canadian, Australian and UK English.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="html"/>
+      </xs:choice>
+      <xs:attribute name="which" type="xs:string"/>
+      <xs:attribute name="other" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="instructorcomment">
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="html"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="library">
     <xs:annotation>
       <xs:documentation>Start of Library</xs:documentation>
@@ -2644,7 +2974,11 @@
   </xs:element>
   <xs:element name="notsolved">
     <xs:annotation>
-      <xs:documentation>Block For When Not Solved</xs:documentation>
+      <xs:documentation>
+        Block For When Not Solved
+        
+        Everything inside is skipped if the problem is “solved”.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2691,7 +3025,11 @@
   </xs:element>
   <xs:element name="part">
     <xs:annotation>
-      <xs:documentation>Problem Part</xs:documentation>
+      <xs:documentation>
+        Problem Part
+        
+        This must be below problem if it is going to be used. It does many of the same tasks as problem, but allows multiple separate problems to exist in a single file.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2764,7 +3102,11 @@
   </xs:element>
   <xs:element name="postanswerdate">
     <xs:annotation>
-      <xs:documentation>After Answer Date Block</xs:documentation>
+      <xs:documentation>
+        After Answer Date Block
+        
+        Everything inside is skipped if the problem is before the answer date.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2795,7 +3137,11 @@
   </xs:element>
   <xs:element name="preduedate">
     <xs:annotation>
-      <xs:documentation>Before Due Date Block</xs:documentation>
+      <xs:documentation>
+        Before Due Date Block
+        
+        Everything inside is skipped if the problem is after the due date.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2841,7 +3187,11 @@
   </xs:element>
   <xs:element name="problem">
     <xs:annotation>
-      <xs:documentation>Start of Homework</xs:documentation>
+      <xs:documentation>
+        Start of Homework
+        
+        This must be first in the file. It sets up the header of the webpage and generates the submit buttons. It also handles due dates properly.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2909,7 +3259,12 @@
   </xs:element>
   <xs:element name="problemtype">
     <xs:annotation>
-      <xs:documentation>Problem Type Block</xs:documentation>
+      <xs:documentation>
+        Problem Type Block
+        
+        Allows you to show or hide output based on what the problem-type parameter is set to in the course.
+        Will only show the output text when the problem is set to the type of exam or survey in the course.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2962,55 +3317,74 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute default="exam" name="for">
+      <xs:attribute default="exam" name="for" type="xs:string">
         <xs:annotation>
           <xs:documentation>
             When used as type(s)
+            
+            List of values among:
+            exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
           </xs:documentation>
         </xs:annotation>
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="exam"/>
-            <xs:enumeration value="survey"/>
-            <xs:enumeration value="surveycred"/>
-            <xs:enumeration value="anonsurvey"/>
-            <xs:enumeration value="anonsurveycred"/>
-            <xs:enumeration value="problem"/>
-            <xs:enumeration value="practice"/>
-            <xs:enumeration value="randomizetry"/>
-          </xs:restriction>
-        </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="randomlabel">
     <xs:annotation>
-      <xs:documentation>Randomly labeled image</xs:documentation>
+      <xs:documentation>
+        Randomly labeled image
+        
+        This shows a specified image with images or text labels randomly assigned to a set of specific locations. Those locations may also have values assigned to them. A hash is generated that contains the mapping of labels to locations, labels to values, and locations to values.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="imageresponse"/>
-        <xs:element name="labelgroup" type="randomlabel--labelgroup"/>
+        <xs:element name="labelgroup" type="randomlabel--labelgroup">
+          <xs:annotation>
+            <xs:documentation>
+              One is required, but multiple are allowed. This declares a group of locations and labels associated with them.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="bgimg">
+          <xs:annotation>
+            <xs:documentation>
+              ???
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType mixed="true">
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
+              <xs:element ref="gnuplot"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
-      <xs:attribute name="bgimg" type="xs:string"/>
+      <xs:attribute name="bgimg" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Either a fully qualified URL for an external image or a LON-CAPA resource. It supports relative references (../images/apicture.gif). The image must either be a GIF or JPEG.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="width" type="xs:int">
         <xs:annotation>
           <xs:documentation>
-            Width(pixel)
+            The width of the image in pixels.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="height" type="xs:int">
         <xs:annotation>
           <xs:documentation>
-            Height(pixel)
+            The height of the image in pixels.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="texwidth" type="xs:decimal">
         <xs:annotation>
           <xs:documentation>
-            TeXWidth(mm)
+            The width of the image in millimeters.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -3018,7 +3392,11 @@
   </xs:element>
   <xs:element name="randomlist">
     <xs:annotation>
-      <xs:documentation>Randomly Parsed Block</xs:documentation>
+      <xs:documentation>
+        Randomly Parsed Block
+        
+        The enclosed tags are parsed in a stable random order. The optional attribute show=“N” restricts the number of tags inside that are actually parsed to no more than N. N can equal the total tags inside. The randomlist tag can be used to randomize problem parts by wrapping the &lt;part&gt; tags with a randomlist tag. Note that when randomlist wraps &lt;part&gt; tags, that all students will work all parts only if show=“N” where N is the total number of parts wrapped. When N is less than the total number of parts wrapped, there will be gaps in the assessment chart, and also in the table of submissions for each student, corresponding to those parts which are never available to that particular student.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -3067,7 +3445,11 @@
   </xs:element>
   <xs:element name="solved">
     <xs:annotation>
-      <xs:documentation>Block For After Solved</xs:documentation>
+      <xs:documentation>
+        Block For After Solved
+        
+        Everything inside is skipped if the problem is “not solved”.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -3117,7 +3499,11 @@
   </xs:element>
   <xs:element name="while">
     <xs:annotation>
-      <xs:documentation>While Loop Block</xs:documentation>
+      <xs:documentation>
+        While Loop Block
+        
+        This implements a while loop. The required attribute condition is a Perl scriptlet that when evaluated results in a true or false value. If true, the entirety of the text between the whiles is parsed. The condition is tested again, etc. If false, it goes to the next tag.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -3782,11 +4168,292 @@
       </xs:choice>
     </xs:complexType>
   </xs:element>
+  <xs:element name="dataresponse">
+    <xs:complexType mixed="true">
+      <xs:annotation>
+        <xs:documentation>
+          dataresponse is an advanced type of response tag that implements a simple data storage and needs an input tag, such as textline, to work correctly.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="html"/>
+        <xs:element ref="textline"/>
+        <xs:element ref="textfield"/>
+        <xs:element ref="hiddensubmission"/>
+        <xs:element ref="hiddenline"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            internal name for the value. It will have the part id and response id added to it.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="type" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            type of data stored in this response field. It should be one of the types supported by parameter.html
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="display" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            string that will be used to describe the field when interfacing with humans.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="windowlink">
+    <xs:annotation>
+      <xs:documentation>
+        This creates a link to a resource that comes up in a pop-up window.
+        The link will be the intervening information between the start and the end tag.
+        By default the window will be 500 pixels wide and 200 pixels tall.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="html"/>
+      </xs:choice>
+      <xs:attribute name="href" type="xs:string"/>
+      <xs:attribute name="height" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            starting height of the popup window
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="width" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            starting width of the popup window
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="togglebox">
+    <xs:annotation>
+      <xs:documentation>
+        This creates a toggling box that can be clicked open and close.
+        When printing, the included text will be rendered in a visible box.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="html"/>
+      </xs:choice>
+      <xs:attribute name="heading" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            heading text of the box, by default no heading
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="headerbg" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            background color of the header, by default white
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="showtext" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            the text that appears to make the box visible, by default the translation of ’show’
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="hidetext" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            the text that appears to hide the box again, by default the translation of ’hide’
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="standalone">
+    <xs:annotation>
+      <xs:documentation>
+        Everything in between the start and end tag is shown only on the web and only if the resource is not part of a course.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="html"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="comment" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        Allows one to comment out sections of code in a balanced manner, or to provide a comment description of how a problem works.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="m" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        The inside text is LaTeX, and is converted to HTML (or MathML) on the fly.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="chem" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        Typesets chemical equation
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="num">
+    <xs:annotation>
+      <xs:documentation>
+        Typesets a number formatted in scientific notation, fixed point, fixed point with commas, fixed point with commas and dollar sign, or in significant digits.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="format" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parse" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        to display the parsed view of a variable’s contents
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="algebra">
+    <xs:annotation>
+      <xs:documentation>
+        Typesets algebraic expressions.
+        Expressions are displayed using the math expression display mechanism defined in the user’s preferences. The default is tth.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="style" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="drawimage">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element name="text">
+          <xs:complexType mixed="true">
+            <xs:attribute name="x" type="xs:int" use="required"/>
+            <xs:attribute name="y" type="xs:int" use="required"/>
+            <xs:attribute name="font" type="xs:string"/>
+            <xs:attribute name="color" type="xs:string"/>
+            <xs:attribute name="direction" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="line">
+          <xs:complexType>
+            <xs:attribute name="x1" type="xs:int" use="required"/>
+            <xs:attribute name="y1" type="xs:int" use="required"/>
+            <xs:attribute name="x2" type="xs:int" use="required"/>
+            <xs:attribute name="y2" type="xs:int" use="required"/>
+            <xs:attribute name="color" type="xs:string"/>
+            <xs:attribute name="thickness" type="xs:int"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="rectangle">
+          <xs:complexType>
+            <xs:attribute name="x1" type="xs:int" use="required"/>
+            <xs:attribute name="y1" type="xs:int" use="required"/>
+            <xs:attribute name="x2" type="xs:int" use="required"/>
+            <xs:attribute name="y2" type="xs:int" use="required"/>
+            <xs:attribute name="color" type="xs:string"/>
+            <xs:attribute name="thickness" type="xs:int"/>
+            <xs:attribute name="filled" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="arc">
+          <xs:complexType>
+            <xs:attribute name="x" type="xs:int" use="required"/>
+            <xs:attribute name="y" type="xs:int" use="required"/>
+            <xs:attribute name="width" type="xs:int" use="required"/>
+            <xs:attribute name="height" type="xs:int" use="required"/>
+            <xs:attribute name="start" type="real"/>
+            <xs:attribute name="end" type="real"/>
+            <xs:attribute name="color" type="xs:string"/>
+            <xs:attribute name="thickness" type="xs:int"/>
+            <xs:attribute name="filled" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="fill">
+          <xs:complexType>
+            <xs:attribute name="x" type="xs:int" use="required"/>
+            <xs:attribute name="y" type="xs:int" use="required"/>
+            <xs:attribute name="color" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="polygon">
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="point">
+                <xs:complexType>
+                  <xs:attribute name="x" type="xs:int" use="required"/>
+                  <xs:attribute name="y" type="xs:int" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attribute name="color" type="xs:string"/>
+            <xs:attribute name="filled" type="xs:string"/>
+            <xs:attribute name="open" type="xs:string"/>
+            <xs:attribute name="thickness" type="xs:int"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="image">
+          <xs:complexType mixed="true">
+            <xs:attribute name="x" type="xs:int" use="required"/>
+            <xs:attribute name="y" type="xs:int" use="required"/>
+            <xs:attribute name="clipx" type="xs:int"/>
+            <xs:attribute name="clipy" type="xs:int"/>
+            <xs:attribute name="clipwidth" type="xs:int"/>
+            <xs:attribute name="clipheight" type="xs:int"/>
+            <xs:attribute name="scaledwidth" type="xs:int"/>
+            <xs:attribute name="scaledheight" type="xs:int"/>
+            <xs:attribute name="transparent" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+      <xs:attribute default="300" name="width" type="xs:int"/>
+      <xs:attribute default="300" name="height" type="xs:int"/>
+      <xs:attribute name="bgcolor" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="displayweight"/>
+  <xs:element name="displaystudentphoto">
+    <xs:complexType>
+      <xs:attribute name="width" type="xs:int"/>
+      <xs:attribute name="height" type="xs:int"/>
+      <xs:attribute name="align">
+        <xs:annotation>
+          <xs:documentation>
+            note: this attribute is not supported in HTML5, css should be used instead !
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="right"/>
+            <xs:enumeration value="middle"/>
+            <xs:enumeration value="top"/>
+            <xs:enumeration value="bottom"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
   
   <xs:group name="html">
     <xs:choice>
       <xs:group ref="blockhtml"/>
       <xs:group ref="inlinehtml"/>
+      <xs:group ref="lchtml"/>
     </xs:choice>
   </xs:group>
   <xs:group name="blockhtml">
@@ -3805,6 +4472,25 @@
       <xs:element ref="i"/>
       <xs:element ref="sup"/>
       <xs:element ref="sub"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="lchtml">
+    <xs:choice>
+      <xs:element ref="languageblock"/>
+      <xs:element ref="translated"/>
+      <xs:element ref="instructorcomment"/>
+      <xs:element ref="windowlink"/>
+      <xs:element ref="togglebox"/>
+      <xs:element ref="standalone"/>
+      <xs:element ref="comment"/>
+      <xs:element ref="m"/>
+      <xs:element ref="chem"/>
+      <xs:element ref="num"/>
+      <xs:element ref="parse"/>
+      <xs:element ref="algebra"/>
+      <xs:element ref="drawimage"/>
+      <xs:element ref="displayweight"/>
+      <xs:element ref="displaystudentphoto"/>
     </xs:choice>
   </xs:group>
   <xs:element name="div">
