@@ -143,11 +143,10 @@
       </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="html"/>
+      <xs:group ref="text"/>
       <xs:element ref="block"/>
       <xs:element ref="display"/>
       <xs:element ref="gnuplot"/>
-      <xs:element ref="img"/>
       <xs:element ref="import"/>
       <xs:element ref="organicstructure"/>
       <xs:element ref="parserlib"/>
@@ -195,11 +194,10 @@
       <xs:documentation>Option response foil</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="html"/>
+      <xs:group ref="text"/>
       <xs:element ref="block"/>
       <xs:element ref="display"/>
       <xs:element ref="gnuplot"/>
-      <xs:element ref="img"/>
       <xs:element ref="import"/>
       <xs:element ref="organicstructure"/>
       <xs:element ref="parserlib"/>
@@ -295,11 +293,10 @@
       <xs:documentation>Foil</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="html"/>
+      <xs:group ref="text"/>
       <xs:element ref="block"/>
       <xs:element ref="display"/>
       <xs:element ref="gnuplot"/>
-      <xs:element ref="img"/>
       <xs:element ref="import"/>
       <xs:element ref="organicstructure"/>
       <xs:element ref="parserlib"/>
@@ -363,11 +360,10 @@
       <xs:documentation>Foil</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="html"/>
+      <xs:group ref="text"/>
       <xs:element ref="block"/>
       <xs:element ref="display"/>
       <xs:element ref="gnuplot"/>
-      <xs:element ref="img"/>
       <xs:element ref="import"/>
       <xs:element ref="organicstructure"/>
       <xs:element ref="parserlib"/>
@@ -424,11 +420,10 @@
       <xs:documentation>Foil</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="html"/>
+      <xs:group ref="text"/>
       <xs:element ref="block"/>
       <xs:element ref="display"/>
       <xs:element ref="gnuplot"/>
-      <xs:element ref="img"/>
       <xs:element ref="import"/>
       <xs:element ref="organicstructure"/>
       <xs:element ref="parserlib"/>
@@ -477,11 +472,10 @@
       <xs:documentation>Item</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="html"/>
+      <xs:group ref="text"/>
       <xs:element ref="block"/>
       <xs:element ref="display"/>
       <xs:element ref="gnuplot"/>
-      <xs:element ref="img"/>
       <xs:element ref="import"/>
       <xs:element ref="organicstructure"/>
       <xs:element ref="parserlib"/>
@@ -635,7 +629,7 @@
       <xs:documentation>Label Text or Path to image</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="html"/>
+      <xs:group ref="text"/>
       <xs:element ref="block"/>
       <xs:element ref="display"/>
       <xs:element ref="import"/>
@@ -1810,7 +1804,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="customhint"/>
         <xs:element ref="formulahint"/>
         <xs:element ref="hintpart"/>
@@ -1844,11 +1838,10 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="display"/>
         <xs:element ref="gnuplot"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="organicstructure"/>
         <xs:element ref="parserlib"/>
@@ -2207,7 +2200,6 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
@@ -2767,13 +2759,12 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="display"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="gnuplot"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="notsolved"/>
         <xs:element ref="organicstructure"/>
@@ -2819,7 +2810,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="customresponse"/>
         <xs:element ref="display"/>
@@ -2830,7 +2821,6 @@
         <xs:element ref="formularesponse"/>
         <xs:element ref="gnuplot"/>
         <xs:element ref="imageresponse"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="matchresponse"/>
         <xs:element ref="mathresponse"/>
@@ -2878,7 +2868,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
       </xs:choice>
       <xs:attribute name="include" type="xs:string"/>
       <xs:attribute name="exclude" type="xs:string"/>
@@ -2895,7 +2885,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="lang"/>
       </xs:choice>
     </xs:complexType>
@@ -2910,7 +2900,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
       </xs:choice>
       <xs:attribute name="which" type="xs:string"/>
       <xs:attribute name="other" type="xs:string"/>
@@ -2919,7 +2909,7 @@
   <xs:element name="instructorcomment">
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -2929,7 +2919,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="customresponse"/>
         <xs:element ref="display"/>
         <xs:element ref="displayduedate"/>
@@ -2939,7 +2929,6 @@
         <xs:element ref="formularesponse"/>
         <xs:element ref="gnuplot"/>
         <xs:element ref="imageresponse"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="matchresponse"/>
         <xs:element ref="mathresponse"/>
@@ -2982,7 +2971,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="customresponse"/>
         <xs:element ref="display"/>
@@ -2993,7 +2982,6 @@
         <xs:element ref="formularesponse"/>
         <xs:element ref="gnuplot"/>
         <xs:element ref="imageresponse"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="matchresponse"/>
         <xs:element ref="mathresponse"/>
@@ -3033,7 +3021,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="customresponse"/>
         <xs:element ref="display"/>
@@ -3044,7 +3032,6 @@
         <xs:element ref="formularesponse"/>
         <xs:element ref="gnuplot"/>
         <xs:element ref="imageresponse"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="matchresponse"/>
         <xs:element ref="mathresponse"/>
@@ -3110,13 +3097,12 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="display"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="gnuplot"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="notsolved"/>
         <xs:element ref="organicstructure"/>
@@ -3145,7 +3131,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="customresponse"/>
         <xs:element ref="display"/>
@@ -3156,7 +3142,6 @@
         <xs:element ref="formularesponse"/>
         <xs:element ref="gnuplot"/>
         <xs:element ref="imageresponse"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="matchresponse"/>
         <xs:element ref="mathresponse"/>
@@ -3195,7 +3180,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="allow"/>
         <xs:element ref="block"/>
         <xs:element ref="customresponse"/>
@@ -3208,7 +3193,6 @@
         <xs:element ref="formularesponse"/>
         <xs:element ref="gnuplot"/>
         <xs:element ref="imageresponse"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="matchresponse"/>
         <xs:element ref="mathresponse"/>
@@ -3240,6 +3224,7 @@
         <xs:element ref="tex"/>
         <xs:element ref="while"/>
         <xs:element ref="window"/>
+        <xs:element ref="dataresponse"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -3268,7 +3253,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="customresponse"/>
         <xs:element ref="display"/>
@@ -3279,7 +3264,6 @@
         <xs:element ref="formularesponse"/>
         <xs:element ref="gnuplot"/>
         <xs:element ref="imageresponse"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="matchresponse"/>
         <xs:element ref="mathresponse"/>
@@ -3453,13 +3437,12 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="display"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="gnuplot"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="organicstructure"/>
         <xs:element ref="parserlib"/>
@@ -3507,13 +3490,12 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="display"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="gnuplot"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="notsolved"/>
         <xs:element ref="organicstructure"/>
@@ -3910,11 +3892,10 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="display"/>
         <xs:element ref="gnuplot"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="organicstructure"/>
         <xs:element ref="parserlib"/>
@@ -3938,11 +3919,10 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="display"/>
         <xs:element ref="gnuplot"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="organicstructure"/>
         <xs:element ref="parserlib"/>
@@ -4000,11 +3980,10 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="display"/>
         <xs:element ref="gnuplot"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="organicstructure"/>
         <xs:element ref="parserlib"/>
@@ -4065,11 +4044,10 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="display"/>
         <xs:element ref="gnuplot"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="organicstructure"/>
         <xs:element ref="parserlib"/>
@@ -4118,11 +4096,10 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="display"/>
         <xs:element ref="gnuplot"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="organicstructure"/>
         <xs:element ref="parserlib"/>
@@ -4146,11 +4123,10 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="block"/>
         <xs:element ref="display"/>
         <xs:element ref="gnuplot"/>
-        <xs:element ref="img"/>
         <xs:element ref="import"/>
         <xs:element ref="organicstructure"/>
         <xs:element ref="parserlib"/>
@@ -4176,7 +4152,7 @@
         </xs:documentation>
       </xs:annotation>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
         <xs:element ref="textline"/>
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
@@ -4216,7 +4192,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
       </xs:choice>
       <xs:attribute name="href" type="xs:string"/>
       <xs:attribute name="height" type="xs:int">
@@ -4244,7 +4220,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
       </xs:choice>
       <xs:attribute name="heading" type="xs:string">
         <xs:annotation>
@@ -4284,7 +4260,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4449,32 +4425,13 @@
     </xs:complexType>
   </xs:element>
   
-  <xs:group name="html">
+  <xs:group name="text">
     <xs:choice>
-      <xs:group ref="blockhtml"/>
-      <xs:group ref="inlinehtml"/>
-      <xs:group ref="lchtml"/>
+      <xs:group ref="blocktext"/>
+      <xs:group ref="inlinetext"/>
     </xs:choice>
   </xs:group>
-  <xs:group name="blockhtml">
-    <xs:choice>
-      <xs:element ref="div"/>
-      <xs:element ref="p"/>
-      <xs:element ref="ul"/>
-      <xs:element ref="table"/>
-    </xs:choice>
-  </xs:group>
-  <xs:group name="inlinehtml">
-    <xs:choice>
-      <xs:element ref="span"/>
-      <xs:element ref="a"/>
-      <xs:element ref="b"/>
-      <xs:element ref="i"/>
-      <xs:element ref="sup"/>
-      <xs:element ref="sub"/>
-    </xs:choice>
-  </xs:group>
-  <xs:group name="lchtml">
+  <xs:group name="blocktext">
     <xs:choice>
       <xs:element ref="languageblock"/>
       <xs:element ref="translated"/>
@@ -4483,21 +4440,39 @@
       <xs:element ref="togglebox"/>
       <xs:element ref="standalone"/>
       <xs:element ref="comment"/>
+      <xs:element ref="drawimage"/>
+      
+      <xs:element ref="div"/>
+      <xs:element ref="p"/>
+      <xs:element ref="ul"/>
+      <xs:element ref="ol"/>
+      <xs:element ref="table"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="inlinetext">
+    <xs:choice>
+      <xs:element ref="img"/>
       <xs:element ref="m"/>
       <xs:element ref="chem"/>
       <xs:element ref="num"/>
       <xs:element ref="parse"/>
       <xs:element ref="algebra"/>
-      <xs:element ref="drawimage"/>
       <xs:element ref="displayweight"/>
       <xs:element ref="displaystudentphoto"/>
+      
+      <xs:element ref="span"/>
+      <xs:element ref="a"/>
+      <xs:element ref="b"/>
+      <xs:element ref="i"/>
+      <xs:element ref="sup"/>
+      <xs:element ref="sub"/>
     </xs:choice>
   </xs:group>
   <xs:element name="div">
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blockhtml"/>
-        <xs:group ref="inlinehtml"/>
+        <xs:group ref="blocktext"/>
+        <xs:group ref="inlinetext"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="class" type="xs:string"/>
@@ -4506,7 +4481,7 @@
   <xs:element name="p">
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinehtml"/>
+        <xs:group ref="inlinetext"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4527,7 +4502,7 @@
   <xs:element name="li">
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinehtml"/>
+        <xs:group ref="inlinetext"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4561,7 +4536,7 @@
   <xs:element name="td">
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
       </xs:choice>
       <xs:attribute name="colspan" type="xs:int"/>
       <xs:attribute name="rowspan" type="xs:int"/>
@@ -4571,7 +4546,7 @@
   <xs:element name="th">
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="html"/>
+        <xs:group ref="text"/>
       </xs:choice>
       <xs:attribute name="colspan" type="xs:int"/>
       <xs:attribute name="rowspan" type="xs:int"/>
@@ -4581,7 +4556,7 @@
   <xs:element name="span">
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinehtml"/>
+        <xs:group ref="inlinetext"/>
       </xs:choice>
       <xs:attribute name="style" type="xs:string"/>
     </xs:complexType>
@@ -4589,28 +4564,28 @@
   <xs:element name="b">
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinehtml"/>
+        <xs:group ref="inlinetext"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="i">
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinehtml"/>
+        <xs:group ref="inlinetext"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="sup">
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinehtml"/>
+        <xs:group ref="inlinetext"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="sub">
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinehtml"/>
+        <xs:group ref="inlinetext"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
