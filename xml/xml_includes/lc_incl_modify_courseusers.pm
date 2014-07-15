@@ -51,13 +51,19 @@ sub incl_modify_courseusers_finalize {
 # We are presenting data
       my $modifyusers;
 # Is this just one user or possibly multiple?
-      if (($content{'user_username'}) && ($content{'user_domain'})) {
+      if (($content{'user_username'}=~/\w/) && ($content{'user_domain'}=~/\w/)) {
 # Just one
          $modifyusers->[0]->{'username'}=$content{'user_username'};
          $modifyusers->[0]->{'domain'}=$content{'user_domain'};
+# This may or may not succeed. For new users, it won't
+         $modifyusers->[0]->{'entity'}=&Apache::lc_entity_users::username_to_entity($content{'user_username'},$content{'user_domain'});
       } else {
 # Possibly multiple
          $modifyusers=&Apache::lc_json_utils::json_to_perl($content{'postdata'});
+      }
+# Do we have any data? If not, we have a problem
+      unless ($modifyusers) {
+         return '<script>followup=0;error=1;</script>'; 
       }
 #FIXME: debug
       $output.='<pre>'.Dumper($modifyusers).'</pre>';
