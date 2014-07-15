@@ -46,6 +46,14 @@ sub incl_modify_courseusers_finalize {
 # Storage or display stage?
    if ($content{'stage_two'}) {
 # We actually store things
+# Load the user information
+      my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+      my $modifyusers=&Apache::lc_json_utils::json_to_perl(
+            &Apache::lc_file_utils::readfile(
+               &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/modify_users.json')));
+      unless ($modifyusers) {
+         return '<script>followup=0;error=1;</script>';
+      }
 #FIXME
    } else {
 # We are presenting data
@@ -62,9 +70,17 @@ sub incl_modify_courseusers_finalize {
          $modifyusers=&Apache::lc_json_utils::json_to_perl($content{'postdata'});
       }
 # Do we have any data? If not, we have a problem
-      unless ($modifyusers) {
+      if ($modifyusers) {
+# Store it
+         my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+         &Apache::lc_file_utils::writefile(
+            &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/modify_users.json'),
+            &Apache::lc_json_utils::perl_to_json($modifyusers));
+      } else {
          return '<script>followup=0;error=1;</script>'; 
       }
+      my $number=$#{$modifyusers};
+      $output.="number:$number<br />";
 #FIXME: debug
       $output.='<pre>'.Dumper($modifyusers).'</pre>';
    }
