@@ -42,7 +42,28 @@ our @EXPORT = qw(incl_modify_courseusers_finalize);
 sub incl_modify_courseusers_finalize {
 # Get posted content
    my %content=&Apache::lc_entity_sessions::posted_content();
-   return join("\n<br />",map { $_.'='.$content{$_} } keys(%content));
+   my $output='';
+# Storage or display stage?
+   if ($content{'stage_two'}) {
+# We actually store things
+#FIXME
+   } else {
+# We are presenting data
+      my $modifyusers;
+# Is this just one user or possibly multiple?
+      if (($content{'user_username'}) && ($content{'user_domain'})) {
+# Just one
+         $modifyusers->[0]->{'username'}=$content{'user_username'};
+         $modifyusers->[0]->{'domain'}=$content{'user_domain'};
+      } else {
+# Possibly multiple
+         $modifyusers=&Apache::lc_json_utils::json_to_perl($content{'postdata'});
+      }
+#FIXME: debug
+      $output.='<pre>'.Dumper($modifyusers).'</pre>';
+   }
+   $output.=join("\n<br />",map { $_.'='.$content{$_} } keys(%content));
+   return $output;
 }
 
 sub handler {
