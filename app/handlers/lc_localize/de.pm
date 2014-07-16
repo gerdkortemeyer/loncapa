@@ -66,6 +66,10 @@ use utf8;
 
 'Enrolling User' => 'Einschreibender Nutzer',
 
+'New user [_1]' => 'Neuer Nutzer [_1]',
+
+'Existing user [_1]' => 'Existierender Nutzer [_1]',
+
 'New or existing user' => 'Neuer oder existierender Nutzer',
 
 'Manual' => 'Manuell',

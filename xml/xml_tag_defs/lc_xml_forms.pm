@@ -175,7 +175,7 @@ sub inputfield {
    my ($type,$id,$name,$size,$default)=@_;
    if ($type eq 'text') {
       unless ($size) { $size=40; }
-      return '<input class="lcformtextinput" type="text" id="'.$id.'" name="'.$name.'" size="'.$size.'" />';
+      return '<input class="lcformtextinput" type="text" id="'.$id.'" name="'.$name.'" size="'.$size.'" value="'.$default.'" />';
    } elsif ($type eq 'textarea') {
       return '<textarea class="ckeditor" id="'.$id.'" name="'.$name.'">'.$default.'</textarea>';
    } elsif ($type eq 'username') {

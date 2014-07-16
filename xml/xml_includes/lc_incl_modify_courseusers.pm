@@ -80,8 +80,55 @@ sub incl_modify_courseusers_finalize {
          return '<script>followup=0;error=1;</script>'; 
       }
       my $number=$#{$modifyusers};
-      $output.="number:$number<br />";
+      my $profile;
+      if ($number==0) {
+         if ($modifyusers->[0]->{'entity'}) {
+            $profile=&Apache::lc_entity_profile::dump_profile($modifyusers->[0]->{'entity'},
+                                                       $modifyusers->[0]->{'domain'});
+            $output.=&Apache::lc_xml_utils::standard_message('Existing user [_1]',
+                                '<tt>'.$modifyusers->[0]->{'username'}.':'.$modifyusers->[0]->{'domain'}.'</tt>');
+         } else {
+            $output.=&Apache::lc_xml_utils::standard_message('New user [_1]',
+                                '<tt>'.$modifyusers->[0]->{'username'}.':'.$modifyusers->[0]->{'domain'}.'</tt>');
+         }
+      }
+      $output.=&Apache::lc_xml_forms::form_table_start();
+      if ($number==0) {
+         $output.=&Apache::lc_xml_forms::table_input_field(
+                 $modifyusers->[0]->{'username'}.'_firstname',
+                 $modifyusers->[0]->{'username'}.'_firstname',
+                 'First Name',
+                 'text',
+                 40,
+                 $profile->{'firstname'});
+         $output.=&Apache::lc_xml_forms::table_input_field(
+                 $modifyusers->[0]->{'username'}.'_middlename',
+                 $modifyusers->[0]->{'username'}.'_middlename',
+                 'Middle Name',
+                 'text',
+                 40,
+                 $profile->{'middlename'});
+         $output.=&Apache::lc_xml_forms::table_input_field(
+                 $modifyusers->[0]->{'username'}.'_lastname',
+                 $modifyusers->[0]->{'username'}.'_lastname',
+                 'Last Name',
+                 'text',
+                 40,
+                 $profile->{'lastname'});
+         $output.=&Apache::lc_xml_forms::table_input_field(
+                 $modifyusers->[0]->{'username'}.'_suffix',
+                 $modifyusers->[0]->{'username'}.'_suffix',
+                 'Suffix',
+                 'text',
+                 20,
+                 $profile->{'suffix'});
+      }
+# End of only one student
+#
+# End of the form table
+      $output.=&Apache::lc_xml_forms::form_table_end();
 #FIXME: debug
+      $output.='<pre>'.Dumper($profile).'</pre>';
       $output.='<pre>'.Dumper($modifyusers).'</pre>';
    }
    $output.=join("\n<br />",map { $_.'='.$content{$_} } keys(%content));
