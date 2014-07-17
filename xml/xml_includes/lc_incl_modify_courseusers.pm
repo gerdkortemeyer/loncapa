@@ -134,8 +134,10 @@ sub incl_modify_courseusers_finalize {
                  &Apache::lc_entity_users::entity_to_pid($modifyusers->[0]->{'entity'},
                                                        $modifyusers->[0]->{'domain'}));
           }
-      }
 # End of only one student
+      } else {
+          $output.=&Apache::lc_xml_utils::standard_message('[_1] users selected',$number+1).'<br />';
+      }
 # The following would apply to all students
       if (&allowed_course('modify_auth',undef,&Apache::lc_entity_sessions::course_entity_domain())) {
 #FIXME: missing authmode
@@ -145,6 +147,20 @@ sub incl_modify_courseusers_finalize {
                  'text',
                  20);
       }
+      $output.=&Apache::lc_xml_forms::table_input_field(
+                 'startdate','startdate',
+                 'Start Date',
+                 'datetime');
+      $output.=&Apache::lc_xml_forms::table_input_field(
+                 'enddate','enddate',
+                 'End Date',
+                 'datetime');
+      $output.=&Apache::lc_xml_forms::table_input_field(
+                 'section','section',
+                 'Section/Group',
+                 'text',
+                 20);
+
 # End of the form table
       $output.=&Apache::lc_xml_forms::form_table_end();
 #FIXME: debug

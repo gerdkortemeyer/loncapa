@@ -72,6 +72,8 @@ use utf8;
 
 'New or existing user' => 'Neuer oder existierender Nutzer',
 
+'[_1] users selected' => '[_1] Nutzer ausgewählt',
+
 'Manual' => 'Manuell',
 
 'Automatic' => 'Automatisch',
