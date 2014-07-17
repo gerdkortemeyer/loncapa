@@ -87,44 +87,64 @@ sub incl_modify_courseusers_finalize {
                                                        $modifyusers->[0]->{'domain'});
             $output.=&Apache::lc_xml_utils::standard_message('Existing user [_1]',
                                 '<tt>'.$modifyusers->[0]->{'username'}.':'.$modifyusers->[0]->{'domain'}.'</tt>');
+            $output.='<br />'.
+                     &Apache::lc_xml_utils::standard_message($profile->{'firstname'}.' '.$profile->{'middlename'}.' '.$profile->{'lastname'}.' '.$profile->{'suffix'});
          } else {
             $output.=&Apache::lc_xml_utils::standard_message('New user [_1]',
                                 '<tt>'.$modifyusers->[0]->{'username'}.':'.$modifyusers->[0]->{'domain'}.'</tt>');
          }
       }
-      $output.=&Apache::lc_xml_forms::form_table_start();
+      $output.='<br />'.&Apache::lc_xml_forms::form_table_start();
       if ($number==0) {
-         $output.=&Apache::lc_xml_forms::table_input_field(
-                 $modifyusers->[0]->{'username'}.'_firstname',
-                 $modifyusers->[0]->{'username'}.'_firstname',
+# Do we have to enter a name or are we allowed to?
+         if ((&allowed_course('modify_name',undef,&Apache::lc_entity_sessions::course_entity_domain())) || 
+             (!$modifyusers->[0]->{'entity'})) {
+            $output.=&Apache::lc_xml_forms::table_input_field(
+                 'firstname','firstname',
                  'First Name',
                  'text',
                  40,
                  $profile->{'firstname'});
-         $output.=&Apache::lc_xml_forms::table_input_field(
-                 $modifyusers->[0]->{'username'}.'_middlename',
-                 $modifyusers->[0]->{'username'}.'_middlename',
+            $output.=&Apache::lc_xml_forms::table_input_field(
+                 'middlename','middlename',
                  'Middle Name',
                  'text',
                  40,
                  $profile->{'middlename'});
-         $output.=&Apache::lc_xml_forms::table_input_field(
-                 $modifyusers->[0]->{'username'}.'_lastname',
-                 $modifyusers->[0]->{'username'}.'_lastname',
+            $output.=&Apache::lc_xml_forms::table_input_field(
+                 'lastname','lastname',
                  'Last Name',
                  'text',
                  40,
                  $profile->{'lastname'});
-         $output.=&Apache::lc_xml_forms::table_input_field(
-                 $modifyusers->[0]->{'username'}.'_suffix',
-                 $modifyusers->[0]->{'username'}.'_suffix',
+            $output.=&Apache::lc_xml_forms::table_input_field(
+                 'suffix','suffix',
                  'Suffix',
                  'text',
                  20,
                  $profile->{'suffix'});
+         }
+         if ((&allowed_course('modify_pid',undef,&Apache::lc_entity_sessions::course_entity_domain())) ||
+             (!$modifyusers->[0]->{'entity'})) {
+            $output.=&Apache::lc_xml_forms::table_input_field(
+                 'pid','pid',
+                 'ID Number',
+                 'text',
+                 20,
+                 &Apache::lc_entity_users::entity_to_pid($modifyusers->[0]->{'entity'},
+                                                       $modifyusers->[0]->{'domain'}));
+          }
       }
 # End of only one student
-#
+# The following would apply to all students
+      if (&allowed_course('modify_auth',undef,&Apache::lc_entity_sessions::course_entity_domain())) {
+#FIXME: missing authmode
+         $output.=&Apache::lc_xml_forms::table_input_field(
+                 'password','password',
+                 'Password',
+                 'text',
+                 20);
+      }
 # End of the form table
       $output.=&Apache::lc_xml_forms::form_table_end();
 #FIXME: debug
