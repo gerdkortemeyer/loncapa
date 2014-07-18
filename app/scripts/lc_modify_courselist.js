@@ -7,9 +7,9 @@ $(document).ready(function() {
         $.ajax({
         url : '/finalize_modify_courseusers',
         type: "POST",
-        data : $('#modifycourseusers').serialize()+"&stage_two=1",
+        data : $('#modify_courseusers').serialize()+"&stage_two=1",
         success: function(data){
-            $('#modifycourseusers').html(data);
+            $('#modify_courseusers_finalize').html(data);
         },
         complete: function() {
             showhide();

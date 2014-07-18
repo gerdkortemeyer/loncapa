@@ -81,6 +81,7 @@ sub incl_modify_courseusers_finalize {
          return '<script>followup=0;error=1;</script>'; 
       }
       my $number=$#{$modifyusers};
+      my $locked=1;
       my $profile;
       if ($number==0) {
          if ($modifyusers->[0]->{'entity'}) {
@@ -91,6 +92,7 @@ sub incl_modify_courseusers_finalize {
             $output.='<br />'.
                      &Apache::lc_xml_utils::standard_message($profile->{'firstname'}.' '.$profile->{'middlename'}.' '.$profile->{'lastname'}.' '.$profile->{'suffix'});
          } else {
+            $locked=0;
             $output.=&Apache::lc_xml_utils::standard_message('New user [_1]',
                                 '<tt>'.$modifyusers->[0]->{'username'}.':'.$modifyusers->[0]->{'domain'}.'</tt>');
          }
@@ -105,25 +107,25 @@ sub incl_modify_courseusers_finalize {
                  'First Name',
                  'text',
                  40,
-                 $profile->{'firstname'},1);
+                 $profile->{'firstname'},$locked);
             $output.=&Apache::lc_xml_forms::table_input_field(
                  'middlename','middlename',
                  'Middle Name',
                  'text',
                  40,
-                 $profile->{'middlename'},1);
+                 $profile->{'middlename'},$locked);
             $output.=&Apache::lc_xml_forms::table_input_field(
                  'lastname','lastname',
                  'Last Name',
                  'text',
                  40,
-                 $profile->{'lastname'},1);
+                 $profile->{'lastname'},$locked);
             $output.=&Apache::lc_xml_forms::table_input_field(
                  'suffix','suffix',
                  'Suffix',
                  'text',
                  20,
-                 $profile->{'suffix'},1);
+                 $profile->{'suffix'},$locked);
          }
          if ((&allowed_course('modify_pid',undef,&Apache::lc_entity_sessions::course_entity_domain())) ||
              (!$modifyusers->[0]->{'entity'})) {
@@ -134,7 +136,7 @@ sub incl_modify_courseusers_finalize {
                  20,
                  &Apache::lc_entity_users::entity_to_pid($modifyusers->[0]->{'entity'},
                                                        $modifyusers->[0]->{'domain'}),
-                 1);
+                 $locked);
           }
 # End of only one student
       } else {
@@ -147,26 +149,26 @@ sub incl_modify_courseusers_finalize {
                  'password','password',
                  'Password',
                  'text',
-                 20,undef,1);
+                 20,undef,$locked);
       }
       $output.=&Apache::lc_xml_forms::table_input_field(
                  'startdate','startdate',
                  'Start Date',
-                 'datetime',undef,undef,1);
+                 'datetime',undef,undef,$locked);
       $output.=&Apache::lc_xml_forms::table_input_field(
                  'enddate','enddate',
                  'End Date',
-                 'datetime',undef,undef,1);
+                 'datetime',undef,undef,$locked);
       $output.=&Apache::lc_xml_forms::table_input_field(
                  'role','role',
                  'Role',
                  'modifiablecourseroles',
-                 undef,'student',1);
+                 undef,'student',$locked);
       $output.=&Apache::lc_xml_forms::table_input_field(
                  'section','section',
                  'Section/Group',
                  'text',
-                 20,undef,1);
+                 20,undef,$locked);
 # End of the form table
       $output.=&Apache::lc_xml_forms::form_table_end().'<script>error=0;followup=1;</script>';
    }
