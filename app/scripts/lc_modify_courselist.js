@@ -19,6 +19,20 @@ $(document).ready(function() {
     });
 });
 
+function runbackground() {
+   $.ajax({
+        url : '/finalize_modify_courseusers',
+        type: "POST",
+        data: {stage_three:1},
+        success: function(data){
+            $('#modify_courseusers_finalize').html(data);
+        },
+        complete: function() {
+            showhide();
+            adjust_framesize();
+        }
+      });
+}
 
 function showhide() {
    if (followup==1) {

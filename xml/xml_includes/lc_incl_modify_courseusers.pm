@@ -25,6 +25,7 @@ use Apache::lc_xml_utils();
 use Apache::lc_authorize;
 use Apache::lc_ui_localize;
 use Apache::lc_xml_forms();
+use Apache::lc_xml_gadgets();
 use Apache::lc_entity_users();
 use Apache::lc_entity_roles();
 use Apache::lc_entity_profile();
@@ -44,7 +45,9 @@ sub incl_modify_courseusers_finalize {
    my %content=&Apache::lc_entity_sessions::posted_content();
    my $output='';
 # Storage or display stage?
-   if ($content{'stage_two'}) {
+   if ($content{'stage_three'}) {
+      $output.='Done with stuff';
+   } elsif ($content{'stage_two'}) {
 # We actually store things
 # Load the user information
       my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
@@ -54,8 +57,17 @@ sub incl_modify_courseusers_finalize {
       unless ($modifyusers) {
          return '<script>followup=0;error=1;</script>';
       }
-      $output.="got it!";
-#FIXME
+# How many do we have?
+      my $number=$#{$modifyusers};
+      if ($number>0) {
+# If we have more than one, bring up a progress bar and do things asyncronously
+#         &Apache::
+         $output.=&Apache::lc_xml_gadgets::progressbar('modifyuserfinalize','modifyuserfinalize').
+                  '<script>followup=0;showhide();runbackground()</script>';
+      } else {
+# Just do it!
+         $output.="Doing stuff now";
+      }
    } else {
 # We are presenting data
       my $modifyusers;
