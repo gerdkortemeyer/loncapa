@@ -156,11 +156,15 @@ sub incl_modify_courseusers_finalize {
                  'End Date',
                  'datetime',undef,undef,1);
       $output.=&Apache::lc_xml_forms::table_input_field(
+                 'role','role',
+                 'Role',
+                 'modifiablecourseroles',
+                 undef,'student',1);
+      $output.=&Apache::lc_xml_forms::table_input_field(
                  'section','section',
                  'Section/Group',
                  'text',
                  20,undef,1);
-
 # End of the form table
       $output.=&Apache::lc_xml_forms::form_table_end();
 #FIXME: debug

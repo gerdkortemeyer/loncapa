@@ -129,7 +129,8 @@ sub table_input_field {
                   &inputfield($type,
                               $id,$name,
                               $size,
-                              $default).
+                              $default,
+                              $locked).
                   '</td></tr>';
    return $output;
 }
@@ -182,10 +183,11 @@ sub cancelbutton {
 # === Generate a single input field
 
 sub inputfield {
-   my ($type,$id,$name,$size,$default)=@_;
+   my ($type,$id,$name,$size,$default,$locked)=@_;
    if ($type eq 'text') {
       unless ($size) { $size=40; }
-      return '<input class="lcformtextinput" type="text" id="'.$id.'" name="'.$name.'" size="'.$size.'" value="'.$default.'" autocomplete="off" />';
+      return '<input class="lcformtextinput" type="text" id="'.$id.'" name="'.$name.'" size="'.$size.'" value="'.$default.'" autocomplete="off"'.
+             ($locked?' disabled="disabled"':'').' />';
    } elsif ($type eq 'textarea') {
       return '<textarea class="ckeditor" id="'.$id.'" name="'.$name.'">'.$default.'</textarea>';
    } elsif ($type eq 'username') {
@@ -220,10 +222,10 @@ sub inputfield {
          }
       }
       unless ($default) { $default=&Apache::lc_date_utils::now2num(); }
-      return &datetimefield($id,$name,$default);
+      return &datetimefield($id,$name,$default,$locked);
    } elsif ($type eq 'modifiablecourseroles') {
       my ($role_short,$role_name)=&modifiable_role_choices('course');
-      return &selectfield($id,$name,$role_short,$role_name,$default);
+      return &selectfield($id,$name,$role_short,$role_name,$default,$locked);
    } elsif ($type eq 'rolemodifiabledomains') {
       my ($defaultdomain,$domain_short,$domain_name)=&domain_choices('rolemodifiable');
       unless ($default) { $default=$defaultdomain; }
@@ -276,7 +278,7 @@ sub math_editor {
 # ==== Generate a select field
 #
 sub selectfield {
-   my ($id,$name,$values,$choices,$default,$onchange)=@_;
+   my ($id,$name,$values,$choices,$default,$locked,$onchange)=@_;
    unless ($default) {
       $default=$screen_form_defaults->{$id};
    }
@@ -284,7 +286,11 @@ sub selectfield {
    if ($onchange) {
       $changecall=' onChange="'.$onchange.'"';
    }
-   my $selectfield='<select class="lcformselectinput" id="'.$id.'" name="'.$name.'"'.$changecall.'>';
+   my $disabled='';
+   if ($locked) {
+      $disabled=' disabled="disabled"';
+   }
+   my $selectfield='<select class="lcformselectinput" id="'.$id.'" name="'.$name.'"'.$changecall.$disabled.'>';
    for (my $i=0;$i<=$#{$values};$i++) {
           $selectfield.='<option value="'.$values->[$i].'"'.($values->[$i]=~/^($default)$/?' selected="selected"':'').'>'.
                          $choices->[$i].'</option>';
@@ -343,7 +349,7 @@ sub start_lcfileupload_html {
 # ==== Datetime
 #
 sub datetimefield {
-   my ($id,$name,$default)=@_;
+   my ($id,$name,$default,$locked)=@_;
    my $timezone=&Apache::lc_ui_localize::context_timezone();
    my $dt = DateTime->from_epoch(epoch => $default)
                     ->set_time_zone($timezone);
@@ -365,7 +371,8 @@ sub datetimefield {
    foreach ('day','year','month') {
       $short_locale=~s/\$$_/eval('$'.$_)/gse;
    }
-   my $output="<fieldset id='".$id."'><time datetime='".$f->format_datetime($dt)."'>";
+   my $output="<fieldset id='".$id."'".
+      ($locked?" disabled='disabled'":"")."><time datetime='".$f->format_datetime($dt)."'>";
    $output.=&hidden_label($dateid,'Date format month/day/year');
    $output.="<script>\$(function(){\$('#$dateid').datepick();\$('#$dateid').datepick('option',\$.datepick.regionalOptions['$lang']);})</script><input type='text' id='$dateid' name='$datename' value='$short_locale' size='10' />";
 # The time fields
@@ -458,7 +465,7 @@ sub end_lcspreadsheetassign_html {
          if ($screen_form_defaults->{$id}) {
             $default=$screen_form_defaults->{$id};
          }
-         $output.=&selectfield($id,$id,$values,$choices,$default,$stack->{'tags'}->[-1]->{'args'}->{'verify'});
+         $output.=&selectfield($id,$id,$values,$choices,$default,undef,$stack->{'tags'}->[-1]->{'args'}->{'verify'});
          $output.="</td></tr>";
       }
       $output.='</tbody></table>';
