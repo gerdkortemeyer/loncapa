@@ -3,6 +3,20 @@ var error=1;
 
 $(document).ready(function() {
     showhide();
+    $("#continue").click(function() {
+        $.ajax({
+        url : '/finalize_modify_courseusers',
+        type: "POST",
+        data : $('#modifycourseusers').serialize()+"&stage_two=1",
+        success: function(data){
+            $('#modifycourseusers').html(data);
+        },
+        complete: function() {
+            showhide();
+            adjust_framesize();
+        }
+      });
+    });
 });
 
 

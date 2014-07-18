@@ -54,6 +54,7 @@ sub incl_modify_courseusers_finalize {
       unless ($modifyusers) {
          return '<script>followup=0;error=1;</script>';
       }
+      $output.="got it!";
 #FIXME
    } else {
 # We are presenting data
@@ -104,25 +105,25 @@ sub incl_modify_courseusers_finalize {
                  'First Name',
                  'text',
                  40,
-                 $profile->{'firstname'});
+                 $profile->{'firstname'},1);
             $output.=&Apache::lc_xml_forms::table_input_field(
                  'middlename','middlename',
                  'Middle Name',
                  'text',
                  40,
-                 $profile->{'middlename'});
+                 $profile->{'middlename'},1);
             $output.=&Apache::lc_xml_forms::table_input_field(
                  'lastname','lastname',
                  'Last Name',
                  'text',
                  40,
-                 $profile->{'lastname'});
+                 $profile->{'lastname'},1);
             $output.=&Apache::lc_xml_forms::table_input_field(
                  'suffix','suffix',
                  'Suffix',
                  'text',
                  20,
-                 $profile->{'suffix'});
+                 $profile->{'suffix'},1);
          }
          if ((&allowed_course('modify_pid',undef,&Apache::lc_entity_sessions::course_entity_domain())) ||
              (!$modifyusers->[0]->{'entity'})) {
@@ -132,7 +133,8 @@ sub incl_modify_courseusers_finalize {
                  'text',
                  20,
                  &Apache::lc_entity_users::entity_to_pid($modifyusers->[0]->{'entity'},
-                                                       $modifyusers->[0]->{'domain'}));
+                                                       $modifyusers->[0]->{'domain'}),
+                 1);
           }
 # End of only one student
       } else {
@@ -166,10 +168,7 @@ sub incl_modify_courseusers_finalize {
                  'text',
                  20,undef,1);
 # End of the form table
-      $output.=&Apache::lc_xml_forms::form_table_end();
-#FIXME: debug
-      $output.='<pre>'.Dumper($profile).'</pre>';
-      $output.='<pre>'.Dumper($modifyusers).'</pre>';
+      $output.=&Apache::lc_xml_forms::form_table_end().'<script>error=0;followup=1;</script>';
    }
    $output.=join("\n<br />",map { $_.'='.$content{$_} } keys(%content));
    return $output;
