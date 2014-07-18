@@ -145,21 +145,21 @@ sub incl_modify_courseusers_finalize {
                  'password','password',
                  'Password',
                  'text',
-                 20);
+                 20,undef,1);
       }
       $output.=&Apache::lc_xml_forms::table_input_field(
                  'startdate','startdate',
                  'Start Date',
-                 'datetime');
+                 'datetime',undef,undef,1);
       $output.=&Apache::lc_xml_forms::table_input_field(
                  'enddate','enddate',
                  'End Date',
-                 'datetime');
+                 'datetime',undef,undef,1);
       $output.=&Apache::lc_xml_forms::table_input_field(
                  'section','section',
                  'Section/Group',
                  'text',
-                 20);
+                 20,undef,1);
 
 # End of the form table
       $output.=&Apache::lc_xml_forms::form_table_end();

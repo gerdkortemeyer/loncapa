@@ -116,12 +116,14 @@ sub start_lcformtableinput_html {
    return &table_input_field($id,$name,$token->[2]->{'description'},
                                        $token->[2]->{'type'},
                                        $token->[2]->{'size'},
-                                       $token->[2]->{'default'});
+                                       $token->[2]->{'default'},
+                                       $token->[2]->{'locked'});
 }
 
 sub table_input_field {
-   my ($id,$name,$description,$type,$size,$default)=@_; 
+   my ($id,$name,$description,$type,$size,$default,$locked)=@_; 
    my $output='<tr><td class="lcformtabledescription"><label for="'.$id.'">'.
+                  ($locked=~/^(on|locked|1)$/i?&lockcode($id):'').
                   &mt($description).
                   '</label></td><td class="lcformtablefield">'.
                   &inputfield($type,
@@ -129,6 +131,14 @@ sub table_input_field {
                               $size,
                               $default).
                   '</td></tr>';
+   return $output;
+}
+
+sub lockcode {
+   my ($id)=@_;
+   my $output='';
+   $output.='<a href="#" onclick="lock_toggle(\''.$id.'\')"><img src="/images/lock_closed.png" id="'.$id.'_lock_img" border="0" /></a>';
+   $output.=&hidden_field($id.'_locked',1);
    return $output;
 }
 
@@ -237,7 +247,7 @@ sub usersearch {
    }
    my $output="<fieldset id='$id' name='$name' class='lcusersearch'>";
    $output.=&Apache::lc_xml_utils::standard_message("Username: [_1]","<span id='".$id."_resultdisplay'>---</span>")."<br />\n";
-   $output.=&hidden_label($id.'_search','Search').'<input type="text" id="'.$id.'_search" size="40" onkeyup="usersearch(\''.$id.'\')" />';
+   $output.=&hidden_label($id.'_search','Search').'<input type="text" id="'.$id.'_search" size="40" autocomplete="off" onkeyup="usersearch(\''.$id.'\')" />';
    $output.=&hidden_label($id.'_domain','Domain').&inputfield('rolemodifiabledomains',$id.'_domain',$name.'_domain',undef,$default);
    $output.='<script>$("#'.$id.'_domain").change(usersearch("'.$id.'"));</script>';
    $output.=&hidden_field($id.'_username','');

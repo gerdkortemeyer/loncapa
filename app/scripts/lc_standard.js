@@ -25,6 +25,18 @@ function screendefaults(formname,storename) {
           });
 }
 
+function lock_toggle(id) {
+   if ($('#'+id+'_locked').val()==1) {
+      $('#'+id+'_lock_img').attr('src','/images/lock_opened.png');
+//      $('#'+id).prob('disabled',false);
+      $('#'+id+'_locked').val(0);
+   } else {
+      $('#'+id+'_lock_img').attr('src','/images/lock_closed.png');
+//      $('#'+id).prob('disabled',true);
+      $('#'+id+'_locked').val(1);
+   }
+}
+
 function progressbar(id,process) {
    var noCache = parent.no_cache_value();
    $.getJSON( "/progress/"+process, { "noCache": noCache }, function( data ) {
