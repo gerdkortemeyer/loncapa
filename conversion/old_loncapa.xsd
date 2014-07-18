@@ -4469,6 +4469,11 @@
     </xs:choice>
   </xs:group>
   <xs:element name="div">
+    <xs:annotation>
+      <xs:documentation>
+        HTML Division
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="blocktext"/>
@@ -4479,13 +4484,24 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="p">
+    <xs:annotation>
+      <xs:documentation>
+        Paragraph
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlinetext"/>
       </xs:choice>
+      <xs:attribute name="style" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="ul">
+    <xs:annotation>
+      <xs:documentation>
+        Unordered list
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:sequence maxOccurs="unbounded">
         <xs:element ref="li"/>
@@ -4493,6 +4509,11 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="ol">
+    <xs:annotation>
+      <xs:documentation>
+        Ordered list
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:sequence maxOccurs="unbounded">
         <xs:element ref="li"/>
@@ -4500,13 +4521,25 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="li">
+    <xs:annotation>
+      <xs:documentation>
+        List item
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlinetext"/>
+        <xs:element ref="ul"/>
+        <xs:element ref="ol"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="table">
+    <xs:annotation>
+      <xs:documentation>
+        Table
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:sequence maxOccurs="unbounded">
         <xs:element ref="tr"/>
@@ -4514,6 +4547,11 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="tr">
+    <xs:annotation>
+      <xs:documentation>
+        Table row
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:choice>
         <xs:sequence maxOccurs="unbounded">
@@ -4534,6 +4572,11 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="td">
+    <xs:annotation>
+      <xs:documentation>
+        Table cell
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
@@ -4544,6 +4587,11 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="th">
+    <xs:annotation>
+      <xs:documentation>
+        Table header cell
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
@@ -4554,6 +4602,11 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="span">
+    <xs:annotation>
+      <xs:documentation>
+        Inline style
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlinetext"/>
@@ -4562,6 +4615,11 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="b">
+    <xs:annotation>
+      <xs:documentation>
+        Bold
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlinetext"/>
@@ -4569,6 +4627,11 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="i">
+    <xs:annotation>
+      <xs:documentation>
+        Italic
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlinetext"/>
@@ -4576,6 +4639,11 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="sup">
+    <xs:annotation>
+      <xs:documentation>
+        Superscript
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlinetext"/>
@@ -4583,6 +4651,11 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="sub">
+    <xs:annotation>
+      <xs:documentation>
+        Subscript
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlinetext"/>
@@ -4590,6 +4663,11 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="a">
+    <xs:annotation>
+      <xs:documentation>
+        Link or anchor
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="href" type="xs:string"/>
