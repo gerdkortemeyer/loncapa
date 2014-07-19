@@ -146,6 +146,12 @@ use utf8;
 
 'Upload complete.' => 'Hochladen beendet.',
 
+'Changes complete.' => 'Änderungen beendet.', 
+
+'Success.' => 'Erfolg.',
+
+'Failure.' => 'Fehlschlag.',
+
 'Language' => 'Sprache',
 
 'German' => 'Deutsch',

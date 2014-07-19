@@ -55,12 +55,12 @@ sub incl_modify_courseusers_finalize {
       }
 # Work through the records, one by one
       foreach my $userrecord (@{$modifyusers}) {
-         sleep(5);
-         &Apache::lc_entity_sessions::inc_progress('modifyuserfinalize','success');
-# &Apache::lc_entity_sessions::inc_progress('modifyuserfinalize','fail');
+         if (&changerecord($userrecord,\%content)) {
+            &Apache::lc_entity_sessions::inc_progress('modifyuserfinalize','success');
+         } else {
+            &Apache::lc_entity_sessions::inc_progress('modifyuserfinalize','fail');
+         }
       }
-      $output.='<pre>'.Dumper(\%content).'</pre>';
-      $output.='Done with stuff';
    } elsif ($content{'stage_two'}) {
 # We actually store things
 # Load the user information
@@ -107,7 +107,13 @@ sub incl_modify_courseusers_finalize {
                   '<script>followup=0;showhide();runbackground();</script>';
       } else {
 # Just do it, there's only one entry!
-         $output.="Doing stuff now";
+         if (&changerecord($modifyusers->[0],\%setfields)) {
+            $output.=&Apache::lc_xml_utils::success_message('Success.').
+                     '<script>error=0;success=1;followup=0;</script>';
+         } else {
+            $output.=&Apache::lc_xml_utils::standard_message('Failure.').
+                     '<script>error=0;success=0;followup=0;</script>';
+         }
       }
    } else {
 # We are presenting data
@@ -226,6 +232,18 @@ sub incl_modify_courseusers_finalize {
       $output.=&Apache::lc_xml_forms::form_table_end().'<script>error=0;followup=1;</script>';
    }
    return $output;
+}
+
+sub changerecord {
+   my ($userrecord,$setfields)=@_;
+# New values override old ones
+   foreach my $field ('firstname','middlename','lastname','suffix',
+                      'password','role','section','pid','startdate','enddate') {
+      if ($setfields->{$field}) {
+         $userrecord->{$field}=$setfields->{$field};
+      }
+   }
+   return &Apache::lc_entity_roles::enroll($userrecord,1,1,1);
 }
 
 sub handler {

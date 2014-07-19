@@ -302,19 +302,22 @@ sub enroll {
       &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Call to enroll without username or domain");
       return 0;
    }
+# New or changed role?
+   if ($userrecord->{'role'}) {
 # Can this role even be given out?
-   my %modifiable_roles=&Apache::lc_authorize::modifiable_course_roles();
-   unless ($modifiable_roles{$userrecord->{'role'}}) {
-      &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Enrolling user not authorized for ".$userrecord->{'role'});
-      return 0;
-   }
-# Can this user give out this role for this section?
-   if ($userrecord->{'section'}) {
-      unless (&Apache::lc_authorize::allowed_section('modify_role',$userrecord->{'role'},
-                                                     &Apache::lc_entity_sessions::course_entity_domain(),$userrecord->{'section'})) {
-         &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Enrolling user not authorized for ".$userrecord->{'role'}.
-                                                                           " in section ".$userrecord->{'section'});
+      my %modifiable_roles=&Apache::lc_authorize::modifiable_course_roles();
+      unless ($modifiable_roles{$userrecord->{'role'}}) {
+         &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Enrolling user not authorized for ".$userrecord->{'role'});
          return 0;
+      }
+# Can this user give out this role for this section?
+      if ($userrecord->{'section'}) {
+         unless (&Apache::lc_authorize::allowed_section('modify_role',$userrecord->{'role'},
+                                                        &Apache::lc_entity_sessions::course_entity_domain(),$userrecord->{'section'})) {
+            &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Enrolling user not authorized for ".$userrecord->{'role'}.
+                                                                              " in section ".$userrecord->{'section'});
+            return 0;
+         }
       }
    }
 # For any profile information that we might collect along the way
@@ -425,19 +428,21 @@ sub enroll {
          return 0;
       }
    }
+# New or changed role?
+   if ($userrecord->{'role'}) {
 # Deal with sections
-   $userrecord->{'section'}=&norm_section($userrecord->{'section'});
-   unless ($userrecord->{'section'}=~/\w/) {
-      $userrecord->{'section'}=undef;
-   }
-   my $startdate=&Apache::lc_date_utils::num2str($userrecord->{'startdate'});
-   my $enddate=&Apache::lc_date_utils::num2str($userrecord->{'enddate'});
-   unless (($startdate=~/\:/) && ($enddate=~/\:/)) {
-      &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Invalid start or end date.");
-      return 0;
-   }
+      $userrecord->{'section'}=&norm_section($userrecord->{'section'});
+      unless ($userrecord->{'section'}=~/\w/) {
+         $userrecord->{'section'}=undef;
+      }
+      my $startdate=&Apache::lc_date_utils::num2str($userrecord->{'startdate'});
+      my $enddate=&Apache::lc_date_utils::num2str($userrecord->{'enddate'});
+      unless (($startdate=~/\:/) && ($enddate=~/\:/)) {
+         &logwarning($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Invalid start or end date.");
+         return 0;
+      }
 # We definitely have a user now, time to assign the role
-   unless (&modify_role(
+      unless (&modify_role(
          $entity,$userrecord->{'domain'}, # who gets the role?
          'course', # system, domain, course, user
          &Apache::lc_entity_sessions::course_entity_domain(),$userrecord->{'section'}, # what's the realm?
@@ -445,8 +450,9 @@ sub enroll {
          $startdate,$enddate, # duration
          &Apache::lc_entity_sessions::user_entity_domain() # who did this?
                        )) {
-      &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not get an entity.");
-      return 0;
+         &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not get an entity.");
+         return 0;
+      }
    }
    return 1;
 }
