@@ -46,6 +46,17 @@ sub incl_modify_courseusers_finalize {
    my $output='';
 # Storage or display stage?
    if ($content{'stage_three'}) {
+      my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+      my $modifyusers=&Apache::lc_json_utils::json_to_perl(
+            &Apache::lc_file_utils::readfile(
+               &Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/modify_users.json')));
+      unless ($modifyusers) {
+         return '<script>followup=0;error=1;</script>';
+      }
+# Work through the records, one by one
+# &Apache::lc_entity_sessions::inc_progress('modifyuserfinalize','success');
+# &Apache::lc_entity_sessions::inc_progress('modifyuserfinalize','fail');
+#
       $output.='Done with stuff';
    } elsif ($content{'stage_two'}) {
 # We actually store things
@@ -57,11 +68,32 @@ sub incl_modify_courseusers_finalize {
       unless ($modifyusers) {
          return '<script>followup=0;error=1;</script>';
       }
+
+      my %setfields;
+      foreach my $field ('firstname','middlename','lastname','suffix','pid',
+                         'password','role','section') {
+          if (($content{$field}=~/\S/) && (!$content{$field.'_locked'})) {
+             $setfields{$field}=$content{$field};
+          }
+      }
+      foreach my $field ('startdate','enddate') {
+         if (($content{$field.'_date'}) && (!$content{$field})) {
+            $setfields{$field}=&Apache::lc_ui_localize::inputdate_to_timestamp(
+                                   $content{$field.'_date'},
+                                   $content{$field.'_time_hour'},
+                                   $content{$field.'_time_min'},
+                                   $content{$field.'_time_sec'},
+                                   $content{$field.'_time_ampm'},
+                                   $content{$field.'_time_zone'});
+         }
+      }
+      $output.='<pre>'.Dumper(\%setfields).'</pre>';
 # How many do we have?
       my $number=$#{$modifyusers};
       if ($number>0) {
 # If we have more than one, bring up a progress bar and do things asyncronously
-#         &Apache::
+         &Apache::lc_entity_sessions::reset_progress('modifyuserfinalize');
+         &Apache::lc_entity_sessions::set_progress_total('modifyuserfinalize',$number+1);
          $output.=&Apache::lc_xml_gadgets::progressbar('modifyuserfinalize','modifyuserfinalize').
                   '<script>followup=0;showhide();runbackground()</script>';
       } else {

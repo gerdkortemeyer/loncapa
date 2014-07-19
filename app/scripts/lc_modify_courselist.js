@@ -23,7 +23,7 @@ function runbackground() {
    $.ajax({
         url : '/finalize_modify_courseusers',
         type: "POST",
-        data: {stage_three:1},
+        data: $('#modify_courseusers').serialize()+"&stage_three=1",
         success: function(data){
             $('#modify_courseusers_finalize').html(data);
         },
