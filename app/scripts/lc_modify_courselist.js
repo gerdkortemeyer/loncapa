@@ -25,7 +25,7 @@ function runbackground() {
         type: "POST",
         data: $('#modify_courseusers').serialize()+"&stage_three=1",
         success: function(data){
-            $('#modify_courseusers_finalize').html(data);
+            $('#messages').html(data);
         },
         complete: function() {
             showhide();

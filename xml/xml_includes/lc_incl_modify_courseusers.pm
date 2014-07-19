@@ -54,9 +54,12 @@ sub incl_modify_courseusers_finalize {
          return '<script>followup=0;error=1;</script>';
       }
 # Work through the records, one by one
-# &Apache::lc_entity_sessions::inc_progress('modifyuserfinalize','success');
+      foreach my $userrecord (@{$modifyusers}) {
+         sleep(5);
+         &Apache::lc_entity_sessions::inc_progress('modifyuserfinalize','success');
 # &Apache::lc_entity_sessions::inc_progress('modifyuserfinalize','fail');
-#
+      }
+      $output.='<pre>'.Dumper(\%content).'</pre>';
       $output.='Done with stuff';
    } elsif ($content{'stage_two'}) {
 # We actually store things
@@ -87,17 +90,23 @@ sub incl_modify_courseusers_finalize {
                                    $content{$field.'_time_zone'});
          }
       }
-      $output.='<pre>'.Dumper(\%setfields).'</pre>';
 # How many do we have?
       my $number=$#{$modifyusers};
       if ($number>0) {
 # If we have more than one, bring up a progress bar and do things asyncronously
+# Reset counter for progressbar
          &Apache::lc_entity_sessions::reset_progress('modifyuserfinalize');
          &Apache::lc_entity_sessions::set_progress_total('modifyuserfinalize',$number+1);
+# Remember stuff for the background process
+         foreach my $key (keys(%setfields)) {
+            $output.=&Apache::lc_xml_forms::hidden_field($key,$setfields{$key});
+         }
+# Bring up progress bar and fire up background process
          $output.=&Apache::lc_xml_gadgets::progressbar('modifyuserfinalize','modifyuserfinalize').
-                  '<script>followup=0;showhide();runbackground()</script>';
+                  '<div id="messages"></div>'.
+                  '<script>followup=0;showhide();runbackground();</script>';
       } else {
-# Just do it!
+# Just do it, there's only one entry!
          $output.="Doing stuff now";
       }
    } else {
@@ -216,7 +225,6 @@ sub incl_modify_courseusers_finalize {
 # End of the form table
       $output.=&Apache::lc_xml_forms::form_table_end().'<script>error=0;followup=1;</script>';
    }
-   $output.=join("\n<br />",map { $_.'='.$content{$_} } keys(%content));
    return $output;
 }
 
