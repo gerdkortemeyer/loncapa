@@ -144,6 +144,8 @@ sub incl_modify_courseusers_finalize {
       my $profile;
       if ($number==0) {
          if ($modifyusers->[0]->{'entity'}) {
+            $modifyusers->[0]->{'username'}=&Apache::lc_entity_users::entity_to_username($modifyusers->[0]->{'entity'},
+                                                                                         $modifyusers->[0]->{'domain'});
             $profile=&Apache::lc_entity_profile::dump_profile($modifyusers->[0]->{'entity'},
                                                        $modifyusers->[0]->{'domain'});
             $output.=&Apache::lc_xml_utils::standard_message('Existing user [_1]',
@@ -236,6 +238,11 @@ sub incl_modify_courseusers_finalize {
 
 sub changerecord {
    my ($userrecord,$setfields)=@_;
+# Works with usernames
+   if ($userrecord->{'entity'}) {
+      $userrecord->{'username'}=&Apache::lc_entity_users::entity_to_username($userrecord->{'entity'},
+                                                                             $userrecord->{'domain'});
+   }
 # New values override old ones
    foreach my $field ('firstname','middlename','lastname','suffix',
                       'password','role','section','pid','startdate','enddate') {
