@@ -23,6 +23,45 @@ use strict;
 use Apache::lc_logs;
 use Apache::lc_parameters;
 use Apache::lc_entity_urls();
+use Apache::lc_entity_utils();
+
+sub new_asset {
+   my ($resentity,$resdomain,$restitle)=@_;
+   return { entity => $resentity, domain => $resdomain, 
+            title => $restitle, 
+            type => 'asset', 
+            active => 1, hidden => 0, 
+            id => &Apache::lc_entity_utils::long_unique_id() }
+}
+
+sub new_folder {
+   my ($foldertitle)=@_;
+   return { title => $foldertitle, type => 'folder',
+            active => 1, hidden => 0, 
+            id => &Apache::lc_entity_utils::long_unique_id(), 
+            content => [] } 
+}
+
+sub setattribute {
+   my ($id,$attribute,$value)=@_;
+
+}
+
+sub hide {
+   my ($id)=@_;
+}
+
+sub unhide {
+   my ($id)=@_;
+}
+
+sub activate {
+   my ($id)=@_;
+}
+
+sub deactivate {
+   my ($id)=@_;
+}
 
 1;
 __END__

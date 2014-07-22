@@ -38,6 +38,11 @@ sub make_unique_id {
    return &luniqid();
 }
 
+sub long_unique_id {
+   return &make_unique_id().'_'.$$.'_'.time;
+}
+
+
 # === Oneway encryption of entities
 # Takes domain,entity
 # or any other array of strings
