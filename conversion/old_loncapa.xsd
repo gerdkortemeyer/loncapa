@@ -1277,7 +1277,10 @@
   </xs:element>
   <xs:element name="spline">
     <xs:annotation>
-      <xs:documentation>Spline</xs:documentation>
+      <xs:documentation>
+        Spline.
+        At least one spline is necessary for a graph problem. These splines are what will be adjusted and analyzed to solve the problem.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="index" type="xs:int"/>
@@ -1321,7 +1324,10 @@
   </xs:element>
   <xs:element name="backgroundplot">
     <xs:annotation>
-      <xs:documentation>Background Function Plot</xs:documentation>
+      <xs:documentation>
+        Background Function Plot.
+        This places a static curve on the graph of your choosing.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="function" type="xs:string"/>
@@ -1369,7 +1375,10 @@
   </xs:element>
   <xs:element name="plotobject">
     <xs:annotation>
-      <xs:documentation>Plot Object</xs:documentation>
+      <xs:documentation>
+        Plot Object.
+        This places a point in the applet.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="label" type="xs:string">
@@ -1385,7 +1394,10 @@
   </xs:element>
   <xs:element name="plotvector">
     <xs:annotation>
-      <xs:documentation>Plot Vector</xs:documentation>
+      <xs:documentation>
+        Plot Vector.
+        This creates a vector (or arrow) in the applet.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="label" type="xs:string">
@@ -1448,7 +1460,10 @@
   </xs:element>
   <xs:element name="functionplotrule">
     <xs:annotation>
-      <xs:documentation>Function Plot Graph Rule</xs:documentation>
+      <xs:documentation>
+        Function Plot Graph Rule
+        Used to evaluate graph problems.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="index" type="xs:string">
@@ -1544,7 +1559,10 @@
   </xs:element>
   <xs:element name="functionplotvectorrule">
     <xs:annotation>
-      <xs:documentation>Function Plot Vector Rule</xs:documentation>
+      <xs:documentation>
+        Function Plot Vector Rule
+        Used to test whether vectors are in the right place, pointed in the right direction, and have the correct length.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="index" type="xs:string">
@@ -1617,7 +1635,10 @@
   </xs:element>
   <xs:element name="functionplotvectorsumrule">
     <xs:annotation>
-      <xs:documentation>Function Plot Vector Sum Rule</xs:documentation>
+      <xs:documentation>
+        Function Plot Vector Sum Rule
+        Used to test the sum of a set of vectors.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="index" type="xs:string">
@@ -1666,13 +1687,20 @@
   </xs:element>
   <xs:element name="functionplotcustomrule">
     <xs:annotation>
-      <xs:documentation>Function Plot Custom Rule</xs:documentation>
+      <xs:documentation>
+        Used to create rules that aren't options using the other rules. The coding is done in Perl and follows Perl syntax. Any variable written inside this rule will be recognized as normal and any evaluation function can be used as well.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="answer">
+          <xs:annotation>
+            <xs:documentation>
+              Answer algorithm, normally in Perl
+            </xs:documentation>
+          </xs:annotation>
           <xs:complexType mixed="true">
-            <xs:attribute name="type" type="xs:string"/>
+            <xs:attribute default="loncapa/perl" name="type" type="xs:string"/>
           </xs:complexType>
         </xs:element>
       </xs:choice>
@@ -4466,6 +4494,7 @@
       <xs:element ref="i"/>
       <xs:element ref="sup"/>
       <xs:element ref="sub"/>
+      <xs:element ref="br"/>
     </xs:choice>
   </xs:group>
   <xs:element name="div">
@@ -4672,5 +4701,12 @@
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="href" type="xs:string"/>
     </xs:complexType>
+  </xs:element>
+  <xs:element name="br">
+    <xs:annotation>
+      <xs:documentation>
+        Line break
+      </xs:documentation>
+    </xs:annotation>
   </xs:element>
 </xs:schema>
