@@ -53,7 +53,7 @@ sub start_head_html {
 <link rel="stylesheet" type="text/css" href="/css/lc_style.css" />
 <link rel="stylesheet" type="text/css" href="/css/jquery.dataTables.css" />
 <link rel="stylesheet" type="text/css" href="/scripts/datepick/flora.datepick.css">
-<link rel="stylesheet" type="test/css" href="/scripts/jstree/themes/default/style.min.css" />
+<link rel="stylesheet" type="text/css" href="/scripts/jstree/themes/default/style.min.css" />
 ENDHEADER
 }
 
