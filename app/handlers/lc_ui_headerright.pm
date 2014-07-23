@@ -32,7 +32,11 @@ use Apache::lc_logs;
 sub handler {
 # Get request object
    my $r = shift;
-   my ($firstname,$middlename,$lastname,$suffix)=&Apache::lc_entity_users::full_name(&Apache::lc_entity_sessions::user_entity_domain());
+   my ($firstname,$middlename,$lastname,$suffix)=('','','','');
+   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+   if ($entity) {
+      ($firstname,$middlename,$lastname,$suffix)=&Apache::lc_entity_users::full_name($entity,$domain);
+   }
    my $name="$firstname $lastname";
    if ($suffix) { $name.=" $suffix"; }
    $r->print(&Apache::lc_json_utils::perl_to_json({'name' => $name}));

@@ -23,6 +23,7 @@ use strict;
 
 use Apache::lc_parameters;
 use Apache::lc_date_utils();
+use Devel::StackTrace();
 
 require Exporter;
 our @ISA = qw (Exporter);
@@ -36,7 +37,8 @@ sub appendlog {
 }
 
 sub logerror {
-   &appendlog('errors',@_[0]);
+   my $trace = Devel::StackTrace->new();
+   &appendlog('errors',@_[0]."\n".$trace->as_string());
 }
 
 sub logwarning {

@@ -31,7 +31,11 @@ use Apache::lc_logs;
 sub handler {
 # Get request object
    my $r = shift;
-   my $title=&Apache::lc_entity_courses::course_title(&Apache::lc_entity_sessions::course_entity_domain());
+   my $title='';
+   my ($course_entity,$course_domain)=&Apache::lc_entity_sessions::course_entity_domain();
+   if ($course_entity) {
+      $title=&Apache::lc_entity_courses::course_title($course_entity,$course_domain);
+   }
    unless ($title) { $title=''; }
    $r->print(&Apache::lc_json_utils::perl_to_json({'title' => $title}));
    return OK;
