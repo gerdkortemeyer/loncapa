@@ -2,27 +2,26 @@ use strict;
 use Data::Uniqid qw(luniqid);
 use JSON::DWIW;
 
+my $depth=0;
 
-my $toc;
-
-&make_folder($toc);
-
-print &perl_to_json($toc);
-exit;
+print &perl_to_json(&make_folder());
 
 sub make_folder {
-   my ($current_toc)=@_;
-   for (my $i=0;$i<=int(rand(20));$i++) {
-      if (int(rand()+0.6)) {
-print "Res\n";
-         push(@{$current_toc},&new_asset(&make_unique_id(),('msu','sfu','ostfalia')[int(rand(2)+0.5)],&make_fake_title()));
+
+
+   $depth++;
+   my $toc;
+
+   for (my $i=0;$i<=int(rand(30));$i++) {
+      if ((int(rand()+0.6)) || ($depth>4)) {
+         push(@{$toc},&new_asset(&make_unique_id(),('msu','sfu','ostfalia')[int(rand(2)+0.5)],&make_fake_title()));
       } else {
-print "Folder\n";
-         push(@{$current_toc},&new_folder('Chapter '.&make_fake_title()));
-         &make_folder($current_toc->[-1]->{'content'});
+         push(@{$toc},&new_folder('Chapter '.&make_fake_title()));
+         $toc->[-1]->{'content'}=&make_folder();
       }
    }
-   print &perl_to_json($current_toc)."\n======\n";
+   $depth--;
+   return $toc;
 }
 
 
