@@ -33,6 +33,14 @@ sub handler {
 # Get request object
    my $r = shift;
    $r->content_type('application/json; charset=utf-8');
+   $r->print(<<ENDCONTENTS);
+     [
+       { "id" : "ajson1", "parent" : "#", "text" :  "Simple root node" },
+       { "id" : "ajson2", "parent" : "#", "text" : "Root folder node 2" },
+       { "id" : "ajson3", "parent" : "ajson2", "text" : "Child 1" },
+       { "id" : "ajson4", "parent" : "ajson2", "text" : "Child 2" }
+     ]
+ENDCONTENTS
    return OK;
 }
 1;
