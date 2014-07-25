@@ -25,6 +25,29 @@ use Apache::lc_parameters;
 use Apache::lc_entity_urls();
 use Apache::lc_entity_utils();
 
+sub toc_to_display {
+   my ($toc)=@_;
+   my $display;
+   
+   return $display;
+}
+
+sub toc_to_serilize {
+   my ($toc)=@_;
+   my $series;
+
+   return $series;
+}
+
+sub folder_serilize_eval {
+   my ($series,$folder)=@_;
+   foreach my $element (@{$folder}) {
+      if ($element->{'type'} eq 'asset') {
+      } elsif ($element->{'type'} eq 'folder') {
+      }
+   }
+}
+
 sub new_asset {
    my ($resentity,$resdomain,$restitle)=@_;
    return { entity => $resentity, domain => $resdomain, 

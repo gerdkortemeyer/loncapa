@@ -1,5 +1,5 @@
 # The LearningOnline Network with CAPA - LON-CAPA
-# Right part of the header 
+# Serves up the table of contents in JSON
 #
 # Copyright (C) 2014 Michigan State University Board of Trustees
 #
@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-package Apache::lc_ui_headerright;
+package Apache::lc_ui_contents;
 
 use strict;
 use Apache2::RequestRec();
@@ -33,14 +33,6 @@ sub handler {
 # Get request object
    my $r = shift;
    $r->content_type('application/json; charset=utf-8');
-   my ($firstname,$middlename,$lastname,$suffix)=('','','','');
-   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
-   if ($entity) {
-      ($firstname,$middlename,$lastname,$suffix)=&Apache::lc_entity_users::full_name($entity,$domain);
-   }
-   my $name="$firstname $lastname";
-   if ($suffix) { $name.=" $suffix"; }
-   $r->print(&Apache::lc_json_utils::perl_to_json({'name' => $name}));
    return OK;
 }
 1;

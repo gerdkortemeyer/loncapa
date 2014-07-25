@@ -31,6 +31,7 @@ use Apache::lc_logs;
 sub handler {
 # Get request object
    my $r = shift;
+   $r->content_type('application/json; charset=utf-8');
    my $title='';
    my ($course_entity,$course_domain)=&Apache::lc_entity_sessions::course_entity_domain();
    if ($course_entity) {
