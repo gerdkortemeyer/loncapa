@@ -25,27 +25,38 @@ use Apache::lc_parameters;
 use Apache::lc_entity_urls();
 use Apache::lc_entity_utils();
 
+my $series;
+
 sub toc_to_display {
    my ($toc)=@_;
    my $display;
-   
+   my $series=&toc_to_serialize($toc);
+   foreach my $element (@{$series}) {
+      my $newelement=undef;
+      $newelement->{'text'}=$element->{'title'};
+      $newelement->{'parent'}=$element->{'parent'};
+      $newelement->{'id'}=$element->{'id'};
+      push(@{$display},$newelement);
+   } 
    return $display;
 }
 
-sub toc_to_serilize {
+sub toc_to_serialize {
    my ($toc)=@_;
-   my $series;
-
-   return $series;
+   $series=undef;
+   return &folder_serialize_eval('#',$toc);
 }
 
-sub folder_serilize_eval {
-   my ($series,$folder)=@_;
+sub folder_serialize_eval {
+   my ($name,$folder)=@_;
    foreach my $element (@{$folder}) {
-      if ($element->{'type'} eq 'asset') {
-      } elsif ($element->{'type'} eq 'folder') {
+      $element->{'parent'}=$name;
+      push(@{$series},$element);
+      if ($element->{'type'} eq 'folder') {
+         &folder_serialize_eval($element->{'id'},$element->{'content'});
       }
    }
+   return $series;
 }
 
 sub new_asset {

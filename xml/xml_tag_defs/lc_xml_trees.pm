@@ -23,8 +23,15 @@ use strict;
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw();
+our @EXPORT = qw(start_lctree_html);
 
+sub start_lctree_html {
+   my ($p,$safe,$stack,$token)=@_;
+   my $id=$token->[2]->{'id'};
+   my $name=$token->[2]->{'name'};
+   unless ($name) { $name=$id; }
+   return "<div id='$id' name='$name'></div>";
+}
 
 1;
 __END__
