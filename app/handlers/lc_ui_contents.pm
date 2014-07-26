@@ -33,12 +33,13 @@ sub handler {
 # Get request object
    my $r = shift;
    $r->content_type('application/json; charset=utf-8');
+   my $timestamp=localtime();
    $r->print(<<ENDCONTENTS);
 [
     
     {
         "parent":"#",
-        "text":"current current current fusion",
+        "text":"current current current fusion $timestamp",
         "id":"jQTfHfgZBBqQv1mGYmd_25271_1406233152"
     },
     
@@ -56,7 +57,7 @@ sub handler {
     
     {
         "parent":"jWMs9bkriLmELfieoBr_25271_1406233152",
-        "text":"Chapter current energy fusion",
+        "text":"Chapter current energy fusion $timestamp",
         "id":"kdRLyLDUsP26hK4TRtv_25271_1406233152"
     },
     
