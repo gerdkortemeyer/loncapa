@@ -1,0 +1,19 @@
+new-blocklevel-tags: answer,foil,image,polygon,rectangle,text,conceptgroup,itemgroup,item,label,data,function,numericalresponse,answergroup,formularesponse,functionplotresponse,functionplotruleset,functionplotelements,functionplotcustomrule,stringresponse,essayresponse,externalresponse,hintgroup,hintpart,formulahint,numericalhint,reactionhint,organichint,optionhint,radiobuttonhint,stringhint,customhint,mathhint,imageresponse,foilgroup,datasubmission,customresponse,mathresponse,textfield,hiddensubmission,optionresponse,radiobuttonresponse,rankresponse,matchresponse,organicresponse,reactionresponse,import,script,window,block,library,notsolved,part,postanswerdate,preduedate,problem,problemtype,randomlabel,bgimg,labelgroup,randomlist,solved,while,gnuplot,curve,Task,IntroParagraph,ClosingParagraph,Question,QuestionText,Setup,Instance,InstanceText,Criteria,CriteriaText,GraderNote,languageblock,translated,lang,instructorcomment,dataresponse,togglebox,standalone,comment,drawimage,allow,displayduedate,displaytitle,responseparam,organicstructure,scriptlib,parserlib,drawoptionlist,spline,backgroundplot,plotobject,plotvector,drawvectorsum,functionplotrule,functionplotvectorrule,functionplotvectorsumrule,axis,key,xtics,ytics,title,xlabel,ylabel,hiddenline,blockfont,emptyfont
+
+new-empty-tags: drawoptionlist,location,parameter,spline,backgroundplot,plotobject,plotvector,drawvectorsum,functionplotrule,functionplotvectorrule,functionplotvectorsumrule,textline,displayduedate,displaytitle,organicstructure,responseparam,img,meta,startpartmarker,endpartmarker,allow,startouttext,endouttext,axis,key,xtics,ytics,displayweight,displaystudentphoto,emptyfont
+
+new-inline-tags: vector,value,location,parameter,array,unit,textline,display,img,meta,startpartmarker,endpartmarker,startouttext,endouttext,tex,web,windowlink,m,num,parse,algebra,displayweight,displaystudentphoto,inlinefont
+
+new-pre-tags: answer
+
+add-xml-decl: yes
+
+output-xhtml: yes
+
+show-body-only: auto
+
+wrap: 0
+
+newline: LF
+
+indent: auto
