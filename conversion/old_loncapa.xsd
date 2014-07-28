@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:lang="en">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
   <xs:simpleType name="yesno">
     <xs:restriction base="xs:string">
       <xs:enumeration value="yes"/>
@@ -72,12 +73,14 @@
       <xs:documentation>Hint algorithm</xs:documentation>
     </xs:annotation>
     <xs:attribute name="type" type="xs:string"/>
+    <xs:attribute fixed="preserve" ref="xml:space"/>
   </xs:complexType>
   <xs:complexType mixed="true" name="mathhint--answer">
     <xs:annotation>
       <xs:documentation>Hint algorithm</xs:documentation>
     </xs:annotation>
     <xs:attribute name="type" type="xs:string"/>
+    <xs:attribute fixed="preserve" ref="xml:space"/>
   </xs:complexType>
   <xs:complexType name="imageresponse--conceptgroup">
     <xs:annotation>
@@ -168,12 +171,14 @@
       <xs:documentation>Answer algorithm</xs:documentation>
     </xs:annotation>
     <xs:attribute name="type" type="xs:string"/>
+    <xs:attribute fixed="preserve" ref="xml:space"/>
   </xs:complexType>
   <xs:complexType mixed="true" name="mathresponse--answer">
     <xs:annotation>
       <xs:documentation>Answer algorithm</xs:documentation>
     </xs:annotation>
     <xs:attribute name="type" type="xs:string"/>
+    <xs:attribute fixed="preserve" ref="xml:space"/>
   </xs:complexType>
   <xs:complexType name="optionresponse--conceptgroup">
     <xs:annotation>
@@ -1701,6 +1706,7 @@
           </xs:annotation>
           <xs:complexType mixed="true">
             <xs:attribute default="loncapa/perl" name="type" type="xs:string"/>
+            <xs:attribute fixed="preserve" ref="xml:space"/>
           </xs:complexType>
         </xs:element>
       </xs:choice>
@@ -2691,6 +2697,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:attribute name="type" type="xs:string"/>
+      <xs:attribute fixed="preserve" ref="xml:space"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="scriptlib" type="xs:string">
@@ -4453,13 +4460,40 @@
     </xs:complexType>
   </xs:element>
   
+  <xs:annotation>
+    <xs:documentation>
+      ==================== HTML ====================
+      
+    </xs:documentation>
+  </xs:annotation>
+  
+  <xs:attributeGroup name="i18n">
+    <xs:annotation>
+      <xs:documentation>
+        internationalization attributes
+        lang language code (backwards compatible)
+        xml:lang language code (as per XML 1.0 spec)
+        dir direction for weak/neutral text
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="lang" type="xs:language"/>
+    <xs:attribute ref="xml:lang"/>
+    <xs:attribute name="dir">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ltr"/>
+          <xs:enumeration value="rtl"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
   <xs:group name="text">
     <xs:choice>
-      <xs:group ref="blocktext"/>
-      <xs:group ref="inlinetext"/>
+      <xs:group ref="blockText"/>
+      <xs:group ref="inlineText"/>
     </xs:choice>
   </xs:group>
-  <xs:group name="blocktext">
+  <xs:group name="blockText">
     <xs:choice>
       <xs:element ref="languageblock"/>
       <xs:element ref="translated"/>
@@ -4470,14 +4504,22 @@
       <xs:element ref="comment"/>
       <xs:element ref="drawimage"/>
       
+      <xs:group ref="heading"/>
       <xs:element ref="div"/>
       <xs:element ref="p"/>
       <xs:element ref="ul"/>
       <xs:element ref="ol"/>
       <xs:element ref="table"/>
+      <xs:element ref="dl"/>
+      <xs:element ref="pre"/>
+      <xs:element ref="noscript"/>
+      <xs:element ref="blockquote"/>
+      <xs:element ref="map"/>
+      <xs:element ref="form"/>
+      <xs:element ref="fieldset"/>
     </xs:choice>
   </xs:group>
-  <xs:group name="inlinetext">
+  <xs:group name="inlineText">
     <xs:choice>
       <xs:element ref="img"/>
       <xs:element ref="m"/>
@@ -4490,13 +4532,275 @@
       
       <xs:element ref="span"/>
       <xs:element ref="a"/>
+      <xs:element ref="strong"/>
+      <xs:element ref="em"/>
       <xs:element ref="b"/>
       <xs:element ref="i"/>
       <xs:element ref="sup"/>
       <xs:element ref="sub"/>
+      <xs:element ref="code"/>
+      <xs:element ref="tt"/>
+      <xs:element ref="ins"/>
+      <xs:element ref="del"/>
+      <xs:element ref="small"/>
+      <xs:element ref="big"/>
+      <xs:element ref="font"/>
+      <xs:element ref="basefont"/>
+      <xs:element ref="hr"/>
       <xs:element ref="br"/>
+      <xs:element ref="object"/>
+      <xs:element ref="applet"/>
+      <xs:element ref="embed"/>
+      <xs:element ref="input"/>
+      <xs:element ref="select"/>
+      <xs:element ref="textarea"/>
+      <xs:element ref="label"/>
+      <xs:element ref="button"/>
     </xs:choice>
   </xs:group>
+  <xs:complexType mixed="true" name="inlineBaseType">
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:group ref="inlineText"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:group name="heading">
+    <xs:choice>
+      <xs:element ref="h1"/>
+      <xs:element ref="h2"/>
+      <xs:element ref="h3"/>
+      <xs:element ref="h4"/>
+      <xs:element ref="h5"/>
+      <xs:element ref="h6"/>
+    </xs:choice>
+  </xs:group>
+  <xs:complexType mixed="true" name="headerContent">
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element ref="span"/>
+      <xs:element ref="i"/>
+      <xs:element ref="sup"/>
+      <xs:element ref="sub"/>
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:element name="html">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML root element (&lt;html&gt;) represents the root of an HTML document.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="head"/>
+        <xs:element ref="body"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="i18n"/>
+      <xs:attribute name="id" type="xs:ID"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:group name="head.misc">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element name="script" type="htmlScript">
+          <xs:annotation>
+            <xs:documentation>
+              script statements, which may include CDATA sections
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="style"/>
+        <xs:element name="meta" type="htmlMeta">
+          <xs:annotation>
+            <xs:documentation>
+              generic metainformation
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="link"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <xs:element name="head">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML Head Element (&lt;head&gt;) provides general information (metadata) about the document, including its title and links to or definitions of scripts and style sheets.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="head.misc"/>
+        <xs:choice>
+          <xs:sequence>
+            <xs:element ref="title"/>
+            <xs:group ref="head.misc"/>
+            <xs:sequence minOccurs="0">
+              <xs:element ref="base"/>
+              <xs:group ref="head.misc"/>
+            </xs:sequence>
+          </xs:sequence>
+          <xs:sequence>
+            <xs:element ref="base"/>
+            <xs:group ref="head.misc"/>
+            <xs:element ref="title"/>
+            <xs:group ref="head.misc"/>
+          </xs:sequence>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attributeGroup ref="i18n"/>
+      <xs:attribute name="id" type="xs:ID"/>
+      <xs:attribute name="profile" type="xs:anyURI"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="title">
+    <xs:annotation>
+      <xs:documentation>
+        The title element is not considered part of the flow of text.
+        It should be displayed, for example as the page header or
+        window title. Exactly one title is required per document.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="i18n"/>
+      <xs:attribute name="id" type="xs:ID"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="base">
+    <xs:annotation>
+      <xs:documentation>
+        Document base URI
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="href" type="xs:anyURI" use="required"/>
+      <xs:attribute name="id" type="xs:ID"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="htmlMeta">
+    <xs:attributeGroup ref="i18n"/>
+    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="http-equiv"/>
+    <xs:attribute name="name"/>
+    <xs:attribute name="content" use="required"/>
+    <xs:attribute name="scheme"/>
+  </xs:complexType>
+  <xs:simpleType name="MediaDesc">
+    <xs:annotation>
+      <xs:documentation>
+        Single or comma-separated list of media descriptors
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[^,]+(,\s*[^,]+)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="link">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML Link Element (&lt;link&gt;) specifies relationships between the current document and external resource. Possible uses for this element include defining a relational framework for navigation. This Element is most used to link to style sheets.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="charset" type="xs:string"/>
+      <xs:attribute name="href" type="xs:anyURI"/>
+      <xs:attribute name="hreflang" type="xs:language"/>
+      <xs:attribute name="type" type="xs:string"/>
+      <xs:attribute name="rel" type="xs:NMTOKENS"/>
+      <xs:attribute name="rev" type="xs:NMTOKENS"/>
+      <xs:attribute name="media" type="MediaDesc"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="style">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;style&gt; element contains style information for a document, or a part of document. The specific style information is contained inside of this element, usually in the CSS.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="i18n"/>
+      <xs:attribute name="id" type="xs:ID"/>
+      <xs:attribute name="type" type="xs:string" use="required"/>
+      <xs:attribute name="media" type="MediaDesc"/>
+      <xs:attribute name="title" type="xs:string"/>
+      <xs:attribute fixed="preserve" ref="xml:space"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType mixed="true" name="htmlScript">
+    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="charset" type="xs:string"/>
+    <xs:attribute name="type" type="xs:string" use="required"/>
+    <xs:attribute name="src" type="xs:anyURI"/>
+    <xs:attribute name="defer">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="defer"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute fixed="preserve" ref="xml:space"/>
+  </xs:complexType>
+  <xs:element name="noscript">
+    <xs:annotation>
+      <xs:documentation>
+        Alternate content container for non script-based rendering.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="blockText"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="body">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="blockText"/>
+      </xs:choice>
+      <xs:attributeGroup ref="i18n"/>
+      <xs:attribute name="onload" type="xs:string"/>
+      <xs:attribute name="onunload" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="h1" type="headerContent">
+    <xs:annotation>
+      <xs:documentation>
+        Level 1 header
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="h2" type="headerContent">
+    <xs:annotation>
+      <xs:documentation>
+        Level 2 header
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="h3" type="headerContent">
+    <xs:annotation>
+      <xs:documentation>
+        Level 3 header
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="h4" type="headerContent">
+    <xs:annotation>
+      <xs:documentation>
+        Level 4 header
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="h5" type="headerContent">
+    <xs:annotation>
+      <xs:documentation>
+        Level 5 header
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="h6" type="headerContent">
+    <xs:annotation>
+      <xs:documentation>
+        Level 6 header
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
   <xs:element name="div">
     <xs:annotation>
       <xs:documentation>
@@ -4505,8 +4809,8 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blocktext"/>
-        <xs:group ref="inlinetext"/>
+        <xs:group ref="blockText"/>
+        <xs:group ref="inlineText"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="class" type="xs:string"/>
@@ -4519,10 +4823,11 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinetext"/>
-      </xs:choice>
-      <xs:attribute name="style" type="xs:string"/>
+      <xs:complexContent mixed="true">
+        <xs:extension base="inlineBaseType">
+          <xs:attribute name="style" type="xs:string"/>
+        </xs:extension>
+      </xs:complexContent>
     </xs:complexType>
   </xs:element>
   <xs:element name="ul">
@@ -4557,9 +4862,44 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinetext"/>
+        <xs:group ref="inlineText"/>
         <xs:element ref="ul"/>
         <xs:element ref="ol"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dl">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;dl&gt; Element (or HTML Description List Element) encloses a list of pairs of terms and descriptions. Common uses for this element are to implement a glossary or to display metadata (a list of key-value pairs).
+        
+        Prior to HTML5, &lt;dl&gt; was known as a Definition List.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="dt"/>
+        <xs:element ref="dd"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dt" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;dt&gt; element (or HTML Definition Term Element) identifies a term in a definition list. This element can occur only as a child element of a &lt;dl&gt;. It is usually followed by a &lt;dd&gt; element; however, multiple &lt;dt&gt; elements in a row indicate several terms that are all defined by the immediate next &lt;dd&gt; element.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="dd">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;dd&gt; Element (or HTML Description Element) indicates the description of a term in a description list (&lt;dl&gt;) element. This element can occur only as a child element of a definition list and it must follow a &lt;dt&gt; element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="blockText"/>
+        <xs:group ref="inlineText"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4638,63 +4978,15 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinetext"/>
+        <xs:group ref="inlineText"/>
       </xs:choice>
       <xs:attribute name="style" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="b">
-    <xs:annotation>
-      <xs:documentation>
-        Bold
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinetext"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="i">
-    <xs:annotation>
-      <xs:documentation>
-        Italic
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinetext"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="sup">
-    <xs:annotation>
-      <xs:documentation>
-        Superscript
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinetext"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="sub">
-    <xs:annotation>
-      <xs:documentation>
-        Subscript
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlinetext"/>
-      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="a">
     <xs:annotation>
       <xs:documentation>
-        Link or anchor
+        The HTML &lt;a&gt; Element (or the HTML Anchor Element) defines a hyperlink, the named target destination for a hyperlink, or both.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -4702,11 +4994,620 @@
       <xs:attribute name="href" type="xs:string"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="br">
+  <xs:element name="strong" type="inlineBaseType">
     <xs:annotation>
       <xs:documentation>
-        Line break
+        Strong emphasis
       </xs:documentation>
     </xs:annotation>
   </xs:element>
+  <xs:element name="em" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        Emphasis
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="b" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        Bold
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="i" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        Italic
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="sup" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        Superscript
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="sub" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        Subscript
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="pre" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;pre&gt; Element (or HTML Preformatted Text) represents preformatted text. Text within this element is typically displayed in a non-proportional font exactly as it is laid out in the file. Whitespaces inside this element are displayed as typed.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="code" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;code&gt; Element represents a fragment of computer code. By default, it is displayed in the browser's default monospace font.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="tt" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
+        The HTML Teletype Text Element (&lt;tt&gt;) produces an inline element displayed in the browser's default monotype font. This element was intended to style text as it would display on a fixed width display, such as a teletype. It probably is more common to display fixed width type using the &lt;code&gt; element.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="ins">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;ins&gt; Element (or HTML Inserted Text) HTML represents a range of text that has been added to a document.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="inlineBaseType">
+          <xs:attribute name="cite" type="xs:anyURI"/>
+          <xs:attribute name="datetime" type="xs:dateTime"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="del">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;del&gt; element (or HTML Deleted Text Element) represents a range of text that has been deleted from a document. This element is often (but need not be) rendered with strike-through text.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="inlineBaseType">
+          <xs:attribute name="cite" type="xs:anyURI"/>
+          <xs:attribute name="datetime" type="xs:dateTime"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="small" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML Small Element (&lt;small&gt;) makes the text font size one size smaller (for example, from large to medium, or from small to x-small) down to the browser's minimum font size. In HTML5, this element is repurposed to represent side-comments and small print, including copyright and legal text, independent of its styled presentation.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="big" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="font">
+    <xs:annotation>
+      <xs:documentation>
+        This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent mixed="true">
+        <xs:extension base="inlineBaseType">
+          <xs:attribute name="color" type="xs:string"/>
+          <xs:attribute name="face" type="xs:string"/>
+          <xs:attribute name="size" type="xs:string"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="basefont">
+    <xs:annotation>
+      <xs:documentation>
+        This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="color" type="xs:string"/>
+      <xs:attribute name="face" type="xs:string"/>
+      <xs:attribute name="size" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="br">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;br&gt; Element (or HTML Line Break Element) produces a line break in text (carriage-return). It is useful for writing a poem or an address, where the division of lines is significant.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="hr">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;hr&gt; element represents a thematic break between paragraph-level elements (for example, a change of scene in a story, or a shift of topic with a section). In previous versions of HTML, it represented a horizontal rule. It may still be displayed as a horizontal rule in visual browsers, but is now defined in semantic terms, rather than presentational terms.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="blockquote">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;blockquote&gt; Element (or HTML Block Quotation Element) indicates that the enclosed text is an extended quotation. Usually, this is rendered visually by indentation (see Notes for how to change it). A URL for the source of the quotation may be given using the cite attribute, while a text representation of the source can be given using the &lt;cite&gt; element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="blockText"/>
+      </xs:choice>
+      <xs:attribute name="cite" type="xs:anyURI"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:simpleType name="htmlLength">
+    <xs:annotation>
+      <xs:documentation>
+        nn for pixels or nn% for percentage length
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[\-+]?(\d+|\d+(\.\d+)?%)"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="object">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;object&gt; Element (or HTML Embedded Object Element) represents an external resource, which can be treated as an image, a nested browsing context, or a resource to be handled by a plugin.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="param"/>
+        <xs:group ref="blockText"/>
+        <xs:group ref="inlineText"/>
+      </xs:choice>
+      <xs:attribute name="classid" type="xs:string"/>
+      <xs:attribute name="codebase" type="xs:string"/>
+      <xs:attribute name="data" type="xs:string"/>
+      <xs:attribute name="type" type="xs:string"/>
+      <xs:attribute name="codetype" type="xs:string"/>
+      <xs:attribute name="archive" type="xs:string"/>
+      <xs:attribute name="standby" type="xs:string"/>
+      <xs:attribute name="height" type="htmlLength"/>
+      <xs:attribute name="width" type="htmlLength"/>
+      <xs:attribute name="usemap" type="xs:string"/>
+      <xs:attribute name="name" type="xs:NMTOKEN"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="param">
+    <xs:annotation>
+      <xs:documentation>
+        param is used to supply a named property value
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="id" type="xs:ID"/>
+      <xs:attribute name="name"/>
+      <xs:attribute name="value"/>
+      <xs:attribute default="data" name="valuetype">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="data"/>
+            <xs:enumeration value="ref"/>
+            <xs:enumeration value="object"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="type" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="embed">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;embed&gt; Element represents an integration point for an external application or interactive content (in other words, a plug-in).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="src" type="xs:anyURI">
+        <xs:annotation>
+          <xs:documentation>
+            The URL of the resource being embedded.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="type" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The MIME type to use to select the plug-in to instantiate.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="height" type="xs:nonNegativeInteger">
+        <xs:annotation>
+          <xs:documentation>
+            The displayed height of the resource, in CSS pixels.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="width" type="xs:nonNegativeInteger">
+        <xs:annotation>
+          <xs:documentation>
+            The displayed width of the resource, in CSS pixels.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="applet">
+    <xs:annotation>
+      <xs:documentation>
+        This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="param"/>
+        <xs:group ref="blockText"/>
+        <xs:group ref="inlineText"/>
+      </xs:choice>
+      <xs:attribute name="codebase" type="xs:anyURI"/>
+      <xs:attribute name="archive"/>
+      <xs:attribute name="code"/>
+      <xs:attribute name="object"/>
+      <xs:attribute name="alt" type="xs:string"/>
+      <xs:attribute name="name" type="xs:NMTOKEN"/>
+      <xs:attribute name="width" type="xs:nonNegativeInteger" use="required"/>
+      <xs:attribute name="height" type="xs:nonNegativeInteger" use="required"/>
+      <xs:attribute name="hspace" type="xs:nonNegativeInteger"/>
+      <xs:attribute name="vspace" type="xs:nonNegativeInteger"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="map">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;area&gt; element defines a hot-spot region on an image, and optionally associates it with a hypertext link. This element is used only within a &lt;map&gt; element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice>
+        <xs:choice maxOccurs="unbounded">
+          <xs:group ref="blockText"/>
+        </xs:choice>
+        <xs:element maxOccurs="unbounded" ref="area"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:ID" use="required"/>
+      <xs:attribute name="class"/>
+      <xs:attribute name="style" type="xs:string"/>
+      <xs:attribute name="title" type="xs:string"/>
+      <xs:attribute name="name" type="xs:NMTOKEN"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="area">
+    <xs:complexType>
+      <xs:attribute default="rect" name="shape">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="rect"/>
+            <xs:enumeration value="circle"/>
+            <xs:enumeration value="poly"/>
+            <xs:enumeration value="default"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="coords">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[\-+]?(\d+|\d+(\.\d+)?%)(,\s*[\-+]?(\d+|\d+(\.\d+)?%))*"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="href" type="xs:anyURI"/>
+      <xs:attribute name="nohref">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="nohref"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="alt" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="form">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;form&gt; element represents a document section that contains interactive controls to submit information to a web server.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="blockText"/>
+      </xs:choice>
+      <xs:attribute name="action" type="xs:anyURI" use="required"/>
+      <xs:attribute default="get" name="method">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="get"/>
+            <xs:enumeration value="post"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="application/x-www-form-urlencoded" name="enctype" type="xs:string"/>
+      <xs:attribute name="onsubmit" type="xs:string"/>
+      <xs:attribute name="onreset" type="xs:string"/>
+      <xs:attribute name="accept" type="xs:string"/>
+      <xs:attribute name="accept-charset" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="label">
+    <xs:annotation>
+      <xs:documentation>
+        Each label must not contain more than ONE field
+        Label elements shouldn't be nested.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="inlineBaseType">
+          <xs:attribute name="for" type="xs:IDREF"/>
+          <xs:attribute name="accesskey">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:length fixed="true" value="1"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="onfocus" type="xs:string"/>
+          <xs:attribute name="onblur" type="xs:string"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="InputType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="text"/>
+      <xs:enumeration value="password"/>
+      <xs:enumeration value="checkbox"/>
+      <xs:enumeration value="radio"/>
+      <xs:enumeration value="submit"/>
+      <xs:enumeration value="reset"/>
+      <xs:enumeration value="file"/>
+      <xs:enumeration value="hidden"/>
+      <xs:enumeration value="image"/>
+      <xs:enumeration value="button"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="input">
+    <xs:annotation>
+      <xs:documentation>
+        form control
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute default="text" name="type" type="InputType"/>
+      <xs:attribute name="name">
+        <xs:annotation>
+          <xs:documentation>
+            the name attribute is required for all but submit &amp; reset
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="value"/>
+      <xs:attribute name="checked">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="checked"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="disabled">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="disabled"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="readonly">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="readonly"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="size"/>
+      <xs:attribute name="maxlength" type="xs:nonNegativeInteger"/>
+      <xs:attribute name="src" type="xs:anyURI"/>
+      <xs:attribute name="alt"/>
+      <xs:attribute name="usemap" type="xs:anyURI"/>
+      <xs:attribute name="onselect" type="xs:string"/>
+      <xs:attribute name="onchange" type="xs:string"/>
+      <xs:attribute name="accept" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="select">
+    <xs:annotation>
+      <xs:documentation>
+        option selector
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="optgroup"/>
+        <xs:element ref="option"/>
+      </xs:choice>
+      <xs:attribute name="name"/>
+      <xs:attribute name="size" type="xs:nonNegativeInteger"/>
+      <xs:attribute name="multiple">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="multiple"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="disabled">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="disabled"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="tabindex" type="xs:nonNegativeInteger"/>
+      <xs:attribute name="onfocus" type="xs:string"/>
+      <xs:attribute name="onblur" type="xs:string"/>
+      <xs:attribute name="onchange" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="optgroup">
+    <xs:annotation>
+      <xs:documentation>
+        option group
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="option"/>
+      </xs:sequence>
+      <xs:attribute name="disabled">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="disabled"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="label" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="option">
+    <xs:annotation>
+      <xs:documentation>
+        selectable choice
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="selected">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="selected"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="disabled">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="disabled"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="label" type="xs:string"/>
+      <xs:attribute name="value"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="textarea">
+    <xs:annotation>
+      <xs:documentation>
+        multi-line text field
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="name"/>
+      <xs:attribute name="rows" type="xs:nonNegativeInteger" use="required"/>
+      <xs:attribute name="cols" type="xs:nonNegativeInteger" use="required"/>
+      <xs:attribute name="disabled">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="disabled"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="readonly">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="readonly"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="onselect" type="xs:string"/>
+      <xs:attribute name="onchange" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fieldset">
+    <xs:annotation>
+      <xs:documentation>
+        The fieldset element is used to group form fields.
+        Only one legend element should occur in the content
+        and if present should only be preceded by whitespace.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element ref="legend"/>
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="blockText"/>
+          <xs:group ref="inlineText"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="legend">
+    <xs:annotation>
+      <xs:documentation>
+        fieldset label
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="inlineBaseType">
+          <xs:attribute name="accesskey">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:length fixed="true" value="1"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="button">
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="blockText"/>
+        <xs:group ref="inlineText"/>
+      </xs:choice>
+      <xs:attribute name="name"/>
+      <xs:attribute name="value"/>
+      <xs:attribute default="submit" name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="button"/>
+            <xs:enumeration value="submit"/>
+            <xs:enumeration value="reset"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="disabled">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="disabled"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  
 </xs:schema>
