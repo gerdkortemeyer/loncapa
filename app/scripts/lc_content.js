@@ -2,15 +2,18 @@ var edit_mode=false;
 
 $(document).ready(function() {
   $('#content_tree').jstree({
-     'plugins' : ['crrm','dnd','search'],
+     'plugins' : ['dnd','search'],
      'core' : {
-        'check_callback' : true,
+        'check_callback' : function(operation, node, node_parent, node_position, more) { return edit_mode; },
         'data' : {
            'url' : function (node) { return '/toc'; },
            'data' : function (node) { return { 'id' : node.id }; }
          }
      },
-     'search' : { 'show_only_matches' : 1 }
+     'search' : { 'show_only_matches' : 1 },
+     'dnd' : {
+        'open_timeout' : 100,
+     }
   });
   var to = false;
   $('#content_tree_q').keyup(function () {
@@ -31,8 +34,10 @@ function treereload() {
 
 function toggle_edit() {
    if (edit_mode) {
+      $('#edit_lock').attr('src','/images/lock_closed.png');
       edit_mode=false;
    } else {
+      $('#edit_lock').attr('src','/images/lock_opened.png');
       edit_mode=true;
    }
 }
