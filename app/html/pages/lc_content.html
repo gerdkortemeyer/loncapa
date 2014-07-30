@@ -1,15 +1,14 @@
 <html>
 <head>
 <title>Content</title>
-<notallowed action="edit_toc" realm="course">
 <script src="/scripts/lc_content.js"></script>
-</notallowed>
-<allowed action="edit_toc" realm="course">
-<script src="/scripts/lc_content_edit.js"></script>
-</allowed>
 </head>
 <body>
 <h1><localize>Content</localize></h1>
+<allowed action="edit_toc" realm="course">
+<a href="#" onclick="toggle_edit()"><img id="edit_lock" src="/images/lock_closed.png" border="0" /></a>
+</allowed>
+<input type="text" id="content_tree_q" value="" />
 <lctree id="content_tree" />
 <a href='javascript:treereload()'>Refresh</a>
 </body>
