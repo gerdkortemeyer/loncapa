@@ -5,11 +5,21 @@
 </head>
 <body>
 <h1><localize>Content</localize></h1>
+<lcform id="content">
+<lcformtable>
+<lcformtableinput id="content_tree_q" type="text" description="Search" />
+</lcformtable>
+</lcform>
 <allowed action="edit_toc" realm="course">
-<a href="#" onclick="toggle_edit()"><img id="edit_lock" src="/images/lock_closed.png" border="0" /></a>
+<table>
+<tr><td><a href="#" onclick="toggle_edit()"><img id="edit_lock" src="/images/lock_closed.png" border="0" /></a></td>
+<td><div id="instructions" class="lcinfo">
+<localize>Right click or CTRL-click: menu</localize><br />
+<localize>Drag and CTRL: copy</localize>
+</div>
+</td></tr>
+</table>
 </allowed>
-<input type="text" id="content_tree_q" value="" />
 <lctree id="content_tree" />
-<a href='javascript:treereload()'>Refresh</a>
 </body>
 </html>

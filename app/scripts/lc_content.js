@@ -2,7 +2,7 @@ var edit_mode=false;
 
 $(document).ready(function() {
   $('#content_tree').jstree({
-     'plugins' : ['dnd','search'],
+     'plugins' : ['dnd','search','contextmenu','types'],
      'core' : {
         'check_callback' : function(operation, node, node_parent, node_position, more) { return edit_mode; },
         'data' : {
@@ -21,7 +21,7 @@ $(document).ready(function() {
     to = setTimeout(function () {
        var v = $('#content_tree_q').val();
        $('#content_tree').jstree(true).search(v);
-       }, 250);
+       }, 100);
   });
   $('#content_tree').on("changed.jstree", function (e, data) {
     console.log(JSON.stringify(data.selected));
@@ -35,9 +35,11 @@ function treereload() {
 function toggle_edit() {
    if (edit_mode) {
       $('#edit_lock').attr('src','/images/lock_closed.png');
+      $('#instructions').hide();
       edit_mode=false;
    } else {
       $('#edit_lock').attr('src','/images/lock_opened.png');
+      $('#instructions').show();
       edit_mode=true;
    }
 }
