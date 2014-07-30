@@ -24,7 +24,12 @@ $(document).ready(function() {
        }, 100);
   });
   $('#content_tree').on("changed.jstree", function (e, data) {
-    console.log(JSON.stringify(data.selected));
+     if ((data.selected) && (!edit_mode)) {
+        parent.display_asset('/course_asset/'+data.instance.get_node(data.selected[0]).id);
+     }
+  });
+  $('#content_tree').on("loaded.jstree", function (e, data) {
+     adjust_framesize();
   });
 });
 
