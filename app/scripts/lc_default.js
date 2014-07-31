@@ -67,8 +67,8 @@ function show_navarrows() {
    $('#content').css('width','94%');
    $('#navleft').css('width','3%');
    $('#navright').css('width','3%');
-   $('#navleft').html('&lt;');
-   $('#navright').html('&gt;');
+   $('#navleft').html('<a href="#" id="navleftlink" class="navarrow">&lt;</a>');
+   $('#navright').html('<a href="#" id="navrightlink" class="navarrow">&gt;</a>');
 }
 
 function hide_navarrows() {

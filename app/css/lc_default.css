@@ -43,13 +43,26 @@ header {
 #navleft {
    text-align: left;
    float: left;
+   background-color: #777777;
+   color: #ffffff;
    width: 0%;
+   border-radius: 8px 0px 0px 8px;
 }
 
 #navright {
    text-align: right;
    float: right;
+   background-color: #777777;
+   color: #ffffff;
    width: 0%;
+   border-radius: 0px 8px 8px 0px;
+}
+
+.navarrow {
+   display: block;
+   text-decoration: none;
+   color: #ffffff;
+   padding: 20px 1px;
 }
 
 aside {
@@ -95,6 +108,7 @@ section {
 
 #contentframe {
    width: 100%;
+   border: 0;
 }
 
 #contentframeload {
