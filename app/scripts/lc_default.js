@@ -37,7 +37,15 @@ function display_course_asset(assetid) {
    $.getJSON( "toc", { "command" : "data", "assetid" : assetid }, function( data ) {
        $.each(data, function(key, val) {
            if (key=='url') {
-              display_asset(val);
+              var newcontent='<div id="content"><iframe id="contentframe" src="'+val+'"></iframe></div>';
+              $('#contentframeload').css("visibility","visible");
+              $('#content').replaceWith(newcontent);
+              $('#contentframe').load(function() {
+                 var frameheight=this.contentWindow.document.body.offsetHeight + 50;
+                 this.style.height = frameheight + 'px';
+                 $('#contentframeload').css("visibility","hidden");
+              });
+              show_navarrows();
            }
        });
    });
@@ -52,7 +60,25 @@ function display_asset(newuri) {
       this.style.height = frameheight + 'px';
       $('#contentframeload').css("visibility","hidden");
    });
+   hide_navarrows();
 }
+
+function show_navarrows() {
+   $('#content').css('width','94%');
+   $('#navleft').css('width','3%');
+   $('#navright').css('width','3%');
+   $('#navleft').html('&lt;');
+   $('#navright').html('&gt;');
+}
+
+function hide_navarrows() {
+   $('#navleft').html('');
+   $('#navright').html('');
+   $('#navleft').css('width','0%');
+   $('#navright').css('width','0%');
+   $('#content').css('width','100%');
+}
+
 
 function showsub (submenuelement) {
    if (!($('#open'+submenuelement).is(":hover"))) {

@@ -40,6 +40,18 @@ header {
    text-align: right;
 }
 
+#navleft {
+   text-align: left;
+   float: left;
+   width: 0%;
+}
+
+#navright {
+   text-align: right;
+   float: right;
+   width: 0%;
+}
+
 aside {
    background-color: rgba(220,220,220,0.5);
    position: fixed;
@@ -74,6 +86,11 @@ section {
    z-index: -1;
    border-radius: 5px 5px 5px 5px;
    box-shadow: 2px 2px 3px #111111;
+}
+
+#content {
+   width: 100%;
+   float: left;
 }
 
 #contentframe {
