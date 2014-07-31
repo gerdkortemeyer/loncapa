@@ -148,6 +148,10 @@ use utf8;
 
 'Changes complete.' => 'Änderungen beendet.', 
 
+'Right click or CTRL-click: menu' => 'Rechte Maustaste oder Strg-klick: Menü',
+
+'Drag and CTRL: copy' => 'Ziehen und Strg: kopieren',
+
 'Success.' => 'Erfolg.',
 
 'Failure.' => 'Fehlschlag.',

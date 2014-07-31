@@ -40,6 +40,31 @@ header {
    text-align: right;
 }
 
+#navleft {
+   text-align: left;
+   float: left;
+   background-color: #777777;
+   color: #ffffff;
+   width: 0%;
+   border-radius: 8px 0px 0px 8px;
+}
+
+#navright {
+   text-align: right;
+   float: right;
+   background-color: #777777;
+   color: #ffffff;
+   width: 0%;
+   border-radius: 0px 8px 8px 0px;
+}
+
+.navarrow {
+   display: block;
+   text-decoration: none;
+   color: #ffffff;
+   padding: 20px 1px;
+}
+
 aside {
    background-color: rgba(220,220,220,0.5);
    position: fixed;
@@ -76,8 +101,14 @@ section {
    box-shadow: 2px 2px 3px #111111;
 }
 
+#content {
+   width: 100%;
+   float: left;
+}
+
 #contentframe {
    width: 100%;
+   border: 0;
 }
 
 #contentframeload {

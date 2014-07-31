@@ -1,16 +1,25 @@
 <html>
 <head>
 <title>Content</title>
-<notallowed action="edit_toc" realm="course">
 <script src="/scripts/lc_content.js"></script>
-</notallowed>
-<allowed action="edit_toc" realm="course">
-<script src="/scripts/lc_content_edit.js"></script>
-</allowed>
 </head>
 <body>
 <h1><localize>Content</localize></h1>
+<lcform id="content">
+<lcformtable>
+<lcformtableinput id="content_tree_q" type="text" description="Search" />
+</lcformtable>
+</lcform>
+<allowed action="edit_toc" realm="course">
+<table>
+<tr><td><a href="#" onclick="toggle_edit()"><img id="edit_lock" src="/images/lock_closed.png" border="0" /></a></td>
+<td><div id="instructions" class="lcinfo">
+<localize>Right click or CTRL-click: menu</localize><br />
+<localize>Drag and CTRL: copy</localize>
+</div>
+</td></tr>
+</table>
+</allowed>
 <lctree id="content_tree" />
-<a href='javascript:treereload()'>Refresh</a>
 </body>
 </html>
