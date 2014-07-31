@@ -29,10 +29,8 @@ use Apache::lc_logs;
 
 # ==== Main handler
 #
-sub handler {
-# Get request object
+sub toc {
    my $r = shift;
-   $r->content_type('application/json; charset=utf-8');
    my $timestamp=localtime();
    $r->print(<<ENDCONTENTS);
 [
@@ -2072,6 +2070,22 @@ sub handler {
     }
 ]
 ENDCONTENTS
+}
+
+sub data {
+   my ($r,$assetid)=@_;
+   $r->print('{ "url" : "/res/msu/zaphod/hello.html" }');
+}
+
+sub handler {
+   my $r = shift;
+   $r->content_type('application/json; charset=utf-8');
+   my %content=&Apache::lc_entity_sessions::posted_content();
+   if ($content{'command'} eq 'data') {
+     &data($r,$content{'assetid'});
+   } else {
+     &toc($r);
+   }
    return OK;
 }
 1;

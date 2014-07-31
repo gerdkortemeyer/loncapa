@@ -33,6 +33,16 @@ function hide_modal() {
    $.unblockUI();
 }
 
+function display_course_asset(assetid) {
+   $.getJSON( "toc", { "command" : "data", "assetid" : assetid }, function( data ) {
+       $.each(data, function(key, val) {
+           if (key=='url') {
+              display_asset(val);
+           }
+       });
+   });
+}
+
 function display_asset(newuri) {
    var newcontent='<div id="content"><iframe id="contentframe" src="'+newuri+'"></iframe></div>';
    $('#contentframeload').css("visibility","visible");

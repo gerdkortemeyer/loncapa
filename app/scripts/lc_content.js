@@ -25,7 +25,7 @@ $(document).ready(function() {
   });
   $('#content_tree').on("changed.jstree", function (e, data) {
      if ((data.selected) && (!edit_mode)) {
-        parent.display_asset('/course_asset/'+data.instance.get_node(data.selected[0]).id);
+        parent.display_course_asset(data.instance.get_node(data.selected[0]).id);
      }
   });
   $('#content_tree').on("loaded.jstree", function (e, data) {
