@@ -2072,18 +2072,26 @@ sub toc {
 ENDCONTENTS
 }
 
-sub data {
+#
+# Accessing course content
+# Remember where we are, set breadcrumbs, etc, etc ...
+#
+sub register {
    my ($r,$assetid)=@_;
-   $r->print('{ "url" : "/res/msu/zaphod/hello.html" }');
+   $r->print('{ "url" : "/res/msu/zaphod/hello.html",
+                "prev" : "oE4NvBu8Hc7s2rGfrKF_25271_1406233153",
+                "next" : "nQKqmGhgsoudh21NjMd_25271_1406233153" }');
 }
 
 sub handler {
    my $r = shift;
    $r->content_type('application/json; charset=utf-8');
    my %content=&Apache::lc_entity_sessions::posted_content();
-   if ($content{'command'} eq 'data') {
-     &data($r,$content{'assetid'});
+   if ($content{'command'} eq 'register') {
+# Accessing a specific piece of content
+     &register($r,$content{'assetid'});
    } else {
+# Just list table of contents
      &toc($r);
    }
    return OK;

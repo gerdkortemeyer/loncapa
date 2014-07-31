@@ -1,4 +1,7 @@
 var serial=0;
+var this_assetid='';
+var prev_assetid='';
+var next_assetid='';
 
 $(document).ready(function() {
    menubar();
@@ -34,10 +37,11 @@ function hide_modal() {
 }
 
 function display_course_asset(assetid) {
-   $.getJSON( "toc", { "command" : "data", "assetid" : assetid }, function( data ) {
+   this_assetid=assetid;
+   $.getJSON( "toc", { "command" : "register", "assetid" : assetid }, function( data ) {
        $.each(data, function(key, val) {
            if (key=='url') {
-              var newcontent='<div id="content"><iframe id="contentframe" src="'+val+'"></iframe></div>';
+              var newcontent='<div id="content"><iframe id="contentframe" src="'+val+'?assetid='+assetid+'"></iframe></div>';
               $('#contentframeload').css("visibility","visible");
               $('#content').replaceWith(newcontent);
               $('#contentframe').load(function() {
@@ -47,7 +51,29 @@ function display_course_asset(assetid) {
               });
               show_navarrows();
            }
+           if (key=='next') {
+              next_assetid=val;
+              if (next_assetid) {
+                 $('#navrightlink').click(function() {
+                    display_course_asset(next_assetid);
+                 });
+              } else {
+                 $('#navrightlink').click(function(){});
+              }
+           }
+           if (key=='prev') {
+              prev_assetid=val;
+              if (prev_assetid) {
+                 $('#navleftlink').click(function() {
+                    display_course_asset(prev_assetid);
+                 });
+              } else {
+                 $('#navleftlink').click(function(){});
+              }
+           }
        });
+       menubar();
+       breadcrumbbar();
    });
 }
 
