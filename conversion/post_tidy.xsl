@@ -11,44 +11,48 @@
   </xsl:template>
 
   <xsl:template match="inlinefont">
-    <xsl:variable name="csscolor"><xsl:call-template name="color"/></xsl:variable>
-    <xsl:variable name="csssize"><xsl:call-template name="size"/></xsl:variable>
-    <xsl:variable name="cssface"><xsl:call-template name="face"/></xsl:variable>
-    <xsl:variable name="symbol"><xsl:call-template name="has-symbol"/></xsl:variable>
-    <xsl:choose>
-      <xsl:when test="$csscolor = '' and $csssize = '' and $cssface = '' and $symbol = 'yes'">
-        <xsl:call-template name="symbol-content"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <span style="{$csscolor}{$csssize}{$cssface}">
-          <xsl:choose>
-            <xsl:when test="$symbol = 'yes'">
-              <xsl:call-template name="symbol-content"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="node()"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </span>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="blockfont">
-    <xsl:variable name="csscolor"><xsl:call-template name="color"/></xsl:variable>
-    <xsl:variable name="csssize"><xsl:call-template name="size"/></xsl:variable>
-    <xsl:variable name="cssface"><xsl:call-template name="face"/></xsl:variable>
-    <xsl:variable name="symbol"><xsl:call-template name="has-symbol"/></xsl:variable>
-    <div style="{$csscolor}{$csssize}{$cssface}">
+    <xsl:if test="node()">
+      <xsl:variable name="csscolor"><xsl:call-template name="color"/></xsl:variable>
+      <xsl:variable name="csssize"><xsl:call-template name="size"/></xsl:variable>
+      <xsl:variable name="cssface"><xsl:call-template name="face"/></xsl:variable>
+      <xsl:variable name="symbol"><xsl:call-template name="has-symbol"/></xsl:variable>
       <xsl:choose>
-        <xsl:when test="$symbol = 'yes'"> <!-- we will not do that test recursively -->
+        <xsl:when test="$csscolor = '' and $csssize = '' and $cssface = '' and $symbol = 'yes'">
           <xsl:call-template name="symbol-content"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="node()"/>
+          <span style="{$csscolor}{$csssize}{$cssface}">
+            <xsl:choose>
+              <xsl:when test="$symbol = 'yes'">
+                <xsl:call-template name="symbol-content"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:apply-templates select="node()"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </span>
         </xsl:otherwise>
       </xsl:choose>
-    </div>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="blockfont">
+    <xsl:if test="node()">
+      <xsl:variable name="csscolor"><xsl:call-template name="color"/></xsl:variable>
+      <xsl:variable name="csssize"><xsl:call-template name="size"/></xsl:variable>
+      <xsl:variable name="cssface"><xsl:call-template name="face"/></xsl:variable>
+      <xsl:variable name="symbol"><xsl:call-template name="has-symbol"/></xsl:variable>
+      <div style="{$csscolor}{$csssize}{$cssface}">
+        <xsl:choose>
+          <xsl:when test="$symbol = 'yes'"> <!-- we will not do that test recursively -->
+            <xsl:call-template name="symbol-content"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates select="node()"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </div>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="color">
@@ -119,6 +123,14 @@
       </xsl:choose>
     </xsl:for-each>
   </xsl:template>
+  
+  
+  <xsl:template match="center">
+    <div style="text-align: center; margin: 0 auto">
+      <xsl:apply-templates select="node()"/>
+    </div>
+  </xsl:template>
+  
   
   <xsl:template match = "@*|node()">
     <xsl:copy>

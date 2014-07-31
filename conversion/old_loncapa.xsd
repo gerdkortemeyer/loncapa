@@ -22,6 +22,17 @@
       <xs:pattern value="[+-]?\d*\.?\d*([eE][+-]?\d+)?"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="perl">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="((\$|\&amp;)([#|$]*[A-Za-z][\w]*|\{[A-Za-z][\w]*\}))([\[\{][^$&amp;\]\}]+[\]\}])*(\([^$&amp;\)]+\))*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="int-or-perl">
+    <xs:union memberTypes="xs:int perl"/>
+  </xs:simpleType>
+  <xs:simpleType name="real-or-perl">
+    <xs:union memberTypes="real perl"/>
+  </xs:simpleType>
   <xs:complexType name="caparesponse--answergroup">
     <xs:annotation>
       <xs:documentation>Collection of Answers</xs:documentation>
@@ -325,11 +336,15 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="true"/>
-          <xs:enumeration value="false"/>
-          <xs:enumeration value="unused"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="true"/>
+              <xs:enumeration value="false"/>
+              <xs:enumeration value="unused"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="random" name="location">
@@ -659,14 +674,14 @@
     <xs:annotation>
       <xs:documentation>Plot Label</xs:documentation>
     </xs:annotation>
-    <xs:attribute default="0" name="xpos" type="real">
+    <xs:attribute default="0" name="xpos" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
           X position of label (graph coordinates)
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="0" name="ypos" type="real">
+    <xs:attribute default="0" name="ypos" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
           Y position of label (graph coordinates)
@@ -724,28 +739,28 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="-10.0" name="xmin" type="real">
+    <xs:attribute default="-10.0" name="xmin" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
           Minimum x-value shown in plot
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="10.0" name="xmax" type="real">
+    <xs:attribute default="10.0" name="xmax" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
           Maximum x-value shown in plot
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="-10.0" name="ymin" type="real">
+    <xs:attribute default="-10.0" name="ymin" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
           Minimum y-value shown in plot
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="10.0" name="ymax" type="real">
+    <xs:attribute default="10.0" name="ymax" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
           Maximum y-value shown in plot
@@ -1039,21 +1054,21 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="-10.0" name="start" type="real">
+    <xs:attribute default="-10.0" name="start" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
           Start major tics at
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="1.0" name="increment" type="real">
+    <xs:attribute default="1.0" name="increment" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
           Place a major tic every
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="10.0" name="end" type="real">
+    <xs:attribute default="10.0" name="end" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
           Stop major tics at
@@ -2623,17 +2638,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="type" use="required">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="tolerance"/>
-            <xs:enumeration value="int"/>
-            <xs:enumeration value="float"/>
-            <xs:enumeration value="string"/>
-            <xs:enumeration value="date"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
+      <xs:attribute name="type" type="xs:string" use="required"/>
       <xs:attribute name="default" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -3581,14 +3586,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="300" name="height" type="xs:int">
+      <xs:attribute default="300" name="height" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Height of image (pixels)
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="400" name="width" type="xs:int">
+      <xs:attribute default="400" name="width" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Width of image (pixels)
@@ -4539,6 +4544,7 @@
       <xs:element ref="sup"/>
       <xs:element ref="sub"/>
       <xs:element ref="code"/>
+      <xs:element ref="kbd"/>
       <xs:element ref="tt"/>
       <xs:element ref="ins"/>
       <xs:element ref="del"/>
@@ -4814,6 +4820,7 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="class" type="xs:string"/>
+      <xs:attribute name="style" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="p">
@@ -5047,6 +5054,13 @@
     <xs:annotation>
       <xs:documentation>
         The HTML &lt;code&gt; Element represents a fragment of computer code. By default, it is displayed in the browser's default monospace font.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="kbd" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;kbd&gt; Element (or HTML Keyboard Input Element) represents user input and produces an inline element displayed in the browser's default monotype font.
       </xs:documentation>
     </xs:annotation>
   </xs:element>
