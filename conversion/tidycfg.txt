@@ -17,3 +17,5 @@ wrap: 0
 newline: LF
 
 indent: auto
+
+show-warnings: no
