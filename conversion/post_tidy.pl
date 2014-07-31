@@ -22,3 +22,5 @@ my $stylesheet = $xslt->parse_stylesheet($style_doc);
 my $results = $stylesheet->transform($source);
 
 print $stylesheet->output_as_bytes($results);
+
+unlink ('/tmp/tidycfg.txt', '/tmp/pretidy.txt');

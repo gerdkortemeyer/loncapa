@@ -11,4 +11,6 @@ fi
 namenoext="${filename%.*}"
 newpath="$dir/${namenoext}_clean$ext"
 
-cat "$pathname" | perl pre_tidy.pl | tidy -config tidycfg.txt | perl post_tidy.pl > "$newpath"
+perl pre_tidy.pl "$pathname" >/tmp/pretidy.txt
+tidy -config /tmp/tidycfg.txt /tmp/pretidy.txt | perl post_tidy.pl > "$newpath"
+
