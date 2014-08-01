@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
 use strict;
+use utf8;
 
 use File::Basename;
 use HTML::TokeParser;
@@ -13,24 +14,115 @@ my @inline_elements = ('vector','value','location','parameter','array','unit','t
 # list of empty elements, which must also appear either in block or inline
 my @empty_elements = ('drawoptionlist','location','parameter','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','textline','displayduedate','displaytitle','organicstructure','responseparam','img','meta','startpartmarker','endpartmarker','allow','startouttext','endouttext','axis','key','xtics','ytics','displayweight','displaystudentphoto','emptyfont');
 
+# list of elements inside which < and > might not be turned into entities
+# unfortunately, answer can sometimes contain the elements vector and value...
+my @cdata_elements = ('answer', 'm'); # FIXME: script is encoded later by tidy, so it would be encoded twice if it was added here, but not adding it here can also cause problems in pre_tidy...
+
+
 if (!defined $RES_DIR) {
   die "The environement variable RES_DIR must be defined (path of res directory parent without the / at the end)";
 }
 
-fix_font();
+my $lines = guess_encoding_and_read($ARGV[0]);
+
+binmode(STDOUT, ":utf8");
+
+fix_cdata_elements($lines);
+
+fix_html_entities($lines);
+
+fix_font($lines);
+
+foreach my $line (@{$lines}) {
+  print $line;
+}
 
 create_tidycfg();
 
 
 ##
+# TODO using http://perldoc.perl.org/Encode/Guess.html
+##
+sub guess_encoding_and_read {
+  my ($fn) = @_;
+  open(my $fh, "<:encoding(UTF-8)", $fn) or die "cannot read $fn: $!";
+  my @lines = <$fh>; # we need to read the whole file to test if font is a block or inline element
+  return \@lines;
+}
+
+
+##
+# Replaces < and > characters by &lt; and &gt; in cdata elements (listed in @cdata_elements).
+# @param {Array<string>} lines
+##
+sub fix_cdata_elements {
+  my ($lines) = @_;
+  my $i = 0;
+  my $j = 0;
+  my $tag = '';
+  my $type;
+  ($tag, $type, $i, $j) = next_tag($lines, $i, $j);
+  while ($tag ne '') {
+    if (in_array_ignore_case(\@cdata_elements, $tag)) {
+      my $cde = $tag;
+      my $line = $lines->[$i];
+      $j = index($line, '>', $j+1) + 1;
+      my $stop = 0;
+      while (!$stop && $i < scalar(@{$lines})) {
+        my $indinf = index($line, '<', $j);
+        my $indsup = index($line, '>', $j);
+        if ($indinf != -1 && $indsup != -1 && $indinf < $indsup) {
+          my $test = substr($line, $indinf + 1, $indsup - ($indinf + 1));
+          $test =~ s/^\s+|\s+$//g ;
+          if ($test eq '/'.$cde) {
+            $stop = 1;
+            $j = $indsup + 1;
+          } elsif ($test =~ /^[a-zA-Z\/]$/) {
+            $j = $indsup + 1;
+          } else {
+            $line = substr($line, 0, $indinf).'&lt;'.substr($line, $indinf+1);
+            $lines->[$i] = $line;
+          }
+        } elsif ($indinf != -1 && $indsup == -1) {
+          $line = substr($line, 0, $indinf).'&lt;'.substr($line, $indinf+1);
+          $lines->[$i] = $line;
+        } elsif ($indsup != -1 && ($indinf == -1 || $indsup < $indinf)) {
+          $line = substr($line, 0, $indsup).'&gt;'.substr($line, $indsup+1);
+          $lines->[$i] = $line;
+        } else {
+          $i++;
+          $line = $lines->[$i];
+          $j = 0;
+        }
+      }
+    }
+    $j++;
+    ($tag, $type, $i, $j) = next_tag($lines, $i, $j);
+  }
+}
+
+
+##
+# Replaces HTML entities (they are not XML unless a DTD is used, which is no longer recommanded for XHTML).
+# @param {Array<string>} lines
+##
+sub fix_html_entities {
+  my ($lines) = @_;
+  foreach my $line (@{$lines}) {
+    $line =~ s/\&nbsp;/&#xA0;/g;
+  }
+}
+
+
+##
 # Transforms $ARGV[0] into stdout by replacing the font element by either epmtyfont, blockfont or inlinefont.
+# @param {Array<string>} lines
 #
 sub fix_font {
-  open(my $fh, "<", $ARGV[0]) or die "cannot read $ARGV[0]: $!";
-  my @lines = <$fh>; # we need to read the whole file to test if font is a block or inline element
+  my ($lines) = @_;
 
-  for (my $i=0; $i<scalar(@lines); $i++) {
-    my $line = $lines[$i];
+  for (my $i=0; $i<scalar(@{$lines}); $i++) {
+    my $line = $lines->[$i];
     # replace empty font elements on the line
     $line =~ s/<font([^>]*)\/>/<emptyfont\1\/>/g;
     $line =~ s/<FONT([^>]*)\/>/<emptyfont\1\/>/g;
@@ -48,7 +140,7 @@ sub fix_font {
       my $type;
       my $is_block = 0;
       my $depth = 0;
-      ($tag, $type, $i2, $j2) = next_tag(\@lines, $i2, $j2+1);
+      ($tag, $type, $i2, $j2) = next_tag($lines, $i2, $j2+1);
       while ($tag ne '') {
         if (($tag eq 'font' || $tag eq 'FONT') && $type eq 'end') {
           if ($depth > 0) {
@@ -58,10 +150,10 @@ sub fix_font {
           }
         } elsif (($tag eq 'font' || $tag eq 'FONT') && $type eq 'start') {
           $depth++;
-        } elsif ($tag ~~ @block_elements) {
+        } elsif (in_array(\@block_elements, $tag)) {
           $is_block = 1;
         }
-        ($tag, $type, $i2, $j2) = next_tag(\@lines, $i2, $j2+1);
+        ($tag, $type, $i2, $j2) = next_tag($lines, $i2, $j2+1);
       }
       my $newname;
       if ($is_block) {
@@ -74,7 +166,7 @@ sub fix_font {
         if ($i2 == $i) {
           $line = substr($line, 0, $j2).'</'.$newname.'>'.substr($line, $j2+7);
         } else {
-          $lines[$i2] = substr($lines[$i2], 0, $j2).'</'.$newname.'>'.substr($lines[$i2], $j2+7);
+          $lines->[$i2] = substr($lines->[$i2], 0, $j2).'</'.$newname.'>'.substr($lines->[$i2], $j2+7);
         }
       }
       # change start tag
@@ -86,9 +178,9 @@ sub fix_font {
       if ($j == -1 || ($ju != -1 && $ju < $j)) {
         $j = $ju;
       }
-      $lines[$i] = $line; # we need that because next_tag is using @lines
+      $lines->[$i] = $line;
     }
-    print $line;
+    $lines->[$i] = $line;
   }
 }
 
@@ -96,9 +188,11 @@ sub fix_font {
 # Returns information about the next tag, starting at line number and char number.
 # Assumes the markup is well-formed and there is no CDATA,
 # which is not always true (like inside script), so results might be wrong sometimes.
-# @param {Array[string]} lines
-# @param {int} line_number
-# @param {int} char_number
+# It is however useful to avoid unnecessary changes in the document (using a parser to
+# do read/write for the whole document would mess up non well-formed documents).
+# @param {Array<string>} lines
+# @param {int} line_number - line number to start at
+# @param {int} char_number - char number to start at on the line
 # @returns (tag, type, line_number, char_number)
 ##
 sub next_tag {
@@ -108,6 +202,7 @@ sub next_tag {
   while ($i2 < scalar(@{$lines})) {
     my $line = $lines->[$i2];
     $j2 = index($line, '<', $j2);
+    #TODO: handle comments
     while ($j2 != -1) {
       my $ind_slash = index($line, '/', $j2);
       my $ind_sup = index($line, '>', $j2);
@@ -198,6 +293,12 @@ newline: LF
 indent: auto
 
 show-warnings: no
+
+quiet: yes
+
+char-encoding: utf8
+
+numeric-entities: yes
 
 END
 ;
@@ -318,7 +419,7 @@ sub better_guess {
         if (in_array_ignore_case(\@block_elements, $tag) || in_array_ignore_case($new_blocks, $tag)) {
           foreach my $inline (@{$new_inlines}) {
             if ($opencount{$inline} > 0) {
-              if (!($inline ~~ @change)) {
+              if (!in_array(\@change, $inline)) {
                 push(@change, $inline);
               }
             }
@@ -341,6 +442,19 @@ sub better_guess {
 }
 
 ##
+# Tests if a string is in an array (to avoid Smartmatch warnings with $value ~~ @array)
+##
+sub in_array {
+  my ($array, $value) = @_;
+  foreach my $v (@{$array}) {
+    if ($v eq $value) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
+##
 # Tests if a string is in an array, ignoring case
 ##
 sub in_array_ignore_case {
@@ -353,3 +467,4 @@ sub in_array_ignore_case {
   }
   return 0;
 }
+
