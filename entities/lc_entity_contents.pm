@@ -25,7 +25,6 @@ use Apache::lc_parameters;
 use Apache::lc_entity_urls();
 use Apache::lc_entity_utils();
 
-my $series;
 
 sub toc_to_display {
    my ($toc)=@_;
@@ -34,28 +33,39 @@ sub toc_to_display {
    foreach my $element (@{$series}) {
       my $newelement=undef;
       $newelement->{'text'}=$element->{'title'};
-      $newelement->{'parent'}=$element->{'parent'};
+      $newelement->{'parent'}=$element->{'parent'}->[-1];
       $newelement->{'id'}=$element->{'id'};
       push(@{$display},$newelement);
    } 
    return $display;
 }
 
+#
+# This is per student: invisible assets not considered
+#
+my $series;
+my @stack;
+
 sub toc_to_serialize {
    my ($toc)=@_;
    $series=undef;
+   @stack=();
    return &folder_serialize_eval('#',$toc);
 }
 
 sub folder_serialize_eval {
    my ($name,$folder)=@_;
+   push(@stack,$name);
    foreach my $element (@{$folder}) {
-      $element->{'parent'}=$name;
+#FIXME: do not push any elements that the user is not allowed to see
+      my @current_stack=@stack;
+      $element->{'parent'}=\@current_stack;
       push(@{$series},$element);
       if ($element->{'type'} eq 'folder') {
          &folder_serialize_eval($element->{'id'},$element->{'content'});
       }
    }
+   pop(@stack);
    return $series;
 }
 
