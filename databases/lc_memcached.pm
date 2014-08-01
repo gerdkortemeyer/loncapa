@@ -179,6 +179,16 @@ sub lookup_toc {
    return &mget("toc:$entity:$domain");
 }
 
+sub insert_tocdigest {
+   my ($uentity,$udomain,$centity,$cdomain,$toc)=@_;
+   &mset("tocdigest:$uentity:$udomain:$centity:$cdomain",$toc,&lc_short_expire());
+}
+
+sub lookup_tocdigest {
+   my ($uentity,$udomain,$centity,$cdomain)=@_;
+   return &mget("tocdigest:$uentity:$udomain:$centity:$cdomain");
+}
+
 #
 # Caching entity profiles
 #

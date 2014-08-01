@@ -33,9 +33,7 @@ use Apache::lc_logs;
 #
 sub toc {
    my $r = shift;
-   my $display=&Apache::lc_entity_contents::toc_to_display(
-                  &Apache::lc_entity_courses::load_contents(
-                      &Apache::lc_entity_sessions::course_entity_domain()));
+   my $display=&Apache::lc_entity_contents::toc_display();
    if ($display) {
       $r->print(&Apache::lc_json_utils::perl_to_json($display));
    } else {

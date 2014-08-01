@@ -24,13 +24,17 @@ use Apache::lc_logs;
 use Apache::lc_parameters;
 use Apache::lc_entity_urls();
 use Apache::lc_entity_utils();
+use Apache::lc_entity_sessions();
+use Apache::lc_memcached();
 
-
-sub toc_to_display {
-   my ($toc)=@_;
+#
+# Returns the displayable version of the table
+# of contents for the current session
+#
+sub toc_display {
    my $display;
-   my $series=&toc_to_serialize($toc);
-   foreach my $element (@{$series}) {
+   my $digest=&toc_digest();
+   foreach my $element (@{$digest->{'series'}}) {
       my $newelement=undef;
       $newelement->{'text'}=$element->{'title'};
       $newelement->{'parent'}=$element->{'parent'}->[-1];
@@ -41,16 +45,31 @@ sub toc_to_display {
 }
 
 #
-# This is per student: invisible assets not considered
+# Returns the digest of the table of contents for the
+# current course and user
 #
+
 my $series;
 my @stack;
 
-sub toc_to_serialize {
-   my ($toc)=@_;
+sub toc_digest {
+   my $digest=&Apache::lc_memcached::lookup_tocdigest(
+                      &Apache::lc_entity_sessions::user_entity_domain(),
+                      &Apache::lc_entity_sessions::course_entity_domain());
+   if ($digest) { return $digest; }
+# Unfortunately not cached, need to construct it
    $series=undef;
    @stack=();
-   return &folder_serialize_eval('#',$toc);
+   $digest->{'series'}=&folder_serialize_eval('#',&Apache::lc_entity_courses::load_contents(&Apache::lc_entity_sessions::course_entity_domain()));
+   if ($digest) {
+      foreach my $element (@{$digest->{'series'}}) {
+      }
+      &Apache::lc_memcached::insert_tocdigest(
+                      &Apache::lc_entity_sessions::user_entity_domain(),
+                      &Apache::lc_entity_sessions::course_entity_domain(),
+                      $digest);
+   }
+   return $digest;
 }
 
 sub folder_serialize_eval {

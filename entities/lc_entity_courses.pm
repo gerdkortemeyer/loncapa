@@ -302,6 +302,8 @@ sub publish_contents {
    if (&Apache::lc_entity_urls::publish(&toc_wrk_url($courseid,$domain))) {
 # Cache it, too, so it takes effect immediately in order to avoid confusion
       &Apache::lc_memcached::insert_toc($courseid,$domain,$toc);
+# No valid digest in this session
+      &Apache::lc_memcached::insert_tocdigest(&Apache::lc_entity::sessions::user_entity_domain(),$courseid,$domain,undef);
       return 1;
    } else {
       return undef;
