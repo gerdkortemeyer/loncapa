@@ -40,7 +40,7 @@ sub toc_display {
       $newelement->{'parent'}=$element->{'parent'}->[-1];
       $newelement->{'id'}=$element->{'id'};
       push(@{$display},$newelement);
-   } 
+   }
    return $display;
 }
 
@@ -61,8 +61,16 @@ sub toc_digest {
    $series=undef;
    @stack=();
    $digest->{'series'}=&folder_serialize_eval('#',&Apache::lc_entity_courses::load_contents(&Apache::lc_entity_sessions::course_entity_domain()));
+# Store information about accessible assets: predecessors, successors, domain, and entity
    if ($digest) {
-      foreach my $element (@{$digest->{'series'}}) {
+      my $prev=undef;
+      for (my $i=0; $i<=$#{$digest->{'series'}}; $i++) {
+          unless ($digest->{'series'}->[$i]->{'type'} eq 'asset') { next; }
+          $digest->{'entity'}->{$digest->{'series'}->[$i]->{'id'}}=$digest->{'series'}->[$i]->{'entity'};
+          $digest->{'domain'}->{$digest->{'series'}->[$i]->{'id'}}=$digest->{'series'}->[$i]->{'domain'};
+          if ($i>0) { $digest->{'series'}->[$i]->{'prev'}=$prev; }
+          if ($i<$#{$digest->{'series'}}) { $digest->{'series'}->[$i]->{'next'}=$digest->{'series'}->[$i]->{'id'}; }
+          $prev=$digest->{'series'}->[$i]->{'id'};
       }
       &Apache::lc_memcached::insert_tocdigest(
                       &Apache::lc_entity_sessions::user_entity_domain(),
@@ -82,6 +90,7 @@ sub folder_serialize_eval {
       push(@{$series},$element);
       if ($element->{'type'} eq 'folder') {
          &folder_serialize_eval($element->{'id'},$element->{'content'});
+         delete($element->{'content'});
       }
    }
    pop(@stack);
