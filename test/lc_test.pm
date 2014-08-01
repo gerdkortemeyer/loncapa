@@ -121,6 +121,8 @@ my $comparedate='2014-04-16 01:00:01';
 
    $r->print("Profile: ".Dumper(&Apache::lc_entity_profile::dump_profile($courseentity,'msu'))."\n");
 
+return OK;
+
 # =====
 
    $r->print("\nNamespaces\n");
@@ -255,7 +257,6 @@ my $comparedate='2014-04-16 01:00:01';
    $r->print("\nClasslist:\n".Dumper(&Apache::lc_entity_roles::lookup_entity_rolelist($courseentity,'msu'))."\n");
 
 
-return OK;
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
        'domain', # system, domain, course, user
@@ -283,9 +284,7 @@ return OK;
    $r->print(&allowed_domain('modify_role','superconductor','msu')."\n");
 
 
-
-return OK;
-
+   $r->print("Courseentity: $courseentity");
 
    $r->print(">".Dumper(&Apache::lc_entity_courses::load_contents($courseentity,'msu'))."\n");
 
@@ -295,6 +294,18 @@ return OK;
    $r->print(">".Dumper(&Apache::lc_entity_courses::load_contents($courseentity,'msu'))."\n");
 
    $r->print("Course: ".join(',',&Apache::lc_entity_sessions::course_entity_domain()));
+
+my $contenttext='';
+open(IN,"/home/www/loncapa/test/toc.json");
+while (my $line=<IN>) {
+   $contenttext.=$line;
+}
+close(IN);
+   $r->print(">".Dumper(&Apache::lc_entity_courses::publish_contents(&Apache::lc_entity_sessions::course_entity_domain(),
+                                                                     &Apache::lc_json_utils::json_to_perl($contenttext))."\n"));
+
+
+return OK;
 
    &Apache::lc_entity_sessions::enter_course($courseentity,'msu');
 
