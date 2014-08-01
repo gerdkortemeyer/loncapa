@@ -161,6 +161,7 @@ sub create_tidycfg {
       $sty = $path.$sty;
     }
     my $new_elements = parse_sty($sty);
+    better_guess($fn, $new_elements);
     my $new_blocks = $new_elements->{'block'};
     my $new_inlines = $new_elements->{'inline'};
     push(@blocks, @{$new_blocks});
@@ -229,62 +230,126 @@ sub extract_libs {
 
 ##
 # Parses a sty file and returns lists of block and inline elements for tidy.
+# @param {string} fn - the file path
 ##
 sub parse_sty {
-   my ($fn) = @_;
-   my @blocks = ();
-   my @inlines = ();
-   my $p = HTML::TokeParser->new($fn);
-   if (! $p) {
-     print "Error reading $fn\n";
-     return {'block'=>\@blocks, 'inline'=>\@inlines};
-   }
-   $p->empty_element_tags(1);
-   my $in_definetag = 0;
-   my $in_render = 0;
-   my %newtags = ();
-   my $newtag = '';
-   my $is_block = 0;
-   while (my $token = $p->get_token) {
-      if ($token->[0] eq 'S') {
-        my $tag = lc($token->[1]);
-        if ($tag eq 'definetag') {
-          $in_definetag = 1;
-          $is_block = 0;
-          my $attributes = $token->[2];
-          $newtag = $attributes->{'name'};
-          if (substr($newtag, 0, 1) eq '/') {
-            $newtag = substr($newtag, 1);
-          }
-        } elsif ($in_definetag && $tag eq 'render') {
-          $in_render = 1;
-          $is_block = 0;
-        } elsif ($in_render) {
-          if ($tag ~~ @block_elements) {
-            $is_block = 1;
-          }
+  my ($fn) = @_;
+  my @blocks = ();
+  my @inlines = ();
+  my $p = HTML::TokeParser->new($fn);
+  if (! $p) {
+    die "Error reading $fn\n";
+    #return {'block'=>\@blocks, 'inline'=>\@inlines};
+  }
+  $p->empty_element_tags(1);
+  my $in_definetag = 0;
+  my $in_render = 0;
+  my %newtags = ();
+  my $newtag = '';
+  my $is_block = 0;
+  while (my $token = $p->get_token) {
+    if ($token->[0] eq 'S') {
+      my $tag = lc($token->[1]);
+      if ($tag eq 'definetag') {
+        $in_definetag = 1;
+        $is_block = 0;
+        my $attributes = $token->[2];
+        $newtag = $attributes->{'name'};
+        if (substr($newtag, 0, 1) eq '/') {
+          $newtag = substr($newtag, 1);
         }
-      } elsif ($token->[0] eq 'E') {
-        my $tag = lc($token->[1]);
-        if ($tag eq 'definetag') {
-          $in_definetag = 0;
-          if (defined $newtags{$newtag}) {
-            $newtags{$newtag} = $newtags{$newtag} || $is_block;
-          } else {
-            $newtags{$newtag} = $is_block;
-          }
-        } elsif ($in_definetag && $tag eq 'render') {
-          $in_render = 0;
+      } elsif ($in_definetag && $tag eq 'render') {
+        $in_render = 1;
+        $is_block = 0;
+      } elsif ($in_render) {
+        if (in_array_ignore_case(\@block_elements, $tag)) {
+          $is_block = 1;
         }
       }
-   }
-   foreach $newtag (keys(%newtags)) {
-     if ($newtags{$newtag} == 1) {
-       push(@blocks, $newtag);
-     } else {
-       push(@inlines, $newtag);
-     }
-   }
-   return {'block'=>\@blocks, 'inline'=>\@inlines};
+    } elsif ($token->[0] eq 'E') {
+      my $tag = lc($token->[1]);
+      if ($tag eq 'definetag') {
+        $in_definetag = 0;
+        if (defined $newtags{$newtag}) {
+          $newtags{$newtag} = $newtags{$newtag} || $is_block;
+        } else {
+          $newtags{$newtag} = $is_block;
+        }
+      } elsif ($in_definetag && $tag eq 'render') {
+        $in_render = 0;
+      }
+    }
+  }
+  foreach $newtag (keys(%newtags)) {
+    if ($newtags{$newtag} == 1) {
+      push(@blocks, $newtag);
+    } else {
+      push(@inlines, $newtag);
+    }
+  }
+  return {'block'=>\@blocks, 'inline'=>\@inlines};
 }
 
+##
+# Parses the input file and marks as block the elements that contain block elements
+# @param {string} fn - the file path
+# @param {Hash<string,Array>} new_elements - contains arrays in 'block' and 'inline'
+##
+sub better_guess {
+  my ($fn, $new_elements) = @_;
+  my $new_blocks = $new_elements->{'block'};
+  my $new_inlines = $new_elements->{'inline'};
+  my $p = HTML::TokeParser->new($fn);
+  if (! $p) {
+    die "Error reading $fn\n";
+  }
+  $p->empty_element_tags(1);
+  my %opencount = ();
+  my @change = (); # change these elements from inline to block
+  foreach my $tag (@{$new_inlines}) {
+    $opencount{$tag} = 0;
+  }
+  while (my $token = $p->get_token) {
+    if ($token->[0] eq 'S') {
+      my $tag = $token->[1];
+      if (defined $opencount{$tag}) {
+        $opencount{$tag}++;
+      } else {
+        if (in_array_ignore_case(\@block_elements, $tag) || in_array_ignore_case($new_blocks, $tag)) {
+          foreach my $inline (@{$new_inlines}) {
+            if ($opencount{$inline} > 0) {
+              if (!($inline ~~ @change)) {
+                push(@change, $inline);
+              }
+            }
+          }
+        }
+      }
+    } elsif ($token->[0] eq 'E') {
+      my $tag = $token->[1];
+      if (defined $opencount{$tag}) {
+        $opencount{$tag}--;
+      }
+    }
+  }
+  foreach my $inline (@change) {
+    my $index = 0;
+    $index++ until $new_inlines->[$index] eq $inline;
+    splice(@{$new_inlines}, $index, 1);
+    push(@{$new_blocks}, $inline);
+  }
+}
+
+##
+# Tests if a string is in an array, ignoring case
+##
+sub in_array_ignore_case {
+  my ($array, $value) = @_;
+  my $lcvalue = lc($value);
+  foreach my $v (@{$array}) {
+    if (lc($v) eq $lcvalue) {
+      return 1;
+    }
+  }
+  return 0;
+}
