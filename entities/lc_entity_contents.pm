@@ -45,6 +45,19 @@ sub toc_display {
 }
 
 #
+# Returns are data structure for assetid
+#
+sub toc_asset_data {
+   my ($assetid)=@_;
+   my $assetdata=();
+   my $digest=&toc_digest();
+   return $assetdata;
+}
+
+
+
+
+#
 # Returns the digest of the table of contents for the
 # current course and user
 #
@@ -61,13 +74,13 @@ sub toc_digest {
    $series=undef;
    @stack=();
    $digest->{'series'}=&folder_serialize_eval('#',&Apache::lc_entity_courses::load_contents(&Apache::lc_entity_sessions::course_entity_domain()));
-# Store information about accessible assets: predecessors, successors, domain, and entity
+# Store information about accessible assets: predecessors, successors, url
    if ($digest) {
       my $prev=undef;
       for (my $i=0; $i<=$#{$digest->{'series'}}; $i++) {
+          $digest->{'title'}->{$digest->{'series'}->[$i]->{'id'}}=$digest->{'series'}->[$i]->{'title'};
           unless ($digest->{'series'}->[$i]->{'type'} eq 'asset') { next; }
-          $digest->{'entity'}->{$digest->{'series'}->[$i]->{'id'}}=$digest->{'series'}->[$i]->{'entity'};
-          $digest->{'domain'}->{$digest->{'series'}->[$i]->{'id'}}=$digest->{'series'}->[$i]->{'domain'};
+          $digest->{'url'}->{$digest->{'series'}->[$i]->{'id'}}=$digest->{'series'}->[$i]->{'url'};
           if ($i>0) { $digest->{'series'}->[$i]->{'prev'}=$prev; }
           if ($i<$#{$digest->{'series'}}) { $digest->{'series'}->[$i]->{'next'}=$digest->{'series'}->[$i]->{'id'}; }
           $prev=$digest->{'series'}->[$i]->{'id'};
@@ -98,8 +111,8 @@ sub folder_serialize_eval {
 }
 
 sub new_asset {
-   my ($resentity,$resdomain,$restitle)=@_;
-   return { entity => $resentity, domain => $resdomain, 
+   my ($resurl,$restitle)=@_;
+   return { url => $resurl, 
             title => $restitle, 
             type => 'asset', 
             active => 1, hidden => 0, 

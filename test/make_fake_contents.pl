@@ -14,7 +14,7 @@ sub make_folder {
 
    for (my $i=0;$i<=int(rand(30));$i++) {
       if ((int(rand()+0.6)) || ($depth>4)) {
-         push(@{$toc},&new_asset(&make_unique_id(),('msu','sfu','ostfalia')[int(rand(2)+0.5)],&make_fake_title()));
+         push(@{$toc},&new_asset(&make_fake_url(),&make_fake_title()));
       } else {
          push(@{$toc},&new_folder('Chapter '.&make_fake_title()));
          $toc->[-1]->{'content'}=&make_folder();
@@ -29,6 +29,14 @@ sub perl_to_json {
    return JSON::DWIW->new->to_json(@_[0],{ pretty => 1 });
 }
 
+sub make_fake_url {
+   my $url='/'.('msu','sfu','ostfalia')[int(rand(2)+0.5)].'/'.('smith','jones','brown')[int(rand(2)+0.5)];
+   for (my $i=0;$i<rand(3)+1;$i++) {
+       $url.='/'.('circuit','voltage','current','power','field','energy','fusion')[int(rand(6)+0.5)];
+   }
+   $url.='.'.('html','xml','htm')[int(rand(2)+0.5)];
+   return $url;
+}
 
 sub make_fake_title {
    my @title=();
@@ -39,8 +47,8 @@ sub make_fake_title {
 }
 
 sub new_asset {
-   my ($resentity,$resdomain,$restitle)=@_;
-   return { entity => $resentity, domain => $resdomain, 
+   my ($resurl,$restitle)=@_;
+   return { url => $resurl,
             title => $restitle, 
             type => 'asset', 
             active => 1, hidden => 0, 
