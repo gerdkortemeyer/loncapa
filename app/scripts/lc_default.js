@@ -51,6 +51,8 @@ function display_course_asset(assetid) {
               });
               show_navarrows();
            }
+       });
+       $.each(data, function(key, val) {
            if (key=='next') {
               next_assetid=val;
               if (next_assetid) {

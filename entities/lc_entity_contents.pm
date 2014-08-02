@@ -85,7 +85,7 @@ sub toc_digest {
           $digest->{'num'}->{$digest->{'series'}->[$i]->{'id'}}=$i;
           unless ($digest->{'series'}->[$i]->{'type'} eq 'asset') { next; }
           if ($i>0) { $digest->{'series'}->[$i]->{'prev'}=$prev; }
-          if ($i<$#{$digest->{'series'}}) { $digest->{'series'}->[$i]->{'next'}=$digest->{'series'}->[$i]->{'id'}; }
+          $digest->{'series'}->[$digest->{'num'}->{$prev}]->{'next'}=$digest->{'series'}->[$i]->{'id'};
           $prev=$digest->{'series'}->[$i]->{'id'};
       }
       &Apache::lc_memcached::insert_tocdigest(
