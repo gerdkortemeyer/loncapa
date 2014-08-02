@@ -51,11 +51,15 @@ sub toc_asset_data {
    my ($assetid)=@_;
    my $assetdata=();
    my $digest=&toc_digest();
+   $assetdata->{'current'}=$digest->{'series'}->[$digest->{'num'}->{$assetid}];
+   if ($assetdata->{'current'}->{'prev'}) {
+      $assetdata->{'prev'}=$digest->{'series'}->[$digest->{'num'}->{$assetdata->{'current'}->{'prev'}}];
+   }
+   if ($assetdata->{'current'}->{'next'}) {
+      $assetdata->{'next'}=$digest->{'series'}->[$digest->{'num'}->{$assetdata->{'current'}->{'next'}}];
+   }
    return $assetdata;
 }
-
-
-
 
 #
 # Returns the digest of the table of contents for the
@@ -78,9 +82,8 @@ sub toc_digest {
    if ($digest) {
       my $prev=undef;
       for (my $i=0; $i<=$#{$digest->{'series'}}; $i++) {
-          $digest->{'title'}->{$digest->{'series'}->[$i]->{'id'}}=$digest->{'series'}->[$i]->{'title'};
+          $digest->{'num'}->{$digest->{'series'}->[$i]->{'id'}}=$i;
           unless ($digest->{'series'}->[$i]->{'type'} eq 'asset') { next; }
-          $digest->{'url'}->{$digest->{'series'}->[$i]->{'id'}}=$digest->{'series'}->[$i]->{'url'};
           if ($i>0) { $digest->{'series'}->[$i]->{'prev'}=$prev; }
           if ($i<$#{$digest->{'series'}}) { $digest->{'series'}->[$i]->{'next'}=$digest->{'series'}->[$i]->{'id'}; }
           $prev=$digest->{'series'}->[$i]->{'id'};

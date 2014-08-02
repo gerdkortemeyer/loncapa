@@ -46,9 +46,14 @@ sub toc {
 #
 sub register {
    my ($r,$assetid)=@_;
-   $r->print('{ "url" : "/res/msu/zaphod/hello.html",
-                "prev" : "oE4NvBu8Hc7s2rGfrKF_25271_1406233153",
-                "next" : "nQKqmGhgsoudh21NjMd_25271_1406233153" }');
+   my $assetdata=&Apache::lc_entity_contents::toc_asset_data($assetid);
+   &logdebug(JSON::DWIW->to_json($assetdata,{ pretty => 1 }));
+#FIXME: needs versions
+   $r->print(&Apache::lc_json_utils::perl_to_json({
+                             'url'  => '/asset/-/-'.$assetdata->{'current'}->{'url'},
+                             'prev' => $assetdata->{'current'}->{'prev'},
+                             'next' => $assetdata->{'current'}->{'next'}
+                                                  }));
 }
 
 sub handler {
