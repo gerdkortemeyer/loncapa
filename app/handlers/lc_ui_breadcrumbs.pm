@@ -26,21 +26,20 @@ use Apache::lc_entity_sessions();
 use Apache::lc_ui_localize;
 
 sub breadcrumb_item {
-   my ($title,$text,$function)=@_;
-   return '"br_'.$title.'" : "'.&mt($text).'&'.$function.'"';
+   my ($title,$text,$function,$arg)=@_;
+   return '"br_'.$title.'" : "'.&mt($text,$arg).'&'.$function.'"';
 }
 
 sub add_breadcrumb {
-   my ($title,$text,$function)=@_;
+   my ($title,$text,$function,$arg)=@_;
    my @breadcrumbs=&Apache::lc_entity_sessions::breadcrumbs();
-   push(@breadcrumbs,{title => $title, text => $text, function => $function});
+   push(@breadcrumbs,{title => $title, text => $text, function => $function, arg => $arg});
    &Apache::lc_entity_sessions::replace_session_key ('breadcrumbs',\@breadcrumbs);
 }
 
 sub fresh_breadcrumbs {
-   my ($title,$text,$function)=@_;
-   &Apache::lc_entity_sessions::replace_session_key('breadcrumbs',
-          &Apache::lc_json_utils::json_to_perl("[{title:'$title',text:'$text',function:'$function'}]"));
+   my ($title,$text,$function,$arg)=@_;
+   &Apache::lc_entity_sessions::replace_session_key('breadcrumbs',[{title => $title, text => $text, function => $function, arg =>$arg}]);
 }
 
 
@@ -59,7 +58,7 @@ sub handler {
    } elsif (&Apache::lc_entity_sessions::breadcrumbs()) {
       my $output='{';
       foreach my $item (&Apache::lc_entity_sessions::breadcrumbs()) {
-         $output.=&breadcrumb_item($item->{'title'},$item->{'text'},$item->{'function'}).',';
+         $output.=&breadcrumb_item($item->{'title'},$item->{'text'},$item->{'function'},$item->{'arg'}).',';
       }
       $output=~s/\,$/\}/;
       $r->print($output);

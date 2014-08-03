@@ -26,6 +26,7 @@ use Apache::lc_entity_courses();
 use Apache::lc_entity_contents();
 use Apache::lc_entity_users();
 use Apache::lc_ui_utils;
+use Apache::lc_ui_breadcrumbs();
 use Apache::lc_json_utils();
 use Apache::lc_logs;
 
@@ -47,7 +48,11 @@ sub toc {
 sub register {
    my ($r,$assetid)=@_;
    my $assetdata=&Apache::lc_entity_contents::toc_asset_data($assetid);
-   &logdebug(JSON::DWIW->to_json($assetdata,{ pretty => 1 }));
+#   &logdebug(JSON::DWIW->to_json($assetdata,{ pretty => 1 }));
+#   &logdebug($assetdata->{'current'}->{'title'});
+   &Apache::lc_ui_breadcrumbs::fresh_breadcrumbs('content','Content','content()');
+   &Apache::lc_ui_breadcrumbs::add_breadcrumb('asset','[_1]',"display_course_asset('$assetid.')",
+                                               $assetdata->{'current'}->{'title'});
 #FIXME: needs versions
    $r->print(&Apache::lc_json_utils::perl_to_json({
                              'url'  => '/asset/-/-'.$assetdata->{'current'}->{'url'},
