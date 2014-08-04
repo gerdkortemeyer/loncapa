@@ -32,9 +32,9 @@ sub breadcrumb_item {
 
 sub add_breadcrumb {
    my ($title,$text,$function,$arg)=@_;
-   my @breadcrumbs=&Apache::lc_entity_sessions::breadcrumbs();
-   push(@breadcrumbs,{title => $title, text => $text, function => $function, arg => $arg});
-   &Apache::lc_entity_sessions::replace_session_key ('breadcrumbs',\@breadcrumbs);
+   my $breadcrumbs=&Apache::lc_entity_sessions::breadcrumbs();
+   push(@{$breadcrumbs},{title => $title, text => $text, function => $function, arg => $arg});
+   &Apache::lc_entity_sessions::replace_session_key ('breadcrumbs',$breadcrumbs);
 }
 
 sub fresh_breadcrumbs {
@@ -57,7 +57,7 @@ sub handler {
       &add_breadcrumb($content{'title'},$content{'text'},$content{'function'});
    } elsif (&Apache::lc_entity_sessions::breadcrumbs()) {
       my $output='{';
-      foreach my $item (&Apache::lc_entity_sessions::breadcrumbs()) {
+      foreach my $item (@{&Apache::lc_entity_sessions::breadcrumbs()}) {
          $output.=&breadcrumb_item($item->{'title'},$item->{'text'},$item->{'function'},$item->{'arg'}).',';
       }
       $output=~s/\,$/\}/;

@@ -178,7 +178,7 @@ sub asset_entity_domain {
 #
 sub breadcrumbs {
    if ($lc_session->{'data'}->{'breadcrumbs'}) {
-      return @{$lc_session->{'data'}->{'breadcrumbs'}};
+      return $lc_session->{'data'}->{'breadcrumbs'};
    } else {
       return undef;
    }
@@ -292,6 +292,9 @@ sub update_session {
 sub replace_session_key {
    my ($key,$data)=@_;
    unless (&session_id()) { return undef; }
+# Replace immediately for this request cycle
+   $lc_session->{'data'}->{$key}=$data;
+# Replace for future cycles
    return &Apache::lc_mongodb::replace_session_key(&session_id(),$key,$data);
 }
 
