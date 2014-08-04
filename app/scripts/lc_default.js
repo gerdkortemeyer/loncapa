@@ -76,6 +76,14 @@ function display_course_asset(assetid) {
               }
            }
        });
+       $.each(data, function(key, val) {
+           if (key=='nexttitle') {
+              $('#navrightlink').prop('title',val);
+           }
+           if (key=='prevtitle') {
+              $('#navleftlink').prop('title',val);
+           }
+       });
        menubar();
        breadcrumbbar();
    });

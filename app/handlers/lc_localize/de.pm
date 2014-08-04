@@ -44,6 +44,10 @@ use utf8;
 'author' => 'Autor',
 'co_author' => 'Co-Autor',
 
+'Start of course contents' => 'Anfang des Kursinhaltes',
+
+'End of course contents' => 'Ende des Kursinhaltes',
+
 'Modify Selected Entries' => 'Ausgewählte Einträge ändern',
 
 'Add New Entry' => 'Neuen Eintrag hinzufügen',
