@@ -61,6 +61,7 @@ function display_course_asset(assetid) {
                  });
               } else {
                  $('#navrightlink').click(function(){});
+                 $('#navrightlink').html('');
               }
            }
            if (key=='prev') {
@@ -71,6 +72,7 @@ function display_course_asset(assetid) {
                  });
               } else {
                  $('#navleftlink').click(function(){});
+                 $('#navleftlink').html('');
               }
            }
        });
