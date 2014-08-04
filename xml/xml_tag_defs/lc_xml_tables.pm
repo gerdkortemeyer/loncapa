@@ -44,10 +44,21 @@ sub start_lcdatatable_html {
       $output.=&courseselect($type);
    } elsif ($class eq "courselist") {
       $output.=&courselist();
+   } elsif ($class eq 'portfoliomanager') {
+      $output.=&portfoliomanager();
    }
    $output.='</table><br clear="all" />';
    return $output;
 }
+
+sub portfoliomanager {
+   my $output.='<thead><tr><th>&nbsp;</th><th>'.&mt('Filename').'</th></tr></thead><tbody>';
+   $output.='<tr><td>Test</td><td>Test</td></tr>';
+   $output.='</tbody>';
+   return $output;
+}
+
+
 
 #
 # Shows all courses/communities that the user is currently part of, lets user select
