@@ -24,8 +24,11 @@ use Apache::lc_entity_users();
 use Apache::lc_entity_roles();
 use Apache::lc_ui_localize;
 use Apache::lc_ui_utils;
+use Apache::lc_entity_urls();
+use Apache::lc_entity_sessions();
 use Apache::lc_date_utils();
 use Apache::lc_authorize;
+use Data::Dumper;
 
 our @ISA = qw(Exporter);
 
@@ -52,8 +55,11 @@ sub start_lcdatatable_html {
 }
 
 sub portfoliomanager {
+   my ($p,$safe,$stack,$token)=@_;
+   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+   my $dir_list=&Apache::lc_entity_urls::full_dir_list($domain.'/'.$entity.'/');
    my $output.='<thead><tr><th>&nbsp;</th><th>'.&mt('Filename').'</th></tr></thead><tbody>';
-   $output.='<tr><td>Test</td><td>Test</td></tr>';
+   $output.='<tr><td>Test</td><td><pre>'.Dumper($dir_list).'</pre></td></tr>';
    $output.='</tbody>';
    return $output;
 }
