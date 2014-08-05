@@ -2,40 +2,40 @@
 
   \item access server, 11
   \item accessibility, 5
-  \item assessments, 23
-  \item assets, 9, 16, 23
+  \item assessments, 25
+  \item assets, 9, 18, 25
   \item authorization, 7
 
   \indexspace
 
-  \item caching, 23
+  \item caching, 25
   \item certificates, 13
-  \item cluster manager, 12
+  \item cluster manager, 13
   \item cluster table, 11
-  \item communities, 15
-  \item course IDs, 22
-  \item courses, 15, 21
+  \item communities, 17
+  \item course IDs, 24
+  \item courses, 17, 23
 
   \indexspace
 
-  \item encoding, 29
-  \item entities, 15
-  \item equation editor, 33
-  \item equation parser, 34
-  \item equation syntax, 35
+  \item encoding, 31
+  \item entities, 17
+  \item equation editor, 35
+  \item equation parser, 36
+  \item equation syntax, 37
 
   \indexspace
 
-  \item groups, 15
+  \item groups, 17
 
   \indexspace
 
-  \item homeserver, 12, 16, 21--23
-  \item HTML pages, 27
+  \item homeserver, 13, 18, 23--25
+  \item HTML pages, 29
 
   \indexspace
 
-  \item internationalization, 5, 29
+  \item internationalization, 5, 31
 
   \indexspace
 
@@ -45,10 +45,10 @@
 
   \indexspace
 
-  \item math, 33
-  \item memcached, 23
-  \item metadata, 16
-  \item MongoDB, 16, 21
+  \item math, 35
+  \item memcached, 25
+  \item metadata, 18
+  \item MongoDB, 18, 23
 
   \indexspace
 
@@ -56,41 +56,41 @@
 
   \indexspace
 
-  \item PIDs, 15, 21
-  \item portfolio, 16
-  \item PostgreSQL, 21
+  \item PIDs, 17, 23
+  \item portfolio, 18
+  \item PostgreSQL, 23
   \item privileges, 7
-  \item problems, 27
-  \item profiles, 16
-  \item publication, 16
+  \item problems, 29
+  \item profiles, 18
+  \item publication, 18
 
   \indexspace
 
-  \item realms, 17
-  \item replication, 10, 14, 23
-  \item roles, 7, 17, 22, 30
+  \item realms, 19
+  \item replication, 10, 15, 25
+  \item roles, 7, 19, 24, 32
 
   \indexspace
 
-  \item safeeval, 28
+  \item safeeval, 30
   \item scalability, 7
-  \item sections, 15
+  \item sections, 17
   \item SSL, 6
 
   \indexspace
 
-  \item unicode, 29
-  \item usernames, 15, 21
-  \item users, 15, 21
-  \item utf-8, 29
+  \item unicode, 31
+  \item usernames, 17, 23
+  \item users, 17, 23
+  \item utf-8, 31
 
   \indexspace
 
-  \item versions, 10, 16, 23
+  \item versions, 10, 18, 25
 
   \indexspace
 
-  \item XML, 25
-  \item XML parser, 10, 27
+  \item XML, 27
+  \item XML parser, 10, 29
 
 \end{theindex}

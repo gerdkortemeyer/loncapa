@@ -16,58 +16,58 @@
 \indexentry{library server}{11}
 \indexentry{access server}{11}
 \indexentry{cluster table}{11}
-\indexentry{homeserver}{12}
-\indexentry{cluster manager}{12}
+\indexentry{homeserver}{13}
+\indexentry{cluster manager}{13}
 \indexentry{certificates}{13}
-\indexentry{replication}{14}
-\indexentry{entities}{15}
-\indexentry{users}{15}
-\indexentry{usernames}{15}
-\indexentry{PIDs}{15}
-\indexentry{courses}{15}
-\indexentry{communities}{15}
-\indexentry{sections}{15}
-\indexentry{groups}{15}
-\indexentry{assets}{16}
-\indexentry{portfolio}{16}
-\indexentry{versions}{16}
-\indexentry{profiles}{16}
-\indexentry{metadata}{16}
-\indexentry{MongoDB}{16}
-\indexentry{homeserver}{16}
-\indexentry{publication}{16}
-\indexentry{versions}{16}
-\indexentry{publication}{16}
-\indexentry{roles}{17}
-\indexentry{realms}{17}
-\indexentry{PostgreSQL}{21}
-\indexentry{MongoDB}{21}
-\indexentry{homeserver}{21}
-\indexentry{users}{21}
-\indexentry{courses}{21}
-\indexentry{usernames}{21}
-\indexentry{PIDs}{21}
-\indexentry{course IDs}{22}
-\indexentry{homeserver}{22}
-\indexentry{roles}{22}
-\indexentry{assessments}{23}
-\indexentry{memcached}{23}
-\indexentry{caching}{23}
+\indexentry{replication}{15}
+\indexentry{entities}{17}
+\indexentry{users}{17}
+\indexentry{usernames}{17}
+\indexentry{PIDs}{17}
+\indexentry{courses}{17}
+\indexentry{communities}{17}
+\indexentry{sections}{17}
+\indexentry{groups}{17}
+\indexentry{assets}{18}
+\indexentry{portfolio}{18}
+\indexentry{versions}{18}
+\indexentry{profiles}{18}
+\indexentry{metadata}{18}
+\indexentry{MongoDB}{18}
+\indexentry{homeserver}{18}
+\indexentry{publication}{18}
+\indexentry{versions}{18}
+\indexentry{publication}{18}
+\indexentry{roles}{19}
+\indexentry{realms}{19}
+\indexentry{PostgreSQL}{23}
+\indexentry{MongoDB}{23}
 \indexentry{homeserver}{23}
-\indexentry{replication}{23}
-\indexentry{versions}{23}
-\indexentry{assets}{23}
-\indexentry{XML}{25}
-\indexentry{XML parser}{27}
-\indexentry{problems}{27}
-\indexentry{HTML pages}{27}
-\indexentry{safeeval}{28}
-\indexentry{internationalization}{29}
-\indexentry{encoding}{29}
-\indexentry{unicode}{29}
-\indexentry{utf-8}{29}
-\indexentry{roles}{30}
-\indexentry{math}{33}
-\indexentry{equation editor}{33}
-\indexentry{equation parser}{34}
-\indexentry{equation syntax}{35}
+\indexentry{users}{23}
+\indexentry{courses}{23}
+\indexentry{usernames}{23}
+\indexentry{PIDs}{23}
+\indexentry{course IDs}{24}
+\indexentry{homeserver}{24}
+\indexentry{roles}{24}
+\indexentry{assessments}{25}
+\indexentry{memcached}{25}
+\indexentry{caching}{25}
+\indexentry{homeserver}{25}
+\indexentry{replication}{25}
+\indexentry{versions}{25}
+\indexentry{assets}{25}
+\indexentry{XML}{27}
+\indexentry{XML parser}{29}
+\indexentry{problems}{29}
+\indexentry{HTML pages}{29}
+\indexentry{safeeval}{30}
+\indexentry{internationalization}{31}
+\indexentry{encoding}{31}
+\indexentry{unicode}{31}
+\indexentry{utf-8}{31}
+\indexentry{roles}{32}
+\indexentry{math}{35}
+\indexentry{equation editor}{35}
+\indexentry{equation parser}{36}
+\indexentry{equation syntax}{37}

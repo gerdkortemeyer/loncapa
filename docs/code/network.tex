@@ -1,4 +1,21 @@
 \chapter{Network}
+
+\section{Overview}
+LON-CAPA has logical layers, see Fig.~\ref{fig:overview}:
+\begin{itemize}
+\item Clients to to particular servers in the network
+\item Requests from clients are handled by handlers (at the ``ui'' level)
+\item Handlers talk to the web service layer (the ``entity'' level) --- the webservices layer abstracts away the fact that the network is distributed
+\item Databases and file systems
+\end{itemize} 
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=12cm]{overview}
+\end{center}
+\caption{General overview of LON-CAPA Next Generation.\label{fig:overview}} 
+\end{figure}
+
 \section{Nodes}
 LON-CAPA is built as a network of servers, which can host sessions and store data. LON-CAPA can have several independent clusters of such servers, but it is expected that in real operation, there is essentially one production cluster. In principle, any server in a cluster can host sessions for any user in the cluster, and any server in the network should be able serve any asset in the system. In practice, limitations may be put on this to preserve privacy and copyright.
 

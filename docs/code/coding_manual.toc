@@ -34,85 +34,86 @@
 \contentsline {section}{\numberline {3.2}Accessing assets}{9}
 \contentsline {section}{\numberline {3.3}System Pages}{10}
 \contentsline {chapter}{\numberline {4}Network}{11}
-\contentsline {section}{\numberline {4.1}Nodes}{11}
-\contentsline {section}{\numberline {4.2}Cluster Table}{11}
-\contentsline {subsection}{\numberline {4.2.1}Configuration}{11}
-\contentsline {subsection}{\numberline {4.2.2}Homeservers}{12}
-\contentsline {subsection}{\numberline {4.2.3}Cluster manager}{12}
-\contentsline {section}{\numberline {4.3}Connections}{13}
-\contentsline {subsection}{\numberline {4.3.1}Connection authentication}{13}
-\contentsline {subsection}{\numberline {4.3.2}Connection handling}{13}
-\contentsline {subsection}{\numberline {4.3.3}Local versus remote}{13}
-\contentsline {section}{\numberline {4.4}Replication}{14}
-\contentsline {chapter}{\numberline {5}Entities}{15}
-\contentsline {section}{\numberline {5.1}Identification}{15}
-\contentsline {section}{\numberline {5.2}Storage and Interface}{15}
-\contentsline {section}{\numberline {5.3}Users}{15}
-\contentsline {section}{\numberline {5.4}Courses}{15}
-\contentsline {section}{\numberline {5.5}Assets}{16}
-\contentsline {subsection}{\numberline {5.5.1}URLs}{16}
-\contentsline {subsection}{\numberline {5.5.2}Profiles and metadata}{16}
-\contentsline {subsection}{\numberline {5.5.3}Storage}{16}
-\contentsline {subsection}{\numberline {5.5.4}Publication and Versioning}{16}
-\contentsline {chapter}{\numberline {6}Authorization}{17}
-\contentsline {section}{\numberline {6.1}Roles}{17}
-\contentsline {subsection}{\numberline {6.1.1}Role definition}{17}
-\contentsline {subsection}{\numberline {6.1.2}Role storage}{18}
-\contentsline {subsubsection}{With user}{18}
-\contentsline {subsubsection}{With domain or system}{20}
-\contentsline {chapter}{\numberline {7}Storage}{21}
-\contentsline {section}{\numberline {7.1}Databases}{21}
-\contentsline {subsection}{\numberline {7.1.1}PostgreSQL tables}{21}
-\contentsline {subsubsection}{URL table}{21}
-\contentsline {subsubsection}{User table}{21}
-\contentsline {subsubsection}{PID table}{21}
-\contentsline {subsubsection}{Course ID table}{22}
-\contentsline {subsubsection}{Homeserver table}{22}
-\contentsline {subsubsection}{Roles}{22}
-\contentsline {subsubsection}{Assessment table}{23}
-\contentsline {section}{\numberline {7.2}Caching}{23}
-\contentsline {section}{\numberline {7.3}File system}{23}
-\contentsline {section}{\numberline {7.4}Programmatic access}{23}
-\contentsline {chapter}{\numberline {8}XML}{25}
-\contentsline {section}{\numberline {8.1}Structure of Documents}{25}
-\contentsline {subsection}{\numberline {8.1.1}Classic LON-CAPA Content}{25}
-\contentsline {subsection}{\numberline {8.1.2}Overview of differences to classic LON-CAPA}{25}
-\contentsline {section}{\numberline {8.2}Editing}{26}
-\contentsline {subsection}{\numberline {8.2.1}Main editors}{26}
-\contentsline {subsection}{\numberline {8.2.2}Emergency editor}{26}
-\contentsline {chapter}{\numberline {9}XML Parser}{27}
-\contentsline {section}{\numberline {9.1}Invocation}{27}
-\contentsline {section}{\numberline {9.2}Tag types}{27}
-\contentsline {section}{\numberline {9.3}Stacks and safeeval}{28}
-\contentsline {chapter}{\numberline {10}Internationalization}{29}
-\contentsline {section}{\numberline {10.1}Encoding}{29}
-\contentsline {section}{\numberline {10.2}Maketext}{29}
-\contentsline {section}{\numberline {10.3}Invocation in documents}{30}
-\contentsline {section}{\numberline {10.4}Invocation from Perl}{30}
-\contentsline {section}{\numberline {10.5}Internal codes}{30}
-\contentsline {section}{\numberline {10.6}Special cases}{30}
-\contentsline {subsection}{\numberline {10.6.1}JavaScript configuration files}{30}
-\contentsline {subsection}{\numberline {10.6.2}Loading locatilization files}{31}
-\contentsline {chapter}{\numberline {11}Math editor, parser and equation syntax}{33}
-\contentsline {section}{\numberline {11.1}Introduction}{33}
-\contentsline {section}{\numberline {11.2}A new user interface}{33}
-\contentsline {subsection}{\numberline {11.2.1}Usage}{34}
-\contentsline {section}{\numberline {11.3}The server-side parser}{34}
-\contentsline {subsection}{\numberline {11.3.1}Usage}{34}
-\contentsline {subsection}{\numberline {11.3.2}Calculation environment}{34}
-\contentsline {subsection}{\numberline {11.3.3}Conversion to Maxima syntax}{34}
-\contentsline {subsection}{\numberline {11.3.4}Catching errors}{34}
-\contentsline {subsection}{\numberline {11.3.5}Example with unit node}{34}
-\contentsline {subsection}{\numberline {11.3.6}Example with symbolic node}{34}
-\contentsline {section}{\numberline {11.4}Equation syntax}{35}
-\contentsline {subsection}{\numberline {11.4.1}Spaces}{35}
-\contentsline {subsection}{\numberline {11.4.2}Decimal separators and function parameter separators}{35}
-\contentsline {subsection}{\numberline {11.4.3}Constants}{35}
-\contentsline {subsection}{\numberline {11.4.4}Units}{35}
-\contentsline {subsection}{\numberline {11.4.5}Parenthesis}{35}
-\contentsline {subsection}{\numberline {11.4.6}Complex numbers}{35}
-\contentsline {subsection}{\numberline {11.4.7}Operators}{35}
-\contentsline {subsection}{\numberline {11.4.8}Implicit operators}{35}
-\contentsline {subsection}{\numberline {11.4.9}Vectors and matrices}{35}
-\contentsline {subsection}{\numberline {11.4.10}Functions}{36}
-\contentsline {chapter}{\numberline {12}Glossary}{37}
+\contentsline {section}{\numberline {4.1}Overview}{11}
+\contentsline {section}{\numberline {4.2}Nodes}{11}
+\contentsline {section}{\numberline {4.3}Cluster Table}{11}
+\contentsline {subsection}{\numberline {4.3.1}Configuration}{11}
+\contentsline {subsection}{\numberline {4.3.2}Homeservers}{13}
+\contentsline {subsection}{\numberline {4.3.3}Cluster manager}{13}
+\contentsline {section}{\numberline {4.4}Connections}{13}
+\contentsline {subsection}{\numberline {4.4.1}Connection authentication}{13}
+\contentsline {subsection}{\numberline {4.4.2}Connection handling}{14}
+\contentsline {subsection}{\numberline {4.4.3}Local versus remote}{14}
+\contentsline {section}{\numberline {4.5}Replication}{15}
+\contentsline {chapter}{\numberline {5}Entities}{17}
+\contentsline {section}{\numberline {5.1}Identification}{17}
+\contentsline {section}{\numberline {5.2}Storage and Interface}{17}
+\contentsline {section}{\numberline {5.3}Users}{17}
+\contentsline {section}{\numberline {5.4}Courses}{17}
+\contentsline {section}{\numberline {5.5}Assets}{18}
+\contentsline {subsection}{\numberline {5.5.1}URLs}{18}
+\contentsline {subsection}{\numberline {5.5.2}Profiles and metadata}{18}
+\contentsline {subsection}{\numberline {5.5.3}Storage}{18}
+\contentsline {subsection}{\numberline {5.5.4}Publication and Versioning}{18}
+\contentsline {chapter}{\numberline {6}Authorization}{19}
+\contentsline {section}{\numberline {6.1}Roles}{19}
+\contentsline {subsection}{\numberline {6.1.1}Role definition}{19}
+\contentsline {subsection}{\numberline {6.1.2}Role storage}{20}
+\contentsline {subsubsection}{With user}{20}
+\contentsline {subsubsection}{With domain or system}{22}
+\contentsline {chapter}{\numberline {7}Storage}{23}
+\contentsline {section}{\numberline {7.1}Databases}{23}
+\contentsline {subsection}{\numberline {7.1.1}PostgreSQL tables}{23}
+\contentsline {subsubsection}{URL table}{23}
+\contentsline {subsubsection}{User table}{23}
+\contentsline {subsubsection}{PID table}{23}
+\contentsline {subsubsection}{Course ID table}{24}
+\contentsline {subsubsection}{Homeserver table}{24}
+\contentsline {subsubsection}{Roles}{24}
+\contentsline {subsubsection}{Assessment table}{25}
+\contentsline {section}{\numberline {7.2}Caching}{25}
+\contentsline {section}{\numberline {7.3}File system}{25}
+\contentsline {section}{\numberline {7.4}Programmatic access}{25}
+\contentsline {chapter}{\numberline {8}XML}{27}
+\contentsline {section}{\numberline {8.1}Structure of Documents}{27}
+\contentsline {subsection}{\numberline {8.1.1}Classic LON-CAPA Content}{27}
+\contentsline {subsection}{\numberline {8.1.2}Overview of differences to classic LON-CAPA}{27}
+\contentsline {section}{\numberline {8.2}Editing}{28}
+\contentsline {subsection}{\numberline {8.2.1}Main editors}{28}
+\contentsline {subsection}{\numberline {8.2.2}Emergency editor}{28}
+\contentsline {chapter}{\numberline {9}XML Parser}{29}
+\contentsline {section}{\numberline {9.1}Invocation}{29}
+\contentsline {section}{\numberline {9.2}Tag types}{29}
+\contentsline {section}{\numberline {9.3}Stacks and safeeval}{30}
+\contentsline {chapter}{\numberline {10}Internationalization}{31}
+\contentsline {section}{\numberline {10.1}Encoding}{31}
+\contentsline {section}{\numberline {10.2}Maketext}{31}
+\contentsline {section}{\numberline {10.3}Invocation in documents}{32}
+\contentsline {section}{\numberline {10.4}Invocation from Perl}{32}
+\contentsline {section}{\numberline {10.5}Internal codes}{32}
+\contentsline {section}{\numberline {10.6}Special cases}{32}
+\contentsline {subsection}{\numberline {10.6.1}JavaScript configuration files}{32}
+\contentsline {subsection}{\numberline {10.6.2}Loading locatilization files}{33}
+\contentsline {chapter}{\numberline {11}Math editor, parser and equation syntax}{35}
+\contentsline {section}{\numberline {11.1}Introduction}{35}
+\contentsline {section}{\numberline {11.2}A new user interface}{35}
+\contentsline {subsection}{\numberline {11.2.1}Usage}{36}
+\contentsline {section}{\numberline {11.3}The server-side parser}{36}
+\contentsline {subsection}{\numberline {11.3.1}Usage}{36}
+\contentsline {subsection}{\numberline {11.3.2}Calculation environment}{36}
+\contentsline {subsection}{\numberline {11.3.3}Conversion to Maxima syntax}{36}
+\contentsline {subsection}{\numberline {11.3.4}Catching errors}{36}
+\contentsline {subsection}{\numberline {11.3.5}Example with unit node}{36}
+\contentsline {subsection}{\numberline {11.3.6}Example with symbolic node}{36}
+\contentsline {section}{\numberline {11.4}Equation syntax}{37}
+\contentsline {subsection}{\numberline {11.4.1}Spaces}{37}
+\contentsline {subsection}{\numberline {11.4.2}Decimal separators and function parameter separators}{37}
+\contentsline {subsection}{\numberline {11.4.3}Constants}{37}
+\contentsline {subsection}{\numberline {11.4.4}Units}{37}
+\contentsline {subsection}{\numberline {11.4.5}Parenthesis}{37}
+\contentsline {subsection}{\numberline {11.4.6}Complex numbers}{37}
+\contentsline {subsection}{\numberline {11.4.7}Operators}{37}
+\contentsline {subsection}{\numberline {11.4.8}Implicit operators}{37}
+\contentsline {subsection}{\numberline {11.4.9}Vectors and matrices}{37}
+\contentsline {subsection}{\numberline {11.4.10}Functions}{38}
+\contentsline {chapter}{\numberline {12}Glossary}{39}
