@@ -29,15 +29,20 @@ namenoext="${filename%.*}"
 newpath="$dir/${namenoext}_clean$ext"
 
 
+# warning: using constant temp file names here prevents running several instances at the same time
 perl $MY_HOME/pre_tidy.pl "$pathname" >/tmp/pretidy.txt
 if [ $? -ne 0 ]; then
-  echo "Error for $pathname\n"
+  echo "pre_tidy error for $pathname"
   exit
 fi
-# warning: using constant temp file names here prevents running several instances at the same time
-tidy -config /tmp/tidycfg.txt /tmp/pretidy.txt | perl $MY_HOME/post_tidy.pl > "$newpath"
+tidy -config /tmp/tidycfg.txt -o /tmp/posttidy.txt /tmp/pretidy.txt
+if [ $? -eq 2 ]; then
+  echo "tidy error for $pathname"
+  exit
+fi
+cat /tmp/posttidy.txt | perl $MY_HOME/post_tidy.pl > "$newpath"
 if [ $? -ne 0 ]; then
-  echo "Error for $pathname\n"
+  echo "post_tidy error for $pathname"
   exit
 fi
 

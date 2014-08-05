@@ -20,6 +20,9 @@
         <xsl:when test="$csscolor = '' and $csssize = '' and $cssface = '' and $symbol = 'yes'">
           <xsl:call-template name="symbol-content"/>
         </xsl:when>
+        <xsl:when test="$csscolor = '' and $csssize = '' and $cssface = '' and $symbol != 'yes'">
+          <xsl:apply-templates select="node()"/>
+        </xsl:when>
         <xsl:otherwise>
           <span style="{$csscolor}{$csssize}{$cssface}">
             <xsl:choose>
@@ -42,16 +45,23 @@
       <xsl:variable name="csssize"><xsl:call-template name="size"/></xsl:variable>
       <xsl:variable name="cssface"><xsl:call-template name="face"/></xsl:variable>
       <xsl:variable name="symbol"><xsl:call-template name="has-symbol"/></xsl:variable>
-      <div style="{$csscolor}{$csssize}{$cssface}">
-        <xsl:choose>
-          <xsl:when test="$symbol = 'yes'"> <!-- we will not do that test recursively -->
-            <xsl:call-template name="symbol-content"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:apply-templates select="node()"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </div>
+      <xsl:choose>
+        <xsl:when test="$csscolor = '' and $csssize = '' and $cssface = '' and $symbol != 'yes'">
+          <xsl:apply-templates select="node()"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <div style="{$csscolor}{$csssize}{$cssface}">
+            <xsl:choose>
+              <xsl:when test="$symbol = 'yes'"> <!-- we will not do that test recursively -->
+                <xsl:call-template name="symbol-content"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:apply-templates select="node()"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </div>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:if>
   </xsl:template>
 
