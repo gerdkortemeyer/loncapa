@@ -4519,9 +4519,13 @@
       <xs:element ref="pre"/>
       <xs:element ref="noscript"/>
       <xs:element ref="blockquote"/>
+      <xs:element ref="object"/>
+      <xs:element ref="applet"/>
+      <xs:element ref="embed"/>
       <xs:element ref="map"/>
       <xs:element ref="form"/>
       <xs:element ref="fieldset"/>
+      <xs:element ref="iframe"/>
     </xs:choice>
   </xs:group>
   <xs:group name="inlineText">
@@ -4545,18 +4549,17 @@
       <xs:element ref="sub"/>
       <xs:element ref="code"/>
       <xs:element ref="kbd"/>
+      <xs:element ref="samp"/>
       <xs:element ref="tt"/>
       <xs:element ref="ins"/>
       <xs:element ref="del"/>
+      <xs:element ref="var"/>
       <xs:element ref="small"/>
       <xs:element ref="big"/>
       <xs:element ref="font"/>
       <xs:element ref="basefont"/>
       <xs:element ref="hr"/>
       <xs:element ref="br"/>
-      <xs:element ref="object"/>
-      <xs:element ref="applet"/>
-      <xs:element ref="embed"/>
       <xs:element ref="input"/>
       <xs:element ref="select"/>
       <xs:element ref="textarea"/>
@@ -4586,6 +4589,7 @@
       <xs:element ref="sup"/>
       <xs:element ref="sub"/>
     </xs:choice>
+    <xs:attribute name="TeXsize" type="xs:int"/>
   </xs:complexType>
   
   <xs:element name="html">
@@ -4821,6 +4825,15 @@
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="class" type="xs:string"/>
       <xs:attribute name="style" type="xs:string"/>
+      <xs:attribute name="align">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="center"/>
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="right"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="p">
@@ -4847,6 +4860,7 @@
       <xs:sequence maxOccurs="unbounded">
         <xs:element ref="li"/>
       </xs:sequence>
+      <xs:attribute name="type" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="ol">
@@ -4859,6 +4873,7 @@
       <xs:sequence maxOccurs="unbounded">
         <xs:element ref="li"/>
       </xs:sequence>
+      <xs:attribute name="type" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="li">
@@ -4873,6 +4888,8 @@
         <xs:element ref="ul"/>
         <xs:element ref="ol"/>
       </xs:choice>
+      <xs:attribute name="type" type="xs:string"/>
+      <xs:attribute name="value" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="dl">
@@ -4920,6 +4937,11 @@
       <xs:sequence maxOccurs="unbounded">
         <xs:element ref="tr"/>
       </xs:sequence>
+      <xs:attribute name="border" type="xs:string"/>
+      <xs:attribute name="TeXwidth" type="xs:int"/>
+      <xs:attribute name="TeXtheme" type="xs:string"/>
+      <xs:attribute name="align" type="xs:string"/>
+      <xs:attribute name="rules" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="tr">
@@ -4937,6 +4959,7 @@
           <xs:element ref="td"/>
         </xs:sequence>
       </xs:choice>
+      <xs:attribute name="align" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:simpleType name="html-align">
@@ -4960,6 +4983,7 @@
       <xs:attribute name="colspan" type="xs:int"/>
       <xs:attribute name="rowspan" type="xs:int"/>
       <xs:attribute name="align" type="html-align"/>
+      <xs:attribute name="TeXwidth" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="th">
@@ -4975,6 +4999,7 @@
       <xs:attribute name="colspan" type="xs:int"/>
       <xs:attribute name="rowspan" type="xs:int"/>
       <xs:attribute name="align" type="html-align"/>
+      <xs:attribute name="TeXwidth" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="span">
@@ -4999,6 +5024,8 @@
     <xs:complexType mixed="true">
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="href" type="xs:string"/>
+      <xs:attribute name="uriprint" type="xs:string"/>
+      <xs:attribute name="anchorprint" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="strong" type="inlineBaseType">
@@ -5064,6 +5091,13 @@
       </xs:documentation>
     </xs:annotation>
   </xs:element>
+  <xs:element name="samp" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;samp&gt; element is an element intended to identify sample output from a computer program. It is usually displayed in the browser's default monotype font.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
   <xs:element name="tt" type="inlineBaseType">
     <xs:annotation>
       <xs:documentation>
@@ -5102,6 +5136,13 @@
       </xs:complexContent>
     </xs:complexType>
   </xs:element>
+  <xs:element name="var" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML Variable Element (&lt;var&gt;) represents a variable in a mathematical expression or a programming context.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
   <xs:element name="small" type="inlineBaseType">
     <xs:annotation>
       <xs:documentation>
@@ -5128,6 +5169,7 @@
           <xs:attribute name="color" type="xs:string"/>
           <xs:attribute name="face" type="xs:string"/>
           <xs:attribute name="size" type="xs:string"/>
+          <xs:attribute name="TeXsize" type="xs:int"/>
         </xs:extension>
       </xs:complexContent>
     </xs:complexType>
@@ -5142,6 +5184,7 @@
       <xs:attribute name="color" type="xs:string"/>
       <xs:attribute name="face" type="xs:string"/>
       <xs:attribute name="size" type="xs:string"/>
+      <xs:attribute name="TeXsize" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="br">
@@ -5169,6 +5212,16 @@
         <xs:group ref="blockText"/>
       </xs:choice>
       <xs:attribute name="cite" type="xs:anyURI"/>
+      <xs:attribute name="TeXwidth" type="xs:int"/>
+      <xs:attribute name="align">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="center"/>
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="right"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   
@@ -5621,6 +5674,29 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="iframe">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;iframe&gt; Element (or HTML inline frame element) represents a nested browsing context, effectively embedding another HTML page into the current page.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="name" type="xs:NMTOKEN"/>
+      <xs:attribute name="src" type="xs:anyURI"/>
+      <xs:attribute default="1" name="frameborder">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="height" type="htmlLength"/>
+      <xs:attribute name="width" type="htmlLength"/>
+      <xs:attribute fixed="allowfullscreen" name="allowfullscreen"/>
     </xs:complexType>
   </xs:element>
   
