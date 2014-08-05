@@ -85,3 +85,12 @@ function modify_selected() {
    parent.breadcrumbbar();
    document.courseusers.submit();
 }
+
+function uploadsuccess(name) {
+   alert("success "+name);
+}
+
+function uploadfailure(name,code) {
+   alert("failure "+name+" code "+code);
+}
+

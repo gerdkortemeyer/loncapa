@@ -186,6 +186,12 @@ sub remote_dir_list {
    }
 }
 
+
+#
+# Returns a raw "directory" listing
+# domain/authorentity/path
+# Array of arrays: [[url,entity],[url,entity]]
+#
 sub dir_list {
    my ($path)=@_;
    my ($domain,$entity)=($path=~/^([^\/]+)\/([^\/]+)\//);
@@ -194,6 +200,25 @@ sub dir_list {
    } else {
       return &remote_dir_list(&Apache::lc_entity_utils::homeserver($entity,$domain),$path);
    }
+}
+
+#
+# Returns a full "directory" listing
+# domain/authorentity/path
+# including metadata
+#
+sub full_dir_list {
+   my ($path)=@_;
+   my $dir_list=&dir_list($path);
+   my $full_list;
+   foreach my $file (@{$dir_list}) {
+      my $url=$file->[0];
+      my $entity=$file->[1];
+      my ($domain)=($url=~/^\/?([^\/]+)\//);
+      my $metadata=&dump_metadata($entity,$domain);
+      push(@{$full_list},{ url => $url, entity => $entity, domain => $domain, metadata => $metadata });
+   }
+   return $full_list;
 }
 
 # =============================================================
