@@ -4822,6 +4822,15 @@
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="class" type="xs:string"/>
       <xs:attribute name="style" type="xs:string"/>
+      <xs:attribute name="align">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="center"/>
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="right"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="p">
@@ -4848,6 +4857,7 @@
       <xs:sequence maxOccurs="unbounded">
         <xs:element ref="li"/>
       </xs:sequence>
+      <xs:attribute name="type" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="ol">
@@ -4860,6 +4870,7 @@
       <xs:sequence maxOccurs="unbounded">
         <xs:element ref="li"/>
       </xs:sequence>
+      <xs:attribute name="type" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="li">
@@ -4874,6 +4885,8 @@
         <xs:element ref="ul"/>
         <xs:element ref="ol"/>
       </xs:choice>
+      <xs:attribute name="type" type="xs:string"/>
+      <xs:attribute name="value" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="dl">
@@ -4921,6 +4934,11 @@
       <xs:sequence maxOccurs="unbounded">
         <xs:element ref="tr"/>
       </xs:sequence>
+      <xs:attribute name="border" type="xs:string"/>
+      <xs:attribute name="TeXwidth" type="xs:int"/>
+      <xs:attribute name="TeXtheme" type="xs:string"/>
+      <xs:attribute name="align" type="xs:string"/>
+      <xs:attribute name="rules" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="tr">
@@ -4938,6 +4956,7 @@
           <xs:element ref="td"/>
         </xs:sequence>
       </xs:choice>
+      <xs:attribute name="align" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:simpleType name="html-align">
@@ -4961,6 +4980,7 @@
       <xs:attribute name="colspan" type="xs:int"/>
       <xs:attribute name="rowspan" type="xs:int"/>
       <xs:attribute name="align" type="html-align"/>
+      <xs:attribute name="TeXwidth" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="th">
@@ -4976,6 +4996,7 @@
       <xs:attribute name="colspan" type="xs:int"/>
       <xs:attribute name="rowspan" type="xs:int"/>
       <xs:attribute name="align" type="html-align"/>
+      <xs:attribute name="TeXwidth" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="span">
@@ -5000,6 +5021,8 @@
     <xs:complexType mixed="true">
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="href" type="xs:string"/>
+      <xs:attribute name="uriprint" type="xs:string"/>
+      <xs:attribute name="anchorprint" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="strong" type="inlineBaseType">
@@ -5172,6 +5195,16 @@
         <xs:group ref="blockText"/>
       </xs:choice>
       <xs:attribute name="cite" type="xs:anyURI"/>
+      <xs:attribute name="TeXwidth" type="xs:int"/>
+      <xs:attribute name="align">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="center"/>
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="right"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   
