@@ -4519,9 +4519,13 @@
       <xs:element ref="pre"/>
       <xs:element ref="noscript"/>
       <xs:element ref="blockquote"/>
+      <xs:element ref="object"/>
+      <xs:element ref="applet"/>
+      <xs:element ref="embed"/>
       <xs:element ref="map"/>
       <xs:element ref="form"/>
       <xs:element ref="fieldset"/>
+      <xs:element ref="iframe"/>
     </xs:choice>
   </xs:group>
   <xs:group name="inlineText">
@@ -4545,18 +4549,17 @@
       <xs:element ref="sub"/>
       <xs:element ref="code"/>
       <xs:element ref="kbd"/>
+      <xs:element ref="samp"/>
       <xs:element ref="tt"/>
       <xs:element ref="ins"/>
       <xs:element ref="del"/>
+      <xs:element ref="var"/>
       <xs:element ref="small"/>
       <xs:element ref="big"/>
       <xs:element ref="font"/>
       <xs:element ref="basefont"/>
       <xs:element ref="hr"/>
       <xs:element ref="br"/>
-      <xs:element ref="object"/>
-      <xs:element ref="applet"/>
-      <xs:element ref="embed"/>
       <xs:element ref="input"/>
       <xs:element ref="select"/>
       <xs:element ref="textarea"/>
@@ -5088,6 +5091,13 @@
       </xs:documentation>
     </xs:annotation>
   </xs:element>
+  <xs:element name="samp" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;samp&gt; element is an element intended to identify sample output from a computer program. It is usually displayed in the browser's default monotype font.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
   <xs:element name="tt" type="inlineBaseType">
     <xs:annotation>
       <xs:documentation>
@@ -5125,6 +5135,13 @@
         </xs:extension>
       </xs:complexContent>
     </xs:complexType>
+  </xs:element>
+  <xs:element name="var" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML Variable Element (&lt;var&gt;) represents a variable in a mathematical expression or a programming context.
+      </xs:documentation>
+    </xs:annotation>
   </xs:element>
   <xs:element name="small" type="inlineBaseType">
     <xs:annotation>
@@ -5657,6 +5674,29 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="iframe">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;iframe&gt; Element (or HTML inline frame element) represents a nested browsing context, effectively embedding another HTML page into the current page.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="name" type="xs:NMTOKEN"/>
+      <xs:attribute name="src" type="xs:anyURI"/>
+      <xs:attribute default="1" name="frameborder">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="height" type="htmlLength"/>
+      <xs:attribute name="width" type="htmlLength"/>
+      <xs:attribute fixed="allowfullscreen" name="allowfullscreen"/>
     </xs:complexType>
   </xs:element>
   

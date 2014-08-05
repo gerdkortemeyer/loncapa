@@ -4519,9 +4519,15 @@
       <xs:element ref="pre"/>
       <xs:element ref="noscript"/>
       <xs:element ref="blockquote"/>
+      <xs:element ref="object"/>
+      <xs:element ref="applet"/>
+      <xs:element ref="embed"/>
+      <xs:element ref="video"/>
+      <xs:element ref="audio"/>
       <xs:element ref="map"/>
       <xs:element ref="form"/>
       <xs:element ref="fieldset"/>
+      <xs:element ref="iframe"/>
     </xs:choice>
   </xs:group>
   <xs:group name="inlineText">
@@ -4545,18 +4551,17 @@
       <xs:element ref="sub"/>
       <xs:element ref="code"/>
       <xs:element ref="kbd"/>
+      <xs:element ref="samp"/>
       <xs:element ref="tt"/>
       <xs:element ref="ins"/>
       <xs:element ref="del"/>
+      <xs:element ref="var"/>
       <xs:element ref="small"/>
       <xs:element ref="big"/>
       <xs:element ref="font"/>
       <xs:element ref="basefont"/>
       <xs:element ref="hr"/>
       <xs:element ref="br"/>
-      <xs:element ref="object"/>
-      <xs:element ref="applet"/>
-      <xs:element ref="embed"/>
       <xs:element ref="input"/>
       <xs:element ref="select"/>
       <xs:element ref="textarea"/>
@@ -5064,6 +5069,13 @@
       </xs:documentation>
     </xs:annotation>
   </xs:element>
+  <xs:element name="samp" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;samp&gt; element is an element intended to identify sample output from a computer program. It is usually displayed in the browser's default monotype font.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
   <xs:element name="tt" type="inlineBaseType">
     <xs:annotation>
       <xs:documentation>
@@ -5101,6 +5113,13 @@
         </xs:extension>
       </xs:complexContent>
     </xs:complexType>
+  </xs:element>
+  <xs:element name="var" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML Variable Element (&lt;var&gt;) represents a variable in a mathematical expression or a programming context.
+      </xs:documentation>
+    </xs:annotation>
   </xs:element>
   <xs:element name="small" type="inlineBaseType">
     <xs:annotation>
@@ -5288,6 +5307,51 @@
       <xs:attribute name="height" type="xs:nonNegativeInteger" use="required"/>
       <xs:attribute name="hspace" type="xs:nonNegativeInteger"/>
       <xs:attribute name="vspace" type="xs:nonNegativeInteger"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="video">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;video&gt; element is used to embed video content. It may contain several video sources, represented using the src attribute or the &lt;source&gt; element; the browser will choose the most suitable one.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="source"/>
+      </xs:choice>
+      <xs:attribute name="src" type="xs:anyURI"/>
+      <xs:attribute name="width" type="xs:nonNegativeInteger"/>
+      <xs:attribute name="height" type="xs:nonNegativeInteger"/>
+      <xs:attribute fixed="autoplay" name="autoplay"/>
+      <xs:attribute fixed="controls" name="controls"/>
+      <xs:attribute fixed="loop" name="loop"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="source">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;source&gt; element is used to specify multiple media resources for &lt;picture&gt;, &lt;audio&gt; and &lt;video&gt; elements. It is an empty element. It is commonly used to serve the same media in multiple formats supported by different browsers.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="src" type="xs:anyURI" use="required"/>
+      <xs:attribute name="type" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="audio">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;audio&gt; element is used to embed sound content in documents. It may contain several audio sources, represented using the src attribute or the &lt;source&gt; element; the browser will choose the most suitable one.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="source"/>
+      </xs:choice>
+      <xs:attribute name="src" type="xs:anyURI"/>
+      <xs:attribute fixed="autoplay" name="autoplay"/>
+      <xs:attribute fixed="controls" name="controls"/>
+      <xs:attribute fixed="loop" name="loop"/>
     </xs:complexType>
   </xs:element>
   
@@ -5621,6 +5685,21 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="iframe">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;iframe&gt; Element (or HTML inline frame element) represents a nested browsing context, effectively embedding another HTML page into the current page.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="name" type="xs:NMTOKEN"/>
+      <xs:attribute name="src" type="xs:anyURI"/>
+      <xs:attribute name="height" type="htmlLength"/>
+      <xs:attribute name="width" type="htmlLength"/>
+      <xs:attribute fixed="allowfullscreen" name="allowfullscreen"/>
     </xs:complexType>
   </xs:element>
   
