@@ -4586,6 +4586,7 @@
       <xs:element ref="sup"/>
       <xs:element ref="sub"/>
     </xs:choice>
+    <xs:attribute name="TeXsize" type="xs:int"/>
   </xs:complexType>
   
   <xs:element name="html">
@@ -5128,6 +5129,7 @@
           <xs:attribute name="color" type="xs:string"/>
           <xs:attribute name="face" type="xs:string"/>
           <xs:attribute name="size" type="xs:string"/>
+          <xs:attribute name="TeXsize" type="xs:int"/>
         </xs:extension>
       </xs:complexContent>
     </xs:complexType>
@@ -5142,6 +5144,7 @@
       <xs:attribute name="color" type="xs:string"/>
       <xs:attribute name="face" type="xs:string"/>
       <xs:attribute name="size" type="xs:string"/>
+      <xs:attribute name="TeXsize" type="xs:int"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="br">
