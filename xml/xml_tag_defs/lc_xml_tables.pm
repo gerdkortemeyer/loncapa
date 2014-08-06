@@ -28,6 +28,7 @@ use Apache::lc_entity_urls();
 use Apache::lc_entity_sessions();
 use Apache::lc_date_utils();
 use Apache::lc_authorize;
+use Apache::lc_logs;
 use Data::Dumper;
 
 our @ISA = qw(Exporter);
@@ -63,8 +64,24 @@ sub portfoliomanager {
                &mt('First Published').'</th><th>&nbsp;</th><th>'.
                &mt('Last Published').'</th><th>&nbsp;</th></tr></thead><tbody>';
    foreach my $file (@{$dir_list}) {
+       my $version='-';
+       my $display_first_date=&mt('Never');
+       my $sort_first_date=0;
+       my $display_last_date=&mt('Never');
+       my $sort_last_date=0;
+       if ($file->{'metadata'}->{'current_version'}) {
+          $version=$file->{'metadata'}->{'current_version'};
+          ($display_first_date,$sort_first_date)=&Apache::lc_ui_localize::locallocaltime(
+                                           &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{1}));
+          ($display_last_date,$sort_last_date)=&Apache::lc_ui_localize::locallocaltime(
+                                           &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{$version}));
+       }
        $output.="\n".'<tr><td>&nbsp;</td><td>Type</td><td>'.(split(/\//,$file->{'url'}))[-1].
-                     '</td><td>Test</td><td>Test</td><td>Test</td><td>Test</td><td>Test</td><td>Test</td><td>Test</td></tr>';
+                     '</td><td>Title</td><td>State</td><td>'.$version.'</td><td>'.
+                  ($sort_first_date?'<time datetime="'.$sort_first_date.'">':'').
+                  $display_first_date.($sort_first_date?'</time>':'').'</td><td>'.$sort_first_date.'</td><td>'.
+                  ($sort_last_date?'<time datetime="'.$sort_last_date.'">':'').
+                  $display_last_date.($sort_last_date?'</time>':'').'</td><td>'.$sort_last_date.'</td></tr>';
    }
    $output.='</tbody>';
    return $output;
