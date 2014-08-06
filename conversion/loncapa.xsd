@@ -3905,285 +3905,6 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-  <xs:element name="Task">
-    <xs:annotation>
-      <xs:documentation>Start of Task</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="IntroParagraph"/>
-        <xs:element ref="Setup"/>
-        <xs:element ref="Question"/>
-        <xs:element ref="Criteria"/>
-        <xs:element ref="ClosingParagraph"/>
-      </xs:choice>
-      <xs:attribute name="optionalrequired" type="xs:int">
-        <xs:annotation>
-          <xs:documentation>
-            Required number of passed optional elements to pass the Task
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="IntroParagraph">
-    <xs:annotation>
-      <xs:documentation>Introductory Information</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="ClosingParagraph">
-    <xs:annotation>
-      <xs:documentation>Closing Information</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="Question">
-    <xs:annotation>
-      <xs:documentation>Question</xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="Instance"/>
-        <xs:element ref="QuestionText"/>
-        <xs:element ref="Question"/>
-        <xs:element ref="Criteria"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute default="Y" name="mandatory">
-        <xs:annotation>
-          <xs:documentation>
-            Passing is Mandatory
-          </xs:documentation>
-        </xs:annotation>
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Y"/>
-            <xs:enumeration value="N"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute name="optionalrequired" type="xs:int">
-        <xs:annotation>
-          <xs:documentation>
-            Required number of passed optional elements to pass
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="QuestionText">
-    <xs:annotation>
-      <xs:documentation>Question Information</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="Setup">
-    <xs:annotation>
-      <xs:documentation>Setup....</xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="Instance"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="Instance">
-    <xs:annotation>
-      <xs:documentation>Specific Question Instance</xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="InstanceText"/>
-        <xs:element ref="Criteria"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute default="no" name="disabled" type="yesno">
-        <xs:annotation>
-          <xs:documentation>
-            Instance is Disabled
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="optionalrequired" type="xs:int">
-        <xs:annotation>
-          <xs:documentation>
-            Required number of passed optional elements to pass the Instance
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="InstanceText">
-    <xs:annotation>
-      <xs:documentation>Information for the Instance</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="Criteria">
-    <xs:annotation>
-      <xs:documentation>Question Criteria</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="GraderNote"/>
-        <xs:element ref="CriteriaText"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute default="Y" name="mandatory">
-        <xs:annotation>
-          <xs:documentation>
-            Passing is Mandatory
-          </xs:documentation>
-        </xs:annotation>
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Y"/>
-            <xs:enumeration value="N"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="CriteriaText">
-    <xs:annotation>
-      <xs:documentation>Criteria Information</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GraderNote">
-    <xs:annotation>
-      <xs:documentation>Text to display to Grader</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="dataresponse">
     <xs:complexType mixed="true">
       <xs:annotation>
@@ -4781,6 +4502,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="blockText"/>
       </xs:choice>
+      <xs:attribute name="class" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="h1" type="headerContent">
@@ -5335,9 +5057,27 @@
       <xs:attribute name="src" type="xs:anyURI"/>
       <xs:attribute name="width" type="xs:nonNegativeInteger"/>
       <xs:attribute name="height" type="xs:nonNegativeInteger"/>
-      <xs:attribute fixed="autoplay" name="autoplay"/>
-      <xs:attribute fixed="controls" name="controls"/>
-      <xs:attribute fixed="loop" name="loop"/>
+      <xs:attribute name="autoplay">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="autoplay"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="controls">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="controls"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="loop">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="loop"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="source">
@@ -5362,9 +5102,27 @@
         <xs:element ref="source"/>
       </xs:choice>
       <xs:attribute name="src" type="xs:anyURI"/>
-      <xs:attribute fixed="autoplay" name="autoplay"/>
-      <xs:attribute fixed="controls" name="controls"/>
-      <xs:attribute fixed="loop" name="loop"/>
+      <xs:attribute name="autoplay">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="autoplay"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="controls">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="controls"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="loop">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="loop"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   
@@ -5712,7 +5470,13 @@
       <xs:attribute name="src" type="xs:anyURI"/>
       <xs:attribute name="height" type="htmlLength"/>
       <xs:attribute name="width" type="htmlLength"/>
-      <xs:attribute fixed="allowfullscreen" name="allowfullscreen"/>
+      <xs:attribute name="allowfullscreen">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="allowfullscreen"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   
