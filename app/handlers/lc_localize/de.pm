@@ -44,6 +44,8 @@ use utf8;
 'author' => 'Autor',
 'co_author' => 'Co-Autor',
 
+'Path' => 'Pfad',
+
 'Start of course contents' => 'Anfang des Kursinhaltes',
 
 'End of course contents' => 'Ende des Kursinhaltes',

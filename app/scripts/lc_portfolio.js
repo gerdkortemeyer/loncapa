@@ -16,6 +16,14 @@ $(document).ready(function() {
       "aoColumns" : [
          { "bVisible": false },
          null,
+         null,
+         null,
+         null,
+         null,
+         {"iDataSort": 7 },
+         { "bVisible": false },
+         {"iDataSort": 9 },
+         { "bVisible": false }
       ]
     } );
 

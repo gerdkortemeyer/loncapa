@@ -58,8 +58,14 @@ sub portfoliomanager {
    my ($p,$safe,$stack,$token)=@_;
    my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
    my $dir_list=&Apache::lc_entity_urls::full_dir_list($domain.'/'.$entity.'/');
-   my $output.='<thead><tr><th>&nbsp;</th><th>'.&mt('Filename').'</th></tr></thead><tbody>';
-   $output.='<tr><td>Test</td><td><pre>'.Dumper($dir_list).'</pre></td></tr>';
+   my $output.='<thead><tr><th>&nbsp;</th><th>'.&mt('Type').'</th><th>'.&mt('Name').'</th><th>'.
+               &mt('Title').'</th><th>'.&mt('Publication State').'</th><th>'.&mt('Version').'</th><th>'.
+               &mt('First Published').'</th><th>&nbsp;</th><th>'.
+               &mt('Last Published').'</th><th>&nbsp;</th></tr></thead><tbody>';
+   foreach my $file (@{$dir_list}) {
+       $output.="\n".'<tr><td>&nbsp;</td><td>Type</td><td>'.(split(/\//,$file->{'url'}))[-1].
+                     '</td><td>Test</td><td>Test</td><td>Test</td><td>Test</td><td>Test</td><td>Test</td><td>Test</td></tr>';
+   }
    $output.='</tbody>';
    return $output;
 }
