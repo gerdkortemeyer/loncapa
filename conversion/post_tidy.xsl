@@ -142,6 +142,13 @@
   </xsl:template>
   
   
+  <xsl:template match="startouttext">
+  </xsl:template>
+  
+  <xsl:template match="endouttext">
+  </xsl:template>
+  
+  
   <xsl:template match = "@*|node()">
     <xsl:copy>
       <xsl:for-each select="@*">
