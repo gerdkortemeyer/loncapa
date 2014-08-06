@@ -5,7 +5,7 @@
 <title>XML Schema</title>
 <style type="text/css">
 body { color: #000000; background: #FFFFFF }
-pre { color: #005500 }
+.documentation { font-family: monospace; color: #005500; white-space: pre-line }
 .grandlien { font-size: 120%; font-weight: bold }
 .nomtitre { color: #550000 }
 .nomattribut { color: #000055; font-weight: bold }
@@ -116,7 +116,7 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<pre>Collection of Answers</pre>
+<div class="documentation">Collection of Answers</div>
 <br>
 
 Choice between:<ul>
@@ -155,7 +155,7 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<pre>Answer</pre>
+<div class="documentation">Answer</div>
 <br>
 
 Choice between:<ul>
@@ -204,7 +204,7 @@ Value restriction based on xs:string<ul>
 </h3>
 
 
-<pre>Value</pre>
+<div class="documentation">Value</div>
 <br>
 
 Value restriction based on xs:string
@@ -215,7 +215,7 @@ Value restriction based on xs:string
 </h3>
 
 
-<pre>Vector</pre>
+<div class="documentation">Vector</div>
 <br>
 
 Value restriction based on xs:string
@@ -227,7 +227,7 @@ Value restriction based on xs:string
 <div class="indentation">
 
 
-<pre>Hint algorithm</pre>
+<div class="documentation">Hint algorithm</div>
 <br>
 
 Attribute <span class="nomattribut">type</span>:
@@ -247,7 +247,7 @@ Attribute <span class="nomattribut"></span>:
 <div class="indentation">
 
 
-<pre>Hint algorithm</pre>
+<div class="documentation">Hint algorithm</div>
 <br>
 
 Attribute <span class="nomattribut">type</span>:
@@ -267,7 +267,7 @@ Attribute <span class="nomattribut"></span>:
 <div class="indentation">
 
 
-<pre>Collection of similar foils</pre>
+<div class="documentation">Collection of similar foils</div>
 <br>
 
 Choice between:<ul>
@@ -293,7 +293,7 @@ Attribute <span class="nomattribut">concept</span>:
 <div class="indentation">
 
 
-<pre>Image response foil. image and rectangle are required.</pre>
+<div class="documentation">Image response foil. image and rectangle are required.</div>
 <br>
 
 Choice between:<ul>
@@ -340,7 +340,7 @@ Attribute <span class="nomattribut">name</span>:
 <div class="indentation">
 
 
-<pre>Collection of Imageresponse foils</pre>
+<div class="documentation">Collection of Imageresponse foils</div>
 <br>
 
 Choice between:<ul>
@@ -369,12 +369,12 @@ Choice between:<ul>
 <div class="indentation">
 
 
-<pre>
+<div class="documentation">
 Imageresponse Image (contains the image source file).
 
 The delimited text should correspond to a published image resource.
 Example: &lt;image&gt;/res/adm/includes/templates/man1.jpg&lt;/image&gt;. The following image formats are recommended - gif, jpg or png. Other formats may work, but there may be printing or display issues. The image should only appear once per foil.
-</pre>
+</div>
 <br>
 
 
@@ -387,11 +387,11 @@ Example: &lt;image&gt;/res/adm/includes/templates/man1.jpg&lt;/image&gt;. The fo
 <div class="indentation">
 
 
-<pre>
+<div class="documentation">
 Rectangular area in image (contains coordinate pairs).
 
 The delimited text specifies a rectangular area that is correct, specified as (x1,y1)-(x2,y2), where x1, x2, y1, and y2 are number corresponding to the x and y coordinates of two corners that define a rectangle which specifies where the right answer for this foil is located on the image. For example, (0,0)-(100,200) will specify that a rectangle 100 pixels wide and 200 pixels tall, situated in the upper left of the image, is correct. At least one rectangle is required; multiple rectangles may be specified.
-</pre>
+</div>
 <br>
 
 
@@ -404,7 +404,7 @@ The delimited text specifies a rectangular area that is correct, specified as (x
 <div class="indentation">
 
 
-<pre>Polygonal area in image (contains coordinate list)</pre>
+<div class="documentation">Polygonal area in image (contains coordinate list)</div>
 <br>
 
 
@@ -417,12 +417,12 @@ The delimited text specifies a rectangular area that is correct, specified as (x
 <div class="indentation">
 
 
-<pre>
+<div class="documentation">
 Text to describe option
 
 The delimited text is printed before the image is shown on the screen.
 This text is typically used to describe to the student what they are expected to click on.
-</pre>
+</div>
 <br>
 
 Choice between:<ul>
@@ -509,7 +509,7 @@ Choice between:<ul>
 <div class="indentation">
 
 
-<pre>Answer algorithm</pre>
+<div class="documentation">Answer algorithm</div>
 <br>
 
 Attribute <span class="nomattribut">type</span>:
@@ -529,7 +529,7 @@ Attribute <span class="nomattribut"></span>:
 <div class="indentation">
 
 
-<pre>Answer algorithm</pre>
+<div class="documentation">Answer algorithm</div>
 <br>
 
 Attribute <span class="nomattribut">type</span>:
@@ -549,7 +549,7 @@ Attribute <span class="nomattribut"></span>:
 <div class="indentation">
 
 
-<pre>Collection of similar foils</pre>
+<div class="documentation">Collection of similar foils</div>
 <br>
 
 Choice between:<ul>
@@ -575,7 +575,7 @@ Attribute <span class="nomattribut">concept</span>:
 <div class="indentation">
 
 
-<pre>Draw Option List</pre>
+<div class="documentation">Draw Option List</div>
 <br>
 
 
@@ -588,7 +588,7 @@ Attribute <span class="nomattribut">concept</span>:
 <div class="indentation">
 
 
-<pre>Option response foil</pre>
+<div class="documentation">Option response foil</div>
 <br>
 
 Choice between:<ul>
@@ -681,9 +681,9 @@ Attribute <span class="nomattribut">value</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Correct Option
-</pre>
+</div>
 <br>
 
 
@@ -719,7 +719,7 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<pre>Collection of Foils</pre>
+<div class="documentation">Collection of Foils</div>
 <br>
 
 Choice between:<ul>
@@ -743,9 +743,9 @@ Attribute <span class="nomattribut">options</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 List of options
-</pre>
+</div>
 <br>
 
 
@@ -754,9 +754,9 @@ Attribute <span class="nomattribut">texoptions</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Print options
-</pre>
+</div>
 <br>
 
 
@@ -775,9 +775,9 @@ Attribute <span class="nomattribut">checkboxvalue</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Two-option checkboxes for
-</pre>
+</div>
 <br>
 
 
@@ -786,9 +786,9 @@ Attribute <span class="nomattribut">checkboxoptions</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Checkbox options
-</pre>
+</div>
 <br>
 
 
@@ -812,7 +812,7 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<pre>Collection of similar foils</pre>
+<div class="documentation">Collection of similar foils</div>
 <br>
 
 Choice between:<ul>
@@ -838,7 +838,7 @@ Attribute <span class="nomattribut">concept</span>:
 <div class="indentation">
 
 
-<pre>Foil</pre>
+<div class="documentation">Foil</div>
 <br>
 
 Choice between:<ul>
@@ -923,9 +923,9 @@ Attribute <span class="nomattribut">value</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Correct Option
-</pre>
+</div>
 <br>
 
 
@@ -982,7 +982,7 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<pre>Collection of Foils</pre>
+<div class="documentation">Collection of Foils</div>
 <br>
 
 Choice between:<ul>
@@ -1011,7 +1011,7 @@ Choice between:<ul>
 <div class="indentation">
 
 
-<pre>Collection of similar foils</pre>
+<div class="documentation">Collection of similar foils</div>
 <br>
 
 Choice between:<ul>
@@ -1037,7 +1037,7 @@ Attribute <span class="nomattribut">concept</span>:
 <div class="indentation">
 
 
-<pre>Foil</pre>
+<div class="documentation">Foil</div>
 <br>
 
 Choice between:<ul>
@@ -1123,9 +1123,9 @@ Attribute <span class="nomattribut">value</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Rank Value
-</pre>
+</div>
 <br>
 
 
@@ -1161,7 +1161,7 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<pre>Collection of Foils</pre>
+<div class="documentation">Collection of Foils</div>
 <br>
 
 Choice between:<ul>
@@ -1190,7 +1190,7 @@ Choice between:<ul>
 <div class="indentation">
 
 
-<pre>Collection of similar foils</pre>
+<div class="documentation">Collection of similar foils</div>
 <br>
 
 Choice between:<ul>
@@ -1216,7 +1216,7 @@ Attribute <span class="nomattribut">concept</span>:
 <div class="indentation">
 
 
-<pre>Foil</pre>
+<div class="documentation">Foil</div>
 <br>
 
 Choice between:<ul>
@@ -1302,9 +1302,9 @@ Attribute <span class="nomattribut">value</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Correct Option
-</pre>
+</div>
 <br>
 
 
@@ -1340,7 +1340,7 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<pre>Collection of Foils</pre>
+<div class="documentation">Collection of Foils</div>
 <br>
 
 Choice between:<ul>
@@ -1376,7 +1376,7 @@ Choice between:<ul>
 <div class="indentation">
 
 
-<pre>Item</pre>
+<div class="documentation">Item</div>
 <br>
 
 Choice between:<ul>
@@ -1488,7 +1488,7 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<pre>Item to Match</pre>
+<div class="documentation">Item to Match</div>
 <br>
 
 Choice between:<ul>
@@ -1505,9 +1505,9 @@ Attribute <span class="nomattribut">randomize</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Randomize Order
-</pre>
+</div>
 <br>
 
 
@@ -1516,9 +1516,9 @@ Attribute <span class="nomattribut">location</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Items Display Location
-</pre>
+</div>
 <br>
 
 
@@ -1548,9 +1548,9 @@ Attribute <span class="nomattribut">direction</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Items Display Direction
-</pre>
+</div>
 <br>
 
 
@@ -1572,9 +1572,9 @@ Attribute <span class="nomattribut">columns</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Items Columns
-</pre>
+</div>
 <br>
 
 
@@ -1610,7 +1610,7 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<pre>Group of Labels</pre>
+<div class="documentation">Group of Labels</div>
 <br>
 
 Choice between:<ul>
@@ -1628,9 +1628,9 @@ Choice between:<ul>
 <br>
 
 
-<pre>
+<div class="documentation">
 declares a location on the image that a label should appear at
-</pre>
+</div>
 <br>
 
 
@@ -1642,9 +1642,9 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 This is the name of the group.
-</pre>
+</div>
 <br>
 
 
@@ -1653,9 +1653,9 @@ Attribute <span class="nomattribut">type</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 the type of labels in this group
-</pre>
+</div>
 <br>
 
 
@@ -1677,9 +1677,9 @@ Attribute <span class="nomattribut">texsize</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 TeX font size
-</pre>
+</div>
 <br>
 
 
@@ -1739,7 +1739,7 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<pre>Label Location</pre>
+<div class="documentation">Label Location</div>
 <br>
 
 Attribute <span class="nomattribut">x</span>:
@@ -1764,7 +1764,7 @@ Attribute <span class="nomattribut">value</span>:
 <div class="indentation">
 
 
-<pre>Label Text or Path to image</pre>
+<div class="documentation">Label Text or Path to image</div>
 <br>
 
 Choice between:<ul>
@@ -1855,7 +1855,7 @@ Attribute <span class="nomattribut">description</span>:
 <div class="indentation">
 
 
-<pre>Plot Label</pre>
+<div class="documentation">Plot Label</div>
 <br>
 
 Attribute <span class="nomattribut">xpos</span>:
@@ -1863,9 +1863,9 @@ Attribute <span class="nomattribut">xpos</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 X position of label (graph coordinates)
-</pre>
+</div>
 <br>
 
 
@@ -1875,9 +1875,9 @@ Attribute <span class="nomattribut">ypos</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Y position of label (graph coordinates)
-</pre>
+</div>
 <br>
 
 
@@ -1886,9 +1886,9 @@ Attribute <span class="nomattribut">justify</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 justification of the label text on the plot
-</pre>
+</div>
 <br>
 
 
@@ -1915,9 +1915,9 @@ Attribute <span class="nomattribut">rotate</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Rotation of label (degrees)
-</pre>
+</div>
 <br>
 
 
@@ -1931,7 +1931,7 @@ Rotation of label (degrees)
 </h3>
 
 
-<pre>Plot Title</pre>
+<div class="documentation">Plot Title</div>
 <br>
 
 Value restriction based on xs:string
@@ -1942,7 +1942,7 @@ Value restriction based on xs:string
 </h3>
 
 
-<pre>Plot x-label</pre>
+<div class="documentation">Plot x-label</div>
 <br>
 
 Value restriction based on xs:string
@@ -1953,7 +1953,7 @@ Value restriction based on xs:string
 </h3>
 
 
-<pre>Plot y-label</pre>
+<div class="documentation">Plot y-label</div>
 <br>
 
 Value restriction based on xs:string
@@ -1965,7 +1965,7 @@ Value restriction based on xs:string
 <div class="indentation">
 
 
-<pre>Plot axes</pre>
+<div class="documentation">Plot axes</div>
 <br>
 
 Attribute <span class="nomattribut">color</span>:
@@ -1973,9 +1973,9 @@ Attribute <span class="nomattribut">color</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Color of grid lines
-</pre>
+</div>
 <br>
 
 
@@ -1985,9 +1985,9 @@ Attribute <span class="nomattribut">xmin</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Minimum x-value shown in plot
-</pre>
+</div>
 <br>
 
 
@@ -1997,9 +1997,9 @@ Attribute <span class="nomattribut">xmax</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Maximum x-value shown in plot
-</pre>
+</div>
 <br>
 
 
@@ -2009,9 +2009,9 @@ Attribute <span class="nomattribut">ymin</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Minimum y-value shown in plot
-</pre>
+</div>
 <br>
 
 
@@ -2021,9 +2021,9 @@ Attribute <span class="nomattribut">ymax</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Maximum y-value shown in plot
-</pre>
+</div>
 <br>
 
 
@@ -2032,9 +2032,9 @@ Attribute <span class="nomattribut">xformat</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 X-axis number formatting
-</pre>
+</div>
 <br>
 
 
@@ -2064,9 +2064,9 @@ Attribute <span class="nomattribut">yformat</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Y-axis number formatting
-</pre>
+</div>
 <br>
 
 
@@ -2096,9 +2096,9 @@ Attribute <span class="nomattribut">xzero</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Show x-zero (y=0) axis
-</pre>
+</div>
 <br>
 
 
@@ -2128,9 +2128,9 @@ Attribute <span class="nomattribut">yzero</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Show y-zero (x=0) axis
-</pre>
+</div>
 <br>
 
 
@@ -2166,7 +2166,7 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<pre>Plot Key</pre>
+<div class="documentation">Plot Key</div>
 <br>
 
 Attribute <span class="nomattribut">title</span>:
@@ -2174,9 +2174,9 @@ Attribute <span class="nomattribut">title</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Title of key
-</pre>
+</div>
 <br>
 
 
@@ -2186,9 +2186,9 @@ Attribute <span class="nomattribut">box</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Draw a box around the key?
-</pre>
+</div>
 <br>
 
 
@@ -2197,9 +2197,9 @@ Attribute <span class="nomattribut">pos</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Position of the key on the plot
-</pre>
+</div>
 <br>
 
 
@@ -2243,7 +2243,7 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<pre>Plot Curve</pre>
+<div class="documentation">Plot Curve</div>
 <br>
 
 Choice between:<ul>
@@ -2267,9 +2267,9 @@ Attribute <span class="nomattribut">color</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Color of curve
-</pre>
+</div>
 <br>
 
 
@@ -2279,9 +2279,9 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Name of curve to appear in key
-</pre>
+</div>
 <br>
 
 
@@ -2355,9 +2355,9 @@ Attribute <span class="nomattribut">linewidth</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Line width (may not apply to all plot styles)
-</pre>
+</div>
 <br>
 
 
@@ -2379,9 +2379,9 @@ Attribute <span class="nomattribut">linetype</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Line type (may not apply to all plot styles)
-</pre>
+</div>
 <br>
 
 
@@ -2404,9 +2404,9 @@ Attribute <span class="nomattribut">pointsize</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Point size (may not apply to all plot styles)
-</pre>
+</div>
 <br>
 
 
@@ -2415,9 +2415,9 @@ Attribute <span class="nomattribut">pointtype</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Point type (may not apply to all plot styles)
-</pre>
+</div>
 <br>
 
 
@@ -2439,9 +2439,9 @@ Attribute <span class="nomattribut">limit</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Point to fill -- for filledcurves
-</pre>
+</div>
 <br>
 
 
@@ -2483,9 +2483,9 @@ Attribute <span class="nomattribut">arrowhead</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Vector arrow head type
-</pre>
+</div>
 <br>
 
 
@@ -2511,9 +2511,9 @@ Attribute <span class="nomattribut">arrowstyle</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Vector arrow head style
-</pre>
+</div>
 <br>
 
 
@@ -2540,9 +2540,9 @@ Attribute <span class="nomattribut">arrowlength</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Length of vector arrow (only applies to vector plots)
-</pre>
+</div>
 <br>
 
 
@@ -2552,9 +2552,9 @@ Attribute <span class="nomattribut">arrowangle</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Angle of arrow branches to arrow body (only applies to vector plots)
-</pre>
+</div>
 <br>
 
 
@@ -2564,9 +2564,9 @@ Attribute <span class="nomattribut">arrowbackangle</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Angle of arrow back lines to branches.
-</pre>
+</div>
 <br>
 
 
@@ -2581,7 +2581,7 @@ Angle of arrow back lines to branches.
 <div class="indentation">
 
 
-<pre>Curve function</pre>
+<div class="documentation">Curve function</div>
 <br>
 
 
@@ -2594,7 +2594,7 @@ Angle of arrow back lines to branches.
 <div class="indentation">
 
 
-<pre>Curve data</pre>
+<div class="documentation">Curve data</div>
 <br>
 
 
@@ -2607,16 +2607,16 @@ Angle of arrow back lines to branches.
 <div class="indentation">
 
 
-<pre>Plot tics</pre>
+<div class="documentation">Plot tics</div>
 <br>
 
 Attribute <span class="nomattribut">location</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Location of major tic marks
-</pre>
+</div>
 <br>
 
 
@@ -2639,9 +2639,9 @@ Attribute <span class="nomattribut">mirror</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Mirror tics on opposite axis?
-</pre>
+</div>
 <br>
 
 
@@ -2651,9 +2651,9 @@ Attribute <span class="nomattribut">start</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Start major tics at
-</pre>
+</div>
 <br>
 
 
@@ -2663,9 +2663,9 @@ Attribute <span class="nomattribut">increment</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Place a major tic every
-</pre>
+</div>
 <br>
 
 
@@ -2675,9 +2675,9 @@ Attribute <span class="nomattribut">end</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Stop major tics at
-</pre>
+</div>
 <br>
 
 
@@ -2687,9 +2687,9 @@ Attribute <span class="nomattribut">minorfreq</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Number of minor tics per major tic mark
-</pre>
+</div>
 <br>
 
 
@@ -2699,9 +2699,9 @@ Attribute <span class="nomattribut">rotate</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Rotate tic label by 90 degrees if on
-</pre>
+</div>
 <br>
 
 
@@ -2716,7 +2716,7 @@ Rotate tic label by 90 degrees if on
 <div class="indentation">
 
 
-<pre>Plot xtics</pre>
+<div class="documentation">Plot xtics</div>
 <br>
 
 
@@ -2732,7 +2732,7 @@ Rotate tic label by 90 degrees if on
 <div class="indentation">
 
 
-<pre>Plot ytics</pre>
+<div class="documentation">Plot ytics</div>
 <br>
 
 
@@ -2747,11 +2747,11 @@ Rotate tic label by 90 degrees if on
 </h3>
 
 
-<pre>
+<div class="documentation">
 Parameters for a part
 
 parameter is exactly the same as responseparam, but should appear outside of a response tag.
-</pre>
+</div>
 <br>
 
 
@@ -2809,7 +2809,7 @@ Attribute <span class="nomattribut">default</span>:
 </h3>
 
 
-<pre>Response: Numerical</pre>
+<div class="documentation">Response: Numerical</div>
 <br>
 
 
@@ -2870,9 +2870,9 @@ Attribute <span class="nomattribut">incorrect</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Incorrect Answers
-</pre>
+</div>
 <br>
 
 
@@ -2890,9 +2890,9 @@ Attribute <span class="nomattribut">preprocess</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Pre-Processor Subroutine
-</pre>
+</div>
 <br>
 
 
@@ -2909,7 +2909,7 @@ Pre-Processor Subroutine
 </h3>
 
 
-<pre>Response: Formula</pre>
+<div class="documentation">Response: Formula</div>
 <br>
 
 
@@ -2956,9 +2956,9 @@ Attribute <span class="nomattribut">samples</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Sample Points
-</pre>
+</div>
 <br>
 
 
@@ -2968,9 +2968,9 @@ Attribute <span class="nomattribut">preprocess</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Pre-Processor Subroutine
-</pre>
+</div>
 <br>
 
 
@@ -2987,7 +2987,7 @@ Pre-Processor Subroutine
 </h3>
 
 
-<pre>Response: Function Plot</pre>
+<div class="documentation">Response: Function Plot</div>
 <br>
 
 
@@ -3019,9 +3019,9 @@ Attribute <span class="nomattribut">width</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Width (pixels)
-</pre>
+</div>
 <br>
 
 
@@ -3031,9 +3031,9 @@ Attribute <span class="nomattribut">height</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Height (pixels)
-</pre>
+</div>
 <br>
 
 
@@ -3043,9 +3043,9 @@ Attribute <span class="nomattribut">xlabel</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Label x-axis
-</pre>
+</div>
 <br>
 
 
@@ -3055,9 +3055,9 @@ Attribute <span class="nomattribut">xmin</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Minimum x-value
-</pre>
+</div>
 <br>
 
 
@@ -3067,9 +3067,9 @@ Attribute <span class="nomattribut">xmax</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Maximum x-value
-</pre>
+</div>
 <br>
 
 
@@ -3079,9 +3079,9 @@ Attribute <span class="nomattribut">xaxisvisible</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 x-axis visible
-</pre>
+</div>
 <br>
 
 
@@ -3091,9 +3091,9 @@ Attribute <span class="nomattribut">ylabel</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Label y-axis
-</pre>
+</div>
 <br>
 
 
@@ -3103,9 +3103,9 @@ Attribute <span class="nomattribut">ymin</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Minimum y-value
-</pre>
+</div>
 <br>
 
 
@@ -3115,9 +3115,9 @@ Attribute <span class="nomattribut">ymax</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Maximum y-value
-</pre>
+</div>
 <br>
 
 
@@ -3127,9 +3127,9 @@ Attribute <span class="nomattribut">yaxisvisible</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 y-axis visible
-</pre>
+</div>
 <br>
 
 
@@ -3139,9 +3139,9 @@ Attribute <span class="nomattribut">gridvisible</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Grid visible
-</pre>
+</div>
 <br>
 
 
@@ -3151,9 +3151,9 @@ Attribute <span class="nomattribut">answerdisplay</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Background plot(s) for answer (function(x):xmin:xmax,function(x):xmin:xmax,x1:y1:sx1:sy1:x2:y2:sx2:sy2,...)
-</pre>
+</div>
 <br>
 
 
@@ -3170,10 +3170,10 @@ Background plot(s) for answer (function(x):xmin:xmax,function(x):xmin:xmax,x1:y1
 </h3>
 
 
-<pre>
+<div class="documentation">
 Spline.
 At least one spline is necessary for a graph problem. These splines are what will be adjusted and analyzed to solve the problem.
-</pre>
+</div>
 <br>
 
 
@@ -3204,9 +3204,9 @@ Attribute <span class="nomattribut">initx</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Initial x-value
-</pre>
+</div>
 <br>
 
 
@@ -3216,9 +3216,9 @@ Attribute <span class="nomattribut">inity</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Initial y-value
-</pre>
+</div>
 <br>
 
 
@@ -3228,9 +3228,9 @@ Attribute <span class="nomattribut">scalex</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Scale x
-</pre>
+</div>
 <br>
 
 
@@ -3240,9 +3240,9 @@ Attribute <span class="nomattribut">scaley</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Scale y
-</pre>
+</div>
 <br>
 
 
@@ -3259,10 +3259,10 @@ Scale y
 </h3>
 
 
-<pre>
+<div class="documentation">
 Background Function Plot.
 This places a static curve on the graph of your choosing.
-</pre>
+</div>
 <br>
 
 
@@ -3276,9 +3276,9 @@ Attribute <span class="nomattribut">xinitial</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Initial x-value (optional)
-</pre>
+</div>
 <br>
 
 
@@ -3288,9 +3288,9 @@ Attribute <span class="nomattribut">xfinal</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Final x-value (optional)
-</pre>
+</div>
 <br>
 
 
@@ -3300,9 +3300,9 @@ Attribute <span class="nomattribut">label</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Label on Plot
-</pre>
+</div>
 <br>
 
 
@@ -3311,9 +3311,9 @@ Attribute <span class="nomattribut">color</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Color (hex code)
-</pre>
+</div>
 <br>
 
 
@@ -3332,9 +3332,9 @@ Attribute <span class="nomattribut">fixed</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Fixed location
-</pre>
+</div>
 <br>
 
 
@@ -3351,10 +3351,10 @@ Fixed location
 </h3>
 
 
-<pre>
+<div class="documentation">
 Plot Object.
 This places a point in the applet.
-</pre>
+</div>
 <br>
 
 
@@ -3364,9 +3364,9 @@ Attribute <span class="nomattribut">label</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Label on Plot
-</pre>
+</div>
 <br>
 
 
@@ -3391,10 +3391,10 @@ Attribute <span class="nomattribut">y</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Plot Vector.
 This creates a vector (or arrow) in the applet.
-</pre>
+</div>
 <br>
 
 
@@ -3404,9 +3404,9 @@ Attribute <span class="nomattribut">label</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Label on Plot
-</pre>
+</div>
 <br>
 
 
@@ -3439,7 +3439,7 @@ Attribute <span class="nomattribut">tipy</span>:
 </h3>
 
 
-<pre>Draw Vector Sum</pre>
+<div class="documentation">Draw Vector Sum</div>
 <br>
 
 
@@ -3449,9 +3449,9 @@ Attribute <span class="nomattribut">label</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Label on Plot
-</pre>
+</div>
 <br>
 
 
@@ -3484,7 +3484,7 @@ Attribute <span class="nomattribut">vectorlist</span>:
 </h3>
 
 
-<pre>Function Plot Rule Set</pre>
+<div class="documentation">Function Plot Rule Set</div>
 <br>
 
 
@@ -3519,7 +3519,7 @@ Choice between:<ul>
 </h3>
 
 
-<pre>Function Plot Elements</pre>
+<div class="documentation">Function Plot Elements</div>
 <br>
 
 
@@ -3558,10 +3558,10 @@ Choice between:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 Function Plot Graph Rule
 Used to evaluate graph problems.
-</pre>
+</div>
 <br>
 
 
@@ -3571,9 +3571,9 @@ Attribute <span class="nomattribut">index</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Index/Name
-</pre>
+</div>
 <br>
 
 
@@ -3582,9 +3582,9 @@ Attribute <span class="nomattribut">derivativeorder</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Function
-</pre>
+</div>
 <br>
 
 
@@ -3615,9 +3615,9 @@ Attribute <span class="nomattribut">xinitial</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Initial x-value
-</pre>
+</div>
 <br>
 
 
@@ -3626,9 +3626,9 @@ Attribute <span class="nomattribut">xinitiallabel</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Initial x-value label
-</pre>
+</div>
 <br>
 
 
@@ -3651,9 +3651,9 @@ Attribute <span class="nomattribut">xfinal</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Final x-value (optional)
-</pre>
+</div>
 <br>
 
 
@@ -3662,9 +3662,9 @@ Attribute <span class="nomattribut">xfinallabel</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Final x-value label (optional)
-</pre>
+</div>
 <br>
 
 
@@ -3683,9 +3683,9 @@ Attribute <span class="nomattribut">minimumlength</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Minimum length for range (optional)
-</pre>
+</div>
 <br>
 
 
@@ -3695,9 +3695,9 @@ Attribute <span class="nomattribut">maximumlength</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Maximum length for range (optional)
-</pre>
+</div>
 <br>
 
 
@@ -3755,10 +3755,10 @@ Attribute <span class="nomattribut">percenterror</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Function Plot Vector Rule
 Used to test whether vectors are in the right place, pointed in the right direction, and have the correct length.
-</pre>
+</div>
 <br>
 
 
@@ -3768,9 +3768,9 @@ Attribute <span class="nomattribut">index</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Index/Name
-</pre>
+</div>
 <br>
 
 
@@ -3784,9 +3784,9 @@ Attribute <span class="nomattribut">attachpoint</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Attached to object
-</pre>
+</div>
 <br>
 
 
@@ -3796,9 +3796,9 @@ Attribute <span class="nomattribut">notattachpoint</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Not attached to object
-</pre>
+</div>
 <br>
 
 
@@ -3808,9 +3808,9 @@ Attribute <span class="nomattribut">tailpoint</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Tail attached to object
-</pre>
+</div>
 <br>
 
 
@@ -3820,9 +3820,9 @@ Attribute <span class="nomattribut">tippoint</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Tip attached to object
-</pre>
+</div>
 <br>
 
 
@@ -3832,9 +3832,9 @@ Attribute <span class="nomattribut">nottailpoint</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Tail not attached to object
-</pre>
+</div>
 <br>
 
 
@@ -3844,9 +3844,9 @@ Attribute <span class="nomattribut">nottippoint</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Tip not attached to object
-</pre>
+</div>
 <br>
 
 
@@ -3860,9 +3860,9 @@ Attribute <span class="nomattribut">lengtherror</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Absolute error length
-</pre>
+</div>
 <br>
 
 
@@ -3876,9 +3876,9 @@ Attribute <span class="nomattribut">angleerror</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Absolute error angle
-</pre>
+</div>
 <br>
 
 
@@ -3895,10 +3895,10 @@ Absolute error angle
 </h3>
 
 
-<pre>
+<div class="documentation">
 Function Plot Vector Sum Rule
 Used to test the sum of a set of vectors.
-</pre>
+</div>
 <br>
 
 
@@ -3908,9 +3908,9 @@ Attribute <span class="nomattribut">index</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Index/Name
-</pre>
+</div>
 <br>
 
 
@@ -3920,9 +3920,9 @@ Attribute <span class="nomattribut">vectors</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Comma-separated list of vectors
-</pre>
+</div>
 <br>
 
 
@@ -3932,9 +3932,9 @@ Attribute <span class="nomattribut">length</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Sum vector length
-</pre>
+</div>
 <br>
 
 
@@ -3944,9 +3944,9 @@ Attribute <span class="nomattribut">lengtherror</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Absolute error length
-</pre>
+</div>
 <br>
 
 
@@ -3956,9 +3956,9 @@ Attribute <span class="nomattribut">angle</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Sum vector angle
-</pre>
+</div>
 <br>
 
 
@@ -3968,9 +3968,9 @@ Attribute <span class="nomattribut">angleerror</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Absolute error angle
-</pre>
+</div>
 <br>
 
 
@@ -3987,9 +3987,9 @@ Absolute error angle
 </h3>
 
 
-<pre>
+<div class="documentation">
 Used to create rules that aren't options using the other rules. The coding is done in Perl and follows Perl syntax. Any variable written inside this rule will be recognized as normal and any evaluation function can be used as well.
-</pre>
+</div>
 <br>
 
 
@@ -4001,9 +4001,9 @@ Choice between:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 Answer algorithm, normally in Perl
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -4026,9 +4026,9 @@ Attribute <span class="nomattribut">index</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Index/Name
-</pre>
+</div>
 <br>
 
 
@@ -4045,9 +4045,9 @@ Index/Name
 </h3>
 
 
-<pre>
+<div class="documentation">
 stringresponse implements a string answer. An internal textline tag is necessary for the student&rsquo;s response to go in. It can check the string for either case or order.
-</pre>
+</div>
 <br>
 
 
@@ -4083,9 +4083,9 @@ Attribute <span class="nomattribut">answer</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 the correct answer, either a perl list or scalar
-</pre>
+</div>
 <br>
 
 
@@ -4094,12 +4094,12 @@ Attribute <span class="nomattribut">type</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Specifies how the string is checked (like the CAPA styles). Possible values are:
 &ndash; cs: case sensitive, order important.
 &ndash; ci: case insensitive, order important.
 &ndash; mc: case insensitive, order unimportant.
-</pre>
+</div>
 <br>
 
 
@@ -4130,9 +4130,9 @@ Attribute <span class="nomattribut">answerdisplay</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 String to display for answer
-</pre>
+</div>
 <br>
 
 
@@ -4142,9 +4142,9 @@ Attribute <span class="nomattribut">preprocess</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Pre-Processor Subroutine
-</pre>
+</div>
 <br>
 
 
@@ -4161,7 +4161,7 @@ Pre-Processor Subroutine
 </h3>
 
 
-<pre>Response: Essay</pre>
+<div class="documentation">Response: Essay</div>
 <br>
 
 
@@ -4212,9 +4212,9 @@ Attribute <span class="nomattribut">name</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 externalresponse is an advanced type of response tag that implements the ability to have an external program grade a response. It expects either a textline or textfield inside the tag.
-</pre>
+</div>
 <br>
 
 
@@ -4254,9 +4254,9 @@ Attribute <span class="nomattribut">url</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 url to submit the answer form to. It does not need to be a LON-CAPA machine.
-</pre>
+</div>
 <br>
 
 
@@ -4266,9 +4266,9 @@ Attribute <span class="nomattribut">answer</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 data to post in the form element LONCAPA correct answer to the remote site.
-</pre>
+</div>
 <br>
 
 
@@ -4278,9 +4278,9 @@ Attribute <span class="nomattribut">form</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 hash variable name that will be submitted to the remote site as a HTTP form.
-</pre>
+</div>
 <br>
 
 
@@ -4301,7 +4301,7 @@ Attribute <span class="nomattribut">answerdisplay</span>:
 </h3>
 
 
-<pre>Hint</pre>
+<div class="documentation">Hint</div>
 <br>
 
 Can contain text<br>
@@ -4365,9 +4365,9 @@ Attribute <span class="nomattribut">showoncorrect</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Show hint even if problem Correct
-</pre>
+</div>
 <br>
 
 
@@ -4384,12 +4384,12 @@ Show hint even if problem Correct
 </h3>
 
 
-<pre>
+<div class="documentation">
 Conditional Hint
 
 When a hint tag named the same as the on attribute evaluates to be correct, the hintpart will show.
 If no other hintpart is to show then all hintparts with an on value set to &ldquo;default&rdquo; will show.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -4484,7 +4484,7 @@ Attribute <span class="nomattribut">on</span>:
 </h3>
 
 
-<pre>Formula Hint Condition</pre>
+<div class="documentation">Formula Hint Condition</div>
 <br>
 
 
@@ -4504,9 +4504,9 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 should be set to the value of which hintpart will be shown
-</pre>
+</div>
 <br>
 
 
@@ -4520,9 +4520,9 @@ Attribute <span class="nomattribut">samples</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Sample Points
-</pre>
+</div>
 <br>
 
 
@@ -4532,9 +4532,9 @@ Attribute <span class="nomattribut">preprocess</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Pre-Processor Subroutine
-</pre>
+</div>
 <br>
 
 
@@ -4551,7 +4551,7 @@ Pre-Processor Subroutine
 </h3>
 
 
-<pre>Numerical Hint Condition</pre>
+<div class="documentation">Numerical Hint Condition</div>
 <br>
 
 
@@ -4571,9 +4571,9 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 should be set to the value of which hintpart will be shown
-</pre>
+</div>
 <br>
 
 
@@ -4595,9 +4595,9 @@ Attribute <span class="nomattribut">preprocess</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Pre-Processor Subroutine
-</pre>
+</div>
 <br>
 
 
@@ -4614,7 +4614,7 @@ Pre-Processor Subroutine
 </h3>
 
 
-<pre>Reaction Hint Condition</pre>
+<div class="documentation">Reaction Hint Condition</div>
 <br>
 
 
@@ -4649,7 +4649,7 @@ Attribute <span class="nomattribut">answer</span>:
 </h3>
 
 
-<pre>Organic Hint Condition</pre>
+<div class="documentation">Organic Hint Condition</div>
 <br>
 
 
@@ -4684,7 +4684,7 @@ Attribute <span class="nomattribut">answer</span>:
 </h3>
 
 
-<pre>Option Response Hint Condition</pre>
+<div class="documentation">Option Response Hint Condition</div>
 <br>
 
 
@@ -4704,9 +4704,9 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 should be set to the value of which hintpart will be shown
-</pre>
+</div>
 <br>
 
 
@@ -4731,7 +4731,7 @@ Attribute <span class="nomattribut">concept</span>:
 </h3>
 
 
-<pre>Radiobutton Hint Condition</pre>
+<div class="documentation">Radiobutton Hint Condition</div>
 <br>
 
 
@@ -4751,9 +4751,9 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 should be set to the value of which hintpart will be shown
-</pre>
+</div>
 <br>
 
 
@@ -4763,9 +4763,9 @@ Attribute <span class="nomattribut">answer</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 should be at least a two element list: first the type (foil or concept) and then either the foil name(s) or the concept string(s), e.g., &ldquo;(&rsquo;foil&rsquo;,&rsquo;greaterthan&rsquo;,&rsquo;equal&rsquo;)&rdquo; if the condition should be triggered by the foils named &ldquo;greaterthan&rdquo; or &ldquo;equal&rdquo;
-</pre>
+</div>
 <br>
 
 
@@ -4782,7 +4782,7 @@ should be at least a two element list: first the type (foil or concept) and then
 </h3>
 
 
-<pre>String Hint Condition</pre>
+<div class="documentation">String Hint Condition</div>
 <br>
 
 
@@ -4802,9 +4802,9 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 should be set to the value of which hintpart will be shown
-</pre>
+</div>
 <br>
 
 
@@ -4814,9 +4814,9 @@ Attribute <span class="nomattribut">answer</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 should be set to the value of which hintpart will be shown
-</pre>
+</div>
 <br>
 
 
@@ -4851,9 +4851,9 @@ Attribute <span class="nomattribut">preprocess</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Pre-Processor Subroutine
-</pre>
+</div>
 <br>
 
 
@@ -4870,11 +4870,11 @@ Pre-Processor Subroutine
 </h3>
 
 
-<pre>
+<div class="documentation">
 Custom Hint Condition
 
 Define the hint condition within an answer block inside of the customhint block. The condition is defined like how an answer is defined in customresponse where you need to return EXACT ANS to indicate when customhint criteria are met.
-</pre>
+</div>
 <br>
 
 
@@ -4901,9 +4901,9 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 should be set to the value of which hintpart will be shown
-</pre>
+</div>
 <br>
 
 
@@ -4920,7 +4920,7 @@ should be set to the value of which hintpart will be shown
 </h3>
 
 
-<pre>Math Hint Condition</pre>
+<div class="documentation">Math Hint Condition</div>
 <br>
 
 
@@ -4950,9 +4950,9 @@ Attribute <span class="nomattribut">cas</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Algebra System
-</pre>
+</div>
 <br>
 
 
@@ -4975,9 +4975,9 @@ Attribute <span class="nomattribut">args</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Argument Array
-</pre>
+</div>
 <br>
 
 
@@ -4994,9 +4994,9 @@ Argument Array
 </h3>
 
 
-<pre>
+<div class="documentation">
 imageresponse implements a image-click answer. imageresponse tags should contain a foilgroup tag, which contain foil tags.
-</pre>
+</div>
 <br>
 
 
@@ -5031,9 +5031,9 @@ Attribute <span class="nomattribut">max</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Max Number Of Shown Foils
-</pre>
+</div>
 <br>
 
 
@@ -5050,7 +5050,7 @@ Max Number Of Shown Foils
 </h3>
 
 
-<pre>Stored Entry Field</pre>
+<div class="documentation">Stored Entry Field</div>
 <br>
 
 
@@ -5063,7 +5063,7 @@ Max Number Of Shown Foils
 </h3>
 
 
-<pre>Response: Custom</pre>
+<div class="documentation">Response: Custom</div>
 <br>
 
 
@@ -5114,9 +5114,9 @@ Attribute <span class="nomattribut">answerdisplay</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 String to display for answer
-</pre>
+</div>
 <br>
 
 
@@ -5133,7 +5133,7 @@ String to display for answer
 </h3>
 
 
-<pre>Response: Math</pre>
+<div class="documentation">Response: Math</div>
 <br>
 
 
@@ -5184,9 +5184,9 @@ Attribute <span class="nomattribut">answerdisplay</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 String to display for answer
-</pre>
+</div>
 <br>
 
 
@@ -5195,9 +5195,9 @@ Attribute <span class="nomattribut">cas</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Algebra System
-</pre>
+</div>
 <br>
 
 
@@ -5220,9 +5220,9 @@ Attribute <span class="nomattribut">args</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Argument Array
-</pre>
+</div>
 <br>
 
 
@@ -5243,12 +5243,12 @@ Attribute <span class="nomattribut">libraries</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Large Text Entry Area, contains the text that appears by default
 
 Creates a large text input box. If data appears between the start and end tags, the data will appear in the textfield if the student has not yet made a submission.
 Additionally, it takes two attributes: rows and cols, which control the height and width of the text area respectively.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -5280,9 +5280,9 @@ Attribute <span class="nomattribut">cols</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Columns
-</pre>
+</div>
 <br>
 
 
@@ -5292,9 +5292,9 @@ Attribute <span class="nomattribut">addchars</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Click-On Texts (comma sep)
-</pre>
+</div>
 <br>
 
 
@@ -5303,9 +5303,9 @@ Attribute <span class="nomattribut">spellcheck</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Spellcheck for
-</pre>
+</div>
 <br>
 
 
@@ -5359,9 +5359,9 @@ Value restriction based on xs:string<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 Single Line Text Entry Area
-</pre>
+</div>
 <br>
 
 
@@ -5371,9 +5371,9 @@ Attribute <span class="nomattribut">size</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 controls the width of the textline
-</pre>
+</div>
 <br>
 
 
@@ -5383,9 +5383,9 @@ Attribute <span class="nomattribut">addchars</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Click-On Texts (comma sep)
-</pre>
+</div>
 <br>
 
 
@@ -5447,9 +5447,9 @@ Value restriction based on xs:string<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 ???
-</pre>
+</div>
 <br>
 
 
@@ -5470,9 +5470,9 @@ Attribute <span class="nomattribut">value</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 ???
-</pre>
+</div>
 <br>
 
 
@@ -5485,12 +5485,12 @@ Attribute <span class="nomattribut">value</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Response: Select from Options
 
 optionresponse implements a &ldquo;select from these choices&rdquo; style question. The choices are specified by the instructor and use the foil structure tags, with this additional addition:
 foilgroup is required to have an options attribute which should be a perl list of possible options for the student.
-</pre>
+</div>
 <br>
 
 
@@ -5525,9 +5525,9 @@ Attribute <span class="nomattribut">max</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Max Number Of Shown Foils
-</pre>
+</div>
 <br>
 
 
@@ -5537,9 +5537,9 @@ Attribute <span class="nomattribut">randomize</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Randomize Foil Order
-</pre>
+</div>
 <br>
 
 
@@ -5548,9 +5548,9 @@ Attribute <span class="nomattribut">texlayout</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Display of options when printed
-</pre>
+</div>
 <br>
 
 
@@ -5580,10 +5580,10 @@ Value restriction based on xs:string<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 This will insert the current due date if one is set in the document.
 It is generated to be inside a table of 1x1 elements.
-</pre>
+</div>
 <br>
 
 
@@ -5593,9 +5593,9 @@ Attribute <span class="nomattribut">style</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 style=&ldquo;plain&rdquo; Makes the due date appear without any boxing. If the parameter value is other than &ldquo;plain&rdquo;, or if the style parameter is omitted, the due date will be displayed within a box.
-</pre>
+</div>
 <br>
 
 
@@ -5616,9 +5616,9 @@ Attribute <span class="nomattribut">format</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 This will insert the title of the problem from the metadata of the problem. Only the first displaytitle in a problem will show the title; this allows clean usage of displaytitle in LON-CAPA style files.
-</pre>
+</div>
 <br>
 
 
@@ -5639,11 +5639,11 @@ Attribute <span class="nomattribut">style</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Response: One of N statements
 
 radiobuttonresponse implements a true/false question with one correct answer. It uses the foil structure tags, but the value of a foil can only be true, false, or unused.
-</pre>
+</div>
 <br>
 
 
@@ -5678,9 +5678,9 @@ Attribute <span class="nomattribut">max</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Max Number Of Shown Foils
-</pre>
+</div>
 <br>
 
 
@@ -5690,9 +5690,9 @@ Attribute <span class="nomattribut">randomize</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Randomize Foil Order
-</pre>
+</div>
 <br>
 
 
@@ -5701,9 +5701,9 @@ Attribute <span class="nomattribut">direction</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Display Direction
-</pre>
+</div>
 <br>
 
 
@@ -5733,7 +5733,7 @@ Value restriction based on xs:string<ul>
 </h3>
 
 
-<pre>Response: Rank Values</pre>
+<div class="documentation">Response: Rank Values</div>
 <br>
 
 
@@ -5768,9 +5768,9 @@ Attribute <span class="nomattribut">max</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Max Number Of Shown Foils
-</pre>
+</div>
 <br>
 
 
@@ -5780,9 +5780,9 @@ Attribute <span class="nomattribut">randomize</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Randomize Foil Order
-</pre>
+</div>
 <br>
 
 
@@ -5799,7 +5799,7 @@ Randomize Foil Order
 </h3>
 
 
-<pre>Response: Match Two Lists</pre>
+<div class="documentation">Response: Match Two Lists</div>
 <br>
 
 
@@ -5838,9 +5838,9 @@ Attribute <span class="nomattribut">max</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Max Number Of Shown Foils
-</pre>
+</div>
 <br>
 
 
@@ -5850,9 +5850,9 @@ Attribute <span class="nomattribut">randomize</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Randomize Foil Order
-</pre>
+</div>
 <br>
 
 
@@ -5869,7 +5869,7 @@ Randomize Foil Order
 </h3>
 
 
-<pre>Response: Organic Chemical Structure</pre>
+<div class="documentation">Response: Organic Chemical Structure</div>
 <br>
 
 
@@ -5934,9 +5934,9 @@ Attribute <span class="nomattribut">molecule</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Starting Molecule
-</pre>
+</div>
 <br>
 
 
@@ -5946,9 +5946,9 @@ Attribute <span class="nomattribut">answer</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Correct Answer
-</pre>
+</div>
 <br>
 
 
@@ -5958,9 +5958,9 @@ Attribute <span class="nomattribut">jmeanswer</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 JME string of the answer
-</pre>
+</div>
 <br>
 
 
@@ -5970,9 +5970,9 @@ Attribute <span class="nomattribut">width</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Width of correct answer image
-</pre>
+</div>
 <br>
 
 
@@ -5989,7 +5989,7 @@ Width of correct answer image
 </h3>
 
 
-<pre>Response: Chemical Reaction</pre>
+<div class="documentation">Response: Chemical Reaction</div>
 <br>
 
 
@@ -6029,9 +6029,9 @@ Attribute <span class="nomattribut">initial</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Initial Reaction
-</pre>
+</div>
 <br>
 
 
@@ -6048,7 +6048,7 @@ Initial Reaction
 </h3>
 
 
-<pre>Organic Structure</pre>
+<div class="documentation">Organic Structure</div>
 <br>
 
 
@@ -6058,9 +6058,9 @@ Attribute <span class="nomattribut">width</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Width (pixels)
-</pre>
+</div>
 <br>
 
 
@@ -6070,9 +6070,9 @@ Attribute <span class="nomattribut">texwidth</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 TeXwidth (mm)
-</pre>
+</div>
 <br>
 
 
@@ -6110,11 +6110,11 @@ Value restriction based on xs:string<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 Parameters for a response
 
 Defines an externally adjustable parameter for the question, which the question can then use to allow other users to customize the problem for their courses without changing the source code of the problem.
-</pre>
+</div>
 <br>
 
 
@@ -6132,9 +6132,9 @@ Attribute <span class="nomattribut">default</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 default value
-</pre>
+</div>
 <br>
 
 
@@ -6156,11 +6156,11 @@ Attribute <span class="nomattribut">description</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Display Script Result Block
 
 The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
-</pre>
+</div>
 <br>
 
 
@@ -6173,11 +6173,11 @@ The intervening Perl script is evaluated in the safe space and the return value 
 </h3>
 
 
-<pre>
+<div class="documentation">
 Import a File
 
 This causes the parse to read in the file named in the body of the tag and parse it as if the entire text of the file had existed at the location of the tag.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -6190,9 +6190,9 @@ Attribute <span class="nomattribut">importmode</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Import as
-</pre>
+</div>
 <br>
 
 
@@ -6223,11 +6223,11 @@ Value restriction based on xs:string<ul>
 <br>
 
 
-<pre>
+<div class="documentation">
 Import Tag Definitions
 
 The enclosed filename contains definitions for new tags.
-</pre>
+</div>
 <br>
 
 
@@ -6240,11 +6240,11 @@ The enclosed filename contains definitions for new tags.
 </h3>
 
 
-<pre>
+<div class="documentation">
 Perl Script Block
 
 If the attribute type is set to &ldquo;loncapa/perl&rdquo; the enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -6269,11 +6269,11 @@ Attribute <span class="nomattribut"></span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Import Script Library
 
 The enclosed filename contains Perl code to run in the safe space.
-</pre>
+</div>
 <br>
 
 
@@ -6286,7 +6286,7 @@ The enclosed filename contains Perl code to run in the safe space.
 </h3>
 
 
-<pre>Image</pre>
+<div class="documentation">Image</div>
 <br>
 
 
@@ -6296,9 +6296,9 @@ Attribute <span class="nomattribut">src</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Image Url
-</pre>
+</div>
 <br>
 
 
@@ -6312,9 +6312,9 @@ Attribute <span class="nomattribut">width</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 width (pixel)
-</pre>
+</div>
 <br>
 
 
@@ -6324,9 +6324,9 @@ Attribute <span class="nomattribut">height</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 height (pixel)
-</pre>
+</div>
 <br>
 
 
@@ -6336,9 +6336,9 @@ Attribute <span class="nomattribut">texwidth</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 TeXwidth (mm)
-</pre>
+</div>
 <br>
 
 
@@ -6348,9 +6348,9 @@ Attribute <span class="nomattribut">texheight</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 TeXheight (mm)
-</pre>
+</div>
 <br>
 
 
@@ -6425,7 +6425,7 @@ Attribute <span class="nomattribut">encrypturl</span>:
 </h3>
 
 
-<pre>Custom Metadata</pre>
+<div class="documentation">Custom Metadata</div>
 <br>
 
 
@@ -6450,12 +6450,12 @@ Attribute <span class="nomattribut">content</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Text In Separate Window
 
 This creates a link that when clicked shows the intervening information in a pop-up window. By default the window will be 500 pixels wide and 200 pixels tall, and the link text will be a superscript * (so as to look like a footnote). These can be changed using the attributes.
 When printing, the included text will get turned into a real footnote.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -6555,9 +6555,9 @@ Attribute <span class="nomattribut">linktext</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Text of Link
-</pre>
+</div>
 <br>
 
 
@@ -6575,9 +6575,9 @@ Attribute <span class="nomattribut">printtext</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Printed text (optional)
-</pre>
+</div>
 <br>
 
 
@@ -6594,11 +6594,11 @@ Printed text (optional)
 </h3>
 
 
-<pre>
+<div class="documentation">
 Conditional Block
 
 This has a required argument condition that is evaluated. If the condition is true, everything inside the tag is evaluated; otherwise, everything inside the block tag is skipped.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -6770,9 +6770,9 @@ Attribute <span class="nomattribut">condition</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Test Condition
-</pre>
+</div>
 <br>
 
 
@@ -6789,9 +6789,9 @@ Test Condition
 </h3>
 
 
-<pre>
+<div class="documentation">
 This declares the intent to provide content that can be rendered in the set of languages in the include specification but not in the exclude specification. If a currently preferred language is in the include list the content in the &lt;languageblock&gt;...&lt;/languageblock&gt; is rendered If the currently preferred language is in the exclude list, the content in the &lt;languageblock&gt;..&lt;/languageblock is not rendered.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -6822,12 +6822,12 @@ Attribute <span class="nomattribut">exclude</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 &lt;translated&gt; starts a block of a resource that has multiple translations.
 See the &lt;lang&gt; tag as well.
 When &lt;/translated&gt; is encountered if there is a translation for the currently preferred language, that is rendered inthe web/tex/webgrade targets. Otherwise, the default text is rendered.
 Note that &lt;lang&gt; is only registered for the duration of the &lt;translated&gt;...&lt;/translated&gt; block.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -6854,11 +6854,11 @@ Choice between:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 Specifies that the block contained within it is a translation for a specific language specified by the 'which' attribute. The 'other' attribute can be used by itself or in conjunction with which to specify this tag _may_ be used as a translation for some list of languages. e.g.:
 &lt;lang which='senisoUS' other='senisoCA,senisoAU,seniso'&gt;
 specifying that the block provides a translation for US (primary) Canadian, Australian and UK English.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -6907,7 +6907,7 @@ Choice between:<ul>
 </h3>
 
 
-<pre>Start of Library</pre>
+<div class="documentation">Start of Library</div>
 <br>
 
 Can contain text<br>
@@ -7082,11 +7082,11 @@ Choice between:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 Block For When Not Solved
 
 Everything inside is skipped if the problem is &ldquo;solved&rdquo;.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -7253,11 +7253,11 @@ Choice between:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 Problem Part
 
 This must be below problem if it is going to be used. It does many of the same tasks as problem, but allows multiple separate problems to exist in a single file.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -7425,9 +7425,9 @@ Attribute <span class="nomattribut">id</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Part ID
-</pre>
+</div>
 <br>
 
 
@@ -7437,9 +7437,9 @@ Attribute <span class="nomattribut">display</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Displayed Part Description
-</pre>
+</div>
 <br>
 
 
@@ -7456,7 +7456,7 @@ Displayed Part Description
 </h3>
 
 
-<pre>Problem Part: Marker for Start of New Part</pre>
+<div class="documentation">Problem Part: Marker for Start of New Part</div>
 <br>
 
 
@@ -7469,7 +7469,7 @@ Displayed Part Description
 </h3>
 
 
-<pre>Problem Part: Marker for End of New Part</pre>
+<div class="documentation">Problem Part: Marker for End of New Part</div>
 <br>
 
 
@@ -7482,11 +7482,11 @@ Displayed Part Description
 </h3>
 
 
-<pre>
+<div class="documentation">
 After Answer Date Block
 
 Everything inside is skipped if the problem is before the answer date.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -7589,11 +7589,11 @@ Choice between:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 Before Due Date Block
 
 Everything inside is skipped if the problem is after the due date.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -7756,11 +7756,11 @@ Choice between:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 Start of Homework
 
 This must be first in the file. It sets up the header of the webpage and generates the submit buttons. It also handles due dates properly.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -7959,7 +7959,7 @@ Choice between:<ul>
 </h3>
 
 
-<pre>File Dependencies</pre>
+<div class="documentation">File Dependencies</div>
 <br>
 
 
@@ -7969,9 +7969,9 @@ Attribute <span class="nomattribut">src</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 File Spec
-</pre>
+</div>
 <br>
 
 
@@ -7988,12 +7988,12 @@ File Spec
 </h3>
 
 
-<pre>
+<div class="documentation">
 Problem Type Block
 
 Allows you to show or hide output based on what the problem-type parameter is set to in the course.
 Will only show the output text when the problem is set to the type of exam or survey in the course.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -8178,12 +8178,12 @@ Attribute <span class="nomattribut">for</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 When used as type(s)
 
 List of values among:
 exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
-</pre>
+</div>
 <br>
 
 
@@ -8200,11 +8200,11 @@ exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomi
 </h3>
 
 
-<pre>
+<div class="documentation">
 Randomly labeled image
 
 This shows a specified image with images or text labels randomly assigned to a set of specific locations. Those locations may also have values assigned to them. A hash is generated that contains the mapping of labels to locations, labels to values, and locations to values.
-</pre>
+</div>
 <br>
 
 
@@ -8221,9 +8221,9 @@ Choice between:<ul>
 <br>
 
 
-<pre>
+<div class="documentation">
 One is required, but multiple are allowed. This declares a group of locations and labels associated with them.
-</pre>
+</div>
 <br>
 
 
@@ -8235,9 +8235,9 @@ One is required, but multiple are allowed. This declares a group of locations an
 </h3>
 
 
-<pre>
+<div class="documentation">
 ???
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -8259,9 +8259,9 @@ Attribute <span class="nomattribut">bgimg</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Either a fully qualified URL for an external image or a LON-CAPA resource. It supports relative references (../images/apicture.gif). The image must either be a GIF or JPEG.
-</pre>
+</div>
 <br>
 
 
@@ -8271,9 +8271,9 @@ Attribute <span class="nomattribut">width</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 The width of the image in pixels.
-</pre>
+</div>
 <br>
 
 
@@ -8283,9 +8283,9 @@ Attribute <span class="nomattribut">height</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 The height of the image in pixels.
-</pre>
+</div>
 <br>
 
 
@@ -8295,9 +8295,9 @@ Attribute <span class="nomattribut">texwidth</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 The width of the image in millimeters.
-</pre>
+</div>
 <br>
 
 
@@ -8314,11 +8314,11 @@ The width of the image in millimeters.
 </h3>
 
 
-<pre>
+<div class="documentation">
 Randomly Parsed Block
 
 The enclosed tags are parsed in a stable random order. The optional attribute show=&ldquo;N&rdquo; restricts the number of tags inside that are actually parsed to no more than N. N can equal the total tags inside. The randomlist tag can be used to randomize problem parts by wrapping the &lt;part&gt; tags with a randomlist tag. Note that when randomlist wraps &lt;part&gt; tags, that all students will work all parts only if show=&ldquo;N&rdquo; where N is the total number of parts wrapped. When N is less than the total number of parts wrapped, there will be gaps in the assessment chart, and also in the table of submissions for each student, corresponding to those parts which are never available to that particular student.
-</pre>
+</div>
 <br>
 
 
@@ -8465,9 +8465,9 @@ Attribute <span class="nomattribut">show</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Maximum Tags to Show
-</pre>
+</div>
 <br>
 
 
@@ -8484,11 +8484,11 @@ Maximum Tags to Show
 </h3>
 
 
-<pre>
+<div class="documentation">
 Block For After Solved
 
 Everything inside is skipped if the problem is &ldquo;not solved&rdquo;.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -8587,7 +8587,7 @@ Choice between:<ul>
 </h3>
 
 
-<pre>Text/HTML Block start</pre>
+<div class="documentation">Text/HTML Block start</div>
 <br>
 
 
@@ -8600,7 +8600,7 @@ Choice between:<ul>
 </h3>
 
 
-<pre>Text/HTML Block end</pre>
+<div class="documentation">Text/HTML Block end</div>
 <br>
 
 
@@ -8614,7 +8614,7 @@ Choice between:<ul>
 <br>
 
 
-<pre>TeX Only Block</pre>
+<div class="documentation">TeX Only Block</div>
 <br>
 
 
@@ -8628,7 +8628,7 @@ Choice between:<ul>
 <br>
 
 
-<pre>Web Only Block</pre>
+<div class="documentation">Web Only Block</div>
 <br>
 
 
@@ -8641,11 +8641,11 @@ Choice between:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 While Loop Block
 
 This implements a while loop. The required attribute condition is a Perl scriptlet that when evaluated results in a true or false value. If true, the entirety of the text between the whiles is parsed. The condition is tested again, etc. If false, it goes to the next tag.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -8749,9 +8749,9 @@ Attribute <span class="nomattribut">condition</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Test Condition
-</pre>
+</div>
 <br>
 
 
@@ -8768,7 +8768,7 @@ Test Condition
 </h3>
 
 
-<pre>GnuPlot</pre>
+<div class="documentation">GnuPlot</div>
 <br>
 
 
@@ -8843,9 +8843,9 @@ Attribute <span class="nomattribut">alttag</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Brief description of the plot
-</pre>
+</div>
 <br>
 
 
@@ -8855,9 +8855,9 @@ Attribute <span class="nomattribut">height</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Height of image (pixels)
-</pre>
+</div>
 <br>
 
 
@@ -8867,9 +8867,9 @@ Attribute <span class="nomattribut">width</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Width of image (pixels)
-</pre>
+</div>
 <br>
 
 
@@ -8879,9 +8879,9 @@ Attribute <span class="nomattribut">bgcolor</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Background color of image
-</pre>
+</div>
 <br>
 
 
@@ -8891,9 +8891,9 @@ Attribute <span class="nomattribut">fgcolor</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Foreground color of image
-</pre>
+</div>
 <br>
 
 
@@ -8903,9 +8903,9 @@ Attribute <span class="nomattribut">transparent</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Transparent image
-</pre>
+</div>
 <br>
 
 
@@ -8915,9 +8915,9 @@ Attribute <span class="nomattribut">grid</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Display grid
-</pre>
+</div>
 <br>
 
 
@@ -8927,9 +8927,9 @@ Attribute <span class="nomattribut">gridlayer</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Display grid front layer over filled boxes or filled curves
-</pre>
+</div>
 <br>
 
 
@@ -8938,9 +8938,9 @@ Attribute <span class="nomattribut">box_border</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Draw border for boxes
-</pre>
+</div>
 <br>
 
 
@@ -8963,9 +8963,9 @@ Attribute <span class="nomattribut">border</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Draw border around plot
-</pre>
+</div>
 <br>
 
 
@@ -8974,9 +8974,9 @@ Attribute <span class="nomattribut">font</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Font size to use in web output (pts)
-</pre>
+</div>
 <br>
 
 
@@ -9019,9 +9019,9 @@ Attribute <span class="nomattribut">fontface</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Type of font to use
-</pre>
+</div>
 <br>
 
 
@@ -9047,9 +9047,9 @@ Attribute <span class="nomattribut">samples</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Number of samples for non-data plots
-</pre>
+</div>
 <br>
 
 
@@ -9071,9 +9071,9 @@ Attribute <span class="nomattribut">align</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Alignment for image in HTML
-</pre>
+</div>
 <br>
 
 
@@ -9104,9 +9104,9 @@ Attribute <span class="nomattribut">texwidth</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Width of plot when printed (mm)
-</pre>
+</div>
 <br>
 
 
@@ -9115,9 +9115,9 @@ Attribute <span class="nomattribut">texfont</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Font size to use in TeX output (pts)
-</pre>
+</div>
 <br>
 
 
@@ -9139,9 +9139,9 @@ Attribute <span class="nomattribut">plotcolor</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Color setting for printing
-</pre>
+</div>
 <br>
 
 
@@ -9167,9 +9167,9 @@ Attribute <span class="nomattribut">pattern</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Pattern value for boxes
-</pre>
+</div>
 <br>
 
 
@@ -9192,9 +9192,9 @@ Attribute <span class="nomattribut">solid</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 The density of fill style for boxes
-</pre>
+</div>
 <br>
 
 
@@ -9203,9 +9203,9 @@ Attribute <span class="nomattribut">fillstyle</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Filled style for boxes
-</pre>
+</div>
 <br>
 
 
@@ -9231,9 +9231,9 @@ Attribute <span class="nomattribut">plottype</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Plot type
-</pre>
+</div>
 <br>
 
 
@@ -9255,9 +9255,9 @@ Attribute <span class="nomattribut">gridtype</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Grid type
-</pre>
+</div>
 <br>
 
 
@@ -9291,9 +9291,9 @@ Attribute <span class="nomattribut">lmargin</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Left margin width (pts)
-</pre>
+</div>
 <br>
 
 
@@ -9315,9 +9315,9 @@ Attribute <span class="nomattribut">rmargin</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Right margin width (pts)
-</pre>
+</div>
 <br>
 
 
@@ -9339,9 +9339,9 @@ Attribute <span class="nomattribut">tmargin</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Top margin width (pts)
-</pre>
+</div>
 <br>
 
 
@@ -9363,9 +9363,9 @@ Attribute <span class="nomattribut">bmargin</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Bottom margin width (pts)
-</pre>
+</div>
 <br>
 
 
@@ -9388,9 +9388,9 @@ Attribute <span class="nomattribut">boxwidth</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Width of boxes, default is auto
-</pre>
+</div>
 <br>
 
 
@@ -9400,9 +9400,9 @@ Attribute <span class="nomattribut">major_ticscale</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Size of major tic marks (plot coordinates)
-</pre>
+</div>
 <br>
 
 
@@ -9412,9 +9412,9 @@ Attribute <span class="nomattribut">minor_ticscale</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Size of minor tic mark (plot coordinates)
-</pre>
+</div>
 <br>
 
 
@@ -9431,7 +9431,7 @@ Size of minor tic mark (plot coordinates)
 </h3>
 
 
-<pre>Start of Task</pre>
+<div class="documentation">Start of Task</div>
 <br>
 
 Can contain text<br>
@@ -9463,9 +9463,9 @@ Attribute <span class="nomattribut">optionalrequired</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Required number of passed optional elements to pass the Task
-</pre>
+</div>
 <br>
 
 
@@ -9482,7 +9482,7 @@ Required number of passed optional elements to pass the Task
 </h3>
 
 
-<pre>Introductory Information</pre>
+<div class="documentation">Introductory Information</div>
 <br>
 
 Can contain text<br>
@@ -9573,7 +9573,7 @@ Choice between:<ul>
 </h3>
 
 
-<pre>Closing Information</pre>
+<div class="documentation">Closing Information</div>
 <br>
 
 Can contain text<br>
@@ -9664,7 +9664,7 @@ Choice between:<ul>
 </h3>
 
 
-<pre>Question</pre>
+<div class="documentation">Question</div>
 <br>
 
 
@@ -9695,9 +9695,9 @@ Attribute <span class="nomattribut">mandatory</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Passing is Mandatory
-</pre>
+</div>
 <br>
 
 
@@ -9720,9 +9720,9 @@ Attribute <span class="nomattribut">optionalrequired</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Required number of passed optional elements to pass
-</pre>
+</div>
 <br>
 
 
@@ -9739,7 +9739,7 @@ Required number of passed optional elements to pass
 </h3>
 
 
-<pre>Question Information</pre>
+<div class="documentation">Question Information</div>
 <br>
 
 Can contain text<br>
@@ -9830,7 +9830,7 @@ Choice between:<ul>
 </h3>
 
 
-<pre>Setup....</pre>
+<div class="documentation">Setup....</div>
 <br>
 
 
@@ -9857,7 +9857,7 @@ Attribute <span class="nomattribut">id</span>:
 </h3>
 
 
-<pre>Specific Question Instance</pre>
+<div class="documentation">Specific Question Instance</div>
 <br>
 
 
@@ -9881,9 +9881,9 @@ Attribute <span class="nomattribut">disabled</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Instance is Disabled
-</pre>
+</div>
 <br>
 
 
@@ -9893,9 +9893,9 @@ Attribute <span class="nomattribut">optionalrequired</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Required number of passed optional elements to pass the Instance
-</pre>
+</div>
 <br>
 
 
@@ -9912,7 +9912,7 @@ Required number of passed optional elements to pass the Instance
 </h3>
 
 
-<pre>Information for the Instance</pre>
+<div class="documentation">Information for the Instance</div>
 <br>
 
 Can contain text<br>
@@ -10003,7 +10003,7 @@ Choice between:<ul>
 </h3>
 
 
-<pre>Question Criteria</pre>
+<div class="documentation">Question Criteria</div>
 <br>
 
 Can contain text<br>
@@ -10026,9 +10026,9 @@ Attribute <span class="nomattribut">mandatory</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 Passing is Mandatory
-</pre>
+</div>
 <br>
 
 
@@ -10058,7 +10058,7 @@ Value restriction based on xs:string<ul>
 </h3>
 
 
-<pre>Criteria Information</pre>
+<div class="documentation">Criteria Information</div>
 <br>
 
 Can contain text<br>
@@ -10149,7 +10149,7 @@ Choice between:<ul>
 </h3>
 
 
-<pre>Text to display to Grader</pre>
+<div class="documentation">Text to display to Grader</div>
 <br>
 
 Can contain text<br>
@@ -10242,9 +10242,9 @@ Can contain text<br>
 <div class="indentation">
 
 
-<pre>
+<div class="documentation">
 dataresponse is an advanced type of response tag that implements a simple data storage and needs an input tag, such as textline, to work correctly.
-</pre>
+</div>
 <br>
 
 Choice between:<ul>
@@ -10278,9 +10278,9 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 internal name for the value. It will have the part id and response id added to it.
-</pre>
+</div>
 <br>
 
 
@@ -10290,9 +10290,9 @@ Attribute <span class="nomattribut">type</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 type of data stored in this response field. It should be one of the types supported by parameter.html
-</pre>
+</div>
 <br>
 
 
@@ -10302,9 +10302,9 @@ Attribute <span class="nomattribut">display</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 string that will be used to describe the field when interfacing with humans.
-</pre>
+</div>
 <br>
 
 
@@ -10321,11 +10321,11 @@ string that will be used to describe the field when interfacing with humans.
 </h3>
 
 
-<pre>
+<div class="documentation">
 This creates a link to a resource that comes up in a pop-up window.
 The link will be the intervening information between the start and the end tag.
 By default the window will be 500 pixels wide and 200 pixels tall.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -10345,9 +10345,9 @@ Attribute <span class="nomattribut">height</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 starting height of the popup window
-</pre>
+</div>
 <br>
 
 
@@ -10357,9 +10357,9 @@ Attribute <span class="nomattribut">width</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 starting width of the popup window
-</pre>
+</div>
 <br>
 
 
@@ -10376,10 +10376,10 @@ starting width of the popup window
 </h3>
 
 
-<pre>
+<div class="documentation">
 This creates a toggling box that can be clicked open and close.
 When printing, the included text will be rendered in a visible box.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -10395,9 +10395,9 @@ Attribute <span class="nomattribut">heading</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 heading text of the box, by default no heading
-</pre>
+</div>
 <br>
 
 
@@ -10407,9 +10407,9 @@ Attribute <span class="nomattribut">headerbg</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 background color of the header, by default white
-</pre>
+</div>
 <br>
 
 
@@ -10419,9 +10419,9 @@ Attribute <span class="nomattribut">showtext</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 the text that appears to make the box visible, by default the translation of &rsquo;show&rsquo;
-</pre>
+</div>
 <br>
 
 
@@ -10431,9 +10431,9 @@ Attribute <span class="nomattribut">hidetext</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 the text that appears to hide the box again, by default the translation of &rsquo;hide&rsquo;
-</pre>
+</div>
 <br>
 
 
@@ -10450,9 +10450,9 @@ the text that appears to hide the box again, by default the translation of &rsqu
 </h3>
 
 
-<pre>
+<div class="documentation">
 Everything in between the start and end tag is shown only on the web and only if the resource is not part of a course.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -10476,9 +10476,9 @@ Choice between:<ul>
 <br>
 
 
-<pre>
+<div class="documentation">
 Allows one to comment out sections of code in a balanced manner, or to provide a comment description of how a problem works.
-</pre>
+</div>
 <br>
 
 
@@ -10492,9 +10492,9 @@ Allows one to comment out sections of code in a balanced manner, or to provide a
 <br>
 
 
-<pre>
+<div class="documentation">
 The inside text is LaTeX, and is converted to HTML (or MathML) on the fly.
-</pre>
+</div>
 <br>
 
 
@@ -10508,9 +10508,9 @@ The inside text is LaTeX, and is converted to HTML (or MathML) on the fly.
 <br>
 
 
-<pre>
+<div class="documentation">
 Typesets chemical equation
-</pre>
+</div>
 <br>
 
 
@@ -10523,9 +10523,9 @@ Typesets chemical equation
 </h3>
 
 
-<pre>
+<div class="documentation">
 Typesets a number formatted in scientific notation, fixed point, fixed point with commas, fixed point with commas and dollar sign, or in significant digits.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -10547,9 +10547,9 @@ Attribute <span class="nomattribut">format</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 to display the parsed view of a variable&rsquo;s contents
-</pre>
+</div>
 <br>
 
 
@@ -10562,10 +10562,10 @@ to display the parsed view of a variable&rsquo;s contents
 </h3>
 
 
-<pre>
+<div class="documentation">
 Typesets algebraic expressions.
 Expressions are displayed using the math expression display mechanism defined in the user&rsquo;s preferences. The default is tth.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -10901,9 +10901,9 @@ Attribute <span class="nomattribut">align</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 note: this attribute is not supported in HTML5, css should be used instead !
-</pre>
+</div>
 <br>
 
 
@@ -10942,10 +10942,10 @@ Value restriction based on xs:string<ul>
 
 
 
-<pre>
+<div class="documentation">
 ==================== HTML ====================
 
-</pre>
+</div>
 <br>
 
 
@@ -10955,12 +10955,12 @@ Value restriction based on xs:string<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 internationalization attributes
 lang language code (backwards compatible)
 xml:lang language code (as per XML 1.0 spec)
 dir direction for weak/neutral text
-</pre>
+</div>
 <br>
 
 Attribute <span class="nomattribut">lang</span>:
@@ -11047,6 +11047,10 @@ Choice between:<ul>
 <br>
 </li>
 <li>
+<a href="#section_0">section</a>
+<br>
+</li>
+<li>
 <a href="#heading_1">heading</a>
 <br>
 </li>
@@ -11124,7 +11128,7 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#text_2">text</a>, <a href="#noscript_0">noscript</a>, <a href="#body_0">body</a>, <a href="#div_0">div</a>, <a href="#dd_0">dd</a>, <a href="#blockquote_0">blockquote</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#map_0">map</a>, <a href="#form_1">form</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
+<br>Parents:<a href="#text_2">text</a>, <a href="#noscript_0">noscript</a>, <a href="#body_0">body</a>, <a href="#section_0">section</a>, <a href="#div_0">div</a>, <a href="#dd_0">dd</a>, <a href="#blockquote_0">blockquote</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#map_0">map</a>, <a href="#form_1">form</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
 <br>
 <hr>
 
@@ -11354,9 +11358,9 @@ Choice between:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML root element (&lt;html&gt;) represents the root of an HTML document.
-</pre>
+</div>
 <br>
 
 
@@ -11398,9 +11402,9 @@ Sequence with:<ul>
 <br>
 
 
-<pre>
+<div class="documentation">
 script statements, which may include CDATA sections
-</pre>
+</div>
 <br>
 
 
@@ -11417,9 +11421,9 @@ script statements, which may include CDATA sections
 <br>
 
 
-<pre>
+<div class="documentation">
 generic metainformation
-</pre>
+</div>
 <br>
 
 
@@ -11442,9 +11446,9 @@ generic metainformation
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML Head Element (&lt;head&gt;) provides general information (metadata) about the document, including its title and links to or definitions of scripts and style sheets.
-</pre>
+</div>
 <br>
 
 
@@ -11523,11 +11527,11 @@ Attribute <span class="nomattribut">profile</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 The title element is not considered part of the flow of text.
 It should be displayed, for example as the page header or
 window title. Exactly one title is required per document.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -11552,9 +11556,9 @@ Attribute <span class="nomattribut">id</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Document base URI
-</pre>
+</div>
 <br>
 
 
@@ -11607,9 +11611,9 @@ Attribute <span class="nomattribut">scheme</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Single or comma-separated list of media descriptors
-</pre>
+</div>
 <br>
 
 Value restriction based on xs:string<ul>
@@ -11627,9 +11631,9 @@ Value restriction based on xs:string<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML Link Element (&lt;link&gt;) specifies relationships between the current document and external resource. Possible uses for this element include defining a relational framework for navigation. This Element is most used to link to style sheets.
-</pre>
+</div>
 <br>
 
 
@@ -11674,9 +11678,9 @@ Attribute <span class="nomattribut">media</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;style&gt; element contains style information for a document, or a part of document. The specific style information is contained inside of this element, usually in the CSS.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -11756,9 +11760,9 @@ Attribute <span class="nomattribut"></span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Alternate content container for non script-based rendering.
-</pre>
+</div>
 <br>
 
 
@@ -11806,15 +11810,40 @@ Attribute <span class="nomattribut">onunload</span>:
 <br>
 <hr>
 
+<a name="section_0"></a>
+<h3>Element <span class="nomtitre">section</span>
+</h3>
+
+
+<div class="documentation">
+The HTML Section Element (&lt;section&gt;) represents a generic section of a document, i.e., a thematic grouping of content, typically with a heading. Each &lt;section&gt; should be identified, typically by including a heading (h1-h6 element) as a child of the &lt;section&gt; element.
+</div>
+<br>
+
+
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#blockText_0">blockText</a>
+<br>
+</li>
+</ul>
+
+</div>
+
+<br>Parents:<a href="#blockText_0">blockText</a>
+<br>
+<hr>
+
 <a name="h1_0"></a>
 <h3>Element <span class="nomtitre">h1</span>
 </h3>type: <a href="#headerContent_0">headerContent</a>
 <br>
 
 
-<pre>
+<div class="documentation">
 Level 1 header
-</pre>
+</div>
 <br>
 
 
@@ -11828,9 +11857,9 @@ Level 1 header
 <br>
 
 
-<pre>
+<div class="documentation">
 Level 2 header
-</pre>
+</div>
 <br>
 
 
@@ -11844,9 +11873,9 @@ Level 2 header
 <br>
 
 
-<pre>
+<div class="documentation">
 Level 3 header
-</pre>
+</div>
 <br>
 
 
@@ -11860,9 +11889,9 @@ Level 3 header
 <br>
 
 
-<pre>
+<div class="documentation">
 Level 4 header
-</pre>
+</div>
 <br>
 
 
@@ -11876,9 +11905,9 @@ Level 4 header
 <br>
 
 
-<pre>
+<div class="documentation">
 Level 5 header
-</pre>
+</div>
 <br>
 
 
@@ -11892,9 +11921,9 @@ Level 5 header
 <br>
 
 
-<pre>
+<div class="documentation">
 Level 6 header
-</pre>
+</div>
 <br>
 
 
@@ -11907,9 +11936,9 @@ Level 6 header
 </h3>
 
 
-<pre>
+<div class="documentation">
 HTML Division
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -11948,9 +11977,9 @@ Attribute <span class="nomattribut">style</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Paragraph
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -11975,9 +12004,9 @@ Attribute <span class="nomattribut">style</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Unordered list
-</pre>
+</div>
 <br>
 
 
@@ -12000,9 +12029,9 @@ Sequence with:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 Ordered list
-</pre>
+</div>
 <br>
 
 
@@ -12025,9 +12054,9 @@ Sequence with:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 List item
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -12058,11 +12087,11 @@ Choice between:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;dl&gt; Element (or HTML Description List Element) encloses a list of pairs of terms and descriptions. Common uses for this element are to implement a glossary or to display metadata (a list of key-value pairs).
 
 Prior to HTML5, &lt;dl&gt; was known as a Definition List.
-</pre>
+</div>
 <br>
 
 
@@ -12090,9 +12119,9 @@ Choice between:<ul>
 <br>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;dt&gt; element (or HTML Definition Term Element) identifies a term in a definition list. This element can occur only as a child element of a &lt;dl&gt;. It is usually followed by a &lt;dd&gt; element; however, multiple &lt;dt&gt; elements in a row indicate several terms that are all defined by the immediate next &lt;dd&gt; element.
-</pre>
+</div>
 <br>
 
 
@@ -12105,9 +12134,9 @@ The HTML &lt;dt&gt; element (or HTML Definition Term Element) identifies a term 
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;dd&gt; Element (or HTML Description Element) indicates the description of a term in a description list (&lt;dl&gt;) element. This element can occur only as a child element of a definition list and it must follow a &lt;dt&gt; element.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -12134,9 +12163,9 @@ Choice between:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 Table
-</pre>
+</div>
 <br>
 
 
@@ -12159,9 +12188,9 @@ Sequence with:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 Table row
-</pre>
+</div>
 <br>
 
 
@@ -12219,9 +12248,9 @@ Value restriction based on xs:string<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 Table cell
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -12256,9 +12285,9 @@ Attribute <span class="nomattribut">align</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Table header cell
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -12293,9 +12322,9 @@ Attribute <span class="nomattribut">align</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Inline style
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -12322,9 +12351,9 @@ Attribute <span class="nomattribut">style</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;a&gt; Element (or the HTML Anchor Element) defines a hyperlink, the named target destination for a hyperlink, or both.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -12350,9 +12379,9 @@ Attribute <span class="nomattribut">href</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 Strong emphasis
-</pre>
+</div>
 <br>
 
 
@@ -12366,9 +12395,9 @@ Strong emphasis
 <br>
 
 
-<pre>
+<div class="documentation">
 Emphasis
-</pre>
+</div>
 <br>
 
 
@@ -12382,9 +12411,9 @@ Emphasis
 <br>
 
 
-<pre>
+<div class="documentation">
 Bold
-</pre>
+</div>
 <br>
 
 
@@ -12398,9 +12427,9 @@ Bold
 <br>
 
 
-<pre>
+<div class="documentation">
 Italic
-</pre>
+</div>
 <br>
 
 
@@ -12414,9 +12443,9 @@ Italic
 <br>
 
 
-<pre>
+<div class="documentation">
 Superscript
-</pre>
+</div>
 <br>
 
 
@@ -12430,9 +12459,9 @@ Superscript
 <br>
 
 
-<pre>
+<div class="documentation">
 Subscript
-</pre>
+</div>
 <br>
 
 
@@ -12446,9 +12475,9 @@ Subscript
 <br>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;pre&gt; Element (or HTML Preformatted Text) represents preformatted text. Text within this element is typically displayed in a non-proportional font exactly as it is laid out in the file. Whitespaces inside this element are displayed as typed.
-</pre>
+</div>
 <br>
 
 
@@ -12462,9 +12491,9 @@ The HTML &lt;pre&gt; Element (or HTML Preformatted Text) represents preformatted
 <br>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;code&gt; Element represents a fragment of computer code. By default, it is displayed in the browser's default monospace font.
-</pre>
+</div>
 <br>
 
 
@@ -12478,9 +12507,9 @@ The HTML &lt;code&gt; Element represents a fragment of computer code. By default
 <br>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;kbd&gt; Element (or HTML Keyboard Input Element) represents user input and produces an inline element displayed in the browser's default monotype font.
-</pre>
+</div>
 <br>
 
 
@@ -12494,9 +12523,9 @@ The HTML &lt;kbd&gt; Element (or HTML Keyboard Input Element) represents user in
 <br>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;samp&gt; element is an element intended to identify sample output from a computer program. It is usually displayed in the browser's default monotype font.
-</pre>
+</div>
 <br>
 
 
@@ -12510,10 +12539,10 @@ The HTML &lt;samp&gt; element is an element intended to identify sample output f
 <br>
 
 
-<pre>
+<div class="documentation">
 This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
 The HTML Teletype Text Element (&lt;tt&gt;) produces an inline element displayed in the browser's default monotype font. This element was intended to style text as it would display on a fixed width display, such as a teletype. It probably is more common to display fixed width type using the &lt;code&gt; element.
-</pre>
+</div>
 <br>
 
 
@@ -12526,9 +12555,9 @@ The HTML Teletype Text Element (&lt;tt&gt;) produces an inline element displayed
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;ins&gt; Element (or HTML Inserted Text) HTML represents a range of text that has been added to a document.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -12557,9 +12586,9 @@ Attribute <span class="nomattribut">datetime</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;del&gt; element (or HTML Deleted Text Element) represents a range of text that has been deleted from a document. This element is often (but need not be) rendered with strike-through text.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -12589,9 +12618,9 @@ Attribute <span class="nomattribut">datetime</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 The HTML Variable Element (&lt;var&gt;) represents a variable in a mathematical expression or a programming context.
-</pre>
+</div>
 <br>
 
 
@@ -12605,9 +12634,9 @@ The HTML Variable Element (&lt;var&gt;) represents a variable in a mathematical 
 <br>
 
 
-<pre>
+<div class="documentation">
 The HTML Small Element (&lt;small&gt;) makes the text font size one size smaller (for example, from large to medium, or from small to x-small) down to the browser's minimum font size. In HTML5, this element is repurposed to represent side-comments and small print, including copyright and legal text, independent of its styled presentation.
-</pre>
+</div>
 <br>
 
 
@@ -12621,9 +12650,9 @@ The HTML Small Element (&lt;small&gt;) makes the text font size one size smaller
 <br>
 
 
-<pre>
+<div class="documentation">
 This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
-</pre>
+</div>
 <br>
 
 
@@ -12636,9 +12665,9 @@ This feature is obsolete. Although it may still work in some browsers, its use i
 </h3>
 
 
-<pre>
+<div class="documentation">
 This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -12671,9 +12700,9 @@ Attribute <span class="nomattribut">size</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
-</pre>
+</div>
 <br>
 
 
@@ -12702,9 +12731,9 @@ Attribute <span class="nomattribut">size</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;br&gt; Element (or HTML Line Break Element) produces a line break in text (carriage-return). It is useful for writing a poem or an address, where the division of lines is significant.
-</pre>
+</div>
 <br>
 
 
@@ -12717,9 +12746,9 @@ The HTML &lt;br&gt; Element (or HTML Line Break Element) produces a line break i
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;hr&gt; element represents a thematic break between paragraph-level elements (for example, a change of scene in a story, or a shift of topic with a section). In previous versions of HTML, it represented a horizontal rule. It may still be displayed as a horizontal rule in visual browsers, but is now defined in semantic terms, rather than presentational terms.
-</pre>
+</div>
 <br>
 
 
@@ -12732,9 +12761,9 @@ The HTML &lt;hr&gt; element represents a thematic break between paragraph-level 
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;blockquote&gt; Element (or HTML Block Quotation Element) indicates that the enclosed text is an extended quotation. Usually, this is rendered visually by indentation (see Notes for how to change it). A URL for the source of the quotation may be given using the cite attribute, while a text representation of the source can be given using the &lt;cite&gt; element.
-</pre>
+</div>
 <br>
 
 
@@ -12762,9 +12791,9 @@ Attribute <span class="nomattribut">cite</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 nn for pixels or nn% for percentage length
-</pre>
+</div>
 <br>
 
 Value restriction based on xs:string<ul>
@@ -12782,9 +12811,9 @@ Value restriction based on xs:string<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;object&gt; Element (or HTML Embedded Object Element) represents an external resource, which can be treated as an image, a nested browsing context, or a resource to be handled by a plugin.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -12859,9 +12888,9 @@ Attribute <span class="nomattribut">name</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 param is used to supply a named property value
-</pre>
+</div>
 <br>
 
 
@@ -12913,9 +12942,9 @@ Attribute <span class="nomattribut">type</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;embed&gt; Element represents an integration point for an external application or interactive content (in other words, a plug-in).
-</pre>
+</div>
 <br>
 
 
@@ -12925,9 +12954,9 @@ Attribute <span class="nomattribut">src</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 The URL of the resource being embedded.
-</pre>
+</div>
 <br>
 
 
@@ -12937,9 +12966,9 @@ Attribute <span class="nomattribut">type</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 The MIME type to use to select the plug-in to instantiate.
-</pre>
+</div>
 <br>
 
 
@@ -12949,9 +12978,9 @@ Attribute <span class="nomattribut">height</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 The displayed height of the resource, in CSS pixels.
-</pre>
+</div>
 <br>
 
 
@@ -12961,9 +12990,9 @@ Attribute <span class="nomattribut">width</span>:
 <br>
 
 
-<pre>
+<div class="documentation">
 The displayed width of the resource, in CSS pixels.
-</pre>
+</div>
 <br>
 
 
@@ -12980,9 +13009,9 @@ The displayed width of the resource, in CSS pixels.
 </h3>
 
 
-<pre>
+<div class="documentation">
 This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -13050,9 +13079,9 @@ Attribute <span class="nomattribut">vspace</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;video&gt; element is used to embed video content. It may contain several video sources, represented using the src attribute or the &lt;source&gt; element; the browser will choose the most suitable one.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -13096,9 +13125,9 @@ Attribute <span class="nomattribut">loop</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;source&gt; element is used to specify multiple media resources for &lt;picture&gt;, &lt;audio&gt; and &lt;video&gt; elements. It is an empty element. It is commonly used to serve the same media in multiple formats supported by different browsers.
-</pre>
+</div>
 <br>
 
 
@@ -13123,9 +13152,9 @@ Attribute <span class="nomattribut">type</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;audio&gt; element is used to embed sound content in documents. It may contain several audio sources, represented using the src attribute or the &lt;source&gt; element; the browser will choose the most suitable one.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -13162,9 +13191,9 @@ Attribute <span class="nomattribut">loop</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;area&gt; element defines a hot-spot region on an image, and optionally associates it with a hypertext link. This element is used only within a &lt;map&gt; element.
-</pre>
+</div>
 <br>
 
 
@@ -13285,9 +13314,9 @@ Attribute <span class="nomattribut">alt</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;form&gt; element represents a document section that contains interactive controls to submit information to a web server.
-</pre>
+</div>
 <br>
 
 
@@ -13351,10 +13380,10 @@ Attribute <span class="nomattribut">accept-charset</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 Each label must not contain more than ONE field
 Label elements shouldn't be nested.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -13446,9 +13475,9 @@ Value restriction based on xs:token<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 form control
-</pre>
+</div>
 <br>
 
 
@@ -13461,9 +13490,9 @@ Attribute <span class="nomattribut">name</span>:
     <div class="indentation">optional<br>
 
 
-<pre>
+<div class="documentation">
 the name attribute is required for all but submit &amp; reset
-</pre>
+</div>
 <br>
 
 
@@ -13552,9 +13581,9 @@ Attribute <span class="nomattribut">accept</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 option selector
-</pre>
+</div>
 <br>
 
 
@@ -13630,9 +13659,9 @@ Attribute <span class="nomattribut">onchange</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 option group
-</pre>
+</div>
 <br>
 
 
@@ -13672,9 +13701,9 @@ Attribute <span class="nomattribut">label</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 selectable choice
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -13724,9 +13753,9 @@ Attribute <span class="nomattribut">value</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 multi-line text field
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -13788,11 +13817,11 @@ Attribute <span class="nomattribut">onchange</span>:
 </h3>
 
 
-<pre>
+<div class="documentation">
 The fieldset element is used to group form fields.
 Only one legend element should occur in the content
 and if present should only be preceded by whitespace.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -13826,9 +13855,9 @@ Sequence with:<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 fieldset label
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -13922,9 +13951,9 @@ Value restriction based on xs:token<ul>
 </h3>
 
 
-<pre>
+<div class="documentation">
 The HTML &lt;iframe&gt; Element (or HTML inline frame element) represents a nested browsing context, effectively embedding another HTML page into the current page.
-</pre>
+</div>
 <br>
 
 Can contain text<br>
@@ -14511,6 +14540,8 @@ Attribute <span class="nomattribut">allowfullscreen</span>:
             (under head.misc)
           <br>
 <a href="#scriptlib_0">scriptlib</a>
+<br>
+<a href="#section_0">section</a>
 <br>
 <a href="#select_0">select</a>
 <br>
