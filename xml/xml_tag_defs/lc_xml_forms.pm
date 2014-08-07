@@ -65,6 +65,15 @@ sub start_lcform_html {
    &form_start($id,$name,$screendefaults);
 }
 
+sub get_screendefaults {
+   my ($formfield)=@_;
+   if ($screen_form_defaults) {
+      return $screen_form_defaults->{$formfield};
+   } else {
+      return undef;
+   }
+}
+
 sub form_start {
    my ($id,$name,$screendefaults)=@_;
    return '<form class="lcform" id="'.$id.'" name="'.$name.'"'.

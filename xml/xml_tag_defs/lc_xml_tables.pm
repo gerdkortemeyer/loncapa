@@ -28,6 +28,7 @@ use Apache::lc_entity_urls();
 use Apache::lc_entity_sessions();
 use Apache::lc_date_utils();
 use Apache::lc_authorize;
+use Apache::lc_xml_forms();
 use Apache::lc_logs;
 use Data::Dumper;
 
@@ -57,17 +58,44 @@ sub start_lcdatatable_html {
 
 sub portfoliomanager {
    my ($p,$safe,$stack,$token)=@_;
-#FIXME: not necessarily just own path
-   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
-#FIXME: debug
-my $path='';
-#
-   my $fullpath=$domain.'/'.$entity.'/'.$path;
-   my $dir_list=&Apache::lc_entity_urls::full_dir_list($fullpath);
+# Cascading determination of path to display
+   my $pathfield=$token->[2]->{'pathfield'};
+   my $path;
+   if ($pathfield) {
+# A pathfield was passed. First see if we have a fresh one
+      my %content=&Apache::lc_entity_sessions::posted_content();
+      $path=$content{$pathfield};
+# No fresh one, get stale one from before
+      unless ($path) {
+         $path=&Apache::lc_xml_forms::get_screendefaults($pathfield);
+      }
+   }
+   unless ($path) {
+# Still no path? Go to the user's home directory
+      my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+      $path=$domain.'/'.$entity.'/';
+   }
+# We want a trailing slash
+   unless ($path=~/\/$/) { $path.='/'; }
+# But no leading ones
+   $path=~s/^\/+//;
+# There's no way up here!
+   $path=~s/\.\.//gs;
+# Header
+   my ($udomain,$uentity)=($path=~/([^\/]+)\/([^\/]+)\//);
+   my $dir_list=&Apache::lc_entity_urls::full_dir_list($path);
    my $output.='<thead><tr><th>&nbsp;</th><th>'.&mt('Type').'</th><th>'.&mt('Name').'</th><th>'.
                &mt('Title').'</th><th>'.&mt('Publication State').'</th><th>'.&mt('Version').'</th><th>'.
                &mt('First Published').'</th><th>&nbsp;</th><th>'.
                &mt('Last Published').'</th><th>&nbsp;</th></tr></thead><tbody>';
+# Now see if we are allowed to look at this
+   my ($udomain,$uentity)=($path=~/([^\/]+)\/([^\/]+)\//);
+   unless (&allowed_user('view_portfolio',undef,$udomain,$uentity)) {
+      $output.='</tbody>';
+      return $output;
+   }
+# Yes, we are allowed, do the listing
+   my $dir_list=&Apache::lc_entity_urls::full_dir_list($path);
    foreach my $file (@{$dir_list}) {
        my $version='-';
        my $display_first_date=&mt('Never');
