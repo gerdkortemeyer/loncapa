@@ -44,6 +44,8 @@ cp app/favicon.ico /home/httpd/html
 cp app/html/*.html /home/httpd/html
 mkdir /home/httpd/html/images
 cp app/images/* /home/httpd/html/images
+mkdir /home/httpd/html/images/fileicons
+cp app/images/fileicons/* /home/httpd/html/images/fileicons
 mkdir /home/httpd/html/scripts
 if [ ! -d /home/httpd/html/scripts/mathjax ]; then
    unzip app/scripts/v2.3-latest -d /home/httpd/html/scripts
@@ -75,4 +77,5 @@ cp app/html/help/* /home/httpd/html/help
 if [ ! -e /home/loncapa/cluster/cluster_manager.conf ]; then
    cp conf/cluster/cluster_manager.conf /home/loncapa/cluster
 fi
+chown -R www:www /home/httpd/html/*
 /etc/init.d/httpd restart
