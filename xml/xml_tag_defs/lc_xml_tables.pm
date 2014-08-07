@@ -57,8 +57,13 @@ sub start_lcdatatable_html {
 
 sub portfoliomanager {
    my ($p,$safe,$stack,$token)=@_;
+#FIXME: not necessarily just own path
    my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
-   my $dir_list=&Apache::lc_entity_urls::full_dir_list($domain.'/'.$entity.'/');
+#FIXME: debug
+my $path='';
+#
+   my $fullpath=$domain.'/'.$entity.'/'.$path;
+   my $dir_list=&Apache::lc_entity_urls::full_dir_list($fullpath);
    my $output.='<thead><tr><th>&nbsp;</th><th>'.&mt('Type').'</th><th>'.&mt('Name').'</th><th>'.
                &mt('Title').'</th><th>'.&mt('Publication State').'</th><th>'.&mt('Version').'</th><th>'.
                &mt('First Published').'</th><th>&nbsp;</th><th>'.
@@ -76,7 +81,7 @@ sub portfoliomanager {
           ($display_last_date,$sort_last_date)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{$version}));
        }
-       $output.="\n".'<tr><td>&nbsp;</td><td>Type</td><td>'.(split(/\//,$file->{'url'}))[-1].
+       $output.="\n".'<tr><td>&nbsp;</td><td>'.$file->{'type'}.'</td><td>'.$file->{'filename'}.
                      '</td><td>Title</td><td>State</td><td>'.$version.'</td><td>'.
                   ($sort_first_date?'<time datetime="'.$sort_first_date.'">':'').
                   $display_first_date.($sort_first_date?'</time>':'').'</td><td>'.$sort_first_date.'</td><td>'.

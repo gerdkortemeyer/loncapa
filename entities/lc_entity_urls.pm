@@ -211,12 +211,24 @@ sub full_dir_list {
    my ($path)=@_;
    my $dir_list=&dir_list($path);
    my $full_list;
+   my %subdirectories=();
    foreach my $file (@{$dir_list}) {
       my $url=$file->[0];
-      my $entity=$file->[1];
-      my ($domain)=($url=~/^\/?([^\/]+)\//);
-      my $metadata=&dump_metadata($entity,$domain);
-      push(@{$full_list},{ url => $url, entity => $entity, domain => $domain, metadata => $metadata });
+      my $url_part=$url;
+      $url_part=~s/^\Q$path\E//;
+      if ($url_part=~/\//) {
+# This is a file inside a subdirectory
+         my $subdir=(split(/\//,$url_part))[0];
+# Have we already seen this subdirectory
+         if ($subdirectories{$subdir}) { next; }
+         $subdirectories{$subdir}=1;
+         push(@{$full_list},{ type => 'directory', url => $path.'/'.$subdir, filename => $subdir });
+      } else {
+         my $entity=$file->[1];
+         my ($domain)=($url=~/^\/?([^\/]+)\//);
+         my $metadata=&dump_metadata($entity,$domain);
+         push(@{$full_list},{ type => 'file', url => $url, filename => $url_part, entity => $entity, domain => $domain, metadata => $metadata });
+      }
    }
    return $full_list;
 }
