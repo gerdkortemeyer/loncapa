@@ -1116,17 +1116,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="type" use="required">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="tolerance"/>
-            <xs:enumeration value="int"/>
-            <xs:enumeration value="float"/>
-            <xs:enumeration value="string"/>
-            <xs:enumeration value="date"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
+      <xs:attribute name="type" type="xs:string" use="required"/>
       <xs:attribute name="description" type="xs:string"/>
       <xs:attribute name="default" type="xs:string"/>
     </xs:complexType>
@@ -4739,6 +4729,8 @@
     <xs:complexType mixed="true">
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="href" type="xs:string"/>
+      <xs:attribute name="target" type="xs:string"/>
+      <xs:attribute name="title" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="strong" type="inlineBaseType">

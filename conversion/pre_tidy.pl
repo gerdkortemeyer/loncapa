@@ -10,13 +10,13 @@ use Encode;
 use Encode::Byte;
 use Encode::Guess;
 
-my @block_elements = ('answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','numericalresponse','answergroup','formularesponse','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','stringresponse','essayresponse','externalresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','customresponse','mathresponse','textfield','hiddensubmission','optionresponse','radiobuttonresponse','rankresponse','matchresponse','organicresponse','reactionresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline');
+my @block_elements = ('answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','numericalresponse','array','unit','answergroup','formularesponse','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','stringresponse','essayresponse','externalresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','customresponse','mathresponse','textfield','hiddensubmission','optionresponse','radiobuttonresponse','rankresponse','matchresponse','organicresponse','reactionresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline');
 
 my @block_html = ('html','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','table','dl','pre','noscript','blockquote','object','applet','embed','map','form','fieldset','iframe');
 
 my @all_block = (@block_elements, @block_html);
 
-my @inline_elements = ('vector','value','location','parameter','array','unit','textline','display','img','meta','startpartmarker','endpartmarker','startouttext','endouttext','tex','web','windowlink','m','chem','num','parse','algebra','displayweight','displaystudentphoto','inlinefont');
+my @inline_elements = ('vector','value','location','parameter','textline','display','img','meta','startpartmarker','endpartmarker','startouttext','endouttext','tex','web','windowlink','m','chem','num','parse','algebra','displayweight','displaystudentphoto','inlinefont');
 
 # list of empty elements, which must also appear either in block or inline
 my @empty_elements = ('drawoptionlist','location','parameter','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','textline','displayduedate','displaytitle','organicstructure','responseparam','img','meta','startpartmarker','endpartmarker','allow','startouttext','endouttext','axis','key','xtics','ytics','displayweight','displaystudentphoto','emptyfont');
@@ -73,8 +73,8 @@ sub guess_encoding_and_read {
     my $decoded_windows = decode('cp1252', $data);
     my $decoded_mac = decode('MacRoman', $data);
     # try to use frequent non-ASCII characters to distinguish the encodings (mostly German, Spanish, Portuguese)
-    my $score_windows = $decoded_windows =~ tr/ßáàäâãçéèêëíñóöôõúüÄÉÑÖÜ¿¡’//;
-    my $score_mac = $decoded_mac =~ tr/ßáàäâãçéèêëíñóöôõúüÄÉÑÖÜ¿¡’//;
+    my $score_windows = $decoded_windows =~ tr/ßáàäâãçéèêëíñóöôõúüÄÉÑÖÜ¿¡’“”//;
+    my $score_mac = $decoded_mac =~ tr/ßáàäâãçéèêëíñóöôõúüÄÉÑÖÜ¿¡’“”//;
     if ($score_windows >= $score_mac) {
       $decoded = $decoded_windows;
     } else {
