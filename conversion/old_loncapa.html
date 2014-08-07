@@ -739,14 +739,22 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">options</span>:
-    <div class="indentation">required<br>type: <tt>xs:string</tt>
-<br>
+    <div class="indentation">required<br>
 
 
 <div class="documentation">
 List of options
 </div>
 <br>
+
+
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>\(.+\)</tt>
+</li>
+
+</ul>
 
 
 </div>
@@ -5038,7 +5046,9 @@ Max Number Of Shown Foils
 </h3>
 
 
-<div class="documentation">Response: Custom</div>
+<div class="documentation">
+Custom Response is a way to have a problem graded based on an algorithm. The use of this response type is generally discouraged, since the responses will not be analyzable by the LON-CAPA statistics tools.
+</div>
 <br>
 
 
@@ -5108,7 +5118,9 @@ String to display for answer
 </h3>
 
 
-<div class="documentation">Response: Math</div>
+<div class="documentation">
+Math response problems use a cas system to evaluate the student response. Which computer algebra system is to be used is specified in the cas argument of the mathresponse tag; both Maxima and R are supported.
+</div>
 <br>
 
 
