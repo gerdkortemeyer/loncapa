@@ -81,7 +81,7 @@ my $path='';
           ($display_last_date,$sort_last_date)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{$version}));
        }
-       $output.="\n".'<tr><td>&nbsp;</td><td>'.$file->{'type'}.'</td><td>'.$file->{'filename'}.
+       $output.="\n".'<tr><td>&nbsp;</td><td>'.&Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}).'</td><td>'.$file->{'filename'}.
                      '</td><td>Title</td><td>State</td><td>'.$version.'</td><td>'.
                   ($sort_first_date?'<time datetime="'.$sort_first_date.'">':'').
                   $display_first_date.($sort_first_date?'</time>':'').'</td><td>'.$sort_first_date.'</td><td>'.

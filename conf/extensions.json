@@ -16,10 +16,6 @@
         {
             "mime":"application\/x-futuresplash"
         },
-    "file":
-        {
-            "mime":"#"
-        },
     "djv":
         {
             "mime":"image\/vnd.djvu"
@@ -42,6 +38,7 @@
         },
     "dotx":
         {
+            "icon":"doc",
             "mime":"application\/vnd.openxmlformats-officedocument.wordprocessingml.template"
         },
     "xlw":
@@ -60,6 +57,7 @@
         },
     "gz":
         {
+            "icon":"zip",
             "mime":"application\/x-gzip"
         },
     "csh":
@@ -112,6 +110,7 @@
         },
     "docx":
         {
+            "icon":"doc",
             "mime":"application\/vnd.openxmlformats-officedocument.wordprocessingml.document"
         },
     "mxu":
@@ -136,10 +135,6 @@
             "icon":"ps",
             "mime":"application\/postscript"
         },
-    "and":
-        {
-            "mime":"#"
-        },
     "css":
         {
             "mime":"text\/css"
@@ -156,10 +151,6 @@
         {
             "mime":"application\/x-koan"
         },
-    "of":
-        {
-            "mime":"#"
-        },
     "lzh":
         {
             "icon":"class",
@@ -175,6 +166,7 @@
         },
     "xlsb":
         {
+            "icon":"xls",
             "mime":"application\/vnd.ms-excel.sheet.binary.macroenabled.12"
         },
     "asc":
@@ -188,6 +180,7 @@
         },
     "texi":
         {
+            "icon":"tex",
             "mime":"application\/x-texinfo"
         },
     "cdf":
@@ -311,12 +304,9 @@
         {
             "mime":"chemical\/x-jcamp-dx"
         },
-    "off":
-        {
-            "mime":"#"
-        },
     "pptx":
         {
+            "icon":"ppt",
             "mime":"application\/vnd.openxmlformats-officedocument.presentationml.presentation"
         },
     "ra":
@@ -351,14 +341,6 @@
         {
             "mime":"audio\/mpeg"
         },
-    "mailcap":
-        {
-            "mime":"#"
-        },
-    "apache":
-        {
-            "mime":"#"
-        },
     "ppsm":
         {
             "mime":"application\/vnd.ms-powerpoint.slideshow.macroenabled.12"
@@ -366,10 +348,6 @@
     "sgml":
         {
             "mime":"text\/sgml"
-        },
-    "file.":
-        {
-            "mime":"#"
         },
     "lha":
         {
@@ -551,10 +529,6 @@
         {
             "mime":"application\/andrew-inset"
         },
-    "based":
-        {
-            "mime":"#"
-        },
     "xbm":
         {
             "mime":"image\/x-xbitmap"
@@ -573,6 +547,7 @@
         },
     "xlsx":
         {
+            "icon":"xls",
             "mime":"application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         },
     "xlc":
@@ -602,6 +577,7 @@
         },
     "potx":
         {
+            "icon":"ppt",
             "mime":"application\/vnd.openxmlformats-officedocument.presentationml.template"
         },
     "txt":
@@ -640,6 +616,7 @@
         },
     "ppsx":
         {
+            "icon":"ppt",
             "mime":"application\/vnd.openxmlformats-officedocument.presentationml.slideshow"
         },
     "bmp":
@@ -691,12 +668,9 @@
             "icon":"xls",
             "mime":"application\/vnd.ms-excel"
         },
-    "the":
-        {
-            "mime":"#"
-        },
     "sldx":
         {
+            "icon":"ppt",
             "mime":"application\/vnd.openxmlformats-officedocument.presentationml.slide"
         },
     "spt":
@@ -746,6 +720,7 @@
         },
     "xltx":
         {
+            "icon":"xls",
             "mime":"application\/vnd.openxmlformats-officedocument.spreadsheetml.template"
         },
     "dxr":
@@ -774,17 +749,9 @@
             "icon":"png",
             "mime":"image\/png"
         },
-    "mime.types":
-        {
-            "mime":"#"
-        },
     "src":
         {
             "mime":"application\/x-wais-source"
-        },
-    "default":
-        {
-            "mime":"#"
         },
     "ppa":
         {
@@ -797,6 +764,7 @@
         },
     "xlsm":
         {
+            "icon":"xls",
             "mime":"application\/vnd.ms-excel.sheet.macroenabled.12"
         },
     "rgb":
@@ -846,6 +814,7 @@
         },
     "latex":
         {
+            "icon":"tex",
             "mime":"application\/x-latex"
         },
     "vcd":
@@ -871,6 +840,7 @@
         },
     "xlam":
         {
+            "icon":"xls",
             "mime":"application\/vnd.ms-excel.addin.macroenabled.12"
         },
     "pps":

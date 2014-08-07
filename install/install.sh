@@ -26,6 +26,7 @@ cp conf/lc_parameters.pm /home/httpd/lib/perl/Apache
 cp conf/roles.json /home/loncapa/conf
 cp conf/units.json /home/loncapa/conf
 cp conf/constants.json /home/loncapa/conf
+cp conf/extensions.json /home/loncapa/conf
 cp app/handlers/*pm /home/httpd/lib/perl/Apache
 mkdir /home/httpd/lib/perl/Apache/lc_localize
 rm /home/httpd/lib/perl/Apache/lc_localize/*

@@ -51,6 +51,14 @@ sub success_message {
 sub form_escape {
    return &HTML::Entities::encode_entities(@_[0]);
 }
+
+#
+# Produces a file icon
+#
+sub file_icon {
+   my ($type,$name)=@_;
+   return '<img class="lcfileicon" src="/images/fileicons/'.&Apache::lc_file_utils::file_icon($type,$name).'.gif" />';
+}
    
 1;
 __END__

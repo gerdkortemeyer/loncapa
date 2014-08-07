@@ -27,6 +27,22 @@ use File::Copy;
 use Apache::lc_logs;
 use Apache::lc_parameters;
 use Apache::lc_entity_urls();
+use Apache::lc_json_utils();
+
+my $extension;
+
+sub file_icon {
+   my ($type,$name)=@_;
+   if ($type eq 'directory') { return 'folder_closed'; }
+   unless ($extension) { &load_extension(); }
+   my ($ext)=($name=~/\.(\w+)$/);
+   if ($extension->{$ext}->{'icon'}) { return $extension->{$ext}->{'icon'}; }
+   return 'unknown';
+}
+
+sub load_extension {
+   $extension=&Apache::lc_json_utils::json_to_perl(&readfile(&lc_conf_dir().'extensions.json'));
+}
 
 # ==== Lock a file the hard way
 #
