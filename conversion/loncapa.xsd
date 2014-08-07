@@ -256,12 +256,17 @@
       <xs:element name="conceptgroup" type="optionresponse--conceptgroup"/>
       <xs:element name="foil" type="optionresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="options" type="xs:string" use="required">
+    <xs:attribute name="options" use="required">
       <xs:annotation>
         <xs:documentation>
           List of options
         </xs:documentation>
       </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="\(.+\)"/>
+        </xs:restriction>
+      </xs:simpleType>
     </xs:attribute>
     <xs:attribute name="texoptions">
       <xs:annotation>
@@ -2159,7 +2164,9 @@
   </xs:element>
   <xs:element name="customresponse">
     <xs:annotation>
-      <xs:documentation>Response: Custom</xs:documentation>
+      <xs:documentation>
+        Custom Response is a way to have a problem graded based on an algorithm. The use of this response type is generally discouraged, since the responses will not be analyzable by the LON-CAPA statistics tools.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2184,7 +2191,9 @@
   </xs:element>
   <xs:element name="mathresponse">
     <xs:annotation>
-      <xs:documentation>Response: Math</xs:documentation>
+      <xs:documentation>
+        Math response problems use a cas system to evaluate the student response. Which computer algebra system is to be used is specified in the cas argument of the mathresponse tag; both Maxima and R are supported.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
