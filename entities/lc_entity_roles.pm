@@ -580,6 +580,19 @@ sub active_roles {
          }
       }
    }
+# Finally, user roles
+   foreach my $domain (keys(%{$roles->{'user'}})) {
+      foreach my $entity (keys(%{$roles->{'user'}->{$domain}})) {
+         foreach my $role (keys(%{$roles->{'user'}->{$domain}->{$entity}})) {
+            unless (&Apache::lc_date_utils::in_date_range(
+                       $roles->{'user'}->{$domain}->{$entity}->{$role}->{'startdate'},
+                       $roles->{'user'}->{$domain}->{$entity}->{$role}->{'enddate'})) {
+               delete($roles->{'user'}->{$domain}->{$entity}->{$role});
+            }
+
+         }
+      }
+   }
    return $roles;
 }
 

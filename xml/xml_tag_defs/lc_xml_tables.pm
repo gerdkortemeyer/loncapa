@@ -90,7 +90,7 @@ sub portfoliomanager {
                &mt('Last Published').'</th><th>&nbsp;</th></tr></thead><tbody>';
 # Now see if we are allowed to look at this
    my ($udomain,$uentity)=($path=~/([^\/]+)\/([^\/]+)\//);
-   unless (&allowed_user('view_portfolio',undef,$udomain,$uentity)) {
+   unless (&allowed_user('view_portfolio',undef,$uentity,$udomain)) {
       $output.='</tbody>';
       return $output;
    }

@@ -80,9 +80,21 @@
                        },
 "member"             : { "realm"  : "community"
                        },
-"author"             : { "realm"  : "user"
+
+"portfolio_owner"    : { "realm"  : "user",
+                         "user"   : {
+                                      "view_portfolio" : "1"
+                                    }
                        },
-"co_author"          : { "realm"  : "user"
+"author"             : { "realm"  : "user",
+                         "user"   : {
+                                      "view_portfolio" : "1"
+                                    }
+                       },
+"co_author"          : { "realm"  : "user",
+                         "user"   : {
+                                      "view_portfolio" : "1"
+                                    }
                        },
 "guest"		     : { "realm"  : "user"
                        }

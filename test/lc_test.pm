@@ -384,12 +384,20 @@ return OK;
        '1299-01-08 04:05:06','1929-01-08 04:05:06', # duration
        'qhhhf21wqffas','msu');
 
+   &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
+       'user', # system, domain, course, user
+       $entity,'msu',undef, # what's the realm?
+       'portfolio_owner', # what role is this?
+       '1299-01-08 04:05:06','2329-01-08 04:05:06', # duration
+       'qhhhf21wqffas','msu');
+
+
    &Apache::lc_entity_profile::modify_profile($entity,'msu',{ lastname => "Beeblebrox" });
 
    $r->print(Dumper(&Apache::lc_entity_roles::dump_roles($entity,'msu')));
    $r->print(Dumper(&Apache::lc_entity_profile::dump_profile($entity,'msu')));
 
-
+return OK;
 
    my $wrk_url='/wrk/msu/'.$entity.'/rqdqweq/fqweqc.html';
 
