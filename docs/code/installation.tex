@@ -1,0 +1,19 @@
+\chapter{Installation}\index{installation}
+This is the description of the installation for {\it code developers}, it is not yet how the system will be installed eventually in production.
+\section{Linux}
+LON-CAPA runs on Linux. Since the target eventually is a server, enterprise editions of Linux are recommended, and in particular CentOS. For CentOS, a ``minimal desktop'' installation is recommended.
+
+For developers, a virtual machine is good enough: something like two cores, four GB RAM, and 40 GB disk will do fine.
+\section{Downloading}
+\begin{enumerate}
+\item get a username at Github, notify Gerd Kortemeyer (for now) to be listed as collaborator
+\item after that, get https://github.com/gerdkortemeyer/loncapa
+\end{enumerate}
+\section{Install LON-CAPA}
+\begin{itemize}
+\item in subdirectory {\tt install}, use {\tt install\_packages.sh} (do this on a fast connection, there are a ton of libraries, etc)
+\item in subdirectory {\tt testcerts}, use {\tt install\_test\_certs.sh}
+\item back in {\tt install}, use {\tt install.sh}
+\item see if the whole thing starts. Then call http://localhost/test - that should make an initial user ``zaphod'' with password ``zaphodB'' (for now)
+\end{itemize}
+

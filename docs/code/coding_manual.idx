@@ -8,66 +8,67 @@
 \indexentry{Linux}{7}
 \indexentry{open source}{7}
 \indexentry{scalability}{7}
-\indexentry{lc.conf}{9}
-\indexentry{assets}{9}
-\indexentry{replication}{10}
-\indexentry{versions}{10}
-\indexentry{XML parser}{10}
-\indexentry{library server}{11}
-\indexentry{access server}{11}
-\indexentry{cluster table}{11}
-\indexentry{homeserver}{13}
-\indexentry{cluster manager}{13}
-\indexentry{certificates}{13}
-\indexentry{replication}{15}
-\indexentry{entities}{17}
-\indexentry{users}{17}
-\indexentry{usernames}{17}
-\indexentry{PIDs}{17}
-\indexentry{courses}{17}
-\indexentry{communities}{17}
-\indexentry{sections}{17}
-\indexentry{groups}{17}
-\indexentry{assets}{18}
-\indexentry{portfolio}{18}
-\indexentry{versions}{18}
-\indexentry{profiles}{18}
-\indexentry{metadata}{18}
-\indexentry{MongoDB}{18}
-\indexentry{homeserver}{18}
-\indexentry{publication}{18}
-\indexentry{versions}{18}
-\indexentry{publication}{18}
-\indexentry{roles}{19}
-\indexentry{realms}{19}
-\indexentry{PostgreSQL}{23}
-\indexentry{MongoDB}{23}
-\indexentry{homeserver}{23}
-\indexentry{users}{23}
-\indexentry{courses}{23}
-\indexentry{usernames}{23}
-\indexentry{PIDs}{23}
-\indexentry{course IDs}{24}
-\indexentry{homeserver}{24}
-\indexentry{roles}{24}
-\indexentry{assessments}{25}
-\indexentry{memcached}{25}
-\indexentry{caching}{25}
+\indexentry{installation}{9}
+\indexentry{lc.conf}{11}
+\indexentry{assets}{11}
+\indexentry{replication}{12}
+\indexentry{versions}{12}
+\indexentry{XML parser}{12}
+\indexentry{library server}{13}
+\indexentry{access server}{13}
+\indexentry{cluster table}{13}
+\indexentry{homeserver}{15}
+\indexentry{cluster manager}{15}
+\indexentry{certificates}{15}
+\indexentry{replication}{17}
+\indexentry{entities}{19}
+\indexentry{users}{19}
+\indexentry{usernames}{19}
+\indexentry{PIDs}{19}
+\indexentry{courses}{19}
+\indexentry{communities}{19}
+\indexentry{sections}{19}
+\indexentry{groups}{19}
+\indexentry{assets}{20}
+\indexentry{portfolio}{20}
+\indexentry{versions}{20}
+\indexentry{profiles}{20}
+\indexentry{metadata}{20}
+\indexentry{MongoDB}{20}
+\indexentry{homeserver}{20}
+\indexentry{publication}{20}
+\indexentry{versions}{20}
+\indexentry{publication}{20}
+\indexentry{roles}{21}
+\indexentry{realms}{21}
+\indexentry{PostgreSQL}{25}
+\indexentry{MongoDB}{25}
 \indexentry{homeserver}{25}
-\indexentry{replication}{25}
-\indexentry{versions}{25}
-\indexentry{assets}{25}
-\indexentry{XML}{27}
-\indexentry{XML parser}{29}
-\indexentry{problems}{29}
-\indexentry{HTML pages}{29}
-\indexentry{safeeval}{30}
-\indexentry{internationalization}{31}
-\indexentry{encoding}{31}
-\indexentry{unicode}{31}
-\indexentry{utf-8}{31}
-\indexentry{roles}{32}
-\indexentry{math}{35}
-\indexentry{equation editor}{35}
-\indexentry{equation parser}{36}
-\indexentry{equation syntax}{37}
+\indexentry{users}{25}
+\indexentry{courses}{25}
+\indexentry{usernames}{25}
+\indexentry{PIDs}{25}
+\indexentry{course IDs}{26}
+\indexentry{homeserver}{26}
+\indexentry{roles}{26}
+\indexentry{assessments}{27}
+\indexentry{memcached}{27}
+\indexentry{caching}{27}
+\indexentry{homeserver}{27}
+\indexentry{replication}{27}
+\indexentry{versions}{27}
+\indexentry{assets}{27}
+\indexentry{XML}{29}
+\indexentry{XML parser}{31}
+\indexentry{problems}{31}
+\indexentry{HTML pages}{31}
+\indexentry{safeeval}{32}
+\indexentry{internationalization}{33}
+\indexentry{encoding}{33}
+\indexentry{unicode}{33}
+\indexentry{utf-8}{33}
+\indexentry{roles}{34}
+\indexentry{math}{37}
+\indexentry{equation editor}{37}
+\indexentry{equation parser}{38}
+\indexentry{equation syntax}{39}
