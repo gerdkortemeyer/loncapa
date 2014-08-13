@@ -102,13 +102,23 @@ sub portfoliomanager {
        my $sort_first_date=0;
        my $display_last_date=&mt('Never');
        my $sort_last_date=0;
-       if ($file->{'metadata'}->{'current_version'}) {
-          $version=$file->{'metadata'}->{'current_version'};
-          ($display_first_date,$sort_first_date)=&Apache::lc_ui_localize::locallocaltime(
+       if ($file->{'type'} eq 'file') {
+# It's a file, use actual dates and versions if existing
+          if ($file->{'metadata'}->{'current_version'}) {
+             $version=$file->{'metadata'}->{'current_version'};
+             ($display_first_date,$sort_first_date)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{1}));
-          ($display_last_date,$sort_last_date)=&Apache::lc_ui_localize::locallocaltime(
+             ($display_last_date,$sort_last_date)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{$version}));
+          }
+       } else {
+# It's a directory, there are no "global" dates
+          $display_first_date='';
+          $display_last_date='';
+          $sort_first_date=-1;
+          $sort_last_date=-1;
        }
+# Produce the output line
        $output.="\n".'<tr><td>&nbsp;</td><td>'.&Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}).'</td><td>'.$file->{'filename'}.
                      '</td><td>Title</td><td>State</td><td>'.$version.'</td><td>'.
                   ($sort_first_date?'<time datetime="'.$sort_first_date.'">':'').

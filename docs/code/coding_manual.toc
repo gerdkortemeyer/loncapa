@@ -77,7 +77,9 @@
 \contentsline {subsubsection}{Assessment table}{27}
 \contentsline {section}{\numberline {8.2}Caching}{27}
 \contentsline {section}{\numberline {8.3}File system}{27}
-\contentsline {section}{\numberline {8.4}Programmatic access}{27}
+\contentsline {subsection}{\numberline {8.3.1}Assets}{27}
+\contentsline {subsection}{\numberline {8.3.2}Tables of Content}{27}
+\contentsline {section}{\numberline {8.4}Programmatic access}{28}
 \contentsline {chapter}{\numberline {9}XML}{29}
 \contentsline {section}{\numberline {9.1}Structure of Documents}{29}
 \contentsline {subsection}{\numberline {9.1.1}Classic LON-CAPA Content}{29}

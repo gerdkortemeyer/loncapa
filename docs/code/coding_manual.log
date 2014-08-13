@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2014.5.27)  12 AUG 2014 14:31
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2014.5.27)  13 AUG 2014 13:11
 entering extended mode
  %&-line parsing enabled.
 **coding_manual
@@ -463,16 +463,29 @@ Chapter 8.
 
 
 
-] [26]) [27]
+] [26]
+Overfull \hbox (21.08548pt too wide) in paragraph at lines 140--141
+\T1/cmr/m/n/10 Tables of con-tent of courses are stored as as-sets in JSON for-
+mat.[] The URL of the ta-ble of con-tents is al-ways \T1/cmr/m/it/10 do-main\T1
+/cmtt/m/n/10 /\T1/cmr/m/it/10 courseid\T1/cmtt/m/n/10 /toc.json
+ []
+
+[27]
+Overfull \hbox (27.58339pt too wide) in paragraph at lines 185--186
+\T1/cmr/m/n/10 Folder con-tent is stored (in or-der) in ar-rays. Each re-source
+ in a course has a unique ID, e.g., ``Jthi8TegI0GZ9Dr812N_2478_1406980671'',
+ []
+
+) [28]
 \openout2 = `xml.aux'.
 
- (./xml.tex [28
-
-
-
-]
+ (./xml.tex
 Chapter 9.
-[29]) [30]
+[29
+
+
+
+]) [30]
 \openout2 = `xmlparser.aux'.
 
  (./xmlparser.tex
@@ -537,9 +550,9 @@ ww/.texlive2007/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/ww
 w/.texlive2007/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1728.600pk></usr/share
 /texmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky/
 cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb>
-Output written on coding_manual.pdf (46 pages, 704281 bytes).
+Output written on coding_manual.pdf (46 pages, 705935 bytes).
 PDF statistics:
- 972 PDF objects out of 1000 (max. 8388607)
+ 973 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 131072)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
