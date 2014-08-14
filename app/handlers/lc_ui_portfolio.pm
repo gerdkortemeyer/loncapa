@@ -101,11 +101,11 @@ sub handler {
    my $r = shift;
    $r->content_type('application/json; charset=utf-8');
    my %content=&Apache::lc_entity_sessions::posted_content();
-#   if ($content{'command'} eq 'listdirectory') {
+   if ($content{'command'} eq 'listdirectory') {
 # Do a directory listing
 #FIXME: debug
       $r->print('{
-  "data": [
+  "aaData": [
     [
       "Test 1",
       "Test 2",
@@ -120,9 +120,9 @@ sub handler {
     ]
    ]
 }');
-#   } elsif ($content{'command'} eq 'listpath') {
+   } elsif ($content{'command'} eq 'listpath') {
 # List the path
-#   }
+   }
    return OK;
 }
 1;

@@ -9,11 +9,7 @@ $(document).ready(function() {
     } );
 
     $('#portfoliolist').dataTable( {
-      "ajax": {
-         "url" : '/portfolio',
-         "type": 'POST',
-         "data": { 'command' : 'listdirectory' }
-      },
+      "sAjaxSource" : '/portfolio?command=listdirectory',
       "bStateSave": true,
       "oLanguage" : {
          "sUrl" : "/datatable_i14n"
