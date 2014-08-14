@@ -58,76 +58,11 @@ sub start_lcdatatable_html {
 
 sub portfoliomanager {
    my ($p,$safe,$stack,$token)=@_;
-# Cascading determination of path to display
-   my $pathfield=$token->[2]->{'pathfield'};
-   my $path;
-   if ($pathfield) {
-# A pathfield was passed. First see if we have a fresh one
-      my %content=&Apache::lc_entity_sessions::posted_content();
-      $path=$content{$pathfield};
-# No fresh one, get stale one from before
-      unless ($path) {
-         $path=&Apache::lc_xml_forms::get_screendefaults($pathfield);
-      }
-   }
-   unless ($path) {
-# Still no path? Go to the user's home directory
-      my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
-      $path=$domain.'/'.$entity.'/';
-   }
-# We want a trailing slash
-   unless ($path=~/\/$/) { $path.='/'; }
-# But no leading ones
-   $path=~s/^\/+//;
-# There's no way up here!
-   $path=~s/\.\.//gs;
 # Header
-   my ($udomain,$uentity)=($path=~/([^\/]+)\/([^\/]+)\//);
-   my $dir_list=&Apache::lc_entity_urls::full_dir_list($path);
-   my $output.='<thead><tr><th>&nbsp;</th><th>'.&mt('Type').'</th><th>'.&mt('Name').'</th><th>'.
+   return '<thead><tr><th>&nbsp;</th><th>'.&mt('Type').'</th><th>'.&mt('Name').'</th><th>'.
                &mt('Title').'</th><th>'.&mt('Publication State').'</th><th>'.&mt('Version').'</th><th>'.
                &mt('First Published').'</th><th>&nbsp;</th><th>'.
-               &mt('Last Published').'</th><th>&nbsp;</th></tr></thead><tbody>';
-# Now see if we are allowed to look at this
-   my ($udomain,$uentity)=($path=~/([^\/]+)\/([^\/]+)\//);
-   unless (&allowed_user('view_portfolio',undef,$uentity,$udomain)) {
-      $output.='</tbody>';
-      return $output;
-   }
-# Yes, we are allowed, do the listing
-   my $dir_list=&Apache::lc_entity_urls::full_dir_list($path);
-   foreach my $file (@{$dir_list}) {
-       my $version='-';
-       my $display_first_date=&mt('Never');
-       my $sort_first_date=0;
-       my $display_last_date=&mt('Never');
-       my $sort_last_date=0;
-       if ($file->{'type'} eq 'file') {
-# It's a file, use actual dates and versions if existing
-          if ($file->{'metadata'}->{'current_version'}) {
-             $version=$file->{'metadata'}->{'current_version'};
-             ($display_first_date,$sort_first_date)=&Apache::lc_ui_localize::locallocaltime(
-                                           &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{1}));
-             ($display_last_date,$sort_last_date)=&Apache::lc_ui_localize::locallocaltime(
-                                           &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{$version}));
-          }
-       } else {
-# It's a directory, there are no "global" dates
-          $display_first_date='';
-          $display_last_date='';
-          $sort_first_date=-1;
-          $sort_last_date=-1;
-       }
-# Produce the output line
-       $output.="\n".'<tr><td>&nbsp;</td><td>'.&Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}).'</td><td>'.$file->{'filename'}.
-                     '</td><td>Title</td><td>State</td><td>'.$version.'</td><td>'.
-                  ($sort_first_date?'<time datetime="'.$sort_first_date.'">':'').
-                  $display_first_date.($sort_first_date?'</time>':'').'</td><td>'.$sort_first_date.'</td><td>'.
-                  ($sort_last_date?'<time datetime="'.$sort_last_date.'">':'').
-                  $display_last_date.($sort_last_date?'</time>':'').'</td><td>'.$sort_last_date.'</td></tr>';
-   }
-   $output.='</tbody>';
-   return $output;
+               &mt('Last Published').'</th><th>&nbsp;</th></tr></thead>';
 }
 
 
