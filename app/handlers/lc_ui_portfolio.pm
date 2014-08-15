@@ -53,14 +53,18 @@ sub determine_path {
 
 sub listdirectory {
 # See if we are allowed to look at this
-   my $path;
+#FIXME: debug
+   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+   my $path=$domain.'/'.$entity.'/';
+#
    my ($udomain,$uentity)=($path=~/([^\/]+)\/([^\/]+)\//);
    unless (&allowed_user('view_portfolio',undef,$uentity,$udomain)) {
 # Nope, good bye
-      return '{ "data": [] }';
+      return '{ "aaData": [] }';
    }
 # Okay, we are allowed
    my $output;
+   $output->{'aaData'}=[];
    my $dir_list=&Apache::lc_entity_urls::full_dir_list($path);
    foreach my $file (@{$dir_list}) {
        my $version='-';
@@ -85,15 +89,21 @@ sub listdirectory {
           $sort_last_date=-1;
        }
 # Add the output line
-       $output.="\n".'<tr><td>&nbsp;</td><td>'.&Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}).'</td><td>'.$file->{'filename'}.
-                     '</td><td>Title</td><td>State</td><td>'.$version.'</td><td>'.
-                  ($sort_first_date?'<time datetime="'.$sort_first_date.'">':'').
-                  $display_first_date.($sort_first_date?'</time>':'').'</td><td>'.$sort_first_date.'</td><td>'.
-                  ($sort_last_date?'<time datetime="'.$sort_last_date.'">':'').
-                  $display_last_date.($sort_last_date?'</time>':'').'</td><td>'.$sort_last_date.'</td></tr>';
+       push(@{$output->{'aaData'}},
+            ['&nbsp;',
+             &Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}),
+             $file->{'filename'},
+             'Title',
+             'State',
+             $version,
+             ($sort_first_date?'<time datetime="'.$sort_first_date.'">':'').$display_first_date.($sort_first_date?'</time>':''),
+             $sort_first_date,
+             ($sort_last_date?'<time datetime="'.$sort_last_date.'">':'').$display_last_date.($sort_last_date?'</time>':''),
+             $sort_last_date
+            ]
+           );
    }
-   $output.='</tbody>';
-
+   return &Apache::lc_json_utils::perl_to_json($output);
 }
 
 
@@ -103,23 +113,7 @@ sub handler {
    my %content=&Apache::lc_entity_sessions::posted_content();
    if ($content{'command'} eq 'listdirectory') {
 # Do a directory listing
-#FIXME: debug
-      $r->print('{
-  "aaData": [
-    [
-      "Test 1",
-      "Test 2",
-      "Test 3",
-      "Test 4",
-      "Test 5",
-      "Stuff",
-      "42",
-      "17",
-      "Fortytwo",
-      "Seventeen"
-    ]
-   ]
-}');
+      $r->print(&listdirectory());
    } elsif ($content{'command'} eq 'listpath') {
 # List the path
    }
