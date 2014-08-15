@@ -32,31 +32,27 @@ use Apache::lc_authorize;
 use Apache::lc_xml_forms();
 
 sub determine_path {
-   my $path;
-   my $pathfield;
-   if ($pathfield) {
-      my %content=&Apache::lc_entity_sessions::posted_content();
-      $path=$content{$pathfield};
-      unless ($path) {
-         $path=&Apache::lc_xml_forms::get_screendefaults($pathfield);
-      }
+   my ($path)=@_;
+   unless ($path) {
+# If we don't have a path, look in the defaults
+      $path=&Apache::lc_xml_forms::get_screendefaults('path');
    }
    unless ($path) {
+# If we still don't have a path, use the user's home directory
       my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
       $path=$domain.'/'.$entity.'/';
    }
+# Path should end with a slash
    unless ($path=~/\/$/) { $path.='/'; }
+# ... but not start with one
    $path=~s/^\/+//;
+# No cheating by going up
    $path=~s/\.\.//gs;
-
+   return $path;
 }
 
 sub listdirectory {
-# See if we are allowed to look at this
-#FIXME: debug
-   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
-   my $path=$domain.'/'.$entity.'/';
-#
+   my ($path)=@_;
    my ($udomain,$uentity)=($path=~/([^\/]+)\/([^\/]+)\//);
    unless (&allowed_user('view_portfolio',undef,$uentity,$udomain)) {
 # Nope, good bye
@@ -106,16 +102,22 @@ sub listdirectory {
    return &Apache::lc_json_utils::perl_to_json($output);
 }
 
+sub listpath {
+   my ($path)=@_;
+   return '{}';
+}
 
 sub handler {
    my $r = shift;
    $r->content_type('application/json; charset=utf-8');
    my %content=&Apache::lc_entity_sessions::posted_content();
+   my $path=&determine_path($content{'path'});
    if ($content{'command'} eq 'listdirectory') {
 # Do a directory listing
-      $r->print(&listdirectory());
+      $r->print(&listdirectory($path));
    } elsif ($content{'command'} eq 'listpath') {
 # List the path
+      $r->print(&listpath($path));
    }
    return OK;
 }
