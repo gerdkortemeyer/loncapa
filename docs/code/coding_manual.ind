@@ -10,9 +10,11 @@
   \indexspace
 
   \item caching, 27
-  \item certificates, 15
+  \item CentOS, 9
+  \item certificate authority, 9
+  \item certificates, 9, 15
   \item cluster manager, 15
-  \item cluster table, 13
+  \item cluster table, 9, 13
   \item communities, 19
   \item course IDs, 26
   \item courses, 19, 25
@@ -27,6 +29,7 @@
 
   \indexspace
 
+  \item Github, 9
   \item groups, 19
 
   \indexspace
@@ -47,7 +50,8 @@
 
   \item lc.conf, 11
   \item library server, 13
-  \item Linux, 7
+  \item Linux, 7, 9
+  \item log files, 10
 
   \indexspace
 

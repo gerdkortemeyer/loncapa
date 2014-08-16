@@ -1,19 +1,30 @@
 \chapter{Installation}\index{installation}
 This is the description of the installation for {\it code developers}, it is not yet how the system will be installed eventually in production.
-\section{Linux}
+\section{Linux}\index{Linux}\index{CentOS}
 LON-CAPA runs on Linux. Since the target eventually is a server, enterprise editions of Linux are recommended, and in particular CentOS. For CentOS, a ``minimal desktop'' installation is recommended.
 
 For developers, a virtual machine is good enough: something like two cores, four GB RAM, and 40 GB disk will do fine.
+\section{Certificate IP/DNS considerations}\index{certificates}
+LON-CAPA is a networked system, and all inter-server communication is secured via certificates. It is important that the machine has a stable IP address and DNS. This works fine for simple virtual machines, where this address is {\tt localhost:localdomain}, and the download includes test certificates for this basic configuration.
+
+When using a real server setup building an actual cluster or using a real server, a customized certificate from the LON-CAPA certificate authority\index{certificate authority} is required. Gerd Kortemeyer (for now) can make those certificates, corresponding to {\tt LONCAPA.crt}.
 \section{Downloading}
 \begin{enumerate}
-\item get a username at Github, notify Gerd Kortemeyer (for now) to be listed as collaborator
-\item after that, get https://github.com/gerdkortemeyer/loncapa
+\item get a username at Github, notify Gerd Kortemeyer (for now) to be listed as collaborator\index{Github}
+\item after that, get {\tt https://github.com/gerdkortemeyer/loncapa}
 \end{enumerate}
 \section{Install LON-CAPA}
 \begin{itemize}
 \item in subdirectory {\tt install}, use {\tt install\_packages.sh} (do this on a fast connection, there are a ton of libraries, etc)
 \item in subdirectory {\tt testcerts}, use {\tt install\_test\_certs.sh}
+\item if not {\tt localhost:localdomain}, now copy customized server certificates into {\tt /home/loncapa/certs} --- please do not overwrite the sandbox certificates in the repository
+\item if not {\tt localhost:localdomain}, the cluster table (see Section~\ref{clustertable} on page~\pageref{clustertable}) and (possibly) the server name in the Apache configuration {\tt httpd.conf} need adjusting\index{cluster table} --- please do not overwrite the sandbox configurations in the repository
 \item back in {\tt install}, use {\tt install.sh}
-\item see if the whole thing starts. Then call http://localhost/test - that should make an initial user ``zaphod'' with password ``zaphodB'' (for now)
+\item see if the whole thing starts. Then call {\tt http://localhost/test} - that should make an initial user ``zaphod'' with password ``zaphodB'' (for now)
 \end{itemize}
-
+\section{If things don't work}
+If things don't work, the following log-files might be helpful:\index{log files}
+\begin{itemize}
+\item Apache server error logs {\tt /etc/httpd/logs/error\_log} and {\tt /etc/httpd/logs/ssl\_error\_log} (or equivalent in distributions other than CentOS)
+\item LON-CAPA log files {\tt /home/loncapa/logs/errors.log} and {\tt /home/loncapa/logs/warnings.log}
+\end{itemize}

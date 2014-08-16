@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2014.5.27)  13 AUG 2014 13:11
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2014.5.27)  16 AUG 2014 08:37
 entering extended mode
  %&-line parsing enabled.
 **coding_manual
@@ -409,16 +409,16 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 
 ]
 Chapter 3.
-) [9]
+[9]) [10]
 \openout2 = `urltranslation.aux'.
 
- (./urltranslation.tex [10
-
-
-
-]
+ (./urltranslation.tex
 Chapter 4.
-[11]) [12]
+[11
+
+
+
+]) [12]
 \openout2 = `network.aux'.
 
  (./network.tex
@@ -530,10 +530,10 @@ Chapter 13.
 (./xmlparser.aux) (./internationalization.aux) (./math.aux) (./glossary.aux)) )
  
 Here is how much of TeX's memory you used:
- 1523 strings out of 256216
- 17751 string characters out of 1917072
- 81556 words of memory out of 1500000
- 4722 multiletter control sequences out of 10000+200000
+ 1524 strings out of 256216
+ 17765 string characters out of 1917072
+ 81569 words of memory out of 1500000
+ 4723 multiletter control sequences out of 10000+200000
  16680 words of font info for 37 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
  25i,6n,21p,611b,337s stack positions out of 5000i,500n,6000p,200000b,15000s
@@ -550,9 +550,9 @@ ww/.texlive2007/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/ww
 w/.texlive2007/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1728.600pk></usr/share
 /texmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky/
 cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb>
-Output written on coding_manual.pdf (46 pages, 705935 bytes).
+Output written on coding_manual.pdf (46 pages, 707988 bytes).
 PDF statistics:
- 973 PDF objects out of 1000 (max. 8388607)
+ 975 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 131072)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
