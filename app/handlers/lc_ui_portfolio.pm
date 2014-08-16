@@ -104,7 +104,10 @@ sub listdirectory {
 
 sub listpath {
    my ($path)=@_;
-   return '{}';
+   $path=~s/^\/+//;
+   $path=~s/\/+$//;
+   my @splitpath=split(/\//,$path);
+   return &Apache::lc_json_utils::perl_to_json({'path' => \@splitpath}); 
 }
 
 sub handler {
