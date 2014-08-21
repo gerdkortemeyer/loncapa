@@ -37,7 +37,7 @@
     <xs:annotation>
       <xs:documentation>Collection of Answers</xs:documentation>
     </xs:annotation>
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="answer" type="caparesponse--answer"/>
     </xs:choice>
     <xs:attribute default="ordered" name="type">
@@ -97,7 +97,7 @@
     <xs:annotation>
       <xs:documentation>Collection of similar foils</xs:documentation>
     </xs:annotation>
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="imageresponse--foil"/>
     </xs:choice>
     <xs:attribute name="concept" type="xs:string" use="required"/>
@@ -118,7 +118,7 @@
     <xs:annotation>
       <xs:documentation>Collection of Imageresponse foils</xs:documentation>
     </xs:annotation>
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="conceptgroup" type="imageresponse--conceptgroup"/>
       <xs:element name="foil" type="imageresponse--foil"/>
     </xs:choice>
@@ -169,8 +169,6 @@
       <xs:element ref="randomlist"/>
       <xs:element ref="script"/>
       <xs:element ref="scriptlib"/>
-      <xs:element ref="startouttext"/>
-      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
@@ -195,7 +193,7 @@
     <xs:annotation>
       <xs:documentation>Collection of similar foils</xs:documentation>
     </xs:annotation>
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="optionresponse--foil"/>
     </xs:choice>
     <xs:attribute name="concept" type="xs:string" use="required"/>
@@ -222,8 +220,6 @@
       <xs:element ref="randomlist"/>
       <xs:element ref="script"/>
       <xs:element ref="scriptlib"/>
-      <xs:element ref="startouttext"/>
-      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
@@ -252,7 +248,7 @@
     <xs:annotation>
       <xs:documentation>Collection of Foils</xs:documentation>
     </xs:annotation>
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="conceptgroup" type="optionresponse--conceptgroup"/>
       <xs:element name="foil" type="optionresponse--foil"/>
     </xs:choice>
@@ -304,7 +300,7 @@
     <xs:annotation>
       <xs:documentation>Collection of similar foils</xs:documentation>
     </xs:annotation>
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="radiobuttonresponse--foil"/>
     </xs:choice>
     <xs:attribute name="concept" type="xs:string" use="required"/>
@@ -326,8 +322,6 @@
       <xs:element ref="randomlist"/>
       <xs:element ref="script"/>
       <xs:element ref="scriptlib"/>
-      <xs:element ref="startouttext"/>
-      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
@@ -366,7 +360,7 @@
     <xs:annotation>
       <xs:documentation>Collection of Foils</xs:documentation>
     </xs:annotation>
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="conceptgroup" type="radiobuttonresponse--conceptgroup"/>
       <xs:element name="foil" type="radiobuttonresponse--foil"/>
     </xs:choice>
@@ -375,7 +369,7 @@
     <xs:annotation>
       <xs:documentation>Collection of similar foils</xs:documentation>
     </xs:annotation>
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="rankresponse--foil"/>
     </xs:choice>
     <xs:attribute name="concept" type="xs:string" use="required"/>
@@ -397,8 +391,6 @@
       <xs:element ref="randomlist"/>
       <xs:element ref="script"/>
       <xs:element ref="scriptlib"/>
-      <xs:element ref="startouttext"/>
-      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
@@ -426,7 +418,7 @@
     <xs:annotation>
       <xs:documentation>Collection of Foils</xs:documentation>
     </xs:annotation>
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="conceptgroup" type="rankresponse--conceptgroup"/>
       <xs:element name="foil" type="rankresponse--foil"/>
     </xs:choice>
@@ -435,7 +427,7 @@
     <xs:annotation>
       <xs:documentation>Collection of similar foils</xs:documentation>
     </xs:annotation>
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="matchresponse--foil"/>
     </xs:choice>
     <xs:attribute name="concept" type="xs:string" use="required"/>
@@ -457,8 +449,6 @@
       <xs:element ref="randomlist"/>
       <xs:element ref="script"/>
       <xs:element ref="scriptlib"/>
-      <xs:element ref="startouttext"/>
-      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
@@ -486,7 +476,7 @@
     <xs:annotation>
       <xs:documentation>Collection of Foils</xs:documentation>
     </xs:annotation>
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="itemgroup" type="matchresponse--itemgroup"/>
       <xs:element name="conceptgroup" type="matchresponse--conceptgroup"/>
       <xs:element name="foil" type="matchresponse--foil"/>
@@ -509,8 +499,6 @@
       <xs:element ref="randomlist"/>
       <xs:element ref="script"/>
       <xs:element ref="scriptlib"/>
-      <xs:element ref="startouttext"/>
-      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
@@ -531,7 +519,7 @@
     <xs:annotation>
       <xs:documentation>Item to Match</xs:documentation>
     </xs:annotation>
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="item" type="matchresponse--item"/>
     </xs:choice>
     <xs:attribute default="yes" name="randomize" type="yesno">
@@ -589,7 +577,7 @@
     <xs:annotation>
       <xs:documentation>Group of Labels</xs:documentation>
     </xs:annotation>
-    <xs:choice maxOccurs="unbounded" minOccurs="0">
+    <xs:choice maxOccurs="unbounded">
       <xs:element name="label" type="randomlabel--label"/>
       <xs:element name="location" type="randomlabel--location">
         <xs:annotation>
@@ -667,8 +655,6 @@
       <xs:element ref="script"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="solved"/>
-      <xs:element ref="startouttext"/>
-      <xs:element ref="endouttext"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="while"/>
@@ -1858,8 +1844,6 @@
         <xs:element ref="radiobuttonhint"/>
         <xs:element ref="reactionhint"/>
         <xs:element ref="organichint"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="stringhint"/>
       </xs:choice>
       <xs:attribute default="no" name="showoncorrect" type="yesno">
@@ -1894,8 +1878,6 @@
         <xs:element ref="randomlist"/>
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
         <xs:element ref="while"/>
@@ -2248,8 +2230,6 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
       </xs:choice>
@@ -2814,8 +2794,6 @@
         <xs:element ref="randomlist"/>
         <xs:element ref="script"/>
         <xs:element ref="solved"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
         <xs:element ref="while"/>
@@ -2882,8 +2860,6 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
@@ -2990,8 +2966,6 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
@@ -3040,8 +3014,6 @@
         <xs:element ref="reactionresponse"/>
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
@@ -3093,8 +3065,6 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
         <xs:element ref="while"/>
@@ -3152,8 +3122,6 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="while"/>
         <xs:element ref="window"/>
@@ -3200,8 +3168,6 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
         <xs:element ref="while"/>
@@ -3256,8 +3222,6 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="startpartmarker"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
@@ -3324,8 +3288,6 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="stringresponse"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
@@ -3491,27 +3453,15 @@
         <xs:element ref="randomlist"/>
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
-  <xs:element name="startouttext">
-    <xs:annotation>
-      <xs:documentation>Text/HTML Block start</xs:documentation>
-    </xs:annotation>
-  </xs:element>
-  <xs:element name="endouttext">
-    <xs:annotation>
-      <xs:documentation>Text/HTML Block end</xs:documentation>
-    </xs:annotation>
-  </xs:element>
   <xs:element name="tex" type="xs:string">
     <xs:annotation>
-      <xs:documentation>TeX Only Block</xs:documentation>
+      <xs:documentation>Print Only Block</xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:element name="web" type="xs:string">
@@ -3546,8 +3496,6 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
         <xs:element ref="while"/>
@@ -4037,6 +3985,17 @@
         The inside text is LaTeX, and is converted to HTML (or MathML) on the fly.
       </xs:documentation>
     </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="display" type="xs:string"/>
+      <xs:attribute default="off" name="eval">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="on"/>
+            <xs:enumeration value="off"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
   </xs:element>
   <xs:element name="chem" type="xs:string">
     <xs:annotation>
@@ -4071,6 +4030,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:attribute name="style" type="xs:string"/>
+      <xs:attribute name="display" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="drawimage">
@@ -4482,6 +4442,11 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="body">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;body&gt; element represents the content of an HTML document. There is only one &lt;body&gt; element in a document.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="blockText"/>
@@ -4507,7 +4472,8 @@
   <xs:element name="h1" type="headerContent">
     <xs:annotation>
       <xs:documentation>
-        Level 1 header
+        Level 1 header (most important).
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </xs:documentation>
     </xs:annotation>
   </xs:element>
@@ -4515,6 +4481,7 @@
     <xs:annotation>
       <xs:documentation>
         Level 2 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </xs:documentation>
     </xs:annotation>
   </xs:element>
@@ -4522,6 +4489,7 @@
     <xs:annotation>
       <xs:documentation>
         Level 3 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </xs:documentation>
     </xs:annotation>
   </xs:element>
@@ -4529,6 +4497,7 @@
     <xs:annotation>
       <xs:documentation>
         Level 4 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </xs:documentation>
     </xs:annotation>
   </xs:element>
@@ -4536,6 +4505,7 @@
     <xs:annotation>
       <xs:documentation>
         Level 5 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </xs:documentation>
     </xs:annotation>
   </xs:element>
@@ -4543,19 +4513,61 @@
     <xs:annotation>
       <xs:documentation>
         Level 6 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:element name="div">
     <xs:annotation>
       <xs:documentation>
-        HTML Division
+        The HTML &lt;div&gt; element (or HTML Document Division Element) is the generic container for flow content, which does not inherently represent anything. It can be used to group elements for styling purposes (using the class or id attributes), or because they share attribute values, such as lang. It should be used only when no other semantic element (such as &lt;article&gt; or &lt;nav&gt;) is appropriate.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blockText"/>
-        <xs:group ref="inlineText"/>
+        <xs:group ref="text"/>
+        <xs:element ref="allow"/>
+        <xs:element ref="block"/>
+        <xs:element ref="customresponse"/>
+        <xs:element ref="display"/>
+        <xs:element ref="displayduedate"/>
+        <xs:element ref="displaytitle"/>
+        <xs:element ref="endpartmarker"/>
+        <xs:element ref="essayresponse"/>
+        <xs:element ref="externalresponse"/>
+        <xs:element ref="formularesponse"/>
+        <xs:element ref="gnuplot"/>
+        <xs:element ref="imageresponse"/>
+        <xs:element ref="import"/>
+        <xs:element ref="matchresponse"/>
+        <xs:element ref="mathresponse"/>
+        <xs:element ref="functionplotresponse"/>
+        <xs:element ref="meta"/>
+        <xs:element ref="notsolved"/>
+        <xs:element ref="numericalresponse"/>
+        <xs:element ref="optionresponse"/>
+        <xs:element ref="organicresponse"/>
+        <xs:element ref="organicstructure"/>
+        <xs:element ref="parameter"/>
+        <xs:element ref="parserlib"/>
+        <xs:element ref="part"/>
+        <xs:element ref="postanswerdate"/>
+        <xs:element ref="preduedate"/>
+        <xs:element ref="problemtype"/>
+        <xs:element ref="radiobuttonresponse"/>
+        <xs:element ref="randomlabel"/>
+        <xs:element ref="randomlist"/>
+        <xs:element ref="rankresponse"/>
+        <xs:element ref="reactionresponse"/>
+        <xs:element ref="script"/>
+        <xs:element ref="scriptlib"/>
+        <xs:element ref="solved"/>
+        <xs:element ref="startpartmarker"/>
+        <xs:element ref="stringresponse"/>
+        <xs:element ref="tex"/>
+        <xs:element ref="while"/>
+        <xs:element ref="window"/>
+        <xs:element ref="dataresponse"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="class" type="xs:string"/>
