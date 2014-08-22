@@ -32,9 +32,11 @@
 \contentsline {chapter}{\numberline {3}Installation}{9}
 \contentsline {section}{\numberline {3.1}Linux}{9}
 \contentsline {section}{\numberline {3.2}Certificate IP/DNS considerations}{9}
-\contentsline {section}{\numberline {3.3}Downloading}{9}
-\contentsline {section}{\numberline {3.4}Install LON-CAPA}{9}
-\contentsline {section}{\numberline {3.5}If things don't work}{10}
+\contentsline {section}{\numberline {3.3}Updating}{9}
+\contentsline {section}{\numberline {3.4}Disable SELinux}{9}
+\contentsline {section}{\numberline {3.5}Downloading}{10}
+\contentsline {section}{\numberline {3.6}Install LON-CAPA}{10}
+\contentsline {section}{\numberline {3.7}If things don't work}{10}
 \contentsline {chapter}{\numberline {4}URL Translation}{11}
 \contentsline {section}{\numberline {4.1}Accessing handlers}{11}
 \contentsline {section}{\numberline {4.2}Accessing assets}{11}

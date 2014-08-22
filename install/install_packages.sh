@@ -1,4 +1,5 @@
 adduser www
+yum install unzip
 yum install tetex tetex-fonts tetex-dvips tetex-latex ghostscript
 yum install ntp
 yum install httpd

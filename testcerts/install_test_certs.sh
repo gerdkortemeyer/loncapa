@@ -1,3 +1,6 @@
+mkdir /home/loncapa
+mkdir /home/loncapa/certs
+mkdir /home/loncapa/cluster
 cp client.key /home/loncapa/certs
 cp client.crt /home/loncapa/certs
 cp localhost.key /home/loncapa/certs/server.key
