@@ -1,0 +1,111 @@
+.lcdblock {
+  overflow: hidden;
+  border-top: 1px solid #AAA;
+  border-left: 1px solid #AAA;
+  border-bottom: 1px solid #AAA;
+  box-shadow: 0px 1px 1px #BBB;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-top-left-radius: 0.4em;
+  border-top-right-radius: 0.4em;
+  border-bottom-left-radius: 0.4em;
+}
+
+.lcdblock.invalid {
+  border-top: 1px solid #F00;
+  border-left: 1px solid #F00;
+  border-bottom: 1px solid #F00;
+  }
+
+.selected .lcdblock-header {
+  background-color: #50A0FF;
+}
+
+.lcdblock-header {
+  overflow: auto;
+  background-color: #F5F5F5;
+  padding: 2px;
+  border-top-right-radius: 0.4em;
+  box-shadow: 0px 1px 2px #AAA;
+  cursor: default;
+  font-family: sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: medium;
+  color: black;
+}
+
+.lcdblock.invalid>.lcdblock-header {
+  background-color: #FFE0B0;
+}
+
+.lcdblock-title {
+  margin-left: 4px;
+  margin-right: 3px;
+  font-style: italic;
+}
+
+.lcdblock-attributes {
+  font-size: 90%;
+}
+
+.lcdblock-content {
+    margin-top: 3px;
+}
+
+.lcd-button-box {
+  display: inline-block;
+  line-height: 20px;
+  border: 1px solid #AAA;
+  margin: 0.2em;
+  background: #FAFAFA;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: default;
+}
+
+.lcdbutton {
+  display: inline-block;
+  line-height: 18px;
+  padding: 3px;
+  cursor: default;
+}
+
+.lcdbutton-disabled {
+  opacity: 0.3;
+}
+
+.lcdbutton-selected {
+  background-color: #DDD;
+}
+
+.lcdbutton:hover {
+  background-color: #EEE;
+}
+
+.lcdbutton-disabled:hover {
+  background-color: transparent;
+}
+
+.lcdbutton-disabled:hover {
+  background-color: transparent;
+}
+
+.lcdbutton img {
+  vertical-align: middle;
+}
+
+.lcdblock .lcd-button-box {
+  float: right;
+}
+
+.tex {
+  cursor: default;
+}
+
+.hr {
+  cursor: default;
+  margin: 0px;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}

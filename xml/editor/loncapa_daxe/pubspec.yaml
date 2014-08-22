@@ -1,0 +1,7 @@
+name: loncapa_daxe
+description: LON-CAPA problem editor
+dependencies:
+  browser: any
+  js: any
+  daxe:
+    path: ../daxe

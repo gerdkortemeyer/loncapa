@@ -1,0 +1,3270 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><CONFIG_JAXE>
+  <LANGAGE>
+    <FICHIER_SCHEMA nom="loncapa.xsd"/>
+    <RACINE element="datasubmission"/>
+    <RACINE element="library"/>
+    <RACINE element="problem"/>
+    <RACINE element="Task"/>
+    <RACINE element="html"/>
+  </LANGAGE>
+  
+  <MENUS>
+    <MENU nom="Structure">
+      <MENU_INSERTION nom="problem"/>
+      <MENU_INSERTION nom="library"/>
+      <MENU_INSERTION nom="datasubmission"/>
+      <MENU_INSERTION nom="part"/>
+      <MENU_INSERTION nom="block"/>
+      <MENU_INSERTION nom="problemtype"/>
+      <MENU_INSERTION nom="startpartmarker"/>
+      <MENU_INSERTION nom="endpartmarker"/>
+      <MENU_INSERTION nom="preduedate"/>
+      <MENU_INSERTION nom="postanswerdate"/>
+      <MENU_INSERTION nom="randomlist"/>
+      <MENU_INSERTION nom="solved"/>
+      <MENU_INSERTION nom="notsolved"/>
+      <MENU_INSERTION nom="tex"/>
+      <MENU_INSERTION nom="web"/>
+      <MENU_INSERTION nom="while"/>
+      <MENU_INSERTION nom="allow"/>
+      <MENU_INSERTION nom="meta"/>
+    </MENU>
+    <MENU nom="Problems">
+      <MENU nom="Chemistry">
+        <MENU_INSERTION nom="organicresponse"/>
+        <MENU_INSERTION nom="reactionresponse"/>
+        <MENU_INSERTION nom="organicstructure"/>
+      </MENU>
+      <MENU nom="CAPA">
+        <MENU_INSERTION nom="numericalresponse"/>
+        <MENU_INSERTION nom="formularesponse"/>
+        <MENU_INSERTION nom="stringresponse"/>
+        <MENU_INSERTION nom="answergroup"/>
+        <MENU_INSERTION nom="value"/>
+        <MENU_INSERTION nom="vector"/>
+        <MENU_INSERTION nom="array"/>
+        <MENU_INSERTION nom="unit"/>
+      </MENU>
+      <MENU nom="Function plot">
+        <MENU_INSERTION nom="functionplotresponse"/>
+        <MENU_INSERTION nom="spline"/>
+        <MENU_INSERTION nom="backgroundplot"/>
+        <MENU_INSERTION nom="plotobject"/>
+        <MENU_INSERTION nom="plotvector"/>
+        <MENU_INSERTION nom="drawvectorsum"/>
+        <MENU_INSERTION nom="functionplotruleset"/>
+        <MENU_INSERTION nom="functionplotelements"/>
+        <MENU_INSERTION nom="functionplotrule"/>
+        <MENU_INSERTION nom="functionplotvectorrule"/>
+        <MENU_INSERTION nom="functionplotvectorsumrule"/>
+        <MENU_INSERTION nom="functionplotcustomrule"/>
+      </MENU>
+      <MENU nom="Gnuplot">
+        <MENU_INSERTION nom="gnuplot"/>
+        <MENU_INSERTION nom="axis"/>
+        <MENU_INSERTION nom="curve"/>
+        <MENU_INSERTION nom="key"/>
+        <MENU_INSERTION nom="xtics"/>
+        <MENU_INSERTION nom="ytics"/>
+        <MENU_INSERTION nom="tic"/>
+        <MENU_INSERTION nom="title"/>
+        <MENU_INSERTION nom="xlabel"/>
+        <MENU_INSERTION nom="ylabel"/>
+        <MENU_INSERTION nom="function"/>
+        <MENU_INSERTION nom="data"/>
+      </MENU>
+      <MENU nom="Hints">
+        <MENU_INSERTION nom="hintgroup"/>
+        <MENU_INSERTION nom="hintpart"/>
+        <MENU_INSERTION nom="formulahint"/>
+        <MENU_INSERTION nom="numericalhint"/>
+        <MENU_INSERTION nom="reactionhint"/>
+        <MENU_INSERTION nom="organichint"/>
+        <MENU_INSERTION nom="optionhint"/>
+        <MENU_INSERTION nom="radiobuttonhint"/>
+        <MENU_INSERTION nom="stringhint"/>
+        <MENU_INSERTION nom="customhint"/>
+        <MENU_INSERTION nom="mathhint"/>
+      </MENU>
+      <MENU nom="Option response">
+        <MENU_INSERTION nom="optionresponse"/>
+        <MENU_INSERTION nom="drawoptionlist"/>
+      </MENU>
+      <MENU nom="Match response">
+        <MENU_INSERTION nom="matchresponse"/>
+        <MENU_INSERTION nom="itemgroup"/>
+        <MENU_INSERTION nom="item"/>
+      </MENU>
+      <MENU nom="Image">
+        <MENU_INSERTION nom="imageresponse"/>
+        <MENU_INSERTION nom="text"/>
+        <MENU_INSERTION nom="image"/>
+        <MENU_INSERTION nom="rectangle"/>
+        <MENU_INSERTION nom="polygon"/>
+      </MENU>
+      <MENU nom="Random label">
+        <MENU_INSERTION nom="randomlabel"/>
+        <MENU_INSERTION nom="labelgroup"/>
+        <MENU_INSERTION nom="location"/>
+        <MENU_INSERTION nom="label"/>
+        <MENU_INSERTION nom="drawimage"/>
+        <MENU_INSERTION nom="bgimg"/>
+      </MENU>
+      <MENU nom="Common">
+        <MENU_INSERTION nom="answer"/>
+        <MENU_INSERTION nom="foil"/>
+        <MENU_INSERTION nom="foilgroup"/>
+        <MENU_INSERTION nom="responseparam"/>
+        <MENU_INSERTION nom="conceptgroup"/>
+        <MENU_INSERTION nom="parameter"/>
+        <MENU_INSERTION nom="hiddensubmission"/>
+        <MENU_INSERTION nom="hiddenline"/>
+      </MENU>
+      <MENU nom="Input">
+        <MENU_INSERTION nom="textfield"/>
+        <MENU_INSERTION nom="textline"/>
+      </MENU>
+      <MENU nom="Output">
+        <MENU_INSERTION nom="displayduedate"/>
+        <MENU_INSERTION nom="displaytitle"/>
+      </MENU>
+      <MENU nom="Other responses">
+        <MENU_INSERTION nom="customresponse"/>
+        <MENU_INSERTION nom="essayresponse"/>
+        <MENU_INSERTION nom="externalresponse"/>
+        <MENU_INSERTION nom="mathresponse"/>
+        <MENU_INSERTION nom="radiobuttonresponse"/>
+        <MENU_INSERTION nom="rankresponse"/>
+        <MENU_INSERTION nom="dataresponse"/>
+      </MENU>
+    </MENU>
+    <MENU nom="Scripts">
+      <MENU_INSERTION nom="script"/>
+      <MENU_INSERTION nom="scriptlib"/>
+      <MENU_INSERTION nom="parserlib"/>
+      <MENU_INSERTION nom="import"/>
+      <MENU_INSERTION nom="window"/>
+      <MENU_INSERTION nom="display"/>
+    </MENU>
+    <MENU nom="Text">
+      <MENU_INSERTION nom="img"/>
+      <MENU_INSERTION nom="languageblock"/>
+      <MENU_INSERTION nom="translated"/>
+      <MENU_INSERTION nom="lang"/>
+      <MENU_INSERTION nom="instructorcomment"/>
+      <MENU_INSERTION nom="windowlink"/>
+      <MENU_INSERTION nom="togglebox"/>
+      <MENU_INSERTION nom="standalone"/>
+      <MENU_INSERTION nom="comment"/>
+      <MENU_INSERTION nom="m"/>
+      <MENU_INSERTION nom="num"/>
+      <MENU_INSERTION nom="parse"/>
+      <MENU_INSERTION nom="algebra"/>
+      <MENU_INSERTION nom="displayweight"/>
+      <MENU_INSERTION nom="displaystudentphoto"/>
+    </MENU>
+    <MENU nom="HTML">
+      <MENU_INSERTION nom="section"/>
+      <MENU_INSERTION nom="div"/>
+      <MENU_INSERTION nom="a"/>
+      <MENU_INSERTION nom="strong"/>
+      <MENU_INSERTION nom="em"/>
+      <MENU_INSERTION nom="hr"/>
+      <MENU_INSERTION nom="dl"/>
+      <MENU_INSERTION nom="dt"/>
+      <MENU_INSERTION nom="dd"/>
+      <MENU_INSERTION nom="pre"/>
+      <MENU_INSERTION nom="code"/>
+      <MENU_INSERTION nom="object"/>
+      <MENU_INSERTION nom="video"/>
+      <MENU_INSERTION nom="source"/>
+      <MENU_INSERTION nom="audio"/>
+      <MENU_INSERTION nom="map"/>
+      <MENU_INSERTION nom="area"/>
+    </MENU>
+  </MENUS>
+  
+  <AFFICHAGE_NOEUDS>
+    <AFFICHAGE_ELEMENT element="answer" type="lcdblock"><PARAMETRE nom="police" valeur="Monospaced"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="vector" type="typesimple"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="value" type="typesimple"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="foil" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="image" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="polygon" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="rectangle" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="text" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="conceptgroup" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="drawoptionlist" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="itemgroup" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="item" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="label" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="location" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="data" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="function" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="parameter" type="vide">
+      <PARAMETRE nom="attributsVisibles" valeur="true"/>
+      <AFFICHAGE_ATTRIBUT attribut="type">
+        <VALEUR_SUGGEREE>tolerance</VALEUR_SUGGEREE>
+        <VALEUR_SUGGEREE>int</VALEUR_SUGGEREE>
+        <VALEUR_SUGGEREE>float</VALEUR_SUGGEREE>
+        <VALEUR_SUGGEREE>string</VALEUR_SUGGEREE>
+        <VALEUR_SUGGEREE>date</VALEUR_SUGGEREE>
+      </AFFICHAGE_ATTRIBUT>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="numericalresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="array" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="unit" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="answergroup" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="formularesponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="functionplotresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="spline" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="backgroundplot" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="plotobject" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="plotvector" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="drawvectorsum" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="functionplotruleset" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="functionplotelements" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="functionplotrule" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="functionplotvectorrule" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="functionplotvectorsumrule" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="functionplotcustomrule" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="stringresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="essayresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="externalresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="hintgroup" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="hintpart" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="formulahint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="numericalhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="reactionhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="organichint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="optionhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="radiobuttonhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="stringhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="customhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="mathhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="imageresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="foilgroup" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="datasubmission" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="customresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="mathresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="textfield" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="textline" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="hiddensubmission" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="hiddenline" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="optionresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="displayduedate" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="displaytitle" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="radiobuttonresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="rankresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="matchresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="organicresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="reactionresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="organicstructure" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="responseparam" type="lcdblock">
+      <AFFICHAGE_ATTRIBUT attribut="type">
+        <VALEUR_SUGGEREE>tolerance</VALEUR_SUGGEREE>
+        <VALEUR_SUGGEREE>int</VALEUR_SUGGEREE>
+        <VALEUR_SUGGEREE>float</VALEUR_SUGGEREE>
+        <VALEUR_SUGGEREE>string</VALEUR_SUGGEREE>
+        <VALEUR_SUGGEREE>date</VALEUR_SUGGEREE>
+      </AFFICHAGE_ATTRIBUT>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="display" type="string">
+      <PARAMETRE nom="attributsVisibles" valeur="true"/>
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="import" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="parserlib" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="script" type="lcdblock"><PARAMETRE nom="police" valeur="Monospaced"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="scriptlib" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="img" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="meta" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="window" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="block" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="library" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="notsolved" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="part" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="startpartmarker" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="endpartmarker" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="postanswerdate" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="preduedate" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="problem" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="allow" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="problemtype" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="randomlabel" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="bgimg" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="labelgroup" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="randomlist" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="solved" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="tex" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="web" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="while" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="gnuplot" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="axis" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="curve" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="key" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="xtics" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="ytics" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="tic" type="string"/>
+    <AFFICHAGE_ELEMENT element="title" type="typesimple"/>
+    <AFFICHAGE_ELEMENT element="xlabel" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="ylabel" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="languageblock" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="translated" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="lang" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="instructorcomment" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="dataresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="windowlink" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="togglebox" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="standalone" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="comment" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="m" type="texmathjax"/>
+    <AFFICHAGE_ELEMENT element="num" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="parse" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="algebra" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="drawimage" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="displayweight" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="displaystudentphoto" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    
+    <AFFICHAGE_ELEMENT element="html" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="head" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="body" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="title" type="lcdblock"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="base" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="link" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="style" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="noscript" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="section" type="lcdblock"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="h1" type="string"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="h2" type="string"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="h3" type="string"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="h4" type="string"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="h5" type="string"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="h6" type="string"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="div" type="hiddendiv"/>
+    <AFFICHAGE_ELEMENT element="p" type="hiddenp"/>
+    <AFFICHAGE_ELEMENT element="ul" type="wlist">
+      <PARAMETRE nom="type" valeur="ul"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="li" type="witem"/>
+    <AFFICHAGE_ELEMENT element="ol" type="wlist">
+      <PARAMETRE nom="type" valeur="ol"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="dl" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="dt" type="string"/>
+    <AFFICHAGE_ELEMENT element="dd" type="string"/>
+    <AFFICHAGE_ELEMENT element="table" type="tabletexte">
+      <PARAMETRE nom="trTag" valeur="tr"/>
+      <PARAMETRE nom="tdTag" valeur="td"/>
+      <PARAMETRE nom="thTag" valeur="th"/>
+      <PARAMETRE nom="colspanAttr" valeur="colspan"/>
+      <PARAMETRE nom="rowspanAttr" valeur="rowspan"/>
+      <PARAMETRE nom="alignAttr" valeur="align"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="tr" type="zone"/>
+    <AFFICHAGE_ELEMENT element="td" type="string"/>
+    <AFFICHAGE_ELEMENT element="th" type="string">
+      <PARAMETRE nom="style" valeur="GRAS"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="span" type="stylespan"/>
+    <AFFICHAGE_ELEMENT element="a" type="anchor"/>
+    <AFFICHAGE_ELEMENT element="strong" type="string">
+      <PARAMETRE nom="style" valeur="GRAS"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="em" type="string">
+      <PARAMETRE nom="style" valeur="ITALIQUE"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="b" type="style">
+      <PARAMETRE nom="style" valeur="GRAS"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="i" type="style">
+      <PARAMETRE nom="style" valeur="ITALIQUE"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="sup" type="style">
+      <PARAMETRE nom="style" valeur="EXPOSANT"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="sub" type="style">
+      <PARAMETRE nom="style" valeur="INDICE"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="pre" type="lcdblock">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="code" type="string">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="kbd" type="string">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="samp" type="string">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="tt" type="style">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="ins" type="string"/>
+    <AFFICHAGE_ELEMENT element="del" type="string"/>
+    <AFFICHAGE_ELEMENT element="var" type="string">
+      <PARAMETRE nom="style" valeur="ITALIQUE"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="small" type="string">
+      <PARAMETRE nom="taille" valeur="75%"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="big" type="string">
+      <PARAMETRE nom="taille" valeur="150%"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="font" type="string"/>
+    <AFFICHAGE_ELEMENT element="basefont" type="vide"/>
+    <AFFICHAGE_ELEMENT element="br" type="br"/>
+    <AFFICHAGE_ELEMENT element="hr" type="hr"/>
+    <AFFICHAGE_ELEMENT element="blockquote" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="object" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="param" type="vide"/>
+    <AFFICHAGE_ELEMENT element="embed" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="applet" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="video" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="source" type="string"/>
+    <AFFICHAGE_ELEMENT element="audio" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="map" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="area" type="vide"/>
+    <AFFICHAGE_ELEMENT element="form" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="label" type="string"/>
+    <AFFICHAGE_ELEMENT element="input" type="vide"/>
+    <AFFICHAGE_ELEMENT element="select" type="string"/>
+    <AFFICHAGE_ELEMENT element="optgroup" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="option" type="string"/>
+    <AFFICHAGE_ELEMENT element="textarea" type="string"/>
+    <AFFICHAGE_ELEMENT element="fieldset" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="legend" type="string"/>
+    <AFFICHAGE_ELEMENT element="button" type="string"/>
+    <AFFICHAGE_ELEMENT element="iframe" type="lcdblock"/>
+  </AFFICHAGE_NOEUDS>
+  
+  <STRINGS langue="en">
+    <DESCRIPTION_CONFIG>LON-CAPA</DESCRIPTION_CONFIG>
+    <STRINGS_ELEMENT element="answer">
+      <TITRE>Answer algorithm</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="vector">
+      <TITRE>Vector</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="value">
+      <TITRE>Value</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="foil">
+      <TITRE>Foil</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="image">
+      <TITRE>Imageresponse Image</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="polygon">
+      <TITRE>Polygonal area in image</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="rectangle">
+      <TITRE>Rectangular area in image</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="text">
+      <TITRE>Text to describe option</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="conceptgroup">
+      <TITRE>Collection of similar foils</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="drawoptionlist">
+      <TITRE>Draw Option List</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="itemgroup">
+      <TITRE>Item to Match</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="item">
+      <TITRE>Item</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="label">
+      <TITRE>Label</TITRE>
+      <DOCUMENTATION>
+        In a gnuplot environment, the label tag allows the author to place text at any position on the plot. There may be many label tags on one plot and all the labels which fall within the plot will show. The color used will be to foreground color of the plot and the font will be the size specified for the plot, both of which are set in the gnuplot tag.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="location">
+      <TITRE>Label Location</TITRE>
+      <DOCUMENTATION>
+        declares a location on the image that a label should appear at
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="data">
+      <TITRE>Curve data</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="function">
+      <TITRE>Curve function</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="parameter">
+      <TITRE>Parameters for a part</TITRE>
+      <DOCUMENTATION>
+        parameter is exactly the same as responseparam, but should appear outside of a response tag.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="description">
+        <TITRE>description</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="default">
+        <TITRE>default</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="numericalresponse">
+      <TITRE>Response: Numerical</TITRE>
+      <DOCUMENTATION>Response: Numerical</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="incorrect">
+        <TITRE>incorrect</TITRE>
+        <DOCUMENTATION>
+          Incorrect Answers
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="unit">
+        <TITRE>unit</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="format">
+        <TITRE>format</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="preprocess">
+        <TITRE>preprocess</TITRE>
+        <DOCUMENTATION>
+          Pre-Processor Subroutine
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="answergroup">
+      <TITRE>Collection of Answers</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="array">
+      <TITRE>Array</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="unit">
+      <TITRE>Unit</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="formularesponse">
+      <TITRE>Response: Formula</TITRE>
+      <DOCUMENTATION>Response: Formula</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="samples">
+        <TITRE>samples</TITRE>
+        <DOCUMENTATION>
+          Sample Points
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="preprocess">
+        <TITRE>preprocess</TITRE>
+        <DOCUMENTATION>
+          Pre-Processor Subroutine
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="functionplotresponse">
+      <TITRE>Response: Function Plot</TITRE>
+      <DOCUMENTATION>Response: Function Plot</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+        <DOCUMENTATION>
+          Width (pixels)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+        <DOCUMENTATION>
+          Height (pixels)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xlabel">
+        <TITRE>xlabel</TITRE>
+        <DOCUMENTATION>
+          Label x-axis
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xmin">
+        <TITRE>xmin</TITRE>
+        <DOCUMENTATION>
+          Minimum x-value
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xmax">
+        <TITRE>xmax</TITRE>
+        <DOCUMENTATION>
+          Maximum x-value
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xaxisvisible">
+        <TITRE>xaxisvisible</TITRE>
+        <DOCUMENTATION>
+          x-axis visible
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="ylabel">
+        <TITRE>ylabel</TITRE>
+        <DOCUMENTATION>
+          Label y-axis
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="ymin">
+        <TITRE>ymin</TITRE>
+        <DOCUMENTATION>
+          Minimum y-value
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="ymax">
+        <TITRE>ymax</TITRE>
+        <DOCUMENTATION>
+          Maximum y-value
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="yaxisvisible">
+        <TITRE>yaxisvisible</TITRE>
+        <DOCUMENTATION>
+          y-axis visible
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="gridvisible">
+        <TITRE>gridvisible</TITRE>
+        <DOCUMENTATION>
+          Grid visible
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answerdisplay">
+        <TITRE>answerdisplay</TITRE>
+        <DOCUMENTATION>
+          Background plot(s) for answer (function(x):xmin:xmax,function(x):xmin:xmax,x1:y1:sx1:sy1:x2:y2:sx2:sy2,...)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="spline">
+      <TITRE>Spline</TITRE>
+      <DOCUMENTATION>
+        Spline.
+        At least one spline is necessary for a graph problem. These splines are what will be adjusted and analyzed to solve the problem.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="index">
+        <TITRE>index</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="order">
+        <TITRE>order</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="initx">
+        <TITRE>initx</TITRE>
+        <DOCUMENTATION>
+          Initial x-value
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="inity">
+        <TITRE>inity</TITRE>
+        <DOCUMENTATION>
+          Initial y-value
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="scalex">
+        <TITRE>scalex</TITRE>
+        <DOCUMENTATION>
+          Scale x
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="scaley">
+        <TITRE>scaley</TITRE>
+        <DOCUMENTATION>
+          Scale y
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="backgroundplot">
+      <TITRE>Background Function Plot</TITRE>
+      <DOCUMENTATION>
+        This places a static curve on the graph of your choosing.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="function">
+        <TITRE>function</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xinitial">
+        <TITRE>xinitial</TITRE>
+        <DOCUMENTATION>
+          Initial x-value (optional)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xfinal">
+        <TITRE>xfinal</TITRE>
+        <DOCUMENTATION>
+          Final x-value (optional)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="label">
+        <TITRE>label</TITRE>
+        <DOCUMENTATION>
+          Label on Plot
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="color">
+        <TITRE>color</TITRE>
+        <DOCUMENTATION>
+          Color (hex code)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="fixed">
+        <TITRE>fixed</TITRE>
+        <DOCUMENTATION>
+          Fixed location
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="plotobject">
+      <TITRE>Plot Object</TITRE>
+      <DOCUMENTATION>
+        This places a point in the applet.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="label">
+        <TITRE>label</TITRE>
+        <DOCUMENTATION>
+          Label on Plot
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="x">
+        <TITRE>x</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="y">
+        <TITRE>y</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="plotvector">
+      <TITRE>Plot Vector</TITRE>
+      <DOCUMENTATION>
+        This creates a vector (or arrow) in the applet.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="label">
+        <TITRE>label</TITRE>
+        <DOCUMENTATION>
+          Label on Plot
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="tailx">
+        <TITRE>tailx</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="taily">
+        <TITRE>taily</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="tipx">
+        <TITRE>tipx</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="tipy">
+        <TITRE>tipy</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="drawvectorsum">
+      <TITRE>Draw Vector Sum</TITRE>
+      <DOCUMENTATION>Draw Vector Sum</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="label">
+        <TITRE>label</TITRE>
+        <DOCUMENTATION>
+          Label on Plot
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="tailx">
+        <TITRE>tailx</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="taily">
+        <TITRE>taily</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="showvalue">
+        <TITRE>showvalue</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="vectorlist">
+        <TITRE>vectorlist</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="functionplotruleset">
+      <TITRE>Function Plot Rule Set</TITRE>
+      <DOCUMENTATION>Function Plot Rule Set</DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="functionplotelements">
+      <TITRE>Function Plot Elements</TITRE>
+      <DOCUMENTATION>Function Plot Elements</DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="functionplotrule">
+      <TITRE>Function Plot Graph Rule</TITRE>
+      <DOCUMENTATION>
+        Function Plot Graph Rule
+        Used to evaluate graph problems.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="index">
+        <TITRE>index</TITRE>
+        <DOCUMENTATION>
+          Index/Name
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="derivativeorder">
+        <TITRE>derivativeorder</TITRE>
+        <DOCUMENTATION>
+          Function
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xinitial">
+        <TITRE>xinitial</TITRE>
+        <DOCUMENTATION>
+          Initial x-value
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xinitiallabel">
+        <TITRE>xinitiallabel</TITRE>
+        <DOCUMENTATION>
+          Initial x-value label
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xfinal">
+        <TITRE>xfinal</TITRE>
+        <DOCUMENTATION>
+          Final x-value (optional)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xfinallabel">
+        <TITRE>xfinallabel</TITRE>
+        <DOCUMENTATION>
+          Final x-value label (optional)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="minimumlength">
+        <TITRE>minimumlength</TITRE>
+        <DOCUMENTATION>
+          Minimum length for range (optional)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="maximumlength">
+        <TITRE>maximumlength</TITRE>
+        <DOCUMENTATION>
+          Maximum length for range (optional)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="relationship">
+        <TITRE>relationship</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="value">
+        <TITRE>value</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="percenterror">
+        <TITRE>percenterror</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="functionplotvectorrule">
+      <TITRE>Function Plot Vector Rule</TITRE>
+      <DOCUMENTATION>
+        Function Plot Vector Rule
+        Used to test whether vectors are in the right place, pointed in the right direction, and have the correct length.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="index">
+        <TITRE>index</TITRE>
+        <DOCUMENTATION>
+          Index/Name
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="vector">
+        <TITRE>vector</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="attachpoint">
+        <TITRE>attachpoint</TITRE>
+        <DOCUMENTATION>
+          Attached to object
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="notattachpoint">
+        <TITRE>notattachpoint</TITRE>
+        <DOCUMENTATION>
+          Not attached to object
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="tailpoint">
+        <TITRE>tailpoint</TITRE>
+        <DOCUMENTATION>
+          Tail attached to object
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="tippoint">
+        <TITRE>tippoint</TITRE>
+        <DOCUMENTATION>
+          Tip attached to object
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="nottailpoint">
+        <TITRE>nottailpoint</TITRE>
+        <DOCUMENTATION>
+          Tail not attached to object
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="nottippoint">
+        <TITRE>nottippoint</TITRE>
+        <DOCUMENTATION>
+          Tip not attached to object
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="length">
+        <TITRE>length</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="lengtherror">
+        <TITRE>lengtherror</TITRE>
+        <DOCUMENTATION>
+          Absolute error length
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="angle">
+        <TITRE>angle</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="angleerror">
+        <TITRE>angleerror</TITRE>
+        <DOCUMENTATION>
+          Absolute error angle
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="functionplotvectorsumrule">
+      <TITRE>Function Plot Vector Sum Rule</TITRE>
+      <DOCUMENTATION>
+        Function Plot Vector Sum Rule
+        Used to test the sum of a set of vectors.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="index">
+        <TITRE>index</TITRE>
+        <DOCUMENTATION>
+          Index/Name
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="vectors">
+        <TITRE>vectors</TITRE>
+        <DOCUMENTATION>
+          Comma-separated list of vectors
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="length">
+        <TITRE>length</TITRE>
+        <DOCUMENTATION>
+          Sum vector length
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="lengtherror">
+        <TITRE>lengtherror</TITRE>
+        <DOCUMENTATION>
+          Absolute error length
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="angle">
+        <TITRE>angle</TITRE>
+        <DOCUMENTATION>
+          Sum vector angle
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="angleerror">
+        <TITRE>angleerror</TITRE>
+        <DOCUMENTATION>
+          Absolute error angle
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="functionplotcustomrule">
+      <TITRE>Function Plot Custom Rule</TITRE>
+      <DOCUMENTATION>
+        Used to create rules that aren't options using the other rules. The coding is done in Perl and follows Perl syntax. Any variable written inside this rule will be recognized as normal and any evaluation function can be used as well.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="index">
+        <TITRE>index</TITRE>
+        <DOCUMENTATION>
+          Index/Name
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="stringresponse">
+      <TITRE>Response: String</TITRE>
+      <DOCUMENTATION>
+        stringresponse implements a string answer. An internal textline tag is necessary for the student&#8217;s response to go in. It can check the string for either case or order.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          the correct answer, either a perl list or scalar
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+        <DOCUMENTATION>
+          Specifies how the string is checked (like the CAPA styles). Possible values are:
+          &#8211; cs: case sensitive, order important.
+          &#8211; ci: case insensitive, order important.
+          &#8211; mc: case insensitive, order unimportant.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answerdisplay">
+        <TITRE>answerdisplay</TITRE>
+        <DOCUMENTATION>
+          String to display for answer
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="preprocess">
+        <TITRE>preprocess</TITRE>
+        <DOCUMENTATION>
+          Pre-Processor Subroutine
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="essayresponse">
+      <TITRE>Response: Essay</TITRE>
+      <DOCUMENTATION>Response: Essay</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="externalresponse">
+      <TITRE>Response: External</TITRE>
+      <DOCUMENTATION>
+        externalresponse is an advanced type of response tag that implements the ability to have an external program grade a response. It expects either a textline or textfield inside the tag.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="url">
+        <TITRE>url</TITRE>
+        <DOCUMENTATION>
+          url to submit the answer form to. It does not need to be a LON-CAPA machine.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          data to post in the form element LONCAPA correct answer to the remote site.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="form">
+        <TITRE>form</TITRE>
+        <DOCUMENTATION>
+          hash variable name that will be submitted to the remote site as a HTTP form.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answerdisplay">
+        <TITRE>answerdisplay</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="hintgroup">
+      <TITRE>Hint</TITRE>
+      <DOCUMENTATION>Hint</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="showoncorrect">
+        <TITRE>showoncorrect</TITRE>
+        <DOCUMENTATION>
+          Show hint even if problem Correct
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="hintpart">
+      <TITRE>Conditional Hint</TITRE>
+      <DOCUMENTATION>
+        When a hint tag named the same as the on attribute evaluates to be correct, the hintpart will show.
+        If no other hintpart is to show then all hintparts with an on value set to &#8220;default&#8221; will show.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="on">
+        <TITRE>on</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="formulahint">
+      <TITRE>Formula Hint Condition</TITRE>
+      <DOCUMENTATION>Formula Hint Condition</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          should be set to the value of which hintpart will be shown
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="samples">
+        <TITRE>samples</TITRE>
+        <DOCUMENTATION>
+          Sample Points
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="preprocess">
+        <TITRE>preprocess</TITRE>
+        <DOCUMENTATION>
+          Pre-Processor Subroutine
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="numericalhint">
+      <TITRE>Numerical Hint Condition</TITRE>
+      <DOCUMENTATION>Numerical Hint Condition</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          should be set to the value of which hintpart will be shown
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="unit">
+        <TITRE>unit</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="format">
+        <TITRE>format</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="preprocess">
+        <TITRE>preprocess</TITRE>
+        <DOCUMENTATION>
+          Pre-Processor Subroutine
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="reactionhint">
+      <TITRE>Reaction Hint Condition</TITRE>
+      <DOCUMENTATION>Reaction Hint Condition</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="organichint">
+      <TITRE>Organic Hint Condition</TITRE>
+      <DOCUMENTATION>Organic Hint Condition</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="optionhint">
+      <TITRE>Option Response Hint Condition</TITRE>
+      <DOCUMENTATION>Option Response Hint Condition</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          should be set to the value of which hintpart will be shown
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="concept">
+        <TITRE>concept</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="radiobuttonhint">
+      <TITRE>Radiobutton Hint Condition</TITRE>
+      <DOCUMENTATION>Radiobutton Hint Condition</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          should be set to the value of which hintpart will be shown
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          should be at least a two element list: first the type (foil or concept) and then either the foil name(s) or the concept string(s), e.g., &#8220;(&#8217;foil&#8217;,&#8217;greaterthan&#8217;,&#8217;equal&#8217;)&#8221; if the condition should be triggered by the foils named &#8220;greaterthan&#8221; or &#8220;equal&#8221;
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="stringhint">
+      <TITRE>String Hint Condition</TITRE>
+      <DOCUMENTATION>String Hint Condition</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          should be set to the value of which hintpart will be shown
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          should be set to the value of which hintpart will be shown
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="preprocess">
+        <TITRE>preprocess</TITRE>
+        <DOCUMENTATION>
+          Pre-Processor Subroutine
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="customhint">
+      <TITRE>Custom Hint Condition</TITRE>
+      <DOCUMENTATION>
+        Custom Hint Condition
+        
+        Define the hint condition within an answer block inside of the customhint block. The condition is defined like how an answer is defined in customresponse where you need to return EXACT ANS to indicate when customhint criteria are met.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          should be set to the value of which hintpart will be shown
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="mathhint">
+      <TITRE>Math Hint Condition</TITRE>
+      <DOCUMENTATION>Math Hint Condition</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="cas">
+        <TITRE>cas</TITRE>
+        <DOCUMENTATION>
+          Algebra System
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="args">
+        <TITRE>args</TITRE>
+        <DOCUMENTATION>
+          Argument Array
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="imageresponse">
+      <TITRE>Response: Click on Image</TITRE>
+      <DOCUMENTATION>
+        imageresponse implements a image-click answer. imageresponse tags should contain a foilgroup tag, which contain foil tags.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="max">
+        <TITRE>max</TITRE>
+        <DOCUMENTATION>
+          Max Number Of Shown Foils
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="foilgroup">
+      <TITRE>Collection of Foils</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="datasubmission">
+      <TITRE>Stored Entry Field</TITRE>
+      <DOCUMENTATION>Stored Entry Field</DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="customresponse">
+      <TITRE>Response: Custom</TITRE>
+      <DOCUMENTATION>
+        Custom Response is a way to have a problem graded based on an algorithm. The use of this response type is generally discouraged, since the responses will not be analyzable by the LON-CAPA statistics tools.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answerdisplay">
+        <TITRE>answerdisplay</TITRE>
+        <DOCUMENTATION>
+          String to display for answer
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="mathresponse">
+      <TITRE>Response: Math</TITRE>
+      <DOCUMENTATION>
+        Math response problems use a cas system to evaluate the student response. Which computer algebra system is to be used is specified in the cas argument of the mathresponse tag; both Maxima and R are supported.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answerdisplay">
+        <TITRE>answerdisplay</TITRE>
+        <DOCUMENTATION>
+          String to display for answer
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="cas">
+        <TITRE>cas</TITRE>
+        <DOCUMENTATION>
+          Algebra System
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="args">
+        <TITRE>args</TITRE>
+        <DOCUMENTATION>
+          Argument Array
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="libraries">
+        <TITRE>libraries</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="textfield">
+      <TITRE>Large Text Entry Area</TITRE>
+      <DOCUMENTATION>
+        Large Text Entry Area, contains the text that appears by default
+        
+        Creates a large text input box. If data appears between the start and end tags, the data will appear in the textfield if the student has not yet made a submission.
+        Additionally, it takes two attributes: rows and cols, which control the height and width of the text area respectively.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="rows">
+        <TITRE>rows</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="cols">
+        <TITRE>cols</TITRE>
+        <DOCUMENTATION>
+          Columns
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="addchars">
+        <TITRE>addchars</TITRE>
+        <DOCUMENTATION>
+          Click-On Texts (comma sep)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="spellcheck">
+        <TITRE>spellcheck</TITRE>
+        <DOCUMENTATION>
+          Spellcheck for
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="textline">
+      <TITRE>Single Line Text Entry Area</TITRE>
+      <DOCUMENTATION>
+        Single Line Text Entry Area
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="size">
+        <TITRE>size</TITRE>
+        <DOCUMENTATION>
+          controls the width of the textline
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="addchars">
+        <TITRE>addchars</TITRE>
+        <DOCUMENTATION>
+          Click-On Texts (comma sep)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="readonly">
+        <TITRE>readonly</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="spellcheck">
+        <TITRE>spellcheck</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="hiddensubmission">
+      <TITRE>Hidden Submission</TITRE>
+      <DOCUMENTATION>
+        ???
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="value">
+        <TITRE>value</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="hiddenline">
+      <TITRE>Hidden Line</TITRE>
+      <DOCUMENTATION>
+        ???
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="optionresponse">
+      <TITRE>Response: Select from Options</TITRE>
+      <DOCUMENTATION>
+        optionresponse implements a &#8220;select from these choices&#8221; style question. The choices are specified by the instructor and use the foil structure tags, with this additional addition:
+        foilgroup is required to have an options attribute which should be a perl list of possible options for the student.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="max">
+        <TITRE>max</TITRE>
+        <DOCUMENTATION>
+          Max Number Of Shown Foils
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="randomize">
+        <TITRE>randomize</TITRE>
+        <DOCUMENTATION>
+          Randomize Foil Order
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="TeXlayout">
+        <TITRE>TeXlayout</TITRE>
+        <DOCUMENTATION>
+          Display of options when printed
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="displayduedate">
+      <TITRE>Display Due Date</TITRE>
+      <DOCUMENTATION>
+        This will insert the current due date if one is set in the document.
+        It is generated to be inside a table of 1x1 elements.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="style">
+        <TITRE>style</TITRE>
+        <DOCUMENTATION>
+          style=&#8220;plain&#8221; Makes the due date appear without any boxing. If the parameter value is other than &#8220;plain&#8221;, or if the style parameter is omitted, the due date will be displayed within a box.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="format">
+        <TITRE>format</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="displaytitle">
+      <TITRE>Display Title</TITRE>
+      <DOCUMENTATION>
+        This will insert the title of the problem from the metadata of the problem. Only the first displaytitle in a problem will show the title; this allows clean usage of displaytitle in LON-CAPA style files.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="style">
+        <TITRE>style</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="radiobuttonresponse">
+      <TITRE>Response: One of N statements</TITRE>
+      <DOCUMENTATION>
+        Response: One of N statements
+        
+        radiobuttonresponse implements a true/false question with one correct answer. It uses the foil structure tags, but the value of a foil can only be true, false, or unused.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="max">
+        <TITRE>max</TITRE>
+        <DOCUMENTATION>
+          Max Number Of Shown Foils
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="randomize">
+        <TITRE>randomize</TITRE>
+        <DOCUMENTATION>
+          Randomize Foil Order
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="direction">
+        <TITRE>direction</TITRE>
+        <DOCUMENTATION>
+          Display Direction
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="rankresponse">
+      <TITRE>Response: Rank Values</TITRE>
+      <DOCUMENTATION>Response: Rank Values</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="max">
+        <TITRE>max</TITRE>
+        <DOCUMENTATION>
+          Max Number Of Shown Foils
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="randomize">
+        <TITRE>randomize</TITRE>
+        <DOCUMENTATION>
+          Randomize Foil Order
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="matchresponse">
+      <TITRE>Response: Match Two Lists</TITRE>
+      <DOCUMENTATION>Response: Match Two Lists</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="max">
+        <TITRE>max</TITRE>
+        <DOCUMENTATION>
+          Max Number Of Shown Foils
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="randomize">
+        <TITRE>randomize</TITRE>
+        <DOCUMENTATION>
+          Randomize Foil Order
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="organicresponse">
+      <TITRE>Response: Organic Chemical Structure</TITRE>
+      <DOCUMENTATION>Response: Organic Chemical Structure</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="options">
+        <TITRE>options</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="molecule">
+        <TITRE>molecule</TITRE>
+        <DOCUMENTATION>
+          Starting Molecule
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          Correct Answer
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="jmeanswer">
+        <TITRE>jmeanswer</TITRE>
+        <DOCUMENTATION>
+          JME string of the answer
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+        <DOCUMENTATION>
+          Width of correct answer image
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="reactionresponse">
+      <TITRE>Response: Chemical Reaction</TITRE>
+      <DOCUMENTATION>Response: Chemical Reaction</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="initial">
+        <TITRE>initial</TITRE>
+        <DOCUMENTATION>
+          Initial Reaction
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="organicstructure">
+      <TITRE>Organic Structure</TITRE>
+      <DOCUMENTATION>Organic Structure</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+        <DOCUMENTATION>
+          Width (pixels)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="texwidth">
+        <TITRE>texwidth</TITRE>
+        <DOCUMENTATION>
+          TeXwidth (mm)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="molecule">
+        <TITRE>molecule</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="options">
+        <TITRE>options</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="responseparam">
+      <TITRE>Parameters for a response</TITRE>
+      <DOCUMENTATION>
+        Defines an externally adjustable parameter for the question, which the question can then use to allow other users to customize the problem for their courses without changing the source code of the problem.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="default">
+        <TITRE>default</TITRE>
+        <DOCUMENTATION>
+          default value
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="description">
+        <TITRE>description</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="display">
+      <TITRE>Display Script Result Block</TITRE>
+      <DOCUMENTATION>
+        The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="import">
+      <TITRE>Import a File</TITRE>
+      <DOCUMENTATION>
+        This causes the parse to read in the file named in the body of the tag and parse it as if the entire text of the file had existed at the location of the tag.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="importmode">
+        <TITRE>importmode</TITRE>
+        <DOCUMENTATION>
+          Import as
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="parserlib">
+      <TITRE>Import Tag Definitions</TITRE>
+      <DOCUMENTATION>
+        The enclosed filename contains definitions for new tags.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="script">
+      <TITRE>Perl Script or Javascript Block</TITRE>
+      <DOCUMENTATION>
+        If the attribute type is set to &#8220;loncapa/perl&#8221; the enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="scriptlib">
+      <TITRE>Import Script Library</TITRE>
+      <DOCUMENTATION>
+        The enclosed filename contains Perl code to run in the safe space.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="img">
+      <TITRE>Image</TITRE>
+      <DOCUMENTATION>Image</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="src">
+        <TITRE>src</TITRE>
+        <DOCUMENTATION>
+          Image Url
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="alt">
+        <TITRE>alt</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+        <DOCUMENTATION>
+          width (pixel)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+        <DOCUMENTATION>
+          height (pixel)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="TeXwidth">
+        <TITRE>TeXwidth</TITRE>
+        <DOCUMENTATION>
+          TeXwidth (mm)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="TeXheight">
+        <TITRE>TeXheight</TITRE>
+        <DOCUMENTATION>
+          TeXheight (mm)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="align">
+        <TITRE>align</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="TeXwrap">
+        <TITRE>TeXwrap</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="encrypturl">
+        <TITRE>encrypturl</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="meta">
+      <TITRE>Custom Metadata</TITRE>
+      <DOCUMENTATION>Custom Metadata</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="content">
+        <TITRE>content</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="window">
+      <TITRE>Text In Separate Window</TITRE>
+      <DOCUMENTATION>
+        This creates a link that when clicked shows the intervening information in a pop-up window. By default the window will be 500 pixels wide and 200 pixels tall, and the link text will be a superscript * (so as to look like a footnote). These can be changed using the attributes.
+        When printing, the included text will get turned into a real footnote.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="linktext">
+        <TITRE>linktext</TITRE>
+        <DOCUMENTATION>
+          Text of Link
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="printtext">
+        <TITRE>printtext</TITRE>
+        <DOCUMENTATION>
+          Printed text (optional)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="block">
+      <TITRE>Conditional Block</TITRE>
+      <DOCUMENTATION>
+        This has a required argument condition that is evaluated. If the condition is true, everything inside the tag is evaluated; otherwise, everything inside the block tag is skipped.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="condition">
+        <TITRE>condition</TITRE>
+        <DOCUMENTATION>
+          Test Condition
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="languageblock">
+      <TITRE>Language Block</TITRE>
+      <DOCUMENTATION>
+        This declares the intent to provide content that can be rendered in the set of languages in the include specification but not in the exclude specification. If a currently preferred language is in the include list the content in the &lt;languageblock&gt;...&lt;/languageblock&gt; is rendered If the currently preferred language is in the exclude list, the content in the &lt;languageblock&gt;..&lt;/languageblock is not rendered.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="include">
+        <TITRE>include</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="exclude">
+        <TITRE>exclude</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="translated">
+      <TITRE>Translated Block</TITRE>
+      <DOCUMENTATION>
+        &lt;translated&gt; starts a block of a resource that has multiple translations.
+        See the &lt;lang&gt; tag as well.
+        When &lt;/translated&gt; is encountered if there is a translation for the currently preferred language, that is rendered inthe web/tex/webgrade targets. Otherwise, the default text is rendered.
+        Note that &lt;lang&gt; is only registered for the duration of the &lt;translated&gt;...&lt;/translated&gt; block.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="lang">
+      <TITRE>Language</TITRE>
+      <DOCUMENTATION>
+        Specifies that the block contained within it is a translation for a specific language specified by the 'which' attribute. The 'other' attribute can be used by itself or in conjunction with which to specify this tag _may_ be used as a translation for some list of languages. e.g.:
+        &lt;lang which='senisoUS' other='senisoCA,senisoAU,seniso'&gt;
+        specifying that the block provides a translation for US (primary) Canadian, Australian and UK English.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="which">
+        <TITRE>which</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="other">
+        <TITRE>other</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="instructorcomment">
+      <TITRE>Instructor Comment</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="library">
+      <TITRE>Start of Library</TITRE>
+      <DOCUMENTATION>Start of Library</DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="notsolved">
+      <TITRE>Block For When Not Solved</TITRE>
+      <DOCUMENTATION>
+        Everything inside is skipped if the problem is &#8220;solved&#8221;.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="part">
+      <TITRE>Problem Part</TITRE>
+      <DOCUMENTATION>
+        This must be below problem if it is going to be used. It does many of the same tasks as problem, but allows multiple separate problems to exist in a single file.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Part ID
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="display">
+        <TITRE>display</TITRE>
+        <DOCUMENTATION>
+          Displayed Part Description
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="startpartmarker">
+      <TITRE>Marker for Start of New Part</TITRE>
+      <DOCUMENTATION>Problem Part: Marker for Start of New Part</DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="endpartmarker">
+      <TITRE>Marker for End of New Part</TITRE>
+      <DOCUMENTATION>Problem Part: Marker for End of New Part</DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="postanswerdate">
+      <TITRE>After Answer Date Block</TITRE>
+      <DOCUMENTATION>
+        Everything inside is skipped if the problem is before the answer date.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="preduedate">
+      <TITRE>Before Due Date Block</TITRE>
+      <DOCUMENTATION>
+        Everything inside is skipped if the problem is after the due date.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="problem">
+      <TITRE>Start of Homework</TITRE>
+      <DOCUMENTATION>
+        This must be first in the file. It sets up the header of the webpage and generates the submit buttons. It also handles due dates properly.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="allow">
+      <TITRE>File Dependencies</TITRE>
+      <DOCUMENTATION>File Dependencies</DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="src">
+        <TITRE>src</TITRE>
+        <DOCUMENTATION>
+          File Spec
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="problemtype">
+      <TITRE>Problem Type Block</TITRE>
+      <DOCUMENTATION>
+        Allows you to show or hide output based on what the problem-type parameter is set to in the course.
+        Will only show the output text when the problem is set to the type of exam or survey in the course.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="mode">
+        <TITRE>mode</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="for">
+        <TITRE>for</TITRE>
+        <DOCUMENTATION>
+          When used as type(s)
+          
+          List of values among:
+          exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="randomlabel">
+      <TITRE>Randomly labeled image</TITRE>
+      <DOCUMENTATION>
+        This shows a specified image with images or text labels randomly assigned to a set of specific locations. Those locations may also have values assigned to them. A hash is generated that contains the mapping of labels to locations, labels to values, and locations to values.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="bgimg">
+        <TITRE>bgimg</TITRE>
+        <DOCUMENTATION>
+          Either a fully qualified URL for an external image or a LON-CAPA resource. It supports relative references (../images/apicture.gif). The image must either be a GIF or JPEG.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+        <DOCUMENTATION>
+          The width of the image in pixels.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+        <DOCUMENTATION>
+          The height of the image in pixels.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="texwidth">
+        <TITRE>texwidth</TITRE>
+        <DOCUMENTATION>
+          The width of the image in millimeters.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="labelgroup">
+      <TITRE>Group of Labels</TITRE>
+      <DOCUMENTATION>
+        One is required, but multiple are allowed. This declares a group of locations and labels associated with them.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="bgimg">
+      <TITRE>bg img</TITRE>
+      <DOCUMENTATION>
+        ???
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="randomlist">
+      <TITRE>Randomly Parsed Block</TITRE>
+      <DOCUMENTATION>
+        The enclosed tags are parsed in a stable random order. The optional attribute show=&#8220;N&#8221; restricts the number of tags inside that are actually parsed to no more than N. N can equal the total tags inside. The randomlist tag can be used to randomize problem parts by wrapping the &lt;part&gt; tags with a randomlist tag. Note that when randomlist wraps &lt;part&gt; tags, that all students will work all parts only if show=&#8220;N&#8221; where N is the total number of parts wrapped. When N is less than the total number of parts wrapped, there will be gaps in the assessment chart, and also in the table of submissions for each student, corresponding to those parts which are never available to that particular student.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="show">
+        <TITRE>show</TITRE>
+        <DOCUMENTATION>
+          Maximum Tags to Show
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="solved">
+      <TITRE>Block For After Solved</TITRE>
+      <DOCUMENTATION>
+        Everything inside is skipped if the problem is &#8220;not solved&#8221;.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="tex">
+      <TITRE>Print Only Block</TITRE>
+      <DOCUMENTATION>Print Only Block</DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="web">
+      <TITRE>Web Only Block</TITRE>
+      <DOCUMENTATION>Web Only Block</DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="while">
+      <TITRE>While Loop Block</TITRE>
+      <DOCUMENTATION>
+        This implements a while loop. The required attribute condition is a Perl scriptlet that when evaluated results in a true or false value. If true, the entirety of the text between the whiles is parsed. The condition is tested again, etc. If false, it goes to the next tag.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="condition">
+        <TITRE>condition</TITRE>
+        <DOCUMENTATION>
+          Test Condition
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="gnuplot">
+      <TITRE>GnuPlot</TITRE>
+      <DOCUMENTATION>
+        The gnuplot LON-CAPA tag allows an author to design a plot which will be created programatically at the time when it is requested for display by a student. This is intended for use in homework problems where a distinct plot should be rendered for each student. It can be used in conjunction with a script tag to generate curve data for random plots.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="alttag">
+        <TITRE>alttag</TITRE>
+        <DOCUMENTATION>
+          Brief description of the plot
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+        <DOCUMENTATION>
+          Height of image (pixels)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+        <DOCUMENTATION>
+          Width of image (pixels)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="bgcolor">
+        <TITRE>bgcolor</TITRE>
+        <DOCUMENTATION>
+          Background color of image
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="fgcolor">
+        <TITRE>fgcolor</TITRE>
+        <DOCUMENTATION>
+          Foreground color of image
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="transparent">
+        <TITRE>transparent</TITRE>
+        <DOCUMENTATION>
+          Transparent image
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="grid">
+        <TITRE>grid</TITRE>
+        <DOCUMENTATION>
+          Display grid
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="gridlayer">
+        <TITRE>gridlayer</TITRE>
+        <DOCUMENTATION>
+          Display grid front layer over filled boxes or filled curves
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="box_border">
+        <TITRE>box_border</TITRE>
+        <DOCUMENTATION>
+          Draw border for boxes
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="border">
+        <TITRE>border</TITRE>
+        <DOCUMENTATION>
+          Draw border around plot
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="font">
+        <TITRE>font</TITRE>
+        <DOCUMENTATION>
+          Font size to use in web output (pts)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="fontface">
+        <TITRE>fontface</TITRE>
+        <DOCUMENTATION>
+          Type of font to use
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="samples">
+        <TITRE>samples</TITRE>
+        <DOCUMENTATION>
+          Number of samples for non-data plots
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="align">
+        <TITRE>align</TITRE>
+        <DOCUMENTATION>
+          Alignment for image in HTML
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="texwidth">
+        <TITRE>texwidth</TITRE>
+        <DOCUMENTATION>
+          Width of plot when printed (mm)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="texfont">
+        <TITRE>texfont</TITRE>
+        <DOCUMENTATION>
+          Font size to use in TeX output (pts)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="plotcolor">
+        <TITRE>plotcolor</TITRE>
+        <DOCUMENTATION>
+          Color setting for printing
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="pattern">
+        <TITRE>pattern</TITRE>
+        <DOCUMENTATION>
+          Pattern value for boxes
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="solid">
+        <TITRE>solid</TITRE>
+        <DOCUMENTATION>
+          The density of fill style for boxes
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="fillstyle">
+        <TITRE>fillstyle</TITRE>
+        <DOCUMENTATION>
+          Filled style for boxes
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="plottype">
+        <TITRE>plottype</TITRE>
+        <DOCUMENTATION>
+          Plot type
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="gridtype">
+        <TITRE>gridtype</TITRE>
+        <DOCUMENTATION>
+          Grid type
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="lmargin">
+        <TITRE>lmargin</TITRE>
+        <DOCUMENTATION>
+          Left margin width (pts)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="rmargin">
+        <TITRE>rmargin</TITRE>
+        <DOCUMENTATION>
+          Right margin width (pts)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="tmargin">
+        <TITRE>tmargin</TITRE>
+        <DOCUMENTATION>
+          Top margin width (pts)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="bmargin">
+        <TITRE>bmargin</TITRE>
+        <DOCUMENTATION>
+          Bottom margin width (pts)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="boxwidth">
+        <TITRE>boxwidth</TITRE>
+        <DOCUMENTATION>
+          Width of boxes, default is auto
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="major_ticscale">
+        <TITRE>major_ticscale</TITRE>
+        <DOCUMENTATION>
+          Size of major tic marks (plot coordinates)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="minor_ticscale">
+        <TITRE>minor_ticscale</TITRE>
+        <DOCUMENTATION>
+          Size of minor tic mark (plot coordinates)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="axis">
+      <TITRE>Axes</TITRE>
+      <DOCUMENTATION>
+        The Plot Axes tag allows you to specify the domain and range of the data to display. It is closely tied with the Plot Ticks tags, which specify where the gridlines are drawn on the plot.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="curve">
+      <TITRE>Curve</TITRE>
+      <DOCUMENTATION>
+        The curve tag is where you set the data to be plotted by gnuplot.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="key">
+      <TITRE>Key</TITRE>
+      <DOCUMENTATION>
+        The key tag causes a key to be drawn on the plot when it is generated. The key will contain an entry for each curve which has a name.
+        The key is the color of the foreground of the plot, specified in the gnuplot tag.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="xtics">
+      <TITRE>Xtics</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="ytics">
+      <TITRE>Ytics</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="tic">
+      <TITRE>Tic</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="title">
+      <TITRE>Title</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="xlabel">
+      <TITRE>Xlabel</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="ylabel">
+      <TITRE>Ylabel</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="dataresponse">
+      <TITRE>Response: data</TITRE>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          internal name for the value. It will have the part id and response id added to it.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+        <DOCUMENTATION>
+          type of data stored in this response field. It should be one of the types supported by parameter.html
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="display">
+        <TITRE>display</TITRE>
+        <DOCUMENTATION>
+          string that will be used to describe the field when interfacing with humans.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="windowlink">
+      <TITRE>Window Link</TITRE>
+      <DOCUMENTATION>
+        This creates a link to a resource that comes up in a pop-up window.
+        The link will be the intervening information between the start and the end tag.
+        By default the window will be 500 pixels wide and 200 pixels tall.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="href">
+        <TITRE>href</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+        <DOCUMENTATION>
+          starting height of the popup window
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+        <DOCUMENTATION>
+          starting width of the popup window
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="togglebox">
+      <TITRE>Toggle Box</TITRE>
+      <DOCUMENTATION>
+        This creates a toggling box that can be clicked open and close.
+        When printing, the included text will be rendered in a visible box.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="heading">
+        <TITRE>heading</TITRE>
+        <DOCUMENTATION>
+          heading text of the box, by default no heading
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="headerbg">
+        <TITRE>headerbg</TITRE>
+        <DOCUMENTATION>
+          background color of the header, by default white
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="showtext">
+        <TITRE>showtext</TITRE>
+        <DOCUMENTATION>
+          the text that appears to make the box visible, by default the translation of &#8217;show&#8217;
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="hidetext">
+        <TITRE>hidetext</TITRE>
+        <DOCUMENTATION>
+          the text that appears to hide the box again, by default the translation of &#8217;hide&#8217;
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="standalone">
+      <TITRE>Standalone Block</TITRE>
+      <DOCUMENTATION>
+        Everything in between the start and end tag is shown only on the web and only if the resource is not part of a course.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="comment">
+      <TITRE>Comment</TITRE>
+      <DOCUMENTATION>
+        Allows one to comment out sections of code in a balanced manner, or to provide a comment description of how a problem works.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="m">
+      <TITRE>TeX</TITRE>
+      <DOCUMENTATION>
+        The inside text is LaTeX, and is converted to HTML (or MathML) on the fly.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="chem">
+      <TITRE>Chem</TITRE>
+      <DOCUMENTATION>
+        Typesets chemical equation
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="num">
+      <TITRE>num</TITRE>
+      <DOCUMENTATION>
+        Typesets a number formatted in scientific notation, fixed point, fixed point with commas, fixed point with commas and dollar sign, or in significant digits.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="format">
+        <TITRE>format</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="parse">
+      <TITRE>Parse</TITRE>
+      <DOCUMENTATION>
+        to display the parsed view of a variable&#8217;s contents
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="algebra">
+      <TITRE>Algebra</TITRE>
+      <DOCUMENTATION>
+        Typesets algebraic expressions.
+        Expressions are displayed using the math expression display mechanism defined in the user&#8217;s preferences. The default is tth.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="style">
+        <TITRE>style</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="drawimage">
+      <TITRE>Draw Image</TITRE>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="bgcolor">
+        <TITRE>bgcolor</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="line">
+      <TITRE>Line</TITRE>
+      <STRINGS_ATTRIBUT attribut="x1">
+        <TITRE>x1</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="y1">
+        <TITRE>y1</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="x2">
+        <TITRE>x2</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="y2">
+        <TITRE>y2</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="color">
+        <TITRE>color</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="thickness">
+        <TITRE>thickness</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="arc">
+      <TITRE>Arc</TITRE>
+      <STRINGS_ATTRIBUT attribut="x">
+        <TITRE>x</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="y">
+        <TITRE>y</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="start">
+        <TITRE>start</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="end">
+        <TITRE>end</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="color">
+        <TITRE>color</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="thickness">
+        <TITRE>thickness</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="filled">
+        <TITRE>filled</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="fill">
+      <TITRE>Fill</TITRE>
+      <STRINGS_ATTRIBUT attribut="x">
+        <TITRE>x</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="y">
+        <TITRE>y</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="color">
+        <TITRE>color</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="point">
+      <TITRE>Point</TITRE>
+      <STRINGS_ATTRIBUT attribut="x">
+        <TITRE>x</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="y">
+        <TITRE>y</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="displayweight">
+      <TITRE>Display Weight</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="displaystudentphoto">
+      <TITRE>Display Student Photo</TITRE>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="align">
+        <TITRE>align</TITRE>
+        <DOCUMENTATION>
+          note: this attribute is not supported in HTML5, css should be used instead !
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    
+    <STRINGS_ELEMENT element="html">
+      <TITRE>HTML</TITRE>
+      <DOCUMENTATION>
+        The HTML root element (&lt;html&gt;) represents the root of an HTML document.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="head">
+      <TITRE>HTML Header</TITRE>
+      <DOCUMENTATION>
+        The HTML Head Element (&lt;head&gt;) provides general information (metadata) about the document, including its title and links to or definitions of scripts and style sheets.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="profile">
+        <TITRE>profile</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="base">
+      <TITRE>Base URI</TITRE>
+      <DOCUMENTATION>
+        Document base URI
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="href">
+        <TITRE>href</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="link">
+      <TITRE>Link</TITRE>
+      <DOCUMENTATION>
+        The HTML Link Element (&lt;link&gt;) specifies relationships between the current document and external resource. Possible uses for this element include defining a relational framework for navigation. This Element is most used to link to style sheets.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="charset">
+        <TITRE>charset</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="href">
+        <TITRE>href</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="hreflang">
+        <TITRE>hreflang</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="rel">
+        <TITRE>rel</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="rev">
+        <TITRE>rev</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="media">
+        <TITRE>media</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="style">
+      <TITRE>Style</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;style&gt; element contains style information for a document, or a part of document. The specific style information is contained inside of this element, usually in the CSS.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="media">
+        <TITRE>media</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="title">
+        <TITRE>title</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xml:space">
+        <TITRE>xml:space</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="noscript">
+      <TITRE>Block when no script</TITRE>
+      <DOCUMENTATION>
+        Alternate content container for non script-based rendering.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="body">
+      <TITRE>HTML Body</TITRE>
+      <STRINGS_ATTRIBUT attribut="onload">
+        <TITRE>onload</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="onunload">
+        <TITRE>onunload</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="section">
+      <TITRE>Section</TITRE>
+      <DOCUMENTATION>
+        The HTML Section Element (&lt;section&gt;) represents a generic section of a document, i.e., a thematic grouping of content, typically with a heading. Each &lt;section&gt; should be identified, typically by including a heading (h1-h6 element) as a child of the &lt;section&gt; element.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="class">
+        <TITRE>class</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="h1">
+      <TITRE>Lvl 1 Header</TITRE>
+      <DOCUMENTATION>
+        Level 1 header
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="h2">
+      <TITRE>Lvl 2 Header</TITRE>
+      <DOCUMENTATION>
+        Level 2 header
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="h3">
+      <TITRE>Lvl 3 Header</TITRE>
+      <DOCUMENTATION>
+        Level 3 header
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="h4">
+      <TITRE>Lvl 4 Header</TITRE>
+      <DOCUMENTATION>
+        Level 4 header
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="h5">
+      <TITRE>Lvl 5 Header</TITRE>
+      <DOCUMENTATION>
+        Level 5 header
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="h6">
+      <TITRE>Lvl 6 Header</TITRE>
+      <DOCUMENTATION>
+        Level 6 header
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="div">
+      <TITRE>Division</TITRE>
+      <DOCUMENTATION>
+        HTML Division
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="class">
+        <TITRE>class</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="p">
+      <TITRE>P</TITRE>
+      <DOCUMENTATION>
+        Paragraph
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="ul">
+      <TITRE>Unordered List</TITRE>
+      <DOCUMENTATION>
+        Unordered list
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="ol">
+      <TITRE>Ordered List</TITRE>
+      <DOCUMENTATION>
+        Ordered list
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="li">
+      <TITRE>Item</TITRE>
+      <DOCUMENTATION>
+        List item
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="dl">
+      <TITRE>Definition List</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;dl&gt; Element (or HTML Description List Element) encloses a list of pairs of terms and descriptions. Common uses for this element are to implement a glossary or to display metadata (a list of key-value pairs).
+        
+        Prior to HTML5, &lt;dl&gt; was known as a Definition List.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="dt">
+      <TITRE>Term</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;dt&gt; element (or HTML Definition Term Element) identifies a term in a definition list. This element can occur only as a child element of a &lt;dl&gt;. It is usually followed by a &lt;dd&gt; element; however, multiple &lt;dt&gt; elements in a row indicate several terms that are all defined by the immediate next &lt;dd&gt; element.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="dd">
+      <TITRE>Description</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;dd&gt; Element (or HTML Description Element) indicates the description of a term in a description list (&lt;dl&gt;) element. This element can occur only as a child element of a definition list and it must follow a &lt;dt&gt; element.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="table">
+      <TITRE>Table</TITRE>
+      <DOCUMENTATION>
+        Table
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="tr">
+      <TITRE>Table Row</TITRE>
+      <DOCUMENTATION>
+        Table row
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="td">
+      <TITRE>Table Cell</TITRE>
+      <DOCUMENTATION>
+        Table cell
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="colspan">
+        <TITRE>colspan</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="rowspan">
+        <TITRE>rowspan</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="align">
+        <TITRE>align</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="th">
+      <TITRE>Table Header Cell</TITRE>
+      <DOCUMENTATION>
+        Table header cell
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="colspan">
+        <TITRE>colspan</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="rowspan">
+        <TITRE>rowspan</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="align">
+        <TITRE>align</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="span">
+      <TITRE>Span</TITRE>
+      <DOCUMENTATION>
+        Inline style
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="style">
+        <TITRE>style</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="a">
+      <TITRE>Link/Anchor</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;a&gt; Element (or the HTML Anchor Element) defines a hyperlink, the named target destination for a hyperlink, or both.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="href">
+        <TITRE>href</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="strong">
+      <TITRE>Strong</TITRE>
+      <DOCUMENTATION>
+        Strong emphasis
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="em">
+      <TITRE>Emphasis</TITRE>
+      <DOCUMENTATION>
+        Emphasis
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="b">
+      <TITRE>Bold</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;b&gt; Element represents a span of text stylistically different from normal text, without conveying any special importance or relevance. It is typically used for keywords in a summary, product names in a review, or other spans of text whose typical presentation would be boldfaced. Another example of its use is to mark the lead sentence of each paragraph of an article.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="i">
+      <TITRE>Italic</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;i&gt; Element represents a range of text that is set off from the normal text for some reason, for example, technical terms, foreign language phrases, or fictional character thoughts. It is typically displayed in italic type.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="sup">
+      <TITRE>Superscript</TITRE>
+      <DOCUMENTATION>
+        The HTML Superscript Element (&lt;sup&gt;) defines a span of text that should be displayed, for typographic reasons, higher, and often smaller, than the main span of text.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="sub">
+      <TITRE>Subscript</TITRE>
+      <DOCUMENTATION>
+        The HTML Subscript Element (&lt;sub&gt;) defines a span of text that should be displayed, for typographic reasons, lower, and often smaller, than the main span of text.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="pre">
+      <TITRE>Preformatted</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;pre&gt; Element (or HTML Preformatted Text) represents preformatted text. Text within this element is typically displayed in a non-proportional font exactly as it is laid out in the file. Whitespaces inside this element are displayed as typed.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="code">
+      <TITRE>Code</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;code&gt; Element represents a fragment of computer code. By default, it is displayed in the browser's default monospace font.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="kbd">
+      <TITRE>Keyboard</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;kbd&gt; Element (or HTML Keyboard Input Element) represents user input and produces an inline element displayed in the browser's default monotype font.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="samp">
+      <TITRE>Sample</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;samp&gt; element is an element intended to identify sample output from a computer program. It is usually displayed in the browser's default monotype font.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="tt">
+      <TITRE>Teletype</TITRE>
+      <DOCUMENTATION>
+        This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
+        The HTML Teletype Text Element (&lt;tt&gt;) produces an inline element displayed in the browser's default monotype font. This element was intended to style text as it would display on a fixed width display, such as a teletype. It probably is more common to display fixed width type using the &lt;code&gt; element.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="ins">
+      <TITRE>Inserted</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;ins&gt; Element (or HTML Inserted Text) HTML represents a range of text that has been added to a document.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="del">
+      <TITRE>Deleted</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;del&gt; element (or HTML Deleted Text Element) represents a range of text that has been deleted from a document. This element is often (but need not be) rendered with strike-through text.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="var">
+      <TITRE>Var</TITRE>
+      <DOCUMENTATION>
+        The HTML Variable Element (&lt;var&gt;) represents a variable in a mathematical expression or a programming context.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="small">
+      <TITRE>Small</TITRE>
+      <DOCUMENTATION>
+        The HTML Small Element (&lt;small&gt;) makes the text font size one size smaller (for example, from large to medium, or from small to x-small) down to the browser's minimum font size. In HTML5, this element is repurposed to represent side-comments and small print, including copyright and legal text, independent of its styled presentation.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="big">
+      <TITRE>Big</TITRE>
+      <DOCUMENTATION>
+        This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="font">
+      <TITRE>Font</TITRE>
+      <DOCUMENTATION>
+        This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="basefont">
+      <TITRE>Base Font</TITRE>
+      <DOCUMENTATION>
+        This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="color">
+        <TITRE>color</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="face">
+        <TITRE>face</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="size">
+        <TITRE>size</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="br">
+      <TITRE>Line Break</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;br&gt; Element (or HTML Line Break Element) produces a line break in text (carriage-return). It is useful for writing a poem or an address, where the division of lines is significant.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="hr">
+      <TITRE>Horizontal Rule</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;hr&gt; element represents a thematic break between paragraph-level elements (for example, a change of scene in a story, or a shift of topic with a section). In previous versions of HTML, it represented a horizontal rule. It may still be displayed as a horizontal rule in visual browsers, but is now defined in semantic terms, rather than presentational terms.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="blockquote">
+      <TITRE>Quotation Block</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;blockquote&gt; Element (or HTML Block Quotation Element) indicates that the enclosed text is an extended quotation. Usually, this is rendered visually by indentation (see Notes for how to change it). A URL for the source of the quotation may be given using the cite attribute, while a text representation of the source can be given using the &lt;cite&gt; element.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="cite">
+        <TITRE>cite</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="object">
+      <TITRE>Object</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;object&gt; Element (or HTML Embedded Object Element) represents an external resource, which can be treated as an image, a nested browsing context, or a resource to be handled by a plugin.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="classid">
+        <TITRE>classid</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="codebase">
+        <TITRE>codebase</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="data">
+        <TITRE>data</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="codetype">
+        <TITRE>codetype</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="archive">
+        <TITRE>archive</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="standby">
+        <TITRE>standby</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="usemap">
+        <TITRE>usemap</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="param">
+      <TITRE>Parameter</TITRE>
+      <DOCUMENTATION>
+        param is used to supply a named property value
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="value">
+        <TITRE>value</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="valuetype">
+        <TITRE>valuetype</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="embed">
+      <TITRE>Embedded</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;embed&gt; Element represents an integration point for an external application or interactive content (in other words, a plug-in).
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="src">
+        <TITRE>src</TITRE>
+        <DOCUMENTATION>
+          The URL of the resource being embedded.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+        <DOCUMENTATION>
+          The MIME type to use to select the plug-in to instantiate.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+        <DOCUMENTATION>
+          The displayed height of the resource, in CSS pixels.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+        <DOCUMENTATION>
+          The displayed width of the resource, in CSS pixels.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="applet">
+      <TITRE>Java Applet</TITRE>
+      <DOCUMENTATION>
+        This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="codebase">
+        <TITRE>codebase</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="archive">
+        <TITRE>archive</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="code">
+        <TITRE>code</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="object">
+        <TITRE>object</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="alt">
+        <TITRE>alt</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="hspace">
+        <TITRE>hspace</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="vspace">
+        <TITRE>vspace</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="video">
+      <TITRE>Video</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;video&gt; element is used to embed video content. It may contain several video sources, represented using the src attribute or the &lt;source&gt; element; the browser will choose the most suitable one.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="src">
+        <TITRE>src</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="autoplay">
+        <TITRE>autoplay</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="controls">
+        <TITRE>controls</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="loop">
+        <TITRE>loop</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="source">
+      <TITRE>Source</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;source&gt; element is used to specify multiple media resources for &lt;picture&gt;, &lt;audio&gt; and &lt;video&gt; elements. It is an empty element. It is commonly used to serve the same media in multiple formats supported by different browsers.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="src">
+        <TITRE>src</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="audio">
+      <TITRE>Audio</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;audio&gt; element is used to embed sound content in documents. It may contain several audio sources, represented using the src attribute or the &lt;source&gt; element; the browser will choose the most suitable one.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="src">
+        <TITRE>src</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="autoplay">
+        <TITRE>autoplay</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="controls">
+        <TITRE>controls</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="loop">
+        <TITRE>loop</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="map">
+      <TITRE>Map</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;area&gt; element defines a hot-spot region on an image, and optionally associates it with a hypertext link. This element is used only within a &lt;map&gt; element.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="class">
+        <TITRE>class</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="style">
+        <TITRE>style</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="title">
+        <TITRE>title</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="area">
+      <TITRE>Area</TITRE>
+      <STRINGS_ATTRIBUT attribut="shape">
+        <TITRE>shape</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="coords">
+        <TITRE>coords</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="href">
+        <TITRE>href</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="nohref">
+        <TITRE>nohref</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="alt">
+        <TITRE>alt</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="form">
+      <TITRE>Form</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;form&gt; element represents a document section that contains interactive controls to submit information to a web server.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="action">
+        <TITRE>action</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="method">
+        <TITRE>method</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="enctype">
+        <TITRE>enctype</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="onsubmit">
+        <TITRE>onsubmit</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="onreset">
+        <TITRE>onreset</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="accept">
+        <TITRE>accept</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="accept-charset">
+        <TITRE>accept-charset</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="input">
+      <TITRE>Form Control</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;input&gt; element is used to create interactive controls for web-based forms.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name attribute is required for all but submit &amp; reset
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="value">
+        <TITRE>value</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="checked">
+        <TITRE>checked</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="disabled">
+        <TITRE>disabled</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="readonly">
+        <TITRE>readonly</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="size">
+        <TITRE>size</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="maxlength">
+        <TITRE>maxlength</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="src">
+        <TITRE>src</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="alt">
+        <TITRE>alt</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="usemap">
+        <TITRE>usemap</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="onselect">
+        <TITRE>onselect</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="onchange">
+        <TITRE>onchange</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="accept">
+        <TITRE>accept</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="select">
+      <TITRE>Option Selector</TITRE>
+      <DOCUMENTATION>
+        The HTML select (&lt;select&gt;) element represents a control that presents a menu of options. The options within the menu are represented by &lt;option&gt; elements, which can be grouped by &lt;optgroup&gt; elements. Options can be pre-selected for the user.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="size">
+        <TITRE>size</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="multiple">
+        <TITRE>multiple</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="disabled">
+        <TITRE>disabled</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="tabindex">
+        <TITRE>tabindex</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="onfocus">
+        <TITRE>onfocus</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="onblur">
+        <TITRE>onblur</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="onchange">
+        <TITRE>onchange</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="optgroup">
+      <TITRE>Option Group</TITRE>
+      <DOCUMENTATION>
+        In a Web form, the HTML &lt;optgroup&gt; element creates a grouping of options within a &lt;select&gt; element.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="disabled">
+        <TITRE>disabled</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="label">
+        <TITRE>label</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="option">
+      <TITRE>Option</TITRE>
+      <DOCUMENTATION>
+        In a Web form, the HTML &lt;option&gt; element is used to create a control representing an item within a &lt;select&gt;, an &lt;optgroup&gt; or a &lt;datalist&gt; HTML5 element.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="selected">
+        <TITRE>selected</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="disabled">
+        <TITRE>disabled</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="label">
+        <TITRE>label</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="value">
+        <TITRE>value</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="textarea">
+      <TITRE>Multi-line Text Field</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;textarea&gt; element represents a multi-line plain-text editing control.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="rows">
+        <TITRE>rows</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="cols">
+        <TITRE>cols</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="disabled">
+        <TITRE>disabled</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="readonly">
+        <TITRE>readonly</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="onselect">
+        <TITRE>onselect</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="onchange">
+        <TITRE>onchange</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="fieldset">
+      <TITRE>Control Group</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;fieldset&gt; element is used to group several controls as well as labels (&lt;label&gt;) within a web form.
+        
+        Only one legend element should occur in the content, and if present should only be preceded by whitespace.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="legend">
+      <TITRE>Legend</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;legend&gt; Element (or HTML Legend Field Element) represents a caption for the content of its parent &lt;fieldset&gt;.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="button">
+      <TITRE>Button</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;button&gt; Element represents a clickable button.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="value">
+        <TITRE>value</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="disabled">
+        <TITRE>disabled</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="iframe">
+      <TITRE>Inline Frame</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;iframe&gt; Element (or HTML inline frame element) represents a nested browsing context, effectively embedding another HTML page into the current page.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+  </STRINGS>
+</CONFIG_JAXE>
