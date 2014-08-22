@@ -2618,6 +2618,33 @@ Angle of arrow back lines to branches.
 <div class="documentation">Plot tics</div>
 <br>
 
+Choice between:<ul>
+<li>
+<a name="tic_0"></a>
+<h3>Element <span class="nomtitre">tic</span>
+</h3>
+
+
+<div class="documentation">
+The &lt;tic&gt; tag allows users to specify exact Tic positions and labels for each axis.
+In this version we only support level 0 tics (major tic).
+Each tic has associated with it a position and a label $current_tics is a reference to the current tick description hash.
+We add elements to an array in that has: ticspecs whose elements are 'pos' - the tick position and 'label' - the tic label.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Attribute <span class="nomattribut">location</span>:
+    <div class="indentation">required<br>type: <a href="#real_0">real</a>
+<br>
+</div>
+
+</div>
+
+<br>
+</li>
+</ul>
 Attribute <span class="nomattribut">location</span>:
     <div class="indentation">optional<br>
 
@@ -2783,7 +2810,7 @@ Attribute <span class="nomattribut">default</span>:
 
 </div>
 
-<br>Parents:<a href="#part_0">part</a>, <a href="#problem_0">problem</a>
+<br>Parents:<a href="#part_0">part</a>, <a href="#problem_0">problem</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -2883,7 +2910,7 @@ Pre-Processor Subroutine
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -2961,7 +2988,7 @@ Pre-Processor Subroutine
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -3144,7 +3171,7 @@ Background plot(s) for answer (function(x):xmin:xmax,function(x):xmin:xmax,x1:y1
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -4135,7 +4162,7 @@ Pre-Processor Subroutine
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -4186,7 +4213,7 @@ Attribute <span class="nomattribut">name</span>:
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -4275,7 +4302,7 @@ Attribute <span class="nomattribut">answerdisplay</span>:
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -5024,7 +5051,7 @@ Max Number Of Shown Foils
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlabel_0">randomlabel</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlabel_0">randomlabel</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -5109,7 +5136,7 @@ String to display for answer
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -5221,7 +5248,7 @@ Attribute <span class="nomattribut">libraries</span>:
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -5558,7 +5585,7 @@ Value restriction based on xs:string<ul>
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -5594,7 +5621,7 @@ Attribute <span class="nomattribut">format</span>:
 
 </div>
 
-<br>Parents:<a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>
+<br>Parents:<a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -5617,7 +5644,7 @@ Attribute <span class="nomattribut">style</span>:
 
 </div>
 
-<br>Parents:<a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>
+<br>Parents:<a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -5711,7 +5738,7 @@ Value restriction based on xs:string<ul>
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -5777,7 +5804,7 @@ Randomize Foil Order
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -5847,7 +5874,7 @@ Randomize Foil Order
 
 </div>
 
-<br>Parents:<a href="#matchresponse_0">matchresponse</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#matchresponse_0">matchresponse</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -5967,7 +5994,7 @@ Width of correct answer image
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -6026,7 +6053,7 @@ Initial Reaction
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -6088,7 +6115,7 @@ Value restriction based on xs:string<ul>
 
 </div>
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -6151,7 +6178,7 @@ The intervening Perl script is evaluated in the safe space and the return value 
 <br>
 
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -6200,7 +6227,7 @@ Value restriction based on xs:string<ul>
 
 </div>
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -6218,7 +6245,7 @@ The enclosed filename contains definitions for new tags.
 <br>
 
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -6246,7 +6273,7 @@ Attribute <span class="nomattribut"></span>:
 
 </div>
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -6264,7 +6291,7 @@ The enclosed filename contains Perl code to run in the safe space.
 <br>
 
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -6428,7 +6455,7 @@ Attribute <span class="nomattribut">content</span>:
 
 </div>
 
-<br>Parents:<a href="#problem_0">problem</a>
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -6572,7 +6599,7 @@ Printed text (optional)
 
 </div>
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -6767,7 +6794,7 @@ Test Condition
 
 </div>
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -7231,7 +7258,7 @@ Choice between:<ul>
 
 </div>
 
-<br>Parents:<a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#while_0">while</a>
+<br>Parents:<a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#while_0">while</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -7434,7 +7461,7 @@ Displayed Part Description
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#problem_0">problem</a>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#problem_0">problem</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -7447,7 +7474,7 @@ Displayed Part Description
 <br>
 
 
-<br>Parents:<a href="#problem_0">problem</a>
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -7460,7 +7487,7 @@ Displayed Part Description
 <br>
 
 
-<br>Parents:<a href="#problem_0">problem</a>
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -7567,7 +7594,7 @@ Choice between:<ul>
 
 </div>
 
-<br>Parents:<a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>
+<br>Parents:<a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -7734,7 +7761,7 @@ Choice between:<ul>
 
 </div>
 
-<br>Parents:<a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>
+<br>Parents:<a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -7966,7 +7993,7 @@ File Spec
 
 </div>
 
-<br>Parents:<a href="#problem_0">problem</a>
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -8178,7 +8205,7 @@ exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomi
 
 </div>
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -8292,7 +8319,7 @@ The width of the image in millimeters.
 
 </div>
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -8462,7 +8489,7 @@ Maximum Tags to Show
 
 </div>
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -8565,7 +8592,7 @@ Choice between:<ul>
 
 </div>
 
-<br>Parents:<a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#while_0">while</a>
+<br>Parents:<a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#while_0">while</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -8601,11 +8628,11 @@ Choice between:<ul>
 <br>
 
 
-<div class="documentation">TeX Only Block</div>
+<div class="documentation">Print Only Block</div>
 <br>
 
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#textfield_0">textfield</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#textfield_0">textfield</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -8746,7 +8773,7 @@ Test Condition
 
 </div>
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -8755,7 +8782,9 @@ Test Condition
 </h3>
 
 
-<div class="documentation">GnuPlot</div>
+<div class="documentation">
+The gnuplot LON-CAPA tag allows an author to design a plot which will be created programatically at the time when it is requested for display by a student. This is intended for use in homework problems where a distinct plot should be rendered for each student. It can be used in conjunction with a script tag to generate curve data for random plots.
+</div>
 <br>
 
 
@@ -8766,6 +8795,14 @@ Choice between:<ul>
 <h3>Element <span class="nomtitre">axis</span>
 </h3>type: <a href="#lonplot--axis_0">lonplot--axis</a>
 <br>
+
+
+<div class="documentation">
+The Plot Axes tag allows you to specify the domain and range of the data to display. It is closely tied with the Plot Ticks tags, which specify where the gridlines are drawn on the plot.
+</div>
+<br>
+
+
 <br>
 </li>
 <li>
@@ -8773,6 +8810,14 @@ Choice between:<ul>
 <h3>Element <span class="nomtitre">curve</span>
 </h3>type: <a href="#lonplot--curve_0">lonplot--curve</a>
 <br>
+
+
+<div class="documentation">
+The curve tag is where you set the data to be plotted by gnuplot.
+</div>
+<br>
+
+
 <br>
 </li>
 <li>
@@ -8780,6 +8825,15 @@ Choice between:<ul>
 <h3>Element <span class="nomtitre">key</span>
 </h3>type: <a href="#lonplot--key_0">lonplot--key</a>
 <br>
+
+
+<div class="documentation">
+The key tag causes a key to be drawn on the plot when it is generated. The key will contain an entry for each curve which has a name.
+The key is the color of the foreground of the plot, specified in the gnuplot tag.
+</div>
+<br>
+
+
 <br>
 </li>
 <li>
@@ -8787,6 +8841,14 @@ Choice between:<ul>
 <h3>Element <span class="nomtitre">label</span>
 </h3>type: <a href="#lonplot--label_0">lonplot--label</a>
 <br>
+
+
+<div class="documentation">
+The label tag allows the author to place text at any position on the plot. There may be many label tags on one plot and all the labels which fall within the plot will show. The color used will be to foreground color of the plot and the font will be the size specified for the plot, both of which are set in the gnuplot tag.
+</div>
+<br>
+
+
 <br>
 </li>
 <li>
@@ -9409,7 +9471,7 @@ Size of minor tic mark (plot coordinates)
 
 </div>
 
-<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlabel_0">randomlabel</a>, <a href="#bgimg_0">bgimg</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>
+<br>Parents:<a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlabel_0">randomlabel</a>, <a href="#bgimg_0">bgimg</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -10299,7 +10361,7 @@ string that will be used to describe the field when interfacing with humans.
 
 </div>
 
-<br>Parents:<a href="#problem_0">problem</a>
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -10484,6 +10546,31 @@ The inside text is LaTeX, and is converted to HTML (or MathML) on the fly.
 </div>
 <br>
 
+Can contain text<br>
+<div class="indentation">
+Attribute <span class="nomattribut">display</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">eval</span>:
+    <div class="indentation">optional<br>
+
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>on</tt>
+</li>
+
+<li>
+<tt>off</tt>
+</li>
+
+</ul>
+
+
+</div>
+
+</div>
 
 <br>Parents:<a href="#inlineText_0">inlineText</a>
 <br>
@@ -10558,6 +10645,10 @@ Expressions are displayed using the math expression display mechanism defined in
 Can contain text<br>
 <div class="indentation">
 Attribute <span class="nomattribut">style</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">display</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
 </div>
@@ -10993,7 +11084,7 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#hintgroup_0">hintgroup</a>, <a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#languageblock_0">languageblock</a>, <a href="#translated_0">translated</a>, <a href="#lang_0">lang</a>, <a href="#instructorcomment_0">instructorcomment</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#dataresponse_0">dataresponse</a>, <a href="#windowlink_0">windowlink</a>, <a href="#togglebox_0">togglebox</a>, <a href="#standalone_0">standalone</a>, <a href="#td_0">td</a>, <a href="#th_0">th</a>
+<br>Parents:<a href="#hintgroup_0">hintgroup</a>, <a href="#hintpart_0">hintpart</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#languageblock_0">languageblock</a>, <a href="#translated_0">translated</a>, <a href="#lang_0">lang</a>, <a href="#instructorcomment_0">instructorcomment</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#dataresponse_0">dataresponse</a>, <a href="#windowlink_0">windowlink</a>, <a href="#togglebox_0">togglebox</a>, <a href="#standalone_0">standalone</a>, <a href="#div_0">div</a>, <a href="#td_0">td</a>, <a href="#th_0">th</a>
 <br>
 <hr>
 
@@ -11103,7 +11194,7 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#text_2">text</a>, <a href="#noscript_0">noscript</a>, <a href="#body_0">body</a>, <a href="#div_0">div</a>, <a href="#dd_0">dd</a>, <a href="#blockquote_0">blockquote</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#map_0">map</a>, <a href="#form_1">form</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
+<br>Parents:<a href="#text_2">text</a>, <a href="#noscript_0">noscript</a>, <a href="#body_0">body</a>, <a href="#dd_0">dd</a>, <a href="#blockquote_0">blockquote</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#map_0">map</a>, <a href="#form_1">form</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
 <br>
 <hr>
 
@@ -11249,7 +11340,7 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#text_2">text</a>, <a href="#div_0">div</a>, <a href="#li_0">li</a>, <a href="#dd_0">dd</a>, <a href="#span_0">span</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
+<br>Parents:<a href="#text_2">text</a>, <a href="#li_0">li</a>, <a href="#dd_0">dd</a>, <a href="#span_0">span</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
 <br>
 <hr>
 
@@ -11763,6 +11854,13 @@ Choice between:<ul>
 <h3>Element <span class="nomtitre">body</span>
 </h3>
 
+
+<div class="documentation">
+The HTML &lt;body&gt; element represents the content of an HTML document. There is only one &lt;body&gt; element in a document.
+</div>
+<br>
+
+
 <div class="indentation">
 Choice between:<ul>
 <li>
@@ -11796,7 +11894,8 @@ Attribute <span class="nomattribut">onunload</span>:
 
 
 <div class="documentation">
-Level 1 header
+Level 1 header (most important).
+A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
 </div>
 <br>
 
@@ -11813,6 +11912,7 @@ Level 1 header
 
 <div class="documentation">
 Level 2 header
+A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
 </div>
 <br>
 
@@ -11829,6 +11929,7 @@ Level 2 header
 
 <div class="documentation">
 Level 3 header
+A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
 </div>
 <br>
 
@@ -11845,6 +11946,7 @@ Level 3 header
 
 <div class="documentation">
 Level 4 header
+A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
 </div>
 <br>
 
@@ -11861,6 +11963,7 @@ Level 4 header
 
 <div class="documentation">
 Level 5 header
+A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
 </div>
 <br>
 
@@ -11877,6 +11980,7 @@ Level 5 header
 
 <div class="documentation">
 Level 6 header
+A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
 </div>
 <br>
 
@@ -11891,7 +11995,7 @@ Level 6 header
 
 
 <div class="documentation">
-HTML Division
+The HTML &lt;div&gt; element (or HTML Document Division Element) is the generic container for flow content, which does not inherently represent anything. It can be used to group elements for styling purposes (using the class or id attributes), or because they share attribute values, such as lang. It should be used only when no other semantic element (such as &lt;article&gt; or &lt;nav&gt;) is appropriate.
 </div>
 <br>
 
@@ -11899,11 +12003,175 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#blockText_0">blockText</a>
+<a href="#text_2">text</a>
 <br>
 </li>
 <li>
-<a href="#inlineText_0">inlineText</a>
+<a href="#allow_0">allow</a>
+<br>
+</li>
+<li>
+<a href="#block_0">block</a>
+<br>
+</li>
+<li>
+<a href="#customresponse_0">customresponse</a>
+<br>
+</li>
+<li>
+<a href="#display_0">display</a>
+<br>
+</li>
+<li>
+<a href="#displayduedate_0">displayduedate</a>
+<br>
+</li>
+<li>
+<a href="#displaytitle_0">displaytitle</a>
+<br>
+</li>
+<li>
+<a href="#endpartmarker_0">endpartmarker</a>
+<br>
+</li>
+<li>
+<a href="#essayresponse_0">essayresponse</a>
+<br>
+</li>
+<li>
+<a href="#externalresponse_0">externalresponse</a>
+<br>
+</li>
+<li>
+<a href="#formularesponse_0">formularesponse</a>
+<br>
+</li>
+<li>
+<a href="#gnuplot_0">gnuplot</a>
+<br>
+</li>
+<li>
+<a href="#imageresponse_0">imageresponse</a>
+<br>
+</li>
+<li>
+<a href="#import_0">import</a>
+<br>
+</li>
+<li>
+<a href="#matchresponse_0">matchresponse</a>
+<br>
+</li>
+<li>
+<a href="#mathresponse_0">mathresponse</a>
+<br>
+</li>
+<li>
+<a href="#functionplotresponse_0">functionplotresponse</a>
+<br>
+</li>
+<li>
+<a href="#meta_0">meta</a>
+<br>
+</li>
+<li>
+<a href="#notsolved_0">notsolved</a>
+<br>
+</li>
+<li>
+<a href="#numericalresponse_0">numericalresponse</a>
+<br>
+</li>
+<li>
+<a href="#optionresponse_0">optionresponse</a>
+<br>
+</li>
+<li>
+<a href="#organicresponse_0">organicresponse</a>
+<br>
+</li>
+<li>
+<a href="#organicstructure_0">organicstructure</a>
+<br>
+</li>
+<li>
+<a href="#parameter_0">parameter</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#part_0">part</a>
+<br>
+</li>
+<li>
+<a href="#postanswerdate_0">postanswerdate</a>
+<br>
+</li>
+<li>
+<a href="#preduedate_0">preduedate</a>
+<br>
+</li>
+<li>
+<a href="#problemtype_0">problemtype</a>
+<br>
+</li>
+<li>
+<a href="#radiobuttonresponse_0">radiobuttonresponse</a>
+<br>
+</li>
+<li>
+<a href="#randomlabel_0">randomlabel</a>
+<br>
+</li>
+<li>
+<a href="#randomlist_0">randomlist</a>
+<br>
+</li>
+<li>
+<a href="#rankresponse_0">rankresponse</a>
+<br>
+</li>
+<li>
+<a href="#reactionresponse_0">reactionresponse</a>
+<br>
+</li>
+<li>
+<a href="#script_0">script</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
+<br>
+</li>
+<li>
+<a href="#solved_0">solved</a>
+<br>
+</li>
+<li>
+<a href="#startpartmarker_0">startpartmarker</a>
+<br>
+</li>
+<li>
+<a href="#stringresponse_0">stringresponse</a>
+<br>
+</li>
+<li>
+<a href="#tex_0">tex</a>
+<br>
+</li>
+<li>
+<a href="#while_0">while</a>
+<br>
+</li>
+<li>
+<a href="#window_0">window</a>
+<br>
+</li>
+<li>
+<a href="#dataresponse_0">dataresponse</a>
 <br>
 </li>
 </ul>
@@ -13954,6 +14222,16 @@ Attribute <span class="nomattribut">width</span>:
 </div>
 Attribute <span class="nomattribut">allowfullscreen</span>:
     <div class="indentation">optional<br>
+
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>allowfullscreen</tt>
+</li>
+
+</ul>
+
+
 </div>
 
 </div>
@@ -14570,6 +14848,8 @@ Attribute <span class="nomattribut">allowfullscreen</span>:
 <a href="#textline_0">textline</a>
 <br>
 <a href="#th_0">th</a>
+<br>
+<a href="#tic_0">tic</a>
 <br>
 <a href="#title_1">title</a>
             (under gnuplot)

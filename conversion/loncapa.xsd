@@ -1025,6 +1025,21 @@
     <xs:annotation>
       <xs:documentation>Plot tics</xs:documentation>
     </xs:annotation>
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element name="tic">
+        <xs:annotation>
+          <xs:documentation>
+            The &lt;tic&gt; tag allows users to specify exact Tic positions and labels for each axis.
+            In this version we only support level 0 tics (major tic).
+            Each tic has associated with it a position and a label $current_tics is a reference to the current tick description hash.
+            We add elements to an array  in that has: ticspecs whose elements are 'pos' - the tick position and 'label' - the tic label.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+          <xs:attribute name="location" type="real" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
     <xs:attribute default="border" name="location">
       <xs:annotation>
         <xs:documentation>
@@ -3512,14 +3527,41 @@
   </xs:element>
   <xs:element name="gnuplot">
     <xs:annotation>
-      <xs:documentation>GnuPlot</xs:documentation>
+      <xs:documentation>
+        The gnuplot LON-CAPA tag allows an author to design a plot which will be created programatically at the time when it is requested for display by a student. This is intended for use in homework problems where a distinct plot should be rendered for each student. It can be used in conjunction with a script tag to generate curve data for random plots.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="axis" type="lonplot--axis"/>
-        <xs:element name="curve" type="lonplot--curve"/>
-        <xs:element name="key" type="lonplot--key"/>
-        <xs:element name="label" type="lonplot--label"/>
+        <xs:element name="axis" type="lonplot--axis">
+          <xs:annotation>
+            <xs:documentation>
+              The Plot Axes tag allows you to specify the domain and range of the data to display. It is closely tied with the Plot Ticks tags, which specify where the gridlines are drawn on the plot.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="curve" type="lonplot--curve">
+          <xs:annotation>
+            <xs:documentation>
+              The curve tag is where you set the data to be plotted by gnuplot.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="key" type="lonplot--key">
+          <xs:annotation>
+            <xs:documentation>
+              The key tag causes a key to be drawn on the plot when it is generated. The key will contain an entry for each curve which has a name.
+              The key is the color of the foreground of the plot, specified in the gnuplot tag.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="label" type="lonplot--label">
+          <xs:annotation>
+            <xs:documentation>
+              The label tag allows the author to place text at any position on the plot. There may be many label tags on one plot and all the labels which fall within the plot will show. The color used will be to foreground color of the plot and the font will be the size specified for the plot, both of which are set in the gnuplot tag.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
         <xs:element name="xtics" type="lonplot--xtics"/>
         <xs:element name="ytics" type="lonplot--ytics"/>
         <xs:element name="title" type="lonplot--title"/>
