@@ -293,9 +293,7 @@ sub pathfield {
    unless ($name) {
       $name=$id;
    }
-   my $output="<ul id='$id' name='$name' class='lcpathrow'>";
-   $output.="</ul>";
-   return $output;
+   return "<ul id='$id' name='$name' class='lcpathrow'></ul>".&hidden_field($id.'_path','');
 }
 
 

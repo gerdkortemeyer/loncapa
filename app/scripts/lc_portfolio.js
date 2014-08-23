@@ -22,8 +22,9 @@ function init_datatable() {
                 }
     } );
 
+   var noCache = parent.no_cache_value();
    $('#portfoliolist').dataTable( {
-      "sAjaxSource" : '/portfolio?command=listdirectory',
+      "sAjaxSource" : '/portfolio?'+$('#portfolio').serialize()+'&command=listdirectory&noCache='+noCache,
       "bStateSave": true,
       "oLanguage" : {
          "sUrl" : "/datatable_i14n"
@@ -41,6 +42,7 @@ function init_datatable() {
          { "bVisible": false }
       ]
     } );
+    adjust_framesize();
 }
 
 function reload_listing() {
@@ -50,14 +52,23 @@ function reload_listing() {
 
 function load_path() {
    var noCache = parent.no_cache_value();
-   $.getJSON( '/portfolio?command=listpath', { "noCache": noCache }, function( data ) {
+   var path='/';
+   $.getJSON( '/portfolio', $('#portfolio').serialize()+"&command=listpath&noCache="+noCache , function( data ) {
        var newpath = "<ul id='pathrow' name='pathrow' class='lcpathrow'>";
        $.each(data,function(index,subdir) {
-            newpath+="<li class='lcpathitem'><a href='#' id='dir"+subdir+"'>"+subdir+"</a></li>";
+            path+=subdir+'/';
+            newpath+="<li class='lcpathitem'><a href='#' id='dir"+subdir+"' onClick='set_path(\""+path+"\")'>"+subdir+"</a></li>";
        });
        newpath+="</ul>";
        $("#pathrow").replaceWith(newpath);
+       adjust_framesize();
    });
+}
+
+function set_path(path) {
+   $('#pathrow_path').val(path);
+   reload_listing();
+   load_path();
 }
 
 function fnShowHide( iCol ) {
