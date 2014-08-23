@@ -1,5 +1,17 @@
 $(document).ready(function() {
 
+    init_datatable();
+
+    $('#newbutton').click(function() {
+        parent.add_to_courselist();
+    });
+
+    $('#modifybutton').click(function() {
+        modify_selected();
+    });
+} );
+
+function init_datatable() {
     $('#portfoliolist tr').click( function() {
                 if ( $(this).hasClass('row_selected') ) {
                         $(this).removeClass('row_selected');
@@ -8,7 +20,7 @@ $(document).ready(function() {
                 }
     } );
 
-    $('#portfoliolist').dataTable( {
+   $('#portfoliolist').dataTable( {
       "sAjaxSource" : '/portfolio?command=listdirectory',
       "bStateSave": true,
       "oLanguage" : {
@@ -27,15 +39,12 @@ $(document).ready(function() {
          { "bVisible": false }
       ]
     } );
+}
 
-    $('#newbutton').click(function() {
-        parent.add_to_courselist();
-    });
-
-    $('#modifybutton').click(function() {
-        modify_selected();
-    });
-} );
+function reload_listing() {
+   $('#portfoliolist').dataTable().fnDestroy();
+   init_datatable();
+}
 
 function fnShowHide( iCol ) {
    var oTable = $('#portfoliolist').dataTable();
