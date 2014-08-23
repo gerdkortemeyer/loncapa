@@ -212,7 +212,7 @@ sub inputfield {
       unless ($default) { $default=$defaultdomain; }
       return &selectfield($id,$name,$domain_short,$domain_name,$default);
    } elsif ($type eq 'portfoliopath') {
-      return &pathfield();
+      return &pathfield($id,$name);
    } elsif ($type eq 'language') {
       my ($default,$language_short,$language_name)=&language_choices($default);
       return &selectfield($id,$name,$language_short,$language_name,$default);
@@ -289,8 +289,11 @@ sub math_editor {
 # ==== Generate a path input field
 #
 sub pathfield {
-   my $output="<ul class='lcpathrow'>";
-   $output.="<li class='lcpathitem'><a href='#'>Test 1</a></li><li class='lcpathitem'><a href='#'>Test 2</a></li><li class='lcpathitem'><a href='#'>Test 3</a></li>";
+   my ($id,$name,$mode,$default)=@_;
+   unless ($name) {
+      $name=$id;
+   }
+   my $output="<ul id='$id' name='$name' class='lcpathrow'>";
    $output.="</ul>";
    return $output;
 }

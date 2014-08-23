@@ -2,6 +2,8 @@ $(document).ready(function() {
 
     init_datatable();
 
+    load_path();
+
     $('#newbutton').click(function() {
         parent.add_to_courselist();
     });
@@ -44,6 +46,18 @@ function init_datatable() {
 function reload_listing() {
    $('#portfoliolist').dataTable().fnDestroy();
    init_datatable();
+}
+
+function load_path() {
+   var noCache = parent.no_cache_value();
+   $.getJSON( '/portfolio?command=listpath', { "noCache": noCache }, function( data ) {
+       var newpath = "<ul id='pathrow' name='pathrow' class='lcpathrow'>";
+       $.each(data,function(index,subdir) {
+            newpath+="<li class='lcpathitem'><a href='#' id='dir"+subdir+"'>"+subdir+"</a></li>";
+       });
+       newpath+="</ul>";
+       $("#pathrow").replaceWith(newpath);
+   });
 }
 
 function fnShowHide( iCol ) {

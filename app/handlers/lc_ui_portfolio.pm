@@ -107,7 +107,7 @@ sub listpath {
    $path=~s/^\/+//;
    $path=~s/\/+$//;
    my @splitpath=split(/\//,$path);
-   return &Apache::lc_json_utils::perl_to_json({'path' => \@splitpath}); 
+   return &Apache::lc_json_utils::perl_to_json(\@splitpath); 
 }
 
 sub handler {
