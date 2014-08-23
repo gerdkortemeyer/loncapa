@@ -68,6 +68,7 @@ sub listdirectory {
        my $sort_first_date=0;
        my $display_last_date=&mt('Never');
        my $sort_last_date=0;
+       my $filename='';
        if ($file->{'type'} eq 'file') {
 # It's a file, so we have dates, etc
           if ($file->{'metadata'}->{'current_version'}) {
@@ -77,18 +78,21 @@ sub listdirectory {
              ($display_last_date,$sort_last_date)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{$version}));
           }
+          $filename=$file->{'filename'};
        } else {
 # It's a directory
           $display_first_date='';
           $display_last_date='';
           $sort_first_date=-1;
           $sort_last_date=-1;
+          my $fullpath=$path.$file->{'filename'}.'/';
+          $filename='<a href="#" onClick="set_path(\''.$fullpath.'\')">'.$file->{'filename'}."</a>";
        }
 # Add the output line
        push(@{$output->{'aaData'}},
             ['&nbsp;',
              &Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}),
-             $file->{'filename'},
+             $filename,
              'Title',
              'State',
              $version,
@@ -114,7 +118,7 @@ sub handler {
    my $r = shift;
    $r->content_type('application/json; charset=utf-8');
    my %content=&Apache::lc_entity_sessions::posted_content();
-   my $path=&determine_path($content{'path'});
+   my $path=&determine_path($content{'pathrow_path'});
    if ($content{'command'} eq 'listdirectory') {
 # Do a directory listing
       $r->print(&listdirectory($path));
