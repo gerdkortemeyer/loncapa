@@ -46,6 +46,8 @@ use utf8;
 
 'Path' => 'Pfad',
 
+'Parent directory' => 'Übergeordnetes Verzeichnis',
+
 'Start of course contents' => 'Anfang des Kursinhaltes',
 
 'End of course contents' => 'Ende des Kursinhaltes',

@@ -61,10 +61,14 @@ sub listdirectory {
 # Okay, we are allowed
    my $output;
    $output->{'aaData'}=[];
-   push(@{$output->{'aaData'}},
+# Generate the level up link, if allowed
+   my $uppath=$path;
+   $uppath=~s/[^\/]+\/$//;
+   if ($uppath=~/^[^\/]+\//) {
+      push(@{$output->{'aaData'}},
             ['&nbsp;',
              &Apache::lc_xml_utils::file_icon('special','dir_up'),
-             '..',
+             '<i><a href="#" onClick="set_path(\''.$uppath.'\')">'.&mt('Parent directory').'</a></i>',
              'Title',
              'State',
              undef,
@@ -73,8 +77,8 @@ sub listdirectory {
              '',
              -2
             ]
-   );
-
+      );
+   }
    my $dir_list=&Apache::lc_entity_urls::full_dir_list($path);
    foreach my $file (@{$dir_list}) {
        my $version='-';
