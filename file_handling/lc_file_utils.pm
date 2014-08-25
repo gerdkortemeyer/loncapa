@@ -33,6 +33,9 @@ my $extension;
 
 sub file_icon {
    my ($type,$name)=@_;
+   if ($type eq 'special') {
+      if ($name eq 'dir_up') { return 'dir_up'; }
+   }
    if ($type eq 'directory') { return 'folder_closed'; }
    unless ($extension) { &load_extension(); }
    my ($ext)=($name=~/\.(\w+)$/);

@@ -61,6 +61,20 @@ sub listdirectory {
 # Okay, we are allowed
    my $output;
    $output->{'aaData'}=[];
+   push(@{$output->{'aaData'}},
+            ['&nbsp;',
+             &Apache::lc_xml_utils::file_icon('special','dir_up'),
+             '..',
+             'Title',
+             'State',
+             undef,
+             '',
+             -2,
+             '',
+             -2
+            ]
+   );
+
    my $dir_list=&Apache::lc_entity_urls::full_dir_list($path);
    foreach my $file (@{$dir_list}) {
        my $version='-';
@@ -96,9 +110,9 @@ sub listdirectory {
              'Title',
              'State',
              $version,
-             ($sort_first_date?'<time datetime="'.$sort_first_date.'">':'').$display_first_date.($sort_first_date?'</time>':''),
+             ($sort_first_date>0?'<time datetime="'.$sort_first_date.'">':'').$display_first_date.($sort_first_date>0?'</time>':''),
              $sort_first_date,
-             ($sort_last_date?'<time datetime="'.$sort_last_date.'">':'').$display_last_date.($sort_last_date?'</time>':''),
+             ($sort_last_date>0?'<time datetime="'.$sort_last_date.'">':'').$display_last_date.($sort_last_date>0?'</time>':''),
              $sort_last_date
             ]
            );
@@ -110,10 +124,15 @@ sub listpath {
    my ($path)=@_;
    $path=~s/^\/+//;
    $path=~s/\/+$//;
-#   my @splitpath=split(/\//,$path);
+   my @path=split(/\//,$path);
    my @splitpath;
-   foreach my $dir (split(/\//,$path)) {
+   foreach my $dir (@path) {
       push(@splitpath,{ $dir => $dir });
+   }
+   $splitpath[0]->{$path[0]}=&Apache::lc_ui_utils::get_domain_name($path[0]);
+   my ($firstname,$middlename,$lastname,$suffix)=&Apache::lc_entity_users::full_name($path[1],$path[0]);
+   if ($lastname) {
+      $splitpath[1]->{$path[1]}=$lastname.', '.$firstname.' '.$middlename;
    }
    return &Apache::lc_json_utils::perl_to_json(\@splitpath); 
 }

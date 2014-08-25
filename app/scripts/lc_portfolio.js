@@ -57,8 +57,13 @@ function load_path() {
        var newpath = "<ul id='pathrow' name='pathrow' class='lcpathrow'>";
        $.each(data,function(index,subdir) {
             $.each(subdir,function(key,value) {
+               var disval=value;
+               if (disval.length>15) {
+                  disval=disval.substring(0,12)+" ...";
+               }
+               disval.replace("'","\\'");
                path+=key+'/';
-               newpath+="<li class='lcpathitem'><a href='#' id='dir"+key+"' onClick='set_path(\""+path+"\")'>"+value+"</a></li>";
+               newpath+="<li class='lcpathitem'><a href='#' id='dir"+key+"' onClick='set_path(\""+path+"\")' title='"+value+"'>"+disval+"</a></li>";
             });
        });
        newpath+="</ul>";

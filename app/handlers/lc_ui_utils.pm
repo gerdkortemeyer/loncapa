@@ -50,6 +50,14 @@ sub clean_domain {
    return $domain;
 }
 
+# ==== Another domain name
+#
+sub get_domain_name {
+   my ($short)=@_;
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
+   return $connection_table->{'cluster_table'}->{'domains'}->{$short}->{'name'};
+}
+
 # ==== The domain choices
 #
 sub domain_choices {
