@@ -56,8 +56,10 @@ function load_path() {
    $.getJSON( '/portfolio', $('#portfolio').serialize()+"&command=listpath&noCache="+noCache , function( data ) {
        var newpath = "<ul id='pathrow' name='pathrow' class='lcpathrow'>";
        $.each(data,function(index,subdir) {
-            path+=subdir+'/';
-            newpath+="<li class='lcpathitem'><a href='#' id='dir"+subdir+"' onClick='set_path(\""+path+"\")'>"+subdir+"</a></li>";
+            $.each(subdir,function(key,value) {
+               path+=key+'/';
+               newpath+="<li class='lcpathitem'><a href='#' id='dir"+key+"' onClick='set_path(\""+path+"\")'>"+value+"</a></li>";
+            });
        });
        newpath+="</ul>";
        $("#pathrow").replaceWith(newpath);

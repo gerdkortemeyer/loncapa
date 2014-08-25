@@ -110,7 +110,11 @@ sub listpath {
    my ($path)=@_;
    $path=~s/^\/+//;
    $path=~s/\/+$//;
-   my @splitpath=split(/\//,$path);
+#   my @splitpath=split(/\//,$path);
+   my @splitpath;
+   foreach my $dir (split(/\//,$path)) {
+      push(@splitpath,{ $dir => $dir });
+   }
    return &Apache::lc_json_utils::perl_to_json(\@splitpath); 
 }
 
