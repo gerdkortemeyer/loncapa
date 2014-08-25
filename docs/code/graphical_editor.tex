@@ -1,0 +1,74 @@
+\chapter{Graphical editor}\index{graphical editor}\index{Daxe}
+
+\section{Introduction}
+
+One of the goals of the new version is to make it easier for new users to start with LON-CAPA. An important task for new users is to create new content. The current graphical editor, called "colorful editor", has one major issue: it requires sending the document to the server with a button for each change in the structure. It is also unable to handle copy/paste actions. This has led many users to edit documents with the source editor instead.
+
+The goal of the new editor is to be user-friendly, which implies that user interactions are dynamic and well integrated with the browser. To reach this goal, the code for the editor has to be moved to the client-side, which requires a rewrite in a different programming language. Also, edition of mixed LON-CAPA and HTML elements should be seamless.
+
+A popular request is a WYSIWYG editor. LON-CAPA elements can be described as high-level building blocks for a program, which even include Perl scripts, and as such cannot be edited in a WYSIWYG way. HTML elements, used for static content, can on the other hand be edited in a WYSIWYG way, but this can lower the quality of the documents served to students, make it difficult to update the content without dealing with the presentation, and prevent updates of the language. The chosen balance for the new graphical editor is to display most LON-CAPA elements in a WYSIWYM way (as was done in the colorful editor), but use more WYSIWYG displays with HTML elements, while still trying to promote semantic editing when it is not cumbersome for authors.
+An example of the balance is the use of WYSIWYG styles like bold and italic, with the absence of styles like underline and font size in the toolbar, and the addition of HTML5 section elements to attach semantics to blocks of text.
+
+
+\section{Choice of tools}
+
+After a general search for tools to create the new editor, two GPL-compatible tools were fully evaluated: CKEditor and Daxe.
+
+CKEditor is a light-weight WYSIWYG HTML editor written in Javascript which is easily extensible. The edition is based on the contenteditable attribute, which means that the browser handles a lot of the editing process. The toolbar can be extended with new buttons, and a little library makes it easy to create new dialogs to insert elements. Widgets were recently introduced to create non-HTML element displays.
+
+Daxe is also a light-weight graphical editor, but it can handle any XML document (not just HTML). It is meant to be configured for a given XML language with an XML schema, a configuration file, and code for element displays. The displays can be WYSIWYG, but most built-in element displays are WYSIWYM instead of WYSIWYG. Daxe is written in Dart converted automatically into Javascript (Daxe stands for DArt Xml Editor), and element displays are also written in Dart (although they can use Javascript if necessary).
+
+Some of the criteria used to chose between these two tools were:
+\begin{itemize}
+\item Maintenance cost. A new developer has to be able to understand and extend or fix the code easily.
+\item Extensibility: how easy is it to add a new element, and new language constraints ?
+\item UI Customizability: it should be easy to change the user interface, from cursor position to global layout.
+\item Ability to handle WYSIWYG and WYSIWYM displays.
+\item Possibility to reuse some built-in displays.
+\item LON-CAPA developer experience with the tool.
+\end{itemize}
+
+To sum it up, Daxe wins (more or less) on all points. Dart is a better programming language for large projects, the fact that Daxe is basing the language constraints on an XML schema makes it easier to add new elements and other language constraints, Daxe (which is not using the contenteditable attribute) can allow precise UI changes at a low level, it has handled a mix of WYSIWYG and WYSIWYM displays from the start, and it was created by the author of these lines (Damien). CKEditor's only advantage is to already have more WYSIWYG displays for HTML elements.
+
+
+\section{Development}
+
+\subsection{Tasks}
+
+Development for the new graphical editor can be described by the following tasks:
+\begin{itemize}
+\item Creation and Improvement of the XML schema, including reference documentation in English for each element.
+\item Creation of a Daxe configuration file for the LON-CAPA language, including localized documentation for each element.
+\item Improvement of Daxe, in particular for HTML WYSIWYG displays. These changes can benefit people outside of LON-CAPA.
+\item Development of a LON-CAPA extension of Daxe, with custom menus, toolbar items, and element displays.
+\end{itemize}
+A parallel task that is not strictly development of the editor is the conversion of current LON-CAPA documents into well-formed, mostly valid, XML documents.
+
+\subsection{Git paths}
+
+In the git, the schema for the current version of LON-CAPA is at \texttt{conversion/old\_loncapa.xsd} (a caveat: LON-CAPA documents are currently not XML and cannot be validated). The new schema is at \texttt{conversion/loncapa.xsd}. Document conversion is done with \texttt{conversion/clean.bash}.
+
+Daxe is located at \texttt{xml/editor/daxe}. The LON-CAPA web application is at \texttt{xml/editor/loncapa\_daxe}. It links to Daxe with a relative path in \texttt{xml/editor/loncapa\_daxe/pubspec.xml}. The schema it uses is at \texttt{xml/editor/loncapa\_daxe/web/config/loncapa.xsd}, which should be the same as \texttt{conversion/loncapa.xsd}. The configuration file is at \texttt{xml/editor/loncapa\_daxe/web/config/loncapa\_config.xml}.
+
+\subsection{Edition and launch in Dart Editor}
+
+The Dart editor, while not necessary, is very useful for Dart development. This editor currently (August 2014) has two major bugs on Ubuntu/KUbuntu, so it is good to know the following workarounds:
+\begin{itemize}
+\item It links to libudev.so.0, so a symbolic link can help if a different version is installed:
+  \texttt{sudo ln -s /lib/x86\_64-linux-gnu/libudev.so.1 /lib/x86\_64-linux-gnu/libudev.so.0}
+\item It crashes with KDE's (default) oxygen theme, so the following workaround is needed to start it when using oxygen:
+  \texttt{GTK2\_RC\_FILES=/usr/share/themes/Raleigh/gtk-2.0/gtkrc DartEditor}
+\end{itemize}
+
+Other Linux distros are not supported. While it is possible to compile the Dart SDK, compiling Dartium is a lot harder and it is harder to debug without Dartium.
+
+Once Dart Editor is started, the directories \texttt{xml/editor/daxe} and \texttt{xml/editor/loncapa\_daxe} should be opened with the menu \texttt{File-Open existing Folder...}. They will reopen automatically the next time Dart Editor is opened.
+
+The \texttt{Run-Manage Launches...} menu can be used to configure launches with Dartium and other browsers (Dartium is a version of Chromium with an enabled Dart VM). Dartium is good for development, but testing with other browsers (which requires an automatic conversion into Javascript) is also necessary.
+The following text should be used in the "HTML file" field:
+\texttt{/loncapa\_daxe/web/loncapa\_daxe.html?config=config/loncapa\_config.xml}
+This will start the editor with an empty file. A file can also be edited by specifying its relative path (from the web directory) in the URL:
+\texttt{/loncapa\_daxe/web/loncapa\_daxe.html?file=test.problem\&config=config/loncapa\_config.xml}
+
+Note that there is a bug in the Dart SDK 1.5 that prevents the use of Daxe in Javascript (Dart Issue 19888). It is fixed in v1.6 (which is not out yet as of August 25 2014). We could work around it with Javascript, but waiting for the new version is easier. Since early 2013 (before version 1), there has been some issues with the conversion from Dart to Javascript, but Google has been fast to fix them when they were reported at \url{https://code.google.com/p/dart/issues/list}.
+
