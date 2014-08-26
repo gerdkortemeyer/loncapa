@@ -2525,7 +2525,6 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="foilgroup" type="matchresponse--foilgroup"/>
         <xs:element ref="hintgroup"/>
-        <xs:element ref="matchresponse"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>

@@ -2505,7 +2505,6 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="foilgroup" type="matchresponse--foilgroup"/>
         <xs:element ref="hintgroup"/>
-        <xs:element ref="matchresponse"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
@@ -3904,45 +3903,6 @@
         <xs:annotation>
           <xs:documentation>
             Size of minor tic mark (plot coordinates)
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="dataresponse">
-    <xs:annotation>
-      <xs:documentation>
-        Query for text or numbers.
-        Advanced type of response that implements a simple data storage and needs an input tag, such as textline, to work correctly.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:element ref="textline"/>
-        <xs:element ref="textfield"/>
-        <xs:element ref="hiddensubmission"/>
-        <xs:element ref="hiddenline"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            internal name for the value. It will have the part id and response id added to it.
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="type" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            type of data stored in this response field. It should be one of the types supported by parameter.html
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="display" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            string that will be used to describe the field when interfacing with humans.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>

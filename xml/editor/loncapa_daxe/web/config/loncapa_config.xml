@@ -135,7 +135,6 @@
         <MENU_INSERTION nom="mathresponse"/>
         <MENU_INSERTION nom="radiobuttonresponse"/>
         <MENU_INSERTION nom="rankresponse"/>
-        <MENU_INSERTION nom="dataresponse"/>
       </MENU>
     </MENU>
     <MENU nom="Scripts">
@@ -313,7 +312,6 @@
     <AFFICHAGE_ELEMENT element="translated" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="lang" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="instructorcomment" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="dataresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="windowlink" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="togglebox" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="standalone" type="lcdblock"/>
@@ -2231,34 +2229,6 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="ylabel">
       <TITRE>Ylabel</TITRE>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="dataresponse">
-      <TITRE>Response: data</TITRE>
-      <DOCUMENTATION>
-        Query for text or numbers.
-        Advanced type of response that implements a simple data storage and needs an input tag, such as textline, to work correctly.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-        <DOCUMENTATION>
-          internal name for the value. It will have the part id and response id added to it.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="type">
-        <TITRE>type</TITRE>
-        <DOCUMENTATION>
-          type of data stored in this response field. It should be one of the types supported by parameter.html
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="display">
-        <TITRE>display</TITRE>
-        <DOCUMENTATION>
-          string that will be used to describe the field when interfacing with humans.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="windowlink">
       <TITRE>Window Link</TITRE>
