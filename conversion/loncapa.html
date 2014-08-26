@@ -2763,7 +2763,7 @@ Attribute <span class="nomattribut">default</span>:
 </h3>
 
 
-<div class="documentation">Response: Numerical</div>
+<div class="documentation">Query for one or several numbers, possibly with units.</div>
 <br>
 
 
@@ -2863,7 +2863,7 @@ Pre-Processor Subroutine
 </h3>
 
 
-<div class="documentation">Response: Formula</div>
+<div class="documentation">Query for a formula.</div>
 <br>
 
 
@@ -2941,7 +2941,7 @@ Pre-Processor Subroutine
 </h3>
 
 
-<div class="documentation">Response: Function Plot</div>
+<div class="documentation">Query for the drawing of a function.</div>
 <br>
 
 
@@ -4000,7 +4000,8 @@ Index/Name
 
 
 <div class="documentation">
-stringresponse implements a string answer. An internal textline tag is necessary for the student&rsquo;s response to go in. It can check the string for either case or order.
+Query for a string.
+An internal textline tag is necessary for the student&rsquo;s response to go in. It can check the string for either case or order.
 </div>
 <br>
 
@@ -4115,7 +4116,9 @@ Pre-Processor Subroutine
 </h3>
 
 
-<div class="documentation">Response: Essay</div>
+<div class="documentation">
+Query for a long text or a line, possibly with spell checking.
+</div>
 <br>
 
 
@@ -4167,7 +4170,7 @@ Attribute <span class="nomattribut">name</span>:
 
 
 <div class="documentation">
-externalresponse is an advanced type of response tag that implements the ability to have an external program grade a response. It expects either a textline or textfield inside the tag.
+Query for a long text or a line, sent to an external program for grading.
 </div>
 <br>
 
@@ -4933,7 +4936,7 @@ Argument Array
 
 
 <div class="documentation">
-imageresponse implements a image-click answer. imageresponse tags should contain a foilgroup tag, which contain foil tags.
+Query for the selection of an image in a list.
 </div>
 <br>
 
@@ -5002,7 +5005,8 @@ Max Number Of Shown Foils
 
 
 <div class="documentation">
-Custom Response is a way to have a problem graded based on an algorithm. The use of this response type is generally discouraged, since the responses will not be analyzable by the LON-CAPA statistics tools.
+Query for text without any constraint (any character is allowed). A script analyzes the answer to grade it automatically.
+The use of this response type is generally discouraged, since the responses will not be analyzable by the LON-CAPA statistics tools.
 </div>
 <br>
 
@@ -5074,7 +5078,8 @@ String to display for answer
 
 
 <div class="documentation">
-Math response problems use a cas system to evaluate the student response. Which computer algebra system is to be used is specified in the cas argument of the mathresponse tag; both Maxima and R are supported.
+Query for text that is evaluated with a script written in a computer algebra system language.
+Which computer algebra system is to be used is specified in the cas attribute; both Maxima and R are supported.
 </div>
 <br>
 
@@ -5420,10 +5425,13 @@ Attribute <span class="nomattribut">value</span>:
 
 
 <div class="documentation">
-Response: Select from Options
+Query for a choice for each given statement.
 
-optionresponse implements a &ldquo;select from these choices&rdquo; style question. The choices are specified by the instructor and use the foil structure tags, with this additional addition:
-foilgroup is required to have an options attribute which should be a perl list of possible options for the student.
+Option Response problems present foils to the student with drop-down boxes. The student can select the matching choice for the foils from a list of choices. Optionally, the foils may be bundled into Concept Groups and the system will select one foil from each group to display to the student.
+
+By default, the list of options is presented in front of the foils. Using the optional drawoptionlist element, the list of options can be embedded into the foil. 
+
+The foilgroup is required to have an options attribute which should be a perl list of possible options for the student.
 </div>
 <br>
 
@@ -5574,9 +5582,8 @@ Attribute <span class="nomattribut">style</span>:
 
 
 <div class="documentation">
-Response: One of N statements
-
-radiobuttonresponse implements a true/false question with one correct answer. It uses the foil structure tags, but the value of a foil can only be true, false, or unused.
+Query for a single choice among several statements.
+The value of the foils can only be true, false, or unused.
 </div>
 <br>
 
@@ -5667,7 +5674,9 @@ Value restriction based on xs:string<ul>
 </h3>
 
 
-<div class="documentation">Response: Rank Values</div>
+<div class="documentation">
+Query to sort a list of items in the right order.
+</div>
 <br>
 
 
@@ -5733,7 +5742,9 @@ Randomize Foil Order
 </h3>
 
 
-<div class="documentation">Response: Match Two Lists</div>
+<div class="documentation">
+Query for matches betweens items from two lists.
+</div>
 <br>
 
 
@@ -5803,7 +5814,9 @@ Randomize Foil Order
 </h3>
 
 
-<div class="documentation">Response: Organic Chemical Structure</div>
+<div class="documentation">
+Query for an organic chemical structure with a molecular editor.
+</div>
 <br>
 
 
@@ -5923,7 +5936,9 @@ Width of correct answer image
 </h3>
 
 
-<div class="documentation">Response: Chemical Reaction</div>
+<div class="documentation">
+Query for a chemical reaction.
+</div>
 <br>
 
 
@@ -9284,15 +9299,16 @@ Size of minor tic mark (plot coordinates)
 <a name="dataresponse_0"></a>
 <h3>Element <span class="nomtitre">dataresponse</span>
 </h3>
-Can contain text<br>
-<div class="indentation">
 
 
 <div class="documentation">
-dataresponse is an advanced type of response tag that implements a simple data storage and needs an input tag, such as textline, to work correctly.
+Query for text or numbers.
+Advanced type of response that implements a simple data storage and needs an input tag, such as textline, to work correctly.
 </div>
 <br>
 
+Can contain text<br>
+<div class="indentation">
 Choice between:<ul>
 <li>
 <a href="#text_2">text</a>
@@ -9955,6 +9971,14 @@ Attribute <span class="nomattribut">bgcolor</span>:
 <a name="displayweight_0"></a>
 <h3>Element <span class="nomtitre">displayweight</span>
 </h3>
+
+
+<div class="documentation">
+Displays the number of points awarded for this problem or problem part.
+</div>
+<br>
+
+
 <br>Parents:<a href="#inlineText_0">inlineText</a>
 <br>
 <hr>

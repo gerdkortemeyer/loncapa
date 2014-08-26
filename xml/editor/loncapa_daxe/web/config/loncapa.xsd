@@ -1032,7 +1032,7 @@
             The &lt;tic&gt; tag allows users to specify exact Tic positions and labels for each axis.
             In this version we only support level 0 tics (major tic).
             Each tic has associated with it a position and a label $current_tics is a reference to the current tick description hash.
-            We add elements to an array  in that has: ticspecs whose elements are 'pos' - the tick position and 'label' - the tic label.
+            We add elements to an array in that has: ticspecs whose elements are 'pos' - the tick position and 'label' - the tic label.
           </xs:documentation>
         </xs:annotation>
         <xs:complexType mixed="true">
@@ -1129,7 +1129,7 @@
   </xs:element>
   <xs:element name="numericalresponse">
     <xs:annotation>
-      <xs:documentation>Response: Numerical</xs:documentation>
+      <xs:documentation>Query for one or several numbers, possibly with units.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -1164,7 +1164,7 @@
   </xs:element>
   <xs:element name="formularesponse">
     <xs:annotation>
-      <xs:documentation>Response: Formula</xs:documentation>
+      <xs:documentation>Query for a formula.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -1195,7 +1195,7 @@
   </xs:element>
   <xs:element name="functionplotresponse">
     <xs:annotation>
-      <xs:documentation>Response: Function Plot</xs:documentation>
+      <xs:documentation>Query for the drawing of a function.</xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -1733,7 +1733,8 @@
   <xs:element name="stringresponse">
     <xs:annotation>
       <xs:documentation>
-        stringresponse implements a string answer. An internal textline tag is necessary for the student’s response to go in. It can check the string for either case or order.
+        Query for a string.
+        An internal textline tag is necessary for the student’s response to go in. It can check the string for either case or order.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -1788,7 +1789,9 @@
   </xs:element>
   <xs:element name="essayresponse">
     <xs:annotation>
-      <xs:documentation>Response: Essay</xs:documentation>
+      <xs:documentation>
+        Query for a long text or a line, possibly with spell checking.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -1806,7 +1809,7 @@
   <xs:element name="externalresponse">
     <xs:annotation>
       <xs:documentation>
-        externalresponse is an advanced type of response tag that implements the ability to have an external program grade a response. It expects either a textline or textfield inside the tag.
+        Query for a long text or a line, sent to an external program for grading.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -2134,7 +2137,7 @@
   <xs:element name="imageresponse">
     <xs:annotation>
       <xs:documentation>
-        imageresponse implements a image-click answer. imageresponse tags should contain a foilgroup tag, which contain foil tags.
+        Query for the selection of an image in a list.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -2162,7 +2165,8 @@
   <xs:element name="customresponse">
     <xs:annotation>
       <xs:documentation>
-        Custom Response is a way to have a problem graded based on an algorithm. The use of this response type is generally discouraged, since the responses will not be analyzable by the LON-CAPA statistics tools.
+        Query for text without any constraint (any character is allowed). A script analyzes the answer to grade it automatically.
+        The use of this response type is generally discouraged, since the responses will not be analyzable by the LON-CAPA statistics tools.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -2189,7 +2193,8 @@
   <xs:element name="mathresponse">
     <xs:annotation>
       <xs:documentation>
-        Math response problems use a cas system to evaluate the student response. Which computer algebra system is to be used is specified in the cas argument of the mathresponse tag; both Maxima and R are supported.
+        Query for text that is evaluated with a script written in a computer algebra system language.
+        Which computer algebra system is to be used is specified in the cas attribute; both Maxima and R are supported.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -2342,10 +2347,13 @@
   <xs:element name="optionresponse">
     <xs:annotation>
       <xs:documentation>
-        Response: Select from Options
+        Query for a choice for each given statement.
         
-        optionresponse implements a “select from these choices” style question. The choices are specified by the instructor and use the foil structure tags, with this additional addition:
-        foilgroup is required to have an options attribute which should be a perl list of possible options for the student.
+        Option Response problems present foils to the student with drop-down boxes. The student can select the matching choice for the foils from a list of choices. Optionally, the foils may be bundled into Concept Groups and the system will select one foil from each group to display to the student.
+        
+        By default, the list of options is presented in front of the foils. Using the optional drawoptionlist element, the list of options can be embedded into the foil. 
+        
+        The foilgroup is required to have an options attribute which should be a perl list of possible options for the student.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -2416,9 +2424,8 @@
   <xs:element name="radiobuttonresponse">
     <xs:annotation>
       <xs:documentation>
-        Response: One of N statements
-        
-        radiobuttonresponse implements a true/false question with one correct answer. It uses the foil structure tags, but the value of a foil can only be true, false, or unused.
+        Query for a single choice among several statements.
+        The value of the foils can only be true, false, or unused.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -2460,7 +2467,9 @@
   </xs:element>
   <xs:element name="rankresponse">
     <xs:annotation>
-      <xs:documentation>Response: Rank Values</xs:documentation>
+      <xs:documentation>
+        Query to sort a list of items in the right order.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2488,7 +2497,9 @@
   </xs:element>
   <xs:element name="matchresponse">
     <xs:annotation>
-      <xs:documentation>Response: Match Two Lists</xs:documentation>
+      <xs:documentation>
+        Query for matches betweens items from two lists.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2517,7 +2528,9 @@
   </xs:element>
   <xs:element name="organicresponse">
     <xs:annotation>
-      <xs:documentation>Response: Organic Chemical Structure</xs:documentation>
+      <xs:documentation>
+        Query for an organic chemical structure with a molecular editor.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2571,7 +2584,9 @@
   </xs:element>
   <xs:element name="reactionresponse">
     <xs:annotation>
-      <xs:documentation>Response: Chemical Reaction</xs:documentation>
+      <xs:documentation>
+        Query for a chemical reaction.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -3895,12 +3910,13 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="dataresponse">
+    <xs:annotation>
+      <xs:documentation>
+        Query for text or numbers.
+        Advanced type of response that implements a simple data storage and needs an input tag, such as textline, to work correctly.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
-      <xs:annotation>
-        <xs:documentation>
-          dataresponse is an advanced type of response tag that implements a simple data storage and needs an input tag, such as textline, to work correctly.
-        </xs:documentation>
-      </xs:annotation>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
         <xs:element ref="textline"/>
@@ -4163,7 +4179,13 @@
       <xs:attribute name="bgcolor" type="xs:string"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="displayweight"/>
+  <xs:element name="displayweight">
+    <xs:annotation>
+      <xs:documentation>
+        Displays the number of points awarded for this problem or problem part.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
   <xs:element name="displaystudentphoto">
     <xs:complexType>
       <xs:attribute name="width" type="xs:int"/>
