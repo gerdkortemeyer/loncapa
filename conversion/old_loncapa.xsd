@@ -95,7 +95,10 @@
   </xs:complexType>
   <xs:complexType name="imageresponse--conceptgroup">
     <xs:annotation>
-      <xs:documentation>Collection of similar foils</xs:documentation>
+      <xs:documentation>
+        Collection of similar foils.
+        When a problem is displayed, only one of the contained foils is selected for display.
+      </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="imageresponse--foil"/>
@@ -133,7 +136,7 @@
       </xs:documentation>
     </xs:annotation>
   </xs:complexType>
-  <xs:complexType mixed="true" name="imageresponse--rectangle">
+  <xs:simpleType name="imageresponse--rectangle">
     <xs:annotation>
       <xs:documentation>
         Rectangular area in image (contains coordinate pairs).
@@ -141,12 +144,26 @@
         The delimited text specifies a rectangular area that is correct, specified as (x1,y1)-(x2,y2), where x1, x2, y1, and y2 are number corresponding to the x and y coordinates of two corners that define a rectangle which specifies where the right answer for this foil is located on the image. For example, (0,0)-(100,200) will specify that a rectangle 100 pixels wide and 200 pixels tall, situated in the upper left of the image, is correct. At least one rectangle is required; multiple rectangles may be specified.
       </xs:documentation>
     </xs:annotation>
-  </xs:complexType>
-  <xs:complexType mixed="true" name="imageresponse--polygon">
+    <xs:union memberTypes="perl">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="\(.+\)-\(.+\)"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="imageresponse--polygon">
     <xs:annotation>
       <xs:documentation>Polygonal area in image (contains coordinate list)</xs:documentation>
     </xs:annotation>
-  </xs:complexType>
+    <xs:union memberTypes="perl">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="\(.+\)(-\(.+\))+"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
   <xs:complexType mixed="true" name="imageresponse--text">
     <xs:annotation>
       <xs:documentation>
@@ -193,7 +210,10 @@
   </xs:complexType>
   <xs:complexType name="optionresponse--conceptgroup">
     <xs:annotation>
-      <xs:documentation>Collection of similar foils</xs:documentation>
+      <xs:documentation>
+        Collection of similar foils.
+        When a problem is displayed, only one of the contained foils is selected for display.
+      </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="optionresponse--foil"/>
@@ -302,7 +322,10 @@
   </xs:complexType>
   <xs:complexType name="radiobuttonresponse--conceptgroup">
     <xs:annotation>
-      <xs:documentation>Collection of similar foils</xs:documentation>
+      <xs:documentation>
+        Collection of similar foils.
+        When a problem is displayed, only one of the contained foils is selected for display.
+      </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="radiobuttonresponse--foil"/>
@@ -337,7 +360,7 @@
     <xs:attribute name="value">
       <xs:annotation>
         <xs:documentation>
-          Correct Option
+          Correct Option (true, false, or unused).
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
@@ -373,7 +396,10 @@
   </xs:complexType>
   <xs:complexType name="rankresponse--conceptgroup">
     <xs:annotation>
-      <xs:documentation>Collection of similar foils</xs:documentation>
+      <xs:documentation>
+        Collection of similar foils.
+        When a problem is displayed, only one of the contained foils is selected for display.
+      </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="rankresponse--foil"/>
@@ -433,7 +459,10 @@
   </xs:complexType>
   <xs:complexType name="matchresponse--conceptgroup">
     <xs:annotation>
-      <xs:documentation>Collection of similar foils</xs:documentation>
+      <xs:documentation>
+        Collection of similar foils.
+        When a problem is displayed, only one of the contained foils is selected for display.
+      </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="matchresponse--foil"/>
@@ -529,7 +558,7 @@
   </xs:complexType>
   <xs:complexType name="matchresponse--itemgroup">
     <xs:annotation>
-      <xs:documentation>Item to Match</xs:documentation>
+      <xs:documentation>Items to Match</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded">
       <xs:element name="item" type="matchresponse--item"/>
@@ -1162,11 +1191,18 @@
         <xs:annotation>
           <xs:documentation>
             Incorrect Answers
+            When switched into exam ("bubble sheet") mode, LON-CAPA usually create wrong answers automatically. To specify wrong answers yourself, you need to provide an array of incorrect values in this attribute. You need to provide at least as many incorrects as 1 less than the number of bubbles on the exam. You can provide more if you want to.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="unit" type="xs:string"/>
-      <xs:attribute name="format" type="xs:string"/>
+      <xs:attribute name="format" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            You can format the number displayed by the computer as the answer. For instance, if the answer is one-third, the computer will display that it computed ".333333333" as the answer. If you'd like to shorten that, you can use the Format field. Format strings like "2E" (without the quotes) will display three significant digits in scientific notation. Format strings like "2f" will display two digits after the decimal point. Format strings like "2s" will round a number to 2 significant digits.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="preprocess" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -1308,13 +1344,23 @@
   <xs:element name="spline">
     <xs:annotation>
       <xs:documentation>
-        Spline.
         At least one spline is necessary for a graph problem. These splines are what will be adjusted and analyzed to solve the problem.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="index" type="xs:int"/>
+      <xs:attribute name="index" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            This is the label assigned to the spline. In general, it's simplest just to label them A, B, C etc.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="order">
+        <xs:annotation>
+          <xs:documentation>
+            This determines the number of Control Points on the spline. For example, selecting '3' means there will be 3 points on the spline that can be moved, as well as 3 points off the spline that will control the slope. 
+          </xs:documentation>
+        </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:int">
             <xs:minInclusive value="2"/>
@@ -1326,6 +1372,7 @@
         <xs:annotation>
           <xs:documentation>
             Initial x-value
+            "Initial x-value" and "Initial y-value" determine where the left most Control Point will be.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -1333,20 +1380,21 @@
         <xs:annotation>
           <xs:documentation>
             Initial y-value
+            "Initial x-value" and "Initial y-value" determine where the left most Control Point will be.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="scalex" type="real">
         <xs:annotation>
           <xs:documentation>
-            Scale x
+            This determines the right most location of the Control Points (on the spline). To figure out where this point will be, add 'Initial x-value' to 'Scale x'.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="scaley" type="real">
         <xs:annotation>
           <xs:documentation>
-            Scale y
+            This determines the distance (in the y-direction) between the Control Points on the spline, and the ones that control the slope.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -1356,7 +1404,7 @@
     <xs:annotation>
       <xs:documentation>
         Background Function Plot.
-        This places a static curve on the graph of your choosing.
+        This places a static curve on the graph of your choosing. It can be labeled, moveable or fixed, and any color desired. Only the right hand side of the function you want displayed is necessary. For example, entering x+2 will display the line y=x+2. The syntax must be syntax recognized by GeoGebra.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -1406,8 +1454,7 @@
   <xs:element name="plotobject">
     <xs:annotation>
       <xs:documentation>
-        Plot Object.
-        This places a point in the applet.
+        This places a point in the applet. Generally intended to be used with Vectors to create problems involving Free-Body Diagrams or any other points that vectors (or arrows) connect to and from.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -1425,8 +1472,7 @@
   <xs:element name="plotvector">
     <xs:annotation>
       <xs:documentation>
-        Plot Vector.
-        This creates a vector (or arrow) in the applet.
+        This creates a vector (or arrow) in the applet. Generally intended to be used with Objects to create problems involving Free-Body Diagrams or to establish connections between Objects.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -1463,7 +1509,9 @@
   </xs:element>
   <xs:element name="functionplotruleset">
     <xs:annotation>
-      <xs:documentation>Function Plot Rule Set</xs:documentation>
+      <xs:documentation>
+        This is where the rules are defined. These rules will determine whether or not an entered answer is correct or not. If there are no rules, any answer will be deemed correct. If there is more than one rule, when an answer is submitted, the server will analyze them in order until one of them is broken (of course, if it's a correct answer, it will go through all of them and return a green box). In such an event, any subsequent rules will be ignored. If conditional hints related to these rules are added, only the first broken rule's hint will be shown, even if all rules are broken.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -1491,22 +1539,23 @@
   <xs:element name="functionplotrule">
     <xs:annotation>
       <xs:documentation>
-        Function Plot Graph Rule
-        Used to evaluate graph problems.
+        Function Plot Graph Rule.
+        
+        Used to create a rule that determines whether or not a submitted graph is correct. In general, it takes the form of testing the function, its integral, or its first or second derivative over a given set of x-values. The test can be to see if it equals, is greater than, or less than a specified value. Anywhere a number is needed, a variable can also be used.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="index" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Index/Name
+            This is an internal label for the rule. Something must be entered here, and it must be different for each rule. This same value will be used to add a conditional hint.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute default="0" name="derivativeorder">
         <xs:annotation>
           <xs:documentation>
-            Function
+            This determines what the server will be testing. For instance, choose 'First derivative' causes the server to evaluate the derivative of the entered answer over the given domain.
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
@@ -1521,14 +1570,16 @@
       <xs:attribute name="xinitial" type="real">
         <xs:annotation>
           <xs:documentation>
-            Initial x-value
+            Initial x-value.
+            A value must be entered for one of "Initial x-value" and "Initial x-value label". Either choose a numerical value for x (the first option), or choose the beginning of the submitted answer, the end, or a previously chosen named point.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="xinitiallabel">
         <xs:annotation>
           <xs:documentation>
-            Initial x-value label
+            Initial x-value label.
+            A value must be entered for one of "Initial x-value" and "Initial x-value label". Either choose a numerical value for x (the first option), or choose the beginning of the submitted answer, the end, or a previously chosen named point.
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
@@ -1541,14 +1592,16 @@
       <xs:attribute name="xfinal" type="real">
         <xs:annotation>
           <xs:documentation>
-            Final x-value (optional)
+            Final x-value (optional).
+            This determines the end of the domain over which the rule examines. To test only a single point (the initial value), leave "Final x-value" and "Final x-value label" blank. If a label is entered, such as 'positive', the point at which the rule fails will be given this special label. This label can then be used in subsequent rules as an 'Initial x-value label'.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="xfinallabel">
         <xs:annotation>
           <xs:documentation>
-            Final x-value label (optional)
+            Final x-value label (optional).
+            This determines the end of the domain over which the rule examines. To test only a single point (the initial value), leave "Final x-value" and "Final x-value label" blank. If a label is entered, such as 'positive', the point at which the rule fails will be given this special label. This label can then be used in subsequent rules as an 'Initial x-value label'.
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
@@ -1560,18 +1613,25 @@
       <xs:attribute name="minimumlength" type="real">
         <xs:annotation>
           <xs:documentation>
-            Minimum length for range (optional)
+            Minimum length for range (optional).
+            This tests that the difference between the initial and final x-values are at least a certain length apart. This is only useful if there is at least one label.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="maximumlength" type="real">
         <xs:annotation>
           <xs:documentation>
-            Maximum length for range (optional)
+            Maximum length for range (optional).
+            This tests that the difference between the initial and final x-values are at most a certain length apart. This is only useful if there is at least one label.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute default="eq" name="relationship">
+        <xs:annotation>
+          <xs:documentation>
+            The heart of the rule. This choice determines whether the chosen 'function' is greater than, less than, equal to, etc. a certain 'value'.
+          </xs:documentation>
+        </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="eq"/>
@@ -1583,8 +1643,20 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute default="undef" name="value" type="xs:string"/>
-      <xs:attribute name="percenterror" type="real"/>
+      <xs:attribute default="undef" name="value" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Enter the number you wish to compare to. It is also possible to choose 'not defined', in the event the answer should not have a value for the given domain. Within the value argument, the function itself can be evaluated using &amp;fpr_f(), its derivative using &amp;fpr_dfdx(), and its second derivative using &amp;fpr_d2fdx2(). This allows for a comparison of two points on the graph. The value of a previously defined label can be retrieved using the function &amp;fpr_val(), e.g., &amp;fpr_val('positive'). Previous defined values from script blocks can also be retrieved as normal variables, e.g., $x.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="percenterror" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            This allows for a margin of error in the y-direction. For instance, if the rule requires that the derivative be equal to 5, the server will accept values close enough to 5 that are within the percent error defined here. Note: Choosing 10% would not mean that the answer is correct as long as it is within the range 4.5-5.5. Instead, the percent corresponds to the total size of the graph. For the function itself, the 'percent error' is multiplied by the ymax-ymin; for the first derivative, it's multiplied by (ymax-ymin)/(xmax-xmin); for the second derivative, it's multiplied by (ymax-ymin)/(xmax-xmin)2; and for the integral, it's multiplied by (ymax-ymin)*(xmax-xmin).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="functionplotvectorrule">
@@ -1862,7 +1934,9 @@
   </xs:element>
   <xs:element name="hintgroup">
     <xs:annotation>
-      <xs:documentation>Hint</xs:documentation>
+      <xs:documentation>
+        The first part of the hint is the condition, which includes a specification of the foil(s) and foil answer(s) required to trigger the hint. The answers specified in the hint condition are compared with the user's submission, and if the condition is met, the hint action included in the conditional hint block will be executed (for example this could be the display of a block of text). You can set multiple hint conditions for a particular problem. Hint conditions are identified by a name. The corresponding hint action includes this hint condition name in the "on" parameter. When a hint condition evaluates to true, the corresponding hint action is triggered. Besides providing hint actions within &lt; hintpart on="NAME" &gt; &lt; /hintpart &gt; tags for each named (NAME) hint condition, a hint can be designated for display if none of the conditional hints evaluate to true. The default hint is not displayed if the conditions were met for any of the conditional hints. The default hint action is included between &lt; hintpart on="default" &gt; &lt; /hintpart &gt; tags.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -1924,7 +1998,11 @@
   </xs:element>
   <xs:element name="formulahint">
     <xs:annotation>
-      <xs:documentation>Formula Hint Condition</xs:documentation>
+      <xs:documentation>
+        Formula Hint Condition
+        
+        The formulahint tag takes three parameters: answer, name, and samples. The "name" is the unique name given to the hint condition. The formula answer for which you wish to provide conditional is included in the answer parameter. The samples parameter includes the points (or range of points) over which sampling of the student's submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples parameter of the formula reponse tag itself. The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt; hintpart &gt; tag. 
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -1957,7 +2035,11 @@
   </xs:element>
   <xs:element name="numericalhint">
     <xs:annotation>
-      <xs:documentation>Numerical Hint Condition</xs:documentation>
+      <xs:documentation>
+        Numerical Hint Condition
+        
+        The numericalhint tag takes four parameters: answer, name, unit and format. The "name" is the unique name given to the hint condition. The numerical answer for which you wish to provide conditional is included in the answer parameter. Student submission of that answer in combination with the "unit" parameter in the hint condition will trigger the hint action specified in the &lt; hintpart &gt; tag. 
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2011,7 +2093,11 @@
   </xs:element>
   <xs:element name="optionhint">
     <xs:annotation>
-      <xs:documentation>Option Response Hint Condition</xs:documentation>
+      <xs:documentation>
+        Option Response Hint Condition
+        
+        There are two types of option response hint conditions: one for standalone foils and one for concept groups. In both cases the option hint tag includes two parameters: answer and name for standalone foils, and concept and name for foils grouped together in a concept group. For the answer parameter, the names and submitted values for each of the foils that are being included in the hint condition are provided in a hash, i.e., in the format: ('Foil1'= &gt; 'True','Foil2'= &gt; 'False'). In the case of a conditional hint for a concept group, the format of the concept parameter is also a hash that links the name of each concept group included in the hint condition to either 'correct' or 'incorrect' - e.g., &lt; optionhint concept="('buoyancy'= &gt; 'correct','density'= &gt; 'correct')" name="fluids" / &gt; If 'correct' is specified for a named concept then when the conditional hint is evaluated answers for each of the foils selected by a student must be correct for the hint action to be triggered. If anything other than 'correct' is provided in the concept hash in the optionhint tag then then students answers will be compared with the set answers for the foils in the concept group and as long as at least one answer is incorrect (i.e., the concept group was not correctly answered) then the corresponding hint action will be triggered. 
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2031,7 +2117,15 @@
   </xs:element>
   <xs:element name="radiobuttonhint">
     <xs:annotation>
-      <xs:documentation>Radiobutton Hint Condition</xs:documentation>
+      <xs:documentation>
+        Radiobutton Hint Condition
+        
+        The radiobutton hint tag takes two parameters: answer and name. The name is the name of the hint condition, and the answer is an array. The first element of the array will be 'foil'; the remaining elements are the names of the foils that you require to have been checked by the student for the hint to be displayed. For example, if you create a radiobutton response problem with six foils named: granite, gabbro, gneiss, shale, sandstone and schist, and you want your hint named: igneous to be displayed when either granite or basalt had been checked your radiobutton hint would be as follows:
+        
+        &lt;radiobuttonhint answer="('foil','granite','gabbro')" name="igneous"&gt;&lt;/radiobuttonhint&gt;
+        
+        In order to trigger display of this hint you also need to create a &lt; hintpart &gt; &lt; /hintpart &gt; block that will include a textblock that contains the text of the actual hint.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2056,7 +2150,11 @@
   </xs:element>
   <xs:element name="stringhint">
     <xs:annotation>
-      <xs:documentation>String Hint Condition</xs:documentation>
+      <xs:documentation>
+        String Hint Condition
+        
+        The string hint takes two parameters: answer and name. The name is the name of the hint condition, and the answer is a text string. The type parameter allows you to choose between case sensitive, case insensitive, and case insensitive in any order.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -2326,7 +2424,7 @@
       <xs:attribute name="addchars" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Click-On Texts (comma sep)
+            Comma-separated list of characters or words that can be inserted with a click.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -2428,7 +2526,53 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="format" type="xs:string"/>
+      <xs:attribute name="format" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Allows you to control the format of the due date. This is an arbitrary string that can contain any of the following formatting items:
+            
+            %a Replaced by the abbreviated weekday name according to the current locale.
+            %A Replaced by the full weekday name according to the current locale.
+            %b The abbreviated month name according to the current locale.
+            %B The full month name according to the current locale.
+            %c The preferred date and time representation for the current locale (the default format string is just this).
+            %C The century number as a two digit integer
+            %d The day of the month as a decimal number. Leading zeroes are shown for single digit day numbers.
+            %D Equivalent to %m/%d/%y
+            %e Like %d but a leadnig zero is replaced by a space.
+            %F Equivalent to %Y-%m-%d
+            %G The four digit year number.
+            %g The two digit year numbger.
+            %H The hour as a two digit number in the range 00 thorugh 23.
+            %I The hour as a two digit number in the range 00 through 12.
+            %j The day your the year in the range 001 through 366.
+            %k The hour (24 hour clock), single digits are preceded by a blank.
+            %l Like %k but using a 12 hour clock.
+            %m The month as a two digit decimal number in the range 01 through 12.
+            %M The minute as a two digit decimal number in the range 00 through 59.
+            %n A newline character.
+            %p AM or PM depending on the time value.
+            %P am or pm.
+            %r The time in am or pm notation.
+            %R Time in 24 hour notatinon (%H:%M). See also %T below.
+            %s Number of seconds since midnight of January 1, 1970.
+            %S The second as a decimal number int the range 00 through 59.
+            %t A horizontal tab character.
+            %T The time in 24 hour notation (%H:%M:%S).
+            %u Day of the week as a decimal number with Monday as 1.
+            %U The week number of the current year in the range 00 through 53. Week 1 is the week containing the first Sunday of the year.
+            %V Same as %U but week 1 is the first week with at least 4 days, with Monday being the first day of a week.
+            %w Day of the week as a decimal integer in the range 0 through 7, Sunday is 0.
+            %W Week number of the current year in the range 00 through 53, where the first Monday of the year is the first day of week 01.
+            %x The preferred date notation in the current locale without the time.
+            %X The preferred time notation in the current locale without the date.
+            %y The year as a decimal number without the century (range 00 through 99).
+            %Y The year as a decimal number including the century.
+            %% A % character.
+            %+ Date and time in the form returned by the Unix date command. 
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="displaytitle">
@@ -2616,7 +2760,7 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string" use="required"/>
       <xs:attribute name="initial" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -2645,7 +2789,13 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="molecule" type="xs:string"/>
+      <xs:attribute name="molecule" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            JME string
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute default="reaction" name="options">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -3369,15 +3519,20 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute default="exam" name="for" type="xs:string">
+      <xs:attribute default="exam" name="for">
         <xs:annotation>
           <xs:documentation>
             When used as type(s)
             
-            List of values among:
+            Comma-separated list of values among:
             exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
           </xs:documentation>
         </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry)(\s*,\s*(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry))*"/>
+          </xs:restriction>
+        </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
   </xs:element>
@@ -3391,7 +3546,6 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="imageresponse"/>
         <xs:element name="labelgroup" type="randomlabel--labelgroup">
           <xs:annotation>
             <xs:documentation>
@@ -4367,7 +4521,7 @@
       </xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:element name="m" type="xs:string">
+  <xs:element name="m">
     <xs:annotation>
       <xs:documentation>
         The inside text is LaTeX, and is converted to HTML (or MathML) on the fly.
@@ -4396,6 +4550,15 @@
     <xs:annotation>
       <xs:documentation>
         Typesets a number formatted in scientific notation, fixed point, fixed point with commas, fixed point with commas and dollar sign, or in significant digits.
+        
+        &lt;num format="2E"&gt;31454678&lt;/num&gt; results in 3.15 x 10^7
+        &lt;num format="2f"&gt;31454678&lt;/num&gt; results in 31454678.00
+        &lt;num format="4g"&gt;31454678&lt;/num&gt; results in 3.145 x 10^7
+        &lt;num format="4g"&gt;314.54678&lt;/num&gt; results in 314.5
+        &lt;num format=",2f"&gt;31454678&lt;/num&gt; results in 31,454,678.00
+        &lt;num format="$2f"&gt;31454678&lt;/num&gt; results in $31,454,678.00
+        &lt;num format="2s"&gt;31454678&lt;/num&gt; results in 31000000
+        &lt;num format=",2s"&gt;31454678&lt;/num&gt; results in 31,000,000
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -4422,6 +4585,11 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="drawimage">
+    <xs:annotation>
+      <xs:documentation>
+        Draws an image with the specified objects using pixel coordinates (text, line, rectangle, arc, fill, polygon, image).
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="text">

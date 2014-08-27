@@ -267,7 +267,10 @@ Attribute <span class="nomattribut"></span>:
 <div class="indentation">
 
 
-<div class="documentation">Collection of similar foils</div>
+<div class="documentation">
+Collection of similar foils.
+When a problem is displayed, only one of the contained foils is selected for display.
+</div>
 <br>
 
 Choice between:<ul>
@@ -382,9 +385,8 @@ Example: &lt;image&gt;/res/adm/includes/templates/man1.jpg&lt;/image&gt;. The fo
 <hr>
 
 <a name="imageresponse--rectangle_0"></a>
-<h3>Complex type <span class="nomtitre">imageresponse--rectangle</span>
-</h3>Can contain text<br>
-<div class="indentation">
+<h3>Simple type <span class="nomtitre">imageresponse--rectangle</span>
+</h3>
 
 
 <div class="documentation">
@@ -395,20 +397,39 @@ The delimited text specifies a rectangular area that is correct, specified as (x
 <br>
 
 
-</div>
+
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>\(.+\)-\(.+\)</tt>
+</li>
+
+</ul>
+
+
+
 <hr>
 
 <a name="imageresponse--polygon_0"></a>
-<h3>Complex type <span class="nomtitre">imageresponse--polygon</span>
-</h3>Can contain text<br>
-<div class="indentation">
+<h3>Simple type <span class="nomtitre">imageresponse--polygon</span>
+</h3>
 
 
 <div class="documentation">Polygonal area in image (contains coordinate list)</div>
 <br>
 
 
-</div>
+
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>\(.+\)(-\(.+\))+</tt>
+</li>
+
+</ul>
+
+
+
 <hr>
 
 <a name="imageresponse--text_0"></a>
@@ -541,7 +562,10 @@ Attribute <span class="nomattribut"></span>:
 <div class="indentation">
 
 
-<div class="documentation">Collection of similar foils</div>
+<div class="documentation">
+Collection of similar foils.
+When a problem is displayed, only one of the contained foils is selected for display.
+</div>
 <br>
 
 Choice between:<ul>
@@ -804,7 +828,10 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<div class="documentation">Collection of similar foils</div>
+<div class="documentation">
+Collection of similar foils.
+When a problem is displayed, only one of the contained foils is selected for display.
+</div>
 <br>
 
 Choice between:<ul>
@@ -908,7 +935,7 @@ Attribute <span class="nomattribut">value</span>:
 
 
 <div class="documentation">
-Correct Option
+Correct Option (true, false, or unused).
 </div>
 <br>
 
@@ -995,7 +1022,10 @@ Choice between:<ul>
 <div class="indentation">
 
 
-<div class="documentation">Collection of similar foils</div>
+<div class="documentation">
+Collection of similar foils.
+When a problem is displayed, only one of the contained foils is selected for display.
+</div>
 <br>
 
 Choice between:<ul>
@@ -1166,7 +1196,10 @@ Choice between:<ul>
 <div class="indentation">
 
 
-<div class="documentation">Collection of similar foils</div>
+<div class="documentation">
+Collection of similar foils.
+When a problem is displayed, only one of the contained foils is selected for display.
+</div>
 <br>
 
 Choice between:<ul>
@@ -1448,7 +1481,7 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<div class="documentation">Item to Match</div>
+<div class="documentation">Items to Match</div>
 <br>
 
 Choice between:<ul>
@@ -2789,20 +2822,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="array_0"></a>
-<h3>Element <span class="nomtitre">array</span>
-</h3>type: <tt>xs:string</tt>
-<br>
-<br>
-</li>
-<li>
-<a name="unit_0"></a>
-<h3>Element <span class="nomtitre">unit</span>
-</h3>type: <tt>xs:string</tt>
-<br>
-<br>
-</li>
-<li>
 <a href="#hiddenline_0">hiddenline</a>
 <br>
 </li>
@@ -2826,6 +2845,7 @@ Attribute <span class="nomattribut">incorrect</span>:
 
 <div class="documentation">
 Incorrect Answers
+When switched into exam ("bubble sheet") mode, LON-CAPA usually create wrong answers automatically. To specify wrong answers yourself, you need to provide an array of incorrect values in this attribute. You need to provide at least as many incorrects as 1 less than the number of bubbles on the exam. You can provide more if you want to.
 </div>
 <br>
 
@@ -2838,6 +2858,14 @@ Attribute <span class="nomattribut">unit</span>:
 Attribute <span class="nomattribut">format</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+You can format the number displayed by the computer as the answer. For instance, if the answer is one-third, the computer will display that it computed ".333333333" as the answer. If you'd like to shorten that, you can use the Format field. Format strings like "2E" (without the quotes) will display three significant digits in scientific notation. Format strings like "2f" will display two digits after the decimal point. Format strings like "2s" will round a number to 2 significant digits.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">preprocess</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
@@ -3125,7 +3153,6 @@ Background plot(s) for answer (function(x):xmin:xmax,function(x):xmin:xmax,x1:y1
 
 
 <div class="documentation">
-Spline.
 At least one spline is necessary for a graph problem. These splines are what will be adjusted and analyzed to solve the problem.
 </div>
 <br>
@@ -3135,9 +3162,24 @@ At least one spline is necessary for a graph problem. These splines are what wil
 Attribute <span class="nomattribut">index</span>:
     <div class="indentation">optional<br>type: <tt>xs:int</tt>
 <br>
+
+
+<div class="documentation">
+This is the label assigned to the spline. In general, it's simplest just to label them A, B, C etc.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">order</span>:
     <div class="indentation">optional<br>
+
+
+<div class="documentation">
+This determines the number of Control Points on the spline. For example, selecting '3' means there will be 3 points on the spline that can be moved, as well as 3 points off the spline that will control the slope. 
+</div>
+<br>
+
 
 Value restriction based on xs:int<ul>
 
@@ -3160,6 +3202,7 @@ Attribute <span class="nomattribut">initx</span>:
 
 <div class="documentation">
 Initial x-value
+"Initial x-value" and "Initial y-value" determine where the left most Control Point will be.
 </div>
 <br>
 
@@ -3172,6 +3215,7 @@ Attribute <span class="nomattribut">inity</span>:
 
 <div class="documentation">
 Initial y-value
+"Initial x-value" and "Initial y-value" determine where the left most Control Point will be.
 </div>
 <br>
 
@@ -3183,7 +3227,7 @@ Attribute <span class="nomattribut">scalex</span>:
 
 
 <div class="documentation">
-Scale x
+This determines the right most location of the Control Points (on the spline). To figure out where this point will be, add 'Initial x-value' to 'Scale x'.
 </div>
 <br>
 
@@ -3195,7 +3239,7 @@ Attribute <span class="nomattribut">scaley</span>:
 
 
 <div class="documentation">
-Scale y
+This determines the distance (in the y-direction) between the Control Points on the spline, and the ones that control the slope.
 </div>
 <br>
 
@@ -3215,7 +3259,7 @@ Scale y
 
 <div class="documentation">
 Background Function Plot.
-This places a static curve on the graph of your choosing.
+This places a static curve on the graph of your choosing. It can be labeled, moveable or fixed, and any color desired. Only the right hand side of the function you want displayed is necessary. For example, entering x+2 will display the line y=x+2. The syntax must be syntax recognized by GeoGebra.
 </div>
 <br>
 
@@ -3306,8 +3350,7 @@ Fixed location
 
 
 <div class="documentation">
-Plot Object.
-This places a point in the applet.
+This places a point in the applet. Generally intended to be used with Vectors to create problems involving Free-Body Diagrams or any other points that vectors (or arrows) connect to and from.
 </div>
 <br>
 
@@ -3346,8 +3389,7 @@ Attribute <span class="nomattribut">y</span>:
 
 
 <div class="documentation">
-Plot Vector.
-This creates a vector (or arrow) in the applet.
+This creates a vector (or arrow) in the applet. Generally intended to be used with Objects to create problems involving Free-Body Diagrams or to establish connections between Objects.
 </div>
 <br>
 
@@ -3438,7 +3480,9 @@ Attribute <span class="nomattribut">vectorlist</span>:
 </h3>
 
 
-<div class="documentation">Function Plot Rule Set</div>
+<div class="documentation">
+This is where the rules are defined. These rules will determine whether or not an entered answer is correct or not. If there are no rules, any answer will be deemed correct. If there is more than one rule, when an answer is submitted, the server will analyze them in order until one of them is broken (of course, if it's a correct answer, it will go through all of them and return a green box). In such an event, any subsequent rules will be ignored. If conditional hints related to these rules are added, only the first broken rule's hint will be shown, even if all rules are broken.
+</div>
 <br>
 
 
@@ -3513,8 +3557,9 @@ Choice between:<ul>
 
 
 <div class="documentation">
-Function Plot Graph Rule
-Used to evaluate graph problems.
+Function Plot Graph Rule.
+
+Used to create a rule that determines whether or not a submitted graph is correct. In general, it takes the form of testing the function, its integral, or its first or second derivative over a given set of x-values. The test can be to see if it equals, is greater than, or less than a specified value. Anywhere a number is needed, a variable can also be used.
 </div>
 <br>
 
@@ -3526,7 +3571,7 @@ Attribute <span class="nomattribut">index</span>:
 
 
 <div class="documentation">
-Index/Name
+This is an internal label for the rule. Something must be entered here, and it must be different for each rule. This same value will be used to add a conditional hint.
 </div>
 <br>
 
@@ -3537,7 +3582,7 @@ Attribute <span class="nomattribut">derivativeorder</span>:
 
 
 <div class="documentation">
-Function
+This determines what the server will be testing. For instance, choose 'First derivative' causes the server to evaluate the derivative of the entered answer over the given domain.
 </div>
 <br>
 
@@ -3570,7 +3615,8 @@ Attribute <span class="nomattribut">xinitial</span>:
 
 
 <div class="documentation">
-Initial x-value
+Initial x-value.
+A value must be entered for one of "Initial x-value" and "Initial x-value label". Either choose a numerical value for x (the first option), or choose the beginning of the submitted answer, the end, or a previously chosen named point.
 </div>
 <br>
 
@@ -3581,7 +3627,8 @@ Attribute <span class="nomattribut">xinitiallabel</span>:
 
 
 <div class="documentation">
-Initial x-value label
+Initial x-value label.
+A value must be entered for one of "Initial x-value" and "Initial x-value label". Either choose a numerical value for x (the first option), or choose the beginning of the submitted answer, the end, or a previously chosen named point.
 </div>
 <br>
 
@@ -3606,7 +3653,8 @@ Attribute <span class="nomattribut">xfinal</span>:
 
 
 <div class="documentation">
-Final x-value (optional)
+Final x-value (optional).
+This determines the end of the domain over which the rule examines. To test only a single point (the initial value), leave "Final x-value" and "Final x-value label" blank. If a label is entered, such as 'positive', the point at which the rule fails will be given this special label. This label can then be used in subsequent rules as an 'Initial x-value label'.
 </div>
 <br>
 
@@ -3617,7 +3665,8 @@ Attribute <span class="nomattribut">xfinallabel</span>:
 
 
 <div class="documentation">
-Final x-value label (optional)
+Final x-value label (optional).
+This determines the end of the domain over which the rule examines. To test only a single point (the initial value), leave "Final x-value" and "Final x-value label" blank. If a label is entered, such as 'positive', the point at which the rule fails will be given this special label. This label can then be used in subsequent rules as an 'Initial x-value label'.
 </div>
 <br>
 
@@ -3638,7 +3687,8 @@ Attribute <span class="nomattribut">minimumlength</span>:
 
 
 <div class="documentation">
-Minimum length for range (optional)
+Minimum length for range (optional).
+This tests that the difference between the initial and final x-values are at least a certain length apart. This is only useful if there is at least one label.
 </div>
 <br>
 
@@ -3650,7 +3700,8 @@ Attribute <span class="nomattribut">maximumlength</span>:
 
 
 <div class="documentation">
-Maximum length for range (optional)
+Maximum length for range (optional).
+This tests that the difference between the initial and final x-values are at most a certain length apart. This is only useful if there is at least one label.
 </div>
 <br>
 
@@ -3658,6 +3709,13 @@ Maximum length for range (optional)
 </div>
 Attribute <span class="nomattribut">relationship</span>:
     <div class="indentation">optional<br>
+
+
+<div class="documentation">
+The heart of the rule. This choice determines whether the chosen 'function' is greater than, less than, equal to, etc. a certain 'value'.
+</div>
+<br>
+
 
 Value restriction based on xs:string<ul>
 
@@ -3692,10 +3750,26 @@ Value restriction based on xs:string<ul>
 Attribute <span class="nomattribut">value</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+Enter the number you wish to compare to. It is also possible to choose 'not defined', in the event the answer should not have a value for the given domain. Within the value argument, the function itself can be evaluated using &amp;fpr_f(), its derivative using &amp;fpr_dfdx(), and its second derivative using &amp;fpr_d2fdx2(). This allows for a comparison of two points on the graph. The value of a previously defined label can be retrieved using the function &amp;fpr_val(), e.g., &amp;fpr_val('positive'). Previous defined values from script blocks can also be retrieved as normal variables, e.g., $x.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">percenterror</span>:
     <div class="indentation">optional<br>type: <a href="#real_0">real</a>
 <br>
+
+
+<div class="documentation">
+This allows for a margin of error in the y-direction. For instance, if the rule requires that the derivative be equal to 5, the server will accept values close enough to 5 that are within the percent error defined here. Note: Choosing 10% would not mean that the answer is correct as long as it is within the range 4.5-5.5. Instead, the percent corresponds to the total size of the graph. For the function itself, the 'percent error' is multiplied by the ymax-ymin; for the first derivative, it's multiplied by (ymax-ymin)/(xmax-xmin); for the second derivative, it's multiplied by (ymax-ymin)/(xmax-xmin)2; and for the integral, it's multiplied by (ymax-ymin)*(xmax-xmin).
+</div>
+<br>
+
+
 </div>
 
 </div>
@@ -4258,7 +4332,9 @@ Attribute <span class="nomattribut">answerdisplay</span>:
 </h3>
 
 
-<div class="documentation">Hint</div>
+<div class="documentation">
+The first part of the hint is the condition, which includes a specification of the foil(s) and foil answer(s) required to trigger the hint. The answers specified in the hint condition are compared with the user's submission, and if the condition is met, the hint action included in the conditional hint block will be executed (for example this could be the display of a block of text). You can set multiple hint conditions for a particular problem. Hint conditions are identified by a name. The corresponding hint action includes this hint condition name in the "on" parameter. When a hint condition evaluates to true, the corresponding hint action is triggered. Besides providing hint actions within &lt; hintpart on="NAME" &gt; &lt; /hintpart &gt; tags for each named (NAME) hint condition, a hint can be designated for display if none of the conditional hints evaluate to true. The default hint is not displayed if the conditions were met for any of the conditional hints. The default hint action is included between &lt; hintpart on="default" &gt; &lt; /hintpart &gt; tags.
+</div>
 <br>
 
 Can contain text<br>
@@ -4425,7 +4501,11 @@ Attribute <span class="nomattribut">on</span>:
 </h3>
 
 
-<div class="documentation">Formula Hint Condition</div>
+<div class="documentation">
+Formula Hint Condition
+
+The formulahint tag takes three parameters: answer, name, and samples. The "name" is the unique name given to the hint condition. The formula answer for which you wish to provide conditional is included in the answer parameter. The samples parameter includes the points (or range of points) over which sampling of the student's submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples parameter of the formula reponse tag itself. The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt; hintpart &gt; tag. 
+</div>
 <br>
 
 
@@ -4492,7 +4572,11 @@ Pre-Processor Subroutine
 </h3>
 
 
-<div class="documentation">Numerical Hint Condition</div>
+<div class="documentation">
+Numerical Hint Condition
+
+The numericalhint tag takes four parameters: answer, name, unit and format. The "name" is the unique name given to the hint condition. The numerical answer for which you wish to provide conditional is included in the answer parameter. Student submission of that answer in combination with the "unit" parameter in the hint condition will trigger the hint action specified in the &lt; hintpart &gt; tag. 
+</div>
 <br>
 
 
@@ -4625,7 +4709,11 @@ Attribute <span class="nomattribut">answer</span>:
 </h3>
 
 
-<div class="documentation">Option Response Hint Condition</div>
+<div class="documentation">
+Option Response Hint Condition
+
+There are two types of option response hint conditions: one for standalone foils and one for concept groups. In both cases the option hint tag includes two parameters: answer and name for standalone foils, and concept and name for foils grouped together in a concept group. For the answer parameter, the names and submitted values for each of the foils that are being included in the hint condition are provided in a hash, i.e., in the format: ('Foil1'= &gt; 'True','Foil2'= &gt; 'False'). In the case of a conditional hint for a concept group, the format of the concept parameter is also a hash that links the name of each concept group included in the hint condition to either 'correct' or 'incorrect' - e.g., &lt; optionhint concept="('buoyancy'= &gt; 'correct','density'= &gt; 'correct')" name="fluids" / &gt; If 'correct' is specified for a named concept then when the conditional hint is evaluated answers for each of the foils selected by a student must be correct for the hint action to be triggered. If anything other than 'correct' is provided in the concept hash in the optionhint tag then then students answers will be compared with the set answers for the foils in the concept group and as long as at least one answer is incorrect (i.e., the concept group was not correctly answered) then the corresponding hint action will be triggered. 
+</div>
 <br>
 
 
@@ -4672,7 +4760,15 @@ Attribute <span class="nomattribut">concept</span>:
 </h3>
 
 
-<div class="documentation">Radiobutton Hint Condition</div>
+<div class="documentation">
+Radiobutton Hint Condition
+
+The radiobutton hint tag takes two parameters: answer and name. The name is the name of the hint condition, and the answer is an array. The first element of the array will be 'foil'; the remaining elements are the names of the foils that you require to have been checked by the student for the hint to be displayed. For example, if you create a radiobutton response problem with six foils named: granite, gabbro, gneiss, shale, sandstone and schist, and you want your hint named: igneous to be displayed when either granite or basalt had been checked your radiobutton hint would be as follows:
+
+&lt;radiobuttonhint answer="('foil','granite','gabbro')" name="igneous"&gt;&lt;/radiobuttonhint&gt;
+
+In order to trigger display of this hint you also need to create a &lt; hintpart &gt; &lt; /hintpart &gt; block that will include a textblock that contains the text of the actual hint.
+</div>
 <br>
 
 
@@ -4723,7 +4819,11 @@ should be at least a two element list: first the type (foil or concept) and then
 </h3>
 
 
-<div class="documentation">String Hint Condition</div>
+<div class="documentation">
+String Hint Condition
+
+The string hint takes two parameters: answer and name. The name is the name of the hint condition, and the answer is a text string. The type parameter allows you to choose between case sensitive, case insensitive, and case insensitive in any order.
+</div>
 <br>
 
 
@@ -4982,20 +5082,7 @@ Max Number Of Shown Foils
 
 </div>
 
-<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlabel_0">randomlabel</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-<a name="datasubmission_0"></a>
-<h3>Element <span class="nomtitre">datasubmission</span>
-</h3>
-
-
-<div class="documentation">Stored Entry Field</div>
-<br>
-
-
-<br>
+<br>Parents:<a href="#block_0">block</a>, <a href="#library_0">library</a>, <a href="#notsolved_0">notsolved</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#problem_0">problem</a>, <a href="#problemtype_0">problemtype</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
 <br>
 <hr>
 
@@ -5323,7 +5410,7 @@ Attribute <span class="nomattribut">addchars</span>:
 
 
 <div class="documentation">
-Click-On Texts (comma sep)
+Comma-separated list of characters or words that can be inserted with a click.
 </div>
 <br>
 
@@ -5545,6 +5632,54 @@ style=&ldquo;plain&rdquo; Makes the due date appear without any boxing. If the p
 Attribute <span class="nomattribut">format</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+Allows you to control the format of the due date. This is an arbitrary string that can contain any of the following formatting items:
+
+%a Replaced by the abbreviated weekday name according to the current locale.
+%A Replaced by the full weekday name according to the current locale.
+%b The abbreviated month name according to the current locale.
+%B The full month name according to the current locale.
+%c The preferred date and time representation for the current locale (the default format string is just this).
+%C The century number as a two digit integer
+%d The day of the month as a decimal number. Leading zeroes are shown for single digit day numbers.
+%D Equivalent to %m/%d/%y
+%e Like %d but a leadnig zero is replaced by a space.
+%F Equivalent to %Y-%m-%d
+%G The four digit year number.
+%g The two digit year numbger.
+%H The hour as a two digit number in the range 00 thorugh 23.
+%I The hour as a two digit number in the range 00 through 12.
+%j The day your the year in the range 001 through 366.
+%k The hour (24 hour clock), single digits are preceded by a blank.
+%l Like %k but using a 12 hour clock.
+%m The month as a two digit decimal number in the range 01 through 12.
+%M The minute as a two digit decimal number in the range 00 through 59.
+%n A newline character.
+%p AM or PM depending on the time value.
+%P am or pm.
+%r The time in am or pm notation.
+%R Time in 24 hour notatinon (%H:%M). See also %T below.
+%s Number of seconds since midnight of January 1, 1970.
+%S The second as a decimal number int the range 00 through 59.
+%t A horizontal tab character.
+%T The time in 24 hour notation (%H:%M:%S).
+%u Day of the week as a decimal number with Monday as 1.
+%U The week number of the current year in the range 00 through 53. Week 1 is the week containing the first Sunday of the year.
+%V Same as %U but week 1 is the first week with at least 4 days, with Monday being the first day of a week.
+%w Day of the week as a decimal integer in the range 0 through 7, Sunday is 0.
+%W Week number of the current year in the range 00 through 53, where the first Monday of the year is the first day of week 01.
+%x The preferred date notation in the current locale without the time.
+%X The preferred time notation in the current locale without the date.
+%y The year as a decimal number without the century (range 00 through 99).
+%Y The year as a decimal number including the century.
+%% A % character.
+%+ Date and time in the form returned by the Unix date command. 
+</div>
+<br>
+
+
 </div>
 
 </div>
@@ -5966,7 +6101,7 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">answer</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">required<br>type: <tt>xs:string</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">initial</span>:
@@ -6023,8 +6158,16 @@ TeXwidth (mm)
 
 </div>
 Attribute <span class="nomattribut">molecule</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">required<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+JME string
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">options</span>:
     <div class="indentation">optional<br>
@@ -7823,10 +7966,6 @@ Choice between:<ul>
 <a href="#window_0">window</a>
 <br>
 </li>
-<li>
-<a href="#dataresponse_">dataresponse</a>
-<br>
-</li>
 </ul>
 
 </div>
@@ -8047,17 +8186,25 @@ Value restriction based on xs:string<ul>
 
 </div>
 Attribute <span class="nomattribut">for</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
+    <div class="indentation">optional<br>
 
 
 <div class="documentation">
 When used as type(s)
 
-List of values among:
+Comma-separated list of values among:
 exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
 </div>
 <br>
+
+
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry)(\s*,\s*(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry))*</tt>
+</li>
+
+</ul>
 
 
 </div>
@@ -8083,10 +8230,6 @@ This shows a specified image with images or text labels randomly assigned to a s
 
 <div class="indentation">
 Choice between:<ul>
-<li>
-<a href="#imageresponse_0">imageresponse</a>
-<br>
-</li>
 <li>
 <a name="labelgroup_0"></a>
 <h3>Element <span class="nomtitre">labelgroup</span>
@@ -9464,8 +9607,7 @@ Allows one to comment out sections of code in a balanced manner, or to provide a
 
 <a name="m_0"></a>
 <h3>Element <span class="nomtitre">m</span>
-</h3>type: <tt>xs:string</tt>
-<br>
+</h3>
 
 
 <div class="documentation">
@@ -9526,6 +9668,15 @@ Typesets chemical equation
 
 <div class="documentation">
 Typesets a number formatted in scientific notation, fixed point, fixed point with commas, fixed point with commas and dollar sign, or in significant digits.
+
+&lt;num format="2E"&gt;31454678&lt;/num&gt; results in 3.15 x 10^7
+&lt;num format="2f"&gt;31454678&lt;/num&gt; results in 31454678.00
+&lt;num format="4g"&gt;31454678&lt;/num&gt; results in 3.145 x 10^7
+&lt;num format="4g"&gt;314.54678&lt;/num&gt; results in 314.5
+&lt;num format=",2f"&gt;31454678&lt;/num&gt; results in 31,454,678.00
+&lt;num format="$2f"&gt;31454678&lt;/num&gt; results in $31,454,678.00
+&lt;num format="2s"&gt;31454678&lt;/num&gt; results in 31000000
+&lt;num format=",2s"&gt;31454678&lt;/num&gt; results in 31,000,000
 </div>
 <br>
 
@@ -9589,6 +9740,13 @@ Attribute <span class="nomattribut">display</span>:
 <a name="drawimage_0"></a>
 <h3>Element <span class="nomtitre">drawimage</span>
 </h3>
+
+
+<div class="documentation">
+Draws an image with the specified objects using pixel coordinates (text, line, rectangle, arc, fill, polygon, image).
+</div>
+<br>
+
 
 <div class="indentation">
 Choice between:<ul>
@@ -11140,10 +11298,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#window_0">window</a>
-<br>
-</li>
-<li>
-<a href="#dataresponse_">dataresponse</a>
 <br>
 </li>
 </ul>
@@ -13296,8 +13450,6 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#area_0">area</a>
 <br>
-<a href="#array_0">array</a>
-<br>
 <a href="#audio_0">audio</a>
 <br>
 <a href="#axis_0">axis</a>
@@ -13371,8 +13523,6 @@ Value restriction based on xs:string<ul>
 <a href="#data_0">data</a>
             (under lonplot--curve)
           <br>
-<a href="#datasubmission_0">datasubmission</a>
-<br>
 <a href="#dd_0">dd</a>
 <br>
 <a href="#del_0">del</a>
@@ -13860,9 +14010,6 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#ul_0">ul</a>
 <br>
-<a href="#unit_0">unit</a>
-            (under numericalresponse)
-          <br>
 <a href="#value_0">value</a>
             (under caparesponse--answer)
           <br>
