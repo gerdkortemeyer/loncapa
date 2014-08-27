@@ -4,6 +4,7 @@ function do_upload (form,event,url,id,success,fail) {
    var oldtext=$('#'+id+'label').html();
    $('#'+id+'label').html(file.name+' ...');
    var formdata = new FormData();
+   formdata.append("uploads_path",$("#"+id+"_path").val());
    formdata.append('uploads', file, file.name);
    var xhr = new XMLHttpRequest();
    xhr.upload.addEventListener("progress", function(e) {

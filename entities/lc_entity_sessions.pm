@@ -90,14 +90,11 @@ sub clear_session {
 sub get_posted_content {
    my ($r)=@_;
    my $query = new CGI($r);
-   my %content=();
+   my %content=$query->Vars;
    if ($query->param('uploads')) {
 # Wow, uploaded a file. Do not put that into memory, just store it
        $content{'remote_filename'}=$query->param('uploads');
        $content{'local_filename'}=$query->tmpFileName($query->param('uploads'));
-   } else {
-# Normal POST
-       %content=$query->Vars;
    }
    $lc_session->{'content'}=\%content;
 }

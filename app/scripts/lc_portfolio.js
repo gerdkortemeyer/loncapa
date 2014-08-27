@@ -67,6 +67,7 @@ function load_path() {
             });
        });
        newpath+="</ul>";
+       $("#newfile_path").val(path);
        $("#pathrow").replaceWith(newpath);
        adjust_framesize();
    });

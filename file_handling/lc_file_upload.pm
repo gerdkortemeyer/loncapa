@@ -21,7 +21,7 @@ package Apache::lc_file_upload;
 
 use strict;
 
-use Apache2::Const qw(:common);
+use Apache2::Const qw(:common :http);
 use Apache::lc_logs;
 use Apache::lc_parameters;
 use Apache::lc_file_utils();
@@ -64,7 +64,17 @@ sub move_uploaded_into_default_place {
 
 
 sub handler {
-   &logdebug(&move_uploaded_into_place('/home/www/Desktop/test.txt'));
+   my $file=&move_uploaded_into_default_place();
+   unless ($file) {
+      &logerror("Failed to upload file");
+      return HTTP_SERVICE_UNAVAILABLE;
+   }
+#FIXME: unpack tar balls, etc
+#
+   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+   my %content=&Apache::lc_entity_sessions::posted_content();
+
+   &logdebug("File [$file] ".join("\n",map { "$_: $content{$_}" } keys(%content)));
    return OK;
 }
 

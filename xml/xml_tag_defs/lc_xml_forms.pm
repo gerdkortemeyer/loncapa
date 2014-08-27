@@ -365,6 +365,7 @@ sub start_lcfileupload_html {
    unless ($description) { $description="Upload file"; }
    my $output='<label class="lcfileuploadlabel" for="'.$id.'" id="'.$id.'label">'.&mt($description).'</label>';
    $output.='<input id="'.$id.'" name="'.$name.'" class="lcinnerfileupload" type="file" onChange="do_upload(this.form,event,'."'$target','$id','$success','$fail'".')" />';
+   $output.=&hidden_field($id.'_path','');
    return $output;
 }
 
