@@ -1,129 +1,136 @@
-\contentsline {chapter}{\numberline {1}License}{3}
-\contentsline {chapter}{\numberline {2}Requirements}{5}
-\contentsline {section}{\numberline {2.1}Interface}{5}
-\contentsline {subsection}{\numberline {2.1.1}Fully accessible}{5}
-\contentsline {subsection}{\numberline {2.1.2}Fully internationalized}{5}
-\contentsline {subsection}{\numberline {2.1.3}System reacts in less than one second}{5}
-\contentsline {subsection}{\numberline {2.1.4}Mobile support}{5}
-\contentsline {subsection}{\numberline {2.1.5}No Java or Flash}{5}
-\contentsline {subsection}{\numberline {2.1.6}Cross-browser compatibility}{5}
-\contentsline {subsection}{\numberline {2.1.7}No complete screen rebuilds}{5}
-\contentsline {subsection}{\numberline {2.1.8}Easy things easy, hard things possible}{6}
-\contentsline {subsection}{\numberline {2.1.9}Preventing users from shooting themselves into the foot}{6}
-\contentsline {section}{\numberline {2.2}Assets}{6}
-\contentsline {subsection}{\numberline {2.2.1}Backward compatibility}{6}
-\contentsline {subsection}{\numberline {2.2.2}Printability}{6}
-\contentsline {section}{\numberline {2.3}Data}{6}
-\contentsline {subsection}{\numberline {2.3.1}All changes take effect after at most 10 minutes}{6}
-\contentsline {subsection}{\numberline {2.3.2}Separation}{6}
-\contentsline {subsection}{\numberline {2.3.3}Times}{6}
-\contentsline {section}{\numberline {2.4}Network functionality}{6}
-\contentsline {subsection}{\numberline {2.4.1}SSL}{6}
-\contentsline {subsection}{\numberline {2.4.2}Predictable storage}{6}
-\contentsline {subsection}{\numberline {2.4.3}Authentication}{6}
-\contentsline {subsection}{\numberline {2.4.4}Authorization}{7}
-\contentsline {subsection}{\numberline {2.4.5}Run everywhere}{7}
-\contentsline {subsection}{\numberline {2.4.6}Servers}{7}
-\contentsline {section}{\numberline {2.5}Coding environment}{7}
-\contentsline {subsection}{\numberline {2.5.1}Linux Distributions}{7}
-\contentsline {subsection}{\numberline {2.5.2}Open source}{7}
-\contentsline {subsection}{\numberline {2.5.3}Porting from LON-CAPA 2.x}{7}
-\contentsline {section}{\numberline {2.6}Scalability testing}{7}
-\contentsline {chapter}{\numberline {3}Installation}{9}
-\contentsline {section}{\numberline {3.1}Linux}{9}
-\contentsline {section}{\numberline {3.2}Certificate IP/DNS considerations}{9}
-\contentsline {section}{\numberline {3.3}Updating}{9}
-\contentsline {section}{\numberline {3.4}Disable SELinux}{9}
-\contentsline {section}{\numberline {3.5}Downloading}{10}
-\contentsline {section}{\numberline {3.6}Install LON-CAPA}{10}
-\contentsline {section}{\numberline {3.7}If things don't work}{10}
-\contentsline {chapter}{\numberline {4}URL Translation}{11}
-\contentsline {section}{\numberline {4.1}Accessing handlers}{11}
-\contentsline {section}{\numberline {4.2}Accessing assets}{11}
-\contentsline {section}{\numberline {4.3}System Pages}{12}
-\contentsline {chapter}{\numberline {5}Network}{13}
-\contentsline {section}{\numberline {5.1}Overview}{13}
-\contentsline {section}{\numberline {5.2}Nodes}{13}
-\contentsline {section}{\numberline {5.3}Cluster Table}{13}
-\contentsline {subsection}{\numberline {5.3.1}Configuration}{13}
-\contentsline {subsection}{\numberline {5.3.2}Homeservers}{15}
-\contentsline {subsection}{\numberline {5.3.3}Cluster manager}{15}
-\contentsline {section}{\numberline {5.4}Connections}{15}
-\contentsline {subsection}{\numberline {5.4.1}Connection authentication}{15}
-\contentsline {subsection}{\numberline {5.4.2}Connection handling}{16}
-\contentsline {subsection}{\numberline {5.4.3}Local versus remote}{16}
-\contentsline {section}{\numberline {5.5}Replication}{17}
-\contentsline {chapter}{\numberline {6}Entities}{19}
-\contentsline {section}{\numberline {6.1}Identification}{19}
-\contentsline {section}{\numberline {6.2}Storage and Interface}{19}
-\contentsline {section}{\numberline {6.3}Users}{19}
-\contentsline {section}{\numberline {6.4}Courses}{19}
-\contentsline {section}{\numberline {6.5}Assets}{20}
-\contentsline {subsection}{\numberline {6.5.1}URLs}{20}
-\contentsline {subsection}{\numberline {6.5.2}Profiles and metadata}{20}
-\contentsline {subsection}{\numberline {6.5.3}Storage}{20}
-\contentsline {subsection}{\numberline {6.5.4}Publication and Versioning}{20}
-\contentsline {chapter}{\numberline {7}Authorization}{21}
-\contentsline {section}{\numberline {7.1}Roles}{21}
-\contentsline {subsection}{\numberline {7.1.1}Role definition}{21}
-\contentsline {subsection}{\numberline {7.1.2}Role storage}{22}
-\contentsline {subsubsection}{With user}{22}
-\contentsline {subsubsection}{With domain or system}{24}
-\contentsline {chapter}{\numberline {8}Storage}{25}
-\contentsline {section}{\numberline {8.1}Databases}{25}
-\contentsline {subsection}{\numberline {8.1.1}PostgreSQL tables}{25}
-\contentsline {subsubsection}{URL table}{25}
-\contentsline {subsubsection}{User table}{25}
-\contentsline {subsubsection}{PID table}{25}
-\contentsline {subsubsection}{Course ID table}{26}
-\contentsline {subsubsection}{Homeserver table}{26}
-\contentsline {subsubsection}{Roles}{26}
-\contentsline {subsubsection}{Assessment table}{27}
-\contentsline {section}{\numberline {8.2}Caching}{27}
-\contentsline {section}{\numberline {8.3}File system}{27}
-\contentsline {subsection}{\numberline {8.3.1}Assets}{27}
-\contentsline {subsection}{\numberline {8.3.2}Tables of Content}{27}
-\contentsline {section}{\numberline {8.4}Programmatic access}{28}
-\contentsline {chapter}{\numberline {9}XML}{29}
-\contentsline {section}{\numberline {9.1}Structure of Documents}{29}
-\contentsline {subsection}{\numberline {9.1.1}Classic LON-CAPA Content}{29}
-\contentsline {subsection}{\numberline {9.1.2}Overview of differences to classic LON-CAPA}{29}
-\contentsline {section}{\numberline {9.2}Editing}{30}
-\contentsline {subsection}{\numberline {9.2.1}Main editors}{30}
-\contentsline {subsection}{\numberline {9.2.2}Emergency editor}{30}
-\contentsline {chapter}{\numberline {10}XML Parser}{31}
-\contentsline {section}{\numberline {10.1}Invocation}{31}
-\contentsline {section}{\numberline {10.2}Tag types}{31}
-\contentsline {section}{\numberline {10.3}Stacks and safeeval}{32}
-\contentsline {chapter}{\numberline {11}Internationalization}{33}
-\contentsline {section}{\numberline {11.1}Encoding}{33}
-\contentsline {section}{\numberline {11.2}Maketext}{33}
-\contentsline {section}{\numberline {11.3}Invocation in documents}{34}
-\contentsline {section}{\numberline {11.4}Invocation from Perl}{34}
-\contentsline {section}{\numberline {11.5}Internal codes}{34}
-\contentsline {section}{\numberline {11.6}Special cases}{34}
-\contentsline {subsection}{\numberline {11.6.1}JavaScript configuration files}{34}
-\contentsline {subsection}{\numberline {11.6.2}Loading locatilization files}{35}
-\contentsline {chapter}{\numberline {12}Math editor, parser and equation syntax}{37}
-\contentsline {section}{\numberline {12.1}Introduction}{37}
-\contentsline {section}{\numberline {12.2}A new user interface}{37}
-\contentsline {subsection}{\numberline {12.2.1}Usage}{38}
-\contentsline {section}{\numberline {12.3}The server-side parser}{38}
-\contentsline {subsection}{\numberline {12.3.1}Usage}{38}
-\contentsline {subsection}{\numberline {12.3.2}Calculation environment}{38}
-\contentsline {subsection}{\numberline {12.3.3}Conversion to Maxima syntax}{38}
-\contentsline {subsection}{\numberline {12.3.4}Catching errors}{38}
-\contentsline {subsection}{\numberline {12.3.5}Example with unit node}{38}
-\contentsline {subsection}{\numberline {12.3.6}Example with symbolic node}{38}
-\contentsline {section}{\numberline {12.4}Equation syntax}{39}
-\contentsline {subsection}{\numberline {12.4.1}Spaces}{39}
-\contentsline {subsection}{\numberline {12.4.2}Decimal separators and function parameter separators}{39}
-\contentsline {subsection}{\numberline {12.4.3}Constants}{39}
-\contentsline {subsection}{\numberline {12.4.4}Units}{39}
-\contentsline {subsection}{\numberline {12.4.5}Parenthesis}{39}
-\contentsline {subsection}{\numberline {12.4.6}Complex numbers}{39}
-\contentsline {subsection}{\numberline {12.4.7}Operators}{39}
-\contentsline {subsection}{\numberline {12.4.8}Implicit operators}{39}
-\contentsline {subsection}{\numberline {12.4.9}Vectors and matrices}{39}
-\contentsline {subsection}{\numberline {12.4.10}Functions}{40}
-\contentsline {chapter}{\numberline {13}Glossary}{41}
+\contentsline {chapter}{\numberline {1}License}{3}{chapter.1}
+\contentsline {chapter}{\numberline {2}Requirements}{5}{chapter.2}
+\contentsline {section}{\numberline {2.1}Interface}{5}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Fully accessible}{5}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Fully internationalized}{5}{subsection.2.1.2}
+\contentsline {subsection}{\numberline {2.1.3}System reacts in less than one second}{5}{subsection.2.1.3}
+\contentsline {subsection}{\numberline {2.1.4}Mobile support}{5}{subsection.2.1.4}
+\contentsline {subsection}{\numberline {2.1.5}No Java or Flash}{5}{subsection.2.1.5}
+\contentsline {subsection}{\numberline {2.1.6}Cross-browser compatibility}{5}{subsection.2.1.6}
+\contentsline {subsection}{\numberline {2.1.7}No complete screen rebuilds}{5}{subsection.2.1.7}
+\contentsline {subsection}{\numberline {2.1.8}Easy things easy, hard things possible}{6}{subsection.2.1.8}
+\contentsline {subsection}{\numberline {2.1.9}Preventing users from shooting themselves into the foot}{6}{subsection.2.1.9}
+\contentsline {section}{\numberline {2.2}Assets}{6}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Backward compatibility}{6}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Printability}{6}{subsection.2.2.2}
+\contentsline {section}{\numberline {2.3}Data}{6}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}All changes take effect after at most 10 minutes}{6}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}Separation}{6}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.3.3}Times}{6}{subsection.2.3.3}
+\contentsline {section}{\numberline {2.4}Network functionality}{6}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}SSL}{6}{subsection.2.4.1}
+\contentsline {subsection}{\numberline {2.4.2}Predictable storage}{6}{subsection.2.4.2}
+\contentsline {subsection}{\numberline {2.4.3}Authentication}{6}{subsection.2.4.3}
+\contentsline {subsection}{\numberline {2.4.4}Authorization}{7}{subsection.2.4.4}
+\contentsline {subsection}{\numberline {2.4.5}Run everywhere}{7}{subsection.2.4.5}
+\contentsline {subsection}{\numberline {2.4.6}Servers}{7}{subsection.2.4.6}
+\contentsline {section}{\numberline {2.5}Coding environment}{7}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Linux Distributions}{7}{subsection.2.5.1}
+\contentsline {subsection}{\numberline {2.5.2}Open source}{7}{subsection.2.5.2}
+\contentsline {subsection}{\numberline {2.5.3}Porting from LON-CAPA 2.x}{7}{subsection.2.5.3}
+\contentsline {section}{\numberline {2.6}Scalability testing}{7}{section.2.6}
+\contentsline {chapter}{\numberline {3}Installation}{9}{chapter.3}
+\contentsline {section}{\numberline {3.1}Linux}{9}{section.3.1}
+\contentsline {section}{\numberline {3.2}Certificate IP/DNS considerations}{9}{section.3.2}
+\contentsline {section}{\numberline {3.3}Updating}{9}{section.3.3}
+\contentsline {section}{\numberline {3.4}Disable SELinux}{9}{section.3.4}
+\contentsline {section}{\numberline {3.5}Downloading}{10}{section.3.5}
+\contentsline {section}{\numberline {3.6}Install LON-CAPA}{10}{section.3.6}
+\contentsline {section}{\numberline {3.7}If things don't work}{10}{section.3.7}
+\contentsline {chapter}{\numberline {4}URL Translation}{11}{chapter.4}
+\contentsline {section}{\numberline {4.1}Accessing handlers}{11}{section.4.1}
+\contentsline {section}{\numberline {4.2}Accessing assets}{11}{section.4.2}
+\contentsline {section}{\numberline {4.3}System Pages}{12}{section.4.3}
+\contentsline {chapter}{\numberline {5}Network}{13}{chapter.5}
+\contentsline {section}{\numberline {5.1}Overview}{13}{section.5.1}
+\contentsline {section}{\numberline {5.2}Nodes}{13}{section.5.2}
+\contentsline {section}{\numberline {5.3}Cluster Table}{13}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Configuration}{13}{subsection.5.3.1}
+\contentsline {subsection}{\numberline {5.3.2}Homeservers}{15}{subsection.5.3.2}
+\contentsline {subsection}{\numberline {5.3.3}Cluster manager}{15}{subsection.5.3.3}
+\contentsline {section}{\numberline {5.4}Connections}{15}{section.5.4}
+\contentsline {subsection}{\numberline {5.4.1}Connection authentication}{15}{subsection.5.4.1}
+\contentsline {subsection}{\numberline {5.4.2}Connection handling}{16}{subsection.5.4.2}
+\contentsline {subsection}{\numberline {5.4.3}Local versus remote}{16}{subsection.5.4.3}
+\contentsline {section}{\numberline {5.5}Replication}{17}{section.5.5}
+\contentsline {chapter}{\numberline {6}Entities}{19}{chapter.6}
+\contentsline {section}{\numberline {6.1}Identification}{19}{section.6.1}
+\contentsline {section}{\numberline {6.2}Storage and Interface}{19}{section.6.2}
+\contentsline {section}{\numberline {6.3}Users}{19}{section.6.3}
+\contentsline {section}{\numberline {6.4}Courses}{19}{section.6.4}
+\contentsline {section}{\numberline {6.5}Assets}{20}{section.6.5}
+\contentsline {subsection}{\numberline {6.5.1}URLs}{20}{subsection.6.5.1}
+\contentsline {subsection}{\numberline {6.5.2}Profiles and metadata}{20}{subsection.6.5.2}
+\contentsline {subsection}{\numberline {6.5.3}Storage}{20}{subsection.6.5.3}
+\contentsline {subsection}{\numberline {6.5.4}Publication and Versioning}{20}{subsection.6.5.4}
+\contentsline {chapter}{\numberline {7}Authorization}{21}{chapter.7}
+\contentsline {section}{\numberline {7.1}Roles}{21}{section.7.1}
+\contentsline {subsection}{\numberline {7.1.1}Role definition}{21}{subsection.7.1.1}
+\contentsline {subsection}{\numberline {7.1.2}Role storage}{22}{subsection.7.1.2}
+\contentsline {subsubsection}{With user}{22}{section*.2}
+\contentsline {subsubsection}{With domain or system}{24}{section*.3}
+\contentsline {chapter}{\numberline {8}Storage}{25}{chapter.8}
+\contentsline {section}{\numberline {8.1}Databases}{25}{section.8.1}
+\contentsline {subsection}{\numberline {8.1.1}PostgreSQL tables}{25}{subsection.8.1.1}
+\contentsline {subsubsection}{URL table}{25}{section*.4}
+\contentsline {subsubsection}{User table}{25}{section*.5}
+\contentsline {subsubsection}{PID table}{25}{section*.6}
+\contentsline {subsubsection}{Course ID table}{26}{section*.7}
+\contentsline {subsubsection}{Homeserver table}{26}{section*.8}
+\contentsline {subsubsection}{Roles}{26}{section*.9}
+\contentsline {subsubsection}{Assessment table}{27}{section*.10}
+\contentsline {section}{\numberline {8.2}Caching}{27}{section.8.2}
+\contentsline {section}{\numberline {8.3}File system}{27}{section.8.3}
+\contentsline {subsection}{\numberline {8.3.1}Assets}{27}{subsection.8.3.1}
+\contentsline {subsection}{\numberline {8.3.2}Tables of Content}{27}{subsection.8.3.2}
+\contentsline {section}{\numberline {8.4}Programmatic access}{28}{section.8.4}
+\contentsline {chapter}{\numberline {9}XML}{29}{chapter.9}
+\contentsline {section}{\numberline {9.1}Structure of Documents}{29}{section.9.1}
+\contentsline {subsection}{\numberline {9.1.1}Classic LON-CAPA Content}{29}{subsection.9.1.1}
+\contentsline {subsection}{\numberline {9.1.2}Overview of differences to classic LON-CAPA}{29}{subsection.9.1.2}
+\contentsline {section}{\numberline {9.2}Editing}{30}{section.9.2}
+\contentsline {subsection}{\numberline {9.2.1}Main editors}{30}{subsection.9.2.1}
+\contentsline {subsection}{\numberline {9.2.2}Emergency editor}{30}{subsection.9.2.2}
+\contentsline {chapter}{\numberline {10}XML Parser}{31}{chapter.10}
+\contentsline {section}{\numberline {10.1}Invocation}{31}{section.10.1}
+\contentsline {section}{\numberline {10.2}Tag types}{31}{section.10.2}
+\contentsline {section}{\numberline {10.3}Stacks and safeeval}{32}{section.10.3}
+\contentsline {chapter}{\numberline {11}Internationalization}{33}{chapter.11}
+\contentsline {section}{\numberline {11.1}Encoding}{33}{section.11.1}
+\contentsline {section}{\numberline {11.2}Maketext}{33}{section.11.2}
+\contentsline {section}{\numberline {11.3}Invocation in documents}{34}{section.11.3}
+\contentsline {section}{\numberline {11.4}Invocation from Perl}{34}{section.11.4}
+\contentsline {section}{\numberline {11.5}Internal codes}{34}{section.11.5}
+\contentsline {section}{\numberline {11.6}Special cases}{34}{section.11.6}
+\contentsline {subsection}{\numberline {11.6.1}JavaScript configuration files}{34}{subsection.11.6.1}
+\contentsline {subsection}{\numberline {11.6.2}Loading locatilization files}{35}{subsection.11.6.2}
+\contentsline {chapter}{\numberline {12}Math editor, parser and equation syntax}{37}{chapter.12}
+\contentsline {section}{\numberline {12.1}Introduction}{37}{section.12.1}
+\contentsline {section}{\numberline {12.2}A new user interface}{37}{section.12.2}
+\contentsline {subsection}{\numberline {12.2.1}Usage}{38}{subsection.12.2.1}
+\contentsline {section}{\numberline {12.3}The server-side parser}{38}{section.12.3}
+\contentsline {subsection}{\numberline {12.3.1}Usage}{38}{subsection.12.3.1}
+\contentsline {subsection}{\numberline {12.3.2}Calculation environment}{38}{subsection.12.3.2}
+\contentsline {subsection}{\numberline {12.3.3}Conversion to Maxima syntax}{38}{subsection.12.3.3}
+\contentsline {subsection}{\numberline {12.3.4}Catching errors}{38}{subsection.12.3.4}
+\contentsline {subsection}{\numberline {12.3.5}Example with unit node}{38}{subsection.12.3.5}
+\contentsline {subsection}{\numberline {12.3.6}Example with symbolic node}{38}{subsection.12.3.6}
+\contentsline {section}{\numberline {12.4}Equation syntax}{39}{section.12.4}
+\contentsline {subsection}{\numberline {12.4.1}Spaces}{39}{subsection.12.4.1}
+\contentsline {subsection}{\numberline {12.4.2}Decimal separators and function parameter separators}{39}{subsection.12.4.2}
+\contentsline {subsection}{\numberline {12.4.3}Constants}{39}{subsection.12.4.3}
+\contentsline {subsection}{\numberline {12.4.4}Units}{39}{subsection.12.4.4}
+\contentsline {subsection}{\numberline {12.4.5}Parenthesis}{39}{subsection.12.4.5}
+\contentsline {subsection}{\numberline {12.4.6}Complex numbers}{39}{subsection.12.4.6}
+\contentsline {subsection}{\numberline {12.4.7}Operators}{39}{subsection.12.4.7}
+\contentsline {subsection}{\numberline {12.4.8}Implicit operators}{39}{subsection.12.4.8}
+\contentsline {subsection}{\numberline {12.4.9}Vectors and matrices}{39}{subsection.12.4.9}
+\contentsline {subsection}{\numberline {12.4.10}Functions}{40}{subsection.12.4.10}
+\contentsline {chapter}{\numberline {13}Graphical editor}{41}{chapter.13}
+\contentsline {section}{\numberline {13.1}Introduction}{41}{section.13.1}
+\contentsline {section}{\numberline {13.2}Choice of tools}{41}{section.13.2}
+\contentsline {section}{\numberline {13.3}Development}{42}{section.13.3}
+\contentsline {subsection}{\numberline {13.3.1}Tasks}{42}{subsection.13.3.1}
+\contentsline {subsection}{\numberline {13.3.2}Git paths}{42}{subsection.13.3.2}
+\contentsline {subsection}{\numberline {13.3.3}Edition and launch in Dart Editor}{42}{subsection.13.3.3}
+\contentsline {chapter}{\numberline {14}Glossary}{43}{chapter.14}

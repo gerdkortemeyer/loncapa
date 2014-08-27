@@ -1,110 +1,116 @@
 \begin{theindex}
 
-  \item access server, 13
-  \item accessibility, 5
-  \item assessments, 27
-  \item assetid, 28
-  \item assets, 11, 20, 27
-  \item authorization, 7
+  \item access server, \hyperpage{13}
+  \item accessibility, \hyperpage{5}
+  \item assessments, \hyperpage{27}
+  \item assetid, \hyperpage{28}
+  \item assets, \hyperpage{11}, \hyperpage{20}, \hyperpage{27}
+  \item authorization, \hyperpage{7}
 
   \indexspace
 
-  \item caching, 27
-  \item CentOS, 9
-  \item certificate authority, 9
-  \item certificates, 9, 15
-  \item cluster manager, 15
-  \item cluster table, 10, 13
-  \item communities, 19
-  \item course IDs, 26
-  \item courses, 19, 25
+  \item caching, \hyperpage{27}
+  \item CentOS, \hyperpage{9}
+  \item certificate authority, \hyperpage{9}
+  \item certificates, \hyperpage{9}, \hyperpage{15}
+  \item cluster manager, \hyperpage{15}
+  \item cluster table, \hyperpage{10}, \hyperpage{13}
+  \item communities, \hyperpage{19}
+  \item course IDs, \hyperpage{26}
+  \item courses, \hyperpage{19}, \hyperpage{25}
 
   \indexspace
 
-  \item encoding, 33
-  \item entities, 19
-  \item equation editor, 37
-  \item equation parser, 38
-  \item equation syntax, 39
+  \item Daxe, \hyperpage{41}
 
   \indexspace
 
-  \item Github, 10
-  \item groups, 19
+  \item encoding, \hyperpage{33}
+  \item entities, \hyperpage{19}
+  \item equation editor, \hyperpage{37}
+  \item equation parser, \hyperpage{38}
+  \item equation syntax, \hyperpage{39}
 
   \indexspace
 
-  \item homeserver, 15, 20, 25--27
-  \item HTML pages, 31
+  \item Github, \hyperpage{10}
+  \item graphical editor, \hyperpage{41}
+  \item groups, \hyperpage{19}
 
   \indexspace
 
-  \item installation, 9
-  \item internationalization, 5, 33
+  \item homeserver, \hyperpage{15}, \hyperpage{20}, \hyperpage{25--27}
+  \item HTML pages, \hyperpage{31}
 
   \indexspace
 
-  \item json, 27
+  \item installation, \hyperpage{9}
+  \item internationalization, \hyperpage{5}, \hyperpage{33}
 
   \indexspace
 
-  \item lc.conf, 11
-  \item library server, 13
-  \item Linux, 7, 9
-  \item log files, 10
+  \item json, \hyperpage{27}
 
   \indexspace
 
-  \item math, 37
-  \item memcached, 27
-  \item metadata, 20
-  \item MongoDB, 20, 25
+  \item lc.conf, \hyperpage{11}
+  \item library server, \hyperpage{13}
+  \item Linux, \hyperpage{7}, \hyperpage{9}
+  \item log files, \hyperpage{10}
 
   \indexspace
 
-  \item open source, 3, 7
+  \item math, \hyperpage{37}
+  \item memcached, \hyperpage{27}
+  \item metadata, \hyperpage{20}
+  \item MongoDB, \hyperpage{20}, \hyperpage{25}
 
   \indexspace
 
-  \item PIDs, 19, 25
-  \item portfolio, 20
-  \item PostgreSQL, 25
-  \item privileges, 7
-  \item problems, 31
-  \item profiles, 20
-  \item publication, 20
+  \item open source, \hyperpage{3}, \hyperpage{7}
 
   \indexspace
 
-  \item realms, 21
-  \item replication, 12, 17, 27
-  \item roles, 7, 21, 26, 34
+  \item PIDs, \hyperpage{19}, \hyperpage{25}
+  \item portfolio, \hyperpage{20}
+  \item PostgreSQL, \hyperpage{25}
+  \item privileges, \hyperpage{7}
+  \item problems, \hyperpage{31}
+  \item profiles, \hyperpage{20}
+  \item publication, \hyperpage{20}
 
   \indexspace
 
-  \item safeeval, 32
-  \item scalability, 7
-  \item sections, 19
-  \item SSL, 6
+  \item realms, \hyperpage{21}
+  \item replication, \hyperpage{12}, \hyperpage{17}, \hyperpage{27}
+  \item roles, \hyperpage{7}, \hyperpage{21}, \hyperpage{26}, 
+		\hyperpage{34}
 
   \indexspace
 
-  \item table of contents, 27
+  \item safeeval, \hyperpage{32}
+  \item scalability, \hyperpage{7}
+  \item sections, \hyperpage{19}
+  \item SSL, \hyperpage{6}
 
   \indexspace
 
-  \item unicode, 33
-  \item usernames, 19, 25
-  \item users, 19, 25
-  \item utf-8, 33
+  \item table of contents, \hyperpage{27}
 
   \indexspace
 
-  \item versions, 12, 20, 27
+  \item unicode, \hyperpage{33}
+  \item usernames, \hyperpage{19}, \hyperpage{25}
+  \item users, \hyperpage{19}, \hyperpage{25}
+  \item utf-8, \hyperpage{33}
 
   \indexspace
 
-  \item XML, 29
-  \item XML parser, 12, 31
+  \item versions, \hyperpage{12}, \hyperpage{20}, \hyperpage{27}
+
+  \indexspace
+
+  \item XML, \hyperpage{29}
+  \item XML parser, \hyperpage{12}, \hyperpage{31}
 
 \end{theindex}
