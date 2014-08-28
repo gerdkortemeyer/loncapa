@@ -138,7 +138,7 @@ function modify_selected() {
 }
 
 function uploadsuccess(name) {
-   alert("success "+name);
+   reload_listing();
 }
 
 function uploadfailure(name,code) {
