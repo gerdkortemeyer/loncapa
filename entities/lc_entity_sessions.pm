@@ -102,7 +102,8 @@ sub get_posted_content {
 # Remove domain/entity
        $path=~s/^\/*\w+\/\w+//;
        $path=~s/^\/*//;
-       $content{'wrk_filename'}=($path?$path.'/'.$query->param('uploads'):$query->param('uploads'));
+       unless ($path=~/\/$/) { $path.='/'; }
+       $content{'wrk_filename'}=($path?$path.$query->param('uploads'):$query->param('uploads'));
    }
 # Load the normal stuff into memory
    $lc_session->{'content'}=\%content;

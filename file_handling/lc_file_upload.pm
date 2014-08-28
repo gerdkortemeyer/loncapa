@@ -35,6 +35,15 @@ sub uploaded_remote_filename {
    return $content{'remote_filename'};
 }
 
+# The URL that an uploaded file should have
+#
+sub uploaded_dest_url {
+   my %content=&Apache::lc_entity_sessions::posted_content();
+   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+   return '/asset/wrk/-/'.$domain.'/'.$entity.'/'.$content{'wrk_filename'};
+}
+
+
 # Moving the uploaded file into place
 #
 sub move_uploaded_into_place {
@@ -64,20 +73,27 @@ sub move_uploaded_into_default_place {
 
 
 sub handler {
+# Fetch the uploaded file
    my $file=&move_uploaded_into_default_place();
    unless ($file) {
       &logerror("Failed to upload file");
       return HTTP_SERVICE_UNAVAILABLE;
    }
-#FIXME: unpack tar balls, etc
+# Where should this go?
+   my $dest_url=&uploaded_dest_url();
+# Does that already exist?
+   my $url_entity=&Apache::lc_entity_urls::url_to_entity($dest_url);
+
+
 #
-   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
-   my %content=&Apache::lc_entity_sessions::posted_content();
-#   my $url='/asset/-/-/msu/'.$entity.'/rqdqweq/fqweqc.html';
+#
+#   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
+#   my %content=&Apache::lc_entity_sessions::posted_content();
+# Construct the URL
 # 
 #   &Apache::lc_entity_urls::transfer_uploaded($url);
 #   &Apache::lc_entity_urls::save($url);
-   &logdebug("File [$file] ".join("\n",map { "$_: $content{$_}" } keys(%content)));
+   &logdebug("File [$file] URL [$dest_url] Entity [$url_entity]");
    return OK;
 }
 
