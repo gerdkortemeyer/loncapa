@@ -83,17 +83,25 @@ sub handler {
    my $dest_url=&uploaded_dest_url();
 # Does that already exist?
    my $url_entity=&Apache::lc_entity_urls::url_to_entity($dest_url);
-
-
-#
-#
-#   my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
-#   my %content=&Apache::lc_entity_sessions::posted_content();
-# Construct the URL
-# 
-#   &Apache::lc_entity_urls::transfer_uploaded($url);
-#   &Apache::lc_entity_urls::save($url);
-   &logdebug("File [$file] URL [$dest_url] Entity [$url_entity]");
+   unless ($url_entity) {
+# Okay, this does not yet exist, we need to make it
+      &Apache::lc_entity_urls::make_new_url($dest_url);
+      $url_entity=&Apache::lc_entity_urls::url_to_entity($dest_url);
+      unless ($url_entity) {
+# Wow, we have a problem!
+         &logerror("Failed to get a new entity for [$dest_url]");
+         return HTTP_SERVICE_UNAVAILABLE;
+      }
+   }
+# Okay, we are in business
+   unless (&Apache::lc_entity_urls::transfer_uploaded($dest_url)) {
+      &logerror("Failed to move into place [$dest_url]");
+      return HTTP_SERVICE_UNAVAILABLE;
+   }
+   unless (&Apache::lc_entity_urls::save($dest_url)) {
+      &logerror("Failed to save [$dest_url]");
+      return HTTP_SERVICE_UNAVAILABLE;
+   }
    return OK;
 }
 
