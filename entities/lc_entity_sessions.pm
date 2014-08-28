@@ -93,9 +93,18 @@ sub get_posted_content {
    my %content=$query->Vars;
    if ($query->param('uploads')) {
 # Wow, uploaded a file. Do not put that into memory, just store it
+# uploads contains the filename
+# optional uploads_path contains the URL full path
        $content{'remote_filename'}=$query->param('uploads');
        $content{'local_filename'}=$query->tmpFileName($query->param('uploads'));
+# Full path under which should be stored in wrk-space - use path if present
+       my $path=$query->param('uploads_path');
+# Remove domain/entity
+       $path=~s/^\/*\w+\/\w+//;
+       $path=~s/^\/*//;
+       $content{'wrk_filename'}=($path?$path.'/'.$query->param('uploads'):$query->param('uploads'));
    }
+# Load the normal stuff into memory
    $lc_session->{'content'}=\%content;
 }
 

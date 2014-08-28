@@ -52,7 +52,7 @@ sub move_uploaded_into_place {
 sub move_uploaded_into_default_place {
    my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
    my %content=&Apache::lc_entity_sessions::posted_content();
-   my $dest_filename=&Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/'.$content{'remote_filename'});
+   my $dest_filename=&Apache::lc_entity_urls::wrk_to_filepath($domain.'/'.$entity.'/'.$content{'wrk_filename'});
    if (&move_uploaded_into_place($dest_filename)) {
       return $dest_filename;
    } else {
@@ -73,7 +73,10 @@ sub handler {
 #
    my ($entity,$domain)=&Apache::lc_entity_sessions::user_entity_domain();
    my %content=&Apache::lc_entity_sessions::posted_content();
-
+#   my $url='/asset/-/-/msu/'.$entity.'/rqdqweq/fqweqc.html';
+# 
+#   &Apache::lc_entity_urls::transfer_uploaded($url);
+#   &Apache::lc_entity_urls::save($url);
    &logdebug("File [$file] ".join("\n",map { "$_: $content{$_}" } keys(%content)));
    return OK;
 }
