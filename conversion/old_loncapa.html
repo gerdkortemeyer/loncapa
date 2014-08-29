@@ -155,7 +155,9 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<div class="documentation">Answer</div>
+<div class="documentation">
+Perl script calculating random input values used in the question, and the associated correct answer.
+</div>
 <br>
 
 Choice between:<ul>
@@ -530,7 +532,18 @@ Choice between:<ul>
 <div class="indentation">
 
 
-<div class="documentation">Answer algorithm</div>
+<div class="documentation">
+Perl script evaluating the student answer.
+
+For a single textfield, the student&rsquo;s answer will be in a variable $submission. If the Custom Response has multiple textfields, the answers will be in an array reference, and can be accessed as $$submission[0], $$submission[1], etc.
+
+The script must return a standard LON-CAPA response. The most common LON-CAPA responses are:
+- EXACT ANS: return if solved exactly correctly
+- APPROX ANS: return if solved approximately
+- INCORRECT: return if not correct, uses up a try
+- ASSIGNED SCORE: partial credit (also return the credit factor, e.g. return(ASSIGNED SCORE,0.3);)
+- SIG FAIL, NO UNIT, EXTRA ANSWER, MISSING ANSWER, BAD FORMULA, WANTED NUMERIC, WRONG FORMAT: return if not correct for different reasons, does not use up a try
+</div>
 <br>
 
 Attribute <span class="nomattribut">type</span>:
@@ -2207,7 +2220,10 @@ Value restriction based on xs:string<ul>
 <div class="indentation">
 
 
-<div class="documentation">Plot Key</div>
+<div class="documentation">
+Causes a key to be drawn on the plot when it is generated. The key will contain an entry for each curve which has a name.
+The key is the color of the foreground of the plot, specified in the gnuplot tag.
+</div>
 <br>
 
 Attribute <span class="nomattribut">title</span>:
@@ -2329,6 +2345,36 @@ Name of curve to appear in key
 </div>
 Attribute <span class="nomattribut">linestyle</span>:
     <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Unless otherwise noted the linestyles require only 2 data sets, X and Y.
+
+- lines: Connect adjacent points with straight line segments.
+- points: Display a small marker at each point.
+- linespoints: Draw both lines and points.
+  Draws a small symbol at each point and then connects adjacent points with straight line segments.
+- dots: Place a tiny dots on the given points.
+- steps: Connect points with horizontal lines.
+  This style connects consecutive points with two line segments: the first from (x1,y1) to (x2,y1) and the second from (x2,y1) to (x2,y2).
+- fsteps: Connect data with horizontal lines.
+  This style connects consecutive points with two line segments: the first from (x1,y1) to (x1,y2) and the second from (x1,y2) to (x2,y2).
+- histeps: Plot as histogram.
+  Y-values are assumed to be centered at the x-values; the point at x1 is represented as a horizontal line from ((x0+x1)/2,y1) to ((x1+x2)/2,y1). The lines representing the end points are extended so that the step is centered on at x. Adjacent points are connected by a vertical line at their average x, that is, from ((x1+x2)/2,y1) to ((x1+x2)/2,y2).
+- errorbars: Same as yerrorbars.
+- xerrorbars: Draw horizontal error bars around the points.
+  Requires 3 or 4 data sets. Either X, Y, Xdelta or X, Y, Xlower, Xupper. Xdelta is a change relative to the given X value. The Xlower and Xupper values are absolute grid coordinates of the upper and lower values to indicated with error bars.
+- yerrorbars: Draw vertical error bars around the points.
+  Requires 3 or 4 data sets. Either X, Y, Ydelta or X, Y, Ylower, Yupper. Ydelta is a change relative to the given Y value. The Ylower and Yupper values are the grid coordinates of the upper and lower values to indicate with error bars.
+- xyerrorbars: Draw both vertical and horizontal error bars around the points.
+  Requires 4 or 6 data sets. Either X, Y, Xdelta, Ydelta or X, Y, Xlower, Xupper, Ylower, Yupper. Xdelta and Ydelta are relative to the given coordinates. Xlower, Xupper, Ylower, and Yupper are the grid coordinates of the upper and lower values to indicate with the error bars.
+- boxes: Draw a box from the X-axis to the Y-value given.
+  Requires either 2 or 3 data sets. Either X, Y or X, Y, Xwidth. In the first case the boxes will be drawn next to eachother. In the latter case Xwidth indicates the horizontal width of the box for the given coordinate.
+- vector: Draws a vector field based on the given data.
+  Requires 4 data sets, X, Y, Xdelta, and Ydelta. The &lsquo;vector&lsquo; style draws a vector from (X,Y) to (X+Xdelta,Y+Ydelta). It also draws a small arrowhead at the end of the vector. May not be fully supported by gnuplot.
+</div>
+<br>
+
 
 Value restriction based on xs:string<ul>
 
@@ -2481,7 +2527,7 @@ Attribute <span class="nomattribut">limit</span>:
 
 
 <div class="documentation">
-Point to fill -- for filledcurves
+Point to fill for filled curves
 </div>
 <br>
 
@@ -2525,7 +2571,7 @@ Attribute <span class="nomattribut">arrowhead</span>:
 
 
 <div class="documentation">
-Vector arrow head type
+For vector plots, controls where in the vector the arrow head(s) appear.
 </div>
 <br>
 
@@ -2553,7 +2599,7 @@ Attribute <span class="nomattribut">arrowstyle</span>:
 
 
 <div class="documentation">
-Vector arrow head style
+For vector plots, controls the fill style of the arrow.
 </div>
 <br>
 
@@ -2582,7 +2628,7 @@ Attribute <span class="nomattribut">arrowlength</span>:
 
 
 <div class="documentation">
-Length of vector arrow (only applies to vector plots)
+For vector plots, determines the distance between the vector line end and the tip of the arrow.
 </div>
 <br>
 
@@ -2594,7 +2640,7 @@ Attribute <span class="nomattribut">arrowangle</span>:
 
 
 <div class="documentation">
-Angle of arrow branches to arrow body (only applies to vector plots)
+For vector plots, determines the angle the arrow branches make with the vector line.
 </div>
 <br>
 
@@ -2606,7 +2652,7 @@ Attribute <span class="nomattribut">arrowbackangle</span>:
 
 
 <div class="documentation">
-Angle of arrow back lines to branches.
+For vector plots, determines the angle the arrow lines that return to the main line from the branches make with the arrow branches.
 </div>
 <br>
 
@@ -2622,7 +2668,10 @@ Angle of arrow back lines to branches.
 <div class="indentation">
 
 
-<div class="documentation">Curve function</div>
+<div class="documentation">
+Used to specify the curve to be plotted as a formula, instead of numerical data.
+The function must be a mathematical expression. Use the independent variable &ldquo;x&rdquo; for cartesian plots and &ldquo;t&rdquo; for polar plots. Implicit multiplication is not accepted by Gnuplot.
+</div>
 <br>
 
 
@@ -2709,6 +2758,7 @@ Attribute <span class="nomattribut">mirror</span>:
 
 <div class="documentation">
 Mirror tics on opposite axis?
+If the location of tic marks is set to &ldquo;border&rdquo; this parameter determines if they are shown on both the top and bottom or right and left sides of the graph. The &ldquo;mirror&rdquo; tic marks are unlabelled.
 </div>
 <br>
 
@@ -2720,7 +2770,7 @@ Attribute <span class="nomattribut">start</span>:
 
 
 <div class="documentation">
-Start major tics at
+The point in graph coordinates which to start making major tics. This may be less than or greater than the lower limit for the axis.
 </div>
 <br>
 
@@ -2732,7 +2782,7 @@ Attribute <span class="nomattribut">increment</span>:
 
 
 <div class="documentation">
-Place a major tic every
+The span, in graph coordinates, between each major tic mark.
 </div>
 <br>
 
@@ -2744,7 +2794,8 @@ Attribute <span class="nomattribut">end</span>:
 
 
 <div class="documentation">
-Stop major tics at
+Stop major tics at.
+This may be less than or greater than the upper limit for the axis.
 </div>
 <br>
 
@@ -2756,7 +2807,7 @@ Attribute <span class="nomattribut">minorfreq</span>:
 
 
 <div class="documentation">
-Number of minor tics per major tic mark
+The number of subdivisions to make of the span between major tic marks. Using a value of &ldquo;10&rdquo; leads to 9 minor tic marks.
 </div>
 <br>
 
@@ -2768,7 +2819,7 @@ Attribute <span class="nomattribut">rotate</span>:
 
 
 <div class="documentation">
-Rotate tic label by 90 degrees if on
+For output devices that support it, this rotates the tic label by 90 degrees. This is most useful with large lables defined by the tic tag described below.
 </div>
 <br>
 
@@ -2852,7 +2903,13 @@ Attribute <span class="nomattribut">default</span>:
 </h3>
 
 
-<div class="documentation">Query for one or several numbers, possibly with units.</div>
+<div class="documentation">
+Query for one or several numbers, possibly with units.
+
+A tolerance parameter should be used to determine how closely the system will require the student&rsquo;s answer to be in order to count it correct. The tolerance will default to zero if it is not defined. The tolerance parameter should always be defined for a numerical problem unless you are certain only integer answers are generated from your script and you want students to reply with exactly that integer.
+
+A significant figures parameter tells the system how many significant figures there are in the problem, as either a single number, e.g. 3, or a range of acceptable values, expressed as min,max. The system will check to make sure that the student&rsquo;s answer contains this many significant digits, useful in many scientific calculations.
+</div>
 <br>
 
 
@@ -2907,6 +2964,14 @@ Attribute <span class="nomattribut">name</span>:
 Attribute <span class="nomattribut">answer</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+The answer the system is looking for. The answer can use variables calculated/defined in the problem&rsquo;s script block, allowing the answer to be determined dynamically (including randomization).
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">incorrect</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
@@ -3009,7 +3074,14 @@ Attribute <span class="nomattribut">samples</span>:
 
 
 <div class="documentation">
-Sample Points
+Sample Points.
+
+Format:
+1. A comma-separated list of the variables you wish to interpret,
+2. followed by &ldquo;@&rdquo; (not in quotes),
+3. followed by any number of the following two things, separated by semi-colons:
+ (a) a comma-separated list of as many numbers as there are variables, which specifies one sampling point, OR
+ (b) a comma-separated list of as many numbers as there are variables, followed by a colon, followed by another list of as many numbers as there are variables, followed by a #, followed by an integer.
 </div>
 <br>
 
@@ -3039,7 +3111,12 @@ Pre-Processor Subroutine
 </h3>
 
 
-<div class="documentation">Query for the drawing of a function.</div>
+<div class="documentation">
+Query for the drawing of a function.
+
+Requires that the student creates a plot that matches specified criteria.
+Examples can be functions that have certain slopes, curvature, maxima or minima at specified independent coordinate values. The students create their answer by dragging the curves and adjusting the slopes.
+</div>
 <br>
 
 
@@ -3192,7 +3269,7 @@ Attribute <span class="nomattribut">gridvisible</span>:
 
 
 <div class="documentation">
-Grid visible
+This determines whether or not the grid is on the graph.
 </div>
 <br>
 
@@ -3205,6 +3282,10 @@ Attribute <span class="nomattribut">answerdisplay</span>:
 
 <div class="documentation">
 Background plot(s) for answer (function(x):xmin:xmax,function(x):xmin:xmax,x1:y1:sx1:sy1:x2:y2:sx2:sy2,...)
+
+This is a green curve the computer will display once the correct answer has been submitted. It is static, and can be given as a piecewise function.
+Since some problems will have multiple correct answers, this necessarily will only be a possible answer. Only the left hand side of the equation is necessary. For example, entering x + 2 will display the line y = x + 2.
+The syntax must be syntax recognized by GeoGebra. To test syntax for Geogebra directly, visit http://www.geogebra.org/webstart/geogebra.html .
 </div>
 <br>
 
@@ -3336,8 +3417,16 @@ This places a static curve on the graph of your choosing. It can be labeled, mov
 
 <div class="indentation">
 Attribute <span class="nomattribut">function</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">required<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+An equals sign is not necessary. Just give the right hand side of the function. LON-CAPA variables are usable as well to allow individualized problems for each student. The syntax must be syntax recognized by GeoGebra.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">xinitial</span>:
     <div class="indentation">optional<br>type: <a href="#real_0">real</a>
@@ -3380,7 +3469,8 @@ Attribute <span class="nomattribut">color</span>:
 
 
 <div class="documentation">
-Color (hex code)
+Color of the background function (hex code).
+The default is 000000 (black). It is recommended to choose a color other than green, since it is easily confused with being the answer.
 </div>
 <br>
 
@@ -3471,7 +3561,9 @@ Attribute <span class="nomattribut">label</span>:
 
 
 <div class="documentation">
-Label on Plot
+Label on Plot.
+Determines the name of the vector, as well as the name that will be visible in the problem.
+This value MUST be capitalized and cannot include spaces or most symbols. To be safe, stick with letters and numbers.
 </div>
 <br>
 
@@ -3868,6 +3960,7 @@ Attribute <span class="nomattribut">index</span>:
 
 <div class="documentation">
 Index/Name
+This is an internal label for the rule. This attribute must be different for each rule. This same value will be used to add a conditional hint.
 </div>
 <br>
 
@@ -3876,6 +3969,14 @@ Index/Name
 Attribute <span class="nomattribut">vector</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+The name of one of the vectors in the list of function plot elements. Specifically, the one you want to test.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">attachpoint</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
@@ -3883,7 +3984,8 @@ Attribute <span class="nomattribut">attachpoint</span>:
 
 
 <div class="documentation">
-Attached to object
+Attached to object.
+Object(s) this vector should be attached to. For more than one object, separate them by commas. If the vector should not be attached to any object, leave this blank. In this case, an object is considered attached if its tail OR its tip is in the vicinity of the object.
 </div>
 <br>
 
@@ -3895,7 +3997,9 @@ Attribute <span class="nomattribut">notattachpoint</span>:
 
 
 <div class="documentation">
-Not attached to object
+Not attached to object.
+Object(s) that this vector should be not be near.
+For more than one object, separate them by commas. Particularly useful for distractor vectors.
 </div>
 <br>
 
@@ -3907,7 +4011,8 @@ Attribute <span class="nomattribut">tailpoint</span>:
 
 
 <div class="documentation">
-Tail attached to object
+Tail attached to object.
+Tail(s) this vector should be attached to.
 </div>
 <br>
 
@@ -3919,7 +4024,8 @@ Attribute <span class="nomattribut">tippoint</span>:
 
 
 <div class="documentation">
-Tip attached to object
+Tip attached to object.
+Tip(s) this vector should be attached to.
 </div>
 <br>
 
@@ -3931,7 +4037,8 @@ Attribute <span class="nomattribut">nottailpoint</span>:
 
 
 <div class="documentation">
-Tail not attached to object
+Tail not attached to object.
+Tail(s) this vector should not be attached to.
 </div>
 <br>
 
@@ -3943,7 +4050,8 @@ Attribute <span class="nomattribut">nottippoint</span>:
 
 
 <div class="documentation">
-Tip not attached to object
+Tip not attached to object.
+Tip(s) this vector should not be attached to.
 </div>
 <br>
 
@@ -3952,6 +4060,14 @@ Tip not attached to object
 Attribute <span class="nomattribut">length</span>:
     <div class="indentation">optional<br>type: <a href="#real_0">real</a>
 <br>
+
+
+<div class="documentation">
+How long the vector should be.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">lengtherror</span>:
     <div class="indentation">optional<br>type: <a href="#real_0">real</a>
@@ -3959,7 +4075,8 @@ Attribute <span class="nomattribut">lengtherror</span>:
 
 
 <div class="documentation">
-Absolute error length
+Absolute error length.
+How accurate the length must be to get the answer correct.
 </div>
 <br>
 
@@ -3968,6 +4085,14 @@ Absolute error length
 Attribute <span class="nomattribut">angle</span>:
     <div class="indentation">optional<br>type: <a href="#real_0">real</a>
 <br>
+
+
+<div class="documentation">
+What direction should the vector point. All values are measured in degrees, counterclockwise starting at the positive x-axis. Values must be 0 &le; θ &lt; 360.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">angleerror</span>:
     <div class="indentation">optional<br>type: <a href="#real_0">real</a>
@@ -3975,7 +4100,8 @@ Attribute <span class="nomattribut">angleerror</span>:
 
 
 <div class="documentation">
-Absolute error angle
+Absolute error angle.
+How accurate the angle must be to get the answer correct.
 </div>
 <br>
 
@@ -4007,7 +4133,8 @@ Attribute <span class="nomattribut">index</span>:
 
 
 <div class="documentation">
-Index/Name
+Index/Name.
+ This is an internal label for the rule. It must be different for each rule. This same value will be used to add a conditional hint.
 </div>
 <br>
 
@@ -4019,7 +4146,8 @@ Attribute <span class="nomattribut">vectors</span>:
 
 
 <div class="documentation">
-Comma-separated list of vectors
+Comma-separated list of vectors.
+List all of the vectors that should be added up to be tested.
 </div>
 <br>
 
@@ -4031,7 +4159,8 @@ Attribute <span class="nomattribut">length</span>:
 
 
 <div class="documentation">
-Sum vector length
+Sum vector length.
+How long the sum of these vectors should be.
 </div>
 <br>
 
@@ -4043,7 +4172,8 @@ Attribute <span class="nomattribut">lengtherror</span>:
 
 
 <div class="documentation">
-Absolute error length
+Absolute error length.
+How accurate the length must be to get the answer correct.
 </div>
 <br>
 
@@ -4055,7 +4185,8 @@ Attribute <span class="nomattribut">angle</span>:
 
 
 <div class="documentation">
-Sum vector angle
+Sum vector angle.
+What direction should the sum of these vectors point. All values are measured in degrees, counterclockwise starting at the positive x-axis. Values must be 0 &le; θ &lt; 360.
 </div>
 <br>
 
@@ -4067,7 +4198,8 @@ Attribute <span class="nomattribut">angleerror</span>:
 
 
 <div class="documentation">
-Absolute error angle
+Absolute error angle.
+How accurate the angle must be to get the answer correct.
 </div>
 <br>
 
@@ -4590,7 +4722,7 @@ Attribute <span class="nomattribut">on</span>:
 <div class="documentation">
 Formula Hint Condition
 
-The formulahint tag takes three parameters: answer, name, and samples. The "name" is the unique name given to the hint condition. The formula answer for which you wish to provide conditional is included in the answer parameter. The samples parameter includes the points (or range of points) over which sampling of the student's submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples parameter of the formula reponse tag itself. The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt; hintpart &gt; tag. 
+The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt;hintpart&gt; element.
 </div>
 <br>
 
@@ -4612,7 +4744,8 @@ Attribute <span class="nomattribut">name</span>:
 
 
 <div class="documentation">
-should be set to the value of which hintpart will be shown
+Unique name given to the hint condition.
+Should be set to the value of which hintpart will be shown.
 </div>
 <br>
 
@@ -4621,6 +4754,14 @@ should be set to the value of which hintpart will be shown
 Attribute <span class="nomattribut">answer</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+Formula answer for which the conditional is provided.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">samples</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
@@ -4628,7 +4769,8 @@ Attribute <span class="nomattribut">samples</span>:
 
 
 <div class="documentation">
-Sample Points
+Sample points (or range of points) over which sampling of the student&rsquo;s submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples
+parameter of the formula reponse element itself.
 </div>
 <br>
 
@@ -4660,8 +4802,6 @@ Pre-Processor Subroutine
 
 <div class="documentation">
 Numerical Hint Condition
-
-The numericalhint tag takes four parameters: answer, name, unit and format. The "name" is the unique name given to the hint condition. The numerical answer for which you wish to provide conditional is included in the answer parameter. Student submission of that answer in combination with the "unit" parameter in the hint condition will trigger the hint action specified in the &lt; hintpart &gt; tag. 
 </div>
 <br>
 
@@ -4683,7 +4823,8 @@ Attribute <span class="nomattribut">name</span>:
 
 
 <div class="documentation">
-should be set to the value of which hintpart will be shown
+Unique name given to the hint condition.
+Should be set to the value of which hintpart will be shown.
 </div>
 <br>
 
@@ -4692,6 +4833,15 @@ should be set to the value of which hintpart will be shown
 Attribute <span class="nomattribut">answer</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+Numerical answer for which the conditional is provided.
+Student submission of that answer in combination with the "unit" attribute in the hint condition will trigger the hint action specified in the &lt;hintpart&gt; element.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">unit</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
@@ -4907,8 +5057,6 @@ should be at least a two element list: first the type (foil or concept) and then
 
 <div class="documentation">
 String Hint Condition
-
-The string hint takes two parameters: answer and name. The name is the name of the hint condition, and the answer is a text string. The type parameter allows you to choose between case sensitive, case insensitive, and case insensitive in any order.
 </div>
 <br>
 
@@ -4930,7 +5078,8 @@ Attribute <span class="nomattribut">name</span>:
 
 
 <div class="documentation">
-should be set to the value of which hintpart will be shown
+Name of the hint condition.
+Should be set to the value of which hintpart will be shown.
 </div>
 <br>
 
@@ -4942,7 +5091,8 @@ Attribute <span class="nomattribut">answer</span>:
 
 
 <div class="documentation">
-should be set to the value of which hintpart will be shown
+Text string.
+Should be set to the value of which hintpart will be shown.
 </div>
 <br>
 
@@ -5264,8 +5414,9 @@ String to display for answer
 
 
 <div class="documentation">
-Query for text that is evaluated with a script written in a computer algebra system language.
-Which computer algebra system is to be used is specified in the cas attribute; both Maxima and R are supported.
+Query for text that is evaluated with a script written in a computer algebra system language by the problem author.
+
+MathResponse is extremely powerful, as it tests answers for conditions rather than agreement with a particular correct answer. An unfortunate byproduct, however, is that it cannot be analyzed by several of the LON-CAPA statistics tools.
 </div>
 <br>
 
@@ -5277,6 +5428,14 @@ Choice between:<ul>
 <h3>Element <span class="nomtitre">answer</span>
 </h3>type: <a href="#mathresponse--answer_0">mathresponse--answer</a>
 <br>
+
+
+<div class="documentation">
+Maxima or R script using the arrays RESPONSE and LONCAPALIST.
+</div>
+<br>
+
+
 <br>
 </li>
 <li>
@@ -5329,7 +5488,7 @@ Attribute <span class="nomattribut">cas</span>:
 
 
 <div class="documentation">
-Algebra System
+Algebra System. Maxima and R are supported.
 </div>
 <br>
 
@@ -6492,7 +6651,7 @@ Attribute <span class="nomattribut">src</span>:
 
 
 <div class="documentation">
-Image Url
+Image URL
 </div>
 <br>
 
@@ -6501,6 +6660,14 @@ Image Url
 Attribute <span class="nomattribut">alt</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+Textual description of the image. If the image cannot be rendered by the target browser, this description is displayed instead.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">width</span>:
     <div class="indentation">optional<br>type: <tt>xs:int</tt>
@@ -6553,6 +6720,18 @@ TeXheight (mm)
 Attribute <span class="nomattribut">align</span>:
     <div class="indentation">optional<br>
 
+
+<div class="documentation">
+Specifies the alignment of the image relative to the enclosing text paragraph:
+- bottom: The image will be aligned so that its bottom will be at the baseline of the surrounding text.
+- middle: The image will be aligned so that its center-line will be at the baseline of the surrounding text.
+- top: The image will be aligned so that its top will be at the baseline of the surrounding text.
+- left: The image will be placed so that it is at the left of the surrounding text. The surrounding text will fill in the region to the right of the image.
+- right: The image will be placed so that it is at the right of the surrounding text. The surrounding text will fill in the region to the left of the image.
+</div>
+<br>
+
+
 Value restriction based on xs:string<ul>
 
 <li>
@@ -6581,6 +6760,16 @@ Value restriction based on xs:string<ul>
 </div>
 Attribute <span class="nomattribut">TeXwrap</span>:
     <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Allows you to select how the LaTeX document will attempt to wrap text around a horizontally aligned image.
+parbox: \newline and \parbox will be used to place the image. This method ensures that text will not be wrapped on top of the image, however very little text will appear next to the image itself.
+parpic: The picins package \parpic command will be used to place the image. This will wrap the remainder of the paragraph containing the picture around the image.
+If, however, there is insufficient text to fill the space to the left or right of the image, the next paragraph may be wrapped on top of the image. In addition, \parpic does not always honor the end of the page, causing the image to extend below the page footer.
+</div>
+<br>
+
 
 Value restriction based on xs:string<ul>
 
@@ -8968,7 +9157,7 @@ Test Condition
 
 
 <div class="documentation">
-The gnuplot LON-CAPA tag allows an author to design a plot which will be created programatically at the time when it is requested for display by a student. This is intended for use in homework problems where a distinct plot should be rendered for each student. It can be used in conjunction with a script tag to generate curve data for random plots.
+The gnuplot LON-CAPA tag allows an author to design a plot which will be created programatically at the time when it is requested for display by a student. This is intended for use in homework problems where a distinct plot should be rendered for each student. It can be used in conjunction with a script to generate curve data for random plots.
 </div>
 <br>
 
@@ -9078,7 +9267,8 @@ Attribute <span class="nomattribut">alttag</span>:
 
 
 <div class="documentation">
-Brief description of the plot
+Brief description of the plot.
+This text is used as the alt value of the img tag used to display the plot on a web page.
 </div>
 <br>
 
@@ -9138,7 +9328,7 @@ Attribute <span class="nomattribut">transparent</span>:
 
 
 <div class="documentation">
-Transparent image
+Transparent image. If the image is transparent the background color will be ignored.
 </div>
 <br>
 
@@ -9209,7 +9399,7 @@ Attribute <span class="nomattribut">font</span>:
 
 
 <div class="documentation">
-Font size to use in web output (pts)
+Font size to use in web output (in pts, or "small", "medium" or "large").
 </div>
 <br>
 
@@ -9282,7 +9472,8 @@ Attribute <span class="nomattribut">samples</span>:
 
 
 <div class="documentation">
-Number of samples for non-data plots
+Number of samples for non-data plots.
+If a function element is used to specify the curve, this indicates the number of sample points to use.
 </div>
 <br>
 

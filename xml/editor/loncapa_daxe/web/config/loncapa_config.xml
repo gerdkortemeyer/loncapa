@@ -448,6 +448,9 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="foil">
       <TITRE>Foil</TITRE>
+      <DOCUMENTATION>
+        Foils do not need to be text; they can be images or other resources.
+      </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="image">
       <TITRE>Image</TITRE>
@@ -512,6 +515,10 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="function">
       <TITRE>Curve function</TITRE>
+      <DOCUMENTATION>
+        Used to specify the curve to be plotted as a formula, instead of numerical data.
+        The function must be a mathematical expression. Use the independent variable &#8220;x&#8221; for cartesian plots and &#8220;t&#8221; for polar plots. Implicit multiplication is not accepted by Gnuplot.
+      </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="parameter">
       <TITRE>Parameters for a part</TITRE>
@@ -533,7 +540,13 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="numericalresponse">
       <TITRE>Response: Numerical</TITRE>
-      <DOCUMENTATION>Query for one or several numbers, possibly with units.</DOCUMENTATION>
+      <DOCUMENTATION>
+        Query for one or several numbers, possibly with units.
+        
+        A tolerance parameter should be used to determine how closely the system will require the student&#8217;s answer to be in order to count it correct. The tolerance will default to zero if it is not defined. The tolerance parameter should always be defined for a numerical problem unless you are certain only integer answers are generated from your script and you want students to reply with exactly that integer.
+        
+        A significant figures parameter tells the system how many significant figures there are in the problem, as either a single number, e.g. 3, or a range of acceptable values, expressed as min,max. The system will check to make sure that the student&#8217;s answer contains this many significant digits, useful in many scientific calculations.
+      </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
       </STRINGS_ATTRIBUT>
@@ -542,6 +555,9 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answer">
         <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          The answer the system is looking for. The answer can use variables calculated/defined in the problem&#8217;s script block, allowing the answer to be determined dynamically (including randomization).
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="incorrect">
         <TITRE>incorrect answers</TITRE>
@@ -579,6 +595,14 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="samples">
         <TITRE>sample points</TITRE>
+        <DOCUMENTATION>
+          Format:
+          1. A comma-separated list of the variables you wish to interpret,
+          2. followed by &#8220;@&#8221; (not in quotes),
+          3. followed by any number of the following two things, separated by semi-colons:
+           (a) a comma-separated list of as many numbers as there are variables, which specifies one sampling point, OR
+           (b) a comma-separated list of as many numbers as there are variables, followed by a colon, followed by another list of as many numbers as there are variables, followed by a #, followed by an integer.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="preprocess">
         <TITRE>pre-processor subroutine</TITRE>
@@ -586,7 +610,12 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="functionplotresponse">
       <TITRE>Response: Function Plot</TITRE>
-      <DOCUMENTATION>Query for the drawing of a function.</DOCUMENTATION>
+      <DOCUMENTATION>
+        Query for the drawing of a function.
+        
+        Requires that the student creates a plot that matches specified criteria.
+        Examples can be functions that have certain slopes, curvature, maxima or minima at specified independent coordinate values. The students create their answer by dragging the curves and adjusting the slopes.
+      </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
       </STRINGS_ATTRIBUT>
@@ -625,11 +654,18 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="gridvisible">
         <TITRE>grid visible</TITRE>
+        <DOCUMENTATION>
+          This determines whether or not the grid is on the graph.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answerdisplay">
         <TITRE>background plot(s) for answer</TITRE>
         <DOCUMENTATION>
           Background plot(s) for answer (function(x):xmin:xmax,function(x):xmin:xmax,x1:y1:sx1:sy1:x2:y2:sx2:sy2,...)
+          
+          This is a green curve the computer will display once the correct answer has been submitted. It is static, and can be given as a piecewise function.
+          Since some problems will have multiple correct answers, this necessarily will only be a possible answer. Only the left hand side of the equation is necessary. For example, entering x + 2 will display the line y = x + 2.
+          The syntax must be syntax recognized by GeoGebra. To test syntax for Geogebra directly, visit http://www.geogebra.org/webstart/geogebra.html .
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
@@ -682,6 +718,9 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="function">
         <TITRE>function</TITRE>
+        <DOCUMENTATION>
+          An equals sign is not necessary. Just give the right hand side of the function. LON-CAPA variables are usable as well to allow individualized problems for each student. The syntax must be syntax recognized by GeoGebra.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="xinitial">
         <TITRE>initial x-value</TITRE>
@@ -700,6 +739,10 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="color">
         <TITRE>color (hex code)</TITRE>
+        <DOCUMENTATION>
+          Color of the background function (hex code).
+          The default is 000000 (black). It is recommended to choose a color other than green, since it is easily confused with being the answer.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="fixed">
         <TITRE>fixed location</TITRE>
@@ -727,6 +770,10 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="label">
         <TITRE>label on plot</TITRE>
+        <DOCUMENTATION>
+          Determines the name of the vector, as well as the name that will be visible in the problem.
+          This value MUST be capitalized and cannot include spaces or most symbols. To be safe, stick with letters and numbers.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="tailx">
         <TITRE>tailx</TITRE>
@@ -866,39 +913,76 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="index">
         <TITRE>index/name</TITRE>
+        <DOCUMENTATION>
+          This is an internal label for the rule. This attribute must be different for each rule. This same value will be used to add a conditional hint.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="vector">
         <TITRE>vector</TITRE>
+        <DOCUMENTATION>
+          The name of one of the vectors in the list of function plot elements. Specifically, the one you want to test.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="attachpoint">
         <TITRE>attached to object</TITRE>
+        <DOCUMENTATION>
+          Object(s) this vector should be attached to. For more than one object, separate them by commas. If the vector should not be attached to any object, leave this blank. In this case, an object is considered attached if its tail OR its tip is in the vicinity of the object.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="notattachpoint">
         <TITRE>not attached to object</TITRE>
+        <DOCUMENTATION>
+          Object(s) that this vector should be not be near.
+          For more than one object, separate them by commas. Particularly useful for distractor vectors.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="tailpoint">
         <TITRE>tail attached to object</TITRE>
+        <DOCUMENTATION>
+          Tail(s) this vector should be attached to.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="tippoint">
         <TITRE>tip attached to object</TITRE>
+        <DOCUMENTATION>
+          Tip(s) this vector should be attached to.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="nottailpoint">
         <TITRE>tail not attached to object</TITRE>
+        <DOCUMENTATION>
+          Tail(s) this vector should not be attached to.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="nottippoint">
         <TITRE>tip not attached to object</TITRE>
+        <DOCUMENTATION>
+          Tip(s) this vector should not be attached to.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="length">
         <TITRE>length</TITRE>
+        <DOCUMENTATION>
+          How long the vector should be.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="lengtherror">
         <TITRE>absolute error length</TITRE>
+        <DOCUMENTATION>
+          How accurate the length must be to get the answer correct.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="angle">
         <TITRE>angle</TITRE>
+        <DOCUMENTATION>
+          What direction should the vector point. All values are measured in degrees, counterclockwise starting at the positive x-axis. Values must be 0 &#8804; &#952; &lt; 360.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="angleerror">
         <TITRE>absolute error angle</TITRE>
+        <DOCUMENTATION>
+          How accurate the angle must be to get the answer correct.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="functionplotvectorsumrule">
@@ -909,21 +993,39 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="index">
         <TITRE>index/name</TITRE>
+        <DOCUMENTATION>
+           This is an internal label for the rule. It must be different for each rule. This same value will be used to add a conditional hint.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="vectors">
         <TITRE>comma-separated list of vectors</TITRE>
+        <DOCUMENTATION>
+          List all of the vectors that should be added up to be tested.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="length">
         <TITRE>sum vector length</TITRE>
+        <DOCUMENTATION>
+          How long the sum of these vectors should be.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="lengtherror">
         <TITRE>absolute error length</TITRE>
+        <DOCUMENTATION>
+          How accurate the length must be to get the answer correct.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="angle">
         <TITRE>sum vector angle</TITRE>
+        <DOCUMENTATION>
+          What direction should the sum of these vectors point. All values are measured in degrees, counterclockwise starting at the positive x-axis. Values must be 0 &#8804; &#952; &lt; 360.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="angleerror">
         <TITRE>absolute error angle</TITRE>
+        <DOCUMENTATION>
+          How accurate the angle must be to get the answer correct.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="functionplotcustomrule">
@@ -1043,9 +1145,7 @@
     <STRINGS_ELEMENT element="formulahint">
       <TITRE>Formula Hint Condition</TITRE>
       <DOCUMENTATION>
-        Formula Hint Condition
-        
-        The formulahint tag takes three parameters: answer, name, and samples. The "name" is the unique name given to the hint condition. The formula answer for which you wish to provide conditional is included in the answer parameter. The samples parameter includes the points (or range of points) over which sampling of the student's submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples parameter of the formula reponse tag itself. The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt; hintpart &gt; tag. 
+        The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt;hintpart&gt; element. 
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
@@ -1053,14 +1153,22 @@
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
         <DOCUMENTATION>
-          should be set to the value of which hintpart will be shown
+          Unique name given to the hint condition.
+          Should be set to the value of which hintpart will be shown.
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answer">
         <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          Formula answer for which the conditional is provided.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="samples">
         <TITRE>sample points</TITRE>
+        <DOCUMENTATION>
+          Sample points (or range of points) over which sampling of the student&#8217;s submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples
+          parameter of the formula reponse element itself.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="preprocess">
         <TITRE>pre-processor subroutine</TITRE>
@@ -1070,8 +1178,6 @@
       <TITRE>Numerical Hint Condition</TITRE>
       <DOCUMENTATION>
         Numerical Hint Condition
-        
-        The numericalhint tag takes four parameters: answer, name, unit and format. The "name" is the unique name given to the hint condition. The numerical answer for which you wish to provide conditional is included in the answer parameter. Student submission of that answer in combination with the "unit" parameter in the hint condition will trigger the hint action specified in the &lt; hintpart &gt; tag. 
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
@@ -1079,11 +1185,16 @@
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
         <DOCUMENTATION>
-          should be set to the value of which hintpart will be shown
+          Unique name given to the hint condition.
+          Should be set to the value of which hintpart will be shown.
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answer">
         <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          Numerical answer for which the conditional is provided.
+          Student submission of that answer in combination with the "unit" attribute in the hint condition will trigger the hint action specified in the &lt;hintpart&gt; element.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="unit">
         <TITRE>unit</TITRE>
@@ -1134,7 +1245,7 @@
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
         <DOCUMENTATION>
-          should be set to the value of which hintpart will be shown
+          should be set to the value of which hintpart (Conditional Hint) will be shown
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answer">
@@ -1151,7 +1262,7 @@
         
         The radiobutton hint tag takes two parameters: answer and name. The name is the name of the hint condition, and the answer is an array. The first element of the array will be 'foil'; the remaining elements are the names of the foils that you require to have been checked by the student for the hint to be displayed. For example, if you create a radiobutton response problem with six foils named: granite, gabbro, gneiss, shale, sandstone and schist, and you want your hint named: igneous to be displayed when either granite or basalt had been checked your radiobutton hint would be as follows:
         
-         &lt;radiobuttonhint answer="('foil','granite','gabbro')" name="igneous"&gt;&lt;/radiobuttonhint&gt;
+        &lt;radiobuttonhint answer="('foil','granite','gabbro')" name="igneous"&gt;&lt;/radiobuttonhint&gt;
         
         In order to trigger display of this hint you also need to create a &lt; hintpart &gt; &lt; /hintpart &gt; block that will include a textblock that contains the text of the actual hint.
       </DOCUMENTATION>
@@ -1161,7 +1272,7 @@
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
         <DOCUMENTATION>
-          should be set to the value of which hintpart will be shown
+          should be set to the value of which hintpart (Conditional Hint) will be shown
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answer">
@@ -1173,28 +1284,29 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="stringhint">
       <TITRE>String Hint Condition</TITRE>
-      <DOCUMENTATION>
-        String Hint Condition
-        
-        The string hint takes two parameters: answer and name. The name is the name of the hint condition, and the answer is a text string. The type parameter allows you to choose between case sensitive, case insensitive, and case insensitive in any order.
-      </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
         <DOCUMENTATION>
-          should be set to the value of which hintpart will be shown
+          Name of the hint condition.
+          Should be set to the value of which hintpart (Conditional Hint) will be shown.
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answer">
         <TITRE>answer</TITRE>
         <DOCUMENTATION>
-          should be set to the value of which hintpart will be shown
+          Text string.
+          Should be set to the value of which hintpart will be shown.
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="type">
         <TITRE>type</TITRE>
+        <TITRE_VALEUR valeur="cs">case sensitive, order important</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="ci">case insensitive, order important</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="mc">case insensitive, order unimportant</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="re">regular expression</TITRE_VALEUR>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="preprocess">
         <TITRE>pre-processor subroutine</TITRE>
@@ -1213,7 +1325,7 @@
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
         <DOCUMENTATION>
-          should be set to the value of which hintpart will be shown
+          should be set to the value of which hintpart (Conditional Hint) will be shown
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
@@ -1269,8 +1381,9 @@
     <STRINGS_ELEMENT element="mathresponse">
       <TITRE>Response: Math</TITRE>
       <DOCUMENTATION>
-        Query for text that is evaluated with a script written in a computer algebra system language.
-        Which computer algebra system is to be used is specified in the cas attribute; both Maxima and R are supported.
+        Query for text that is evaluated with a script written in a computer algebra system language by the problem author.
+        
+        MathResponse is extremely powerful, as it tests answers for conditions rather than agreement with a particular correct answer. An unfortunate byproduct, however, is that it cannot be analyzed by several of the LON-CAPA statistics tools.
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
@@ -1283,6 +1396,9 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="cas">
         <TITRE>algebra system</TITRE>
+        <DOCUMENTATION>
+          Maxima and R are supported.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="args">
         <TITRE>argument array</TITRE>
@@ -1392,45 +1508,45 @@
         <DOCUMENTATION>
           Allows you to control the format of the due date. This is an arbitrary string that can contain any of the following formatting items:
           
-              %a Replaced by the abbreviated weekday name according to the current locale.
-              %A Replaced by the full weekday name according to the current locale.
-              %b The abbreviated month name according to the current locale.
-              %B The full month name according to the current locale.
-              %c The preferred date and time representation for the current locale (the default format string is just this).
-              %C The century number as a two digit integer
-              %d The day of the month as a decimal number. Leading zeroes are shown for single digit day numbers.
-              %D Equivalent to %m/%d/%y
-              %e Like %d but a leadnig zero is replaced by a space.
-              %F Equivalent to %Y-%m-%d
-              %G The four digit year number.
-              %g The two digit year numbger.
-              %H The hour as a two digit number in the range 00 thorugh 23.
-              %I The hour as a two digit number in the range 00 through 12.
-              %j The day your the year in the range 001 through 366.
-              %k The hour (24 hour clock), single digits are preceded by a blank.
-              %l Like %k but using a 12 hour clock.
-              %m The month as a two digit decimal number in the range 01 through 12.
-              %M The minute as a two digit decimal number in the range 00 through 59.
-              %n A newline character.
-              %p AM or PM depending on the time value.
-              %P am or pm.
-              %r The time in am or pm notation.
-              %R Time in 24 hour notatinon (%H:%M). See also %T below.
-              %s Number of seconds since midnight of January 1, 1970.
-              %S The second as a decimal number int the range 00 through 59.
-              %t A horizontal tab character.
-              %T The time in 24 hour notation (%H:%M:%S).
-              %u Day of the week as a decimal number with Monday as 1.
-              %U The week number of the current year in the range 00 through 53. Week 1 is the week containing the first Sunday of the year.
-              %V Same as %U but week 1 is the first week with at least 4 days, with Monday being the first day of a week.
-              %w Day of the week as a decimal integer in the range 0 through 7, Sunday is 0.
-              %W Week number of the current year in the range 00 through 53, where the first Monday of the year is the first day of week 01.
-              %x The preferred date notation in the current locale without the time.
-              %X The preferred time notation in the current locale without the date.
-              %y The year as a decimal number without the century (range 00 through 99).
-              %Y The year as a decimal number including the century.
-              %% A % character.
-              %+ Date and time in the form returned by the Unix date command. 
+          %a Replaced by the abbreviated weekday name according to the current locale.
+          %A Replaced by the full weekday name according to the current locale.
+          %b The abbreviated month name according to the current locale.
+          %B The full month name according to the current locale.
+          %c The preferred date and time representation for the current locale (the default format string is just this).
+          %C The century number as a two digit integer
+          %d The day of the month as a decimal number. Leading zeroes are shown for single digit day numbers.
+          %D Equivalent to %m/%d/%y
+          %e Like %d but a leadnig zero is replaced by a space.
+          %F Equivalent to %Y-%m-%d
+          %G The four digit year number.
+          %g The two digit year numbger.
+          %H The hour as a two digit number in the range 00 thorugh 23.
+          %I The hour as a two digit number in the range 00 through 12.
+          %j The day your the year in the range 001 through 366.
+          %k The hour (24 hour clock), single digits are preceded by a blank.
+          %l Like %k but using a 12 hour clock.
+          %m The month as a two digit decimal number in the range 01 through 12.
+          %M The minute as a two digit decimal number in the range 00 through 59.
+          %n A newline character.
+          %p AM or PM depending on the time value.
+          %P am or pm.
+          %r The time in am or pm notation.
+          %R Time in 24 hour notatinon (%H:%M). See also %T below.
+          %s Number of seconds since midnight of January 1, 1970.
+          %S The second as a decimal number int the range 00 through 59.
+          %t A horizontal tab character.
+          %T The time in 24 hour notation (%H:%M:%S).
+          %u Day of the week as a decimal number with Monday as 1.
+          %U The week number of the current year in the range 00 through 53. Week 1 is the week containing the first Sunday of the year.
+          %V Same as %U but week 1 is the first week with at least 4 days, with Monday being the first day of a week.
+          %w Day of the week as a decimal integer in the range 0 through 7, Sunday is 0.
+          %W Week number of the current year in the range 00 through 53, where the first Monday of the year is the first day of week 01.
+          %x The preferred date notation in the current locale without the time.
+          %X The preferred time notation in the current locale without the date.
+          %y The year as a decimal number without the century (range 00 through 99).
+          %Y The year as a decimal number including the century.
+          %% A % character.
+          %+ Date and time in the form returned by the Unix date command. 
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
@@ -1628,6 +1744,9 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="alt">
         <TITRE>alt</TITRE>
+        <DOCUMENTATION>
+          Textual description of the image. If the image cannot be rendered by the target browser, this description is displayed instead.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="width">
         <TITRE>width (pixel)</TITRE>
@@ -1636,19 +1755,33 @@
         <TITRE>height (pixel)</TITRE>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="TeXwidth">
-        <TITRE>TeXwidth (mm)</TITRE>
+        <TITRE>TeX width (mm)</TITRE>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="TeXheight">
-        <TITRE>TeXheight (mm)</TITRE>
+        <TITRE>TeX height (mm)</TITRE>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="align">
         <TITRE>align</TITRE>
+        <DOCUMENTATION>
+          Specifies the alignment of the image relative to the enclosing text paragraph:
+          - bottom: The image will be aligned so that its bottom will be at the baseline of the surrounding text.
+          - middle: The image will be aligned so that its center-line will be at the baseline of the surrounding text.
+          - top: The image will be aligned so that its top will be at the baseline of the surrounding text.
+          - left: The image will be placed so that it is at the left of the surrounding text. The surrounding text will fill in the region to the right of the image.
+          - right: The image will be placed so that it is at the right of the surrounding text. The surrounding text will fill in the region to the left of the image.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="TeXwrap">
-        <TITRE>TeXwrap</TITRE>
+        <TITRE>TeX wrap</TITRE>
+        <DOCUMENTATION>
+          Allows you to select how the LaTeX document will attempt to wrap text around a horizontally aligned image.
+          parbox: \newline and \parbox will be used to place the image. This method ensures that text will not be wrapped on top of the image, however very little text will appear next to the image itself.
+          parpic: The picins package \parpic command will be used to place the image. This will wrap the remainder of the paragraph containing the picture around the image.
+          If, however, there is insufficient text to fill the space to the left or right of the image, the next paragraph may be wrapped on top of the image. In addition, \parpic does not always honor the end of the page, causing the image to extend below the page footer.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="encrypturl">
-        <TITRE>encrypturl</TITRE>
+        <TITRE>encrypt url</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="meta">
@@ -1866,12 +1999,13 @@
     <STRINGS_ELEMENT element="gnuplot">
       <TITRE>GnuPlot</TITRE>
       <DOCUMENTATION>
-        The gnuplot LON-CAPA tag allows an author to design a plot which will be created programatically at the time when it is requested for display by a student. This is intended for use in homework problems where a distinct plot should be rendered for each student. It can be used in conjunction with a script tag to generate curve data for random plots.
+        The gnuplot LON-CAPA tag allows an author to design a plot which will be created programatically at the time when it is requested for display by a student. This is intended for use in homework problems where a distinct plot should be rendered for each student. It can be used in conjunction with a script to generate curve data for random plots.
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="alttag">
-        <TITRE>alttag</TITRE>
+        <TITRE>brief description</TITRE>
         <DOCUMENTATION>
-          Brief description of the plot
+          Brief description of the plot.
+          This text is used as the alt value of the img tag used to display the plot on a web page.
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="height">
@@ -1888,6 +2022,9 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="transparent">
         <TITRE>transparent image</TITRE>
+        <DOCUMENTATION>
+          If the image is transparent the background color will be ignored.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="grid">
         <TITRE>display grid</TITRE>
@@ -1913,7 +2050,7 @@
       <STRINGS_ATTRIBUT attribut="font">
         <TITRE>font</TITRE>
         <DOCUMENTATION>
-          Font size to use in web output (pts)
+          Font size to use in web output (in pts, or "small", "medium" or "large").
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="fontface">
@@ -1925,7 +2062,8 @@
       <STRINGS_ATTRIBUT attribut="samples">
         <TITRE>samples</TITRE>
         <DOCUMENTATION>
-          Number of samples for non-data plots
+          Number of samples for non-data plots.
+          If a function element is used to specify the curve, this indicates the number of sample points to use.
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="align">
@@ -2006,28 +2144,261 @@
       <DOCUMENTATION>
         The Plot Axes tag allows you to specify the domain and range of the data to display. It is closely tied with the Plot Ticks tags, which specify where the gridlines are drawn on the plot.
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="color">
+        <TITRE>color of grid lines</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xmin">
+        <TITRE>minimum x-value shown in plot</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xmax">
+        <TITRE>maximum x-value shown in plot</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="ymin">
+        <TITRE>minimum y-value shown in plot</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="ymax">
+        <TITRE>maximum y-value shown in plot</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xformat">
+        <TITRE>x-axis number formatting</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="yformat">
+        <TITRE>y-axis number formatting</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xzero">
+        <TITRE>show x-zero (y=0) axis</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="yzero">
+        <TITRE>show y-zero (x=0) axis</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="curve">
       <TITRE>Curve</TITRE>
       <DOCUMENTATION>
         The curve tag is where you set the data to be plotted by gnuplot.
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="color">
+        <TITRE>color</TITRE>
+        <DOCUMENTATION>
+          Color of curve
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          Name of curve to appear in key
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="linestyle">
+        <TITRE>line style</TITRE>
+        <DOCUMENTATION>
+          Unless otherwise noted the linestyles require only 2 data sets, X and Y.
+          
+          - lines: Connect adjacent points with straight line segments.
+          - points: Display a small marker at each point.
+          - linespoints: Draw both lines and points.
+            Draws a small symbol at each point and then connects adjacent points with straight line segments.
+          - dots: Place a tiny dots on the given points.
+          - steps: Connect points with horizontal lines.
+            This style connects consecutive points with two line segments: the first from (x1,y1) to (x2,y1) and the second from (x2,y1) to (x2,y2).
+          - fsteps: Connect data with horizontal lines.
+            This style connects consecutive points with two line segments: the first from (x1,y1) to (x1,y2) and the second from (x1,y2) to (x2,y2).
+          - histeps: Plot as histogram.
+            Y-values are assumed to be centered at the x-values; the point at x1 is represented as a horizontal line from ((x0+x1)/2,y1) to ((x1+x2)/2,y1). The lines representing the end points are extended so that the step is centered on at x. Adjacent points are connected by a vertical line at their average x, that is, from ((x1+x2)/2,y1) to ((x1+x2)/2,y2).
+          - errorbars: Same as yerrorbars.
+          - xerrorbars: Draw horizontal error bars around the points.
+            Requires 3 or 4 data sets. Either X, Y, Xdelta or X, Y, Xlower, Xupper. Xdelta is a change relative to the given X value. The Xlower and Xupper values are absolute grid coordinates of the upper and lower values to indicated with error bars.
+          - yerrorbars: Draw vertical error bars around the points.
+            Requires 3 or 4 data sets. Either X, Y, Ydelta or X, Y, Ylower, Yupper. Ydelta is a change relative to the given Y value. The Ylower and Yupper values are the grid coordinates of the upper and lower values to indicate with error bars.
+          - xyerrorbars: Draw both vertical and horizontal error bars around the points.
+            Requires 4 or 6 data sets. Either X, Y, Xdelta, Ydelta or X, Y, Xlower, Xupper, Ylower, Yupper. Xdelta and Ydelta are relative to the given coordinates. Xlower, Xupper, Ylower, and Yupper are the grid coordinates of the upper and lower values to indicate with the error bars.
+          - boxes: Draw a box from the X-axis to the Y-value given.
+            Requires either 2 or 3 data sets. Either X, Y or X, Y, Xwidth. In the first case the boxes will be drawn next to eachother. In the latter case Xwidth indicates the horizontal width of the box for the given coordinate.
+          - vector: Draws a vector field based on the given data.
+            Requires 4 data sets, X, Y, Xdelta, and Ydelta. The &#8216;vector&#8216; style draws a vector from (X,Y) to (X+Xdelta,Y+Ydelta). It also draws a small arrowhead at the end of the vector. May not be fully supported by gnuplot.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="linewidth">
+        <TITRE>line width</TITRE>
+        <DOCUMENTATION>
+          Line width (may not apply to all plot styles)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="linetype">
+        <TITRE>line type</TITRE>
+        <DOCUMENTATION>
+          Line type (may not apply to all plot styles)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="pointsize">
+        <TITRE>point size</TITRE>
+        <DOCUMENTATION>
+          Point size (may not apply to all plot styles)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="pointtype">
+        <TITRE>point type</TITRE>
+        <DOCUMENTATION>
+          Point type (may not apply to all plot styles)
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="limit">
+        <TITRE>limit</TITRE>
+        <DOCUMENTATION>
+          Point to fill for filled curves
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="arrowhead">
+        <TITRE>arrow head</TITRE>
+        <DOCUMENTATION>
+          For vector plots, controls where in the vector the arrow head(s) appear.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="arrowstyle">
+        <TITRE>arrow style</TITRE>
+        <DOCUMENTATION>
+          For vector plots, controls the fill style of the arrow.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="arrowlength">
+        <TITRE>arrow length</TITRE>
+        <DOCUMENTATION>
+          For vector plots, determines the distance between the vector line end and the tip of the arrow.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="arrowangle">
+        <TITRE>arrow angle</TITRE>
+        <DOCUMENTATION>
+          For vector plots, determines the angle the arrow branches make with the vector line.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="arrowbackangle">
+        <TITRE>arrow back angle</TITRE>
+        <DOCUMENTATION>
+          For vector plots, determines the angle the arrow lines that return to the main line from the branches make with the arrow branches.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="key">
       <TITRE>Key</TITRE>
       <DOCUMENTATION>
-        The key tag causes a key to be drawn on the plot when it is generated. The key will contain an entry for each curve which has a name.
+        Causes a key to be drawn on the plot when it is generated. The key will contain an entry for each curve which has a name.
         The key is the color of the foreground of the plot, specified in the gnuplot tag.
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="title">
+        <TITRE>title</TITRE>
+        <DOCUMENTATION>
+          Title of key
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="box">
+        <TITRE>box</TITRE>
+        <DOCUMENTATION>
+          Draw a box around the key?
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="pos">
+        <TITRE>pos</TITRE>
+        <DOCUMENTATION>
+          Position of the key on the plot
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="xtics">
       <TITRE>xtics</TITRE>
+      <STRINGS_ATTRIBUT attribut="location">
+        <TITRE>location of major tic marks</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="mirror">
+        <TITRE>mirror tics on opposite axis?</TITRE>
+        <DOCUMENTATION>
+          If the location of tic marks is set to &#8220;border&#8221; this parameter determines if they are shown on both the top and bottom or right and left sides of the graph. The &#8220;mirror&#8221; tic marks are unlabelled.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="start">
+        <TITRE>start major tics at</TITRE>
+        <DOCUMENTATION>
+          The point in graph coordinates which to start making major tics. This may be less than or greater than the lower limit for the axis.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="increment">
+        <TITRE>place a major tic every</TITRE>
+        <DOCUMENTATION>
+          The span, in graph coordinates, between each major tic mark.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="end">
+        <TITRE>stop major tics at</TITRE>
+        <DOCUMENTATION>
+          This may be less than or greater than the upper limit for the axis.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="minorfreq">
+        <TITRE>number of minor tics per major tic mark</TITRE>
+        <DOCUMENTATION>
+          The number of subdivisions to make of the span between major tic marks. Using a value of &#8220;10&#8221; leads to 9 minor tic marks.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="rotate">
+        <TITRE>rotate tic label by 90 degrees if on</TITRE>
+        <DOCUMENTATION>
+          For output devices that support it, this rotates the tic label by 90 degrees. This is most useful with large lables defined by the tic tag described below.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="ytics">
       <TITRE>ytics</TITRE>
+      <STRINGS_ATTRIBUT attribut="location">
+        <TITRE>location of major tic marks</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="mirror">
+        <TITRE>mirror tics on opposite axis?</TITRE>
+        <DOCUMENTATION>
+          If the location of tic marks is set to &#8220;border&#8221; this parameter determines if they are shown on both the top and bottom or right and left sides of the graph. The &#8220;mirror&#8221; tic marks are unlabelled.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="start">
+        <TITRE>start major tics at</TITRE>
+        <DOCUMENTATION>
+          The point in graph coordinates which to start making major tics. This may be less than or greater than the lower limit for the axis.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="increment">
+        <TITRE>place a major tic every</TITRE>
+        <DOCUMENTATION>
+          The span, in graph coordinates, between each major tic mark.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="end">
+        <TITRE>stop major tics at</TITRE>
+        <DOCUMENTATION>
+          This may be less than or greater than the upper limit for the axis.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="minorfreq">
+        <TITRE>number of minor tics per major tic mark</TITRE>
+        <DOCUMENTATION>
+          The number of subdivisions to make of the span between major tic marks. Using a value of &#8220;10&#8221; leads to 9 minor tic marks.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="rotate">
+        <TITRE>rotate tic label by 90 degrees if on</TITRE>
+        <DOCUMENTATION>
+          For output devices that support it, this rotates the tic label by 90 degrees. This is most useful with large lables defined by the tic tag described below.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="tic">
       <TITRE>tic</TITRE>
+      <DOCUMENTATION>
+        The &lt;tic&gt; tag allows users to specify exact Tic positions and labels for each axis.
+        In this version we only support level 0 tics (major tic).
+        Each tic has associated with it a position and a label $current_tics is a reference to the current tick description hash.
+        We add elements to an array in that has: ticspecs whose elements are 'pos' - the tick position and 'label' - the tic label.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="location">
+        <TITRE>location</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="title">
       <TITRE>title</TITRE>
@@ -2121,14 +2492,14 @@
       <DOCUMENTATION>
         Typesets a number formatted in scientific notation, fixed point, fixed point with commas, fixed point with commas and dollar sign, or in significant digits.
         
-          &lt;num format="2E"&gt;31454678&lt;/num&gt; results in 3.15 x 10^7
-          &lt;num format="2f"&gt;31454678&lt;/num&gt; results in 31454678.00
-          &lt;num format="4g"&gt;31454678&lt;/num&gt; results in 3.145 x 10^7
-          &lt;num format="4g"&gt;314.54678&lt;/num&gt; results in 314.5
-          &lt;num format=",2f"&gt;31454678&lt;/num&gt; results in 31,454,678.00
-          &lt;num format="$2f"&gt;31454678&lt;/num&gt; results in $31,454,678.00
-          &lt;num format="2s"&gt;31454678&lt;/num&gt; results in 31000000
-          &lt;num format=",2s"&gt;31454678&lt;/num&gt; results in 31,000,000
+        &lt;num format="2E"&gt;31454678&lt;/num&gt; results in 3.15 x 10^7
+        &lt;num format="2f"&gt;31454678&lt;/num&gt; results in 31454678.00
+        &lt;num format="4g"&gt;31454678&lt;/num&gt; results in 3.145 x 10^7
+        &lt;num format="4g"&gt;314.54678&lt;/num&gt; results in 314.5
+        &lt;num format=",2f"&gt;31454678&lt;/num&gt; results in 31,454,678.00
+        &lt;num format="$2f"&gt;31454678&lt;/num&gt; results in $31,454,678.00
+        &lt;num format="2s"&gt;31454678&lt;/num&gt; results in 31000000
+        &lt;num format=",2s"&gt;31454678&lt;/num&gt; results in 31,000,000
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="format">
         <TITRE>format</TITRE>

@@ -51,7 +51,9 @@
   </xs:complexType>
   <xs:complexType name="caparesponse--answer">
     <xs:annotation>
-      <xs:documentation>Answer</xs:documentation>
+      <xs:documentation>
+        Perl script calculating random input values used in the question, and the associated correct answer.
+      </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element name="vector" type="caparesponse--vector"/>
@@ -196,7 +198,18 @@
   </xs:complexType>
   <xs:complexType mixed="true" name="customresponse--answer">
     <xs:annotation>
-      <xs:documentation>Answer algorithm</xs:documentation>
+      <xs:documentation>
+        Perl script evaluating the student answer.
+        
+        For a single textfield, the student’s answer will be in a variable $submission. If the Custom Response has multiple textfields, the answers will be in an array reference, and can be accessed as $$submission[0], $$submission[1], etc.
+        
+        The script must return a standard LON-CAPA response. The most common LON-CAPA responses are:
+        - EXACT ANS: return if solved exactly correctly
+        - APPROX ANS: return if solved approximately
+        - INCORRECT: return if not correct, uses up a try
+        - ASSIGNED SCORE: partial credit (also return the credit factor, e.g. return(ASSIGNED SCORE,0.3);)
+        - SIG FAIL, NO UNIT, EXTRA ANSWER, MISSING ANSWER, BAD FORMULA, WANTED NUMERIC, WRONG FORMAT: return if not correct for different reasons, does not use up a try
+      </xs:documentation>
     </xs:annotation>
     <xs:attribute name="type" type="xs:string"/>
     <xs:attribute fixed="preserve" ref="xml:space"/>
@@ -864,7 +877,10 @@
   </xs:complexType>
   <xs:complexType name="lonplot--key">
     <xs:annotation>
-      <xs:documentation>Plot Key</xs:documentation>
+      <xs:documentation>
+        Causes a key to be drawn on the plot when it is generated. The key will contain an entry for each curve which has a name.
+        The key is the color of the foreground of the plot, specified in the gnuplot tag.
+      </xs:documentation>
     </xs:annotation>
     <xs:attribute name="title" type="xs:string">
       <xs:annotation>
@@ -921,6 +937,34 @@
       </xs:annotation>
     </xs:attribute>
     <xs:attribute default="lines" name="linestyle">
+      <xs:annotation>
+        <xs:documentation>
+          Unless otherwise noted the linestyles require only 2 data sets, X and Y.
+          
+          - lines: Connect adjacent points with straight line segments.
+          - points: Display a small marker at each point.
+          - linespoints: Draw both lines and points.
+            Draws a small symbol at each point and then connects adjacent points with straight line segments.
+          - dots: Place a tiny dots on the given points.
+          - steps: Connect points with horizontal lines.
+            This style connects consecutive points with two line segments: the first from (x1,y1) to (x2,y1) and the second from (x2,y1) to (x2,y2).
+          - fsteps: Connect data with horizontal lines.
+            This style connects consecutive points with two line segments: the first from (x1,y1) to (x1,y2) and the second from (x1,y2) to (x2,y2).
+          - histeps: Plot as histogram.
+            Y-values are assumed to be centered at the x-values; the point at x1 is represented as a horizontal line from ((x0+x1)/2,y1) to ((x1+x2)/2,y1). The lines representing the end points are extended so that the step is centered on at x. Adjacent points are connected by a vertical line at their average x, that is, from ((x1+x2)/2,y1) to ((x1+x2)/2,y2).
+          - errorbars: Same as yerrorbars.
+          - xerrorbars: Draw horizontal error bars around the points.
+            Requires 3 or 4 data sets. Either X, Y, Xdelta or X, Y, Xlower, Xupper. Xdelta is a change relative to the given X value. The Xlower and Xupper values are absolute grid coordinates of the upper and lower values to indicated with error bars.
+          - yerrorbars: Draw vertical error bars around the points.
+            Requires 3 or 4 data sets. Either X, Y, Ydelta or X, Y, Ylower, Yupper. Ydelta is a change relative to the given Y value. The Ylower and Yupper values are the grid coordinates of the upper and lower values to indicate with error bars.
+          - xyerrorbars: Draw both vertical and horizontal error bars around the points.
+            Requires 4 or 6 data sets. Either X, Y, Xdelta, Ydelta or X, Y, Xlower, Xupper, Ylower, Yupper. Xdelta and Ydelta are relative to the given coordinates. Xlower, Xupper, Ylower, and Yupper are the grid coordinates of the upper and lower values to indicate with the error bars.
+          - boxes: Draw a box from the X-axis to the Y-value given.
+            Requires either 2 or 3 data sets. Either X, Y or X, Y, Xwidth. In the first case the boxes will be drawn next to eachother. In the latter case Xwidth indicates the horizontal width of the box for the given coordinate.
+          - vector: Draws a vector field based on the given data.
+            Requires 4 data sets, X, Y, Xdelta, and Ydelta. The ‘vector‘ style draws a vector from (X,Y) to (X+Xdelta,Y+Ydelta). It also draws a small arrowhead at the end of the vector. May not be fully supported by gnuplot.
+        </xs:documentation>
+      </xs:annotation>
       <xs:simpleType>
         <xs:restriction base="xs:string">
           <xs:enumeration value="lines"/>
@@ -989,7 +1033,7 @@
     <xs:attribute default="closed" name="limit">
       <xs:annotation>
         <xs:documentation>
-          Point to fill -- for filledcurves
+          Point to fill for filled curves
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
@@ -1007,7 +1051,7 @@
     <xs:attribute default="head" name="arrowhead">
       <xs:annotation>
         <xs:documentation>
-          Vector arrow head type
+          For vector plots, controls where in the vector the arrow head(s) appear.
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
@@ -1021,7 +1065,7 @@
     <xs:attribute default="filled" name="arrowstyle">
       <xs:annotation>
         <xs:documentation>
-          Vector arrow head style
+          For vector plots, controls the fill style of the arrow.
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
@@ -1035,28 +1079,31 @@
     <xs:attribute default="0.02" name="arrowlength" type="real">
       <xs:annotation>
         <xs:documentation>
-          Length of vector arrow (only applies to vector plots)
+          For vector plots, determines the distance between the vector line end and the tip of the arrow.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute default="10.0" name="arrowangle" type="real">
       <xs:annotation>
         <xs:documentation>
-          Angle of arrow branches to arrow body (only applies to vector plots)
+          For vector plots, determines the angle the arrow branches make with the vector line.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute default="90.0" name="arrowbackangle" type="real">
       <xs:annotation>
         <xs:documentation>
-          Angle of arrow back lines to branches.
+          For vector plots, determines the angle the arrow lines that return to the main line from the branches make with the arrow branches.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
   <xs:complexType mixed="true" name="lonplot--function">
     <xs:annotation>
-      <xs:documentation>Curve function</xs:documentation>
+      <xs:documentation>
+        Used to specify the curve to be plotted as a formula, instead of numerical data.
+        The function must be a mathematical expression. Use the independent variable “x” for cartesian plots and “t” for polar plots. Implicit multiplication is not accepted by Gnuplot.
+      </xs:documentation>
     </xs:annotation>
   </xs:complexType>
   <xs:complexType mixed="true" name="lonplot--data">
@@ -1100,41 +1147,43 @@
       <xs:annotation>
         <xs:documentation>
           Mirror tics on opposite axis?
+          If the location of tic marks is set to “border” this parameter determines if they are shown on both the top and bottom or right and left sides of the graph. The “mirror” tic marks are unlabelled.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute default="-10.0" name="start" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
-          Start major tics at
+          The point in graph coordinates which to start making major tics. This may be less than or greater than the lower limit for the axis.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute default="1.0" name="increment" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
-          Place a major tic every
+          The span, in graph coordinates, between each major tic mark.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute default="10.0" name="end" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
-          Stop major tics at
+          Stop major tics at.
+          This may be less than or greater than the upper limit for the axis.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute default="0" name="minorfreq" type="xs:int">
       <xs:annotation>
         <xs:documentation>
-          Number of minor tics per major tic mark
+          The number of subdivisions to make of the span between major tic marks. Using a value of “10” leads to 9 minor tic marks.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute default="off" name="rotate" type="onoff">
       <xs:annotation>
         <xs:documentation>
-          Rotate tic label by 90 degrees if on
+          For output devices that support it, this rotates the tic label by 90 degrees. This is most useful with large lables defined by the tic tag described below.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -1172,7 +1221,13 @@
   </xs:element>
   <xs:element name="numericalresponse">
     <xs:annotation>
-      <xs:documentation>Query for one or several numbers, possibly with units.</xs:documentation>
+      <xs:documentation>
+        Query for one or several numbers, possibly with units.
+        
+        A tolerance parameter should be used to determine how closely the system will require the student’s answer to be in order to count it correct. The tolerance will default to zero if it is not defined. The tolerance parameter should always be defined for a numerical problem unless you are certain only integer answers are generated from your script and you want students to reply with exactly that integer.
+        
+        A significant figures parameter tells the system how many significant figures there are in the problem, as either a single number, e.g. 3, or a range of acceptable values, expressed as min,max. The system will check to make sure that the student’s answer contains this many significant digits, useful in many scientific calculations.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -1186,7 +1241,13 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The answer the system is looking for. The answer can use variables calculated/defined in the problem’s script block, allowing the answer to be determined dynamically (including randomization).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="incorrect" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -1230,7 +1291,14 @@
       <xs:attribute name="samples" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Sample Points
+            Sample Points.
+            
+            Format:
+            1. A comma-separated list of the variables you wish to interpret,
+            2. followed by “@” (not in quotes),
+            3. followed by any number of the following two things, separated by semi-colons:
+             (a) a comma-separated list of as many numbers as there are variables, which specifies one sampling point, OR
+             (b) a comma-separated list of as many numbers as there are variables, followed by a colon, followed by another list of as many numbers as there are variables, followed by a #, followed by an integer.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -1245,7 +1313,12 @@
   </xs:element>
   <xs:element name="functionplotresponse">
     <xs:annotation>
-      <xs:documentation>Query for the drawing of a function.</xs:documentation>
+      <xs:documentation>
+        Query for the drawing of a function.
+        
+        Requires that the student creates a plot that matches specified criteria.
+        Examples can be functions that have certain slopes, curvature, maxima or minima at specified independent coordinate values. The students create their answer by dragging the curves and adjusting the slopes.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -1276,14 +1349,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="xmin" type="real">
+      <xs:attribute default="-10" name="xmin" type="real">
         <xs:annotation>
           <xs:documentation>
             Minimum x-value
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="xmax" type="real">
+      <xs:attribute default="10" name="xmax" type="real">
         <xs:annotation>
           <xs:documentation>
             Maximum x-value
@@ -1304,14 +1377,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="ymin" type="real">
+      <xs:attribute default="-10" name="ymin" type="real">
         <xs:annotation>
           <xs:documentation>
             Minimum y-value
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="ymax" type="real">
+      <xs:attribute default="10" name="ymax" type="real">
         <xs:annotation>
           <xs:documentation>
             Maximum y-value
@@ -1328,7 +1401,7 @@
       <xs:attribute default="yes" name="gridvisible" type="yesno">
         <xs:annotation>
           <xs:documentation>
-            Grid visible
+            This determines whether or not the grid is on the graph.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -1336,6 +1409,10 @@
         <xs:annotation>
           <xs:documentation>
             Background plot(s) for answer (function(x):xmin:xmax,function(x):xmin:xmax,x1:y1:sx1:sy1:x2:y2:sx2:sy2,...)
+            
+            This is a green curve the computer will display once the correct answer has been submitted. It is static, and can be given as a piecewise function.
+            Since some problems will have multiple correct answers, this necessarily will only be a possible answer. Only the left hand side of the equation is necessary. For example, entering x + 2 will display the line y = x + 2.
+            The syntax must be syntax recognized by GeoGebra. To test syntax for Geogebra directly, visit http://www.geogebra.org/webstart/geogebra.html .
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -1408,7 +1485,13 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="function" type="xs:string"/>
+      <xs:attribute name="function" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            An equals sign is not necessary. Just give the right hand side of the function. LON-CAPA variables are usable as well to allow individualized problems for each student. The syntax must be syntax recognized by GeoGebra.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="xinitial" type="real">
         <xs:annotation>
           <xs:documentation>
@@ -1433,7 +1516,8 @@
       <xs:attribute name="color">
         <xs:annotation>
           <xs:documentation>
-            Color (hex code)
+            Color of the background function (hex code).
+            The default is 000000 (black). It is recommended to choose a color other than green, since it is easily confused with being the answer.
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
@@ -1479,7 +1563,9 @@
       <xs:attribute name="label" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Label on Plot
+            Label on Plot.
+            Determines the name of the vector, as well as the name that will be visible in the problem.
+            This value MUST be capitalized and cannot include spaces or most symbols. To be safe, stick with letters and numbers.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -1671,65 +1757,93 @@
         <xs:annotation>
           <xs:documentation>
             Index/Name
+            This is an internal label for the rule. This attribute must be different for each rule. This same value will be used to add a conditional hint.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="vector" type="xs:string"/>
+      <xs:attribute name="vector" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The name of one of the vectors in the list of function plot elements. Specifically, the one you want to test.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="attachpoint" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Attached to object
+            Attached to object.
+            Object(s) this vector should be attached to. For more than one object, separate them by commas. If the vector should not be attached to any object, leave this blank. In this case, an object is considered attached if its tail OR its tip is in the vicinity of the object.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="notattachpoint" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Not attached to object
+            Not attached to object.
+            Object(s) that this vector should be not be near.
+            For more than one object, separate them by commas. Particularly useful for distractor vectors.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="tailpoint" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Tail attached to object
+            Tail attached to object.
+            Tail(s) this vector should be attached to.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="tippoint" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Tip attached to object
+            Tip attached to object.
+            Tip(s) this vector should be attached to.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="nottailpoint" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Tail not attached to object
+            Tail not attached to object.
+            Tail(s) this vector should not be attached to.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="nottippoint" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Tip not attached to object
+            Tip not attached to object.
+            Tip(s) this vector should not be attached to.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="length" type="real"/>
+      <xs:attribute name="length" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            How long the vector should be.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="lengtherror" type="real">
         <xs:annotation>
           <xs:documentation>
-            Absolute error length
+            Absolute error length.
+            How accurate the length must be to get the answer correct.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="angle" type="real"/>
+      <xs:attribute name="angle" type="real">
+        <xs:annotation>
+          <xs:documentation>
+            What direction should the vector point. All values are measured in degrees, counterclockwise starting at the positive x-axis. Values must be 0 ≤ θ &lt; 360.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="angleerror" type="real">
         <xs:annotation>
           <xs:documentation>
-            Absolute error angle
+            Absolute error angle.
+            How accurate the angle must be to get the answer correct.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -1746,42 +1860,48 @@
       <xs:attribute name="index" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Index/Name
+            Index/Name.
+             This is an internal label for the rule. It must be different for each rule. This same value will be used to add a conditional hint.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="vectors" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Comma-separated list of vectors
+            Comma-separated list of vectors.
+            List all of the vectors that should be added up to be tested.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="length" type="real">
         <xs:annotation>
           <xs:documentation>
-            Sum vector length
+            Sum vector length.
+            How long the sum of these vectors should be.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="lengtherror" type="real">
         <xs:annotation>
           <xs:documentation>
-            Absolute error length
+            Absolute error length.
+            How accurate the length must be to get the answer correct.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="angle" type="real">
         <xs:annotation>
           <xs:documentation>
-            Sum vector angle
+            Sum vector angle.
+            What direction should the sum of these vectors point. All values are measured in degrees, counterclockwise starting at the positive x-axis. Values must be 0 ≤ θ &lt; 360.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="angleerror" type="real">
         <xs:annotation>
           <xs:documentation>
-            Absolute error angle
+            Absolute error angle.
+            How accurate the angle must be to get the answer correct.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -2001,7 +2121,7 @@
       <xs:documentation>
         Formula Hint Condition
         
-        The formulahint tag takes three parameters: answer, name, and samples. The "name" is the unique name given to the hint condition. The formula answer for which you wish to provide conditional is included in the answer parameter. The samples parameter includes the points (or range of points) over which sampling of the student's submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples parameter of the formula reponse tag itself. The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt; hintpart &gt; tag. 
+        The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt;hintpart&gt; element.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -2012,15 +2132,23 @@
       <xs:attribute name="name" type="xs:string" use="required">
         <xs:annotation>
           <xs:documentation>
-            should be set to the value of which hintpart will be shown
+            Unique name given to the hint condition.
+            Should be set to the value of which hintpart will be shown.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Formula answer for which the conditional is provided.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="samples" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Sample Points
+            Sample points (or range of points) over which sampling of the student’s submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples
+            parameter of the formula reponse element itself.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -2037,8 +2165,6 @@
     <xs:annotation>
       <xs:documentation>
         Numerical Hint Condition
-        
-        The numericalhint tag takes four parameters: answer, name, unit and format. The "name" is the unique name given to the hint condition. The numerical answer for which you wish to provide conditional is included in the answer parameter. Student submission of that answer in combination with the "unit" parameter in the hint condition will trigger the hint action specified in the &lt; hintpart &gt; tag. 
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -2049,11 +2175,19 @@
       <xs:attribute name="name" type="xs:string" use="required">
         <xs:annotation>
           <xs:documentation>
-            should be set to the value of which hintpart will be shown
+            Unique name given to the hint condition.
+            Should be set to the value of which hintpart will be shown.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Numerical answer for which the conditional is provided.
+            Student submission of that answer in combination with the "unit" attribute in the hint condition will trigger the hint action specified in the &lt;hintpart&gt; element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="unit" type="xs:string"/>
       <xs:attribute name="format" type="xs:string"/>
       <xs:attribute name="preprocess" type="xs:string">
@@ -2152,8 +2286,6 @@
     <xs:annotation>
       <xs:documentation>
         String Hint Condition
-        
-        The string hint takes two parameters: answer and name. The name is the name of the hint condition, and the answer is a text string. The type parameter allows you to choose between case sensitive, case insensitive, and case insensitive in any order.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -2164,14 +2296,16 @@
       <xs:attribute name="name" type="xs:string" use="required">
         <xs:annotation>
           <xs:documentation>
-            should be set to the value of which hintpart will be shown
+            Name of the hint condition.
+            Should be set to the value of which hintpart will be shown.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="answer" type="xs:string" use="required">
         <xs:annotation>
           <xs:documentation>
-            should be set to the value of which hintpart will be shown
+            Text string.
+            Should be set to the value of which hintpart will be shown.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -2309,13 +2443,20 @@
   <xs:element name="mathresponse">
     <xs:annotation>
       <xs:documentation>
-        Query for text that is evaluated with a script written in a computer algebra system language.
-        Which computer algebra system is to be used is specified in the cas attribute; both Maxima and R are supported.
+        Query for text that is evaluated with a script written in a computer algebra system language by the problem author.
+        
+        MathResponse is extremely powerful, as it tests answers for conditions rather than agreement with a particular correct answer. An unfortunate byproduct, however, is that it cannot be analyzed by several of the LON-CAPA statistics tools.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="answer" type="mathresponse--answer"/>
+        <xs:element name="answer" type="mathresponse--answer">
+          <xs:annotation>
+            <xs:documentation>
+              Maxima or R script using the arrays RESPONSE and LONCAPALIST.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textfield"/>
@@ -2335,7 +2476,7 @@
       <xs:attribute default="maxima" name="cas">
         <xs:annotation>
           <xs:documentation>
-            Algebra System
+            Algebra System. Maxima and R are supported.
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
@@ -2900,11 +3041,17 @@
       <xs:attribute name="src" type="xs:string" use="required">
         <xs:annotation>
           <xs:documentation>
-            Image Url
+            Image URL
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="alt" type="xs:string"/>
+      <xs:attribute name="alt" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Textual description of the image. If the image cannot be rendered by the target browser, this description is displayed instead.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="width" type="xs:int">
         <xs:annotation>
           <xs:documentation>
@@ -2934,6 +3081,16 @@
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="align">
+        <xs:annotation>
+          <xs:documentation>
+            Specifies the alignment of the image relative to the enclosing text paragraph:
+            - bottom: The image will be aligned so that its bottom will be at the baseline of the surrounding text.
+            - middle: The image will be aligned so that its center-line will be at the baseline of the surrounding text.
+            - top: The image will be aligned so that its top will be at the baseline of the surrounding text.
+            - left: The image will be placed so that it is at the left of the surrounding text. The surrounding text will fill in the region to the right of the image.
+            - right: The image will be placed so that it is at the right of the surrounding text. The surrounding text will fill in the region to the left of the image.
+          </xs:documentation>
+        </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="bottom"/>
@@ -2945,6 +3102,14 @@
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="TeXwrap">
+        <xs:annotation>
+          <xs:documentation>
+            Allows you to select how the LaTeX document will attempt to wrap text around a horizontally aligned image.
+            parbox: \newline and \parbox will be used to place the image. This method ensures that text will not be wrapped on top of the image, however very little text will appear next to the image itself.
+            parpic: The picins package \parpic command will be used to place the image. This will wrap the remainder of the paragraph containing the picture around the image.
+            If, however, there is insufficient text to fill the space to the left or right of the image, the next paragraph may be wrapped on top of the image. In addition, \parpic does not always honor the end of the page, causing the image to extend below the page footer.
+          </xs:documentation>
+        </xs:annotation>
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:enumeration value="none"/>
@@ -3748,7 +3913,7 @@
   <xs:element name="gnuplot">
     <xs:annotation>
       <xs:documentation>
-        The gnuplot LON-CAPA tag allows an author to design a plot which will be created programatically at the time when it is requested for display by a student. This is intended for use in homework problems where a distinct plot should be rendered for each student. It can be used in conjunction with a script tag to generate curve data for random plots.
+        The gnuplot LON-CAPA tag allows an author to design a plot which will be created programatically at the time when it is requested for display by a student. This is intended for use in homework problems where a distinct plot should be rendered for each student. It can be used in conjunction with a script to generate curve data for random plots.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -3791,7 +3956,8 @@
       <xs:attribute default="dynamically generated plot" name="alttag" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Brief description of the plot
+            Brief description of the plot.
+            This text is used as the alt value of the img tag used to display the plot on a web page.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -3826,7 +3992,7 @@
       <xs:attribute default="off" name="transparent" type="onoff">
         <xs:annotation>
           <xs:documentation>
-            Transparent image
+            Transparent image. If the image is transparent the background color will be ignored.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -3867,7 +4033,7 @@
       <xs:attribute default="9" name="font">
         <xs:annotation>
           <xs:documentation>
-            Font size to use in web output (pts)
+            Font size to use in web output (in pts, or "small", "medium" or "large").
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
@@ -3905,7 +4071,8 @@
       <xs:attribute default="100" name="samples">
         <xs:annotation>
           <xs:documentation>
-            Number of samples for non-data plots
+            Number of samples for non-data plots.
+            If a function element is used to specify the curve, this indicates the number of sample points to use.
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
