@@ -53,6 +53,10 @@ sub move_uploaded_into_place {
       return undef; 
    }
    my %content=&Apache::lc_entity_sessions::posted_content();
+   unless (-e $content{'local_filename'}) {
+      &logerror("Local uploaded file does not exist for $dest_filename");
+      return 0;
+   }
    return &copy($content{'local_filename'},$dest_filename);
 }
 
@@ -79,6 +83,10 @@ sub handler {
       &logerror("Failed to upload file");
       return HTTP_SERVICE_UNAVAILABLE;
    }
+   unless (-e $file) {
+      &logerror("Did not generate uploaded file [$file]");
+      return HTTP_SERVICE_UNAVAILABLE;
+   }
 # Where should this go?
    my $dest_url=&uploaded_dest_url();
 # Does that already exist?
@@ -87,7 +95,9 @@ sub handler {
 # Okay, this does not yet exist, we need to make it
       &Apache::lc_entity_urls::make_new_url($dest_url);
       $url_entity=&Apache::lc_entity_urls::url_to_entity($dest_url);
-      unless ($url_entity) {
+      if ($url_entity) {
+         &lognotice("Generated new entity [$url_entity] for [$dest_url]");
+      } else {
 # Wow, we have a problem!
          &logerror("Failed to get a new entity for [$dest_url]");
          return HTTP_SERVICE_UNAVAILABLE;

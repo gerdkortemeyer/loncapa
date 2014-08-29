@@ -692,6 +692,7 @@ sub raw_to_filepath {
 sub wrk_to_filepath {
    my ($wrk_url)=@_;
    $wrk_url=~s/^\/wrk\///;
+   $wrk_url=~s/\/\//\//gs;
    return &lc_wrk_dir().$wrk_url;
 }
 
