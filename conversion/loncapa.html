@@ -2297,25 +2297,25 @@ Unless otherwise noted the linestyles require only 2 data sets, X and Y.
 - lines: Connect adjacent points with straight line segments.
 - points: Display a small marker at each point.
 - linespoints: Draw both lines and points.
-  Draws a small symbol at each point and then connects adjacent points with straight line segments.
+Draws a small symbol at each point and then connects adjacent points with straight line segments.
 - dots: Place a tiny dots on the given points.
 - steps: Connect points with horizontal lines.
-  This style connects consecutive points with two line segments: the first from (x1,y1) to (x2,y1) and the second from (x2,y1) to (x2,y2).
+This style connects consecutive points with two line segments: the first from (x1,y1) to (x2,y1) and the second from (x2,y1) to (x2,y2).
 - fsteps: Connect data with horizontal lines.
-  This style connects consecutive points with two line segments: the first from (x1,y1) to (x1,y2) and the second from (x1,y2) to (x2,y2).
+This style connects consecutive points with two line segments: the first from (x1,y1) to (x1,y2) and the second from (x1,y2) to (x2,y2).
 - histeps: Plot as histogram.
-  Y-values are assumed to be centered at the x-values; the point at x1 is represented as a horizontal line from ((x0+x1)/2,y1) to ((x1+x2)/2,y1). The lines representing the end points are extended so that the step is centered on at x. Adjacent points are connected by a vertical line at their average x, that is, from ((x1+x2)/2,y1) to ((x1+x2)/2,y2).
+Y-values are assumed to be centered at the x-values; the point at x1 is represented as a horizontal line from ((x0+x1)/2,y1) to ((x1+x2)/2,y1). The lines representing the end points are extended so that the step is centered on at x. Adjacent points are connected by a vertical line at their average x, that is, from ((x1+x2)/2,y1) to ((x1+x2)/2,y2).
 - errorbars: Same as yerrorbars.
 - xerrorbars: Draw horizontal error bars around the points.
-  Requires 3 or 4 data sets. Either X, Y, Xdelta or X, Y, Xlower, Xupper. Xdelta is a change relative to the given X value. The Xlower and Xupper values are absolute grid coordinates of the upper and lower values to indicated with error bars.
+Requires 3 or 4 data sets. Either X, Y, Xdelta or X, Y, Xlower, Xupper. Xdelta is a change relative to the given X value. The Xlower and Xupper values are absolute grid coordinates of the upper and lower values to indicated with error bars.
 - yerrorbars: Draw vertical error bars around the points.
-  Requires 3 or 4 data sets. Either X, Y, Ydelta or X, Y, Ylower, Yupper. Ydelta is a change relative to the given Y value. The Ylower and Yupper values are the grid coordinates of the upper and lower values to indicate with error bars.
+Requires 3 or 4 data sets. Either X, Y, Ydelta or X, Y, Ylower, Yupper. Ydelta is a change relative to the given Y value. The Ylower and Yupper values are the grid coordinates of the upper and lower values to indicate with error bars.
 - xyerrorbars: Draw both vertical and horizontal error bars around the points.
-  Requires 4 or 6 data sets. Either X, Y, Xdelta, Ydelta or X, Y, Xlower, Xupper, Ylower, Yupper. Xdelta and Ydelta are relative to the given coordinates. Xlower, Xupper, Ylower, and Yupper are the grid coordinates of the upper and lower values to indicate with the error bars.
+Requires 4 or 6 data sets. Either X, Y, Xdelta, Ydelta or X, Y, Xlower, Xupper, Ylower, Yupper. Xdelta and Ydelta are relative to the given coordinates. Xlower, Xupper, Ylower, and Yupper are the grid coordinates of the upper and lower values to indicate with the error bars.
 - boxes: Draw a box from the X-axis to the Y-value given.
-  Requires either 2 or 3 data sets. Either X, Y or X, Y, Xwidth. In the first case the boxes will be drawn next to eachother. In the latter case Xwidth indicates the horizontal width of the box for the given coordinate.
+Requires either 2 or 3 data sets. Either X, Y or X, Y, Xwidth. In the first case the boxes will be drawn next to eachother. In the latter case Xwidth indicates the horizontal width of the box for the given coordinate.
 - vector: Draws a vector field based on the given data.
-  Requires 4 data sets, X, Y, Xdelta, and Ydelta. The &lsquo;vector&lsquo; style draws a vector from (X,Y) to (X+Xdelta,Y+Ydelta). It also draws a small arrowhead at the end of the vector. May not be fully supported by gnuplot.
+Requires 4 data sets, X, Y, Xdelta, and Ydelta. The &lsquo;vector&lsquo; style draws a vector from (X,Y) to (X+Xdelta,Y+Ydelta). It also draws a small arrowhead at the end of the vector. May not be fully supported by gnuplot.
 </div>
 <br>
 
@@ -2805,6 +2805,44 @@ For output devices that support it, this rotates the tic label by 90 degrees. Th
 </div>
 <hr>
 
+
+<a name="loncapa_0"></a>
+<h3>Element <span class="nomtitre">loncapa</span>
+</h3>
+
+
+<div class="documentation">
+LON-CAPA document root element.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#htmlhead_0">htmlhead</a>
+<br>
+</li>
+<li>
+<a href="#htmlbody_0">htmlbody</a>
+<br>
+</li>
+<li>
+<a href="#problem_0">problem</a>
+<br>
+</li>
+<li>
+<a href="#blockText_0">blockText</a>
+<br>
+</li>
+</ul>
+
+</div>
+
+<br>
+<br>
+<hr>
+
 <a name="parameter_0"></a>
 <h3>Element <span class="nomtitre">parameter</span>
 </h3>
@@ -3004,14 +3042,14 @@ Attribute <span class="nomattribut">samples</span>:
 
 
 <div class="documentation">
-Sample Points
+Sample Points.
 
 Format:
 1. A comma-separated list of the variables you wish to interpret,
 2. followed by &ldquo;@&rdquo; (not in quotes),
 3. followed by any number of the following two things, separated by semi-colons:
- (a) a comma-separated list of as many numbers as there are variables, which specifies one sampling point, OR
- (b) a comma-separated list of as many numbers as there are variables, followed by a colon, followed by another list of as many numbers as there are variables, followed by a #, followed by an integer.
+(a) a comma-separated list of as many numbers as there are variables, which specifies one sampling point, OR
+(b) a comma-separated list of as many numbers as there are variables, followed by a colon, followed by another list of as many numbers as there are variables, followed by a #, followed by an integer.
 </div>
 <br>
 
@@ -4064,7 +4102,7 @@ Attribute <span class="nomattribut">index</span>:
 
 <div class="documentation">
 Index/Name.
- This is an internal label for the rule. It must be different for each rule. This same value will be used to add a conditional hint.
+This is an internal label for the rule. It must be different for each rule. This same value will be used to add a conditional hint.
 </div>
 <br>
 
@@ -8159,7 +8197,7 @@ Choice between:<ul>
 
 </div>
 
-<br>
+<br>Parents:<a href="#loncapa_0">loncapa</a>
 <br>
 <hr>
 
@@ -10350,7 +10388,7 @@ Value restriction based on xs:token<ul>
 
 </div>
 
-<br>Parents:<a href="#html_0">html</a>, <a href="#head_0">head</a>, <a href="#title_2">title</a>, <a href="#htmlMeta_0">htmlMeta</a>, <a href="#style_3">style</a>, <a href="#body_0">body</a>
+<br>Parents:<a href="#htmlhead_0">htmlhead</a>, <a href="#title_2">title</a>, <a href="#htmlMeta_0">htmlMeta</a>, <a href="#style_3">style</a>, <a href="#htmlbody_0">htmlbody</a>
 <br>
 <hr>
 
@@ -10490,7 +10528,7 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#text_2">text</a>, <a href="#noscript_0">noscript</a>, <a href="#body_0">body</a>, <a href="#section_0">section</a>, <a href="#dd_0">dd</a>, <a href="#blockquote_0">blockquote</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#map_0">map</a>, <a href="#form_1">form</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
+<br>Parents:<a href="#loncapa_0">loncapa</a>, <a href="#text_2">text</a>, <a href="#noscript_0">noscript</a>, <a href="#section_0">section</a>, <a href="#dd_0">dd</a>, <a href="#blockquote_0">blockquote</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#map_0">map</a>, <a href="#form_1">form</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
 <br>
 <hr>
 
@@ -10715,43 +10753,6 @@ Choice between:<ul>
 <hr>
 
 
-<a name="html_0"></a>
-<h3>Element <span class="nomtitre">html</span>
-</h3>
-
-
-<div class="documentation">
-The HTML root element (&lt;html&gt;) represents the root of an HTML document.
-</div>
-<br>
-
-
-<div class="indentation">
-Sequence with:<ul>
-<li>
-<a href="#head_0">head</a>
-<br>
-</li>
-<li>
-<a href="#body_0">body</a>
-<br>
-</li>
-</ul>
-
-<a href="#i18n_0">i18n</a>
-<br>
-<br>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:ID</tt>
-<br>
-</div>
-
-</div>
-
-<br>
-<br>
-<hr>
-
 <a name="head.misc_0"></a>
 <h3>Group <span class="nomtitre">head.misc</span>
 </h3>
@@ -10799,12 +10800,12 @@ generic metainformation
 </li>
 </ul>
 
-<br>Parents:<a href="#head_0">head</a>
+<br>Parents:<a href="#htmlhead_0">htmlhead</a>
 <br>
 <hr>
 
-<a name="head_0"></a>
-<h3>Element <span class="nomtitre">head</span>
+<a name="htmlhead_0"></a>
+<h3>Element <span class="nomtitre">htmlhead</span>
 </h3>
 
 
@@ -10880,7 +10881,7 @@ Attribute <span class="nomattribut">profile</span>:
 
 </div>
 
-<br>Parents:<a href="#html_0">html</a>
+<br>Parents:<a href="#loncapa_0">loncapa</a>
 <br>
 <hr>
 
@@ -10909,7 +10910,7 @@ Attribute <span class="nomattribut">id</span>:
 
 </div>
 
-<br>Parents:<a href="#head_0">head</a>
+<br>Parents:<a href="#htmlhead_0">htmlhead</a>
 <br>
 <hr>
 
@@ -10936,7 +10937,7 @@ Attribute <span class="nomattribut">id</span>:
 
 </div>
 
-<br>Parents:<a href="#head_0">head</a>
+<br>Parents:<a href="#htmlhead_0">htmlhead</a>
 <br>
 <hr>
 
@@ -11142,24 +11143,18 @@ Choice between:<ul>
 <br>
 <hr>
 
-<a name="body_0"></a>
-<h3>Element <span class="nomtitre">body</span>
+<a name="htmlbody_0"></a>
+<h3>Element <span class="nomtitre">htmlbody</span>
 </h3>
 
 
 <div class="documentation">
-The HTML &lt;body&gt; element represents the content of an HTML document. There is only one &lt;body&gt; element in a document.
+Contains only the attributes that will be used in the future HTML document body. It is an empty element.
 </div>
 <br>
 
 
 <div class="indentation">
-Choice between:<ul>
-<li>
-<a href="#blockText_0">blockText</a>
-<br>
-</li>
-</ul>
 
 <a href="#i18n_0">i18n</a>
 <br>
@@ -11175,7 +11170,7 @@ Attribute <span class="nomattribut">onunload</span>:
 
 </div>
 
-<br>Parents:<a href="#html_0">html</a>
+<br>Parents:<a href="#loncapa_0">loncapa</a>
 <br>
 <hr>
 
@@ -13664,8 +13659,6 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#blockText_0">blockText</a>
 <br>
-<a href="#body_0">body</a>
-<br>
 <a href="#br_0">br</a>
 <br>
 <a href="#button_0">button</a>
@@ -13841,8 +13834,6 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#h6_0">h6</a>
 <br>
-<a href="#head_0">head</a>
-<br>
 <a href="#head.misc_0">head.misc</a>
 <br>
 <a href="#headerContent_0">headerContent</a>
@@ -13859,9 +13850,11 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#hr_0">hr</a>
 <br>
-<a href="#html_0">html</a>
-<br>
 <a href="#html-align_0">html-align</a>
+<br>
+<a href="#htmlbody_0">htmlbody</a>
+<br>
+<a href="#htmlhead_0">htmlhead</a>
 <br>
 <a href="#htmlLength_0">htmlLength</a>
 <br>
@@ -13950,6 +13943,8 @@ Value restriction based on xs:string<ul>
 <a href="#location_6">location</a>
             (under randomlabel--labelgroup)
           <br>
+<a href="#loncapa_0">loncapa</a>
+<br>
 <a href="#lonplot--axis_0">lonplot--axis</a>
 <br>
 <a href="#lonplot--curve_0">lonplot--curve</a>

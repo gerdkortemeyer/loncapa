@@ -4,6 +4,43 @@
 
   <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 
+  <xsl:template match="/">
+    <loncapa>
+      <xsl:if test="/html/head/title!='' or //htmlhead/*[name()!='title']">
+        <htmlhead>
+          <xsl:apply-templates select="/html/head/title"/>
+          <xsl:for-each select="//htmlhead">
+            <xsl:apply-templates/>
+          </xsl:for-each>
+        </htmlhead>
+      </xsl:if>
+      <xsl:for-each select="//htmlbody">
+        <xsl:if test="@*">
+          <htmlbody><xsl:apply-templates select="@*"/></htmlbody>
+        </xsl:if>
+      </xsl:for-each>
+      <xsl:apply-templates/>
+    </loncapa>
+  </xsl:template>
+  
+  <xsl:template match="html">
+    <xsl:apply-templates/>
+  </xsl:template>
+  
+  <xsl:template match="head">
+  </xsl:template>
+  
+  <xsl:template match="body">
+    <xsl:apply-templates/>
+  </xsl:template>
+  
+  <xsl:template match="htmlhead">
+  </xsl:template>
+  
+  <xsl:template match="htmlbody">
+    <xsl:apply-templates/>
+  </xsl:template>
+  
   <xsl:template match="emptyfont">
     <xsl:element name="font">
       <xsl:apply-templates select="@*|node()"/>

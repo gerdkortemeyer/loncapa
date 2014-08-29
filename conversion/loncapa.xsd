@@ -1190,6 +1190,22 @@
       <xs:extension base="lonplot--tics"/>
     </xs:complexContent>
   </xs:complexType>
+  
+  <xs:element name="loncapa">
+    <xs:annotation>
+      <xs:documentation>
+        LON-CAPA document root element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="htmlhead"/>
+        <xs:element ref="htmlbody"/>
+        <xs:element ref="problem"/>
+        <xs:group ref="blockText"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="parameter">
     <xs:annotation>
       <xs:documentation>
@@ -4625,21 +4641,6 @@
     </xs:choice>
   </xs:complexType>
   
-  <xs:element name="html">
-    <xs:annotation>
-      <xs:documentation>
-        The HTML root element (&lt;html&gt;) represents the root of an HTML document.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="head"/>
-        <xs:element ref="body"/>
-      </xs:sequence>
-      <xs:attributeGroup ref="i18n"/>
-      <xs:attribute name="id" type="xs:ID"/>
-    </xs:complexType>
-  </xs:element>
   <xs:group name="head.misc">
     <xs:sequence>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -4662,7 +4663,7 @@
       </xs:choice>
     </xs:sequence>
   </xs:group>
-  <xs:element name="head">
+  <xs:element name="htmlhead">
     <xs:annotation>
       <xs:documentation>
         The HTML Head Element (&lt;head&gt;) provides general information (metadata) about the document, including its title and links to or definitions of scripts and style sheets.
@@ -4792,16 +4793,13 @@
       </xs:choice>
     </xs:complexType>
   </xs:element>
-  <xs:element name="body">
+  <xs:element name="htmlbody">
     <xs:annotation>
       <xs:documentation>
-        The HTML &lt;body&gt; element represents the content of an HTML document. There is only one &lt;body&gt; element in a document.
+        Contains only the attributes that will be used in the future HTML document body. It is an empty element.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blockText"/>
-      </xs:choice>
       <xs:attributeGroup ref="i18n"/>
       <xs:attribute name="onload" type="xs:string"/>
       <xs:attribute name="onunload" type="xs:string"/>
