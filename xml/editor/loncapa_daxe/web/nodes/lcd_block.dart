@@ -254,8 +254,10 @@ class LCDBlock extends DaxeNode {
     bCollapsed.deselect();
     state = 0;
     updateHTML();
-    String firstAttName = doc.cfg.attributeQualifiedName(ref, attRefs.first);
-    attributeControls[firstAttName].focus();
+    if (attRefs.length > 0) {
+      String firstAttName = doc.cfg.attributeQualifiedName(ref, attRefs.first);
+      attributeControls[firstAttName].focus();
+    }
   }
   
   void normalView() {
