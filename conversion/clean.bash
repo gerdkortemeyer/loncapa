@@ -40,7 +40,7 @@ if [ $? -eq 2 ]; then
   echo "tidy error for $pathname"
   exit
 fi
-cat /tmp/posttidy.txt | perl $MY_HOME/post_tidy.pl > "$newpath"
+cat /tmp/posttidy.txt | sed -e 's/ xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"//' | perl $MY_HOME/post_tidy.pl > "$newpath"
 if [ $? -ne 0 ]; then
   echo "post_tidy error for $pathname"
   exit

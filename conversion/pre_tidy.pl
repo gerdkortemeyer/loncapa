@@ -10,7 +10,7 @@ use Encode;
 use Encode::Byte;
 use Encode::Guess;
 
-my @block_elements = ('answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','numericalresponse','array','unit','answergroup','formularesponse','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','stringresponse','essayresponse','externalresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','customresponse','mathresponse','textfield','hiddensubmission','optionresponse','radiobuttonresponse','rankresponse','matchresponse','organicresponse','reactionresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline');
+my @block_elements = ('answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','numericalresponse','array','unit','answergroup','formularesponse','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','stringresponse','essayresponse','externalresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','customresponse','mathresponse','textfield','hiddensubmission','optionresponse','radiobuttonresponse','rankresponse','matchresponse','organicresponse','reactionresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody');
 
 my @block_html = ('html','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','table','dl','pre','noscript','blockquote','object','applet','embed','map','form','fieldset','iframe');
 
@@ -37,6 +37,8 @@ binmode(STDOUT, ":utf8");
 fix_cdata_elements($lines);
 
 fix_html_entities($lines);
+
+tidy_workaround_head_body($lines);
 
 fix_font($lines);
 
@@ -145,6 +147,24 @@ sub fix_html_entities {
   my ($lines) = @_;
   foreach my $line (@{$lines}) {
     $line =~ s/\&nbsp;/&#xA0;/g;
+  }
+}
+
+
+##
+# Replaces <head> by <htmlhead> and <body> by <htmlbody>, so that tidy does no mess up with them
+# (otherwise tidy moves script elements outside of head, and removes body elements attributes when
+# body is not at the top).
+# @param {Array<string>} lines
+#
+sub tidy_workaround_head_body {
+  my ($lines) = @_;
+  
+  foreach my $line (@{$lines}) {
+    $line =~ s/<head([^>]*)>/<htmlhead\1>/g;
+    $line =~ s/<\/head([^>]*)>/<\/htmlhead\1>/g;
+    $line =~ s/<body([^>]*)>/<htmlbody\1>/g;
+    $line =~ s/<\/body([^>]*)>/<\/htmlbody\1>/g;
   }
 }
 
@@ -319,7 +339,7 @@ add-xml-decl: yes
 
 output-xhtml: yes
 
-show-body-only: auto
+//show-body-only: auto // this removes head/title (not good)
 
 wrap: 0
 
@@ -334,6 +354,8 @@ quiet: yes
 char-encoding: utf8
 
 numeric-entities: yes
+
+tidy-mark: no
 
 END
 ;

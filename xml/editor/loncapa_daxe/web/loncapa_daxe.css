@@ -33,6 +33,7 @@
   font-style: normal;
   font-size: medium;
   color: black;
+  text-align: left;
 }
 
 .lcdblock.invalid>.lcdblock-header {
