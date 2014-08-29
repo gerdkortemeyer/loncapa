@@ -4633,10 +4633,13 @@
   <xs:complexType mixed="true" name="headerContent">
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:element ref="span"/>
-      <xs:element ref="i"/>
+      <xs:element ref="em"/>
+      <xs:element ref="a"/>
       <xs:element ref="sup"/>
       <xs:element ref="sub"/>
+      <xs:element ref="i"/>
     </xs:choice>
+    <xs:attribute name="id" type="xs:string"/>
   </xs:complexType>
   
   <xs:group name="head.misc">
@@ -4658,6 +4661,7 @@
           </xs:annotation>
         </xs:element>
         <xs:element ref="link"/>
+        <xs:element ref="import"/>
       </xs:choice>
     </xs:sequence>
   </xs:group>
@@ -4813,6 +4817,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="blockText"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="class" type="xs:string"/>
     </xs:complexType>
   </xs:element>
@@ -4929,6 +4934,8 @@
     <xs:complexType mixed="true">
       <xs:complexContent mixed="true">
         <xs:extension base="inlineBaseType">
+          <xs:attribute name="id" type="xs:string"/>
+          <xs:attribute name="class" type="xs:string"/>
           <xs:attribute name="style" type="xs:string"/>
         </xs:extension>
       </xs:complexContent>
@@ -5270,6 +5277,10 @@
         The HTML &lt;hr&gt; element represents a thematic break between paragraph-level elements (for example, a change of scene in a story, or a shift of topic with a section). In previous versions of HTML, it represented a horizontal rule. It may still be displayed as a horizontal rule in visual browsers, but is now defined in semantic terms, rather than presentational terms.
       </xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="class" type="xs:string"/>
+      <xs:attribute name="style" type="xs:string"/>
+    </xs:complexType>
   </xs:element>
   <xs:element name="blockquote">
     <xs:annotation>
