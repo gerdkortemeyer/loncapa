@@ -175,9 +175,32 @@
   
   
   <xsl:template match="center">
-    <div style="text-align: center; margin: 0 auto">
+    <xsl:choose>
+      <xsl:when test="table">
+        <xsl:apply-templates select="node()"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <div style="text-align: center; margin: 0 auto">
+          <xsl:apply-templates select="node()"/>
+        </div>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
+  
+  <xsl:template match="table">
+    <table>
+      <xsl:choose>
+        <xsl:when test="parent::center">
+          <xsl:apply-templates select="@*[name()!='style']"/>
+          <xsl:attribute name="style">margin-left:auto; margin-right:auto;<xsl:value-of select="@style"/></xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="@*"/>
+        </xsl:otherwise>
+      </xsl:choose>
       <xsl:apply-templates select="node()"/>
-    </div>
+    </table>
   </xsl:template>
   
   
