@@ -42,9 +42,11 @@
   </xsl:template>
   
   <xsl:template match="emptyfont">
+    <!-- just get rid of them
     <xsl:element name="font">
       <xsl:apply-templates select="@*|node()"/>
     </xsl:element>
+    -->
   </xsl:template>
 
   <xsl:template match="inlinefont">
