@@ -331,12 +331,12 @@
     <AFFICHAGE_ELEMENT element="style" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="noscript" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="section" type="lcdblock"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="h1" type="string"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="h2" type="string"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="h3" type="string"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="h4" type="string"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="h5" type="string"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="h6" type="string"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="h1" type="lcdblock"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="h2" type="lcdblock"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="h3" type="lcdblock"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="h4" type="lcdblock"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="h5" type="lcdblock"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="h6" type="lcdblock"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="div" type="hiddendiv"/>
     <AFFICHAGE_ELEMENT element="p" type="hiddenp"/>
     <AFFICHAGE_ELEMENT element="ul" type="wlist">
@@ -1904,9 +1904,9 @@
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="problem">
-      <TITRE>Start of Homework</TITRE>
+      <TITRE>Problem</TITRE>
       <DOCUMENTATION>
-        This must be first in the file. It sets up the header of the webpage and generates the submit buttons. It also handles due dates properly.
+        A LON-CAPA problem.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="allow">
