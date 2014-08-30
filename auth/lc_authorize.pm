@@ -142,6 +142,17 @@ sub all_roles {
 }
 
 #
+# Should this role have a portfolio space?
+#
+sub should_have_portfolio {
+   my ($role)=@_;
+   if (($privileges->{$role}->{'realm'} eq 'regular') ||
+       ($privileges->{$role}->{'realm'} eq 'community')) {
+      return 1;
+   }
+   return 0;
+}
+#
 # Course roles that this user can modify 
 # Returns a hash with "1" for allowed roles
 #

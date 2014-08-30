@@ -450,8 +450,22 @@ sub enroll {
          $startdate,$enddate, # duration
          &Apache::lc_entity_sessions::user_entity_domain() # who did this?
                        )) {
-         &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not get an entity.");
+         &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not assign role $userrecord->{'role'}.");
          return 0;
+      }
+# Last stage: if this is a role that should have a portfolio, provide one
+      if (&Apache::lc_authorize::should_have_portfolio($userrecord->{'role'})) {
+         unless (&modify_role(
+             $entity,$userrecord->{'domain'}, # who gets the role?
+             'user', # system, domain, course, user
+             $entity,$userrecord->{'domain'},undef, # what's the realm?
+             'portfolio_owner', # what role is this?
+             undef,undef, # duration
+             &Apache::lc_entity_sessions::user_entity_domain() # who did this?
+                       )) {
+             &logerror($userrecord->{'username'}.':'.$userrecord->{'domain'}.": Could not assign portfolio_owner to go with $userrecord->{'role'}.");
+             return 0;
+          }
       }
    }
    return 1;
