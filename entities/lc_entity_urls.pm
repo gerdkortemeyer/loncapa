@@ -210,23 +210,22 @@ sub full_dir_list {
    my ($path)=@_;
    my $dir_list=&dir_list($path);
    my $full_list;
-   my %subdirectories=();
    foreach my $file (@{$dir_list}) {
       my $url=$file->[0];
       my $url_part=$url;
       $url_part=~s/^\Q$path\E//;
-      if ($url_part=~/\//) {
-# This is a file inside a subdirectory
-         my $subdir=(split(/\//,$url_part))[0];
-# Have we already seen this subdirectory
-         if ($subdirectories{$subdir}) { next; }
-         $subdirectories{$subdir}=1;
-         push(@{$full_list},{ type => 'directory', url => $path.'/'.$subdir, filename => $subdir });
-      } else {
+# This gets everything underneath the path,
+# but (for now), only take stuff at this level
+      unless (($url_part=~/\/[^\/]/) || ($url_part eq '')) {
          my $entity=$file->[1];
          my ($domain)=($url=~/^\/?([^\/]+)\//);
          my $metadata=&dump_metadata($entity,$domain);
-         push(@{$full_list},{ type => 'file', url => $url, filename => $url_part, entity => $entity, domain => $domain, metadata => $metadata });
+         my $type='file';
+         if ($url_part=~/\/$/) {
+            $url_part=~s/\/+$//;
+            $type='directory';
+         }
+         push(@{$full_list},{ type => $type, url => $url, filename => $url_part, entity => $entity, domain => $domain, metadata => $metadata });
       }
    }
    return $full_list;
@@ -395,6 +394,26 @@ sub make_new_url {
    } else {
       return &remote_make_new_url(&Apache::lc_entity_utils::homeserver($author,$domain),$full_url);
    }
+}
+
+#
+# Make a new subdirectory
+#
+sub make_new_subdir {
+   my ($full_url)=@_;
+   unless ($full_url=~/\/$/) { $full_url.='/'; }
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+   unless ($version_type eq 'wrk') { 
+      &logwarning("Tried to make subdirectory [$full_url], but cannot be published");
+      return undef; 
+   }
+   my ($entity,$domain)=&url_to_entity($full_url);
+   if ($entity) {
+      &logwarning("Tried to make subdirectory [$full_url], but already exists"); 
+      return undef; 
+   }
+# We don't have it, so let's make it
+   return &make_new_url($full_url);
 }
 
 # ======================================================
