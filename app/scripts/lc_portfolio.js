@@ -138,10 +138,11 @@ function modify_selected() {
 }
 
 function uploadsuccess(name) {
+   $('.lcerror').hide();
    reload_listing();
 }
 
 function uploadfailure(name,code) {
-   alert("failure "+name+" code "+code);
+    $('.lcerror').show();
 }
 

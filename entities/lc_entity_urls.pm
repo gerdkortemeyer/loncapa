@@ -33,7 +33,6 @@ use Apache::lc_parameters;
 use File::Copy;
 use File::stat;
 
-
 # =========================================================================
 # Get the metadata for an asset
 # =========================================================================
@@ -265,6 +264,24 @@ sub transfer_uploaded {
    return 1;
 }
 
+# =============================================================
+# Get some raw metadata
+# =============================================================
+#
+sub store_file_vitals {
+   my ($entity,$domain,$version,$version_arg)=@_;
+   my $filename=&asset_resource_filename($entity,$domain,$version,$version_arg);
+   if (-e $filename) {
+      my $sb=stat($filename);
+      if ($version eq 'wrk') { $version_arg='wrk'; }
+      my $filedata;
+      $filedata->{'filedata'}->{$version_arg}->{'size'}=$sb->size;
+      $filedata->{'filedata'}->{$version_arg}->{'modified'}=$sb->mtime;
+      &Apache::lc_mongodb::insert_metadata($entity,$domain,$filedata);
+      &Apache::lc_memcached::insert_metadata($entity,$domain,$filedata);
+   }
+}
+
 
 # =============================================================
 # Moving unpublished assets between servers
@@ -278,6 +295,7 @@ sub local_fetch_wrk_file {
    my ($orig_host,$entity,$domain)=@_;
    if (&Apache::lc_dispatcher::copy_file($orig_host,'/raw/wrk/-/'.$domain.'/'.$entity,
                                          &asset_resource_filename($entity,$domain,'wrk','-'))) {
+      &store_file_vitals($entity,$domain,'wrk','-');
       return 1;
    }
    &logwarning("Failed to copy wrk-file entity ($entity) domain ($domain) from host ($orig_host)");
@@ -405,7 +423,8 @@ sub local_publish {
          return undef;
       }
       if (&move(&asset_resource_filename($entity,$domain,'wrk','-'),$dest_filename)) {
-         &lognotice("Published version ($new_version) of ($full_url)"); 
+         &lognotice("Published version ($new_version) of ($full_url)");
+         &store_file_vitals($entity,$domain,'n',$new_version); 
          return $new_version;
       } else {
 # How could that fail?
@@ -480,17 +499,18 @@ sub publish {
 sub save {
    my ($full_url)=@_;
    my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+   my $entity=&url_to_entity($full_url);
+   unless ($entity) {
+# Wow, this should not happen. We cannot save unassigned URLs!
+      &logerror("Trying to save ($full_url), but no entity assigned yet!");
+      return undef;
+   }
    if (&Apache::lc_entity_utils::we_are_homeserver($author,$domain)) {
-# There's nothing to do, all set
+# Remember the file vitals
+      &store_file_vitals($entity,$domain,$version_type,$version_arg);
+# There's nothing more to do, all set
       return 1;
    } else {
-      my $entity=&url_to_entity($full_url);
-      unless ($entity) {
-# Wow, this should not happen. We cannot save unassigned URLs!
-         &logerror("Trying to save ($full_url), but no entity assigned yet!");
-         return undef;
-      }
-# Make the homeserver copy it over
       return &remote_fetch_wrk_file(&Apache::lc_entity_utils::homeserver($author,$domain),$entity,$domain,'wrk');   
    }
 }
