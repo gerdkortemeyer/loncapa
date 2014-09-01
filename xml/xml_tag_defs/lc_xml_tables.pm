@@ -60,9 +60,11 @@ sub portfoliomanager {
    my ($p,$safe,$stack,$token)=@_;
 # Header
    return '<thead><tr><th>&nbsp;</th><th>'.&mt('Type').'</th><th>'.&mt('Name').'</th><th>'.
-               &mt('Title').'</th><th>'.&mt('Publication State').'</th><th>'.&mt('Version').'</th><th>'.
+               &mt('Title').'</th><th>'.&mt('Publication State').'</th><th>'.
+               &mt('File Size').'</th><th>'.&mt('Version').'</th><th>'.
                &mt('First Published').'</th><th>&nbsp;</th><th>'.
-               &mt('Last Published').'</th><th>&nbsp;</th></tr></thead>';
+               &mt('Last Published').'</th><th>&nbsp;</th><th>'.
+               &mt('Last Modified').'</th><th>&nbsp;</th></tr></thead>';
 }
 
 

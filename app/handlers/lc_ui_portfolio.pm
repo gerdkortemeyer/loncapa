@@ -72,6 +72,9 @@ sub listdirectory {
              'Title',
              'State',
              undef,
+             undef,
+             '',
+             -2,
              '',
              -2,
              '',
@@ -87,6 +90,9 @@ sub listdirectory {
        my $display_last_date=&mt('Never');
        my $sort_last_date=0;
        my $filename='';
+       my $size=undef;
+       my $display_last_modified=&mt('Never');
+       my $sort_last_modified=0;
        if ($file->{'type'} eq 'file') {
 # It's a file, so we have dates, etc
           if ($file->{'metadata'}->{'current_version'}) {
@@ -96,13 +102,18 @@ sub listdirectory {
              ($display_last_date,$sort_last_date)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{$version}));
           }
+          ($display_last_modified,$sort_last_modified)=&Apache::lc_ui_localize::locallocaltime(
+                                           &Apache::lc_date_utils::str2num($file->{'metadata'}->{'filedata'}->{'wrk'}->{'modified'}));
+          $size=$file->{'metadata'}->{'filedata'}->{'wrk'}->{'size'};
           $filename=$file->{'filename'};
        } else {
 # It's a directory
           $display_first_date='';
           $display_last_date='';
+          $display_last_modified='';
           $sort_first_date=-1;
           $sort_last_date=-1;
+          $sort_last_modified=-1;
           my $fullpath=$path.$file->{'filename'}.'/';
           $filename='<a href="#" onClick="set_path(\''.$fullpath.'\')">'.$file->{'filename'}."</a>";
        }
@@ -113,11 +124,14 @@ sub listdirectory {
              $filename,
              'Title',
              'State',
+             $size,
              $version,
              ($sort_first_date>0?'<time datetime="'.$sort_first_date.'">':'').$display_first_date.($sort_first_date>0?'</time>':''),
              $sort_first_date,
              ($sort_last_date>0?'<time datetime="'.$sort_last_date.'">':'').$display_last_date.($sort_last_date>0?'</time>':''),
-             $sort_last_date
+             $sort_last_date,
+             ($sort_last_modified>0?'<time datetime="'.$sort_last_modified.'">':'').$display_last_modified.($sort_last_modified>0?'</time>':''),
+             $sort_last_modified
             ]
            );
    }

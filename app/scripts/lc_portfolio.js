@@ -36,9 +36,12 @@ function init_datatable() {
          null,
          null,
          null,
+         null,
          {"iDataSort": 7 },
          { "bVisible": false },
          {"iDataSort": 9 },
+         { "bVisible": false },
+         {"iDataSort": 11 },
          { "bVisible": false }
       ]
     } );

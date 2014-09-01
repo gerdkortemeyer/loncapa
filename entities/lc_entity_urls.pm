@@ -30,6 +30,7 @@ use Apache::lc_memcached();
 use Apache::lc_entity_utils();
 use Apache::lc_connection_utils();
 use Apache::lc_parameters;
+use Apache::lc_date_utils();
 use File::Copy;
 use File::stat;
 
@@ -275,7 +276,7 @@ sub store_file_vitals {
       if ($version eq 'wrk') { $version_arg='wrk'; }
       my $filedata;
       $filedata->{'filedata'}->{$version_arg}->{'size'}=$sb->size;
-      $filedata->{'filedata'}->{$version_arg}->{'modified'}=$sb->mtime;
+      $filedata->{'filedata'}->{$version_arg}->{'modified'}=&Apache::lc_date_utils::num2str($sb->mtime);
       &Apache::lc_mongodb::insert_metadata($entity,$domain,$filedata);
       &Apache::lc_memcached::insert_metadata($entity,$domain,$filedata);
    }
