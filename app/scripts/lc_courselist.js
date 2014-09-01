@@ -13,6 +13,9 @@ $(document).ready(function() {
       "oLanguage" : {
          "sUrl" : "/datatable_i14n"
       },
+     "fnInitComplete": function(oSettings, json) {
+         adjust_framesize();
+      },
       "aoColumns" : [
          { "bVisible": false },
          null,

@@ -29,6 +29,9 @@ function init_datatable() {
       "oLanguage" : {
          "sUrl" : "/datatable_i14n"
       },
+      "fnInitComplete": function(oSettings, json) {
+         adjust_framesize();
+      },
       "aoColumns" : [
          { "bVisible": false },
          null,
@@ -45,7 +48,6 @@ function init_datatable() {
          { "bVisible": false }
       ]
     } );
-    adjust_framesize();
 }
 
 function reload_listing() {
