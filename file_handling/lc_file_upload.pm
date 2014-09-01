@@ -108,10 +108,6 @@ sub handler {
       &logerror("Failed to move into place [$dest_url]");
       return HTTP_SERVICE_UNAVAILABLE;
    }
-   unless (&Apache::lc_entity_urls::save($dest_url)) {
-      &logerror("Failed to save [$dest_url]");
-      return HTTP_SERVICE_UNAVAILABLE;
-   }
    return OK;
 }
 

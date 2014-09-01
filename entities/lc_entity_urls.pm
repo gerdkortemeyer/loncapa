@@ -34,6 +34,8 @@ use Apache::lc_date_utils();
 use File::Copy;
 use File::stat;
 
+use Data::Dumper;
+
 # =========================================================================
 # Get the metadata for an asset
 # =========================================================================
@@ -274,11 +276,11 @@ sub store_file_vitals {
    if (-e $filename) {
       my $sb=stat($filename);
       if ($version eq 'wrk') { $version_arg='wrk'; }
-      my $filedata;
-      $filedata->{'filedata'}->{$version_arg}->{'size'}=$sb->size;
-      $filedata->{'filedata'}->{$version_arg}->{'modified'}=&Apache::lc_date_utils::num2str($sb->mtime);
-      &Apache::lc_mongodb::insert_metadata($entity,$domain,$filedata);
-      &Apache::lc_memcached::insert_metadata($entity,$domain,$filedata);
+      my $metadata=&local_dump_metadata($entity,$domain);
+      $metadata->{'filedata'}->{$version_arg}->{'size'}=$sb->size;
+      $metadata->{'filedata'}->{$version_arg}->{'modified'}=&Apache::lc_date_utils::num2str($sb->mtime);
+      &Apache::lc_mongodb::update_metadata($entity,$domain,$metadata);
+      &Apache::lc_memcached::insert_metadata($entity,$domain,$metadata);
    }
 }
 
