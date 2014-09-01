@@ -26,8 +26,16 @@ $(document).ready(function() {
   $('#content_tree').on("changed.jstree", function (e, data) {
      if ((data.selected) && (!edit_mode)) {
         parent.display_course_asset(data.instance.get_node(data.selected[0]).id);
+     } else {
+        adjust_framesize();
      }
   });
+  $("#content_tree").on("after_open.jstree", function () {
+     adjust_framesize();
+  });
+  $("#content_tree").on("after_close.jstree", function () {
+     adjust_framesize();
+  })
   $('#content_tree').on("loaded.jstree", function (e, data) {
      adjust_framesize();
   });
