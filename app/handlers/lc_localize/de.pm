@@ -224,6 +224,22 @@ use utf8;
 
 'Never' => 'Niemals',
 
+'Type' => 'Typ',
+
+'Name' => 'Name',
+
+'Publication State' => 'Veröffentlichungsstatus',
+
+'File Size' => 'Dateigröße',
+
+'Version' => 'Version',
+
+'First Published' => 'Erstveröffentlichung',
+
+'Last Published' => 'Letzte Veröffentlichung',
+
+'Last Modified' => 'Letzte Änderung',
+
 'Select a course to enter' => 'Wählen Sie einen Kurs aus',
 
 'Select a community to enter' => 'Wählen Sie eine Gemeinschaft aus',
