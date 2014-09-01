@@ -59,7 +59,18 @@ sub start_lcdatatable_html {
 sub portfoliomanager {
    my ($p,$safe,$stack,$token)=@_;
 # Header
-   return '<thead><tr><th>&nbsp;</th><th>'.&mt('Type').'</th><th>'.&mt('Name').'</th><th>'.
+   return '<thead>'.
+          '<tr><td colspan="13">'.
+            '<a href="#" class="lcselecttoggle" onClick="select_all()">'.&mt('Select All').'</a>'.
+            '&nbsp;<a href="#" class="lcselecttoggle" onClick="select_filtered()">'.&mt('Select Filtered').'</a>'.
+            '&nbsp;<a href="#" class="lcselecttoggle" onClick="deselect_all()">'.&mt('Deselect All').'</a></td></tr>'.
+          '<tr><td colspan="13">'.&mt('Column Visibility:').
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(5)">'.&mt('File Size').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(7)">'.&mt('First Published').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(9)">'.&mt('Last Published').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(11)">'.&mt('Last Modified').'</a>'.
+            '</td></tr>'.
+          '<tr><th>&nbsp;</th><th>'.&mt('Type').'</th><th>'.&mt('Name').'</th><th>'.
                &mt('Title').'</th><th>'.&mt('Publication State').'</th><th>'.
                &mt('File Size').'</th><th>'.&mt('Version').'</th><th>'.
                &mt('First Published').'</th><th>&nbsp;</th><th>'.

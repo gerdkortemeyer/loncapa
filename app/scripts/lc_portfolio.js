@@ -34,14 +34,14 @@ function init_datatable() {
          null,
          null,
          null,
-         null,
-         null,
-         null,
-         {"iDataSort": 7 },
          { "bVisible": false },
-         {"iDataSort": 9 },
+         null,
+         null,
+         {"iDataSort": 7, "bVisible": false },
          { "bVisible": false },
-         {"iDataSort": 11 },
+         {"iDataSort": 9, "bVisible": false },
+         { "bVisible": false },
+         {"iDataSort": 11, "bVisible": false },
          { "bVisible": false }
       ]
     } );
