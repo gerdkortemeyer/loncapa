@@ -100,7 +100,7 @@ sub local_new_version {
       }
    } else {
       $new_version=1;
-      unless (&Apache::lc_mongodb::insert_metadata($entity,$domain,{ current_version => 1,
+      unless (&Apache::lc_mongodb::update_metadata($entity,$domain,{ current_version => 1,
                                                           versions => { 1 => &Apache::lc_date_utils::now2str() } })) {
          &logerror("Could not generate first metadata entry for ($entity) ($domain)");
          return undef;
@@ -267,10 +267,10 @@ sub transfer_uploaded {
 }
 
 # =============================================================
-# Get some raw metadata
+# Get some raw metadata, only on homeserver where file is
 # =============================================================
 #
-sub store_file_vitals {
+sub local_store_file_vitals {
    my ($entity,$domain,$version,$version_arg)=@_;
    my $filename=&asset_resource_filename($entity,$domain,$version,$version_arg);
    if (-e $filename) {
@@ -297,6 +297,14 @@ sub store_file_vitals {
 #
 sub local_store_metadata {
    my ($entity,$domain,$newmetadata)=@_;
+# Do we already have metadata? If not, do it now
+   my $oldmetadata=&local_dump_metadata($entity,$domain);
+   unless ($oldmetadata) {
+      &lognotice("Started metadata record for [$entity] [$domain]");
+      unless (&Apache::lc_mongodb::insert_metadata($entity,$domain,{ 'generated' => &Apache::lc_date_utils::now2str() })) {
+         &logwarning("Could not generate metadata record for [$entity] [$domain]");
+      }
+   }
 # Attempt to update the metadata
    unless (&Apache::lc_mongodb::update_metadata($entity,$domain,$newmetadata)) {
       &logerror("Could not store metadata [$entity] [$domain]");
@@ -362,10 +370,35 @@ sub remote_store_metadata {
 sub store_metadata {
    my ($entity,$domain,$newmetadata)=@_;
    if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
-      return &local_store_metadata($entity,$domain);
+      return &local_store_metadata($entity,$domain,$newmetadata);
    } else {
       return &remote_dump_metadata(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
    }
+}
+
+# =============================================================
+# Setting flags, etc, etc. Call these.
+# =============================================================
+# Sets obsolete flag for full URL
+#
+sub store_url_metadata {
+   my ($full_url,$data)=@_;
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
+   my $entity=&url_to_entity($full_url);
+   unless ($entity) {
+      &logwarning("Trying to modify URL metadata for [$url], does not exist.");
+   }
+   return &store_metadata($entity,$domain,{ 'urldata' => { $url => $data } });
+}
+
+sub make_obsolete {
+   my ($full_url)=@_;
+   return &store_url_metadata($full_url,{ 'obsolete' => 1 }); 
+}
+
+sub un_obsolete {
+   my ($full_url)=@_;
+   return &store_metadata($full_url,{ 'obsolete' => 0 });
 }
 
 # =============================================================
@@ -380,7 +413,7 @@ sub local_fetch_wrk_file {
    my ($orig_host,$entity,$domain)=@_;
    if (&Apache::lc_dispatcher::copy_file($orig_host,'/raw/wrk/-/'.$domain.'/'.$entity,
                                          &asset_resource_filename($entity,$domain,'wrk','-'))) {
-      &store_file_vitals($entity,$domain,'wrk','-');
+      &local_store_file_vitals($entity,$domain,'wrk','-');
       return 1;
    }
    &logwarning("Failed to copy wrk-file entity ($entity) domain ($domain) from host ($orig_host)");
@@ -416,23 +449,27 @@ sub remote_fetch_wrk_file {
 # homeserver for the author
 #
 sub local_make_new_url {
-   my ($version_type,$version_arg,$domain,$author,$url)=&split_url(@_[0]);
+   my ($full_url)=@_;
+   my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
 # Are we even potentially in charge here?
    unless (&Apache::lc_entity_utils::we_are_homeserver($author,$domain)) {
       &logwarning("Tried to generate url ($url), but not homeserver of entity ($author) domain ($domain)");
       return undef;
    }
 # First make sure this url does not exist
-   if (&local_url_to_entity ($url)) {
+   if (&local_url_to_entity ($full_url)) {
 # Oops, that url already exists locally!
       &logwarning("Tried to generate url ($url), but already exists locally");
       return undef;
    }
 # Check all other library hosts, make sure they are responding
-   my ($code,$reply)=&Apache::lc_dispatcher::query_all_domain_libraries($domain,"url_to_entity","{ url : '$url'}");
+   my ($code,$reply)=&Apache::lc_dispatcher::query_all_domain_libraries($domain,"url_to_entity",
+                        &Apache::lc_json_utils::perl_to_json({'full_url' => $full_url})
+                                                                       );
 # If we could not get a hold of all libraries, do not proceed. It may exist on that one!
    unless ($code eq HTTP_OK) {
-      &logwarning("Tried to generate url ($url), but could not get replies from all library servers");                                           return undef;
+      &logwarning("Tried to generate url ($url), but could not get replies from all library servers");
+      return undef;
    }
 # We found that url elsewhere
    if ($reply) {
@@ -529,7 +566,7 @@ sub local_publish {
       }
       if (&move(&asset_resource_filename($entity,$domain,'wrk','-'),$dest_filename)) {
          &lognotice("Published version ($new_version) of ($full_url)");
-         &store_file_vitals($entity,$domain,'n',$new_version); 
+         &local_store_file_vitals($entity,$domain,'n',$new_version); 
          return $new_version;
       } else {
 # How could that fail?
@@ -612,7 +649,7 @@ sub save {
    }
    if (&Apache::lc_entity_utils::we_are_homeserver($author,$domain)) {
 # Remember the file vitals
-      &store_file_vitals($entity,$domain,$version_type,$version_arg);
+      &local_store_file_vitals($entity,$domain,$version_type,$version_arg);
 # There's nothing more to do, all set
       return 1;
    } else {
