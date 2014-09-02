@@ -30,6 +30,7 @@ use Apache::lc_logs;
 use Apache::lc_ui_localize;
 use Apache::lc_authorize;
 use Apache::lc_xml_forms();
+use HTML::Entities;
 
 sub determine_path {
    my ($path)=@_;
@@ -119,7 +120,9 @@ sub listdirectory {
        }
 # Add the output line
        push(@{$output->{'aaData'}},
-            ['&nbsp;',
+            [&encode_entities(
+               &Apache::lc_json_utils::perl_to_json({'entity' => $file->{'entity'}, 'domain' => $file->{'domain'}, 'url' => $file->{'url'}}),
+                         '\W'),
              &Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}),
              $filename,
              'Title',
