@@ -276,14 +276,97 @@ sub store_file_vitals {
    if (-e $filename) {
       my $sb=stat($filename);
       if ($version eq 'wrk') { $version_arg='wrk'; }
-      my $metadata=&local_dump_metadata($entity,$domain);
-      $metadata->{'filedata'}->{$version_arg}->{'size'}=$sb->size;
-      $metadata->{'filedata'}->{$version_arg}->{'modified'}=&Apache::lc_date_utils::num2str($sb->mtime);
-      &Apache::lc_mongodb::update_metadata($entity,$domain,$metadata);
-      &Apache::lc_memcached::insert_metadata($entity,$domain,$metadata);
+      return &local_store_metadata($entity,$domain,
+                                        { 'filedata' => { 
+                                              $version_arg => {
+                                                 'size' => $sb->size,
+                                                 'modified' => &Apache::lc_date_utils::num2str($sb->mtime)
+                                                              }
+                                                        }
+                                        });
+   }
+   return undef;
+}
+
+# =============================================================
+# Store metadata flags
+# =============================================================
+#
+# Called with the entity, the domain, and the new metadata as hash pointer
+# Returns full updated metadata as hash pointer
+#
+sub local_store_metadata {
+   my ($entity,$domain,$newmetadata)=@_;
+# Attempt to update the metadata
+   unless (&Apache::lc_mongodb::update_metadata($entity,$domain,$newmetadata)) {
+      &logerror("Could not store metadata [$entity] [$domain]");
+      return undef;
+   }
+# Now see if it updated correctly, and to what
+   my $updatedmetadata=&local_dump_metadata($entity,$domain);
+   unless ($updatedmetadata) {
+      &logerror("Updating of metadata failed for [$entity] [$domain]");
+      return undef;
+   }
+# Might as well remember locally
+   &Apache::lc_memcached::insert_metadata($entity,$domain,$updatedmetadata);
+   return $updatedmetadata;
+}
+
+#
+# Called with the entity, the domain, and the new metadata in JSON
+# Returns full updated metadata in JSON
+#
+sub local_json_store_metadata {
+   my ($entity,$domain,$newmetajson)=@_;
+   return &Apache::lc_json_utils::perl_to_json(
+       &local_store_metadata($entity,$domain,&Apache::lc_json_utils::json_to_perl($newmetajson))
+                                              );
+}
+
+#
+# The remote call for storing metadata
+#
+sub remote_store_metadata {
+   my ($host,$entity,$domain,$newmetadata)=@_;
+   unless ($host) {
+      &logwarning("Cannot store metadata, no homewserver for [$entity] [$domain]");
+      return undef;
+   }
+# Put the new metadata into JSON
+   my $fields_json=&Apache::lc_json_utils::perl_to_json($newmetadata);
+   unless ($fields_json) {
+      &logerror("Could not store metadata for [$entity] [$domain], no valid hash given");
+      return undef;
+   }
+# Send the JSON inside JSON
+   my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'store_metadata',
+                              &Apache::lc_json_utils::perl_to_json({ entity => $entity,
+                                                                     domain => $domain,
+                                                                     fields_json => $fields_json
+                                                                      }));
+# If okay, cache and return
+   if ($code eq HTTP_OK) {
+      my $updatedmetadata=&Apache::lc_json_utils::json_to_perl($response);
+      if ($updatedmetadata) {
+         &Apache::lc_memcached::insert_metadata($entity,$domain,$updatedmetadata);
+         return $updatedmetadata;
+      } else {
+         return undef;
+      }
+   } else {
+      return undef;
    }
 }
 
+sub store_metadata {
+   my ($entity,$domain,$newmetadata)=@_;
+   if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
+      return &local_store_metadata($entity,$domain);
+   } else {
+      return &remote_dump_metadata(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
+   }
+}
 
 # =============================================================
 # Moving unpublished assets between servers
@@ -779,6 +862,7 @@ BEGIN {
    &Apache::lc_connection_handle::register('make_new_url',undef,undef,undef,\&local_make_new_url,'full_url');
    &Apache::lc_connection_handle::register('current_version',undef,undef,undef,\&local_current_version,'entity','domain');
    &Apache::lc_connection_handle::register('dump_metadata',undef,undef,undef,\&local_json_dump_metadata,'entity','domain');
+   &Apache::lc_connection_handle::register('store_metadata',undef,undef,undef,\&local_json_store_metadata,'entity','domain','fields_json');
    &Apache::lc_connection_handle::register('dir_list',undef,undef,undef,\&local_json_dir_list,'path');
    &Apache::lc_connection_handle::register('fetch_wrk_file',undef,undef,undef,\&local_fetch_wrk_file,'orig_host','entity','domain');
    &Apache::lc_connection_handle::register('publish',undef,undef,undef,\&local_publish,'full_url');
