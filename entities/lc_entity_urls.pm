@@ -33,6 +33,7 @@ use Apache::lc_parameters;
 use Apache::lc_date_utils();
 use File::Copy;
 use File::stat;
+use HTML::Entities;
 
 use Data::Dumper;
 
@@ -379,8 +380,16 @@ sub store_metadata {
 # =============================================================
 # Setting flags, etc, etc. Call these.
 # =============================================================
-# Sets obsolete flag for full URL
+# Encode URL for use as Mongo key
 #
+sub url_encode {
+   my ($url)=@_;
+   $url=&encode_entities($url,'\W');
+   $url=&encode_entities($url,'_');
+   $url=~s/\W/\_/gs;
+   return $url;
+}
+
 sub store_url_metadata {
    my ($full_url,$data)=@_;
    my ($version_type,$version_arg,$domain,$author,$url)=&split_url($full_url);
@@ -388,7 +397,7 @@ sub store_url_metadata {
    unless ($entity) {
       &logwarning("Trying to modify URL metadata for [$url], does not exist.");
    }
-   return &store_metadata($entity,$domain,{ 'urldata' => { $url => $data } });
+   return &store_metadata($entity,$domain,{ 'urldata' => { &url_encode($url) => $data } });
 }
 
 sub make_obsolete {
