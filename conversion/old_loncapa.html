@@ -23,6 +23,59 @@ body { color: #000000; background: #FFFFFF }
 <hr>
 
 
+<a name="perl_0"></a>
+<h3>Simple type <span class="nomtitre">perl</span>
+</h3>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>((\$|\&amp;)([#|$]*[A-Za-z][\w]*|\{[A-Za-z][\w]*\}))([\[\{][^$&amp;\]\}]+[\]\}])*(\([^$&amp;\)]+\))*</tt>
+</li>
+
+</ul>
+
+<hr>
+
+<a name="int-or-perl_0"></a>
+<h3>Simple type <span class="nomtitre">int-or-perl</span>
+</h3>
+Possible values:<ul>
+<li>xs:int perl</li>
+</ul>
+
+<hr>
+
+<a name="decimal-or-perl_0"></a>
+<h3>Simple type <span class="nomtitre">decimal-or-perl</span>
+</h3>
+Possible values:<ul>
+<li>xs:decimal perl</li>
+</ul>
+
+<hr>
+
+<a name="real_0"></a>
+<h3>Simple type <span class="nomtitre">real</span>
+</h3>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>[+-]?\d*\.?\d*([eE][+-]?\d+)?</tt>
+</li>
+
+</ul>
+
+<hr>
+
+<a name="real-or-perl_0"></a>
+<h3>Simple type <span class="nomtitre">real-or-perl</span>
+</h3>
+Possible values:<ul>
+<li>real perl</li>
+</ul>
+
+<hr>
+
 <a name="yesno_0"></a>
 <h3>Simple type <span class="nomtitre">yesno</span>
 </h3>
@@ -36,6 +89,15 @@ Value restriction based on xs:string<ul>
 <tt>no</tt>
 </li>
 
+</ul>
+
+<hr>
+
+<a name="yesno-or-perl_0"></a>
+<h3>Simple type <span class="nomtitre">yesno-or-perl</span>
+</h3>
+Possible values:<ul>
+<li>yesno perl</li>
 </ul>
 
 <hr>
@@ -57,6 +119,15 @@ Value restriction based on xs:string<ul>
 
 <hr>
 
+<a name="onoff-or-perl_0"></a>
+<h3>Simple type <span class="nomtitre">onoff-or-perl</span>
+</h3>
+Possible values:<ul>
+<li>onoff perl</li>
+</ul>
+
+<hr>
+
 <a name="color_0"></a>
 <h3>Simple type <span class="nomtitre">color</span>
 </h3>
@@ -70,45 +141,45 @@ Value restriction based on xs:string<ul>
 
 <hr>
 
-<a name="real_0"></a>
-<h3>Simple type <span class="nomtitre">real</span>
+<a name="color-or-perl_0"></a>
+<h3>Simple type <span class="nomtitre">color-or-perl</span>
+</h3>
+Possible values:<ul>
+<li>color perl</li>
+</ul>
+
+<hr>
+
+<a name="location_0"></a>
+<h3>Simple type <span class="nomtitre">location</span>
 </h3>
 Value restriction based on xs:string<ul>
 
 <li>
-<tt>[+-]?\d*\.?\d*([eE][+-]?\d+)?</tt>
+<tt>random</tt>
+</li>
+
+<li>
+<tt>top</tt>
+</li>
+
+<li>
+<tt>bottom</tt>
 </li>
 
 </ul>
 
 <hr>
 
-<a name="perl_0"></a>
-<h3>Simple type <span class="nomtitre">perl</span>
+<a name="location-or-perl_0"></a>
+<h3>Simple type <span class="nomtitre">location-or-perl</span>
 </h3>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>((\$|\&amp;)([#|$]*[A-Za-z][\w]*|\{[A-Za-z][\w]*\}))([\[\{][^$&amp;\]\}]+[\]\}])*(\([^$&amp;\)]+\))*</tt>
-</li>
-
+Possible values:<ul>
+<li>location perl</li>
 </ul>
 
 <hr>
 
-<a name="int-or-perl_0"></a>
-<h3>Simple type <span class="nomtitre">int-or-perl</span>
-</h3>
-
-
-<hr>
-
-<a name="real-or-perl_0"></a>
-<h3>Simple type <span class="nomtitre">real-or-perl</span>
-</h3>
-
-
-<hr>
 
 <a name="caparesponse--answergroup_0"></a>
 <h3>Complex type <span class="nomtitre">caparesponse--answergroup</span>
@@ -131,6 +202,9 @@ Choice between:<ul>
 Attribute <span class="nomattribut">type</span>:
     <div class="indentation">optional<br>
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -141,6 +215,9 @@ Value restriction based on xs:string<ul>
 <tt>unordered</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -183,6 +260,9 @@ Attribute <span class="nomattribut">name</span>:
 Attribute <span class="nomattribut">type</span>:
     <div class="indentation">optional<br>
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -193,6 +273,9 @@ Value restriction based on xs:string<ul>
 <tt>unordered</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -332,7 +415,7 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">required<br>type: <tt>xs:string</tt>
 <br>
 </div>
 
@@ -398,8 +481,9 @@ The delimited text specifies a rectangular area that is correct, specified as (x
 </div>
 <br>
 
-
-
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -408,7 +492,8 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
-
+</li>
+</ul>
 
 <hr>
 
@@ -420,8 +505,9 @@ Value restriction based on xs:string<ul>
 <div class="documentation">Polygonal area in image (contains coordinate list)</div>
 <br>
 
-
-
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -430,7 +516,8 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
-
+</li>
+</ul>
 
 <hr>
 
@@ -625,7 +712,9 @@ Attribute <span class="nomattribut">concept</span>:
 <div class="indentation">
 
 
-<div class="documentation">Option response foil</div>
+<div class="documentation">
+Statement next to the drop-down box.
+</div>
 <br>
 
 Choice between:<ul>
@@ -710,11 +799,11 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">required<br>type: <tt>xs:string</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">value</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">required<br>type: <tt>xs:string</tt>
 <br>
 
 
@@ -726,25 +815,8 @@ Correct Option
 
 </div>
 Attribute <span class="nomattribut">location</span>:
-    <div class="indentation">optional<br>
-
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>random</tt>
-</li>
-
-<li>
-<tt>top</tt>
-</li>
-
-<li>
-<tt>bottom</tt>
-</li>
-
-</ul>
-
-
+    <div class="indentation">optional<br>type: <a href="#location-or-perl_0">location-or-perl</a>
+<br>
 </div>
 
 </div>
@@ -785,12 +857,28 @@ List of options
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>@[a-zA-Z0-9_\-]+</tt>
+</li>
+
+</ul>
+
+</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
 <tt>\(.+\)</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -805,12 +893,18 @@ Print options
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
 <tt>nochoice</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -837,12 +931,18 @@ Checkbox options
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
 <tt>nochoice</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -886,7 +986,9 @@ Attribute <span class="nomattribut">concept</span>:
 <div class="indentation">
 
 
-<div class="documentation">Foil</div>
+<div class="documentation">
+Statement next to the radio button.
+</div>
 <br>
 
 Choice between:<ul>
@@ -964,11 +1066,11 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">required<br>type: <tt>xs:string</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">value</span>:
-    <div class="indentation">optional<br>
+    <div class="indentation">required<br>
 
 
 <div class="documentation">
@@ -977,8 +1079,9 @@ Correct Option (true, false, or unused).
 <br>
 
 
-
-
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -995,30 +1098,14 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
-
+</li>
+</ul>
 
 
 </div>
 Attribute <span class="nomattribut">location</span>:
-    <div class="indentation">optional<br>
-
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>random</tt>
-</li>
-
-<li>
-<tt>top</tt>
-</li>
-
-<li>
-<tt>bottom</tt>
-</li>
-
-</ul>
-
-
+    <div class="indentation">optional<br>type: <a href="#location-or-perl_0">location-or-perl</a>
+<br>
 </div>
 
 </div>
@@ -1166,7 +1253,7 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">required<br>type: <tt>xs:string</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">value</span>:
@@ -1182,25 +1269,8 @@ Rank Value
 
 </div>
 Attribute <span class="nomattribut">location</span>:
-    <div class="indentation">optional<br>
-
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>random</tt>
-</li>
-
-<li>
-<tt>top</tt>
-</li>
-
-<li>
-<tt>bottom</tt>
-</li>
-
-</ul>
-
-
+    <div class="indentation">optional<br>type: <a href="#location-or-perl_0">location-or-perl</a>
+<br>
 </div>
 
 </div>
@@ -1348,7 +1418,7 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">required<br>type: <tt>xs:string</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">value</span>:
@@ -1364,25 +1434,8 @@ Correct Option
 
 </div>
 Attribute <span class="nomattribut">location</span>:
-    <div class="indentation">optional<br>
-
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>random</tt>
-</li>
-
-<li>
-<tt>top</tt>
-</li>
-
-<li>
-<tt>bottom</tt>
-</li>
-
-</ul>
-
-
+    <div class="indentation">optional<br>type: <a href="#location-or-perl_0">location-or-perl</a>
+<br>
 </div>
 
 </div>
@@ -1512,25 +1565,8 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">location</span>:
-    <div class="indentation">optional<br>
-
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>random</tt>
-</li>
-
-<li>
-<tt>top</tt>
-</li>
-
-<li>
-<tt>bottom</tt>
-</li>
-
-</ul>
-
-
+    <div class="indentation">optional<br>type: <a href="#location-or-perl_0">location-or-perl</a>
+<br>
 </div>
 
 </div>
@@ -1555,7 +1591,7 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">randomize</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 
 
@@ -1576,6 +1612,9 @@ Items Display Location
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -1596,6 +1635,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">direction</span>:
@@ -1608,6 +1650,9 @@ Items Display Direction
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -1618,6 +1663,9 @@ Value restriction based on xs:string<ul>
 <tt>horizontal</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -1632,7 +1680,10 @@ Items Columns
 <br>
 
 
-Value restriction based on xs:string<ul>
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:int<ul>
 
 <li>
 <tt>1</tt>
@@ -1650,6 +1701,9 @@ Value restriction based on xs:string<ul>
 <tt>4</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -1676,7 +1730,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="location_6"></a>
+<a name="location_7"></a>
 <h3>Element <span class="nomtitre">location</span>
 </h3>type: <a href="#randomlabel--location_0">randomlabel--location</a>
 <br>
@@ -1713,6 +1767,9 @@ the type of labels in this group
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -1723,6 +1780,9 @@ Value restriction based on xs:string<ul>
 <tt>image</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -1737,6 +1797,9 @@ TeX font size
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -1781,6 +1844,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 
@@ -1797,11 +1863,11 @@ Value restriction based on xs:string<ul>
 <br>
 
 Attribute <span class="nomattribut">x</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">y</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">value</span>:
@@ -1946,6 +2012,9 @@ justification of the label text on the plot
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -1962,10 +2031,13 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">rotate</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -2023,7 +2095,7 @@ Value restriction based on xs:string
 <br>
 
 Attribute <span class="nomattribut">color</span>:
-    <div class="indentation">optional<br>type: <a href="#color_0">color</a>
+    <div class="indentation">optional<br>type: <a href="#color-or-perl_0">color-or-perl</a>
 <br>
 
 
@@ -2092,6 +2164,9 @@ X-axis number formatting
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -2110,6 +2185,9 @@ Value restriction based on xs:string<ul>
 <tt>2f</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -2124,6 +2202,9 @@ Y-axis number formatting
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -2144,6 +2225,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">xzero</span>:
@@ -2156,6 +2240,9 @@ Show x-zero (y=0) axis
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -2176,6 +2263,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">yzero</span>:
@@ -2188,6 +2278,9 @@ Show y-zero (x=0) axis
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -2206,6 +2299,9 @@ Value restriction based on xs:string<ul>
 <tt>dotted</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -2239,7 +2335,7 @@ Title of key
 
 </div>
 Attribute <span class="nomattribut">box</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff_0">onoff</a>
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
 <br>
 
 
@@ -2260,6 +2356,9 @@ Position of the key on the plot
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -2286,6 +2385,9 @@ Value restriction based on xs:string<ul>
 <tt>below</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -2320,7 +2422,7 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">color</span>:
-    <div class="indentation">optional<br>type: <a href="#color_0">color</a>
+    <div class="indentation">optional<br>type: <a href="#color-or-perl_0">color-or-perl</a>
 <br>
 
 
@@ -2376,6 +2478,9 @@ Requires 4 data sets, X, Y, Xdelta, and Ydelta. The &lsquo;vector&lsquo; style d
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -2436,6 +2541,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">linewidth</span>:
@@ -2448,6 +2556,9 @@ Line width (may not apply to all plot styles)
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:int<ul>
 
 <li>
@@ -2458,6 +2569,9 @@ Value restriction based on xs:int<ul>
 <tt>&lt;= 10</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -2472,6 +2586,9 @@ Line type (may not apply to all plot styles)
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -2484,10 +2601,13 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">pointsize</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -2508,6 +2628,9 @@ Point type (may not apply to all plot styles)
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:int<ul>
 
 <li>
@@ -2518,6 +2641,9 @@ Value restriction based on xs:int<ul>
 <tt>&lt;= 6</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -2532,6 +2658,9 @@ Point to fill for filled curves
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -2564,6 +2693,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">arrowhead</span>:
@@ -2576,6 +2708,9 @@ For vector plots, controls where in the vector the arrow head(s) appear.
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -2592,6 +2727,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">arrowstyle</span>:
@@ -2604,6 +2742,9 @@ For vector plots, controls the fill style of the arrow.
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -2620,10 +2761,13 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">arrowlength</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -2635,7 +2779,7 @@ For vector plots, determines the distance between the vector line end and the ti
 
 </div>
 Attribute <span class="nomattribut">arrowangle</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -2647,7 +2791,7 @@ For vector plots, determines the angle the arrow branches make with the vector l
 
 </div>
 Attribute <span class="nomattribut">arrowbackangle</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -2718,7 +2862,7 @@ We add elements to an array in that has: ticspecs whose elements are 'pos' - the
 Can contain text<br>
 <div class="indentation">
 Attribute <span class="nomattribut">location</span>:
-    <div class="indentation">required<br>type: <a href="#real_0">real</a>
+    <div class="indentation">required<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 </div>
 
@@ -2737,6 +2881,9 @@ Location of major tic marks
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -2749,10 +2896,13 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">mirror</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff_0">onoff</a>
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
 <br>
 
 
@@ -2802,7 +2952,7 @@ This may be less than or greater than the upper limit for the axis.
 
 </div>
 Attribute <span class="nomattribut">minorfreq</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -2814,7 +2964,7 @@ The number of subdivisions to make of the span between major tic marks. Using a 
 
 </div>
 Attribute <span class="nomattribut">rotate</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff_0">onoff</a>
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
 <br>
 
 
@@ -3144,7 +3294,7 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -3156,7 +3306,7 @@ Width (pixels)
 
 </div>
 Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -3180,7 +3330,7 @@ Label x-axis
 
 </div>
 Attribute <span class="nomattribut">xmin</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3192,7 +3342,7 @@ Minimum x-value
 
 </div>
 Attribute <span class="nomattribut">xmax</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3204,7 +3354,7 @@ Maximum x-value
 
 </div>
 Attribute <span class="nomattribut">xaxisvisible</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 
 
@@ -3228,7 +3378,7 @@ Label y-axis
 
 </div>
 Attribute <span class="nomattribut">ymin</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3240,7 +3390,7 @@ Minimum y-value
 
 </div>
 Attribute <span class="nomattribut">ymax</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3252,7 +3402,7 @@ Maximum y-value
 
 </div>
 Attribute <span class="nomattribut">yaxisvisible</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 
 
@@ -3264,7 +3414,7 @@ y-axis visible
 
 </div>
 Attribute <span class="nomattribut">gridvisible</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 
 
@@ -3311,7 +3461,7 @@ At least one spline is necessary for a graph problem. These splines are what wil
 
 <div class="indentation">
 Attribute <span class="nomattribut">index</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -3332,6 +3482,9 @@ This determines the number of Control Points on the spline. For example, selecti
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:int<ul>
 
 <li>
@@ -3344,10 +3497,13 @@ Value restriction based on xs:int<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">initx</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3360,7 +3516,7 @@ Initial x-value
 
 </div>
 Attribute <span class="nomattribut">inity</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3373,7 +3529,7 @@ Initial y-value
 
 </div>
 Attribute <span class="nomattribut">scalex</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3385,7 +3541,7 @@ This determines the right most location of the Control Points (on the spline). T
 
 </div>
 Attribute <span class="nomattribut">scaley</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3429,7 +3585,7 @@ An equals sign is not necessary. Just give the right hand side of the function. 
 
 </div>
 Attribute <span class="nomattribut">xinitial</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3441,7 +3597,7 @@ Initial x-value (optional)
 
 </div>
 Attribute <span class="nomattribut">xfinal</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3475,6 +3631,9 @@ The default is 000000 (black). It is recommended to choose a color other than gr
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -3483,10 +3642,13 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">fixed</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 
 
@@ -3529,11 +3691,11 @@ Label on Plot
 
 </div>
 Attribute <span class="nomattribut">x</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">y</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 </div>
 
@@ -3570,19 +3732,19 @@ This value MUST be capitalized and cannot include spaces or most symbols. To be 
 
 </div>
 Attribute <span class="nomattribut">tailx</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">taily</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">tipx</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">tipy</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 </div>
 
@@ -3615,15 +3777,15 @@ Label on Plot
 
 </div>
 Attribute <span class="nomattribut">tailx</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">taily</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">showvalue</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">vectorlist</span>:
@@ -3749,6 +3911,9 @@ This determines what the server will be testing. For instance, choose 'First der
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:int<ul>
 
 <li>
@@ -3769,10 +3934,13 @@ Value restriction based on xs:int<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">xinitial</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3795,6 +3963,9 @@ A value must be entered for one of "Initial x-value" and "Initial x-value label"
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -3807,10 +3978,13 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">xfinal</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3833,6 +4007,9 @@ This determines the end of the domain over which the rule examines. To test only
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -3841,10 +4018,13 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">minimumlength</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3857,7 +4037,7 @@ This tests that the difference between the initial and final x-values are at lea
 
 </div>
 Attribute <span class="nomattribut">maximumlength</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -3879,6 +4059,9 @@ The heart of the rule. This choice determines whether the chosen 'function' is g
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -3907,6 +4090,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">value</span>:
@@ -3922,7 +4108,7 @@ Enter the number you wish to compare to. It is also possible to choose 'not defi
 
 </div>
 Attribute <span class="nomattribut">percenterror</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -4058,7 +4244,7 @@ Tip(s) this vector should not be attached to.
 
 </div>
 Attribute <span class="nomattribut">length</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -4070,7 +4256,7 @@ How long the vector should be.
 
 </div>
 Attribute <span class="nomattribut">lengtherror</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -4083,7 +4269,7 @@ How accurate the length must be to get the answer correct.
 
 </div>
 Attribute <span class="nomattribut">angle</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -4095,7 +4281,7 @@ What direction should the vector point. All values are measured in degrees, coun
 
 </div>
 Attribute <span class="nomattribut">angleerror</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -4154,7 +4340,7 @@ List all of the vectors that should be added up to be tested.
 
 </div>
 Attribute <span class="nomattribut">length</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -4167,7 +4353,7 @@ How long the sum of these vectors should be.
 
 </div>
 Attribute <span class="nomattribut">lengtherror</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -4180,7 +4366,7 @@ How accurate the length must be to get the answer correct.
 
 </div>
 Attribute <span class="nomattribut">angle</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -4193,7 +4379,7 @@ What direction should the sum of these vectors point. All values are measured in
 
 </div>
 Attribute <span class="nomattribut">angleerror</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -4334,6 +4520,9 @@ Specifies how the string is checked (like the CAPA styles). Possible values are:
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -4352,6 +4541,9 @@ Value restriction based on xs:string<ul>
 <tt>re</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -4596,7 +4788,7 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">showoncorrect</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 
 
@@ -5101,6 +5293,9 @@ Should be set to the value of which hintpart will be shown.
 Attribute <span class="nomattribut">type</span>:
     <div class="indentation">optional<br>
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -5119,6 +5314,9 @@ Value restriction based on xs:string<ul>
 <tt>re</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -5233,6 +5431,9 @@ Algebra System
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -5243,6 +5444,9 @@ Value restriction based on xs:string<ul>
 <tt>R</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -5304,7 +5508,7 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">max</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -5493,6 +5697,9 @@ Algebra System. Maxima and R are supported.
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -5503,6 +5710,9 @@ Value restriction based on xs:string<ul>
 <tt>R</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -5564,11 +5774,11 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">rows</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">cols</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -5601,6 +5811,9 @@ Spellcheck for
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -5637,6 +5850,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 
@@ -5659,7 +5875,7 @@ Single Line Text Entry Area
 
 <div class="indentation">
 Attribute <span class="nomattribut">size</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -5683,12 +5899,15 @@ Comma-separated list of characters or words that can be inserted with a click.
 
 </div>
 Attribute <span class="nomattribut">readonly</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">spellcheck</span>:
     <div class="indentation">optional<br>
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -5723,6 +5942,9 @@ Value restriction based on xs:string<ul>
 <tt>tr</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -5816,7 +6038,7 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">max</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -5828,7 +6050,7 @@ Max Number Of Shown Foils
 
 </div>
 Attribute <span class="nomattribut">randomize</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 
 
@@ -5849,6 +6071,9 @@ Display of options when printed
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -5859,6 +6084,9 @@ Value restriction based on xs:string<ul>
 <tt>vertical</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -6016,7 +6244,7 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">max</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -6028,7 +6256,7 @@ Max Number Of Shown Foils
 
 </div>
 Attribute <span class="nomattribut">randomize</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 
 
@@ -6049,6 +6277,9 @@ Display Direction
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -6059,6 +6290,9 @@ Value restriction based on xs:string<ul>
 <tt>horizontal</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -6108,7 +6342,7 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">max</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -6120,7 +6354,7 @@ Max Number Of Shown Foils
 
 </div>
 Attribute <span class="nomattribut">randomize</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 
 
@@ -6176,7 +6410,7 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">max</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -6188,7 +6422,7 @@ Max Number Of Shown Foils
 
 </div>
 Attribute <span class="nomattribut">randomize</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 
 
@@ -6247,6 +6481,9 @@ Attribute <span class="nomattribut">name</span>:
 Attribute <span class="nomattribut">options</span>:
     <div class="indentation">optional<br>
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -6269,6 +6506,9 @@ Value restriction based on xs:string<ul>
 <tt>number</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -6310,7 +6550,7 @@ JME string of the answer
 
 </div>
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -6400,7 +6640,7 @@ Initial Reaction
 
 <div class="indentation">
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -6412,7 +6652,7 @@ Width (pixels)
 
 </div>
 Attribute <span class="nomattribut">texwidth</span>:
-    <div class="indentation">optional<br>type: <tt>xs:decimal</tt>
+    <div class="indentation">optional<br>type: <a href="#decimal-or-perl_0">decimal-or-perl</a>
 <br>
 
 
@@ -6438,6 +6678,9 @@ JME string
 Attribute <span class="nomattribut">options</span>:
     <div class="indentation">optional<br>
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -6448,6 +6691,9 @@ Value restriction based on xs:string<ul>
 <tt>border</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -6550,6 +6796,9 @@ Import as
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -6560,6 +6809,9 @@ Value restriction based on xs:string<ul>
 <tt>part</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -6670,7 +6922,7 @@ Textual description of the image. If the image cannot be rendered by the target 
 
 </div>
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -6682,7 +6934,7 @@ width (pixel)
 
 </div>
 Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -6694,7 +6946,7 @@ height (pixel)
 
 </div>
 Attribute <span class="nomattribut">TeXwidth</span>:
-    <div class="indentation">optional<br>type: <tt>xs:decimal</tt>
+    <div class="indentation">optional<br>type: <a href="#decimal-or-perl_0">decimal-or-perl</a>
 <br>
 
 
@@ -6706,7 +6958,7 @@ TeXwidth (mm)
 
 </div>
 Attribute <span class="nomattribut">TeXheight</span>:
-    <div class="indentation">optional<br>type: <tt>xs:decimal</tt>
+    <div class="indentation">optional<br>type: <a href="#decimal-or-perl_0">decimal-or-perl</a>
 <br>
 
 
@@ -6732,6 +6984,9 @@ Specifies the alignment of the image relative to the enclosing text paragraph:
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -6756,6 +7011,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">TeXwrap</span>:
@@ -6771,6 +7029,9 @@ If, however, there is insufficient text to fill the space to the left or right o
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -6791,10 +7052,13 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">encrypturl</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 </div>
 
@@ -6947,11 +7211,11 @@ Text of Link
 
 </div>
 Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">printtext</span>:
@@ -8543,6 +8807,9 @@ Choice between:<ul>
 Attribute <span class="nomattribut">mode</span>:
     <div class="indentation">optional<br>
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -8553,6 +8820,9 @@ Value restriction based on xs:string<ul>
 <tt>hide</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -8570,12 +8840,18 @@ exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomi
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
 <tt>(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry)(\s*,\s*(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry))*</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -8655,7 +8931,7 @@ Either a fully qualified URL for an external image or a LON-CAPA resource. It su
 
 </div>
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -8667,7 +8943,7 @@ The width of the image in pixels.
 
 </div>
 Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -8679,7 +8955,7 @@ The height of the image in pixels.
 
 </div>
 Attribute <span class="nomattribut">texwidth</span>:
-    <div class="indentation">optional<br>type: <tt>xs:decimal</tt>
+    <div class="indentation">optional<br>type: <a href="#decimal-or-perl_0">decimal-or-perl</a>
 <br>
 
 
@@ -8849,7 +9125,7 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">show</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -9299,7 +9575,7 @@ Width of image (pixels)
 
 </div>
 Attribute <span class="nomattribut">bgcolor</span>:
-    <div class="indentation">optional<br>type: <a href="#color_0">color</a>
+    <div class="indentation">optional<br>type: <a href="#color-or-perl_0">color-or-perl</a>
 <br>
 
 
@@ -9311,7 +9587,7 @@ Background color of image
 
 </div>
 Attribute <span class="nomattribut">fgcolor</span>:
-    <div class="indentation">optional<br>type: <a href="#color_0">color</a>
+    <div class="indentation">optional<br>type: <a href="#color-or-perl_0">color-or-perl</a>
 <br>
 
 
@@ -9323,7 +9599,7 @@ Foreground color of image
 
 </div>
 Attribute <span class="nomattribut">transparent</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff_0">onoff</a>
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
 <br>
 
 
@@ -9335,7 +9611,7 @@ Transparent image. If the image is transparent the background color will be igno
 
 </div>
 Attribute <span class="nomattribut">grid</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff_0">onoff</a>
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
 <br>
 
 
@@ -9347,7 +9623,7 @@ Display grid
 
 </div>
 Attribute <span class="nomattribut">gridlayer</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff_0">onoff</a>
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
 <br>
 
 
@@ -9368,6 +9644,9 @@ Draw border for boxes
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -9380,10 +9659,13 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">border</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff_0">onoff</a>
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
 <br>
 
 
@@ -9404,8 +9686,9 @@ Font size to use in web output (in pts, or "small", "medium" or "large").
 <br>
 
 
-
-
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:int<ul>
 
 <li>
@@ -9418,7 +9701,8 @@ Value restriction based on xs:int<ul>
 
 </ul>
 
-
+</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -9435,7 +9719,8 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
-
+</li>
+</ul>
 
 
 </div>
@@ -9449,6 +9734,9 @@ Type of font to use
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -9465,6 +9753,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">samples</span>:
@@ -9478,6 +9769,9 @@ If a function element is used to specify the curve, this indicates the number of
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:int<ul>
 
 <li>
@@ -9488,6 +9782,9 @@ Value restriction based on xs:int<ul>
 <tt>&lt;= 5000</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -9502,6 +9799,9 @@ Alignment for image in HTML
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -9522,10 +9822,13 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">texwidth</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -9546,6 +9849,9 @@ Font size to use in TeX output (pts)
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:int<ul>
 
 <li>
@@ -9556,6 +9862,9 @@ Value restriction based on xs:int<ul>
 <tt>&lt;= 36</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -9570,6 +9879,9 @@ Color setting for printing
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -9586,6 +9898,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">pattern</span>:
@@ -9598,6 +9913,9 @@ Pattern value for boxes
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:int<ul>
 
 <li>
@@ -9610,10 +9928,13 @@ Value restriction based on xs:int<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">solid</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -9634,6 +9955,9 @@ Filled style for boxes
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -9650,6 +9974,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">plottype</span>:
@@ -9662,6 +9989,9 @@ Plot type
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -9672,6 +10002,9 @@ Value restriction based on xs:string<ul>
 <tt>Polar</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -9686,6 +10019,9 @@ Grid type
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -9710,6 +10046,9 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">lmargin</span>:
@@ -9722,8 +10061,9 @@ Left margin width (pts)
 <br>
 
 
-
-
+Possible values:<ul>
+<li>perl xs:int</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -9732,7 +10072,8 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
-
+</li>
+</ul>
 
 
 </div>
@@ -9746,8 +10087,9 @@ Right margin width (pts)
 <br>
 
 
-
-
+Possible values:<ul>
+<li>perl xs:int</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -9756,7 +10098,8 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
-
+</li>
+</ul>
 
 
 </div>
@@ -9770,8 +10113,9 @@ Top margin width (pts)
 <br>
 
 
-
-
+Possible values:<ul>
+<li>perl xs:int</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -9780,7 +10124,8 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
-
+</li>
+</ul>
 
 
 </div>
@@ -9794,8 +10139,9 @@ Bottom margin width (pts)
 <br>
 
 
-
-
+Possible values:<ul>
+<li>perl xs:int</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -9804,7 +10150,8 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
-
+</li>
+</ul>
 
 
 </div>
@@ -9821,7 +10168,7 @@ Width of boxes, default is auto
 
 </div>
 Attribute <span class="nomattribut">major_ticscale</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -9833,7 +10180,7 @@ Size of major tic marks (plot coordinates)
 
 </div>
 Attribute <span class="nomattribut">minor_ticscale</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 
 
@@ -9884,7 +10231,7 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">OptionalRequired</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -10126,6 +10473,9 @@ Passing is Mandatory
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -10138,10 +10488,13 @@ Value restriction based on xs:string<ul>
 
 </ul>
 
+</li>
+</ul>
+
 
 </div>
 Attribute <span class="nomattribut">OptionalRequired</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -10302,7 +10655,7 @@ Attribute <span class="nomattribut">id</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">Disabled</span>:
-    <div class="indentation">optional<br>type: <a href="#yesno_0">yesno</a>
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 
 
@@ -10314,7 +10667,7 @@ Instance is Disabled
 
 </div>
 Attribute <span class="nomattribut">OptionalRequired</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -10457,6 +10810,9 @@ Passing is Mandatory
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -10467,6 +10823,9 @@ Value restriction based on xs:string<ul>
 <tt>N</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -10767,7 +11126,7 @@ Attribute <span class="nomattribut">href</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -10779,7 +11138,7 @@ starting height of the popup window
 
 </div>
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 
 
@@ -10929,21 +11288,8 @@ Attribute <span class="nomattribut">display</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">eval</span>:
-    <div class="indentation">optional<br>
-
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>on</tt>
-</li>
-
-<li>
-<tt>off</tt>
-</li>
-
-</ul>
-
-
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
+<br>
 </div>
 
 </div>
@@ -11064,11 +11410,11 @@ Choice between:<ul>
 Can contain text<br>
 <div class="indentation">
 Attribute <span class="nomattribut">x</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">y</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">font</span>:
@@ -11095,19 +11441,19 @@ Attribute <span class="nomattribut">direction</span>:
 
 <div class="indentation">
 Attribute <span class="nomattribut">x1</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">y1</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">x2</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">y2</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">color</span>:
@@ -11115,7 +11461,7 @@ Attribute <span class="nomattribut">color</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">thickness</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 
@@ -11130,19 +11476,19 @@ Attribute <span class="nomattribut">thickness</span>:
 
 <div class="indentation">
 Attribute <span class="nomattribut">x1</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">y1</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">x2</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">y2</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">color</span>:
@@ -11150,7 +11496,7 @@ Attribute <span class="nomattribut">color</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">thickness</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">filled</span>:
@@ -11169,27 +11515,27 @@ Attribute <span class="nomattribut">filled</span>:
 
 <div class="indentation">
 Attribute <span class="nomattribut">x</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">y</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">start</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">end</span>:
-    <div class="indentation">optional<br>type: <a href="#real_0">real</a>
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">color</span>:
@@ -11197,7 +11543,7 @@ Attribute <span class="nomattribut">color</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">thickness</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">filled</span>:
@@ -11216,11 +11562,11 @@ Attribute <span class="nomattribut">filled</span>:
 
 <div class="indentation">
 Attribute <span class="nomattribut">x</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">y</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">color</span>:
@@ -11246,11 +11592,11 @@ Choice between:<ul>
 
 <div class="indentation">
 Attribute <span class="nomattribut">x</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">y</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 
@@ -11272,7 +11618,7 @@ Attribute <span class="nomattribut">open</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">thickness</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 
@@ -11287,35 +11633,35 @@ Attribute <span class="nomattribut">thickness</span>:
 Can contain text<br>
 <div class="indentation">
 Attribute <span class="nomattribut">x</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">y</span>:
-    <div class="indentation">required<br>type: <tt>xs:int</tt>
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">clipx</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">clipy</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">clipwidth</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">clipheight</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">scaledwidth</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">scaledheight</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">transparent</span>:
@@ -11329,11 +11675,11 @@ Attribute <span class="nomattribut">transparent</span>:
 </li>
 </ul>
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">bgcolor</span>:
@@ -11368,11 +11714,11 @@ Displays the number of points awarded for this problem or problem part.
 
 <div class="indentation">
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">align</span>:
@@ -11385,6 +11731,9 @@ note: this attribute is not supported in HTML5, css should be used instead !
 <br>
 
 
+Possible values:<ul>
+<li>perl</li>
+<li>
 Value restriction based on xs:string<ul>
 
 <li>
@@ -11407,6 +11756,9 @@ Value restriction based on xs:string<ul>
 <tt>bottom</tt>
 </li>
 
+</ul>
+
+</li>
 </ul>
 
 
@@ -12876,6 +13228,10 @@ Attribute <span class="nomattribut">align</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">rules</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">style</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
 </div>
@@ -14761,6 +15117,8 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#color_0">color</a>
 <br>
+<a href="#color-or-perl_0">color-or-perl</a>
+<br>
 <a href="#comment_0">comment</a>
 <br>
 <a href="#conceptgroup_0">conceptgroup</a>
@@ -14800,6 +15158,8 @@ Value restriction based on xs:string<ul>
 <a href="#datasubmission_0">datasubmission</a>
 <br>
 <a href="#dd_0">dd</a>
+<br>
+<a href="#decimal-or-perl_0">decimal-or-perl</a>
 <br>
 <a href="#del_0">del</a>
 <br>
@@ -15042,9 +15402,13 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#link_0">link</a>
 <br>
-<a href="#location_6">location</a>
+<a href="#location_0">location</a>
+<br>
+<a href="#location_7">location</a>
             (under randomlabel--labelgroup)
           <br>
+<a href="#location-or-perl_0">location-or-perl</a>
+<br>
 <a href="#lonplot--axis_0">lonplot--axis</a>
 <br>
 <a href="#lonplot--curve_0">lonplot--curve</a>
@@ -15115,6 +15479,8 @@ Value restriction based on xs:string<ul>
 <a href="#ol_0">ol</a>
 <br>
 <a href="#onoff_0">onoff</a>
+<br>
+<a href="#onoff-or-perl_0">onoff-or-perl</a>
 <br>
 <a href="#optgroup_0">optgroup</a>
 <br>
@@ -15327,6 +15693,8 @@ Value restriction based on xs:string<ul>
 <a href="#xtics_0">xtics</a>
 <br>
 <a href="#yesno_0">yesno</a>
+<br>
+<a href="#yesno-or-perl_0">yesno-or-perl</a>
 <br>
 <a href="#ylabel_1">ylabel</a>
             (under gnuplot)

@@ -1,27 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:lang="en">
   <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
-  <xs:simpleType name="yesno">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="yes"/>
-      <xs:enumeration value="no"/>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="onoff">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="on"/>
-      <xs:enumeration value="off"/>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="color">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[x#][\da-fA-F]{6}"/>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="real">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[+-]?\d*\.?\d*([eE][+-]?\d+)?"/>
-    </xs:restriction>
-  </xs:simpleType>
   <xs:simpleType name="perl">
     <xs:restriction base="xs:string">
       <xs:pattern value="((\$|\&amp;)([#|$]*[A-Za-z][\w]*|\{[A-Za-z][\w]*\}))([\[\{][^$&amp;\]\}]+[\]\}])*(\([^$&amp;\)]+\))*"/>
@@ -30,9 +8,54 @@
   <xs:simpleType name="int-or-perl">
     <xs:union memberTypes="xs:int perl"/>
   </xs:simpleType>
+  <xs:simpleType name="decimal-or-perl">
+    <xs:union memberTypes="xs:decimal perl"/>
+  </xs:simpleType>
+  <xs:simpleType name="real">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[+-]?\d*\.?\d*([eE][+-]?\d+)?"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="real-or-perl">
     <xs:union memberTypes="real perl"/>
   </xs:simpleType>
+  <xs:simpleType name="yesno">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="yes"/>
+      <xs:enumeration value="no"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="yesno-or-perl">
+    <xs:union memberTypes="yesno perl"/>
+  </xs:simpleType>
+  <xs:simpleType name="onoff">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="on"/>
+      <xs:enumeration value="off"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="onoff-or-perl">
+    <xs:union memberTypes="onoff perl"/>
+  </xs:simpleType>
+  <xs:simpleType name="color">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[x#][\da-fA-F]{6}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="color-or-perl">
+    <xs:union memberTypes="color perl"/>
+  </xs:simpleType>
+  <xs:simpleType name="location">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="random"/>
+      <xs:enumeration value="top"/>
+      <xs:enumeration value="bottom"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="location-or-perl">
+    <xs:union memberTypes="location perl"/>
+  </xs:simpleType>
+  
   <xs:complexType name="caparesponse--answergroup">
     <xs:annotation>
       <xs:documentation>Collection of Answers</xs:documentation>
@@ -42,10 +65,14 @@
     </xs:choice>
     <xs:attribute default="ordered" name="type">
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="ordered"/>
-          <xs:enumeration value="unordered"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="ordered"/>
+              <xs:enumeration value="unordered"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
   </xs:complexType>
@@ -62,10 +89,14 @@
     <xs:attribute name="name" type="xs:string"/>
     <xs:attribute default="ordered" name="type">
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="ordered"/>
-          <xs:enumeration value="unordered"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="ordered"/>
+              <xs:enumeration value="unordered"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
   </xs:complexType>
@@ -117,7 +148,7 @@
       <xs:element name="rectangle" type="imageresponse--rectangle"/>
       <xs:element name="text" type="imageresponse--text"/>
     </xs:choice>
-    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
   </xs:complexType>
   <xs:complexType name="imageresponse--foilgroup">
     <xs:annotation>
@@ -238,7 +269,9 @@
   </xs:complexType>
   <xs:complexType mixed="true" name="optionresponse--foil">
     <xs:annotation>
-      <xs:documentation>Option response foil</xs:documentation>
+      <xs:documentation>
+        Statement next to the drop-down box.
+      </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
@@ -259,23 +292,15 @@
       <xs:element ref="window"/>
       <xs:element name="drawoptionlist" type="optionresponse--drawoptionlist"/>
     </xs:choice>
-    <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="value" type="xs:string">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="value" type="xs:string" use="required">
       <xs:annotation>
         <xs:documentation>
           Correct Option
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="random" name="location">
-      <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="random"/>
-          <xs:enumeration value="top"/>
-          <xs:enumeration value="bottom"/>
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:attribute>
+    <xs:attribute default="random" name="location" type="location-or-perl"/>
   </xs:complexType>
   <xs:complexType name="optionresponse--foilgroup">
     <xs:annotation>
@@ -292,9 +317,18 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:pattern value="\(.+\)"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:pattern value="@[a-zA-Z0-9_\-]+"/>
+            </xs:restriction>
+          </xs:simpleType>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:pattern value="\(.+\)"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute name="texoptions">
@@ -304,9 +338,13 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="nochoice"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="nochoice"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute name="checkboxvalue" type="xs:string">
@@ -323,9 +361,13 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="nochoice"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="nochoice"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
   </xs:complexType>
@@ -343,7 +385,9 @@
   </xs:complexType>
   <xs:complexType mixed="true" name="radiobuttonresponse--foil">
     <xs:annotation>
-      <xs:documentation>Foil</xs:documentation>
+      <xs:documentation>
+        Statement next to the radio button.
+      </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
@@ -363,8 +407,8 @@
       <xs:element ref="while"/>
       <xs:element ref="window"/>
     </xs:choice>
-    <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="value">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="value" use="required">
       <xs:annotation>
         <xs:documentation>
           Correct Option (true, false, or unused).
@@ -382,15 +426,7 @@
         </xs:union>
       </xs:simpleType>
     </xs:attribute>
-    <xs:attribute default="random" name="location">
-      <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="random"/>
-          <xs:enumeration value="top"/>
-          <xs:enumeration value="bottom"/>
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:attribute>
+    <xs:attribute default="random" name="location" type="location-or-perl"/>
   </xs:complexType>
   <xs:complexType name="radiobuttonresponse--foilgroup">
     <xs:annotation>
@@ -435,7 +471,7 @@
       <xs:element ref="while"/>
       <xs:element ref="window"/>
     </xs:choice>
-    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="value" type="xs:string">
       <xs:annotation>
         <xs:documentation>
@@ -443,15 +479,7 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="random" name="location">
-      <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="random"/>
-          <xs:enumeration value="top"/>
-          <xs:enumeration value="bottom"/>
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:attribute>
+    <xs:attribute default="random" name="location" type="location-or-perl"/>
   </xs:complexType>
   <xs:complexType name="rankresponse--foilgroup">
     <xs:annotation>
@@ -496,7 +524,7 @@
       <xs:element ref="while"/>
       <xs:element ref="window"/>
     </xs:choice>
-    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="value" type="xs:string">
       <xs:annotation>
         <xs:documentation>
@@ -504,15 +532,7 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="random" name="location">
-      <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="random"/>
-          <xs:enumeration value="top"/>
-          <xs:enumeration value="bottom"/>
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:attribute>
+    <xs:attribute default="random" name="location" type="location-or-perl"/>
   </xs:complexType>
   <xs:complexType name="matchresponse--foilgroup">
     <xs:annotation>
@@ -547,15 +567,7 @@
       <xs:element ref="window"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute default="random" name="location">
-      <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="random"/>
-          <xs:enumeration value="top"/>
-          <xs:enumeration value="bottom"/>
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:attribute>
+    <xs:attribute default="random" name="location" type="location-or-perl"/>
   </xs:complexType>
   <xs:complexType name="matchresponse--itemgroup">
     <xs:annotation>
@@ -564,7 +576,7 @@
     <xs:choice maxOccurs="unbounded">
       <xs:element name="item" type="matchresponse--item"/>
     </xs:choice>
-    <xs:attribute default="yes" name="randomize" type="yesno">
+    <xs:attribute default="yes" name="randomize" type="yesno-or-perl">
       <xs:annotation>
         <xs:documentation>
           Randomize Order
@@ -578,12 +590,16 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="top"/>
-          <xs:enumeration value="bottom"/>
-          <xs:enumeration value="left"/>
-          <xs:enumeration value="right"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="top"/>
+              <xs:enumeration value="bottom"/>
+              <xs:enumeration value="left"/>
+              <xs:enumeration value="right"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="vertical" name="direction">
@@ -593,10 +609,14 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="vertical"/>
-          <xs:enumeration value="horizontal"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="vertical"/>
+              <xs:enumeration value="horizontal"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute name="columns">
@@ -606,12 +626,16 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="1"/>
-          <xs:enumeration value="2"/>
-          <xs:enumeration value="3"/>
-          <xs:enumeration value="4"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:enumeration value="1"/>
+              <xs:enumeration value="2"/>
+              <xs:enumeration value="3"/>
+              <xs:enumeration value="4"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
   </xs:complexType>
@@ -643,10 +667,14 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="text"/>
-          <xs:enumeration value="image"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="text"/>
+              <xs:enumeration value="image"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="\normalsize" name="texsize">
@@ -656,18 +684,22 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="\tiny"/>
-          <xs:enumeration value="\scriptsize"/>
-          <xs:enumeration value="\footnotesize"/>
-          <xs:enumeration value="\small"/>
-          <xs:enumeration value="\normalsize"/>
-          <xs:enumeration value="\large"/>
-          <xs:enumeration value="\Large"/>
-          <xs:enumeration value="\LARGE"/>
-          <xs:enumeration value="\huge"/>
-          <xs:enumeration value="\Huge"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="\tiny"/>
+              <xs:enumeration value="\scriptsize"/>
+              <xs:enumeration value="\footnotesize"/>
+              <xs:enumeration value="\small"/>
+              <xs:enumeration value="\normalsize"/>
+              <xs:enumeration value="\large"/>
+              <xs:enumeration value="\Large"/>
+              <xs:enumeration value="\LARGE"/>
+              <xs:enumeration value="\huge"/>
+              <xs:enumeration value="\Huge"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
   </xs:complexType>
@@ -675,8 +707,8 @@
     <xs:annotation>
       <xs:documentation>Label Location</xs:documentation>
     </xs:annotation>
-    <xs:attribute name="x" type="xs:int" use="required"/>
-    <xs:attribute name="y" type="xs:int" use="required"/>
+    <xs:attribute name="x" type="int-or-perl" use="required"/>
+    <xs:attribute name="y" type="int-or-perl" use="required"/>
     <xs:attribute name="value" type="xs:string"/>
   </xs:complexType>
   <xs:complexType mixed="true" name="randomlabel--label">
@@ -728,14 +760,18 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="left"/>
-          <xs:enumeration value="right"/>
-          <xs:enumeration value="center"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="left"/>
+              <xs:enumeration value="right"/>
+              <xs:enumeration value="center"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
-    <xs:attribute default="0" name="rotate" type="real">
+    <xs:attribute default="0" name="rotate" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
           Rotation of label (degrees)
@@ -765,7 +801,7 @@
     <xs:annotation>
       <xs:documentation>Plot axes</xs:documentation>
     </xs:annotation>
-    <xs:attribute default="x000000" name="color" type="color">
+    <xs:attribute default="x000000" name="color" type="color-or-perl">
       <xs:annotation>
         <xs:documentation>
           Color of grid lines
@@ -807,12 +843,16 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="on"/>
-          <xs:enumeration value="off"/>
-          <xs:enumeration value="2e"/>
-          <xs:enumeration value="2f"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="on"/>
+              <xs:enumeration value="off"/>
+              <xs:enumeration value="2e"/>
+              <xs:enumeration value="2f"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="on" name="yformat">
@@ -822,12 +862,16 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="on"/>
-          <xs:enumeration value="off"/>
-          <xs:enumeration value="2e"/>
-          <xs:enumeration value="2f"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="on"/>
+              <xs:enumeration value="off"/>
+              <xs:enumeration value="2e"/>
+              <xs:enumeration value="2f"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="off" name="xzero">
@@ -837,12 +881,16 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="off"/>
-          <xs:enumeration value="line"/>
-          <xs:enumeration value="thick-line"/>
-          <xs:enumeration value="dotted"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="off"/>
+              <xs:enumeration value="line"/>
+              <xs:enumeration value="thick-line"/>
+              <xs:enumeration value="dotted"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="off" name="yzero">
@@ -852,12 +900,16 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="off"/>
-          <xs:enumeration value="line"/>
-          <xs:enumeration value="thick-line"/>
-          <xs:enumeration value="dotted"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="off"/>
+              <xs:enumeration value="line"/>
+              <xs:enumeration value="thick-line"/>
+              <xs:enumeration value="dotted"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
   </xs:complexType>
@@ -875,7 +927,7 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="off" name="box" type="onoff">
+    <xs:attribute default="off" name="box" type="onoff-or-perl">
       <xs:annotation>
         <xs:documentation>
           Draw a box around the key?
@@ -889,14 +941,18 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="top left"/>
-          <xs:enumeration value="top right"/>
-          <xs:enumeration value="bottom left"/>
-          <xs:enumeration value="bottom right"/>
-          <xs:enumeration value="outside"/>
-          <xs:enumeration value="below"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="top left"/>
+              <xs:enumeration value="top right"/>
+              <xs:enumeration value="bottom left"/>
+              <xs:enumeration value="bottom right"/>
+              <xs:enumeration value="outside"/>
+              <xs:enumeration value="below"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
   </xs:complexType>
@@ -908,7 +964,7 @@
       <xs:element name="data" type="lonplot--data"/>
       <xs:element name="function" type="lonplot--function"/>
     </xs:choice>
-    <xs:attribute default="x000000" name="color" type="color">
+    <xs:attribute default="x000000" name="color" type="color-or-perl">
       <xs:annotation>
         <xs:documentation>
           Color of curve
@@ -952,22 +1008,26 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="lines"/>
-          <xs:enumeration value="linespoints"/>
-          <xs:enumeration value="dots"/>
-          <xs:enumeration value="points"/>
-          <xs:enumeration value="steps"/>
-          <xs:enumeration value="fsteps"/>
-          <xs:enumeration value="histeps"/>
-          <xs:enumeration value="errorbars"/>
-          <xs:enumeration value="xerrorbars"/>
-          <xs:enumeration value="yerrorbars"/>
-          <xs:enumeration value="xyerrorbars"/>
-          <xs:enumeration value="boxes"/>
-          <xs:enumeration value="filledcurves"/>
-          <xs:enumeration value="vector"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="lines"/>
+              <xs:enumeration value="linespoints"/>
+              <xs:enumeration value="dots"/>
+              <xs:enumeration value="points"/>
+              <xs:enumeration value="steps"/>
+              <xs:enumeration value="fsteps"/>
+              <xs:enumeration value="histeps"/>
+              <xs:enumeration value="errorbars"/>
+              <xs:enumeration value="xerrorbars"/>
+              <xs:enumeration value="yerrorbars"/>
+              <xs:enumeration value="xyerrorbars"/>
+              <xs:enumeration value="boxes"/>
+              <xs:enumeration value="filledcurves"/>
+              <xs:enumeration value="vector"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="1" name="linewidth">
@@ -977,10 +1037,14 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:int">
-          <xs:minInclusive value="1"/>
-          <xs:maxInclusive value="10"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:minInclusive value="1"/>
+              <xs:maxInclusive value="10"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="solid" name="linetype">
@@ -990,13 +1054,17 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="solid"/>
-          <xs:enumeration value="dashed"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="solid"/>
+              <xs:enumeration value="dashed"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
-    <xs:attribute default="1" name="pointsize" type="xs:int">
+    <xs:attribute default="1" name="pointsize" type="int-or-perl">
       <xs:annotation>
         <xs:documentation>
           Point size (may not apply to all plot styles)
@@ -1010,10 +1078,14 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:int">
-          <xs:minInclusive value="0"/>
-          <xs:maxInclusive value="6"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:minInclusive value="0"/>
+              <xs:maxInclusive value="6"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="closed" name="limit">
@@ -1023,15 +1095,19 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="above"/>
-          <xs:enumeration value="below"/>
-          <xs:enumeration value="closed"/>
-          <xs:enumeration value="x1"/>
-          <xs:enumeration value="x2"/>
-          <xs:enumeration value="y1"/>
-          <xs:enumeration value="y2"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="above"/>
+              <xs:enumeration value="below"/>
+              <xs:enumeration value="closed"/>
+              <xs:enumeration value="x1"/>
+              <xs:enumeration value="x2"/>
+              <xs:enumeration value="y1"/>
+              <xs:enumeration value="y2"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="head" name="arrowhead">
@@ -1041,11 +1117,15 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="nohead"/>
-          <xs:enumeration value="head"/>
-          <xs:enumeration value="heads"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="nohead"/>
+              <xs:enumeration value="head"/>
+              <xs:enumeration value="heads"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute default="filled" name="arrowstyle">
@@ -1055,28 +1135,32 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="filled"/>
-          <xs:enumeration value="empty"/>
-          <xs:enumeration value="nofilled"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="filled"/>
+              <xs:enumeration value="empty"/>
+              <xs:enumeration value="nofilled"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
-    <xs:attribute default="0.02" name="arrowlength" type="real">
+    <xs:attribute default="0.02" name="arrowlength" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
           For vector plots, determines the distance between the vector line end and the tip of the arrow.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="10.0" name="arrowangle" type="real">
+    <xs:attribute default="10.0" name="arrowangle" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
           For vector plots, determines the angle the arrow branches make with the vector line.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="90.0" name="arrowbackangle" type="real">
+    <xs:attribute default="90.0" name="arrowbackangle" type="real-or-perl">
       <xs:annotation>
         <xs:documentation>
           For vector plots, determines the angle the arrow lines that return to the main line from the branches make with the arrow branches.
@@ -1112,7 +1196,7 @@
           </xs:documentation>
         </xs:annotation>
         <xs:complexType mixed="true">
-          <xs:attribute name="location" type="real" use="required"/>
+          <xs:attribute name="location" type="real-or-perl" use="required"/>
         </xs:complexType>
       </xs:element>
     </xs:choice>
@@ -1123,13 +1207,17 @@
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="border"/>
-          <xs:enumeration value="axis"/>
-        </xs:restriction>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="border"/>
+              <xs:enumeration value="axis"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
       </xs:simpleType>
     </xs:attribute>
-    <xs:attribute default="on" name="mirror" type="onoff">
+    <xs:attribute default="on" name="mirror" type="onoff-or-perl">
       <xs:annotation>
         <xs:documentation>
           Mirror tics on opposite axis?
@@ -1159,14 +1247,14 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="0" name="minorfreq" type="xs:int">
+    <xs:attribute default="0" name="minorfreq" type="int-or-perl">
       <xs:annotation>
         <xs:documentation>
           The number of subdivisions to make of the span between major tic marks. Using a value of “10” leads to 9 minor tic marks.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute default="off" name="rotate" type="onoff">
+    <xs:attribute default="off" name="rotate" type="onoff-or-perl">
       <xs:annotation>
         <xs:documentation>
           For output devices that support it, this rotates the tic label by 90 degrees. This is most useful with large lables defined by the tic tag described below.
@@ -1328,14 +1416,14 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="width" type="xs:int">
+      <xs:attribute name="width" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Width (pixels)
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="height" type="xs:int">
+      <xs:attribute name="height" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Height (pixels)
@@ -1349,21 +1437,21 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="-10" name="xmin" type="real">
+      <xs:attribute default="-10" name="xmin" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Minimum x-value
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="10" name="xmax" type="real">
+      <xs:attribute default="10" name="xmax" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Maximum x-value
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="yes" name="xaxisvisible" type="yesno">
+      <xs:attribute default="yes" name="xaxisvisible" type="yesno-or-perl">
         <xs:annotation>
           <xs:documentation>
             x-axis visible
@@ -1377,28 +1465,28 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="-10" name="ymin" type="real">
+      <xs:attribute default="-10" name="ymin" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Minimum y-value
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="10" name="ymax" type="real">
+      <xs:attribute default="10" name="ymax" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Maximum y-value
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="yes" name="yaxisvisible" type="yesno">
+      <xs:attribute default="yes" name="yaxisvisible" type="yesno-or-perl">
         <xs:annotation>
           <xs:documentation>
             y-axis visible
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="yes" name="gridvisible" type="yesno">
+      <xs:attribute default="yes" name="gridvisible" type="yesno-or-perl">
         <xs:annotation>
           <xs:documentation>
             This determines whether or not the grid is on the graph.
@@ -1425,7 +1513,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="index" type="xs:int">
+      <xs:attribute name="index" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             This is the label assigned to the spline. In general, it's simplest just to label them A, B, C etc.
@@ -1439,13 +1527,17 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:int">
-            <xs:minInclusive value="2"/>
-            <xs:maxInclusive value="8"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:int">
+                <xs:minInclusive value="2"/>
+                <xs:maxInclusive value="8"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="initx" type="real">
+      <xs:attribute name="initx" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Initial x-value
@@ -1453,7 +1545,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="inity" type="real">
+      <xs:attribute name="inity" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Initial y-value
@@ -1461,14 +1553,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="scalex" type="real">
+      <xs:attribute name="scalex" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             This determines the right most location of the Control Points (on the spline). To figure out where this point will be, add 'Initial x-value' to 'Scale x'.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="scaley" type="real">
+      <xs:attribute name="scaley" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             This determines the distance (in the y-direction) between the Control Points on the spline, and the ones that control the slope.
@@ -1492,14 +1584,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="xinitial" type="real">
+      <xs:attribute name="xinitial" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Initial x-value (optional)
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="xfinal" type="real">
+      <xs:attribute name="xfinal" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Final x-value (optional)
@@ -1521,12 +1613,16 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:pattern value="[\da-fA-F]{6}"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:pattern value="[\da-fA-F]{6}"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute default="yes" name="fixed" type="yesno">
+      <xs:attribute default="yes" name="fixed" type="yesno-or-perl">
         <xs:annotation>
           <xs:documentation>
             Fixed location
@@ -1549,8 +1645,8 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="x" type="real"/>
-      <xs:attribute name="y" type="real"/>
+      <xs:attribute name="x" type="real-or-perl"/>
+      <xs:attribute name="y" type="real-or-perl"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="plotvector">
@@ -1569,10 +1665,10 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="tailx" type="real"/>
-      <xs:attribute name="taily" type="real"/>
-      <xs:attribute name="tipx" type="real"/>
-      <xs:attribute name="tipy" type="real"/>
+      <xs:attribute name="tailx" type="real-or-perl"/>
+      <xs:attribute name="taily" type="real-or-perl"/>
+      <xs:attribute name="tipx" type="real-or-perl"/>
+      <xs:attribute name="tipy" type="real-or-perl"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="drawvectorsum">
@@ -1587,9 +1683,9 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="tailx" type="real"/>
-      <xs:attribute name="taily" type="real"/>
-      <xs:attribute default="yes" name="showvalue" type="yesno"/>
+      <xs:attribute name="tailx" type="real-or-perl"/>
+      <xs:attribute name="taily" type="real-or-perl"/>
+      <xs:attribute default="yes" name="showvalue" type="yesno-or-perl"/>
       <xs:attribute name="vectorlist" type="xs:string"/>
     </xs:complexType>
   </xs:element>
@@ -1645,15 +1741,19 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:int">
-            <xs:enumeration value="0"/>
-            <xs:enumeration value="1"/>
-            <xs:enumeration value="2"/>
-            <xs:enumeration value="-1"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:int">
+                <xs:enumeration value="0"/>
+                <xs:enumeration value="1"/>
+                <xs:enumeration value="2"/>
+                <xs:enumeration value="-1"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="xinitial" type="real">
+      <xs:attribute name="xinitial" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Initial x-value.
@@ -1669,13 +1769,17 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="start"/>
-            <xs:enumeration value="end"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="start"/>
+                <xs:enumeration value="end"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="xfinal" type="real">
+      <xs:attribute name="xfinal" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Final x-value (optional).
@@ -1691,12 +1795,16 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="end"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="end"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="minimumlength" type="real">
+      <xs:attribute name="minimumlength" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Minimum length for range (optional).
@@ -1704,7 +1812,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="maximumlength" type="real">
+      <xs:attribute name="maximumlength" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Maximum length for range (optional).
@@ -1719,14 +1827,18 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="eq"/>
-            <xs:enumeration value="ne"/>
-            <xs:enumeration value="ge"/>
-            <xs:enumeration value="gt"/>
-            <xs:enumeration value="lt"/>
-            <xs:enumeration value="le"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="eq"/>
+                <xs:enumeration value="ne"/>
+                <xs:enumeration value="ge"/>
+                <xs:enumeration value="gt"/>
+                <xs:enumeration value="lt"/>
+                <xs:enumeration value="le"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute default="undef" name="value" type="xs:string">
@@ -1736,7 +1848,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="percenterror" type="real">
+      <xs:attribute name="percenterror" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             This allows for a margin of error in the y-direction. For instance, if the rule requires that the derivative be equal to 5, the server will accept values close enough to 5 that are within the percent error defined here. Note: Choosing 10% would not mean that the answer is correct as long as it is within the range 4.5-5.5. Instead, the percent corresponds to the total size of the graph. For the function itself, the 'percent error' is multiplied by the ymax-ymin; for the first derivative, it's multiplied by (ymax-ymin)/(xmax-xmin); for the second derivative, it's multiplied by (ymax-ymin)/(xmax-xmin)2; and for the integral, it's multiplied by (ymax-ymin)*(xmax-xmin).
@@ -1817,14 +1929,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="length" type="real">
+      <xs:attribute name="length" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             How long the vector should be.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="lengtherror" type="real">
+      <xs:attribute name="lengtherror" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Absolute error length.
@@ -1832,14 +1944,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="angle" type="real">
+      <xs:attribute name="angle" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             What direction should the vector point. All values are measured in degrees, counterclockwise starting at the positive x-axis. Values must be 0 ≤ θ &lt; 360.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="angleerror" type="real">
+      <xs:attribute name="angleerror" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Absolute error angle.
@@ -1873,7 +1985,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="length" type="real">
+      <xs:attribute name="length" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Sum vector length.
@@ -1881,7 +1993,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="lengtherror" type="real">
+      <xs:attribute name="lengtherror" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Absolute error length.
@@ -1889,7 +2001,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="angle" type="real">
+      <xs:attribute name="angle" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Sum vector angle.
@@ -1897,7 +2009,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="angleerror" type="real">
+      <xs:attribute name="angleerror" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Absolute error angle.
@@ -1969,12 +2081,16 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="cs"/>
-            <xs:enumeration value="ci"/>
-            <xs:enumeration value="mc"/>
-            <xs:enumeration value="re"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="cs"/>
+                <xs:enumeration value="ci"/>
+                <xs:enumeration value="mc"/>
+                <xs:enumeration value="re"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="answerdisplay" type="xs:string">
@@ -2072,7 +2188,7 @@
         <xs:element ref="organichint"/>
         <xs:element ref="stringhint"/>
       </xs:choice>
-      <xs:attribute default="no" name="showoncorrect" type="yesno">
+      <xs:attribute default="no" name="showoncorrect" type="yesno-or-perl">
         <xs:annotation>
           <xs:documentation>
             Show hint even if problem Correct
@@ -2307,12 +2423,16 @@
       </xs:attribute>
       <xs:attribute default="cs" name="type">
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="cs"/>
-            <xs:enumeration value="ci"/>
-            <xs:enumeration value="mc"/>
-            <xs:enumeration value="re"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="cs"/>
+                <xs:enumeration value="ci"/>
+                <xs:enumeration value="mc"/>
+                <xs:enumeration value="re"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="preprocess" type="xs:string">
@@ -2365,10 +2485,14 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="maxima"/>
-            <xs:enumeration value="R"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="maxima"/>
+                <xs:enumeration value="R"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="args" type="xs:string">
@@ -2394,7 +2518,7 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="max" type="xs:int">
+      <xs:attribute name="max" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Max Number Of Shown Foils
@@ -2471,10 +2595,14 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="maxima"/>
-            <xs:enumeration value="R"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="maxima"/>
+                <xs:enumeration value="R"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="args" type="xs:string">
@@ -2501,8 +2629,8 @@
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
       </xs:choice>
-      <xs:attribute default="10" name="rows" type="xs:int"/>
-      <xs:attribute default="80" name="cols" type="xs:int">
+      <xs:attribute default="10" name="rows" type="int-or-perl"/>
+      <xs:attribute default="80" name="cols" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Columns
@@ -2523,16 +2651,20 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="none"/>
-            <xs:enumeration value="en"/>
-            <xs:enumeration value="de"/>
-            <xs:enumeration value="he"/>
-            <xs:enumeration value="es"/>
-            <xs:enumeration value="fr"/>
-            <xs:enumeration value="pt"/>
-            <xs:enumeration value="tr"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="none"/>
+                <xs:enumeration value="en"/>
+                <xs:enumeration value="de"/>
+                <xs:enumeration value="he"/>
+                <xs:enumeration value="es"/>
+                <xs:enumeration value="fr"/>
+                <xs:enumeration value="pt"/>
+                <xs:enumeration value="tr"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
@@ -2544,7 +2676,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute default="20" name="size" type="xs:int">
+      <xs:attribute default="20" name="size" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             controls the width of the textline
@@ -2558,19 +2690,23 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="no" name="readonly" type="yesno"/>
+      <xs:attribute default="no" name="readonly" type="yesno-or-perl"/>
       <xs:attribute name="spellcheck">
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="none"/>
-            <xs:enumeration value="en"/>
-            <xs:enumeration value="de"/>
-            <xs:enumeration value="he"/>
-            <xs:enumeration value="es"/>
-            <xs:enumeration value="fr"/>
-            <xs:enumeration value="pt"/>
-            <xs:enumeration value="tr"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="none"/>
+                <xs:enumeration value="en"/>
+                <xs:enumeration value="de"/>
+                <xs:enumeration value="he"/>
+                <xs:enumeration value="es"/>
+                <xs:enumeration value="fr"/>
+                <xs:enumeration value="pt"/>
+                <xs:enumeration value="tr"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
@@ -2612,14 +2748,14 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="max" type="xs:int">
+      <xs:attribute name="max" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Max Number Of Shown Foils
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="yes" name="randomize" type="yesno">
+      <xs:attribute default="yes" name="randomize" type="yesno-or-perl">
         <xs:annotation>
           <xs:documentation>
             Randomize Foil Order
@@ -2633,10 +2769,14 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="horizontal"/>
-            <xs:enumeration value="vertical"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="horizontal"/>
+                <xs:enumeration value="vertical"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
@@ -2730,14 +2870,14 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="max" type="xs:int">
+      <xs:attribute name="max" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Max Number Of Shown Foils
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="yes" name="randomize" type="yesno">
+      <xs:attribute default="yes" name="randomize" type="yesno-or-perl">
         <xs:annotation>
           <xs:documentation>
             Randomize Foil Order
@@ -2751,10 +2891,14 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="vertical"/>
-            <xs:enumeration value="horizontal"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="vertical"/>
+                <xs:enumeration value="horizontal"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
@@ -2773,14 +2917,14 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="max" type="xs:int">
+      <xs:attribute name="max" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Max Number Of Shown Foils
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="yes" name="randomize" type="yesno">
+      <xs:attribute default="yes" name="randomize" type="yesno-or-perl">
         <xs:annotation>
           <xs:documentation>
             Randomize Foil Order
@@ -2803,14 +2947,14 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="max" type="xs:int">
+      <xs:attribute name="max" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Max Number Of Shown Foils
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="yes" name="randomize" type="yesno">
+      <xs:attribute default="yes" name="randomize" type="yesno-or-perl">
         <xs:annotation>
           <xs:documentation>
             Randomize Foil Order
@@ -2836,13 +2980,17 @@
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute default="autoez" name="options">
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="autoez"/>
-            <xs:enumeration value="multipart"/>
-            <xs:enumeration value="nostereo"/>
-            <xs:enumeration value="reaction"/>
-            <xs:enumeration value="number"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="autoez"/>
+                <xs:enumeration value="multipart"/>
+                <xs:enumeration value="nostereo"/>
+                <xs:enumeration value="reaction"/>
+                <xs:enumeration value="number"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="molecule" type="xs:string">
@@ -2866,7 +3014,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="width" type="xs:int">
+      <xs:attribute name="width" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Width of correct answer image
@@ -2905,14 +3053,14 @@
       <xs:documentation>Organic Structure</xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="width" type="xs:int">
+      <xs:attribute name="width" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Width (pixels)
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="texwidth" type="xs:decimal">
+      <xs:attribute name="texwidth" type="decimal-or-perl">
         <xs:annotation>
           <xs:documentation>
             TeXwidth (mm)
@@ -2928,10 +3076,14 @@
       </xs:attribute>
       <xs:attribute default="reaction" name="options">
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="reaction"/>
-            <xs:enumeration value="border"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="reaction"/>
+                <xs:enumeration value="border"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
@@ -2983,10 +3135,14 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="problem"/>
-            <xs:enumeration value="part"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="problem"/>
+                <xs:enumeration value="part"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
@@ -3041,28 +3197,28 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="width" type="xs:int">
+      <xs:attribute name="width" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             width (pixel)
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="height" type="xs:int">
+      <xs:attribute name="height" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             height (pixel)
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="texwidth" type="xs:decimal">
+      <xs:attribute name="texwidth" type="decimal-or-perl">
         <xs:annotation>
           <xs:documentation>
             TeXwidth (mm)
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="texheight" type="xs:decimal">
+      <xs:attribute name="texheight" type="decimal-or-perl">
         <xs:annotation>
           <xs:documentation>
             TeXheight (mm)
@@ -3081,13 +3237,17 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="bottom"/>
-            <xs:enumeration value="middle"/>
-            <xs:enumeration value="top"/>
-            <xs:enumeration value="left"/>
-            <xs:enumeration value="right"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="bottom"/>
+                <xs:enumeration value="middle"/>
+                <xs:enumeration value="top"/>
+                <xs:enumeration value="left"/>
+                <xs:enumeration value="right"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="texwrap">
@@ -3100,15 +3260,19 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="none"/>
-            <xs:enumeration value="parbox"/>
-            <xs:enumeration value="parpic"/>
-            <xs:enumeration value="wrapfigure"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="none"/>
+                <xs:enumeration value="parbox"/>
+                <xs:enumeration value="parpic"/>
+                <xs:enumeration value="wrapfigure"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute default="no" name="encrypturl" type="yesno"/>
+      <xs:attribute default="no" name="encrypturl" type="yesno-or-perl"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="meta">
@@ -3159,8 +3323,8 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="200" name="height" type="xs:int"/>
-      <xs:attribute default="500" name="width" type="xs:int"/>
+      <xs:attribute default="200" name="height" type="int-or-perl"/>
+      <xs:attribute default="500" name="width" type="int-or-perl"/>
       <xs:attribute name="printtext" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -3646,10 +3810,14 @@
       </xs:choice>
       <xs:attribute default="show" name="mode">
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="show"/>
-            <xs:enumeration value="hide"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="show"/>
+                <xs:enumeration value="hide"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute default="exam" name="for">
@@ -3662,9 +3830,13 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:pattern value="(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry)(\s*,\s*(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry))*"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:pattern value="(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry)(\s*,\s*(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry))*"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
@@ -3706,21 +3878,21 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="width" type="xs:int">
+      <xs:attribute name="width" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             The width of the image in pixels.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="height" type="xs:int">
+      <xs:attribute name="height" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             The height of the image in pixels.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="texwidth" type="xs:decimal">
+      <xs:attribute name="texwidth" type="decimal-or-perl">
         <xs:annotation>
           <xs:documentation>
             The width of the image in millimeters.
@@ -3773,7 +3945,7 @@
         <xs:element ref="while"/>
         <xs:element ref="window"/>
       </xs:choice>
-      <xs:attribute name="show" type="xs:int">
+      <xs:attribute name="show" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Maximum Tags to Show
@@ -3929,35 +4101,35 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="xffffff" name="bgcolor" type="color">
+      <xs:attribute default="xffffff" name="bgcolor" type="color-or-perl">
         <xs:annotation>
           <xs:documentation>
             Background color of image
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="x000000" name="fgcolor" type="color">
+      <xs:attribute default="x000000" name="fgcolor" type="color-or-perl">
         <xs:annotation>
           <xs:documentation>
             Foreground color of image
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="off" name="transparent" type="onoff">
+      <xs:attribute default="off" name="transparent" type="onoff-or-perl">
         <xs:annotation>
           <xs:documentation>
             Transparent image. If the image is transparent the background color will be ignored.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="on" name="grid" type="onoff">
+      <xs:attribute default="on" name="grid" type="onoff-or-perl">
         <xs:annotation>
           <xs:documentation>
             Display grid
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="off" name="gridlayer" type="onoff">
+      <xs:attribute default="off" name="gridlayer" type="onoff-or-perl">
         <xs:annotation>
           <xs:documentation>
             Display grid front layer over filled boxes or filled curves
@@ -3971,13 +4143,17 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="border"/>
-            <xs:enumeration value="noborder"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="border"/>
+                <xs:enumeration value="noborder"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute default="on" name="border" type="onoff">
+      <xs:attribute default="on" name="border" type="onoff-or-perl">
         <xs:annotation>
           <xs:documentation>
             Draw border around plot
@@ -3991,7 +4167,7 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:union>
+          <xs:union memberTypes="perl">
             <xs:simpleType>
               <xs:restriction base="xs:int">
                 <xs:minInclusive value="5"/>
@@ -4015,11 +4191,15 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="sans-serif"/>
-            <xs:enumeration value="serif"/>
-            <xs:enumeration value="classic"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="sans-serif"/>
+                <xs:enumeration value="serif"/>
+                <xs:enumeration value="classic"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute default="100" name="samples">
@@ -4030,10 +4210,14 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:int">
-            <xs:minInclusive value="100"/>
-            <xs:maxInclusive value="5000"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:int">
+                <xs:minInclusive value="100"/>
+                <xs:maxInclusive value="5000"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute default="middle" name="align">
@@ -4043,15 +4227,19 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="left"/>
-            <xs:enumeration value="right"/>
-            <xs:enumeration value="middle"/>
-            <xs:enumeration value="center"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="left"/>
+                <xs:enumeration value="right"/>
+                <xs:enumeration value="middle"/>
+                <xs:enumeration value="center"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute default="93" name="texwidth" type="xs:int">
+      <xs:attribute default="93" name="texwidth" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             Width of plot when printed (mm)
@@ -4065,10 +4253,14 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:int">
-            <xs:minInclusive value="8"/>
-            <xs:maxInclusive value="36"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:int">
+                <xs:minInclusive value="8"/>
+                <xs:maxInclusive value="36"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute default="monochrome" name="plotcolor">
@@ -4078,11 +4270,15 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="monochrome"/>
-            <xs:enumeration value="color"/>
-            <xs:enumeration value="colour"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="monochrome"/>
+                <xs:enumeration value="color"/>
+                <xs:enumeration value="colour"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="pattern">
@@ -4092,13 +4288,17 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:int">
-            <xs:minInclusive value="0"/>
-            <xs:maxInclusive value="6"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:int">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="6"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute default="0" name="solid" type="xs:int">
+      <xs:attribute default="0" name="solid" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             The density of fill style for boxes
@@ -4112,11 +4312,15 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="empty"/>
-            <xs:enumeration value="solid"/>
-            <xs:enumeration value="pattern"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="empty"/>
+                <xs:enumeration value="solid"/>
+                <xs:enumeration value="pattern"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute default="Cartesian" name="plottype">
@@ -4126,10 +4330,14 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Cartesian"/>
-            <xs:enumeration value="Polar"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Cartesian"/>
+                <xs:enumeration value="Polar"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute default="Cartesian" name="gridtype">
@@ -4139,13 +4347,17 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Cartesian"/>
-            <xs:enumeration value="Polar"/>
-            <xs:enumeration value="Linear-Log"/>
-            <xs:enumeration value="Log-Linear"/>
-            <xs:enumeration value="Log-Log"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Cartesian"/>
+                <xs:enumeration value="Polar"/>
+                <xs:enumeration value="Linear-Log"/>
+                <xs:enumeration value="Log-Linear"/>
+                <xs:enumeration value="Log-Log"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute default="default" name="lmargin">
@@ -4155,7 +4367,7 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:union memberTypes="xs:int">
+          <xs:union memberTypes="perl xs:int">
             <xs:simpleType>
               <xs:restriction base="xs:string">
                 <xs:enumeration value="default"/>
@@ -4171,7 +4383,7 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:union memberTypes="xs:int">
+          <xs:union memberTypes="perl xs:int">
             <xs:simpleType>
               <xs:restriction base="xs:string">
                 <xs:enumeration value="default"/>
@@ -4187,7 +4399,7 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:union memberTypes="xs:int">
+          <xs:union memberTypes="perl xs:int">
             <xs:simpleType>
               <xs:restriction base="xs:string">
                 <xs:enumeration value="default"/>
@@ -4203,7 +4415,7 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:union memberTypes="xs:int">
+          <xs:union memberTypes="perl xs:int">
             <xs:simpleType>
               <xs:restriction base="xs:string">
                 <xs:enumeration value="default"/>
@@ -4219,14 +4431,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="1" name="major_ticscale" type="real">
+      <xs:attribute default="1" name="major_ticscale" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Size of major tic marks (plot coordinates)
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="0.5" name="minor_ticscale" type="real">
+      <xs:attribute default="0.5" name="minor_ticscale" type="real-or-perl">
         <xs:annotation>
           <xs:documentation>
             Size of minor tic mark (plot coordinates)
@@ -4248,14 +4460,14 @@
         <xs:group ref="text"/>
       </xs:choice>
       <xs:attribute name="href" type="xs:string"/>
-      <xs:attribute name="height" type="xs:int">
+      <xs:attribute name="height" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             starting height of the popup window
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="width" type="xs:int">
+      <xs:attribute name="width" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
             starting width of the popup window
@@ -4332,14 +4544,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:attribute name="display" type="xs:string"/>
-      <xs:attribute default="off" name="eval">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="on"/>
-            <xs:enumeration value="off"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
+      <xs:attribute default="off" name="eval" type="onoff-or-perl"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="chem" type="xs:string">
@@ -4397,8 +4602,8 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="text">
           <xs:complexType mixed="true">
-            <xs:attribute name="x" type="xs:int" use="required"/>
-            <xs:attribute name="y" type="xs:int" use="required"/>
+            <xs:attribute name="x" type="int-or-perl" use="required"/>
+            <xs:attribute name="y" type="int-or-perl" use="required"/>
             <xs:attribute name="font" type="xs:string"/>
             <xs:attribute name="color" type="xs:string"/>
             <xs:attribute name="direction" type="xs:string"/>
@@ -4406,42 +4611,42 @@
         </xs:element>
         <xs:element name="line">
           <xs:complexType>
-            <xs:attribute name="x1" type="xs:int" use="required"/>
-            <xs:attribute name="y1" type="xs:int" use="required"/>
-            <xs:attribute name="x2" type="xs:int" use="required"/>
-            <xs:attribute name="y2" type="xs:int" use="required"/>
+            <xs:attribute name="x1" type="int-or-perl" use="required"/>
+            <xs:attribute name="y1" type="int-or-perl" use="required"/>
+            <xs:attribute name="x2" type="int-or-perl" use="required"/>
+            <xs:attribute name="y2" type="int-or-perl" use="required"/>
             <xs:attribute name="color" type="xs:string"/>
-            <xs:attribute name="thickness" type="xs:int"/>
+            <xs:attribute name="thickness" type="int-or-perl"/>
           </xs:complexType>
         </xs:element>
         <xs:element name="rectangle">
           <xs:complexType>
-            <xs:attribute name="x1" type="xs:int" use="required"/>
-            <xs:attribute name="y1" type="xs:int" use="required"/>
-            <xs:attribute name="x2" type="xs:int" use="required"/>
-            <xs:attribute name="y2" type="xs:int" use="required"/>
+            <xs:attribute name="x1" type="int-or-perl" use="required"/>
+            <xs:attribute name="y1" type="int-or-perl" use="required"/>
+            <xs:attribute name="x2" type="int-or-perl" use="required"/>
+            <xs:attribute name="y2" type="int-or-perl" use="required"/>
             <xs:attribute name="color" type="xs:string"/>
-            <xs:attribute name="thickness" type="xs:int"/>
+            <xs:attribute name="thickness" type="int-or-perl"/>
             <xs:attribute name="filled" type="xs:string"/>
           </xs:complexType>
         </xs:element>
         <xs:element name="arc">
           <xs:complexType>
-            <xs:attribute name="x" type="xs:int" use="required"/>
-            <xs:attribute name="y" type="xs:int" use="required"/>
-            <xs:attribute name="width" type="xs:int" use="required"/>
-            <xs:attribute name="height" type="xs:int" use="required"/>
-            <xs:attribute name="start" type="real"/>
-            <xs:attribute name="end" type="real"/>
+            <xs:attribute name="x" type="int-or-perl" use="required"/>
+            <xs:attribute name="y" type="int-or-perl" use="required"/>
+            <xs:attribute name="width" type="int-or-perl" use="required"/>
+            <xs:attribute name="height" type="int-or-perl" use="required"/>
+            <xs:attribute name="start" type="real-or-perl"/>
+            <xs:attribute name="end" type="real-or-perl"/>
             <xs:attribute name="color" type="xs:string"/>
-            <xs:attribute name="thickness" type="xs:int"/>
+            <xs:attribute name="thickness" type="int-or-perl"/>
             <xs:attribute name="filled" type="xs:string"/>
           </xs:complexType>
         </xs:element>
         <xs:element name="fill">
           <xs:complexType>
-            <xs:attribute name="x" type="xs:int" use="required"/>
-            <xs:attribute name="y" type="xs:int" use="required"/>
+            <xs:attribute name="x" type="int-or-perl" use="required"/>
+            <xs:attribute name="y" type="int-or-perl" use="required"/>
             <xs:attribute name="color" type="xs:string"/>
           </xs:complexType>
         </xs:element>
@@ -4450,33 +4655,33 @@
             <xs:choice maxOccurs="unbounded">
               <xs:element name="point">
                 <xs:complexType>
-                  <xs:attribute name="x" type="xs:int" use="required"/>
-                  <xs:attribute name="y" type="xs:int" use="required"/>
+                  <xs:attribute name="x" type="int-or-perl" use="required"/>
+                  <xs:attribute name="y" type="int-or-perl" use="required"/>
                 </xs:complexType>
               </xs:element>
             </xs:choice>
             <xs:attribute name="color" type="xs:string"/>
             <xs:attribute name="filled" type="xs:string"/>
             <xs:attribute name="open" type="xs:string"/>
-            <xs:attribute name="thickness" type="xs:int"/>
+            <xs:attribute name="thickness" type="int-or-perl"/>
           </xs:complexType>
         </xs:element>
         <xs:element name="image">
           <xs:complexType mixed="true">
-            <xs:attribute name="x" type="xs:int" use="required"/>
-            <xs:attribute name="y" type="xs:int" use="required"/>
-            <xs:attribute name="clipx" type="xs:int"/>
-            <xs:attribute name="clipy" type="xs:int"/>
-            <xs:attribute name="clipwidth" type="xs:int"/>
-            <xs:attribute name="clipheight" type="xs:int"/>
-            <xs:attribute name="scaledwidth" type="xs:int"/>
-            <xs:attribute name="scaledheight" type="xs:int"/>
+            <xs:attribute name="x" type="int-or-perl" use="required"/>
+            <xs:attribute name="y" type="int-or-perl" use="required"/>
+            <xs:attribute name="clipx" type="int-or-perl"/>
+            <xs:attribute name="clipy" type="int-or-perl"/>
+            <xs:attribute name="clipwidth" type="int-or-perl"/>
+            <xs:attribute name="clipheight" type="int-or-perl"/>
+            <xs:attribute name="scaledwidth" type="int-or-perl"/>
+            <xs:attribute name="scaledheight" type="int-or-perl"/>
             <xs:attribute name="transparent" type="xs:string"/>
           </xs:complexType>
         </xs:element>
       </xs:choice>
-      <xs:attribute default="300" name="width" type="xs:int"/>
-      <xs:attribute default="300" name="height" type="xs:int"/>
+      <xs:attribute default="300" name="width" type="int-or-perl"/>
+      <xs:attribute default="300" name="height" type="int-or-perl"/>
       <xs:attribute name="bgcolor" type="xs:string"/>
     </xs:complexType>
   </xs:element>
@@ -4489,8 +4694,8 @@
   </xs:element>
   <xs:element name="displaystudentphoto">
     <xs:complexType>
-      <xs:attribute name="width" type="xs:int"/>
-      <xs:attribute name="height" type="xs:int"/>
+      <xs:attribute name="width" type="int-or-perl"/>
+      <xs:attribute name="height" type="int-or-perl"/>
       <xs:attribute name="align">
         <xs:annotation>
           <xs:documentation>
@@ -4498,13 +4703,17 @@
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="left"/>
-            <xs:enumeration value="right"/>
-            <xs:enumeration value="middle"/>
-            <xs:enumeration value="top"/>
-            <xs:enumeration value="bottom"/>
-          </xs:restriction>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="left"/>
+                <xs:enumeration value="right"/>
+                <xs:enumeration value="middle"/>
+                <xs:enumeration value="top"/>
+                <xs:enumeration value="bottom"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
         </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
@@ -5024,6 +5233,7 @@
       <xs:sequence maxOccurs="unbounded">
         <xs:element ref="tr"/>
       </xs:sequence>
+      <xs:attribute name="style" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="tr">

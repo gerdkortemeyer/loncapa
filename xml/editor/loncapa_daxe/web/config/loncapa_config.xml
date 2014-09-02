@@ -180,7 +180,9 @@
   
   <AFFICHAGE_NOEUDS>
     <AFFICHAGE_ELEMENT element="loncapa" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="answer" type="lcdblock"><PARAMETRE nom="police" valeur="Monospaced"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="answer" type="lcdblock">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="vector" type="typesimple"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="value" type="typesimple"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="foil" type="lcdblock"/>
@@ -217,15 +219,7 @@
     <AFFICHAGE_ELEMENT element="drawvectorsum" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotruleset" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotelements" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="functionplotrule" type="lcdblock">
-      <AFFICHAGE_ATTRIBUT attribut="xinitiallabel">
-        <VALEUR_SUGGEREE>start</VALEUR_SUGGEREE>
-        <VALEUR_SUGGEREE>end</VALEUR_SUGGEREE>
-      </AFFICHAGE_ATTRIBUT>
-      <AFFICHAGE_ATTRIBUT attribut="xfinallabel">
-        <VALEUR_SUGGEREE>end</VALEUR_SUGGEREE>
-      </AFFICHAGE_ATTRIBUT>
-    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="functionplotrule" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotvectorrule" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotvectorsumrule" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotcustomrule" type="lcdblock"/>
@@ -274,7 +268,12 @@
     </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="import" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="parserlib" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="script" type="lcdblock"><PARAMETRE nom="police" valeur="Monospaced"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="script" type="lcdblock">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+      <AFFICHAGE_ATTRIBUT attribut="type">
+        <VALEUR_SUGGEREE>loncapa/perl</VALEUR_SUGGEREE>
+      </AFFICHAGE_ATTRIBUT>
+    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="scriptlib" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="img" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="meta" type="lcdblock"/>
@@ -444,6 +443,12 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="answer">
       <TITRE>Answer algorithm</TITRE>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="vector">
       <TITRE>Vector</TITRE>
@@ -456,6 +461,18 @@
       <DOCUMENTATION>
         Foils do not need to be text; they can be images or other resources.
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="value">
+        <TITRE>value</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="location">
+        <TITRE>location</TITRE>
+        <TITRE_VALEUR valeur="random">random</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="top">top</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="bottom">bottom</TITRE_VALEUR>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="image">
       <TITRE>Image</TITRE>
@@ -493,27 +510,88 @@
         Collection of similar foils.
         When a problem is displayed, only one of the contained foils is selected for display.
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="concept">
+        <TITRE>concept</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="drawoptionlist">
       <TITRE>Draw Option List</TITRE>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="itemgroup">
       <TITRE>Items to Match</TITRE>
+      <STRINGS_ATTRIBUT attribut="randomize">
+        <TITRE>randomize order</TITRE>
+        <TITRE_VALEUR valeur="yes">yes</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="no">no</TITRE_VALEUR>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="location">
+        <TITRE>items display location</TITRE>
+        <TITRE_VALEUR valeur="top">top</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="bottom">bottom</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="left">left</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="right">right</TITRE_VALEUR>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="direction">
+        <TITRE>items display direction</TITRE>
+        <TITRE_VALEUR valeur="vertical">vertical</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="horizontal">horizontal</TITRE_VALEUR>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="columns">
+        <TITRE>items columns</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="item">
       <TITRE>Item</TITRE>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="location">
+        <TITRE>location</TITRE>
+        <TITRE_VALEUR valeur="random">random</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="top">top</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="bottom">bottom</TITRE_VALEUR>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="label">
       <TITRE>Label</TITRE>
       <DOCUMENTATION>
-        In a gnuplot environment, the label tag allows the author to place text at any position on the plot. There may be many label tags on one plot and all the labels which fall within the plot will show. The color used will be to foreground color of the plot and the font will be the size specified for the plot, both of which are set in the gnuplot tag.
+        In a gnuplot environment, the label element allows the author to place text at any position on the plot. There may be many label elements on one plot and all the labels which fall within the plot will show. The color used will be to foreground color of the plot and the font will be the size specified for the plot, both of which are set in the gnuplot element.
+        
+        In a randomlabel environment, this is a label text or path to image.
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="description">
+        <TITRE>description</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="xpos">
+        <TITRE>xpos</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="ypos">
+        <TITRE>ypos</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="justify">
+        <TITRE>justify</TITRE>
+        <TITRE_VALEUR valeur="left">left</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="right">right</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="center">center</TITRE_VALEUR>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="rotate">
+        <TITRE>rotate</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="location">
       <TITRE>Label Location</TITRE>
       <DOCUMENTATION>
         declares a location on the image that a label should appear at
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="x">
+        <TITRE>x</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="y">
+        <TITRE>y</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="value">
+        <TITRE>value</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="data">
       <TITRE>Curve data</TITRE>
@@ -585,6 +663,11 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="answergroup">
       <TITRE>Collection of Answers</TITRE>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+        <TITRE_VALEUR valeur="ordered">ordered</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="unordered">unordered</TITRE_VALEUR>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="formularesponse">
       <TITRE>Response: Formula</TITRE>
@@ -1366,6 +1449,20 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="foilgroup">
       <TITRE>Collection of Foils</TITRE>
+      <STRINGS_ATTRIBUT attribut="options">
+        <TITRE>options</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="texoptions">
+        <TITRE>print options</TITRE>
+        <TITRE_VALEUR valeur="nochoice">nochoice</TITRE_VALEUR>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="checkboxvalue">
+        <TITRE>two-option checkboxes for</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="checkboxoptions">
+        <TITRE>checkbox options</TITRE>
+        <TITRE_VALEUR valeur="nochoice">nochoice</TITRE_VALEUR>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="customresponse">
       <TITRE>Response: Custom</TITRE>
@@ -1964,6 +2061,15 @@
       <DOCUMENTATION>
         One is required, but multiple are allowed. This declares a group of locations and labels associated with them.
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="texsize">
+        <TITRE>tex font size</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="bgimg">
       <TITRE>bg img</TITRE>
@@ -2301,12 +2407,20 @@
         <DOCUMENTATION>
           Draw a box around the key?
         </DOCUMENTATION>
+        <TITRE_VALEUR valeur="on">on</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="off">off</TITRE_VALEUR>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="pos">
         <TITRE>pos</TITRE>
         <DOCUMENTATION>
           Position of the key on the plot
         </DOCUMENTATION>
+        <TITRE_VALEUR valeur="top left">top left</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="top right">top right</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="bottom left">bottom left</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="bottom right">bottom right</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="outside">outside</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="below">below</TITRE_VALEUR>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="xtics">
