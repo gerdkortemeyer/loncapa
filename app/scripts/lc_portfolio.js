@@ -37,6 +37,7 @@ function init_datatable() {
    var noCache = parent.no_cache_value();
    $('#portfoliolist').dataTable( {
       "sAjaxSource" : '/portfolio?'+$('#portfolio').serialize()+'&command=listdirectory&showhidden='+showhidden+'&noCache='+noCache,
+      "bAutoWidth": false, 
       "bStateSave": true,
       "oLanguage" : {
          "sUrl" : "/datatable_i14n"
