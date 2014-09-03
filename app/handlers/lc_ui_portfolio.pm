@@ -54,8 +54,12 @@ sub determine_path {
    return $path;
 }
 
+#
+# Return the directory listing as JSON
+# Input: path to list and whether or not to show hidden (obsolete) files
+#
 sub listdirectory {
-   my ($path)=@_;
+   my ($path,$showhidden)=@_;
    my ($udomain,$uentity)=($path=~/([^\/]+)\/([^\/]+)\//);
    unless (&allowed_user('view_portfolio',undef,$uentity,$udomain)) {
 # Nope, good bye
@@ -87,9 +91,14 @@ sub listdirectory {
    }
    my $dir_list=&Apache::lc_entity_urls::full_dir_list($path);
    foreach my $file (@{$dir_list}) {
+# Is the file/directory obsolete?
        my $obsolete=0;
        if (ref($file->{'metadata'}->{'urldata'}) eq 'HASH') {
           $obsolete=$file->{'metadata'}->{'urldata'}->{&Apache::lc_entity_urls::url_encode($file->{'url'})}->{'obsolete'};
+       }
+# Don't show it unless asked for
+       unless ($showhidden) {
+          if ($obsolete) { next; }
        }
        my $version='-';
        my $display_first_date=&mt('Never');
@@ -171,7 +180,7 @@ sub handler {
    my $path=&determine_path($content{'pathrow_path'});
    if ($content{'command'} eq 'listdirectory') {
 # Do a directory listing
-      $r->print(&listdirectory($path));
+      $r->print(&listdirectory($path,$content{'showhidden'}));
    } elsif ($content{'command'} eq 'listpath') {
 # List the path
       $r->print(&listpath($path));
