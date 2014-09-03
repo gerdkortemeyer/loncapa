@@ -75,7 +75,7 @@
   
   <xs:annotation>
     <xs:documentation>
-      Root element (problem)
+      Problem (root element)
     </xs:documentation>
   </xs:annotation>
   <xs:element name="problem">
@@ -90,19 +90,50 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
+        <xs:group ref="block"/>
         <xs:element ref="part"/>
         <xs:element ref="allow"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="endpartmarker"/>
+        <xs:element ref="meta"/>
+        <xs:element ref="parameter"/>
+        <xs:element ref="postanswerdate"/>
+        <xs:element ref="preduedate"/>
+        <xs:element ref="randomlabel"/>
+        <xs:element ref="parserlib"/>
+        <xs:element ref="scriptlib"/>
+        <xs:element ref="solved"/>
+        <xs:element ref="notsolved"/>
+        <xs:element ref="startpartmarker"/>
+        <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:annotation>
+    <xs:documentation>
+      Library (root element)
+    </xs:documentation>
+  </xs:annotation>
+  <xs:element name="library">
+    <xs:annotation>
+      <xs:documentation>Start of Library</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text"/>
+        <xs:group ref="responses"/>
+        <xs:element ref="display"/>
+        <xs:element ref="displayduedate"/>
+        <xs:element ref="displaytitle"/>
         <xs:element ref="gnuplot"/>
         <xs:element ref="import"/>
-        <xs:element ref="meta"/>
+        <xs:element ref="notsolved"/>
         <xs:element ref="organicstructure"/>
-        <xs:element ref="parameter"/>
         <xs:element ref="parserlib"/>
+        <xs:element ref="part"/>
         <xs:element ref="postanswerdate"/>
         <xs:element ref="preduedate"/>
         <xs:element ref="problemtype"/>
@@ -111,9 +142,8 @@
         <xs:element ref="script"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
-        <xs:element ref="notsolved"/>
-        <xs:element ref="startpartmarker"/>
         <xs:element ref="tex"/>
+        <xs:element ref="web"/>
         <xs:element ref="while"/>
         <xs:element ref="window"/>
         <xs:element ref="startouttext"/>
@@ -322,23 +352,13 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
-      <xs:element ref="block"/>
-      <xs:element ref="display"/>
-      <xs:element ref="gnuplot"/>
-      <xs:element ref="import"/>
-      <xs:element ref="organicstructure"/>
-      <xs:element ref="parserlib"/>
-      <xs:element ref="problemtype"/>
+      <xs:group ref="block"/>
       <xs:element ref="randomlabel"/>
-      <xs:element ref="randomlist"/>
-      <xs:element ref="script"/>
+      <xs:element ref="web"/>
+      <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="startouttext"/>
       <xs:element ref="endouttext"/>
-      <xs:element ref="tex"/>
-      <xs:element ref="web"/>
-      <xs:element ref="while"/>
-      <xs:element ref="window"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="value" use="required">
@@ -509,23 +529,13 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
-      <xs:element ref="block"/>
-      <xs:element ref="display"/>
-      <xs:element ref="gnuplot"/>
-      <xs:element ref="import"/>
-      <xs:element ref="organicstructure"/>
-      <xs:element ref="parserlib"/>
-      <xs:element ref="problemtype"/>
+      <xs:group ref="block"/>
       <xs:element ref="randomlabel"/>
-      <xs:element ref="randomlist"/>
-      <xs:element ref="script"/>
+      <xs:element ref="web"/>
+      <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="startouttext"/>
       <xs:element ref="endouttext"/>
-      <xs:element ref="tex"/>
-      <xs:element ref="web"/>
-      <xs:element ref="while"/>
-      <xs:element ref="window"/>
       <xs:element name="drawoptionlist" type="optionresponse--drawoptionlist"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string" use="required"/>
@@ -655,23 +665,13 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
-      <xs:element ref="block"/>
-      <xs:element ref="display"/>
-      <xs:element ref="gnuplot"/>
-      <xs:element ref="import"/>
-      <xs:element ref="organicstructure"/>
-      <xs:element ref="parserlib"/>
-      <xs:element ref="problemtype"/>
+      <xs:group ref="block"/>
       <xs:element ref="randomlabel"/>
-      <xs:element ref="randomlist"/>
-      <xs:element ref="script"/>
+      <xs:element ref="web"/>
+      <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="startouttext"/>
       <xs:element ref="endouttext"/>
-      <xs:element ref="tex"/>
-      <xs:element ref="web"/>
-      <xs:element ref="while"/>
-      <xs:element ref="window"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string"/>
     <xs:attribute default="random" name="location" type="location-or-perl"/>
@@ -704,23 +704,13 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
-      <xs:element ref="block"/>
-      <xs:element ref="display"/>
-      <xs:element ref="gnuplot"/>
-      <xs:element ref="import"/>
-      <xs:element ref="organicstructure"/>
-      <xs:element ref="parserlib"/>
-      <xs:element ref="problemtype"/>
+      <xs:group ref="block"/>
       <xs:element ref="randomlabel"/>
-      <xs:element ref="randomlist"/>
-      <xs:element ref="script"/>
+      <xs:element ref="web"/>
+      <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="startouttext"/>
       <xs:element ref="endouttext"/>
-      <xs:element ref="tex"/>
-      <xs:element ref="web"/>
-      <xs:element ref="while"/>
-      <xs:element ref="window"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="value" type="xs:string">
@@ -795,23 +785,13 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
-      <xs:element ref="block"/>
-      <xs:element ref="display"/>
-      <xs:element ref="gnuplot"/>
-      <xs:element ref="import"/>
-      <xs:element ref="organicstructure"/>
-      <xs:element ref="parserlib"/>
-      <xs:element ref="problemtype"/>
+      <xs:group ref="block"/>
       <xs:element ref="randomlabel"/>
-      <xs:element ref="randomlist"/>
-      <xs:element ref="script"/>
+      <xs:element ref="web"/>
+      <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="startouttext"/>
       <xs:element ref="endouttext"/>
-      <xs:element ref="tex"/>
-      <xs:element ref="web"/>
-      <xs:element ref="while"/>
-      <xs:element ref="window"/>
     </xs:choice>
     <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="value" type="xs:string">
@@ -934,23 +914,13 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
-      <xs:element ref="block"/>
-      <xs:element ref="display"/>
-      <xs:element ref="gnuplot"/>
-      <xs:element ref="import"/>
-      <xs:element ref="organicstructure"/>
-      <xs:element ref="parserlib"/>
-      <xs:element ref="problemtype"/>
+      <xs:group ref="block"/>
       <xs:element ref="randomlabel"/>
-      <xs:element ref="randomlist"/>
-      <xs:element ref="script"/>
+      <xs:element ref="web"/>
+      <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="startouttext"/>
       <xs:element ref="endouttext"/>
-      <xs:element ref="tex"/>
-      <xs:element ref="web"/>
-      <xs:element ref="while"/>
-      <xs:element ref="window"/>
     </xs:choice>
   </xs:complexType>
   
@@ -2113,10 +2083,10 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
         <xs:element ref="tex"/>
         <xs:element ref="web"/>
+        <xs:element ref="startouttext"/>
+        <xs:element ref="endouttext"/>
       </xs:choice>
       <xs:attribute default="10" name="rows" type="int-or-perl"/>
       <xs:attribute default="80" name="cols" type="int-or-perl">
@@ -2266,23 +2236,13 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
+        <xs:group ref="block"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
+        <xs:element ref="web"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
       <xs:attribute name="on" type="xs:string" use="required"/>
     </xs:complexType>
@@ -3673,23 +3633,23 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
-      <xs:element ref="block"/>
-      <xs:element ref="display"/>
       <xs:element ref="import"/>
-      <xs:element ref="notsolved"/>
-      <xs:element ref="parserlib"/>
-      <xs:element ref="postanswerdate"/>
-      <xs:element ref="preduedate"/>
+      <xs:element ref="block"/>
+      <xs:element ref="while"/>
+      <xs:element ref="tex"/>
       <xs:element ref="problemtype"/>
       <xs:element ref="randomlist"/>
       <xs:element ref="script"/>
+      <xs:element ref="display"/>
+      <xs:element ref="postanswerdate"/>
+      <xs:element ref="preduedate"/>
+      <xs:element ref="web"/>
+      <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="solved"/>
+      <xs:element ref="notsolved"/>
       <xs:element ref="startouttext"/>
       <xs:element ref="endouttext"/>
-      <xs:element ref="tex"/>
-      <xs:element ref="web"/>
-      <xs:element ref="while"/>
     </xs:choice>
     <xs:attribute name="description" type="xs:string"/>
   </xs:complexType>
@@ -3701,6 +3661,27 @@
     <xs:attribute name="y" type="int-or-perl" use="required"/>
     <xs:attribute name="value" type="xs:string"/>
   </xs:complexType>
+  
+  <xs:annotation>
+    <xs:documentation>
+      List of common block elements that cannot be used anywhere text is used.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:group name="block">
+    <xs:choice>
+      <xs:element ref="import"/>
+      <xs:element ref="block"/>
+      <xs:element ref="while"/>
+      <xs:element ref="tex"/>
+      <xs:element ref="problemtype"/>
+      <xs:element ref="randomlist"/>
+      <xs:element ref="script"/>
+      <xs:element ref="display"/>
+      <xs:element ref="window"/>
+      <xs:element ref="gnuplot"/>
+      <xs:element ref="organicstructure"/>
+    </xs:choice>
+  </xs:group>
   
   <xs:annotation>
     <xs:documentation>
@@ -3719,27 +3700,17 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
+        <xs:group ref="block"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
         <xs:element ref="parameter"/>
-        <xs:element ref="parserlib"/>
         <xs:element ref="postanswerdate"/>
         <xs:element ref="preduedate"/>
-        <xs:element ref="problemtype"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
       </xs:choice>
@@ -3786,54 +3757,6 @@
           </xs:union>
         </xs:simpleType>
       </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="library">
-    <xs:annotation>
-      <xs:documentation>Start of Library</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:element ref="customresponse"/>
-        <xs:element ref="display"/>
-        <xs:element ref="displayduedate"/>
-        <xs:element ref="displaytitle"/>
-        <xs:element ref="essayresponse"/>
-        <xs:element ref="externalresponse"/>
-        <xs:element ref="formularesponse"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="imageresponse"/>
-        <xs:element ref="import"/>
-        <xs:element ref="matchresponse"/>
-        <xs:element ref="mathresponse"/>
-        <xs:element ref="functionplotresponse"/>
-        <xs:element ref="notsolved"/>
-        <xs:element ref="numericalresponse"/>
-        <xs:element ref="optionresponse"/>
-        <xs:element ref="organicresponse"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="part"/>
-        <xs:element ref="postanswerdate"/>
-        <xs:element ref="preduedate"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="radiobuttonresponse"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="rankresponse"/>
-        <xs:element ref="reactionresponse"/>
-        <xs:element ref="script"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="solved"/>
-        <xs:element ref="startouttext"/>
-        <xs:element ref="endouttext"/>
-        <xs:element ref="stringresponse"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
-      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="allow">
@@ -3902,44 +3825,20 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="customresponse"/>
-        <xs:element ref="display"/>
+        <xs:group ref="responses"/>
+        <xs:group ref="block"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
-        <xs:element ref="essayresponse"/>
-        <xs:element ref="externalresponse"/>
-        <xs:element ref="formularesponse"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="imageresponse"/>
-        <xs:element ref="import"/>
-        <xs:element ref="matchresponse"/>
-        <xs:element ref="mathresponse"/>
-        <xs:element ref="functionplotresponse"/>
-        <xs:element ref="notsolved"/>
-        <xs:element ref="numericalresponse"/>
-        <xs:element ref="optionresponse"/>
-        <xs:element ref="organicresponse"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
         <xs:element ref="postanswerdate"/>
         <xs:element ref="preduedate"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="radiobuttonresponse"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="rankresponse"/>
-        <xs:element ref="reactionresponse"/>
-        <xs:element ref="script"/>
+        <xs:element ref="web"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
+        <xs:element ref="notsolved"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="stringresponse"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
       <xs:attribute default="show" name="mode">
         <xs:simpleType>
@@ -4075,27 +3974,17 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
+        <xs:group ref="block"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="notsolved"/>
-        <xs:element ref="organicstructure"/>
         <xs:element ref="postanswerdate"/>
         <xs:element ref="preduedate"/>
-        <xs:element ref="problemtype"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
+        <xs:element ref="web"/>
         <xs:element ref="solved"/>
+        <xs:element ref="notsolved"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
       <xs:attribute name="linktext" type="xs:string">
         <xs:annotation>
@@ -4126,45 +4015,21 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="customresponse"/>
-        <xs:element ref="display"/>
+        <xs:group ref="responses"/>
+        <xs:group ref="block"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
-        <xs:element ref="essayresponse"/>
-        <xs:element ref="externalresponse"/>
-        <xs:element ref="formularesponse"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="imageresponse"/>
-        <xs:element ref="import"/>
-        <xs:element ref="matchresponse"/>
-        <xs:element ref="mathresponse"/>
-        <xs:element ref="functionplotresponse"/>
-        <xs:element ref="notsolved"/>
-        <xs:element ref="numericalresponse"/>
-        <xs:element ref="optionresponse"/>
-        <xs:element ref="organicresponse"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
         <xs:element ref="part"/>
         <xs:element ref="postanswerdate"/>
         <xs:element ref="preduedate"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="radiobuttonresponse"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="rankresponse"/>
-        <xs:element ref="reactionresponse"/>
-        <xs:element ref="script"/>
+        <xs:element ref="web"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
+        <xs:element ref="notsolved"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="stringresponse"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
       <xs:attribute name="condition" type="xs:string">
         <xs:annotation>
@@ -4186,28 +4051,18 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
+        <xs:group ref="block"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="notsolved"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
         <xs:element ref="postanswerdate"/>
         <xs:element ref="preduedate"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
+        <xs:element ref="web"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
+        <xs:element ref="notsolved"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
       <xs:attribute name="condition" type="xs:string">
         <xs:annotation>
@@ -4239,26 +4094,16 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
+        <xs:group ref="block"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="notsolved"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
+        <xs:element ref="notsolved"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4273,41 +4118,17 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="customresponse"/>
-        <xs:element ref="display"/>
+        <xs:group ref="responses"/>
+        <xs:group ref="block"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
-        <xs:element ref="essayresponse"/>
-        <xs:element ref="externalresponse"/>
-        <xs:element ref="formularesponse"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="imageresponse"/>
-        <xs:element ref="import"/>
-        <xs:element ref="matchresponse"/>
-        <xs:element ref="mathresponse"/>
-        <xs:element ref="functionplotresponse"/>
-        <xs:element ref="notsolved"/>
-        <xs:element ref="numericalresponse"/>
-        <xs:element ref="optionresponse"/>
-        <xs:element ref="organicresponse"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="radiobuttonresponse"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="rankresponse"/>
-        <xs:element ref="reactionresponse"/>
-        <xs:element ref="script"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
+        <xs:element ref="notsolved"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="stringresponse"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4321,39 +4142,29 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="block"/>
-        <xs:element ref="customresponse"/>
-        <xs:element ref="display"/>
+        <xs:element ref="stringresponse"/>
         <xs:element ref="essayresponse"/>
-        <xs:element ref="externalresponse"/>
-        <xs:element ref="formularesponse"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="imageresponse"/>
-        <xs:element ref="img"/>
-        <xs:element ref="import"/>
+        <xs:element ref="radiobuttonresponse"/>
+        <xs:element ref="optionresponse"/>
         <xs:element ref="matchresponse"/>
+        <xs:element ref="imageresponse"/>
+        <xs:element ref="numericalresponse"/>
+        <xs:element ref="formularesponse"/>
         <xs:element ref="mathresponse"/>
         <xs:element ref="functionplotresponse"/>
-        <xs:element ref="notsolved"/>
-        <xs:element ref="numericalresponse"/>
-        <xs:element ref="optionresponse"/>
         <xs:element ref="organicresponse"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
+        <xs:element ref="reactionresponse"/>
+        <xs:element ref="customresponse"/>
+        <xs:element ref="externalresponse"/>
+        <xs:element name="foilgroup" type="rankresponse--foilgroup"/>
+        <xs:group ref="block"/>
+        <xs:element ref="img"/>
         <xs:element ref="postanswerdate"/>
         <xs:element ref="preduedate"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="radiobuttonresponse"/>
-        <xs:element ref="randomlist"/>
-        <xs:element name="foilgroup" type="rankresponse--foilgroup"/>
-        <xs:element ref="reactionresponse"/>
-        <xs:element ref="script"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
-        <xs:element ref="stringresponse"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
+        <xs:element ref="notsolved"/>
       </xs:choice>
       <xs:attribute name="show" type="int-or-perl">
         <xs:annotation>
@@ -4375,25 +4186,15 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
+        <xs:group ref="block"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
         <xs:element ref="postanswerdate"/>
         <xs:element ref="preduedate"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4408,42 +4209,18 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="customresponse"/>
-        <xs:element ref="display"/>
+        <xs:group ref="responses"/>
+        <xs:group ref="block"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
-        <xs:element ref="essayresponse"/>
-        <xs:element ref="externalresponse"/>
-        <xs:element ref="formularesponse"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="imageresponse"/>
-        <xs:element ref="import"/>
-        <xs:element ref="matchresponse"/>
-        <xs:element ref="mathresponse"/>
-        <xs:element ref="functionplotresponse"/>
-        <xs:element ref="numericalresponse"/>
-        <xs:element ref="optionresponse"/>
-        <xs:element ref="organicresponse"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
         <xs:element ref="postanswerdate"/>
         <xs:element ref="preduedate"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="radiobuttonresponse"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="rankresponse"/>
-        <xs:element ref="reactionresponse"/>
-        <xs:element ref="script"/>
+        <xs:element ref="web"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="stringresponse"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4550,23 +4327,13 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
+        <xs:group ref="block"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
+        <xs:element ref="web"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4577,23 +4344,13 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
+        <xs:group ref="block"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
+        <xs:element ref="web"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4642,23 +4399,13 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
+        <xs:group ref="block"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
+        <xs:element ref="web"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4706,23 +4453,13 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
+        <xs:group ref="block"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
+        <xs:element ref="web"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4762,23 +4499,13 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
+        <xs:group ref="block"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
+        <xs:element ref="web"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4789,23 +4516,13 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="block"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="import"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="problemtype"/>
+        <xs:group ref="block"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="script"/>
+        <xs:element ref="web"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="web"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
