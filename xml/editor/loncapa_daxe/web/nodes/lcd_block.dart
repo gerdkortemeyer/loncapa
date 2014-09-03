@@ -329,6 +329,8 @@ class LCDBlock extends DaxeNode {
     h.Element ht = attributeControl.html();
     if (ht.firstChild is h.TextInputElement)
       (ht.firstChild as h.TextInputElement).classes.add('form_field');
+    else if (ht.firstChild is h.DataListElement && ht.firstChild.nextNode is h.TextInputElement)
+      (ht.firstChild.nextNode as h.TextInputElement).classes.add('form_field');
     td.append(ht);
     tr.append(td);
     
