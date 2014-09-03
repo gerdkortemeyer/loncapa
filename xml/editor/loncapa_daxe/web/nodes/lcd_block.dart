@@ -28,6 +28,7 @@ class LCDBlock extends DaxeNode {
   List<x.Element> attRefs;
   int state; // 0 = editable attributes, 1 = non-editable attributes, 2 = collapsed element
   HashMap<String, SimpleTypeControl> attributeControls;
+  HashMap<DaxeAttr, h.TextInputElement> unknownAttributeFields;
   bool hasContent;
   LCDButton bEditable, bNormal, bCollapsed;
   
@@ -70,6 +71,7 @@ class LCDBlock extends DaxeNode {
     attRefs = doc.cfg.elementAttributes(ref);
     if (attRefs.length > 0)
       attributeControls = new HashMap<String, SimpleTypeControl>();
+    unknownAttributeFields = null;
     hasContent = doc.cfg.canContainText(ref) || doc.cfg.subElements(ref).length > 0;
   }
   
@@ -120,6 +122,19 @@ class LCDBlock extends DaxeNode {
       table.classes.add('expand');
       for (x.Element refAttr in attRefs) {
         table.append(attributeHTML(refAttr));
+      }
+      for (DaxeAttr att in attributes) {
+        bool found = false;
+        for (x.Element attref in attRefs) {
+          if (att.localName == doc.cfg.attributeName(attref) &&
+              att.namespaceURI == doc.cfg.attributeNamespace(attref)) {
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          table.append(unknownAttributeHTML(att));
+        }
       }
       headerDiv.append(table);
     } else if (state == 1) {
@@ -324,6 +339,40 @@ class LCDBlock extends DaxeNode {
     return(tr);
   }
   
+  h.TableRowElement unknownAttributeHTML(DaxeAttr att) {
+    if (unknownAttributeFields == null)
+      unknownAttributeFields = new HashMap<DaxeAttr, h.TextInputElement>();
+    h.TextInputElement input = new h.TextInputElement();
+    input.spellcheck = false;
+    input.size = 40;
+    input.value = att.value;
+    input.classes.add('invalid');
+    input.onInput.listen((h.Event event) => changeUnknownAttributeValue(att, input)); // onInput doesn't work with IE9 and backspace
+    input.onKeyUp.listen((h.KeyboardEvent event) => changeUnknownAttributeValue(att, input)); // so we use onKeyUp too
+    unknownAttributeFields[att] = input;
+    
+    h.TableRowElement tr = new h.TableRowElement();
+    h.TableCellElement td = new h.TableCellElement();
+    td.classes.add('shrink');
+    tr.append(td);
+    
+    td = new h.TableCellElement();
+    td.classes.add('shrink');
+    td.appendText(att.name);
+    tr.append(td);
+    
+    td = new h.TableCellElement();
+    td.classes.add('expand');
+    td.append(input);
+    tr.append(td);
+    
+    td = new h.TableCellElement();
+    td.classes.add('shrink');
+    tr.append(td);
+    
+    return(tr);
+  }
+  
   void changeAttributeValue(x.Element refAttr, SimpleTypeControl attributeControl) {
     String value = attributeControl.getValue();
     String name = doc.cfg.attributeQualifiedName(ref, refAttr);
@@ -338,6 +387,20 @@ class LCDBlock extends DaxeNode {
     if (attr != null)
       doc.doNewEdit(new UndoableEdit.changeAttribute(this, attr, updateDisplay: false));
     updateValidity();
+  }
+  
+  void changeUnknownAttributeValue(DaxeAttr att, h.TextInputElement input) {
+    String value = input.value;
+    if (getAttributeNS(att.namespaceURI, att.localName) != value) {
+      String name = att.name;
+      DaxeAttr attr;
+      if (value == '')
+        attr = new DaxeAttr(name, null); // remove the attribute
+      else
+        attr = new DaxeAttr(name, value);
+      doc.doNewEdit(new UndoableEdit.changeAttribute(this, attr, updateDisplay: false));
+      updateValidity();
+    }
   }
   
   static h.ButtonElement makeHelpButton(final x.Element elementRef, final x.Element attributeRef) {
