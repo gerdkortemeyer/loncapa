@@ -1,3 +1,5 @@
+var showhidden=0;
+
 $(document).ready(function() {
 
     init_datatable();
@@ -13,6 +15,16 @@ $(document).ready(function() {
     });
 } );
 
+function hiddenvisible() {
+   if (showhidden) {
+      showhidden=0;
+   } else {
+      showhidden=1;
+   }
+   reload_listing();
+}
+
+
 function init_datatable() {
     $('#portfoliolist tr').click( function() {
                 if ( $(this).hasClass('row_selected') ) {
@@ -24,7 +36,7 @@ function init_datatable() {
 
    var noCache = parent.no_cache_value();
    $('#portfoliolist').dataTable( {
-      "sAjaxSource" : '/portfolio?'+$('#portfolio').serialize()+'&command=listdirectory&noCache='+noCache,
+      "sAjaxSource" : '/portfolio?'+$('#portfolio').serialize()+'&command=listdirectory&showhidden='+showhidden+'&noCache='+noCache,
       "bStateSave": true,
       "oLanguage" : {
          "sUrl" : "/datatable_i14n"
@@ -37,8 +49,8 @@ function init_datatable() {
          null,
          null,
          null,
-         { "bVisible": false },
          null,
+         { "bVisible": false },
          null,
          {"iDataSort": 7, "bVisible": false },
          { "bVisible": false },

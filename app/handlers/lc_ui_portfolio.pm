@@ -32,6 +32,8 @@ use Apache::lc_authorize;
 use Apache::lc_xml_forms();
 use HTML::Entities;
 
+use Data::Dumper;
+
 sub determine_path {
    my ($path)=@_;
    unless ($path) {
@@ -85,6 +87,10 @@ sub listdirectory {
    }
    my $dir_list=&Apache::lc_entity_urls::full_dir_list($path);
    foreach my $file (@{$dir_list}) {
+       my $obsolete=0;
+       if (ref($file->{'metadata'}->{'urldata'}) eq 'HASH') {
+          $obsolete=$file->{'metadata'}->{'urldata'}->{&Apache::lc_entity_urls::url_encode($file->{'url'})}->{'obsolete'};
+       }
        my $version='-';
        my $display_first_date=&mt('Never');
        my $sort_first_date=0;
@@ -126,7 +132,7 @@ sub listdirectory {
              &Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}),
              $filename,
              'Title',
-             'State',
+             'Obs '.$obsolete,
              $size,
              $version,
              ($sort_first_date>0?'<time datetime="'.$sort_first_date.'">':'').$display_first_date.($sort_first_date>0?'</time>':''),

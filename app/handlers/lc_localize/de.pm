@@ -230,6 +230,8 @@ use utf8;
 
 'Publication State' => 'Veröffentlichungsstatus',
 
+'Show/Hide Obsolete' => 'Veraltete anzeigen/verbergen',
+
 'File Size' => 'Dateigröße',
 
 'Version' => 'Version',
