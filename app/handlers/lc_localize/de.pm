@@ -246,6 +246,10 @@ use utf8;
 
 'Select a community to enter' => 'Wählen Sie eine Gemeinschaft aus',
 
+'New Title' => 'Neuer Titel',
+
+'Please enter a new title' => 'Bitte einen neuen Titel eingeben',
+
 'A problem occurred while entering the course.' => 'Bei der Auswahl des Kurses trat ein Problem auf.',
 
 'A problem occurred while entering the community.' => 'Bei der Auswahl der Gemeinschaft trat ein Problem auf.',
