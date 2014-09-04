@@ -17,6 +17,13 @@ $( window ).resize(function() {
    checknotificationbox();
 });
 
+function getParameterByName(query,name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(query);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
 function display_modal(newuri) {
     $.blockUI({
                  message: '<iframe id="lcmodal" width="100%" height="100%" src="'+newuri+'" />',

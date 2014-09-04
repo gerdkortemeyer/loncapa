@@ -54,6 +54,14 @@ sub determine_path {
    return $path;
 }
 
+sub change_title_link {
+   my ($entity,$domain,$title)=@_;
+   return '<a href="#" onClick="parent.display_modal(\'/modals/lc_new_title.html?domain='.$domain.'&entity='.$entity.'&title='.
+                  &Apache::lc_ui_utils::query_encode($title).'\')">'.
+                  ($title?$title:'-').'</a>',
+}
+
+
 #
 # Return the directory listing as JSON
 # Input: path to list and whether or not to show hidden (obsolete) files
@@ -140,7 +148,7 @@ sub listdirectory {
                          '\W'),
              &Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}),
              $filename,
-             'Title',
+             &change_title_link($file->{'entity'},$file->{'domain'},$file->{'title'}),
              'Obs '.$obsolete,
              $size,
              $version,

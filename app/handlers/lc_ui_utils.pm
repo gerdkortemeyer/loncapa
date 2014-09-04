@@ -27,6 +27,8 @@ use Apache::lc_authorize;
 
 
 use Apache::lc_logs;
+use URI::Escape;
+
 use Data::Dumper;
 
 require Exporter;
@@ -48,6 +50,12 @@ sub clean_domain {
    $domain=~s/\s//gs;
    $domain=~s/\///gs;
    return $domain;
+}
+
+# ==== Encode variables for query strings
+#
+sub query_encode {
+   return &uri_escape(@_[0]);
 }
 
 # ==== Another domain name
