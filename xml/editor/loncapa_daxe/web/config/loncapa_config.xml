@@ -227,7 +227,15 @@
     <AFFICHAGE_ELEMENT element="plotvector" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="drawvectorsum" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotruleset" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="functionplotrule" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="functionplotrule" type="lcdblock">
+      <AFFICHAGE_ATTRIBUT attribut="xinitiallabel">
+        <VALEUR_SUGGEREE>start</VALEUR_SUGGEREE>
+        <VALEUR_SUGGEREE>end</VALEUR_SUGGEREE>
+      </AFFICHAGE_ATTRIBUT>
+      <AFFICHAGE_ATTRIBUT attribut="xfinallabel">
+        <VALEUR_SUGGEREE>end</VALEUR_SUGGEREE>
+      </AFFICHAGE_ATTRIBUT>
+    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="functionplotvectorrule" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotvectorsumrule" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotcustomrule" type="lcdblock"/>
@@ -1098,6 +1106,8 @@
         <DOCUMENTATION>
           A value must be entered for one of "Initial x-value" and "Initial x-value label". Either choose a numerical value for x (the first option), or choose the beginning of the submitted answer, the end, or a previously chosen named point.
         </DOCUMENTATION>
+        <TITRE_VALEUR valeur="start">Start of Plot</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="end">End of Plot</TITRE_VALEUR>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="xfinal">
         <TITRE>final x-value</TITRE>
@@ -1112,6 +1122,7 @@
           Final x-value label (optional).
           This determines the end of the domain over which the rule examines. To test only a single point (the initial value), leave "Final x-value" and "Final x-value label" blank. If a label is entered, such as 'positive', the point at which the rule fails will be given this special label. This label can then be used in subsequent rules as an 'Initial x-value label'.
         </DOCUMENTATION>
+        <TITRE_VALEUR valeur="end">End of Plot</TITRE_VALEUR>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="minimumlength">
         <TITRE>minimum length for range</TITRE>

@@ -19,7 +19,9 @@ my @all_block = (@block_elements, @block_html);
 my @inline_elements = ('vector','value','location','parameter','textline','display','img','meta','startpartmarker','endpartmarker','startouttext','endouttext','tex','web','windowlink','m','chem','num','parse','algebra','displayweight','displaystudentphoto','inlinefont');
 
 # list of empty elements, which must also appear either in block or inline
-my @empty_elements = ('drawoptionlist','location','parameter','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','textline','displayduedate','displaytitle','organicstructure','responseparam','img','meta','startpartmarker','endpartmarker','allow','startouttext','endouttext','axis','key','xtics','ytics','displayweight','displaystudentphoto','emptyfont');
+# this is not working well with tidy (for instance with template StringResponse), so it is disabled
+#my @empty_elements = ('drawoptionlist','location','parameter','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','textline','displayduedate','displaytitle','organicstructure','responseparam','img','meta','startpartmarker','endpartmarker','allow','startouttext','endouttext','axis','key','xtics','ytics','displayweight','displaystudentphoto','emptyfont');
+my @empty_elements = ();
 
 # list of elements inside which < and > might not be turned into entities
 # unfortunately, answer can sometimes contain the elements vector and value...
@@ -90,6 +92,7 @@ sub guess_encoding_and_read {
 
 ##
 # Replaces < and > characters by &lt; and &gt; in cdata elements (listed in @cdata_elements).
+# EXCEPT for answer when it's inside numericalresponse or formularesponse.
 # @param {Array<string>} lines
 ##
 sub fix_cdata_elements {
@@ -98,9 +101,25 @@ sub fix_cdata_elements {
   my $j = 0;
   my $tag = '';
   my $type;
+  my $in_numericalresponse = 0;
+  my $in_formularesponse = 0;
   ($tag, $type, $i, $j) = next_tag($lines, $i, $j);
   while ($tag ne '') {
-    if (in_array_ignore_case(\@cdata_elements, $tag)) {
+    if ($tag eq 'numericalresponse') {
+      if ($type eq 'start') {
+        $in_numericalresponse = 1;
+      } else {
+        $in_numericalresponse = 0;
+      }
+    } elsif ($tag eq 'formularesponse') {
+      if ($type eq 'start') {
+        $in_formularesponse = 1;
+      } else {
+        $in_formularesponse = 0;
+      }
+    }
+    if (in_array_ignore_case(\@cdata_elements, $tag) &&
+        ($tag ne 'answer' || (!$in_numericalresponse && !$in_formularesponse))) {
       my $cde = $tag;
       my $line = $lines->[$i];
       $j = index($line, '>', $j+1) + 1;
