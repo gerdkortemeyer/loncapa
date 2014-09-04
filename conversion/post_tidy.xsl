@@ -2,7 +2,7 @@
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
-  <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
+  <xsl:output method="xml" indent="no" encoding="UTF-8"/>
 
   <xsl:template match="/">
     <loncapa>
@@ -21,6 +21,13 @@
       </xsl:for-each>
       <xsl:apply-templates/>
     </loncapa>
+  </xsl:template>
+  
+  <xsl:template match="problem|foil|item|hintgroup|hintpart|label|part|problemtype|window|block|while|postanswerdate|preduedate|solved|notsolved|languageblock|translated|lang|instructorcomment|windowlink|togglebox|standalone|htmlbody|div">
+    <xsl:copy>
+      <xsl:apply-templates select="@*"/>
+      <xsl:call-template name="paragraphs"/>
+    </xsl:copy>
   </xsl:template>
   
   <xsl:template match="html">
@@ -210,6 +217,9 @@
   <xsl:template match="endouttext">
   </xsl:template>
   
+  <xsl:template match="br">
+    <!-- replaced by paragraphs -->
+  </xsl:template>
   
   <xsl:template match = "@*|node()">
     <xsl:copy>
@@ -220,6 +230,44 @@
       </xsl:for-each>
       <xsl:apply-templates select="node()"/>
     </xsl:copy>
+  </xsl:template>
+  
+<!-- Reorganize a block by moving text and inline elements inside paragraphs, to avoid mixing text and block elements.
+  br elements are replaced by new paragraphs. -->
+  <xsl:template name="paragraphs">
+    <xsl:variable name="inline-elements">|textline|display|img|windowlink|m|chem|num|parse|algebra|displayweight|displaystudentphoto|inlinefont|span|a|strong|em|b|i|sup|sub|code|kbd|samp|tt|ins|del|var|small|big|font|basefont|hr|input|select|textarea|label|button|u|</xsl:variable>
+    <xsl:choose>
+      <xsl:when test="count(*[not(contains($inline-elements, concat('|',name(),'|')))]) &gt; 0">
+        <xsl:if test="count(*[not(contains($inline-elements, concat('|',name(),'|')))][1]/preceding-sibling::*)!=0 or normalize-space(*[not(contains($inline-elements, concat('|',name(),'|')))][1]/preceding-sibling::node())!=''">
+          <p>
+            <xsl:apply-templates select="*[not(contains($inline-elements, concat('|',name(),'|')))][1]/preceding-sibling::node()"/>
+          </p>
+        </xsl:if>
+        <xsl:for-each select="*[not(contains($inline-elements, concat('|',name(),'|')))]">
+          <xsl:if test="not(contains($inline-elements, concat('|',name(),'|')))">
+            <xsl:apply-templates select="."/>
+          </xsl:if>
+          <xsl:if test="position()!=last()">
+            <xsl:variable name="next" select="generate-id(following-sibling::*[not(contains($inline-elements, concat('|',name(),'|')))][1])"/>
+            <xsl:if test="count(following-sibling::*[generate-id(following-sibling::*[not(contains($inline-elements, concat('|',name(),'|')))][1]) = $next])!=0 or normalize-space(following-sibling::node()[generate-id(following-sibling::*[not(contains($inline-elements, concat('|',name(),'|')))][1]) = $next])!=''">
+              <p>
+                <xsl:apply-templates select="following-sibling::node()[generate-id(following-sibling::*[not(contains($inline-elements, concat('|',name(),'|')))][1]) = $next]"/>
+              </p>
+            </xsl:if>
+          </xsl:if>
+        </xsl:for-each>
+        <xsl:if test="count(*[not(contains($inline-elements, concat('|',name(),'|')))][position()=last()]/following-sibling::*)!=0 or normalize-space(*[not(contains($inline-elements, concat('|',name(),'|')))][position()=last()]/following-sibling::node())!=''">
+          <p>
+            <xsl:apply-templates select="*[not(contains($inline-elements, concat('|',name(),'|')))][position()=last()]/following-sibling::node()"/>
+          </p>
+        </xsl:if>
+      </xsl:when>
+      <xsl:otherwise>
+        <p>
+          <xsl:apply-templates/>
+        </p>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>
