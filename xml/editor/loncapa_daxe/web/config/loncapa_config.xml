@@ -8,7 +8,9 @@
     <MENU nom="Structure">
       <MENU_INSERTION nom="loncapa"/>
       <MENU_INSERTION nom="problem"/>
-      <MENU_INSERTION nom="library"/>
+      <MENU_INSERTION nom="scriptlib"/>
+      <MENU_INSERTION nom="parserlib"/>
+      <MENU_INSERTION nom="import"/>
       <MENU_INSERTION nom="part"/>
       <MENU_INSERTION nom="block"/>
       <MENU_INSERTION nom="problemtype"/>
@@ -25,19 +27,42 @@
       <MENU_INSERTION nom="allow"/>
       <MENU_INSERTION nom="meta"/>
     </MENU>
-    <MENU nom="Problems">
-      <MENU nom="Chemistry">
-        <MENU_INSERTION nom="organicresponse"/>
-        <MENU_INSERTION nom="reactionresponse"/>
-        <MENU_INSERTION nom="organicstructure"/>
+    <MENU nom="Responses">
+      <MENU nom="Text">
+        <MENU_INSERTION nom="stringresponse"/>
+        <MENU_INSERTION nom="essayresponse"/>
       </MENU>
-      <MENU nom="CAPA">
+      <MENU nom="Options">
+        <MENU_INSERTION nom="radiobuttonresponse"/>
+        <MENU_INSERTION nom="rankresponse"/>
+        <MENU nom="Match response">
+          <MENU_INSERTION nom="matchresponse"/>
+          <MENU_INSERTION nom="itemgroup"/>
+          <MENU_INSERTION nom="item"/>
+        </MENU>
+        <MENU nom="Option response">
+          <MENU_INSERTION nom="optionresponse"/>
+          <MENU_INSERTION nom="drawoptionlist"/>
+        </MENU>
+      </MENU>
+      <MENU nom="Image">
+        <MENU_INSERTION nom="imageresponse"/>
+        <MENU_INSERTION nom="text"/>
+        <MENU_INSERTION nom="image"/>
+        <MENU_INSERTION nom="rectangle"/>
+        <MENU_INSERTION nom="polygon"/>
+      </MENU>
+      <MENU nom="Math">
         <MENU_INSERTION nom="numericalresponse"/>
         <MENU_INSERTION nom="formularesponse"/>
-        <MENU_INSERTION nom="stringresponse"/>
         <MENU_INSERTION nom="answergroup"/>
         <MENU_INSERTION nom="value"/>
         <MENU_INSERTION nom="vector"/>
+        <MENU_INSERTION nom="mathresponse"/>
+      </MENU>
+      <MENU nom="Chemistry">
+        <MENU_INSERTION nom="organicresponse"/>
+        <MENU_INSERTION nom="reactionresponse"/>
       </MENU>
       <MENU nom="Function plot">
         <MENU_INSERTION nom="functionplotresponse"/>
@@ -53,19 +78,9 @@
         <MENU_INSERTION nom="functionplotvectorsumrule"/>
         <MENU_INSERTION nom="functionplotcustomrule"/>
       </MENU>
-      <MENU nom="Gnuplot">
-        <MENU_INSERTION nom="gnuplot"/>
-        <MENU_INSERTION nom="axis"/>
-        <MENU_INSERTION nom="curve"/>
-        <MENU_INSERTION nom="key"/>
-        <MENU_INSERTION nom="xtics"/>
-        <MENU_INSERTION nom="ytics"/>
-        <MENU_INSERTION nom="tic"/>
-        <MENU_INSERTION nom="title"/>
-        <MENU_INSERTION nom="xlabel"/>
-        <MENU_INSERTION nom="ylabel"/>
-        <MENU_INSERTION nom="function"/>
-        <MENU_INSERTION nom="data"/>
+      <MENU nom="Advanced responses">
+        <MENU_INSERTION nom="customresponse"/>
+        <MENU_INSERTION nom="externalresponse"/>
       </MENU>
       <MENU nom="Hints">
         <MENU_INSERTION nom="hintgroup"/>
@@ -80,64 +95,60 @@
         <MENU_INSERTION nom="customhint"/>
         <MENU_INSERTION nom="mathhint"/>
       </MENU>
-      <MENU nom="Option response">
-        <MENU_INSERTION nom="optionresponse"/>
-        <MENU_INSERTION nom="drawoptionlist"/>
+      <MENU nom="Common">
+        <MENU_INSERTION nom="responseparam"/>
+        <MENU_INSERTION nom="foilgroup"/>
+        <MENU_INSERTION nom="conceptgroup"/>
+        <MENU_INSERTION nom="foil"/>
+        <MENU_INSERTION nom="answer"/>
+        <MENU_INSERTION nom="textfield"/>
+        <MENU_INSERTION nom="textline"/>
+        <MENU_INSERTION nom="hiddensubmission"/>
+        <MENU_INSERTION nom="hiddenline"/>
       </MENU>
-      <MENU nom="Match response">
-        <MENU_INSERTION nom="matchresponse"/>
-        <MENU_INSERTION nom="itemgroup"/>
-        <MENU_INSERTION nom="item"/>
+    </MENU>
+    <MENU nom="Block">
+      <MENU nom="Scripts">
+        <MENU_INSERTION nom="script"/>
+        <MENU_INSERTION nom="display"/>
       </MENU>
-      <MENU nom="Image">
-        <MENU_INSERTION nom="imageresponse"/>
-        <MENU_INSERTION nom="text"/>
-        <MENU_INSERTION nom="image"/>
-        <MENU_INSERTION nom="rectangle"/>
-        <MENU_INSERTION nom="polygon"/>
+      <MENU nom="Gnuplot">
+        <MENU_INSERTION nom="gnuplot"/>
+        <MENU_INSERTION nom="title"/>
+        <MENU_INSERTION nom="axis"/>
+        <MENU_INSERTION nom="curve"/>
+        <MENU_INSERTION nom="key"/>
+        <MENU_INSERTION nom="xtics"/>
+        <MENU_INSERTION nom="ytics"/>
+        <MENU_INSERTION nom="tic"/>
+        <MENU_INSERTION nom="xlabel"/>
+        <MENU_INSERTION nom="ylabel"/>
+        <MENU_INSERTION nom="function"/>
+        <MENU_INSERTION nom="data"/>
       </MENU>
       <MENU nom="Random label">
         <MENU_INSERTION nom="randomlabel"/>
         <MENU_INSERTION nom="labelgroup"/>
         <MENU_INSERTION nom="location"/>
         <MENU_INSERTION nom="label"/>
-        <MENU_INSERTION nom="drawimage"/>
         <MENU_INSERTION nom="bgimg"/>
       </MENU>
-      <MENU nom="Common">
-        <MENU_INSERTION nom="answer"/>
-        <MENU_INSERTION nom="foil"/>
-        <MENU_INSERTION nom="foilgroup"/>
-        <MENU_INSERTION nom="responseparam"/>
-        <MENU_INSERTION nom="conceptgroup"/>
-        <MENU_INSERTION nom="parameter"/>
-        <MENU_INSERTION nom="hiddensubmission"/>
-        <MENU_INSERTION nom="hiddenline"/>
+      <MENU nom="Draw image">
+        <MENU_INSERTION nom="drawimage"/>
+        <MENU_INSERTION nom="line"/>
+        <MENU_INSERTION nom="rectangle"/>
+        <MENU_INSERTION nom="arc"/>
+        <MENU_INSERTION nom="fill"/>
+        <MENU_INSERTION nom="polygon"/>
+        <MENU_INSERTION nom="image"/>
       </MENU>
-      <MENU nom="Input">
-        <MENU_INSERTION nom="textfield"/>
-        <MENU_INSERTION nom="textline"/>
-      </MENU>
-      <MENU nom="Output">
+      <MENU nom="Display">
         <MENU_INSERTION nom="displayduedate"/>
         <MENU_INSERTION nom="displaytitle"/>
       </MENU>
-      <MENU nom="Other responses">
-        <MENU_INSERTION nom="customresponse"/>
-        <MENU_INSERTION nom="essayresponse"/>
-        <MENU_INSERTION nom="externalresponse"/>
-        <MENU_INSERTION nom="mathresponse"/>
-        <MENU_INSERTION nom="radiobuttonresponse"/>
-        <MENU_INSERTION nom="rankresponse"/>
-      </MENU>
-    </MENU>
-    <MENU nom="Scripts">
-      <MENU_INSERTION nom="script"/>
-      <MENU_INSERTION nom="scriptlib"/>
-      <MENU_INSERTION nom="parserlib"/>
-      <MENU_INSERTION nom="import"/>
+      <MENU_INSERTION nom="organicstructure"/>
       <MENU_INSERTION nom="window"/>
-      <MENU_INSERTION nom="display"/>
+      <MENU_INSERTION nom="parameter"/>
     </MENU>
     <MENU nom="Text">
       <MENU_INSERTION nom="img"/>
@@ -320,6 +331,10 @@
     <AFFICHAGE_ELEMENT element="parse" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="algebra" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="drawimage" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="line" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="arc" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="fill" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="point" type="vide"/>
     <AFFICHAGE_ELEMENT element="displayweight" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="displaystudentphoto" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     
