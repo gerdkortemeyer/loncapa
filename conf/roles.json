@@ -83,19 +83,25 @@
 
 "portfolio_owner"    : { "realm"  : "user",
                          "user"   : {
-                                      "view_portfolio" : "1"
+                                      "view_portfolio" : "1",
+                                      "edit_portfolio" : "1"
                                     }
                        },
 "author"             : { "realm"  : "user",
                          "user"   : {
-                                      "view_portfolio" : "1"
+                                      "view_portfolio" : "1",
+                                      "edit_portfolio" : "1"
                                     }
                        },
 "co_author"          : { "realm"  : "user",
                          "user"   : {
-                                      "view_portfolio" : "1"
+                                      "view_portfolio" : "1",
+                                      "edit_portfolio" : "1"
                                     }
                        },
-"guest"		     : { "realm"  : "user"
+"guest"		     : { "realm"  : "user",
+                         "user"   : {
+                                      "view_portfolio" : "1"
+                                    }
                        }
 }

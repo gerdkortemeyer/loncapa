@@ -5,6 +5,7 @@ var title;
 $(document).ready(function() {
      entity=parent.getParameterByName(location.search,'entity');
      domain=parent.getParameterByName(location.search,'domain');
+     url=parent.getParameterByName(location.search,'url');
      title=parent.getParameterByName(location.search,'title');
      $('#newtitle').val(title);
      $('#storebutton').click(function() {
@@ -14,6 +15,7 @@ $(document).ready(function() {
              data: { 'command' : 'changetitle',
                      'entity'  : entity,
                      'domain'  : domain,
+                     'url'     : url,
                      'title'   : $('#newtitle').val() },
              success: function(response) {
                 if (response=='error') {

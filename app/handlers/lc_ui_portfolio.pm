@@ -55,22 +55,38 @@ sub determine_path {
 }
 
 # =====================================================
+# Permissions checking
+# =====================================================
+#
+sub edit_permission {
+   my ($rentity,$rdomain,$rurl)=@_;
+   return 1;
+}
+
+# =====================================================
 # Changing titles
 # =====================================================
 #
 # Produce a link to the modal window to change titles
 #
 sub change_title_link {
-   my ($entity,$domain,$title)=@_;
-   return '<a href="#" onClick="change_title(\''.$domain.'\',\''.$entity.'\',\''.&Apache::lc_ui_utils::query_encode($title).'\')">'.
+   my ($entity,$domain,$url,$title)=@_;
+   if (&edit_permission($entity,$domain,$url)) {
+      return '<a href="#" onClick="change_title(\''.$domain.'\',\''.$entity.
+          '\',\''.&Apache::lc_ui_utils::query_encode($url).
+          '\',\''.&Apache::lc_ui_utils::query_encode($title).'\')">'.
                   ($title?$title:'-').'</a>',
+   } else {
+      return ($title?$title:'-');
+   }
 }
 #
 # Actually change the title
 #
 sub change_title {
-   my ($entity,$domain,$title)=@_;
-&logdebug("Change $entity $domain $title");
+   my ($entity,$domain,$url,$title)=@_;
+   unless (&edit_permission($entity,$domain,$url)) { return 'error'; }
+&logdebug("Change $entity $domain $url $title");
    return 'ok';
 }
 
@@ -163,7 +179,7 @@ sub listdirectory {
                          '\W'),
              &Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}),
              $filename,
-             &change_title_link($file->{'entity'},$file->{'domain'},$file->{'title'}),
+             &change_title_link($file->{'entity'},$file->{'domain'},$file->{'url'},$file->{'title'}),
              'Obs '.$obsolete,
              $size,
              $version,
@@ -213,7 +229,7 @@ sub handler {
       $r->content_type('application/json; charset=utf-8');
       $r->print(&listpath($path));
    } elsif ($content{'command'} eq 'changetitle') {
-      $r->print(&change_title($content{'entity'},$content{'domain'},$content{'title'}));
+      $r->print(&change_title($content{'entity'},$content{'domain'},$content{'url'},$content{'title'}));
    }
    return OK;
 }

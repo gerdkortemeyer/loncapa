@@ -24,8 +24,8 @@ function hiddenvisible() {
    reload_listing();
 }
 
-function change_title(entity,domain,title) {
-   parent.display_modal('/modals/lc_new_title.html?domain='+domain+'&entity='+entity+'&title='+title);
+function change_title(entity,domain,url,title) {
+   parent.display_modal('/modals/lc_new_title.html?domain='+domain+'&entity='+entity+'&url='+url+'&title='+title);
 }
 
 function init_datatable() {
