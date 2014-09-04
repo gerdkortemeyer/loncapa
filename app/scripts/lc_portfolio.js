@@ -24,6 +24,9 @@ function hiddenvisible() {
    reload_listing();
 }
 
+function change_title(entity,domain,title) {
+   parent.display_modal('/modals/lc_new_title.html?domain='+domain+'&entity='+entity+'&title='+title);
+}
 
 function init_datatable() {
     $('#portfoliolist tr').click( function() {

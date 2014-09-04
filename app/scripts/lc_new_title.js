@@ -11,11 +11,16 @@ $(document).ready(function() {
          $.ajax({
              url: '/portfolio',
              type:'POST',
+             data: { 'command' : 'changetitle',
+                     'entity'  : entity,
+                     'domain'  : domain,
+                     'title'   : $('#newtitle').val() },
              success: function(response) {
                 if (response=='error') {
                    $('.lcstandard').hide();
                    $('.lcerror').show();
                 } else {
+                   parent.frames['contentframe'].contentWindow.reload_listing();
                    parent.hide_modal();
                 }
              },

@@ -54,14 +54,29 @@ sub determine_path {
    return $path;
 }
 
+# =====================================================
+# Changing titles
+# =====================================================
+#
+# Produce a link to the modal window to change titles
+#
 sub change_title_link {
    my ($entity,$domain,$title)=@_;
-   return '<a href="#" onClick="parent.display_modal(\'/modals/lc_new_title.html?domain='.$domain.'&entity='.$entity.'&title='.
-                  &Apache::lc_ui_utils::query_encode($title).'\')">'.
+   return '<a href="#" onClick="change_title(\''.$domain.'\',\''.$entity.'\',\''.&Apache::lc_ui_utils::query_encode($title).'\')">'.
                   ($title?$title:'-').'</a>',
 }
+#
+# Actually change the title
+#
+sub change_title {
+   my ($entity,$domain,$title)=@_;
+&logdebug("Change $entity $domain $title");
+   return 'ok';
+}
 
-
+# ======================================================================
+# List directory
+# ======================================================================
 #
 # Return the directory listing as JSON
 # Input: path to list and whether or not to show hidden (obsolete) files
@@ -164,6 +179,10 @@ sub listdirectory {
    return &Apache::lc_json_utils::perl_to_json($output);
 }
 
+# ========================================================
+# List path
+# ========================================================
+#
 sub listpath {
    my ($path)=@_;
    $path=~s/^\/+//;
@@ -183,15 +202,18 @@ sub listpath {
 
 sub handler {
    my $r = shift;
-   $r->content_type('application/json; charset=utf-8');
    my %content=&Apache::lc_entity_sessions::posted_content();
    my $path=&determine_path($content{'pathrow_path'});
    if ($content{'command'} eq 'listdirectory') {
 # Do a directory listing
+      $r->content_type('application/json; charset=utf-8');
       $r->print(&listdirectory($path,$content{'showhidden'}));
    } elsif ($content{'command'} eq 'listpath') {
 # List the path
+      $r->content_type('application/json; charset=utf-8');
       $r->print(&listpath($path));
+   } elsif ($content{'command'} eq 'changetitle') {
+      $r->print(&change_title($content{'entity'},$content{'domain'},$content{'title'}));
    }
    return OK;
 }
