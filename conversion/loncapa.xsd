@@ -4031,21 +4031,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="stringresponse"/>
-        <xs:element ref="essayresponse"/>
-        <xs:element ref="radiobuttonresponse"/>
-        <xs:element ref="optionresponse"/>
-        <xs:element ref="matchresponse"/>
-        <xs:element ref="imageresponse"/>
-        <xs:element ref="numericalresponse"/>
-        <xs:element ref="formularesponse"/>
-        <xs:element ref="mathresponse"/>
-        <xs:element ref="functionplotresponse"/>
-        <xs:element ref="organicresponse"/>
-        <xs:element ref="reactionresponse"/>
-        <xs:element ref="customresponse"/>
-        <xs:element ref="externalresponse"/>
-        <xs:element name="foilgroup" type="rankresponse--foilgroup"/>
+        <xs:group ref="responses"/>
         <xs:group ref="block"/>
         <xs:element ref="img"/>
         <xs:element ref="postanswerdate"/>
