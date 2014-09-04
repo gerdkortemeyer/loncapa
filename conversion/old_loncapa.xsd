@@ -19,7 +19,7 @@
   </xs:annotation>
   <xs:simpleType name="perl">
     <xs:restriction base="xs:string">
-      <xs:pattern value="((\$|\&amp;)([#|$]*[A-Za-z][\w]*|\{[A-Za-z][\w]*\}))([\[\{][^$&amp;\]\}]+[\]\}])*(\([^$&amp;\)]+\))*"/>
+      <xs:pattern value="((\$|\&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{][^$&amp;\]\}]+[\]\}])*(\([^$&amp;\)]+\))*"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="int-or-perl">
@@ -1284,12 +1284,21 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="index" type="int-or-perl">
+      <xs:attribute name="index">
         <xs:annotation>
           <xs:documentation>
             This is the label assigned to the spline. In general, it's simplest just to label them A, B, C etc.
           </xs:documentation>
         </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:pattern value="[a-zA-Z_]+"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="order">
         <xs:annotation>
@@ -1529,8 +1538,7 @@
           <xs:union memberTypes="perl">
             <xs:simpleType>
               <xs:restriction base="xs:string">
-                <xs:enumeration value="start"/>
-                <xs:enumeration value="end"/>
+                <xs:pattern value="[a-zA-Z_]+"/>
               </xs:restriction>
             </xs:simpleType>
           </xs:union>
@@ -1555,7 +1563,7 @@
           <xs:union memberTypes="perl">
             <xs:simpleType>
               <xs:restriction base="xs:string">
-                <xs:enumeration value="end"/>
+                <xs:pattern value="[a-zA-Z_]+"/>
               </xs:restriction>
             </xs:simpleType>
           </xs:union>
@@ -5442,12 +5450,12 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlineText"/>
-        <xs:element ref="ul"/>
-        <xs:element ref="ol"/>
+        <xs:group ref="text"/>
       </xs:choice>
       <xs:attribute name="type" type="xs:string"/>
       <xs:attribute name="value" type="xs:string"/>
+      <xs:attribute name="class" type="xs:string"/>
+      <xs:attribute name="style" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="dl">
@@ -5571,6 +5579,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlineText"/>
       </xs:choice>
+      <xs:attribute name="class" type="xs:string"/>
       <xs:attribute name="style" type="xs:string"/>
     </xs:complexType>
   </xs:element>

@@ -52,7 +52,7 @@ Shared simple types.
 Value restriction based on xs:string<ul>
 
 <li>
-<tt>((\$|\&amp;)([#|$]*[A-Za-z][\w]*|\{[A-Za-z][\w]*\}))([\[\{][^$&amp;\]\}]+[\]\}])*(\([^$&amp;\)]+\))*</tt>
+<tt>((\$|\&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{][^$&amp;\]\}]+[\]\}])*(\([^$&amp;\)]+\))*</tt>
 </li>
 
 </ul>
@@ -2974,14 +2974,28 @@ At least one spline is necessary for a graph problem. These splines are what wil
 
 <div class="indentation">
 Attribute <span class="nomattribut">index</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
+    <div class="indentation">optional<br>
 
 
 <div class="documentation">
 This is the label assigned to the spline. In general, it's simplest just to label them A, B, C etc.
 </div>
 <br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>[a-zA-Z_]+</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
 
 
 </div>
@@ -3443,11 +3457,7 @@ Possible values:<ul>
 Value restriction based on xs:string<ul>
 
 <li>
-<tt>start</tt>
-</li>
-
-<li>
-<tt>end</tt>
+<tt>[a-zA-Z_]+</tt>
 </li>
 
 </ul>
@@ -3487,7 +3497,7 @@ Possible values:<ul>
 Value restriction based on xs:string<ul>
 
 <li>
-<tt>end</tt>
+<tt>[a-zA-Z_]+</tt>
 </li>
 
 </ul>
@@ -10789,7 +10799,7 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#library_0">library</a>, <a href="#dataresponse_0">dataresponse</a>, <a href="#hintgroup_0">hintgroup</a>, <a href="#hintpart_0">hintpart</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#window_0">window</a>, <a href="#block_1">block</a>, <a href="#while_0">while</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#solved_0">solved</a>, <a href="#notsolved_0">notsolved</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#languageblock_0">languageblock</a>, <a href="#translated_0">translated</a>, <a href="#lang_0">lang</a>, <a href="#instructorcomment_0">instructorcomment</a>, <a href="#windowlink_0">windowlink</a>, <a href="#togglebox_0">togglebox</a>, <a href="#standalone_0">standalone</a>, <a href="#div_0">div</a>, <a href="#td_0">td</a>, <a href="#th_0">th</a>
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#library_0">library</a>, <a href="#dataresponse_0">dataresponse</a>, <a href="#hintgroup_0">hintgroup</a>, <a href="#hintpart_0">hintpart</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#window_0">window</a>, <a href="#block_1">block</a>, <a href="#while_0">while</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#solved_0">solved</a>, <a href="#notsolved_0">notsolved</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#languageblock_0">languageblock</a>, <a href="#translated_0">translated</a>, <a href="#lang_0">lang</a>, <a href="#instructorcomment_0">instructorcomment</a>, <a href="#windowlink_0">windowlink</a>, <a href="#togglebox_0">togglebox</a>, <a href="#standalone_0">standalone</a>, <a href="#div_0">div</a>, <a href="#li_0">li</a>, <a href="#td_0">td</a>, <a href="#th_0">th</a>
 <br>
 <hr>
 
@@ -11045,7 +11055,7 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#text_2">text</a>, <a href="#li_0">li</a>, <a href="#dd_0">dd</a>, <a href="#span_0">span</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
+<br>Parents:<a href="#text_2">text</a>, <a href="#dd_0">dd</a>, <a href="#span_0">span</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
 <br>
 <hr>
 
@@ -12047,7 +12057,7 @@ Attribute <span class="nomattribut">type</span>:
 
 </div>
 
-<br>Parents:<a href="#blockText_0">blockText</a>, <a href="#li_0">li</a>
+<br>Parents:<a href="#blockText_0">blockText</a>
 <br>
 <hr>
 
@@ -12076,7 +12086,7 @@ Attribute <span class="nomattribut">type</span>:
 
 </div>
 
-<br>Parents:<a href="#blockText_0">blockText</a>, <a href="#li_0">li</a>
+<br>Parents:<a href="#blockText_0">blockText</a>
 <br>
 <hr>
 
@@ -12094,15 +12104,7 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#inlineText_0">inlineText</a>
-<br>
-</li>
-<li>
-<a href="#ul_0">ul</a>
-<br>
-</li>
-<li>
-<a href="#ol_0">ol</a>
+<a href="#text_2">text</a>
 <br>
 </li>
 </ul>
@@ -12111,6 +12113,14 @@ Attribute <span class="nomattribut">type</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">value</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">class</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">style</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
 </div>
@@ -12410,6 +12420,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
+Attribute <span class="nomattribut">class</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
 Attribute <span class="nomattribut">style</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
