@@ -407,7 +407,16 @@ sub make_obsolete {
 
 sub un_obsolete {
    my ($full_url)=@_;
-   return &store_metadata($full_url,{ 'obsolete' => 0 });
+   return &store_url_metadata($full_url,{ 'obsolete' => 0 });
+}
+
+# =============================================================
+# Change title
+# =============================================================
+#
+sub store_new_title {
+   my ($entity,$domain,$newtitle)=@_;
+   return &store_metadata($entity,$domain,{ 'title' => $newtitle });
 }
 
 # =============================================================

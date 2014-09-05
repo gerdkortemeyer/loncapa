@@ -22,7 +22,7 @@ $(document).ready(function() {
                    $('.lcstandard').hide();
                    $('.lcerror').show();
                 } else {
-                   parent.frames['contentframe'].contentWindow.reload_listing();
+                   parent.document.getElementById('contentframe').contentWindow.reload_listing();
                    parent.hide_modal();
                 }
              },

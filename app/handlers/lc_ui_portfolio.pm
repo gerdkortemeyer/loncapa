@@ -100,8 +100,12 @@ sub change_title {
       &logwarning("Mismatch ($entity) ($domain) ($url)");
       return 'error';
    }
-&logdebug("Change $entity $domain $url $title");
-   return 'ok';
+   if (&Apache::lc_entity_urls::store_new_title($entity,$domain,$title)) {
+      return 'ok';
+   } else {
+       &logerror("Storing new title failed for ($entity) ($domain)");
+       return 'error';
+   }
 }
 
 # ======================================================================
@@ -193,7 +197,7 @@ sub listdirectory {
                          '\W'),
              &Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}),
              $filename,
-             &change_title_link($file->{'entity'},$file->{'domain'},$file->{'url'},$file->{'title'}),
+             &change_title_link($file->{'entity'},$file->{'domain'},$file->{'url'},$file->{'metadata'}->{'title'}),
              'Obs '.$obsolete,
              $size,
              $version,
