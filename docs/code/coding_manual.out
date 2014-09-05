@@ -1,0 +1,127 @@
+\BOOKMARK [0][-]{chapter.1}{License}{}
+\BOOKMARK [0][-]{chapter.2}{Requirements}{}
+\BOOKMARK [1][-]{section.2.1}{Interface}{chapter.2}
+\BOOKMARK [2][-]{subsection.2.1.1}{Fully accessible}{section.2.1}
+\BOOKMARK [2][-]{subsection.2.1.2}{Fully internationalized}{section.2.1}
+\BOOKMARK [2][-]{subsection.2.1.3}{System reacts in less than one second}{section.2.1}
+\BOOKMARK [2][-]{subsection.2.1.4}{Mobile support}{section.2.1}
+\BOOKMARK [2][-]{subsection.2.1.5}{No Java or Flash}{section.2.1}
+\BOOKMARK [2][-]{subsection.2.1.6}{Cross-browser compatibility}{section.2.1}
+\BOOKMARK [2][-]{subsection.2.1.7}{No complete screen rebuilds}{section.2.1}
+\BOOKMARK [2][-]{subsection.2.1.8}{Easy things easy, hard things possible}{section.2.1}
+\BOOKMARK [2][-]{subsection.2.1.9}{Preventing users from shooting themselves into the foot}{section.2.1}
+\BOOKMARK [1][-]{section.2.2}{Assets}{chapter.2}
+\BOOKMARK [2][-]{subsection.2.2.1}{Backward compatibility}{section.2.2}
+\BOOKMARK [2][-]{subsection.2.2.2}{Printability}{section.2.2}
+\BOOKMARK [1][-]{section.2.3}{Data}{chapter.2}
+\BOOKMARK [2][-]{subsection.2.3.1}{All changes take effect after at most 10 minutes}{section.2.3}
+\BOOKMARK [2][-]{subsection.2.3.2}{Separation}{section.2.3}
+\BOOKMARK [2][-]{subsection.2.3.3}{Times}{section.2.3}
+\BOOKMARK [1][-]{section.2.4}{Network functionality}{chapter.2}
+\BOOKMARK [2][-]{subsection.2.4.1}{SSL}{section.2.4}
+\BOOKMARK [2][-]{subsection.2.4.2}{Predictable storage}{section.2.4}
+\BOOKMARK [2][-]{subsection.2.4.3}{Authentication}{section.2.4}
+\BOOKMARK [2][-]{subsection.2.4.4}{Authorization}{section.2.4}
+\BOOKMARK [2][-]{subsection.2.4.5}{Run everywhere}{section.2.4}
+\BOOKMARK [2][-]{subsection.2.4.6}{Servers}{section.2.4}
+\BOOKMARK [1][-]{section.2.5}{Coding environment}{chapter.2}
+\BOOKMARK [2][-]{subsection.2.5.1}{Linux Distributions}{section.2.5}
+\BOOKMARK [2][-]{subsection.2.5.2}{Open source}{section.2.5}
+\BOOKMARK [2][-]{subsection.2.5.3}{Porting from LON-CAPA 2.x}{section.2.5}
+\BOOKMARK [1][-]{section.2.6}{Scalability testing}{chapter.2}
+\BOOKMARK [0][-]{chapter.3}{Installation}{}
+\BOOKMARK [1][-]{section.3.1}{Linux}{chapter.3}
+\BOOKMARK [1][-]{section.3.2}{Certificate IP/DNS considerations}{chapter.3}
+\BOOKMARK [1][-]{section.3.3}{Updating}{chapter.3}
+\BOOKMARK [1][-]{section.3.4}{Disable SELinux}{chapter.3}
+\BOOKMARK [1][-]{section.3.5}{Downloading}{chapter.3}
+\BOOKMARK [1][-]{section.3.6}{Install LON-CAPA}{chapter.3}
+\BOOKMARK [1][-]{section.3.7}{If things don't work}{chapter.3}
+\BOOKMARK [0][-]{chapter.4}{URL Translation}{}
+\BOOKMARK [1][-]{section.4.1}{Accessing handlers}{chapter.4}
+\BOOKMARK [1][-]{section.4.2}{Accessing assets}{chapter.4}
+\BOOKMARK [1][-]{section.4.3}{System Pages}{chapter.4}
+\BOOKMARK [0][-]{chapter.5}{Network}{}
+\BOOKMARK [1][-]{section.5.1}{Overview}{chapter.5}
+\BOOKMARK [1][-]{section.5.2}{Nodes}{chapter.5}
+\BOOKMARK [1][-]{section.5.3}{Cluster Table}{chapter.5}
+\BOOKMARK [2][-]{subsection.5.3.1}{Configuration}{section.5.3}
+\BOOKMARK [2][-]{subsection.5.3.2}{Homeservers}{section.5.3}
+\BOOKMARK [2][-]{subsection.5.3.3}{Cluster manager}{section.5.3}
+\BOOKMARK [1][-]{section.5.4}{Connections}{chapter.5}
+\BOOKMARK [2][-]{subsection.5.4.1}{Connection authentication}{section.5.4}
+\BOOKMARK [2][-]{subsection.5.4.2}{Connection handling}{section.5.4}
+\BOOKMARK [2][-]{subsection.5.4.3}{Local versus remote}{section.5.4}
+\BOOKMARK [1][-]{section.5.5}{Replication}{chapter.5}
+\BOOKMARK [0][-]{chapter.6}{Entities}{}
+\BOOKMARK [1][-]{section.6.1}{Identification}{chapter.6}
+\BOOKMARK [1][-]{section.6.2}{Storage and Interface}{chapter.6}
+\BOOKMARK [1][-]{section.6.3}{Users}{chapter.6}
+\BOOKMARK [1][-]{section.6.4}{Courses}{chapter.6}
+\BOOKMARK [1][-]{section.6.5}{Assets}{chapter.6}
+\BOOKMARK [2][-]{subsection.6.5.1}{URLs}{section.6.5}
+\BOOKMARK [2][-]{subsection.6.5.2}{Profiles and metadata}{section.6.5}
+\BOOKMARK [2][-]{subsection.6.5.3}{Storage}{section.6.5}
+\BOOKMARK [2][-]{subsection.6.5.4}{Publication and Versioning}{section.6.5}
+\BOOKMARK [0][-]{chapter.7}{Authorization}{}
+\BOOKMARK [1][-]{section.7.1}{Roles}{chapter.7}
+\BOOKMARK [2][-]{subsection.7.1.1}{Role definition}{section.7.1}
+\BOOKMARK [2][-]{subsection.7.1.2}{Role storage}{section.7.1}
+\BOOKMARK [0][-]{chapter.8}{Storage}{}
+\BOOKMARK [1][-]{section.8.1}{Databases}{chapter.8}
+\BOOKMARK [2][-]{subsection.8.1.1}{PostgreSQL tables}{section.8.1}
+\BOOKMARK [1][-]{section.8.2}{Caching}{chapter.8}
+\BOOKMARK [1][-]{section.8.3}{File system}{chapter.8}
+\BOOKMARK [2][-]{subsection.8.3.1}{Assets}{section.8.3}
+\BOOKMARK [2][-]{subsection.8.3.2}{Tables of Content}{section.8.3}
+\BOOKMARK [1][-]{section.8.4}{Programmatic access}{chapter.8}
+\BOOKMARK [0][-]{chapter.9}{XML}{}
+\BOOKMARK [1][-]{section.9.1}{Structure of Documents}{chapter.9}
+\BOOKMARK [2][-]{subsection.9.1.1}{Classic LON-CAPA Content}{section.9.1}
+\BOOKMARK [2][-]{subsection.9.1.2}{Overview of differences to classic LON-CAPA}{section.9.1}
+\BOOKMARK [1][-]{section.9.2}{Editing}{chapter.9}
+\BOOKMARK [2][-]{subsection.9.2.1}{Main editors}{section.9.2}
+\BOOKMARK [2][-]{subsection.9.2.2}{Emergency editor}{section.9.2}
+\BOOKMARK [0][-]{chapter.10}{XML Parser}{}
+\BOOKMARK [1][-]{section.10.1}{Invocation}{chapter.10}
+\BOOKMARK [1][-]{section.10.2}{Tag types}{chapter.10}
+\BOOKMARK [1][-]{section.10.3}{Stacks and safeeval}{chapter.10}
+\BOOKMARK [0][-]{chapter.11}{Internationalization}{}
+\BOOKMARK [1][-]{section.11.1}{Encoding}{chapter.11}
+\BOOKMARK [1][-]{section.11.2}{Maketext}{chapter.11}
+\BOOKMARK [1][-]{section.11.3}{Invocation in documents}{chapter.11}
+\BOOKMARK [1][-]{section.11.4}{Invocation from Perl}{chapter.11}
+\BOOKMARK [1][-]{section.11.5}{Internal codes}{chapter.11}
+\BOOKMARK [1][-]{section.11.6}{Special cases}{chapter.11}
+\BOOKMARK [2][-]{subsection.11.6.1}{JavaScript configuration files}{section.11.6}
+\BOOKMARK [2][-]{subsection.11.6.2}{Loading locatilization files}{section.11.6}
+\BOOKMARK [0][-]{chapter.12}{Math editor, parser and equation syntax}{}
+\BOOKMARK [1][-]{section.12.1}{Introduction}{chapter.12}
+\BOOKMARK [1][-]{section.12.2}{A new user interface}{chapter.12}
+\BOOKMARK [2][-]{subsection.12.2.1}{Usage}{section.12.2}
+\BOOKMARK [1][-]{section.12.3}{The server-side parser}{chapter.12}
+\BOOKMARK [2][-]{subsection.12.3.1}{Usage}{section.12.3}
+\BOOKMARK [2][-]{subsection.12.3.2}{Calculation environment}{section.12.3}
+\BOOKMARK [2][-]{subsection.12.3.3}{Conversion to Maxima syntax}{section.12.3}
+\BOOKMARK [2][-]{subsection.12.3.4}{Catching errors}{section.12.3}
+\BOOKMARK [2][-]{subsection.12.3.5}{Example with unit node}{section.12.3}
+\BOOKMARK [2][-]{subsection.12.3.6}{Example with symbolic node}{section.12.3}
+\BOOKMARK [1][-]{section.12.4}{Equation syntax}{chapter.12}
+\BOOKMARK [2][-]{subsection.12.4.1}{Spaces}{section.12.4}
+\BOOKMARK [2][-]{subsection.12.4.2}{Decimal separators and function parameter separators}{section.12.4}
+\BOOKMARK [2][-]{subsection.12.4.3}{Constants}{section.12.4}
+\BOOKMARK [2][-]{subsection.12.4.4}{Units}{section.12.4}
+\BOOKMARK [2][-]{subsection.12.4.5}{Parenthesis}{section.12.4}
+\BOOKMARK [2][-]{subsection.12.4.6}{Complex numbers}{section.12.4}
+\BOOKMARK [2][-]{subsection.12.4.7}{Operators}{section.12.4}
+\BOOKMARK [2][-]{subsection.12.4.8}{Implicit operators}{section.12.4}
+\BOOKMARK [2][-]{subsection.12.4.9}{Vectors and matrices}{section.12.4}
+\BOOKMARK [2][-]{subsection.12.4.10}{Functions}{section.12.4}
+\BOOKMARK [0][-]{chapter.13}{Graphical editor}{}
+\BOOKMARK [1][-]{section.13.1}{Introduction}{chapter.13}
+\BOOKMARK [1][-]{section.13.2}{Choice of tools}{chapter.13}
+\BOOKMARK [1][-]{section.13.3}{Development}{chapter.13}
+\BOOKMARK [2][-]{subsection.13.3.1}{Tasks}{section.13.3}
+\BOOKMARK [2][-]{subsection.13.3.2}{Git paths}{section.13.3}
+\BOOKMARK [2][-]{subsection.13.3.3}{Edition and launch in Dart Editor}{section.13.3}
+\BOOKMARK [0][-]{chapter.14}{Glossary}{}
