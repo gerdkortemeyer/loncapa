@@ -13,9 +13,9 @@ Entities do not change. An individual, course, or assets always keeps its entity
 \section{Storage and Interface}
 Information in the system is always stored by entity:domain, not by usernames or course codes. However, entity:domain is not exposed on the interface level, here we talk in terms of usernames, personal ID numbers, or course codes.
 \section{Users}\index{users}\index{usernames}\index{PIDs}
-Usernames and personal ID numbers (PIDs) are properties of the user entity. They need to be unique within a domain, thus to fully specify a user entity in this fashion, one needs to specify the username {\it and} domain. Just specifying the username is not enought!
+Usernames and personal ID numbers (PIDs) are properties of the user entity. They need to be unique within a domain, thus to fully specify a user entity in this fashion, one needs to specify the username {\it and} domain. Just specifying the username is not enough!
 
-Usernames and PIDs can change. For example, username changes can happen due to live events or because the user wants a vanity ID. At most universities, usernames once given out are never recycled. Also, PIDs can change if a person changes from student to faculty/staff or vice versa. Once again, PIDs at most places are never recycled.
+Usernames and PIDs can change. For example, username changes can happen due to life events or because the user wants a vanity ID. At most universities, usernames once given out are never recycled. Also, PIDs can change if a person changes from student to faculty/staff or vice versa. Once again, PIDs at most places are never recycled.
 
 The system should thus assume:
 \begin{itemize}

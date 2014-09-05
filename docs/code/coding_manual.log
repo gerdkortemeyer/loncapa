@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2014.5.27)  4 SEP 2014 22:52
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2014.5.27)  5 SEP 2014 07:07
 entering extended mode
  %&-line parsing enabled.
 **coding_manual
@@ -626,35 +626,7 @@ Chapter 13.
 
 
 
-]
-Overfull \hbox (75.6411pt too wide) in paragraph at lines 51--52
-\T1/cmr/m/n/10 with a rel-a-tive path in \T1/cmtt/m/n/10 xml/editor/loncapa_dax
-e/pubspec.xml\T1/cmr/m/n/10 . The schema it uses is at \T1/cmtt/m/n/10 xml/edit
-or/loncapa_daxe/web/config/loncapa.xsd\T1/cmr/m/n/10 ,
- []
-
-
-Overfull \hbox (81.63963pt too wide) in paragraph at lines 51--52
-\T1/cmr/m/n/10 which should be the same as \T1/cmtt/m/n/10 conversion/loncapa.x
-sd\T1/cmr/m/n/10 . The con-fig-u-ra-tion file is at \T1/cmtt/m/n/10 xml/editor/
-loncapa_daxe/web/config/loncapa_config.xml\T1/cmr/m/n/10 . 
- []
-
-
-Overfull \hbox (57.71642pt too wide) in paragraph at lines 57--59
-[]\T1/cmr/m/n/10 It links to libudev.so.0, so a sym-bolic link can help if a di
-f-fer-ent ver-sion is in-stalled: \T1/cmtt/m/n/10 sudo ln -s /lib/x86_64-linux-
-gnu/libudev.so.1
- []
-
-
-Overfull \hbox (273.90749pt too wide) in paragraph at lines 67--72
-\T1/cmr/m/n/10 file can also be edited by spec-i-fy-ing its rel-a-tive path (fr
-om the web di-rec-tory) in the URL: \T1/cmtt/m/n/10 /loncapa_daxe/web/loncapa_d
-axe.html?file=test.problem&config=config/loncapa_config.xml 
- []
-
-) [42]
+]) [42]
 \openout2 = `glossary.aux'.
 
  (./glossary.tex
@@ -693,9 +665,9 @@ ljfour/jknappen/ec/ecrm1200.600pk> </home/www/.texlive2007/texmf-var/fonts/pk/l
 jfour/jknappen/ec/ecrm1728.600pk></usr/share/texmf/fonts/type1/bluesky/cm/cmmi1
 0.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/font
 s/type1/bluesky/cm/cmsy10.pfb>
-Output written on coding_manual.pdf (48 pages, 819597 bytes).
+Output written on coding_manual.pdf (48 pages, 819878 bytes).
 PDF statistics:
- 1851 PDF objects out of 2073 (max. 8388607)
+ 1852 PDF objects out of 2073 (max. 8388607)
  204 named destinations out of 1000 (max. 131072)
  1038 words of extra memory for PDF output out of 10000 (max. 10000000)
 
