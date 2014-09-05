@@ -28,19 +28,19 @@ table.dataTable td.center,
 table.dataTable td.dataTables_empty {
 text-align: center;
 }
-table.dataTable tr.odd { background-color: #33cc66; }
-table.dataTable tr.even { background-color: #33ff99; }
-table.dataTable tr.odd td.sorting_1 { background-color: #ccff66; }
+table.dataTable tr.odd { background-color: #e0ffe0; }
+table.dataTable tr.even { background-color: #8ae68a; }
+table.dataTable tr.odd td.sorting_1 { background-color: #ebffc2; }
 table.dataTable tr.odd td.sorting_2 { background-color: #eaebff; }
 table.dataTable tr.odd td.sorting_3 { background-color: #E0E2FF; }
-table.dataTable tr.even td.sorting_1 { background-color: #ffffcc; }
+table.dataTable tr.even td.sorting_1 { background-color: #b8e65c; }
 table.dataTable tr.even td.sorting_2 { background-color: #F2F3FF; }
 table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 table.dataTable tr.even.row_selected td {
-background-color: #B0BED9;
+background-color: #00b88a;
 }
 table.dataTable tr.odd.row_selected td {
-background-color: #9FAFD1;
+background-color: #00a37a;
 }
 /*
  * * Table wrapper
