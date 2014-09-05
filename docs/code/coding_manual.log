@@ -1,14 +1,21 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.8.25)  25 AUG 2014 14:57
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.8.19)  5 SEP 2014 01:19
 entering extended mode
- restricted \write18 enabled.
- %&-line parsing enabled.
-**coding_manual.tex
-(./coding_manual.tex
+**C:/github/loncapa/docs/code/coding_manual.tex
+(C:/github/loncapa/docs/code/coding_manual.tex
 LaTeX2e <2011/06/27>
-Babel <3.9h> and hyphenation patterns for 2 languages loaded.
-(/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
+Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
+abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
+croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, ga
+lician, german, german-x-2013-05-26, greek, gujarati, hindi, hungarian, iceland
+ic, indonesian, interlingua, irish, italian, kannada, kurmanji, latin, latvian,
+ lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerman, n
+german-x-2013-05-26, nynorsk, oriya, panjabi, pinyin, polish, portuguese, roman
+ian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swissgerm
+an, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, usengl
+ishmax, welsh, loaded.
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\book.cls"
 Document Class: book 2007/10/19 v1.4h Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/bk10.clo
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\bk10.clo"
 File: bk10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -24,22 +31,22 @@ File: bk10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\geometry\geometry.sty"
 Package: geometry 2010/09/12 v5.6 Page Geometry
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks14
 )
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
 Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
 Package ifpdf Info: pdfTeX in PDF mode is detected.
 )
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ifvtex.sty"
 Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
 Package ifvtex Info: VTeX not detected.
 )
-(/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\ifxetex\ifxetex.sty"
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
 \Gm@cnth=\count88
@@ -54,20 +61,21 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@layouthoffset=\dimen109
 \Gm@layoutvoffset=\dimen110
 \Gm@dimlist=\toks15
-)
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\geometry\geometry.cfg"))
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\inputenc.sty"
 Package: inputenc 2008/03/30 v1.1d Input encoding file
 \inpenc@prehook=\toks16
 \inpenc@posthook=\toks17
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\utf8.def"
 File: utf8.def 2008/04/05 v1.1m UTF-8 support for inputenc
 Now handling font encoding OML ...
 ... no UTF-8 mapping file for font encoding OML
 Now handling font encoding T1 ...
 ... processing UTF-8 mapping file for font encoding T1
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/t1enc.dfu
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\t1enc.dfu"
 File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+00A1 (decimal 161)
    defining Unicode char U+00A3 (decimal 163)
@@ -217,7 +225,7 @@ File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
 Now handling font encoding OT1 ...
 ... processing UTF-8 mapping file for font encoding OT1
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/ot1enc.dfu
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ot1enc.dfu"
 File: ot1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+00A1 (decimal 161)
    defining Unicode char U+00A3 (decimal 163)
@@ -248,7 +256,7 @@ File: ot1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
 Now handling font encoding OMS ...
 ... processing UTF-8 mapping file for font encoding OMS
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/omsenc.dfu
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omsenc.dfu"
 File: omsenc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+00A7 (decimal 167)
    defining Unicode char U+00B6 (decimal 182)
@@ -272,34 +280,34 @@ Now handling font encoding U ...
    defining Unicode char U+2122 (decimal 8482)
    defining Unicode char U+2423 (decimal 9251)
 ))
-(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\fontenc.sty"
 Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/t1enc.def
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\t1enc.def"
 File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
 ))
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\trig.sty"
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/graphics.cfg
-File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
 )
 Package graphics Info: Driver file: pdftex.def on input line 91.
 
-(/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
 File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
 
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
 Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
 )
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
 Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 )
 \Gread@gobject=\count91
@@ -307,7 +315,7 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen111
 \Gin@req@width=\dimen112
 )
-(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\listings\listings.sty"
 \lst@mode=\count92
 \lst@gtempboxa=\box26
 \lst@token=\toks18
@@ -321,27 +329,27 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \lst@lineno=\count97
 \lst@maxwidth=\dimen116
 
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2013/08/26 1.5b (Carsten Heinz)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\listings\lstmisc.sty"
+File: lstmisc.sty 2014/03/04 1.5c (Carsten Heinz)
 \c@lstnumber=\count98
 \lst@skipnumbers=\count99
 \lst@framebox=\box27
 )
-(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
-File: listings.cfg 2013/08/26 1.5b listings configuration
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\listings\listings.cfg"
+File: listings.cfg 2014/03/04 1.5c listings configuration
 ))
-Package: listings 2013/08/26 1.5b (Carsten Heinz)
+Package: listings 2014/03/04 1.5c (Carsten Heinz)
 
-(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\hyperref.sty"
 Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
 
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
-Package: hobsub-hyperref 2012/05/28 v1.13 Bundle oberdiek, subset hyperref (HO)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\hobsub-hyperref.sty"
+Package: hobsub-hyperref 2012/04/25 v1.12 Bundle oberdiek, subset hyperref (HO)
 
 
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
-Package: hobsub-generic 2012/05/28 v1.13 Bundle oberdiek, subset generic (HO)
-Package: hobsub 2012/05/28 v1.13 Construct package bundles (HO)
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\hobsub-generic.sty"
+Package: hobsub-generic 2012/04/25 v1.12 Bundle oberdiek, subset generic (HO)
+Package: hobsub 2012/04/25 v1.12 Construct package bundles (HO)
 Package hobsub Info: Skipping package `infwarerr' (already loaded).
 Package hobsub Info: Skipping package `ltxcmds' (already loaded).
 Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
@@ -370,7 +378,7 @@ Package: uniquecounter 2011/01/30 v1.2 Provide unlimited unique counter (HO)
 )
 Package hobsub Info: Skipping package `hobsub' (already loaded).
 Package: letltxmacro 2010/09/02 v1.4 Let assignment for LaTeX macros (HO)
-Package: hopatch 2012/05/28 v1.2 Wrapper for package hooks (HO)
+Package: hopatch 2011/06/24 v1.1 Wrapper for package hooks (HO)
 Package: xcolor-patch 2011/01/30 xcolor patch
 Package: atveryend 2011/06/30 v1.8 Hooks at the very end of document (HO)
 Package atveryend Info: \enddocument detected (standard20110627).
@@ -378,24 +386,24 @@ Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
 Package: refcount 2011/10/16 v3.4 Data extraction from label references (HO)
 Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
 )
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/auxhook.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\auxhook.sty"
 Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
 )
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\kvoptions.sty"
 Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 )
 \@linkdim=\dimen117
 \Hy@linkcounter=\count100
 \Hy@pagecounter=\count101
 
-(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\pd1enc.def"
 File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 )
 \Hy@SavedSpaceFactor=\count102
 
-(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\00miktex\hyperref.cfg"
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
 )
 Package hyperref Info: Hyper figures OFF on input line 4443.
@@ -407,7 +415,7 @@ Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4688.
 \c@Hy@tempcnt=\count103
 
-(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\url\url.sty"
 \Urlmuskip=\muskip10
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
@@ -432,12 +440,12 @@ LaTeX Info: Redefining \pageref on input line 6369.
 
 Package hyperref Message: Driver (autodetected): hpdftex.
 
-(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\hpdftex.def"
 File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
 \Fld@listcount=\count108
 \c@bookmark@seq@number=\count109
 
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\oberdiek\rerunfilecheck.sty"
 Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 82.
@@ -445,16 +453,22 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 \Hy@SectionHShift=\skip43
 )
 \@indexfile=\write3
-\openout3 = `coding_manual.idx'.
-
 
 Writing index file coding_manual.idx
-(./coding_manual.aux (./license.aux) (./requirements.aux) (./installation.aux)
-(./urltranslation.aux) (./network.aux) (./entities.aux) (./authorization.aux)
-(./storage.aux) (./xml.aux) (./xmlparser.aux) (./internationalization.aux)
-(./math.aux) (./graphical_editor.aux) (./glossary.aux))
-\openout1 = `coding_manual.aux'.
-
+(C:\github\loncapa\docs\code\coding_manual.aux
+(C:\github\loncapa\docs\code\license.aux)
+(C:\github\loncapa\docs\code\requirements.aux)
+(C:\github\loncapa\docs\code\installation.aux)
+(C:\github\loncapa\docs\code\urltranslation.aux)
+(C:\github\loncapa\docs\code\network.aux)
+(C:\github\loncapa\docs\code\entities.aux)
+(C:\github\loncapa\docs\code\authorization.aux)
+(C:\github\loncapa\docs\code\storage.aux) (C:\github\loncapa\docs\code\xml.aux)
+(C:\github\loncapa\docs\code\xmlparser.aux)
+(C:\github\loncapa\docs\code\internationalization.aux)
+(C:\github\loncapa\docs\code\math.aux)
+(C:\github\loncapa\docs\code\graphical_editor.aux)
+(C:\github\loncapa\docs\code\glossary.aux))
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
@@ -504,7 +518,7 @@ LaTeX Font Info:    ... okay on input line 9.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+("C:\Program Files (x86)\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count110
 \scratchdimen=\dimen121
@@ -517,29 +531,14 @@ LaTeX Font Info:    ... okay on input line 9.
 \MPnumerator=\count114
 \makeMPintoPDFobject=\count115
 \everyMPtoPDFconversion=\toks20
-) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
-
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
 )
-Package grfext Info: Graphics extension search list:
-(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
-G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 452.
-
-(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
-))
 \c@lstlisting=\count116
 \AtBeginShipoutBox=\box29
 Package hyperref Info: Link coloring OFF on input line 9.
-
-(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\gettitlestring.sty"
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count117
@@ -548,10 +547,9 @@ LaTeX Info: Redefining \ref on input line 9.
 LaTeX Info: Redefining \pageref on input line 9.
 LaTeX Info: Redefining \nameref on input line 9.
 
-(./coding_manual.out) (./coding_manual.out)
+(C:\github\loncapa\docs\code\coding_manual.out)
+(C:\github\loncapa\docs\code\coding_manual.out)
 \@outlinefile=\write4
-\openout4 = `coding_manual.out'.
-
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <12> on input line 16.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -561,34 +559,26 @@ LaTeX Font Info:    External font `cmex10' loaded for size
  [1
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
+{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}] [2
 
-] (./coding_manual.toc
+] (C:\github\loncapa\docs\code\coding_manual.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 3.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 3.
- [3] [4])
+
+[3] [4])
 \tf@toc=\write5
-\openout5 = `coding_manual.toc'.
-
- [1]
-\openout2 = `license.aux'.
-
- (./license.tex
-[2
+ [1] (C:\github\loncapa\docs\code\license.tex [2
 
 
 ]
 Chapter 1.
 LaTeX Font Info:    Try loading font information for T1+cmtt on input line 2.
-(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\t1cmtt.fd"
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )) [3]
-\openout2 = `requirements.aux'.
-
-
-(./requirements.tex [4
+(C:\github\loncapa\docs\code\requirements.tex [4
 
 
 
@@ -596,42 +586,33 @@ File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 Chapter 2.
 [5] [6]
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 56.
- (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 56.
-) [7]
-\openout2 = `installation.aux'.
-
-
-(./installation.tex [8
+)
+[7] (C:\github\loncapa\docs\code\installation.tex [8
 
 
 
 ]
 Chapter 3.
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2013/08/26 1.5b listings language file
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
+File: lstlang1.sty 2014/03/04 1.5c listings language file
 )
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2013/08/26 1.5b listings language file
-) [9]) [10]
-\openout2 = `urltranslation.aux'.
-
-
-(./urltranslation.tex
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
+File: lstlang1.sty 2014/03/04 1.5c listings language file
+) [9])
+[10] (C:\github\loncapa\docs\code\urltranslation.tex
 Chapter 4.
 [11
 
 
 
-]) [12]
-\openout2 = `network.aux'.
-
- (./network.tex
+]) [12] (C:\github\loncapa\docs\code\network.tex
 Chapter 5.
-<overview.pdf, id=743, 686.565pt x 523.9575pt>
+<overview.pdf, id=738, 686.565pt x 523.9575pt>
 File: overview.pdf Graphic file (type pdf)
  <use overview.pdf>
 Package pdftex.def Info: overview.pdf used on input line 14.
@@ -643,19 +624,14 @@ Package pdftex.def Info: overview.pdf used on input line 14.
 ]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [14 <./overview.pdf>] [15] [16]) [17]
-\openout2 = `entities.aux'.
-
- (./entities.tex [18
+ [14 <C:/github/loncapa/docs/code/overview.pdf>] [15] [16]) [17]
+(C:\github\loncapa\docs\code\entities.tex [18
 
 
 
 ]
 Chapter 6.
-[19]) [20]
-\openout2 = `authorization.aux'.
-
- (./authorization.tex
+[19]) [20] (C:\github\loncapa\docs\code\authorization.tex
 Chapter 7.
 [21
 
@@ -665,10 +641,7 @@ Chapter 7.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [23])
-[24]
-\openout2 = `storage.aux'.
-
- (./storage.tex
+[24] (C:\github\loncapa\docs\code\storage.tex
 Chapter 8.
 [25
 
@@ -687,130 +660,96 @@ Overfull \hbox (27.58339pt too wide) in paragraph at lines 185--186
  in a course has a unique ID, e.g., ``Jthi8TegI0GZ9Dr812N_2478_1406980671'',
  []
 
-) [28]
-\openout2 = `xml.aux'.
-
- (./xml.tex
+) [28] (C:\github\loncapa\docs\code\xml.tex
 Chapter 9.
 [29
 
 
 
-]) [30]
-\openout2 = `xmlparser.aux'.
-
- (./xmlparser.tex
+]) [30] (C:\github\loncapa\docs\code\xmlparser.tex
 Chapter 10.
 [31
 
 
 
-]) [32]
-\openout2 = `internationalization.aux'.
-
- (./internationalization.tex
+]) [32] (C:\github\loncapa\docs\code\internationalization.tex
 Chapter 11.
 [33
 
 
 
-] [34]) [35]
-\openout2 = `math.aux'.
-
- (./math.tex [36
+] [34]) [35] (C:\github\loncapa\docs\code\math.tex [36
 
 
 
 ]
 Chapter 12.
-[37] [38] [39]) [40]
-\openout2 = `graphical_editor.aux'.
-
- (./graphical_editor.tex
+[37] [38] [39]) [40] (C:\github\loncapa\docs\code\graphical_editor.tex
 Chapter 13.
 [41
 
 
 
-]
-Overfull \hbox (75.6411pt too wide) in paragraph at lines 51--52
-\T1/cmr/m/n/10 with a rel-a-tive path in \T1/cmtt/m/n/10 xml/editor/loncapa_dax
-e/pubspec.xml\T1/cmr/m/n/10 . The schema it uses is at \T1/cmtt/m/n/10 xml/edit
-or/loncapa_daxe/web/config/loncapa.xsd\T1/cmr/m/n/10 ,
- []
-
-
-Overfull \hbox (81.63963pt too wide) in paragraph at lines 51--52
-\T1/cmr/m/n/10 which should be the same as \T1/cmtt/m/n/10 conversion/loncapa.x
-sd\T1/cmr/m/n/10 . The con-fig-u-ra-tion file is at \T1/cmtt/m/n/10 xml/editor/
-loncapa_daxe/web/config/loncapa_config.xml\T1/cmr/m/n/10 . 
- []
-
-
-Overfull \hbox (57.71642pt too wide) in paragraph at lines 57--59
-[]\T1/cmr/m/n/10 It links to libudev.so.0, so a sym-bolic link can help if a di
-f-fer-ent ver-sion is in-stalled: \T1/cmtt/m/n/10 sudo ln -s /lib/x86_64-linux-
-gnu/libudev.so.1
- []
-
-
-Overfull \hbox (273.90749pt too wide) in paragraph at lines 67--72
-\T1/cmr/m/n/10 file can also be edited by spec-i-fy-ing its rel-a-tive path (fr
-om the web di-rec-tory) in the URL: \T1/cmtt/m/n/10 /loncapa_daxe/web/loncapa_d
-axe.html?file=test.problem&config=config/loncapa_config.xml 
- []
-
-) [42]
-\openout2 = `glossary.aux'.
-
- (./glossary.tex
+]) [42] (C:\github\loncapa\docs\code\glossary.tex
 Chapter 14.
 ) [43
 
 
 
-] (./coding_manual.ind [44
+] (C:\github\loncapa\docs\code\coding_manual.ind [44
 
 
 ])
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 33.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 33.
- (./coding_manual.aux (./license.aux)
-(./requirements.aux) (./installation.aux) (./urltranslation.aux) (./network.aux
-) (./entities.aux) (./authorization.aux) (./storage.aux) (./xml.aux)
-(./xmlparser.aux) (./internationalization.aux) (./math.aux)
-(./graphical_editor.aux) (./glossary.aux))
+
+(C:\github\loncapa\docs\code\coding_manual.aux
+(C:\github\loncapa\docs\code\license.aux)
+(C:\github\loncapa\docs\code\requirements.aux)
+(C:\github\loncapa\docs\code\installation.aux)
+(C:\github\loncapa\docs\code\urltranslation.aux)
+(C:\github\loncapa\docs\code\network.aux)
+(C:\github\loncapa\docs\code\entities.aux)
+(C:\github\loncapa\docs\code\authorization.aux)
+(C:\github\loncapa\docs\code\storage.aux) (C:\github\loncapa\docs\code\xml.aux)
+(C:\github\loncapa\docs\code\xmlparser.aux)
+(C:\github\loncapa\docs\code\internationalization.aux)
+(C:\github\loncapa\docs\code\math.aux)
+(C:\github\loncapa\docs\code\graphical_editor.aux)
+(C:\github\loncapa\docs\code\glossary.aux))
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 33.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 33.
 Package rerunfilecheck Info: File `coding_manual.out' has not changed.
-(rerunfilecheck)             Checksum: C14F2EEB9170700E40571CDBBCE23EB4;8363.
+(rerunfilecheck)             Checksum: B39247C22946CBCF9BF691090832A6F2;8490.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 33.
  ) 
 Here is how much of TeX's memory you used:
- 8157 strings out of 495028
- 115243 string characters out of 6181497
- 241695 words of memory out of 5000000
- 10980 multiletter control sequences out of 15000+600000
- 16680 words of font info for 37 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
- 36i,6n,53p,795b,1106s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/damien/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1000.600pk> </home/
-damien/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/damien/.te
-xmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/damien/.texmf-var/fo
-nts/pk/ljfour/jknappen/ec/ectt1000.600pk> </home/damien/.texmf-var/fonts/pk/ljf
-our/jknappen/ec/ecbx2074.600pk> </home/damien/.texmf-var/fonts/pk/ljfour/jknapp
-en/ec/ecsl1000.600pk> </home/damien/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx
-1000.600pk> </home/damien/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2488.600pk
-> </home/damien/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/d
-amien/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/damien/.tex
-mf-var/fonts/pk/ljfour/jknappen/ec/ecrm1728.600pk></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmsy10.pfb>
-Output written on coding_manual.pdf (48 pages, 711774 bytes).
+ 8048 strings out of 493921
+ 116218 string characters out of 3144876
+ 239712 words of memory out of 3000000
+ 10962 multiletter control sequences out of 15000+200000
+ 16680 words of font info for 37 fonts, out of 3000000 for 9000
+ 841 hyphenation exceptions out of 8191
+ 36i,6n,53p,824b,1106s stack positions out of 5000i,500n,10000p,200000b,50000s
+ <C:\Users\corey\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\
+ecti1000.pk> <C:\Users\corey\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\
+ec\dpi600\ecbx1200.pk> <C:\Users\corey\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour
+\jknappen\ec\dpi600\ecbx1440.pk> <C:\Users\corey\AppData\Local\MiKTeX\2.9\fonts
+\pk\ljfour\jknappen\ec\dpi600\ectt1000.pk> <C:\Users\corey\AppData\Local\MiKTeX
+\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx2074.pk> <C:\Users\corey\AppData\Lo
+cal\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecsl1000.pk> <C:\Users\corey\
+AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1000.pk> <C:\Us
+ers\corey\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx2488.
+pk> <C:\Users\corey\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600
+\ecrm1000.pk> <C:\Users\corey\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen
+\ec\dpi600\ecrm1200.pk> <C:\Users\corey\AppData\Local\MiKTeX\2.9\fonts\pk\ljfou
+r\jknappen\ec\dpi600\ecrm1728.pk><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1
+/public/amsfonts/cm/cmmi10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/p
+ublic/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/publ
+ic/amsfonts/cm/cmsy10.pfb>
+Output written on coding_manual.pdf (48 pages, 838185 bytes).
 PDF statistics:
- 1857 PDF objects out of 2073 (max. 8388607)
- 1166 compressed objects within 12 object streams
+ 1847 PDF objects out of 2073 (max. 8388607)
  204 named destinations out of 1000 (max. 500000)
  1022 words of extra memory for PDF output out of 10000 (max. 10000000)
 

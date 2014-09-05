@@ -48,13 +48,13 @@ A parallel task that is not strictly development of the editor is the conversion
 
 In the git, the schema for the current version of LON-CAPA is at \texttt{conversion/old\_loncapa.xsd} (a caveat: LON-CAPA documents are currently not XML and cannot be validated). The new schema is at \texttt{conversion/loncapa.xsd}. Document conversion is done with \texttt{conversion/clean.bash}.
 
-Daxe is located at \texttt{xml/editor/daxe}. The LON-CAPA web application is at \texttt{xml/editor/loncapa\_daxe}. It links to Daxe with a relative path in \texttt{xml/editor/loncapa\_daxe/pubspec.xml}. The schema it uses is at \texttt{xml/editor/loncapa\_daxe/web/config/loncapa.xsd}, which should be the same as \texttt{conversion/loncapa.xsd}. The configuration file is at \texttt{xml/editor/loncapa\_daxe/web/config/loncapa\_config.xml}.
+Daxe is located at \texttt{xml/editor/daxe}. The LON-CAPA web application is at \texttt{xml/editor/loncapa\_daxe}. It links to Daxe with a relative path in \texttt{xml/editor/loncapa\_daxe/pubspec.xml}. The schema it uses is at \\* \texttt{xml/editor/loncapa\_daxe/web/config/loncapa.xsd}, which should be the same as \texttt{conversion/loncapa.xsd}. The configuration file is at \texttt{xml/editor/loncapa\_daxe/web/config/loncapa\_config.xml}.
 
 \subsection{Edition and launch in Dart Editor}
 
 The Dart editor, while not necessary, is very useful for Dart development. This editor currently (August 2014) has two major bugs on Ubuntu/KUbuntu, so it is good to know the following workarounds:
 \begin{itemize}
-\item It links to libudev.so.0, so a symbolic link can help if a different version is installed:
+\item It links to libudev.so.0, so a symbolic link can help if a different version is installed: \\*
   \texttt{sudo ln -s /lib/x86\_64-linux-gnu/libudev.so.1 /lib/x86\_64-linux-gnu/libudev.so.0}
 \item It crashes with KDE's (default) oxygen theme, so the following workaround is needed to start it when using oxygen:
   \texttt{GTK2\_RC\_FILES=/usr/share/themes/Raleigh/gtk-2.0/gtkrc DartEditor}
@@ -67,8 +67,8 @@ Once Dart Editor is started, the directories \texttt{xml/editor/daxe} and \textt
 The \texttt{Run-Manage Launches...} menu can be used to configure launches with Dartium and other browsers (Dartium is a version of Chromium with an enabled Dart VM). Dartium is good for development, but testing with other browsers (which requires an automatic conversion into Javascript) is also necessary.
 The following text should be used in the "HTML file" field:
 \texttt{/loncapa\_daxe/web/loncapa\_daxe.html?config=config/loncapa\_config.xml}
-This will start the editor with an empty file. A file can also be edited by specifying its relative path (from the web directory) in the URL:
-\texttt{/loncapa\_daxe/web/loncapa\_daxe.html?file=test.problem\&config=config/loncapa\_config.xml}
+This will start the editor with an empty file. A file can also be edited by specifying its relative path (from the web directory) in the \\*
+URL: \texttt{/loncapa\_daxe/web/loncapa\_daxe.html?file=test.problem\&config=config/loncapa\_config.xml}
 
 Note that there is a bug in the Dart SDK 1.5 that prevents the use of Daxe in Javascript (Dart Issue 19888). It is fixed in v1.6 (which is not out yet as of August 25 2014). We could work around it with Javascript, but waiting for the new version is easier. Since early 2013 (before version 1), there has been some issues with the conversion from Dart to Javascript, but Google has been fast to fix them when they were reported at \url{https://code.google.com/p/dart/issues/list}.
 

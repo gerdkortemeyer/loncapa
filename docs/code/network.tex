@@ -20,7 +20,7 @@ LON-CAPA has logical layers, see Fig.~\ref{fig:overview}:
 LON-CAPA is built as a network of servers, which can host sessions and store data. LON-CAPA can have several independent clusters of such servers, but it is expected that in real operation, there is essentially one production cluster. In principle, any server in a cluster can host sessions for any user in the cluster, and any server in the network should be able serve any asset in the system. In practice, limitations may be put on this to preserve privacy and copyright.
 
 \index{library server}\index{access server}
-There are two classes of servers: access and library. The difference is that library servers permanently store data, and access servers to do. This means that library servers need to remain stable and have backup, which access servers can be added or removed on demand to absorb session loads.
+There are two classes of servers: access and library. The difference is that library servers permanently store data, and access servers do not. This means that library servers need to remain stable and have backup, which access servers can be added or removed on demand to absorb session loads.
 \section{Cluster Table}
 \subsection{Configuration}\index{cluster table}\label{clustertable}
 Clusters are established by cluster tables, see below for an example
@@ -82,7 +82,7 @@ Who is cluster manager is configured in
 \begin{verbatim}
 /home/loncapa/cluster/cluster_manager.conf
 \end{verbatim}
-This need to be the full DNS name of the cluster manager, and essentially configures which cluster a server is a member of.
+This needs to be the full DNS name of the cluster manager, and essentially configures which cluster a server is a member of.
 
 The cluster manager can trigger updating this table on other servers via
 \begin{verbatim}
