@@ -90,7 +90,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="part"/>
         <xs:element ref="allow"/>
         <xs:element ref="displayduedate"/>
@@ -352,7 +352,7 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
-      <xs:group ref="block"/>
+      <xs:group ref="lcblocks"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="web"/>
       <xs:element ref="parserlib"/>
@@ -529,7 +529,7 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
-      <xs:group ref="block"/>
+      <xs:group ref="lcblocks"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="web"/>
       <xs:element ref="parserlib"/>
@@ -665,7 +665,7 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
-      <xs:group ref="block"/>
+      <xs:group ref="lcblocks"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="web"/>
       <xs:element ref="parserlib"/>
@@ -704,7 +704,7 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
-      <xs:group ref="block"/>
+      <xs:group ref="lcblocks"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="web"/>
       <xs:element ref="parserlib"/>
@@ -785,7 +785,7 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
-      <xs:group ref="block"/>
+      <xs:group ref="lcblocks"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="web"/>
       <xs:element ref="parserlib"/>
@@ -914,7 +914,7 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text"/>
-      <xs:group ref="block"/>
+      <xs:group ref="lcblocks"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="web"/>
       <xs:element ref="parserlib"/>
@@ -2244,7 +2244,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="web"/>
         <xs:element ref="parserlib"/>
@@ -3675,7 +3675,7 @@
       List of common block elements that cannot be used anywhere text is used.
     </xs:documentation>
   </xs:annotation>
-  <xs:group name="block">
+  <xs:group name="lcblocks">
     <xs:choice>
       <xs:element ref="import"/>
       <xs:element ref="block"/>
@@ -3708,7 +3708,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="parameter"/>
@@ -3834,7 +3834,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="postanswerdate"/>
@@ -3982,7 +3982,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="postanswerdate"/>
@@ -4024,7 +4024,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="part"/>
@@ -4059,7 +4059,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="postanswerdate"/>
@@ -4102,7 +4102,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="randomlabel"/>
@@ -4127,7 +4127,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="randomlabel"/>
@@ -4165,7 +4165,7 @@
         <xs:element ref="customresponse"/>
         <xs:element ref="externalresponse"/>
         <xs:element name="foilgroup" type="rankresponse--foilgroup"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="img"/>
         <xs:element ref="postanswerdate"/>
         <xs:element ref="preduedate"/>
@@ -4194,7 +4194,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="postanswerdate"/>
@@ -4218,7 +4218,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="postanswerdate"/>
@@ -4335,7 +4335,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="web"/>
         <xs:element ref="parserlib"/>
@@ -4352,7 +4352,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="web"/>
         <xs:element ref="parserlib"/>
@@ -4407,7 +4407,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="web"/>
         <xs:element ref="parserlib"/>
@@ -4461,7 +4461,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="web"/>
         <xs:element ref="parserlib"/>
@@ -4507,7 +4507,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="web"/>
         <xs:element ref="parserlib"/>
@@ -4524,7 +4524,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:group ref="block"/>
+        <xs:group ref="lcblocks"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="web"/>
         <xs:element ref="parserlib"/>
