@@ -59,8 +59,15 @@ sub determine_path {
 # =====================================================
 #
 sub edit_permission {
-   my ($rentity,$rdomain,$rurl)=@_;
-   return 1;
+   my ($rurl)=@_;
+# Extract author domain and entity from URL
+   my ($adomain,$aentity)=($rurl=~/^([^\/]+)\/([^\/]+)\//);
+   return &allowed_user('edit_portfolio',undef,$aentity,$adomain);
+}
+
+sub verify_url {
+   my ($entity,$url)=@_;
+   return (&Apache::lc_entity_urls::url_to_entity('/asset/-/-/'.$url) eq $entity);
 }
 
 # =====================================================
@@ -71,8 +78,8 @@ sub edit_permission {
 #
 sub change_title_link {
    my ($entity,$domain,$url,$title)=@_;
-   if (&edit_permission($entity,$domain,$url)) {
-      return '<a href="#" onClick="change_title(\''.$domain.'\',\''.$entity.
+   if (&edit_permission($url)) {
+      return '<a href="#" onClick="change_title(\''.$entity.'\',\''.$domain.
           '\',\''.&Apache::lc_ui_utils::query_encode($url).
           '\',\''.&Apache::lc_ui_utils::query_encode($title).'\')">'.
                   ($title?$title:'-').'</a>',
@@ -85,7 +92,14 @@ sub change_title_link {
 #
 sub change_title {
    my ($entity,$domain,$url,$title)=@_;
-   unless (&edit_permission($entity,$domain,$url)) { return 'error'; }
+   unless (&edit_permission($url)) { 
+      &logwarning("No edit portfolio permission ($url)");
+      return 'error'; 
+   }
+   unless (&verify_url($entity,$url)) {
+      &logwarning("Mismatch ($entity) ($domain) ($url)");
+      return 'error';
+   }
 &logdebug("Change $entity $domain $url $title");
    return 'ok';
 }
