@@ -91,21 +91,18 @@
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
         <xs:group ref="lcblocks"/>
+        <xs:group ref="inserts"/>
         <xs:element ref="part"/>
         <xs:element ref="allow"/>
-        <xs:element ref="displayduedate"/>
-        <xs:element ref="displaytitle"/>
-        <xs:element ref="endpartmarker"/>
         <xs:element ref="meta"/>
         <xs:element ref="parameter"/>
-        <xs:element ref="postanswerdate"/>
-        <xs:element ref="preduedate"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
         <xs:element ref="startpartmarker"/>
+        <xs:element ref="endpartmarker"/>
         <xs:element ref="startouttext"/>
         <xs:element ref="endouttext"/>
       </xs:choice>
@@ -125,17 +122,14 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
+        <xs:group ref="inserts"/>
         <xs:element ref="display"/>
-        <xs:element ref="displayduedate"/>
-        <xs:element ref="displaytitle"/>
         <xs:element ref="gnuplot"/>
         <xs:element ref="import"/>
         <xs:element ref="notsolved"/>
         <xs:element ref="organicstructure"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="part"/>
-        <xs:element ref="postanswerdate"/>
-        <xs:element ref="preduedate"/>
         <xs:element ref="problemtype"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="randomlist"/>
@@ -3672,6 +3666,20 @@
   
   <xs:annotation>
     <xs:documentation>
+      List of elements that insert something if a condition is verified.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:group name="inserts">
+    <xs:choice>
+      <xs:element ref="displaytitle"/>
+      <xs:element ref="displayduedate"/>
+      <xs:element ref="preduedate"/>
+      <xs:element ref="postanswerdate"/>
+    </xs:choice>
+  </xs:group>
+  
+  <xs:annotation>
+    <xs:documentation>
       List of common block elements that cannot be used anywhere text is used.
     </xs:documentation>
   </xs:annotation>
@@ -3709,11 +3717,8 @@
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
         <xs:group ref="lcblocks"/>
-        <xs:element ref="displayduedate"/>
-        <xs:element ref="displaytitle"/>
+        <xs:group ref="inserts"/>
         <xs:element ref="parameter"/>
-        <xs:element ref="postanswerdate"/>
-        <xs:element ref="preduedate"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -3835,10 +3840,7 @@
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
         <xs:group ref="lcblocks"/>
-        <xs:element ref="displayduedate"/>
-        <xs:element ref="displaytitle"/>
-        <xs:element ref="postanswerdate"/>
-        <xs:element ref="preduedate"/>
+        <xs:group ref="inserts"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="web"/>
         <xs:element ref="parserlib"/>
@@ -3983,10 +3985,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
         <xs:group ref="lcblocks"/>
-        <xs:element ref="displayduedate"/>
-        <xs:element ref="displaytitle"/>
-        <xs:element ref="postanswerdate"/>
-        <xs:element ref="preduedate"/>
+        <xs:group ref="inserts"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="web"/>
         <xs:element ref="solved"/>
@@ -4025,11 +4024,8 @@
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
         <xs:group ref="lcblocks"/>
-        <xs:element ref="displayduedate"/>
-        <xs:element ref="displaytitle"/>
+        <xs:group ref="inserts"/>
         <xs:element ref="part"/>
-        <xs:element ref="postanswerdate"/>
-        <xs:element ref="preduedate"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="web"/>
         <xs:element ref="parserlib"/>
@@ -4060,10 +4056,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
         <xs:group ref="lcblocks"/>
-        <xs:element ref="displayduedate"/>
-        <xs:element ref="displaytitle"/>
-        <xs:element ref="postanswerdate"/>
-        <xs:element ref="preduedate"/>
+        <xs:group ref="inserts"/>
         <xs:element ref="web"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -4195,10 +4188,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
         <xs:group ref="lcblocks"/>
-        <xs:element ref="displayduedate"/>
-        <xs:element ref="displaytitle"/>
-        <xs:element ref="postanswerdate"/>
-        <xs:element ref="preduedate"/>
+        <xs:group ref="inserts"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="startouttext"/>
@@ -4219,10 +4209,7 @@
         <xs:group ref="text"/>
         <xs:group ref="responses"/>
         <xs:group ref="lcblocks"/>
-        <xs:element ref="displayduedate"/>
-        <xs:element ref="displaytitle"/>
-        <xs:element ref="postanswerdate"/>
-        <xs:element ref="preduedate"/>
+        <xs:group ref="inserts"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="web"/>
         <xs:element ref="parserlib"/>
@@ -5343,48 +5330,20 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
-        <xs:element ref="allow"/>
-        <xs:element ref="block"/>
-        <xs:element ref="customresponse"/>
-        <xs:element ref="display"/>
-        <xs:element ref="displayduedate"/>
-        <xs:element ref="displaytitle"/>
-        <xs:element ref="endpartmarker"/>
-        <xs:element ref="essayresponse"/>
-        <xs:element ref="externalresponse"/>
-        <xs:element ref="formularesponse"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="imageresponse"/>
-        <xs:element ref="import"/>
-        <xs:element ref="matchresponse"/>
-        <xs:element ref="mathresponse"/>
-        <xs:element ref="functionplotresponse"/>
-        <xs:element ref="meta"/>
-        <xs:element ref="notsolved"/>
-        <xs:element ref="numericalresponse"/>
-        <xs:element ref="optionresponse"/>
-        <xs:element ref="organicresponse"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="parameter"/>
-        <xs:element ref="parserlib"/>
+        <xs:group ref="responses"/>
+        <xs:group ref="lcblocks"/>
+        <xs:group ref="inserts"/>
         <xs:element ref="part"/>
-        <xs:element ref="postanswerdate"/>
-        <xs:element ref="preduedate"/>
-        <xs:element ref="problemtype"/>
-        <xs:element ref="radiobuttonresponse"/>
+        <xs:element ref="allow"/>
+        <xs:element ref="meta"/>
+        <xs:element ref="parameter"/>
         <xs:element ref="randomlabel"/>
-        <xs:element ref="randomlist"/>
-        <xs:element ref="rankresponse"/>
-        <xs:element ref="reactionresponse"/>
-        <xs:element ref="script"/>
+        <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
+        <xs:element ref="notsolved"/>
         <xs:element ref="startpartmarker"/>
-        <xs:element ref="stringresponse"/>
-        <xs:element ref="tex"/>
-        <xs:element ref="while"/>
-        <xs:element ref="window"/>
-        <xs:element ref="dataresponse"/>
+        <xs:element ref="endpartmarker"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="class" type="xs:string"/>
