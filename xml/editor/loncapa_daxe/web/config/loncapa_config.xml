@@ -820,7 +820,7 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="answer">
-      <TITRE>Answer algorithm</TITRE>
+      <TITRE>Answer</TITRE>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
       </STRINGS_ATTRIBUT>
@@ -1360,6 +1360,17 @@
       <TITRE>Response: External</TITRE>
       <DOCUMENTATION>
         Query for a long text or a line, sent to an external program for grading.
+        
+        The form sent will consist of:
+        - LONCAPA student response full text of what the student entered in the entry field
+        - LONCAPA correct answer contents of the answer attribute
+        - LONCAPA language specified language encoding of the requesting resource
+        - all items in the form attribute if any of these clash with the above, the above values will overwite the value in the form attribute
+        
+        The response of the remote server needs to be in XML as follows:
+        - loncapagrade: takes no attributes, but must surround the response.
+        - awarddetail: required. The delimited text inside must be one of the detailed results that appears in the data storage documentation. CVS:loncapa/doc/homework/datastorage, look for resource.partid.responseid.awarddetail.
+        - message: optional message to have shown to the student.
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
