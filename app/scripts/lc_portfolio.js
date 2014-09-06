@@ -33,13 +33,6 @@ function change_status(entity,domain,url) {
 }
 
 function init_datatable() {
-    $('#portfoliolist tr').click( function() {
-                if ( $(this).hasClass('row_selected') ) {
-                        $(this).removeClass('row_selected');
-                } else {
-                        $(this).addClass('row_selected');
-                }
-    } );
 
    var noCache = parent.no_cache_value();
    $('#portfoliolist').dataTable( {
@@ -50,6 +43,14 @@ function init_datatable() {
          "sUrl" : "/datatable_i14n"
       },
       "fnInitComplete": function(oSettings, json) {
+         $('#portfoliolist tr').click( function() {
+                if ( $(this).hasClass('row_selected') ) {
+                        $(this).removeClass('row_selected');
+                } else {
+                        $(this).addClass('row_selected');
+                }
+         } );
+
          adjust_framesize();
       },
       "aoColumns" : [
