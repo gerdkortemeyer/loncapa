@@ -28,6 +28,7 @@ h3 {
 }
 
 .lcpathrow li a {
+    font-family: sans-serif;
     text-decoration: none;
     color: #30a097;
 }
@@ -37,6 +38,10 @@ h3 {
 }
 
 
+.lcdirlink {
+    text-decoration: none;
+    color: #30a097;
+}
 
 .lcvisibilitytoggle {
    font-family: sans-serif;

@@ -81,7 +81,7 @@ sub change_title_link {
    if (&edit_permission($url)) {
       return '<a href="#" onClick="change_title(\''.$entity.'\',\''.$domain.
           '\',\''.&Apache::lc_ui_utils::query_encode($url).
-          '\',\''.&Apache::lc_ui_utils::query_encode($title).'\')">'.
+          '\',\''.&Apache::lc_ui_utils::query_encode($title).'\')" class="lcdirlink">'.
                   ($title?$title:'-').'</a>',
    } else {
       return ($title?$title:'-');
@@ -132,9 +132,9 @@ sub listdirectory {
       push(@{$output->{'aaData'}},
             ['&nbsp;',
              &Apache::lc_xml_utils::file_icon('special','dir_up'),
-             '<i><a href="#" onClick="set_path(\''.$uppath.'\')">'.&mt('Parent directory').'</a></i>',
-             'Title',
-             'State',
+             '<i><a href="#" onClick="set_path(\''.$uppath.'\')" class="lcdirlink">'.&mt('Parent directory').'</a></i>',
+             '',
+             '',
              undef,
              undef,
              '',
@@ -188,7 +188,7 @@ sub listdirectory {
           $sort_last_date=-1;
           $sort_last_modified=-1;
           my $fullpath=$path.$file->{'filename'}.'/';
-          $filename='<a href="#" onClick="set_path(\''.$fullpath.'\')">'.$file->{'filename'}."</a>";
+          $filename='<a href="#" onClick="set_path(\''.$fullpath.'\')" class="lcdirlink">'.$file->{'filename'}."</a>";
        }
 # Add the output line
        push(@{$output->{'aaData'}},
