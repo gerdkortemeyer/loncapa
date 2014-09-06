@@ -71,6 +71,38 @@ sub verify_url {
 }
 
 # =====================================================
+# Publication status
+# =====================================================
+#
+sub publication_status_link {
+   my ($entity,$domain,$url,$obsolete,$modified,$published)=@_;
+   my $led='red';
+   my $status=&mt('Unpublished');
+   if ($obsolete) {
+      $led='black';
+      $status=&mt('Obsolete');
+   } elsif ($published) {
+      if ($modified) {
+         $led='orange';
+         $status=&mt('Modified');
+      } else {
+         $led='green';
+         $status=&mt('Published');
+      }
+   }
+   my $inner=&Apache::lc_xml_utils::file_icon('special','led_'.$led).'&nbsp'.$status;
+   if (&edit_permission($url)) {
+      return '<a href="#" onClick="change_status(\''.$entity.'\',\''.$domain.
+          '\',\''.&Apache::lc_ui_utils::query_encode($url).
+          '\',\''.$obsolete.'\',\''.$modified.'\',\''.$published.'\')" class="lcdirlink">'.
+                  $inner.'</a>',
+   } else {
+      return $inner;
+   }
+}
+
+
+# =====================================================
 # Changing titles
 # =====================================================
 #
@@ -198,7 +230,8 @@ sub listdirectory {
              &Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}),
              $filename,
              &change_title_link($file->{'entity'},$file->{'domain'},$file->{'url'},$file->{'metadata'}->{'title'}),
-             'Obs '.$obsolete,
+#FIXME: modified, etc.
+             &publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,0,0),
              $size,
              $version,
              ($sort_first_date>0?'<time datetime="'.$sort_first_date.'">':'').$display_first_date.($sort_first_date>0?'</time>':''),

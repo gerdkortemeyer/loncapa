@@ -35,6 +35,10 @@ sub file_icon {
    my ($type,$name)=@_;
    if ($type eq 'special') {
       if ($name eq 'dir_up') { return 'dir_up'; }
+      if ($name eq 'led_green') { return 'led_green'; }
+      if ($name eq 'led_orange') { return 'led_orange'; }
+      if ($name eq 'led_red') { return 'led_red'; }
+      if ($name eq 'led_black') { return 'led_black'; }
    }
    if ($type eq 'directory') { return 'folder_closed'; }
    unless ($extension) { &load_extension(); }

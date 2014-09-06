@@ -28,6 +28,10 @@ function change_title(entity,domain,url,title) {
    parent.display_modal('/modals/lc_new_title.html?domain='+domain+'&entity='+entity+'&url='+url+'&title='+title);
 }
 
+function change_status(entity,domain,url,obsolete,modified,published) {
+   alert("Called change status");
+}
+
 function init_datatable() {
     $('#portfoliolist tr').click( function() {
                 if ( $(this).hasClass('row_selected') ) {

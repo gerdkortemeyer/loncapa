@@ -230,6 +230,14 @@ use utf8;
 
 'Publication State' => 'Veröffentlichungsstatus',
 
+'Obsolete' => 'Veraltet',
+
+'Published' => 'Veröffentlicht',
+
+'Unpublished' => 'Unveröffentlicht',
+
+'Modified' => 'Verändert',
+
 'Show/Hide Obsolete' => 'Veraltete anzeigen/verbergen',
 
 'File Size' => 'Dateigröße',
