@@ -93,8 +93,7 @@ sub publication_status_link {
    my $inner=&Apache::lc_xml_utils::file_icon('special','led_'.$led).'&nbsp'.$status;
    if (&edit_permission($url)) {
       return '<a href="#" onClick="change_status(\''.$entity.'\',\''.$domain.
-          '\',\''.&Apache::lc_ui_utils::query_encode($url).
-          '\',\''.$obsolete.'\',\''.$modified.'\',\''.$published.'\')" class="lcdirlink">'.
+          '\',\''.&Apache::lc_ui_utils::query_encode($url).'\')" class="lcdirlink">'.
                   $inner.'</a>',
    } else {
       return $inner;
@@ -110,13 +109,14 @@ sub publication_status_link {
 #
 sub change_title_link {
    my ($entity,$domain,$url,$title)=@_;
+   my $inner=($title?$title:'<i>- '.&mt('Untitled').' -</i>');
    if (&edit_permission($url)) {
       return '<a href="#" onClick="change_title(\''.$entity.'\',\''.$domain.
           '\',\''.&Apache::lc_ui_utils::query_encode($url).
           '\',\''.&Apache::lc_ui_utils::query_encode($title).'\')" class="lcdirlink">'.
-                  ($title?$title:'-').'</a>',
+                  $inner.'</a>',
    } else {
-      return ($title?$title:'-');
+      return $inner;
    }
 }
 #

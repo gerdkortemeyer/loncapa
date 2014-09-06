@@ -28,8 +28,8 @@ function change_title(entity,domain,url,title) {
    parent.display_modal('/modals/lc_new_title.html?domain='+domain+'&entity='+entity+'&url='+url+'&title='+title);
 }
 
-function change_status(entity,domain,url,obsolete,modified,published) {
-   alert("Called change status");
+function change_status(entity,domain,url) {
+   parent.display_modal('/modals/lc_change_status.html?domain='+domain+'&entity='+entity+'&url='+url);
 }
 
 function init_datatable() {

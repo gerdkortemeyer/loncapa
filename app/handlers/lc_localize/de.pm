@@ -230,6 +230,10 @@ use utf8;
 
 'Publication State' => 'Veröffentlichungsstatus',
 
+'Publication' => 'Veröffentlichung',
+
+'Choose how this file is shared.' => 'Wählen Sie, wie diese Datei verwendet werden kann.',
+
 'Obsolete' => 'Veraltet',
 
 'Published' => 'Veröffentlicht',
@@ -237,6 +241,8 @@ use utf8;
 'Unpublished' => 'Unveröffentlicht',
 
 'Modified' => 'Verändert',
+
+'Untitled' => 'Ohne Titel',
 
 'Show/Hide Obsolete' => 'Veraltete anzeigen/verbergen',
 

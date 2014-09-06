@@ -37,6 +37,9 @@ h3 {
    display:inline;
 }
 
+.lcfileicon {
+    vertical-align:middle;
+}
 
 .lcdirlink {
     text-decoration: none;
