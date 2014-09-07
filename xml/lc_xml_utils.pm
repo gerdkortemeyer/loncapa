@@ -57,7 +57,8 @@ sub form_escape {
 #
 sub file_icon {
    my ($type,$name)=@_;
-   return '<img class="lcfileicon" src="/images/fileicons/'.&Apache::lc_file_utils::file_icon($type,$name).'.gif" />';
+   my $icon=&Apache::lc_file_utils::file_icon($type,$name);
+   return '<img class="lcfileicon" src="/images/fileicons/'.$icon.'.gif" alt="'.$icon.'" />';
 }
    
 1;

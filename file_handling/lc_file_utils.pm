@@ -47,6 +47,17 @@ sub file_icon {
    return 'unknown';
 }
 
+sub human_readable_size {
+   my ($size)=@_;
+   if ($size>1024*1024) {
+      return int($size/(1024*1024)+0.5).' MB';
+   } elsif ($size>1024) {
+      return int($size/1024+0.5).' KB';
+   } else {
+      return $size.' B';
+   }
+}
+
 sub load_extension {
    $extension=&Apache::lc_json_utils::json_to_perl(&readfile(&lc_conf_dir().'extensions.json'));
 }

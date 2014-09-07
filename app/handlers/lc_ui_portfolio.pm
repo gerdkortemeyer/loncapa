@@ -30,6 +30,8 @@ use Apache::lc_logs;
 use Apache::lc_ui_localize;
 use Apache::lc_authorize;
 use Apache::lc_xml_forms();
+use Apache::lc_file_utils();
+use Apache::lc_xml_utils();
 use HTML::Entities;
 
 use Data::Dumper;
@@ -109,7 +111,7 @@ sub publication_status_link {
 #
 sub change_title_link {
    my ($entity,$domain,$url,$title)=@_;
-   my $inner=($title?$title:'<i>- '.&mt('Untitled').' -</i>');
+   my $inner=($title?$title:'-');
    if (&edit_permission($url)) {
       return '<a href="#" onClick="change_title(\''.$entity.'\',\''.$domain.
           '\',\''.&Apache::lc_ui_utils::query_encode($url).
@@ -164,11 +166,13 @@ sub listdirectory {
       push(@{$output->{'aaData'}},
             ['&nbsp;',
              &Apache::lc_xml_utils::file_icon('special','dir_up'),
+             '0',
              '<i><a href="#" onClick="set_path(\''.$uppath.'\')" class="lcdirlink">'.&mt('Parent directory').'</a></i>',
              '',
              '',
-             undef,
-             undef,
+             '',
+             -2,
+             '',
              '',
              -2,
              '',
@@ -195,9 +199,12 @@ sub listdirectory {
        my $display_last_date=&mt('Never');
        my $sort_last_date=0;
        my $filename='';
-       my $size=undef;
+       my $size='';
+       my $sort_size=-1;
+       my $status='';
        my $display_last_modified=&mt('Never');
        my $sort_last_modified=0;
+       my $sort_type='1';
        if ($file->{'type'} eq 'file') {
 # It's a file, so we have dates, etc
           if ($file->{'metadata'}->{'current_version'}) {
@@ -209,8 +216,11 @@ sub listdirectory {
           }
           ($display_last_modified,$sort_last_modified)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'filedata'}->{'wrk'}->{'modified'}));
-          $size=$file->{'metadata'}->{'filedata'}->{'wrk'}->{'size'};
+          $status=&publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,0,0);
+          $sort_size=$file->{'metadata'}->{'filedata'}->{'wrk'}->{'size'};
+          $size=&Apache::lc_file_utils::human_readable_size($sort_size);
           $filename=$file->{'filename'};
+          $sort_type=&Apache::lc_file_utils::file_icon($file->{'type'},$file->{'filename'});
        } else {
 # It's a directory
           $display_first_date='';
@@ -228,11 +238,12 @@ sub listdirectory {
                &Apache::lc_json_utils::perl_to_json({'entity' => $file->{'entity'}, 'domain' => $file->{'domain'}, 'url' => $file->{'url'}}),
                          '\W'),
              &Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}),
+             $sort_type,
              $filename,
              &change_title_link($file->{'entity'},$file->{'domain'},$file->{'url'},$file->{'metadata'}->{'title'}),
-#FIXME: modified, etc.
-             &publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,0,0),
+             $status,
              $size,
+             $sort_size,
              $version,
              ($sort_first_date>0?'<time datetime="'.$sort_first_date.'">':'').$display_first_date.($sort_first_date>0?'</time>':''),
              $sort_first_date,

@@ -55,17 +55,19 @@ function init_datatable() {
       },
       "aoColumns" : [
          { "bVisible": false },
-         null,
-         null,
-         null,
-         null,
+         {"iDataSort": 2},
          { "bVisible": false },
+         null,
+         null,
          null,
          {"iDataSort": 7, "bVisible": false },
+         {"bVisible": false },
+         null,
+         {"iDataSort": 10, "bVisible": false },
          { "bVisible": false },
-         {"iDataSort": 9, "bVisible": false },
+         {"iDataSort": 12, "bVisible": false },
          { "bVisible": false },
-         {"iDataSort": 11, "bVisible": false },
+         {"iDataSort": 14, "bVisible": false },
          { "bVisible": false }
       ]
     } );
