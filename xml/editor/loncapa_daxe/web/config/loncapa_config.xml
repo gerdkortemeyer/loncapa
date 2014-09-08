@@ -434,6 +434,7 @@
     <AFFICHAGE_ELEMENT element="audio" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="map" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="area" type="vide"/>
+    <AFFICHAGE_ELEMENT element="canvas" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="form" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="input" type="vide"/>
     <AFFICHAGE_ELEMENT element="select" type="string"/>
@@ -2919,6 +2920,12 @@
       <DOCUMENTATION>
         Inline style
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="class">
+        <TITRE>class</TITRE>
+      </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="style">
         <TITRE>style</TITRE>
       </STRINGS_ATTRIBUT>
@@ -3079,11 +3086,11 @@
       <STRINGS_ATTRIBUT attribut="standby">
         <TITRE>standby</TITRE>
       </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="height">
-        <TITRE>height</TITRE>
-      </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="width">
         <TITRE>width</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="usemap">
         <TITRE>usemap</TITRE>
@@ -3130,16 +3137,16 @@
           The MIME type to use to select the plug-in to instantiate.
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="height">
-        <TITRE>height</TITRE>
-        <DOCUMENTATION>
-          The displayed height of the resource, in CSS pixels.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="width">
         <TITRE>width</TITRE>
         <DOCUMENTATION>
           The displayed width of the resource, in CSS pixels.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+        <DOCUMENTATION>
+          The displayed height of the resource, in CSS pixels.
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
@@ -3270,6 +3277,27 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="alt">
         <TITRE>alt</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="canvas">
+      <TITRE>Canvas</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;canvas&gt; Element can be used to draw graphics via scripting (usually JavaScript). For example, it can be used to draw graphs, make photo compositions or even perform animations. You may (and should) provide alternate content inside the &lt;canvas&gt; block. That content will be rendered both on older browsers that don't support canvas and in browsers with JavaScript disabled.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="class">
+        <TITRE>class</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="style">
+        <TITRE>style</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="form">

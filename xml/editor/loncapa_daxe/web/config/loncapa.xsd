@@ -2591,7 +2591,6 @@
       <xs:element ref="problemtype"/>
       <xs:element ref="randomlist"/>
       <xs:element ref="script"/>
-      <xs:element ref="display"/>
       <xs:element ref="postanswerdate"/>
       <xs:element ref="preduedate"/>
       <xs:element ref="web"/>
@@ -4489,6 +4488,7 @@
       <xs:element ref="video"/>
       <xs:element ref="audio"/>
       <xs:element ref="map"/>
+      <xs:element ref="canvas"/>
       <xs:element ref="form"/>
       <xs:element ref="fieldset"/>
       <xs:element ref="iframe"/>
@@ -4580,7 +4580,9 @@
       <xs:element ref="sub"/>
       <xs:element ref="i"/>
     </xs:choice>
-    <xs:attribute name="id" type="xs:string"/>
+    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="class" type="xs:NMTOKENS"/>
+    <xs:attribute name="style" type="xs:string"/>
   </xs:complexType>
   
   <xs:group name="head.misc">
@@ -4758,8 +4760,8 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="blockText"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="class" type="xs:string"/>
+      <xs:attribute name="id" type="xs:ID"/>
+      <xs:attribute name="class" type="xs:NMTOKENS"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="h1" type="headerContent">
@@ -4831,8 +4833,8 @@
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="class" type="xs:string"/>
+      <xs:attribute name="id" type="xs:ID"/>
+      <xs:attribute name="class" type="xs:NMTOKENS"/>
       <xs:attribute name="style" type="xs:string"/>
     </xs:complexType>
   </xs:element>
@@ -4845,8 +4847,8 @@
     <xs:complexType mixed="true">
       <xs:complexContent mixed="true">
         <xs:extension base="inlineBaseType">
-          <xs:attribute name="id" type="xs:string"/>
-          <xs:attribute name="class" type="xs:string"/>
+          <xs:attribute name="id" type="xs:ID"/>
+          <xs:attribute name="class" type="xs:NMTOKENS"/>
           <xs:attribute name="style" type="xs:string"/>
         </xs:extension>
       </xs:complexContent>
@@ -4886,7 +4888,8 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text"/>
       </xs:choice>
-      <xs:attribute name="class" type="xs:string"/>
+      <xs:attribute name="id" type="xs:ID"/>
+      <xs:attribute name="class" type="xs:NMTOKENS"/>
       <xs:attribute name="style" type="xs:string"/>
     </xs:complexType>
   </xs:element>
@@ -5003,7 +5006,8 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlineText"/>
       </xs:choice>
-      <xs:attribute name="class" type="xs:string"/>
+      <xs:attribute name="id" type="xs:ID"/>
+      <xs:attribute name="class" type="xs:NMTOKENS"/>
       <xs:attribute name="style" type="xs:string"/>
     </xs:complexType>
   </xs:element>
@@ -5163,7 +5167,8 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="class" type="xs:string"/>
+      <xs:attribute name="id" type="xs:ID"/>
+      <xs:attribute name="class" type="xs:NMTOKENS"/>
       <xs:attribute name="style" type="xs:string"/>
     </xs:complexType>
   </xs:element>
@@ -5203,17 +5208,88 @@
         <xs:group ref="blockText"/>
         <xs:group ref="inlineText"/>
       </xs:choice>
-      <xs:attribute name="classid" type="xs:string"/>
-      <xs:attribute name="codebase" type="xs:string"/>
-      <xs:attribute name="data" type="xs:string"/>
-      <xs:attribute name="type" type="xs:string"/>
-      <xs:attribute name="codetype" type="xs:string"/>
-      <xs:attribute name="archive" type="xs:string"/>
-      <xs:attribute name="standby" type="xs:string"/>
-      <xs:attribute name="height" type="htmlLength"/>
-      <xs:attribute name="width" type="htmlLength"/>
-      <xs:attribute name="usemap" type="xs:string"/>
-      <xs:attribute name="name" type="xs:NMTOKEN"/>
+      <xs:attribute name="classid" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The URI of the object's implementation. It can be used together with, or in place of, the data attribute.
+            Obsolete since HTML5.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="codebase" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The base path used to resolve relative URIs specified by classid, data, or archive. If not specified, the default is the base URI of the current document.
+            Obsolete since HTML5.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="data" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The address of the resource as a valid URL. At least one of data and type must be defined.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="type" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The content type of the resource specified by data. At least one of data and type must be defined.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="codetype" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The content type of the data specified by classid.
+            Obsolete since HTML5.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="archive" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            A space-separated list of URIs for archives of resources for the object.
+            Obsolete since HTML5.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="standby" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            A message that the browser can show while loading the object's implementation and data.
+            Obsolete since HTML5.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="width" type="htmlLength">
+        <xs:annotation>
+          <xs:documentation>
+            The width of the display resource, in CSS pixels.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="height" type="htmlLength">
+        <xs:annotation>
+          <xs:documentation>
+            The height of the displayed resource, in CSS pixels.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="usemap" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            A hash-name reference to a &lt;map&gt; element; that is a '#' followed by the value of a name of a map element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:NMTOKEN">
+        <xs:annotation>
+          <xs:documentation>
+            The name of valid browsing context (HTML5), or the name of the control (HTML 4).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="param">
@@ -5259,17 +5335,17 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="height" type="xs:nonNegativeInteger">
-        <xs:annotation>
-          <xs:documentation>
-            The displayed height of the resource, in CSS pixels.
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
       <xs:attribute name="width" type="xs:nonNegativeInteger">
         <xs:annotation>
           <xs:documentation>
             The displayed width of the resource, in CSS pixels.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="height" type="xs:nonNegativeInteger">
+        <xs:annotation>
+          <xs:documentation>
+            The displayed height of the resource, in CSS pixels.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -5395,7 +5471,7 @@
         <xs:element maxOccurs="unbounded" ref="area"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:ID" use="required"/>
-      <xs:attribute name="class"/>
+      <xs:attribute name="class" type="xs:NMTOKENS"/>
       <xs:attribute name="style" type="xs:string"/>
       <xs:attribute name="title" type="xs:string"/>
       <xs:attribute name="name" type="xs:NMTOKEN"/>
@@ -5429,6 +5505,36 @@
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="alt" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="canvas">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;canvas&gt; Element can be used to draw graphics via scripting (usually JavaScript). For example, it can be used to draw graphs, make photo compositions or even perform animations. You may (and should) provide alternate content inside the &lt;canvas&gt; block. That content will be rendered both on older browsers that don't support canvas and in browsers with JavaScript disabled.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="blockText"/>
+        <xs:group ref="inlineText"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:ID"/>
+      <xs:attribute name="class" type="xs:NMTOKENS"/>
+      <xs:attribute name="style" type="xs:string"/>
+      <xs:attribute default="300" name="width" type="htmlLength">
+        <xs:annotation>
+          <xs:documentation>
+            The width of the coordinate space in CSS pixels.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="150" name="height" type="htmlLength">
+        <xs:annotation>
+          <xs:documentation>
+            The height of the coordinate space in CSS pixels.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   

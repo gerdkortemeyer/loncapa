@@ -5785,10 +5785,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#display_2">display</a>
-<br>
-</li>
-<li>
 <a href="#postanswerdate_0">postanswerdate</a>
 <br>
 </li>
@@ -11047,7 +11043,7 @@ Value restriction based on xs:token<ul>
 
 </div>
 
-<br>Parents:<a href="#html_0">html</a>, <a href="#head_0">head</a>, <a href="#title_2">title</a>, <a href="#htmlMeta_0">htmlMeta</a>, <a href="#style_3">style</a>, <a href="#body_0">body</a>
+<br>Parents:<a href="#html_0">html</a>, <a href="#head_0">head</a>, <a href="#title_2">title</a>, <a href="#htmlMeta_0">htmlMeta</a>, <a href="#style_4">style</a>, <a href="#body_0">body</a>
 <br>
 <hr>
 
@@ -11130,6 +11126,14 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:ID</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">class</span>:
+    <div class="indentation">optional<br>type: <tt>xs:NMTOKENS</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">style</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
 </div>
@@ -11200,7 +11204,7 @@ script statements, which may include CDATA sections
 <br>
 </li>
 <li>
-<a href="#style_3">style</a>
+<a href="#style_4">style</a>
 <br>
 </li>
 <li>
@@ -11466,7 +11470,7 @@ Attribute <span class="nomattribut">media</span>:
 <br>
 <hr>
 
-<a name="style_3"></a>
+<a name="style_4"></a>
 <h3>Element <span class="nomtitre">style</span>
 </h3>
 
@@ -11787,11 +11791,11 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:ID</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">class</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:NMTOKENS</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">style</span>:
@@ -11841,11 +11845,11 @@ Can contain text<br>
 
 
 Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:ID</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">class</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:NMTOKENS</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">style</span>:
@@ -11945,8 +11949,12 @@ Attribute <span class="nomattribut">value</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
 </div>
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:ID</tt>
+<br>
+</div>
 Attribute <span class="nomattribut">class</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:NMTOKENS</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">style</span>:
@@ -12249,8 +12257,12 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:ID</tt>
+<br>
+</div>
 Attribute <span class="nomattribut">class</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:NMTOKENS</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">style</span>:
@@ -12695,8 +12707,12 @@ The HTML &lt;hr&gt; element represents a thematic break between paragraph-level 
 
 
 <div class="indentation">
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:ID</tt>
+<br>
+</div>
 Attribute <span class="nomattribut">class</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:NMTOKENS</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">style</span>:
@@ -12814,46 +12830,139 @@ Choice between:<ul>
 Attribute <span class="nomattribut">classid</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+The URI of the object's implementation. It can be used together with, or in place of, the data attribute.
+Obsolete since HTML5.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">codebase</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+The base path used to resolve relative URIs specified by classid, data, or archive. If not specified, the default is the base URI of the current document.
+Obsolete since HTML5.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">data</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+The address of the resource as a valid URL. At least one of data and type must be defined.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">type</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+The content type of the resource specified by data. At least one of data and type must be defined.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">codetype</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+The content type of the data specified by classid.
+Obsolete since HTML5.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">archive</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+A space-separated list of URIs for archives of resources for the object.
+Obsolete since HTML5.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">standby</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+A message that the browser can show while loading the object's implementation and data.
+Obsolete since HTML5.
 </div>
-Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <a href="#htmlLength_0">htmlLength</a>
 <br>
+
+
 </div>
 Attribute <span class="nomattribut">width</span>:
     <div class="indentation">optional<br>type: <a href="#htmlLength_0">htmlLength</a>
 <br>
+
+
+<div class="documentation">
+The width of the display resource, in CSS pixels.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">height</span>:
+    <div class="indentation">optional<br>type: <a href="#htmlLength_0">htmlLength</a>
+<br>
+
+
+<div class="documentation">
+The height of the displayed resource, in CSS pixels.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">usemap</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+A hash-name reference to a &lt;map&gt; element; that is a '#' followed by the value of a name of a map element.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">name</span>:
     <div class="indentation">optional<br>type: <tt>xs:NMTOKEN</tt>
 <br>
+
+
+<div class="documentation">
+The name of valid browsing context (HTML5), or the name of the control (HTML 4).
+</div>
+<br>
+
+
 </div>
 
 </div>
@@ -12952,18 +13061,6 @@ The MIME type to use to select the plug-in to instantiate.
 
 
 </div>
-Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <tt>xs:nonNegativeInteger</tt>
-<br>
-
-
-<div class="documentation">
-The displayed height of the resource, in CSS pixels.
-</div>
-<br>
-
-
-</div>
 Attribute <span class="nomattribut">width</span>:
     <div class="indentation">optional<br>type: <tt>xs:nonNegativeInteger</tt>
 <br>
@@ -12971,6 +13068,18 @@ Attribute <span class="nomattribut">width</span>:
 
 <div class="documentation">
 The displayed width of the resource, in CSS pixels.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">height</span>:
+    <div class="indentation">optional<br>type: <tt>xs:nonNegativeInteger</tt>
+<br>
+
+
+<div class="documentation">
+The displayed height of the resource, in CSS pixels.
 </div>
 <br>
 
@@ -13084,7 +13193,8 @@ Attribute <span class="nomattribut">id</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">class</span>:
-    <div class="indentation">optional<br>
+    <div class="indentation">optional<br>type: <tt>xs:NMTOKENS</tt>
+<br>
 </div>
 Attribute <span class="nomattribut">style</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
@@ -14472,7 +14582,7 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#strong_0">strong</a>
 <br>
-<a href="#style_3">style</a>
+<a href="#style_4">style</a>
 <br>
 <a href="#sub_0">sub</a>
 <br>
