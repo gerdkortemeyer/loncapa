@@ -97,6 +97,25 @@ sub inputdate_to_timestamp {
    return $datetime;
 }
 
+sub print_number {
+   my ($num)=@_;
+#FIXME
+   return $num;
+}
+
+sub human_readable_size {
+   my ($size)=@_;
+   if ($size>1024*1024) {
+      return &print_number(int(10.*$size/(1024*1024)+0.5)/10.).' MB';
+   } elsif ($size>1024) {
+      return &print_number(int(10.*$size/1024+0.5)/10.).' KB';
+   } else {
+      return $size.' B';
+   }
+}
+
+
+
 sub all_languages {
    return %known_languages;
 }

@@ -26,6 +26,8 @@ use base qw(Apache::lc_localize);
 'language_direction' => 'ltr',
 'language_description' => 'English',
 'date_short_locale' => '$month/$day/$year',
+'decimal_divider' => '.',
+'power_of_ten_divider' => ',',
 
 'superuser' => 'Superuser',
 'domain_coordinator' => 'Domain Coordinator',

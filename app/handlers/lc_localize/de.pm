@@ -32,6 +32,8 @@ use utf8;
 'date_am' => 'vormittags',
 'date_pm' => 'nachmittags',
 'date_format' => '24',
+'decimal_divider' => ',',
+'power_of_ten_divider' => '.',
 
 'superuser' => 'Superuser',
 'domain_coordinator' => 'Domänenkoordinator',

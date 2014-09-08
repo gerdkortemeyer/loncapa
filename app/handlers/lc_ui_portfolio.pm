@@ -218,7 +218,7 @@ sub listdirectory {
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'filedata'}->{'wrk'}->{'modified'}));
           $status=&publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,0,0);
           $sort_size=$file->{'metadata'}->{'filedata'}->{'wrk'}->{'size'};
-          $size=&Apache::lc_file_utils::human_readable_size($sort_size);
+          $size=&Apache::lc_ui_localize::human_readable_size($sort_size);
           $filename=$file->{'filename'};
           $sort_type=&Apache::lc_file_utils::file_icon($file->{'type'},$file->{'filename'});
        } else {
