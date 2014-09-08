@@ -334,11 +334,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#display_2">display</a>
-<br>
-</li>
-<li>
-<a href="#gnuplot_0">gnuplot</a>
+<a href="#part_0">part</a>
 <br>
 </li>
 <li>
@@ -346,19 +342,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#notsolved_0">notsolved</a>
-<br>
-</li>
-<li>
-<a href="#organicstructure_0">organicstructure</a>
-<br>
-</li>
-<li>
 <a href="#parserlib_0">parserlib</a>
-<br>
-</li>
-<li>
-<a href="#part_0">part</a>
 <br>
 </li>
 <li>
@@ -383,6 +367,10 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#solved_0">solved</a>
+<br>
+</li>
+<li>
+<a href="#notsolved_0">notsolved</a>
 <br>
 </li>
 <li>
@@ -5498,1827 +5486,6 @@ Attribute <span class="nomattribut"></span>:
 
 
 <div class="documentation">
-Gnuplot
-</div>
-<br>
-
-
-<a name="gnuplot_0"></a>
-<h3>Element <span class="nomtitre">gnuplot</span>
-</h3>
-
-
-<div class="documentation">
-The gnuplot LON-CAPA tag allows an author to design a plot which will be created programatically at the time when it is requested for display by a student. This is intended for use in homework problems where a distinct plot should be rendered for each student. It can be used in conjunction with a script to generate curve data for random plots.
-</div>
-<br>
-
-
-<div class="indentation">
-Choice between:<ul>
-<li>
-<a name="title_0"></a>
-<h3>Element <span class="nomtitre">title</span>
-</h3>type: <a href="#lonplot--title_0">lonplot--title</a>
-<br>
-<br>
-</li>
-<li>
-<a name="axis_0"></a>
-<h3>Element <span class="nomtitre">axis</span>
-</h3>type: <a href="#lonplot--axis_0">lonplot--axis</a>
-<br>
-
-
-<div class="documentation">
-The Plot Axes tag allows you to specify the domain and range of the data to display. It is closely tied with the Plot Ticks tags, which specify where the gridlines are drawn on the plot.
-</div>
-<br>
-
-
-<br>
-</li>
-<li>
-<a name="curve_0"></a>
-<h3>Element <span class="nomtitre">curve</span>
-</h3>type: <a href="#lonplot--curve_0">lonplot--curve</a>
-<br>
-
-
-<div class="documentation">
-The curve tag is where you set the data to be plotted by gnuplot.
-</div>
-<br>
-
-
-<br>
-</li>
-<li>
-<a name="key_0"></a>
-<h3>Element <span class="nomtitre">key</span>
-</h3>type: <a href="#lonplot--key_0">lonplot--key</a>
-<br>
-
-
-<div class="documentation">
-The key tag causes a key to be drawn on the plot when it is generated. The key will contain an entry for each curve which has a name.
-The key is the color of the foreground of the plot, specified in the gnuplot tag.
-</div>
-<br>
-
-
-<br>
-</li>
-<li>
-<a name="label_4"></a>
-<h3>Element <span class="nomtitre">label</span>
-</h3>type: <a href="#lonplot--label_0">lonplot--label</a>
-<br>
-
-
-<div class="documentation">
-The label tag allows the author to place text at any position on the plot. There may be many label tags on one plot and all the labels which fall within the plot will show. The color used will be to foreground color of the plot and the font will be the size specified for the plot, both of which are set in the gnuplot tag.
-</div>
-<br>
-
-
-<br>
-</li>
-<li>
-<a name="xtics_0"></a>
-<h3>Element <span class="nomtitre">xtics</span>
-</h3>type: <a href="#lonplot--xtics_0">lonplot--xtics</a>
-<br>
-<br>
-</li>
-<li>
-<a name="ytics_0"></a>
-<h3>Element <span class="nomtitre">ytics</span>
-</h3>type: <a href="#lonplot--ytics_0">lonplot--ytics</a>
-<br>
-<br>
-</li>
-<li>
-<a name="xlabel_1"></a>
-<h3>Element <span class="nomtitre">xlabel</span>
-</h3>type: <a href="#lonplot--xlabel_0">lonplot--xlabel</a>
-<br>
-<br>
-</li>
-<li>
-<a name="ylabel_1"></a>
-<h3>Element <span class="nomtitre">ylabel</span>
-</h3>type: <a href="#lonplot--ylabel_0">lonplot--ylabel</a>
-<br>
-<br>
-</li>
-</ul>
-Attribute <span class="nomattribut">alttag</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Brief description of the plot.
-This text is used as the alt value of the img tag used to display the plot on a web page.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Height of image (pixels)
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Width of image (pixels)
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">bgcolor</span>:
-    <div class="indentation">optional<br>type: <a href="#color-or-perl_0">color-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Background color of image
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">fgcolor</span>:
-    <div class="indentation">optional<br>type: <a href="#color-or-perl_0">color-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Foreground color of image
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">transparent</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Transparent image. If the image is transparent the background color will be ignored.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">grid</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Display grid
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">gridlayer</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Display grid front layer over filled boxes or filled curves
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">box_border</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Draw border for boxes
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>border</tt>
-</li>
-
-<li>
-<tt>noborder</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">border</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Draw border around plot
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">font</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Font size to use in web output (in pts, or "small", "medium" or "large").
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:int<ul>
-
-<li>
-<tt>&gt;= 5</tt>
-</li>
-
-<li>
-<tt>&lt;= 15</tt>
-</li>
-
-</ul>
-
-</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>small</tt>
-</li>
-
-<li>
-<tt>medium</tt>
-</li>
-
-<li>
-<tt>large</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">fontface</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Type of font to use
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>sans-serif</tt>
-</li>
-
-<li>
-<tt>serif</tt>
-</li>
-
-<li>
-<tt>classic</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">samples</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Number of samples for non-data plots.
-If a function element is used to specify the curve, this indicates the number of sample points to use.
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:int<ul>
-
-<li>
-<tt>&gt;= 100</tt>
-</li>
-
-<li>
-<tt>&lt;= 5000</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">align</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Alignment for image in HTML
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>left</tt>
-</li>
-
-<li>
-<tt>right</tt>
-</li>
-
-<li>
-<tt>middle</tt>
-</li>
-
-<li>
-<tt>center</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">texwidth</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Width of plot when printed (mm)
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">texfont</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Font size to use in TeX output (pts)
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:int<ul>
-
-<li>
-<tt>&gt;= 8</tt>
-</li>
-
-<li>
-<tt>&lt;= 36</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">plotcolor</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Color setting for printing
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>monochrome</tt>
-</li>
-
-<li>
-<tt>color</tt>
-</li>
-
-<li>
-<tt>colour</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">pattern</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Pattern value for boxes
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:int<ul>
-
-<li>
-<tt>&gt;= 0</tt>
-</li>
-
-<li>
-<tt>&lt;= 6</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">solid</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-
-
-<div class="documentation">
-The density of fill style for boxes
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">fillstyle</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Filled style for boxes
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>empty</tt>
-</li>
-
-<li>
-<tt>solid</tt>
-</li>
-
-<li>
-<tt>pattern</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">plottype</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Plot type
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>Cartesian</tt>
-</li>
-
-<li>
-<tt>Polar</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">gridtype</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Grid type
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>Cartesian</tt>
-</li>
-
-<li>
-<tt>Polar</tt>
-</li>
-
-<li>
-<tt>Linear-Log</tt>
-</li>
-
-<li>
-<tt>Log-Linear</tt>
-</li>
-
-<li>
-<tt>Log-Log</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">lmargin</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Left margin width (pts)
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl xs:int</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>default</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">rmargin</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Right margin width (pts)
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl xs:int</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>default</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">tmargin</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Top margin width (pts)
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl xs:int</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>default</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">bmargin</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Bottom margin width (pts)
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl xs:int</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>default</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">boxwidth</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Width of boxes, default is auto
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">major_ticscale</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Size of major tic marks (plot coordinates)
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">minor_ticscale</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Size of minor tic mark (plot coordinates)
-</div>
-<br>
-
-
-</div>
-
-</div>
-
-<br>Parents:<a href="#library_0">library</a>, <a href="#randomlabel_0">randomlabel</a>, <a href="#bgimg_0">bgimg</a>, <a href="#lcblocks_0">lcblocks</a>
-<br>
-<hr>
-
-<a name="lonplot--title_0"></a>
-<h3>Simple type <span class="nomtitre">lonplot--title</span>
-</h3>
-
-
-<div class="documentation">Plot Title</div>
-<br>
-
-Value restriction based on xs:string
-<hr>
-
-<a name="lonplot--axis_0"></a>
-<h3>Complex type <span class="nomtitre">lonplot--axis</span>
-</h3>
-<div class="indentation">
-
-
-<div class="documentation">Plot axes</div>
-<br>
-
-Attribute <span class="nomattribut">color</span>:
-    <div class="indentation">optional<br>type: <a href="#color-or-perl_0">color-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Color of grid lines
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">xmin</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Minimum x-value shown in plot
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">xmax</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Maximum x-value shown in plot
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">ymin</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Minimum y-value shown in plot
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">ymax</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Maximum y-value shown in plot
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">xformat</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-X-axis number formatting
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>on</tt>
-</li>
-
-<li>
-<tt>off</tt>
-</li>
-
-<li>
-<tt>2e</tt>
-</li>
-
-<li>
-<tt>2f</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">yformat</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Y-axis number formatting
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>on</tt>
-</li>
-
-<li>
-<tt>off</tt>
-</li>
-
-<li>
-<tt>2e</tt>
-</li>
-
-<li>
-<tt>2f</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">xzero</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Show x-zero (y=0) axis
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>off</tt>
-</li>
-
-<li>
-<tt>line</tt>
-</li>
-
-<li>
-<tt>thick-line</tt>
-</li>
-
-<li>
-<tt>dotted</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">yzero</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Show y-zero (x=0) axis
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>off</tt>
-</li>
-
-<li>
-<tt>line</tt>
-</li>
-
-<li>
-<tt>thick-line</tt>
-</li>
-
-<li>
-<tt>dotted</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-
-</div>
-<hr>
-
-<a name="lonplot--curve_0"></a>
-<h3>Complex type <span class="nomtitre">lonplot--curve</span>
-</h3>
-<div class="indentation">
-
-
-<div class="documentation">Plot Curve</div>
-<br>
-
-Choice between:<ul>
-<li>
-<a name="data_0"></a>
-<h3>Element <span class="nomtitre">data</span>
-</h3>type: <a href="#lonplot--data_0">lonplot--data</a>
-<br>
-<br>
-</li>
-<li>
-<a name="function_1"></a>
-<h3>Element <span class="nomtitre">function</span>
-</h3>type: <a href="#lonplot--function_0">lonplot--function</a>
-<br>
-<br>
-</li>
-</ul>
-Attribute <span class="nomattribut">color</span>:
-    <div class="indentation">optional<br>type: <a href="#color-or-perl_0">color-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Color of curve
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Name of curve to appear in key
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">linestyle</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Unless otherwise noted the linestyles require only 2 data sets, X and Y.
-
-- lines: Connect adjacent points with straight line segments.
-- points: Display a small marker at each point.
-- linespoints: Draw both lines and points.
-Draws a small symbol at each point and then connects adjacent points with straight line segments.
-- dots: Place a tiny dots on the given points.
-- steps: Connect points with horizontal lines.
-This style connects consecutive points with two line segments: the first from (x1,y1) to (x2,y1) and the second from (x2,y1) to (x2,y2).
-- fsteps: Connect data with horizontal lines.
-This style connects consecutive points with two line segments: the first from (x1,y1) to (x1,y2) and the second from (x1,y2) to (x2,y2).
-- histeps: Plot as histogram.
-Y-values are assumed to be centered at the x-values; the point at x1 is represented as a horizontal line from ((x0+x1)/2,y1) to ((x1+x2)/2,y1). The lines representing the end points are extended so that the step is centered on at x. Adjacent points are connected by a vertical line at their average x, that is, from ((x1+x2)/2,y1) to ((x1+x2)/2,y2).
-- errorbars: Same as yerrorbars.
-- xerrorbars: Draw horizontal error bars around the points.
-Requires 3 or 4 data sets. Either X, Y, Xdelta or X, Y, Xlower, Xupper. Xdelta is a change relative to the given X value. The Xlower and Xupper values are absolute grid coordinates of the upper and lower values to indicated with error bars.
-- yerrorbars: Draw vertical error bars around the points.
-Requires 3 or 4 data sets. Either X, Y, Ydelta or X, Y, Ylower, Yupper. Ydelta is a change relative to the given Y value. The Ylower and Yupper values are the grid coordinates of the upper and lower values to indicate with error bars.
-- xyerrorbars: Draw both vertical and horizontal error bars around the points.
-Requires 4 or 6 data sets. Either X, Y, Xdelta, Ydelta or X, Y, Xlower, Xupper, Ylower, Yupper. Xdelta and Ydelta are relative to the given coordinates. Xlower, Xupper, Ylower, and Yupper are the grid coordinates of the upper and lower values to indicate with the error bars.
-- boxes: Draw a box from the X-axis to the Y-value given.
-Requires either 2 or 3 data sets. Either X, Y or X, Y, Xwidth. In the first case the boxes will be drawn next to eachother. In the latter case Xwidth indicates the horizontal width of the box for the given coordinate.
-- vector: Draws a vector field based on the given data.
-Requires 4 data sets, X, Y, Xdelta, and Ydelta. The &lsquo;vector&lsquo; style draws a vector from (X,Y) to (X+Xdelta,Y+Ydelta). It also draws a small arrowhead at the end of the vector. May not be fully supported by gnuplot.
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>lines</tt>
-</li>
-
-<li>
-<tt>linespoints</tt>
-</li>
-
-<li>
-<tt>dots</tt>
-</li>
-
-<li>
-<tt>points</tt>
-</li>
-
-<li>
-<tt>steps</tt>
-</li>
-
-<li>
-<tt>fsteps</tt>
-</li>
-
-<li>
-<tt>histeps</tt>
-</li>
-
-<li>
-<tt>errorbars</tt>
-</li>
-
-<li>
-<tt>xerrorbars</tt>
-</li>
-
-<li>
-<tt>yerrorbars</tt>
-</li>
-
-<li>
-<tt>xyerrorbars</tt>
-</li>
-
-<li>
-<tt>boxes</tt>
-</li>
-
-<li>
-<tt>filledcurves</tt>
-</li>
-
-<li>
-<tt>vector</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">linewidth</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Line width (may not apply to all plot styles)
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:int<ul>
-
-<li>
-<tt>&gt;= 1</tt>
-</li>
-
-<li>
-<tt>&lt;= 10</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">linetype</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Line type (may not apply to all plot styles)
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>solid</tt>
-</li>
-
-<li>
-<tt>dashed</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">pointsize</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Point size (may not apply to all plot styles)
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">pointtype</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Point type (may not apply to all plot styles)
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:int<ul>
-
-<li>
-<tt>&gt;= 0</tt>
-</li>
-
-<li>
-<tt>&lt;= 6</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">limit</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Point to fill for filled curves
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>above</tt>
-</li>
-
-<li>
-<tt>below</tt>
-</li>
-
-<li>
-<tt>closed</tt>
-</li>
-
-<li>
-<tt>x1</tt>
-</li>
-
-<li>
-<tt>x2</tt>
-</li>
-
-<li>
-<tt>y1</tt>
-</li>
-
-<li>
-<tt>y2</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">arrowhead</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-For vector plots, controls where in the vector the arrow head(s) appear.
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>nohead</tt>
-</li>
-
-<li>
-<tt>head</tt>
-</li>
-
-<li>
-<tt>heads</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">arrowstyle</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-For vector plots, controls the fill style of the arrow.
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>filled</tt>
-</li>
-
-<li>
-<tt>empty</tt>
-</li>
-
-<li>
-<tt>nofilled</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">arrowlength</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-For vector plots, determines the distance between the vector line end and the tip of the arrow.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">arrowangle</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-For vector plots, determines the angle the arrow branches make with the vector line.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">arrowbackangle</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-For vector plots, determines the angle the arrow lines that return to the main line from the branches make with the arrow branches.
-</div>
-<br>
-
-
-</div>
-
-</div>
-<hr>
-
-<a name="lonplot--data_0"></a>
-<h3>Complex type <span class="nomtitre">lonplot--data</span>
-</h3>Can contain text<br>
-<div class="indentation">
-
-
-<div class="documentation">Curve data</div>
-<br>
-
-
-</div>
-<hr>
-
-<a name="lonplot--function_0"></a>
-<h3>Complex type <span class="nomtitre">lonplot--function</span>
-</h3>Can contain text<br>
-<div class="indentation">
-
-
-<div class="documentation">
-Used to specify the curve to be plotted as a formula, instead of numerical data.
-The function must be a mathematical expression. Use the independent variable &ldquo;x&rdquo; for cartesian plots and &ldquo;t&rdquo; for polar plots. Implicit multiplication is not accepted by Gnuplot.
-</div>
-<br>
-
-
-</div>
-<hr>
-
-<a name="lonplot--key_0"></a>
-<h3>Complex type <span class="nomtitre">lonplot--key</span>
-</h3>
-<div class="indentation">
-
-
-<div class="documentation">
-Causes a key to be drawn on the plot when it is generated. The key will contain an entry for each curve which has a name.
-The key is the color of the foreground of the plot, specified in the gnuplot tag.
-</div>
-<br>
-
-Attribute <span class="nomattribut">title</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Title of key
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">box</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Draw a box around the key?
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">pos</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Position of the key on the plot
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>top left</tt>
-</li>
-
-<li>
-<tt>top right</tt>
-</li>
-
-<li>
-<tt>bottom left</tt>
-</li>
-
-<li>
-<tt>bottom right</tt>
-</li>
-
-<li>
-<tt>outside</tt>
-</li>
-
-<li>
-<tt>below</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-
-</div>
-<hr>
-
-<a name="lonplot--label_0"></a>
-<h3>Complex type <span class="nomtitre">lonplot--label</span>
-</h3>Can contain text<br>
-<div class="indentation">
-
-
-<div class="documentation">Plot Label</div>
-<br>
-
-Attribute <span class="nomattribut">xpos</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-X position of label (graph coordinates)
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">ypos</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Y position of label (graph coordinates)
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">justify</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-justification of the label text on the plot
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>left</tt>
-</li>
-
-<li>
-<tt>right</tt>
-</li>
-
-<li>
-<tt>center</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">rotate</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Rotation of label (degrees)
-</div>
-<br>
-
-
-</div>
-
-</div>
-<hr>
-
-<a name="lonplot--tics_0"></a>
-<h3>Complex type <span class="nomtitre">lonplot--tics</span>
-</h3>
-<div class="indentation">
-
-
-<div class="documentation">Plot tics</div>
-<br>
-
-Choice between:<ul>
-<li>
-<a name="tic_0"></a>
-<h3>Element <span class="nomtitre">tic</span>
-</h3>
-
-
-<div class="documentation">
-The &lt;tic&gt; tag allows users to specify exact Tic positions and labels for each axis.
-In this version we only support level 0 tics (major tic).
-Each tic has associated with it a position and a label $current_tics is a reference to the current tick description hash.
-We add elements to an array in that has: ticspecs whose elements are 'pos' - the tick position and 'label' - the tic label.
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-Attribute <span class="nomattribut">location</span>:
-    <div class="indentation">required<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-</div>
-
-</div>
-
-<br>
-</li>
-</ul>
-Attribute <span class="nomattribut">location</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Location of major tic marks
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>border</tt>
-</li>
-
-<li>
-<tt>axis</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">mirror</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Mirror tics on opposite axis?
-If the location of tic marks is set to &ldquo;border&rdquo; this parameter determines if they are shown on both the top and bottom or right and left sides of the graph. The &ldquo;mirror&rdquo; tic marks are unlabelled.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">start</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-The point in graph coordinates which to start making major tics. This may be less than or greater than the lower limit for the axis.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">increment</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-The span, in graph coordinates, between each major tic mark.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">end</span>:
-    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Stop major tics at.
-This may be less than or greater than the upper limit for the axis.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">minorfreq</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-
-
-<div class="documentation">
-The number of subdivisions to make of the span between major tic marks. Using a value of &ldquo;10&rdquo; leads to 9 minor tic marks.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">rotate</span>:
-    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
-<br>
-
-
-<div class="documentation">
-For output devices that support it, this rotates the tic label by 90 degrees. This is most useful with large lables defined by the tic tag described below.
-</div>
-<br>
-
-
-</div>
-
-</div>
-<hr>
-
-<a name="lonplot--xtics_0"></a>
-<h3>Complex type <span class="nomtitre">lonplot--xtics</span>
-</h3>
-<div class="indentation">
-
-
-<div class="documentation">Plot xtics</div>
-<br>
-
-
-
-
-
-</div>
-<hr>
-
-<a name="lonplot--ytics_0"></a>
-<h3>Complex type <span class="nomtitre">lonplot--ytics</span>
-</h3>
-<div class="indentation">
-
-
-<div class="documentation">Plot ytics</div>
-<br>
-
-
-
-
-
-</div>
-<hr>
-
-<a name="lonplot--xlabel_0"></a>
-<h3>Simple type <span class="nomtitre">lonplot--xlabel</span>
-</h3>
-
-
-<div class="documentation">Plot x-label</div>
-<br>
-
-Value restriction based on xs:string
-<hr>
-
-<a name="lonplot--ylabel_0"></a>
-<h3>Simple type <span class="nomtitre">lonplot--ylabel</span>
-</h3>
-
-
-<div class="documentation">Plot y-label</div>
-<br>
-
-Value restriction based on xs:string
-<hr>
-
-
-
-<div class="documentation">
 Random label
 </div>
 <br>
@@ -7445,14 +5612,14 @@ The width of the image in millimeters.
 
 Choice between:<ul>
 <li>
-<a name="label_5"></a>
+<a name="label_4"></a>
 <h3>Element <span class="nomtitre">label</span>
 </h3>type: <a href="#randomlabel--label_0">randomlabel--label</a>
 <br>
 <br>
 </li>
 <li>
-<a name="location_9"></a>
+<a name="location_7"></a>
 <h3>Element <span class="nomtitre">location</span>
 </h3>type: <a href="#randomlabel--location_0">randomlabel--location</a>
 <br>
@@ -7766,19 +5933,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#display_2">display</a>
-<br>
-</li>
-<li>
 <a href="#window_0">window</a>
-<br>
-</li>
-<li>
-<a href="#gnuplot_0">gnuplot</a>
-<br>
-</li>
-<li>
-<a href="#organicstructure_0">organicstructure</a>
 <br>
 </li>
 </ul>
@@ -8836,6 +6991,18 @@ Choice between:<ul>
 <br>
 </li>
 <li>
+<a href="#display_2">display</a>
+<br>
+</li>
+<li>
+<a href="#gnuplot_0">gnuplot</a>
+<br>
+</li>
+<li>
+<a href="#organicstructure_0">organicstructure</a>
+<br>
+</li>
+<li>
 <a href="#img_0">img</a>
 <br>
 </li>
@@ -9022,100 +7189,6 @@ Choice between:<ul>
 
 
 <br>Parents:<a href="#library_0">library</a>, <a href="#textfield_0">textfield</a>, <a href="#lcblocks_0">lcblocks</a>
-<br>
-<hr>
-
-<a name="display_2"></a>
-<h3>Element <span class="nomtitre">display</span>
-</h3>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Display Script Result Block
-
-The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
-</div>
-<br>
-
-
-<br>Parents:<a href="#library_0">library</a>, <a href="#lcblocks_0">lcblocks</a>
-<br>
-<hr>
-
-<a name="organicstructure_0"></a>
-<h3>Element <span class="nomtitre">organicstructure</span>
-</h3>
-
-
-<div class="documentation">Organic Structure</div>
-<br>
-
-
-<div class="indentation">
-Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Width (pixels)
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">texwidth</span>:
-    <div class="indentation">optional<br>type: <a href="#decimal-or-perl_0">decimal-or-perl</a>
-<br>
-
-
-<div class="documentation">
-TeXwidth (mm)
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">molecule</span>:
-    <div class="indentation">required<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-JME string
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">options</span>:
-    <div class="indentation">optional<br>
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>reaction</tt>
-</li>
-
-<li>
-<tt>border</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-
-</div>
-
-<br>Parents:<a href="#library_0">library</a>, <a href="#lcblocks_0">lcblocks</a>
 <br>
 <hr>
 
@@ -9737,10 +7810,1925 @@ Choice between:<ul>
 
 
 <div class="documentation">
+Gnuplot
+</div>
+<br>
+
+
+<a name="gnuplot_0"></a>
+<h3>Element <span class="nomtitre">gnuplot</span>
+</h3>
+
+
+<div class="documentation">
+The gnuplot LON-CAPA tag allows an author to design a plot which will be created programatically at the time when it is requested for display by a student. This is intended for use in homework problems where a distinct plot should be rendered for each student. It can be used in conjunction with a script to generate curve data for random plots.
+</div>
+<br>
+
+
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a name="title_0"></a>
+<h3>Element <span class="nomtitre">title</span>
+</h3>type: <a href="#lonplot--title_0">lonplot--title</a>
+<br>
+<br>
+</li>
+<li>
+<a name="axis_0"></a>
+<h3>Element <span class="nomtitre">axis</span>
+</h3>type: <a href="#lonplot--axis_0">lonplot--axis</a>
+<br>
+
+
+<div class="documentation">
+The Plot Axes tag allows you to specify the domain and range of the data to display. It is closely tied with the Plot Ticks tags, which specify where the gridlines are drawn on the plot.
+</div>
+<br>
+
+
+<br>
+</li>
+<li>
+<a name="curve_0"></a>
+<h3>Element <span class="nomtitre">curve</span>
+</h3>type: <a href="#lonplot--curve_0">lonplot--curve</a>
+<br>
+
+
+<div class="documentation">
+The curve tag is where you set the data to be plotted by gnuplot.
+</div>
+<br>
+
+
+<br>
+</li>
+<li>
+<a name="key_0"></a>
+<h3>Element <span class="nomtitre">key</span>
+</h3>type: <a href="#lonplot--key_0">lonplot--key</a>
+<br>
+
+
+<div class="documentation">
+The key tag causes a key to be drawn on the plot when it is generated. The key will contain an entry for each curve which has a name.
+The key is the color of the foreground of the plot, specified in the gnuplot tag.
+</div>
+<br>
+
+
+<br>
+</li>
+<li>
+<a name="label_5"></a>
+<h3>Element <span class="nomtitre">label</span>
+</h3>type: <a href="#lonplot--label_0">lonplot--label</a>
+<br>
+
+
+<div class="documentation">
+The label tag allows the author to place text at any position on the plot. There may be many label tags on one plot and all the labels which fall within the plot will show. The color used will be to foreground color of the plot and the font will be the size specified for the plot, both of which are set in the gnuplot tag.
+</div>
+<br>
+
+
+<br>
+</li>
+<li>
+<a name="xtics_0"></a>
+<h3>Element <span class="nomtitre">xtics</span>
+</h3>type: <a href="#lonplot--xtics_0">lonplot--xtics</a>
+<br>
+<br>
+</li>
+<li>
+<a name="ytics_0"></a>
+<h3>Element <span class="nomtitre">ytics</span>
+</h3>type: <a href="#lonplot--ytics_0">lonplot--ytics</a>
+<br>
+<br>
+</li>
+<li>
+<a name="xlabel_1"></a>
+<h3>Element <span class="nomtitre">xlabel</span>
+</h3>type: <a href="#lonplot--xlabel_0">lonplot--xlabel</a>
+<br>
+<br>
+</li>
+<li>
+<a name="ylabel_1"></a>
+<h3>Element <span class="nomtitre">ylabel</span>
+</h3>type: <a href="#lonplot--ylabel_0">lonplot--ylabel</a>
+<br>
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">alttag</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Brief description of the plot.
+This text is used as the alt value of the img tag used to display the plot on a web page.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">height</span>:
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Height of image (pixels)
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">width</span>:
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Width of image (pixels)
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">bgcolor</span>:
+    <div class="indentation">optional<br>type: <a href="#color-or-perl_0">color-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Background color of image
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">fgcolor</span>:
+    <div class="indentation">optional<br>type: <a href="#color-or-perl_0">color-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Foreground color of image
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">transparent</span>:
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Transparent image. If the image is transparent the background color will be ignored.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">grid</span>:
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Display grid
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">gridlayer</span>:
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Display grid front layer over filled boxes or filled curves
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">box_border</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Draw border for boxes
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>border</tt>
+</li>
+
+<li>
+<tt>noborder</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">border</span>:
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Draw border around plot
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">font</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Font size to use in web output (in pts, or "small", "medium" or "large").
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:int<ul>
+
+<li>
+<tt>&gt;= 5</tt>
+</li>
+
+<li>
+<tt>&lt;= 15</tt>
+</li>
+
+</ul>
+
+</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>small</tt>
+</li>
+
+<li>
+<tt>medium</tt>
+</li>
+
+<li>
+<tt>large</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">fontface</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Type of font to use
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>sans-serif</tt>
+</li>
+
+<li>
+<tt>serif</tt>
+</li>
+
+<li>
+<tt>classic</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">samples</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Number of samples for non-data plots.
+If a function element is used to specify the curve, this indicates the number of sample points to use.
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:int<ul>
+
+<li>
+<tt>&gt;= 100</tt>
+</li>
+
+<li>
+<tt>&lt;= 5000</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">align</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Alignment for image in HTML
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>left</tt>
+</li>
+
+<li>
+<tt>right</tt>
+</li>
+
+<li>
+<tt>middle</tt>
+</li>
+
+<li>
+<tt>center</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">texwidth</span>:
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Width of plot when printed (mm)
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">texfont</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Font size to use in TeX output (pts)
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:int<ul>
+
+<li>
+<tt>&gt;= 8</tt>
+</li>
+
+<li>
+<tt>&lt;= 36</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">plotcolor</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Color setting for printing
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>monochrome</tt>
+</li>
+
+<li>
+<tt>color</tt>
+</li>
+
+<li>
+<tt>colour</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">pattern</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Pattern value for boxes
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:int<ul>
+
+<li>
+<tt>&gt;= 0</tt>
+</li>
+
+<li>
+<tt>&lt;= 6</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">solid</span>:
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+
+
+<div class="documentation">
+The density of fill style for boxes
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">fillstyle</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Filled style for boxes
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>empty</tt>
+</li>
+
+<li>
+<tt>solid</tt>
+</li>
+
+<li>
+<tt>pattern</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">plottype</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Plot type
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>Cartesian</tt>
+</li>
+
+<li>
+<tt>Polar</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">gridtype</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Grid type
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>Cartesian</tt>
+</li>
+
+<li>
+<tt>Polar</tt>
+</li>
+
+<li>
+<tt>Linear-Log</tt>
+</li>
+
+<li>
+<tt>Log-Linear</tt>
+</li>
+
+<li>
+<tt>Log-Log</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">lmargin</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Left margin width (pts)
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl xs:int</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>default</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">rmargin</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Right margin width (pts)
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl xs:int</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>default</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">tmargin</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Top margin width (pts)
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl xs:int</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>default</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">bmargin</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Bottom margin width (pts)
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl xs:int</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>default</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">boxwidth</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Width of boxes, default is auto
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">major_ticscale</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Size of major tic marks (plot coordinates)
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">minor_ticscale</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Size of minor tic mark (plot coordinates)
+</div>
+<br>
+
+
+</div>
+
+</div>
+
+<br>Parents:<a href="#randomlabel_0">randomlabel</a>, <a href="#bgimg_0">bgimg</a>, <a href="#randomlist_0">randomlist</a>, <a href="#blockText_0">blockText</a>
+<br>
+<hr>
+
+<a name="lonplot--title_0"></a>
+<h3>Simple type <span class="nomtitre">lonplot--title</span>
+</h3>
+
+
+<div class="documentation">Plot Title</div>
+<br>
+
+Value restriction based on xs:string
+<hr>
+
+<a name="lonplot--axis_0"></a>
+<h3>Complex type <span class="nomtitre">lonplot--axis</span>
+</h3>
+<div class="indentation">
+
+
+<div class="documentation">Plot axes</div>
+<br>
+
+Attribute <span class="nomattribut">color</span>:
+    <div class="indentation">optional<br>type: <a href="#color-or-perl_0">color-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Color of grid lines
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">xmin</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Minimum x-value shown in plot
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">xmax</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Maximum x-value shown in plot
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">ymin</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Minimum y-value shown in plot
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">ymax</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Maximum y-value shown in plot
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">xformat</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+X-axis number formatting
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>on</tt>
+</li>
+
+<li>
+<tt>off</tt>
+</li>
+
+<li>
+<tt>2e</tt>
+</li>
+
+<li>
+<tt>2f</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">yformat</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Y-axis number formatting
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>on</tt>
+</li>
+
+<li>
+<tt>off</tt>
+</li>
+
+<li>
+<tt>2e</tt>
+</li>
+
+<li>
+<tt>2f</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">xzero</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Show x-zero (y=0) axis
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>off</tt>
+</li>
+
+<li>
+<tt>line</tt>
+</li>
+
+<li>
+<tt>thick-line</tt>
+</li>
+
+<li>
+<tt>dotted</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">yzero</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Show y-zero (x=0) axis
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>off</tt>
+</li>
+
+<li>
+<tt>line</tt>
+</li>
+
+<li>
+<tt>thick-line</tt>
+</li>
+
+<li>
+<tt>dotted</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+
+</div>
+<hr>
+
+<a name="lonplot--curve_0"></a>
+<h3>Complex type <span class="nomtitre">lonplot--curve</span>
+</h3>
+<div class="indentation">
+
+
+<div class="documentation">Plot Curve</div>
+<br>
+
+Choice between:<ul>
+<li>
+<a name="data_0"></a>
+<h3>Element <span class="nomtitre">data</span>
+</h3>type: <a href="#lonplot--data_0">lonplot--data</a>
+<br>
+<br>
+</li>
+<li>
+<a name="function_1"></a>
+<h3>Element <span class="nomtitre">function</span>
+</h3>type: <a href="#lonplot--function_0">lonplot--function</a>
+<br>
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">color</span>:
+    <div class="indentation">optional<br>type: <a href="#color-or-perl_0">color-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Color of curve
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">name</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Name of curve to appear in key
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">linestyle</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Unless otherwise noted the linestyles require only 2 data sets, X and Y.
+
+- lines: Connect adjacent points with straight line segments.
+- points: Display a small marker at each point.
+- linespoints: Draw both lines and points.
+Draws a small symbol at each point and then connects adjacent points with straight line segments.
+- dots: Place a tiny dots on the given points.
+- steps: Connect points with horizontal lines.
+This style connects consecutive points with two line segments: the first from (x1,y1) to (x2,y1) and the second from (x2,y1) to (x2,y2).
+- fsteps: Connect data with horizontal lines.
+This style connects consecutive points with two line segments: the first from (x1,y1) to (x1,y2) and the second from (x1,y2) to (x2,y2).
+- histeps: Plot as histogram.
+Y-values are assumed to be centered at the x-values; the point at x1 is represented as a horizontal line from ((x0+x1)/2,y1) to ((x1+x2)/2,y1). The lines representing the end points are extended so that the step is centered on at x. Adjacent points are connected by a vertical line at their average x, that is, from ((x1+x2)/2,y1) to ((x1+x2)/2,y2).
+- errorbars: Same as yerrorbars.
+- xerrorbars: Draw horizontal error bars around the points.
+Requires 3 or 4 data sets. Either X, Y, Xdelta or X, Y, Xlower, Xupper. Xdelta is a change relative to the given X value. The Xlower and Xupper values are absolute grid coordinates of the upper and lower values to indicated with error bars.
+- yerrorbars: Draw vertical error bars around the points.
+Requires 3 or 4 data sets. Either X, Y, Ydelta or X, Y, Ylower, Yupper. Ydelta is a change relative to the given Y value. The Ylower and Yupper values are the grid coordinates of the upper and lower values to indicate with error bars.
+- xyerrorbars: Draw both vertical and horizontal error bars around the points.
+Requires 4 or 6 data sets. Either X, Y, Xdelta, Ydelta or X, Y, Xlower, Xupper, Ylower, Yupper. Xdelta and Ydelta are relative to the given coordinates. Xlower, Xupper, Ylower, and Yupper are the grid coordinates of the upper and lower values to indicate with the error bars.
+- boxes: Draw a box from the X-axis to the Y-value given.
+Requires either 2 or 3 data sets. Either X, Y or X, Y, Xwidth. In the first case the boxes will be drawn next to eachother. In the latter case Xwidth indicates the horizontal width of the box for the given coordinate.
+- vector: Draws a vector field based on the given data.
+Requires 4 data sets, X, Y, Xdelta, and Ydelta. The &lsquo;vector&lsquo; style draws a vector from (X,Y) to (X+Xdelta,Y+Ydelta). It also draws a small arrowhead at the end of the vector. May not be fully supported by gnuplot.
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>lines</tt>
+</li>
+
+<li>
+<tt>linespoints</tt>
+</li>
+
+<li>
+<tt>dots</tt>
+</li>
+
+<li>
+<tt>points</tt>
+</li>
+
+<li>
+<tt>steps</tt>
+</li>
+
+<li>
+<tt>fsteps</tt>
+</li>
+
+<li>
+<tt>histeps</tt>
+</li>
+
+<li>
+<tt>errorbars</tt>
+</li>
+
+<li>
+<tt>xerrorbars</tt>
+</li>
+
+<li>
+<tt>yerrorbars</tt>
+</li>
+
+<li>
+<tt>xyerrorbars</tt>
+</li>
+
+<li>
+<tt>boxes</tt>
+</li>
+
+<li>
+<tt>filledcurves</tt>
+</li>
+
+<li>
+<tt>vector</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">linewidth</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Line width (may not apply to all plot styles)
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:int<ul>
+
+<li>
+<tt>&gt;= 1</tt>
+</li>
+
+<li>
+<tt>&lt;= 10</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">linetype</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Line type (may not apply to all plot styles)
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>solid</tt>
+</li>
+
+<li>
+<tt>dashed</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">pointsize</span>:
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Point size (may not apply to all plot styles)
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">pointtype</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Point type (may not apply to all plot styles)
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:int<ul>
+
+<li>
+<tt>&gt;= 0</tt>
+</li>
+
+<li>
+<tt>&lt;= 6</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">limit</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Point to fill for filled curves
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>above</tt>
+</li>
+
+<li>
+<tt>below</tt>
+</li>
+
+<li>
+<tt>closed</tt>
+</li>
+
+<li>
+<tt>x1</tt>
+</li>
+
+<li>
+<tt>x2</tt>
+</li>
+
+<li>
+<tt>y1</tt>
+</li>
+
+<li>
+<tt>y2</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">arrowhead</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+For vector plots, controls where in the vector the arrow head(s) appear.
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>nohead</tt>
+</li>
+
+<li>
+<tt>head</tt>
+</li>
+
+<li>
+<tt>heads</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">arrowstyle</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+For vector plots, controls the fill style of the arrow.
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>filled</tt>
+</li>
+
+<li>
+<tt>empty</tt>
+</li>
+
+<li>
+<tt>nofilled</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">arrowlength</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+For vector plots, determines the distance between the vector line end and the tip of the arrow.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">arrowangle</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+For vector plots, determines the angle the arrow branches make with the vector line.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">arrowbackangle</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+For vector plots, determines the angle the arrow lines that return to the main line from the branches make with the arrow branches.
+</div>
+<br>
+
+
+</div>
+
+</div>
+<hr>
+
+<a name="lonplot--data_0"></a>
+<h3>Complex type <span class="nomtitre">lonplot--data</span>
+</h3>Can contain text<br>
+<div class="indentation">
+
+
+<div class="documentation">Curve data</div>
+<br>
+
+
+</div>
+<hr>
+
+<a name="lonplot--function_0"></a>
+<h3>Complex type <span class="nomtitre">lonplot--function</span>
+</h3>Can contain text<br>
+<div class="indentation">
+
+
+<div class="documentation">
+Used to specify the curve to be plotted as a formula, instead of numerical data.
+The function must be a mathematical expression. Use the independent variable &ldquo;x&rdquo; for cartesian plots and &ldquo;t&rdquo; for polar plots. Implicit multiplication is not accepted by Gnuplot.
+</div>
+<br>
+
+
+</div>
+<hr>
+
+<a name="lonplot--key_0"></a>
+<h3>Complex type <span class="nomtitre">lonplot--key</span>
+</h3>
+<div class="indentation">
+
+
+<div class="documentation">
+Causes a key to be drawn on the plot when it is generated. The key will contain an entry for each curve which has a name.
+The key is the color of the foreground of the plot, specified in the gnuplot tag.
+</div>
+<br>
+
+Attribute <span class="nomattribut">title</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Title of key
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">box</span>:
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Draw a box around the key?
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">pos</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Position of the key on the plot
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>top left</tt>
+</li>
+
+<li>
+<tt>top right</tt>
+</li>
+
+<li>
+<tt>bottom left</tt>
+</li>
+
+<li>
+<tt>bottom right</tt>
+</li>
+
+<li>
+<tt>outside</tt>
+</li>
+
+<li>
+<tt>below</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+
+</div>
+<hr>
+
+<a name="lonplot--label_0"></a>
+<h3>Complex type <span class="nomtitre">lonplot--label</span>
+</h3>Can contain text<br>
+<div class="indentation">
+
+
+<div class="documentation">Plot Label</div>
+<br>
+
+Attribute <span class="nomattribut">xpos</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+X position of label (graph coordinates)
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">ypos</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Y position of label (graph coordinates)
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">justify</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+justification of the label text on the plot
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>left</tt>
+</li>
+
+<li>
+<tt>right</tt>
+</li>
+
+<li>
+<tt>center</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">rotate</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Rotation of label (degrees)
+</div>
+<br>
+
+
+</div>
+
+</div>
+<hr>
+
+<a name="lonplot--tics_0"></a>
+<h3>Complex type <span class="nomtitre">lonplot--tics</span>
+</h3>
+<div class="indentation">
+
+
+<div class="documentation">Plot tics</div>
+<br>
+
+Choice between:<ul>
+<li>
+<a name="tic_0"></a>
+<h3>Element <span class="nomtitre">tic</span>
+</h3>
+
+
+<div class="documentation">
+The &lt;tic&gt; tag allows users to specify exact Tic positions and labels for each axis.
+In this version we only support level 0 tics (major tic).
+Each tic has associated with it a position and a label $current_tics is a reference to the current tick description hash.
+We add elements to an array in that has: ticspecs whose elements are 'pos' - the tick position and 'label' - the tic label.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Attribute <span class="nomattribut">location</span>:
+    <div class="indentation">required<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+</div>
+
+</div>
+
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">location</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Location of major tic marks
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>border</tt>
+</li>
+
+<li>
+<tt>axis</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">mirror</span>:
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Mirror tics on opposite axis?
+If the location of tic marks is set to &ldquo;border&rdquo; this parameter determines if they are shown on both the top and bottom or right and left sides of the graph. The &ldquo;mirror&rdquo; tic marks are unlabelled.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">start</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+The point in graph coordinates which to start making major tics. This may be less than or greater than the lower limit for the axis.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">increment</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+The span, in graph coordinates, between each major tic mark.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">end</span>:
+    <div class="indentation">optional<br>type: <a href="#real-or-perl_0">real-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Stop major tics at.
+This may be less than or greater than the upper limit for the axis.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">minorfreq</span>:
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+
+
+<div class="documentation">
+The number of subdivisions to make of the span between major tic marks. Using a value of &ldquo;10&rdquo; leads to 9 minor tic marks.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">rotate</span>:
+    <div class="indentation">optional<br>type: <a href="#onoff-or-perl_0">onoff-or-perl</a>
+<br>
+
+
+<div class="documentation">
+For output devices that support it, this rotates the tic label by 90 degrees. This is most useful with large lables defined by the tic tag described below.
+</div>
+<br>
+
+
+</div>
+
+</div>
+<hr>
+
+<a name="lonplot--xtics_0"></a>
+<h3>Complex type <span class="nomtitre">lonplot--xtics</span>
+</h3>
+<div class="indentation">
+
+
+<div class="documentation">Plot xtics</div>
+<br>
+
+
+
+
+
+</div>
+<hr>
+
+<a name="lonplot--ytics_0"></a>
+<h3>Complex type <span class="nomtitre">lonplot--ytics</span>
+</h3>
+<div class="indentation">
+
+
+<div class="documentation">Plot ytics</div>
+<br>
+
+
+
+
+
+</div>
+<hr>
+
+<a name="lonplot--xlabel_0"></a>
+<h3>Simple type <span class="nomtitre">lonplot--xlabel</span>
+</h3>
+
+
+<div class="documentation">Plot x-label</div>
+<br>
+
+Value restriction based on xs:string
+<hr>
+
+<a name="lonplot--ylabel_0"></a>
+<h3>Simple type <span class="nomtitre">lonplot--ylabel</span>
+</h3>
+
+
+<div class="documentation">Plot y-label</div>
+<br>
+
+Value restriction based on xs:string
+<hr>
+
+
+
+<div class="documentation">
 Non-HTML block elements mixed with text
 </div>
 <br>
 
+
+<a name="display_2"></a>
+<h3>Element <span class="nomtitre">display</span>
+</h3>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Display Script Result Block
+
+The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
+</div>
+<br>
+
+
+<br>Parents:<a href="#randomlist_0">randomlist</a>, <a href="#blockText_0">blockText</a>
+<br>
+<hr>
+
+<a name="organicstructure_0"></a>
+<h3>Element <span class="nomtitre">organicstructure</span>
+</h3>
+
+
+<div class="documentation">Organic Structure</div>
+<br>
+
+
+<div class="indentation">
+Attribute <span class="nomattribut">width</span>:
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Width (pixels)
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">texwidth</span>:
+    <div class="indentation">optional<br>type: <a href="#decimal-or-perl_0">decimal-or-perl</a>
+<br>
+
+
+<div class="documentation">
+TeXwidth (mm)
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">molecule</span>:
+    <div class="indentation">required<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+JME string
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">options</span>:
+    <div class="indentation">optional<br>
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>reaction</tt>
+</li>
+
+<li>
+<tt>border</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<br>Parents:<a href="#randomlist_0">randomlist</a>, <a href="#blockText_0">blockText</a>
+<br>
+<hr>
 
 <a name="languageblock_0"></a>
 <h3>Element <span class="nomtitre">languageblock</span>
@@ -10748,6 +10736,18 @@ Choice between:<ul>
 <h3>Group <span class="nomtitre">blockText</span>
 </h3>
 Choice between:<ul>
+<li>
+<a href="#display_2">display</a>
+<br>
+</li>
+<li>
+<a href="#gnuplot_0">gnuplot</a>
+<br>
+</li>
+<li>
+<a href="#organicstructure_0">organicstructure</a>
+<br>
+</li>
 <li>
 <a href="#languageblock_0">languageblock</a>
 <br>
@@ -14226,10 +14226,10 @@ Value restriction based on xs:string<ul>
 <a href="#key_0">key</a>
 <br>
 <a href="#label_4">label</a>
-            (under gnuplot)
+            (under randomlabel--labelgroup)
           <br>
 <a href="#label_5">label</a>
-            (under randomlabel--labelgroup)
+            (under gnuplot)
           <br>
 <a href="#label_6">label</a>
 <br>
@@ -14253,7 +14253,7 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#location_0">location</a>
 <br>
-<a href="#location_9">location</a>
+<a href="#location_7">location</a>
             (under randomlabel--labelgroup)
           <br>
 <a href="#location-or-perl_0">location-or-perl</a>

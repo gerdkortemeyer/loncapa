@@ -8,14 +8,12 @@
     <MENU nom="Structure">
       <MENU_INSERTION nom="loncapa"/>
       <MENU_INSERTION nom="problem"/>
+      <MENU_INSERTION nom="part"/>
       <MENU_INSERTION nom="scriptlib"/>
       <MENU_INSERTION nom="parserlib"/>
       <MENU_INSERTION nom="import"/>
-      <MENU_INSERTION nom="part"/>
       <MENU_INSERTION nom="block"/>
       <MENU_INSERTION nom="problemtype"/>
-      <MENU_INSERTION nom="startpartmarker"/>
-      <MENU_INSERTION nom="endpartmarker"/>
       <MENU_INSERTION nom="preduedate"/>
       <MENU_INSERTION nom="postanswerdate"/>
       <MENU_INSERTION nom="randomlist"/>
@@ -24,7 +22,6 @@
       <MENU_INSERTION nom="tex"/>
       <MENU_INSERTION nom="web"/>
       <MENU_INSERTION nom="while"/>
-      <MENU_INSERTION nom="allow"/>
       <MENU_INSERTION nom="meta"/>
     </MENU>
     <MENU nom="Responses">
@@ -142,10 +139,6 @@
         <MENU_INSERTION nom="polygon"/>
         <MENU_INSERTION nom="image"/>
       </MENU>
-      <MENU nom="Display">
-        <MENU_INSERTION nom="displayduedate"/>
-        <MENU_INSERTION nom="displaytitle"/>
-      </MENU>
       <MENU_INSERTION nom="organicstructure"/>
       <MENU_INSERTION nom="window"/>
       <MENU_INSERTION nom="parameter"/>
@@ -164,8 +157,6 @@
       <MENU_INSERTION nom="num"/>
       <MENU_INSERTION nom="parse"/>
       <MENU_INSERTION nom="algebra"/>
-      <MENU_INSERTION nom="displayweight"/>
-      <MENU_INSERTION nom="displaystudentphoto"/>
     </MENU>
     <MENU nom="HTML">
       <MENU_INSERTION nom="htmlhead"/>
@@ -291,7 +282,6 @@
     
     <AFFICHAGE_ELEMENT element="part" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="import" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="allow" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="parserlib" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="script" type="lcdblock">
       <PARAMETRE nom="police" valeur="Monospaced"/>
@@ -312,13 +302,9 @@
         <VALEUR_SUGGEREE>date</VALEUR_SUGGEREE>
       </AFFICHAGE_ATTRIBUT>
     </AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="displayduedate" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="displaytitle" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="window" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="block" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="while" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="startpartmarker" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="endpartmarker" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="postanswerdate" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="preduedate" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="randomlist" type="lcdblock"/>
@@ -351,8 +337,6 @@
     <AFFICHAGE_ELEMENT element="algebra" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="chem" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="parse" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="displayweight" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="displaystudentphoto" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     
     <AFFICHAGE_ELEMENT element="htmlhead" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="base" type="lcdblock"/>
@@ -438,8 +422,6 @@
     <AFFICHAGE_ELEMENT element="big" type="string">
       <PARAMETRE nom="taille" valeur="150%"/>
     </AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="font" type="string"/>
-    <AFFICHAGE_ELEMENT element="basefont" type="vide"/>
     <AFFICHAGE_ELEMENT element="br" type="br"/>
     <AFFICHAGE_ELEMENT element="hr" type="hr"/>
     <AFFICHAGE_ELEMENT element="blockquote" type="lcdblock"/>
@@ -2246,13 +2228,6 @@
         <TITRE>import as</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="allow">
-      <TITRE>File Dependencies</TITRE>
-      <DOCUMENTATION>File Dependencies</DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="src">
-        <TITRE>file spec</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="parserlib">
       <TITRE>Import Tag Definitions</TITRE>
       <DOCUMENTATION>
@@ -2320,74 +2295,6 @@
         <TITRE>default</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="displayduedate">
-      <TITRE>Display Due Date</TITRE>
-      <DOCUMENTATION>
-        This will insert the current due date if one is set in the document.
-        It is generated to be inside a table of 1x1 elements.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="style">
-        <TITRE>style</TITRE>
-        <DOCUMENTATION>
-          style=&#8220;plain&#8221; Makes the due date appear without any boxing. If the parameter value is other than &#8220;plain&#8221;, or if the style parameter is omitted, the due date will be displayed within a box.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="format">
-        <TITRE>format</TITRE>
-        <DOCUMENTATION>
-          Allows you to control the format of the due date. This is an arbitrary string that can contain any of the following formatting items:
-          
-          %a Replaced by the abbreviated weekday name according to the current locale.
-          %A Replaced by the full weekday name according to the current locale.
-          %b The abbreviated month name according to the current locale.
-          %B The full month name according to the current locale.
-          %c The preferred date and time representation for the current locale (the default format string is just this).
-          %C The century number as a two digit integer
-          %d The day of the month as a decimal number. Leading zeroes are shown for single digit day numbers.
-          %D Equivalent to %m/%d/%y
-          %e Like %d but a leadnig zero is replaced by a space.
-          %F Equivalent to %Y-%m-%d
-          %G The four digit year number.
-          %g The two digit year numbger.
-          %H The hour as a two digit number in the range 00 thorugh 23.
-          %I The hour as a two digit number in the range 00 through 12.
-          %j The day your the year in the range 001 through 366.
-          %k The hour (24 hour clock), single digits are preceded by a blank.
-          %l Like %k but using a 12 hour clock.
-          %m The month as a two digit decimal number in the range 01 through 12.
-          %M The minute as a two digit decimal number in the range 00 through 59.
-          %n A newline character.
-          %p AM or PM depending on the time value.
-          %P am or pm.
-          %r The time in am or pm notation.
-          %R Time in 24 hour notatinon (%H:%M). See also %T below.
-          %s Number of seconds since midnight of January 1, 1970.
-          %S The second as a decimal number int the range 00 through 59.
-          %t A horizontal tab character.
-          %T The time in 24 hour notation (%H:%M:%S).
-          %u Day of the week as a decimal number with Monday as 1.
-          %U The week number of the current year in the range 00 through 53. Week 1 is the week containing the first Sunday of the year.
-          %V Same as %U but week 1 is the first week with at least 4 days, with Monday being the first day of a week.
-          %w Day of the week as a decimal integer in the range 0 through 7, Sunday is 0.
-          %W Week number of the current year in the range 00 through 53, where the first Monday of the year is the first day of week 01.
-          %x The preferred date notation in the current locale without the time.
-          %X The preferred time notation in the current locale without the date.
-          %y The year as a decimal number without the century (range 00 through 99).
-          %Y The year as a decimal number including the century.
-          %% A % character.
-          %+ Date and time in the form returned by the Unix date command. 
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="displaytitle">
-      <TITRE>Display Title</TITRE>
-      <DOCUMENTATION>
-        This will insert the title of the problem from the metadata of the problem. Only the first displaytitle in a problem will show the title; this allows clean usage of displaytitle in LON-CAPA style files.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="style">
-        <TITRE>style</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="window">
       <TITRE>Text In Separate Window</TITRE>
       <DOCUMENTATION>
@@ -2424,12 +2331,6 @@
       <STRINGS_ATTRIBUT attribut="condition">
         <TITRE>test condition</TITRE>
       </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="startpartmarker">
-      <TITRE>Marker for Start of New Part</TITRE>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="endpartmarker">
-      <TITRE>Marker for End of New Part</TITRE>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="postanswerdate">
       <TITRE>After Answer Date Block</TITRE>
@@ -2778,27 +2679,6 @@
       <DOCUMENTATION>
         to display the parsed view of a variable&#8217;s contents
       </DOCUMENTATION>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="displayweight">
-      <TITRE>Display Weight</TITRE>
-      <DOCUMENTATION>
-        Displays the number of points awarded for this problem or problem part.
-      </DOCUMENTATION>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="displaystudentphoto">
-      <TITRE>Display Student Photo</TITRE>
-      <STRINGS_ATTRIBUT attribut="width">
-        <TITRE>width</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="height">
-        <TITRE>height</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="align">
-        <TITRE>align</TITRE>
-        <DOCUMENTATION>
-          note: this attribute is not supported in HTML5, css should be used instead !
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     
     <STRINGS_ELEMENT element="htmlhead">
@@ -3151,27 +3031,6 @@
       <DOCUMENTATION>
         This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
       </DOCUMENTATION>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="font">
-      <TITRE>Font</TITRE>
-      <DOCUMENTATION>
-        This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
-      </DOCUMENTATION>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="basefont">
-      <TITRE>Base Font</TITRE>
-      <DOCUMENTATION>
-        This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="color">
-        <TITRE>color</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="face">
-        <TITRE>face</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="size">
-        <TITRE>size</TITRE>
-      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="br">
       <TITRE>Line Break</TITRE>

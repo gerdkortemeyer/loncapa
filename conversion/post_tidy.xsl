@@ -180,6 +180,9 @@
     </xsl:for-each>
   </xsl:template>
   
+  <xsl:template match="basefont">
+  </xsl:template>
+  
   
   <xsl:template match="center">
     <xsl:choose>
@@ -210,16 +213,38 @@
     </table>
   </xsl:template>
   
-  
+  <!-- removed elements -->
   <xsl:template match="startouttext">
   </xsl:template>
   
   <xsl:template match="endouttext">
   </xsl:template>
   
+  <xsl:template match="startpartmarker">
+  </xsl:template>
+  
+  <xsl:template match="endpartmarker">
+  </xsl:template>
+  
+  <xsl:template match="displayweight">
+  </xsl:template>
+  
+  <xsl:template match="displaystudentphoto">
+  </xsl:template>
+  
+  <xsl:template match="displaytitle">
+  </xsl:template>
+  
+  <xsl:template match="displayduedate">
+  </xsl:template>
+  
+  <xsl:template match="allow">
+  </xsl:template>
+  
   <xsl:template match="br">
     <!-- replaced by paragraphs -->
   </xsl:template>
+  
   
   <xsl:template match = "@*|node()">
     <xsl:copy>

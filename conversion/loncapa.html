@@ -282,10 +282,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#allow_0">allow</a>
-<br>
-</li>
-<li>
 <a href="#meta_0">meta</a>
 <br>
 </li>
@@ -311,14 +307,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#notsolved_0">notsolved</a>
-<br>
-</li>
-<li>
-<a href="#startpartmarker_0">startpartmarker</a>
-<br>
-</li>
-<li>
-<a href="#endpartmarker_0">endpartmarker</a>
 <br>
 </li>
 </ul>
@@ -789,10 +777,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#web_0">web</a>
-<br>
-</li>
-<li>
 <a href="#parserlib_0">parserlib</a>
 <br>
 </li>
@@ -1142,10 +1126,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#web_0">web</a>
-<br>
-</li>
-<li>
 <a href="#parserlib_0">parserlib</a>
 <br>
 </li>
@@ -1437,10 +1417,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#web_0">web</a>
-<br>
-</li>
-<li>
 <a href="#parserlib_0">parserlib</a>
 <br>
 </li>
@@ -1546,10 +1522,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#randomlabel_0">randomlabel</a>
-<br>
-</li>
-<li>
-<a href="#web_0">web</a>
 <br>
 </li>
 <li>
@@ -1739,10 +1711,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#randomlabel_0">randomlabel</a>
-<br>
-</li>
-<li>
-<a href="#web_0">web</a>
 <br>
 </li>
 <li>
@@ -2042,10 +2010,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#randomlabel_0">randomlabel</a>
-<br>
-</li>
-<li>
-<a href="#web_0">web</a>
 <br>
 </li>
 <li>
@@ -4600,10 +4564,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#web_0">web</a>
-<br>
-</li>
-<li>
 <a href="#parserlib_0">parserlib</a>
 <br>
 </li>
@@ -5230,6 +5190,1374 @@ Attribute <span class="nomattribut"></span>:
 
 
 <div class="documentation">
+Random label
+</div>
+<br>
+
+
+<a name="randomlabel_0"></a>
+<h3>Element <span class="nomtitre">randomlabel</span>
+</h3>
+
+
+<div class="documentation">
+Randomly labeled image
+
+This shows a specified image with images or text labels randomly assigned to a set of specific locations. Those locations may also have values assigned to them. A hash is generated that contains the mapping of labels to locations, labels to values, and locations to values.
+</div>
+<br>
+
+
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a name="labelgroup_0"></a>
+<h3>Element <span class="nomtitre">labelgroup</span>
+</h3>type: <a href="#randomlabel--labelgroup_0">randomlabel--labelgroup</a>
+<br>
+
+
+<div class="documentation">
+One is required, but multiple are allowed. This declares a group of locations and labels associated with them.
+</div>
+<br>
+
+
+<br>
+</li>
+<li>
+<a name="bgimg_0"></a>
+<h3>Element <span class="nomtitre">bgimg</span>
+</h3>
+
+
+<div class="documentation">
+???
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#gnuplot_0">gnuplot</a>
+<br>
+</li>
+</ul>
+
+</div>
+
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">bgimg</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Either a fully qualified URL for an external image or a LON-CAPA resource. It supports relative references (../images/apicture.gif). The image must either be a GIF or JPEG.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">width</span>:
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+
+
+<div class="documentation">
+The width of the image in pixels.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">height</span>:
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+
+
+<div class="documentation">
+The height of the image in pixels.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">texwidth</span>:
+    <div class="indentation">optional<br>type: <a href="#decimal-or-perl_0">decimal-or-perl</a>
+<br>
+
+
+<div class="documentation">
+The width of the image in millimeters.
+</div>
+<br>
+
+
+</div>
+
+</div>
+
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#hintpart_0">hintpart</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#notsolved_0">notsolved</a>, <a href="#div_0">div</a>
+<br>
+<hr>
+
+<a name="randomlabel--labelgroup_0"></a>
+<h3>Complex type <span class="nomtitre">randomlabel--labelgroup</span>
+</h3>
+<div class="indentation">
+
+
+<div class="documentation">Group of Labels</div>
+<br>
+
+Choice between:<ul>
+<li>
+<a name="label_4"></a>
+<h3>Element <span class="nomtitre">label</span>
+</h3>type: <a href="#randomlabel--label_0">randomlabel--label</a>
+<br>
+<br>
+</li>
+<li>
+<a name="location_7"></a>
+<h3>Element <span class="nomtitre">location</span>
+</h3>type: <a href="#randomlabel--location_0">randomlabel--location</a>
+<br>
+
+
+<div class="documentation">
+declares a location on the image that a label should appear at
+</div>
+<br>
+
+
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">name</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+This is the name of the group.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">type</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+the type of labels in this group
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>text</tt>
+</li>
+
+<li>
+<tt>image</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">texsize</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+TeX font size
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>\tiny</tt>
+</li>
+
+<li>
+<tt>\scriptsize</tt>
+</li>
+
+<li>
+<tt>\footnotesize</tt>
+</li>
+
+<li>
+<tt>\small</tt>
+</li>
+
+<li>
+<tt>\normalsize</tt>
+</li>
+
+<li>
+<tt>\large</tt>
+</li>
+
+<li>
+<tt>\Large</tt>
+</li>
+
+<li>
+<tt>\LARGE</tt>
+</li>
+
+<li>
+<tt>\huge</tt>
+</li>
+
+<li>
+<tt>\Huge</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+
+</div>
+<hr>
+
+<a name="randomlabel--label_0"></a>
+<h3>Complex type <span class="nomtitre">randomlabel--label</span>
+</h3>Can contain text<br>
+<div class="indentation">
+
+
+<div class="documentation">Label Text or Path to image</div>
+<br>
+
+Choice between:<ul>
+<li>
+<a href="#text_2">text</a>
+<br>
+</li>
+<li>
+<a href="#import_0">import</a>
+<br>
+</li>
+<li>
+<a href="#block_0">block</a>
+<br>
+</li>
+<li>
+<a href="#while_0">while</a>
+<br>
+</li>
+<li>
+<a href="#tex_0">tex</a>
+<br>
+</li>
+<li>
+<a href="#problemtype_0">problemtype</a>
+<br>
+</li>
+<li>
+<a href="#randomlist_0">randomlist</a>
+<br>
+</li>
+<li>
+<a href="#script_0">script</a>
+<br>
+</li>
+<li>
+<a href="#display_1">display</a>
+<br>
+</li>
+<li>
+<a href="#postanswerdate_0">postanswerdate</a>
+<br>
+</li>
+<li>
+<a href="#preduedate_0">preduedate</a>
+<br>
+</li>
+<li>
+<a href="#web_0">web</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
+<br>
+</li>
+<li>
+<a href="#solved_0">solved</a>
+<br>
+</li>
+<li>
+<a href="#notsolved_0">notsolved</a>
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">description</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+
+</div>
+<hr>
+
+<a name="randomlabel--location_0"></a>
+<h3>Complex type <span class="nomtitre">randomlabel--location</span>
+</h3>
+<div class="indentation">
+
+
+<div class="documentation">Label Location</div>
+<br>
+
+Attribute <span class="nomattribut">x</span>:
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+</div>
+Attribute <span class="nomattribut">y</span>:
+    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+</div>
+Attribute <span class="nomattribut">value</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+
+</div>
+<hr>
+
+
+
+<div class="documentation">
+List of elements that insert something if a condition is verified.
+</div>
+<br>
+
+
+<a name="inserts_0"></a>
+<h3>Group <span class="nomtitre">inserts</span>
+</h3>
+Choice between:<ul>
+<li>
+<a href="#preduedate_0">preduedate</a>
+<br>
+</li>
+<li>
+<a href="#postanswerdate_0">postanswerdate</a>
+<br>
+</li>
+</ul>
+
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#while_0">while</a>, <a href="#solved_0">solved</a>, <a href="#notsolved_0">notsolved</a>, <a href="#div_0">div</a>
+<br>
+<hr>
+
+
+
+<div class="documentation">
+List of common block elements that cannot be used anywhere text is used.
+</div>
+<br>
+
+
+<a name="lcblocks_0"></a>
+<h3>Group <span class="nomtitre">lcblocks</span>
+</h3>
+Choice between:<ul>
+<li>
+<a href="#import_0">import</a>
+<br>
+</li>
+<li>
+<a href="#block_0">block</a>
+<br>
+</li>
+<li>
+<a href="#while_0">while</a>
+<br>
+</li>
+<li>
+<a href="#tex_0">tex</a>
+<br>
+</li>
+<li>
+<a href="#web_0">web</a>
+<br>
+</li>
+<li>
+<a href="#problemtype_0">problemtype</a>
+<br>
+</li>
+<li>
+<a href="#randomlist_0">randomlist</a>
+<br>
+</li>
+<li>
+<a href="#script_0">script</a>
+<br>
+</li>
+<li>
+<a href="#window_0">window</a>
+<br>
+</li>
+</ul>
+
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#hintpart_0">hintpart</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#while_0">while</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#notsolved_0">notsolved</a>, <a href="#div_0">div</a>
+<br>
+<hr>
+
+
+
+<div class="documentation">
+Problem block elements that cannot be used anywhere text is used.
+</div>
+<br>
+
+
+<a name="part_0"></a>
+<h3>Element <span class="nomtitre">part</span>
+</h3>
+
+
+<div class="documentation">
+Problem Part
+
+This must be below problem if it is going to be used. It does many of the same tasks as problem, but allows multiple separate problems to exist in a single file.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text_2">text</a>
+<br>
+</li>
+<li>
+<a href="#responses_0">responses</a>
+<br>
+</li>
+<li>
+<a href="#lcblocks_0">lcblocks</a>
+<br>
+</li>
+<li>
+<a href="#inserts_0">inserts</a>
+<br>
+</li>
+<li>
+<a href="#parameter_0">parameter</a>
+<br>
+</li>
+<li>
+<a href="#randomlabel_0">randomlabel</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
+<br>
+</li>
+<li>
+<a href="#solved_0">solved</a>
+<br>
+</li>
+<li>
+<a href="#notsolved_0">notsolved</a>
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Part ID
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">display</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Displayed Part Description
+</div>
+<br>
+
+
+</div>
+
+</div>
+
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#block_0">block</a>, <a href="#div_0">div</a>
+<br>
+<hr>
+
+<a name="import_0"></a>
+<h3>Element <span class="nomtitre">import</span>
+</h3>
+
+
+<div class="documentation">
+Import a File
+
+This causes the parse to read in the file named in the body of the tag and parse it as if the entire text of the file had existed at the location of the tag.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">importmode</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Import as
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>problem</tt>
+</li>
+
+<li>
+<tt>part</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<br>Parents:<a href="#lcblocks_0">lcblocks</a>, <a href="#head.misc_0">head.misc</a>
+<br>
+<hr>
+
+<a name="parserlib_0"></a>
+<h3>Element <span class="nomtitre">parserlib</span>
+</h3>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Import Tag Definitions
+
+The enclosed filename contains definitions for new tags.
+</div>
+<br>
+
+
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#hintpart_0">hintpart</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#block_0">block</a>, <a href="#while_0">while</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#notsolved_0">notsolved</a>, <a href="#div_0">div</a>
+<br>
+<hr>
+
+<a name="script_0"></a>
+<h3>Element <span class="nomtitre">script</span>
+</h3>
+
+
+<div class="documentation">
+Perl Script Block
+
+If the attribute type is set to &ldquo;loncapa/perl&rdquo; the enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Attribute <span class="nomattribut">type</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut"></span>:
+    <div class="indentation">optional<br>
+</div>
+
+</div>
+
+<br>Parents:<a href="#lcblocks_0">lcblocks</a>
+<br>
+<hr>
+
+<a name="scriptlib_0"></a>
+<h3>Element <span class="nomtitre">scriptlib</span>
+</h3>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Import Script Library
+
+The enclosed filename contains Perl code to run in the safe space.
+</div>
+<br>
+
+
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#hintpart_0">hintpart</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#block_0">block</a>, <a href="#while_0">while</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#notsolved_0">notsolved</a>, <a href="#div_0">div</a>
+<br>
+<hr>
+
+<a name="meta_0"></a>
+<h3>Element <span class="nomtitre">meta</span>
+</h3>
+
+
+<div class="documentation">Custom Metadata</div>
+<br>
+
+
+<div class="indentation">
+Attribute <span class="nomattribut">name</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">content</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+
+</div>
+
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#div_0">div</a>
+<br>
+<hr>
+
+<a name="problemtype_0"></a>
+<h3>Element <span class="nomtitre">problemtype</span>
+</h3>
+
+
+<div class="documentation">
+Problem Type Block
+
+Allows you to show or hide output based on what the problem-type parameter is set to in the course.
+Will only show the output text when the problem is set to the type of exam or survey in the course.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text_2">text</a>
+<br>
+</li>
+<li>
+<a href="#responses_0">responses</a>
+<br>
+</li>
+<li>
+<a href="#lcblocks_0">lcblocks</a>
+<br>
+</li>
+<li>
+<a href="#inserts_0">inserts</a>
+<br>
+</li>
+<li>
+<a href="#randomlabel_0">randomlabel</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
+<br>
+</li>
+<li>
+<a href="#solved_0">solved</a>
+<br>
+</li>
+<li>
+<a href="#notsolved_0">notsolved</a>
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">mode</span>:
+    <div class="indentation">optional<br>
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>show</tt>
+</li>
+
+<li>
+<tt>hide</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">for</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+When used as type(s)
+
+Comma-separated list of values among:
+exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry)(\s*,\s*(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry))*</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
+<br>Parents:<a href="#lcblocks_0">lcblocks</a>
+<br>
+<hr>
+
+<a name="parameter_0"></a>
+<h3>Element <span class="nomtitre">parameter</span>
+</h3>
+
+
+<div class="documentation">
+Parameters for a part
+
+parameter is exactly the same as responseparam, but should appear outside of a response tag.
+</div>
+<br>
+
+
+<div class="indentation">
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">name</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">type</span>:
+    <div class="indentation">required<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">description</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">default</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+
+</div>
+
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#part_0">part</a>, <a href="#div_0">div</a>
+<br>
+<hr>
+
+<a name="window_0"></a>
+<h3>Element <span class="nomtitre">window</span>
+</h3>
+
+
+<div class="documentation">
+Text In Separate Window
+
+This creates a link that when clicked shows the intervening information in a pop-up window. By default the window will be 500 pixels wide and 200 pixels tall, and the link text will be a superscript * (so as to look like a footnote). These can be changed using the attributes.
+When printing, the included text will get turned into a real footnote.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text_2">text</a>
+<br>
+</li>
+<li>
+<a href="#lcblocks_0">lcblocks</a>
+<br>
+</li>
+<li>
+<a href="#inserts_0">inserts</a>
+<br>
+</li>
+<li>
+<a href="#randomlabel_0">randomlabel</a>
+<br>
+</li>
+<li>
+<a href="#solved_0">solved</a>
+<br>
+</li>
+<li>
+<a href="#notsolved_0">notsolved</a>
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">linktext</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Text of Link
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">height</span>:
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+</div>
+Attribute <span class="nomattribut">width</span>:
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+</div>
+Attribute <span class="nomattribut">printtext</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Printed text (optional)
+</div>
+<br>
+
+
+</div>
+
+</div>
+
+<br>Parents:<a href="#lcblocks_0">lcblocks</a>
+<br>
+<hr>
+
+<a name="block_0"></a>
+<h3>Element <span class="nomtitre">block</span>
+</h3>
+
+
+<div class="documentation">
+Conditional Block
+
+This has a required argument condition that is evaluated. If the condition is true, everything inside the tag is evaluated; otherwise, everything inside the block tag is skipped.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text_2">text</a>
+<br>
+</li>
+<li>
+<a href="#responses_0">responses</a>
+<br>
+</li>
+<li>
+<a href="#lcblocks_0">lcblocks</a>
+<br>
+</li>
+<li>
+<a href="#inserts_0">inserts</a>
+<br>
+</li>
+<li>
+<a href="#part_0">part</a>
+<br>
+</li>
+<li>
+<a href="#randomlabel_0">randomlabel</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
+<br>
+</li>
+<li>
+<a href="#solved_0">solved</a>
+<br>
+</li>
+<li>
+<a href="#notsolved_0">notsolved</a>
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">condition</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Test Condition
+</div>
+<br>
+
+
+</div>
+
+</div>
+
+<br>Parents:<a href="#lcblocks_0">lcblocks</a>
+<br>
+<hr>
+
+<a name="while_0"></a>
+<h3>Element <span class="nomtitre">while</span>
+</h3>
+
+
+<div class="documentation">
+While Loop Block
+
+This implements a while loop. The required attribute condition is a Perl scriptlet that when evaluated results in a true or false value. If true, the entirety of the text between the whiles is parsed. The condition is tested again, etc. If false, it goes to the next tag.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text_2">text</a>
+<br>
+</li>
+<li>
+<a href="#lcblocks_0">lcblocks</a>
+<br>
+</li>
+<li>
+<a href="#inserts_0">inserts</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
+<br>
+</li>
+<li>
+<a href="#solved_0">solved</a>
+<br>
+</li>
+<li>
+<a href="#notsolved_0">notsolved</a>
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">condition</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Test Condition
+</div>
+<br>
+
+
+</div>
+
+</div>
+
+<br>Parents:<a href="#lcblocks_0">lcblocks</a>
+<br>
+<hr>
+
+<a name="postanswerdate_0"></a>
+<h3>Element <span class="nomtitre">postanswerdate</span>
+</h3>
+
+
+<div class="documentation">
+After Answer Date Block
+
+Everything inside is skipped if the problem is before the answer date.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text_2">text</a>
+<br>
+</li>
+<li>
+<a href="#lcblocks_0">lcblocks</a>
+<br>
+</li>
+<li>
+<a href="#randomlabel_0">randomlabel</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
+<br>
+</li>
+<li>
+<a href="#solved_0">solved</a>
+<br>
+</li>
+<li>
+<a href="#notsolved_0">notsolved</a>
+<br>
+</li>
+</ul>
+
+</div>
+
+<br>Parents:<a href="#inserts_0">inserts</a>, <a href="#randomlist_0">randomlist</a>
+<br>
+<hr>
+
+<a name="preduedate_0"></a>
+<h3>Element <span class="nomtitre">preduedate</span>
+</h3>
+
+
+<div class="documentation">
+Before Due Date Block
+
+Everything inside is skipped if the problem is after the due date.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text_2">text</a>
+<br>
+</li>
+<li>
+<a href="#responses_0">responses</a>
+<br>
+</li>
+<li>
+<a href="#lcblocks_0">lcblocks</a>
+<br>
+</li>
+<li>
+<a href="#randomlabel_0">randomlabel</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
+<br>
+</li>
+<li>
+<a href="#solved_0">solved</a>
+<br>
+</li>
+<li>
+<a href="#notsolved_0">notsolved</a>
+<br>
+</li>
+</ul>
+
+</div>
+
+<br>Parents:<a href="#inserts_0">inserts</a>, <a href="#randomlist_0">randomlist</a>
+<br>
+<hr>
+
+<a name="randomlist_0"></a>
+<h3>Element <span class="nomtitre">randomlist</span>
+</h3>
+
+
+<div class="documentation">
+Randomly Parsed Block
+
+The enclosed tags are parsed in a stable random order. The optional attribute show=&ldquo;N&rdquo; restricts the number of tags inside that are actually parsed to no more than N. N can equal the total tags inside. The randomlist tag can be used to randomize problem parts by wrapping the &lt;part&gt; tags with a randomlist tag. Note that when randomlist wraps &lt;part&gt; tags, that all students will work all parts only if show=&ldquo;N&rdquo; where N is the total number of parts wrapped. When N is less than the total number of parts wrapped, there will be gaps in the assessment chart, and also in the table of submissions for each student, corresponding to those parts which are never available to that particular student.
+</div>
+<br>
+
+
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#responses_0">responses</a>
+<br>
+</li>
+<li>
+<a href="#lcblocks_0">lcblocks</a>
+<br>
+</li>
+<li>
+<a href="#display_1">display</a>
+<br>
+</li>
+<li>
+<a href="#gnuplot_0">gnuplot</a>
+<br>
+</li>
+<li>
+<a href="#organicstructure_0">organicstructure</a>
+<br>
+</li>
+<li>
+<a href="#img_0">img</a>
+<br>
+</li>
+<li>
+<a href="#postanswerdate_0">postanswerdate</a>
+<br>
+</li>
+<li>
+<a href="#preduedate_0">preduedate</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
+<br>
+</li>
+<li>
+<a href="#solved_0">solved</a>
+<br>
+</li>
+<li>
+<a href="#notsolved_0">notsolved</a>
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">show</span>:
+    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+<br>
+
+
+<div class="documentation">
+Maximum Tags to Show
+</div>
+<br>
+
+
+</div>
+
+</div>
+
+<br>Parents:<a href="#lcblocks_0">lcblocks</a>
+<br>
+<hr>
+
+<a name="solved_0"></a>
+<h3>Element <span class="nomtitre">solved</span>
+</h3>
+
+
+<div class="documentation">
+Block For After Solved
+
+Everything inside is skipped if the problem is &ldquo;not solved&rdquo;.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text_2">text</a>
+<br>
+</li>
+<li>
+<a href="#lcblocks_0">lcblocks</a>
+<br>
+</li>
+<li>
+<a href="#inserts_0">inserts</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
+<br>
+</li>
+</ul>
+
+</div>
+
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#while_0">while</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
+<br>
+<hr>
+
+<a name="notsolved_0"></a>
+<h3>Element <span class="nomtitre">notsolved</span>
+</h3>
+
+
+<div class="documentation">
+Block For When Not Solved
+
+Everything inside is skipped if the problem is &ldquo;solved&rdquo;.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text_2">text</a>
+<br>
+</li>
+<li>
+<a href="#responses_0">responses</a>
+<br>
+</li>
+<li>
+<a href="#lcblocks_0">lcblocks</a>
+<br>
+</li>
+<li>
+<a href="#inserts_0">inserts</a>
+<br>
+</li>
+<li>
+<a href="#randomlabel_0">randomlabel</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
+<br>
+</li>
+</ul>
+
+</div>
+
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#while_0">while</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
+<br>
+<hr>
+
+<a name="web_0"></a>
+<h3>Element <span class="nomtitre">web</span>
+</h3>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">Web Only Block</div>
+<br>
+
+
+<br>Parents:<a href="#textfield_0">textfield</a>, <a href="#lcblocks_0">lcblocks</a>
+<br>
+<hr>
+
+<a name="tex_0"></a>
+<h3>Element <span class="nomtitre">tex</span>
+</h3>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">Print Only Block</div>
+<br>
+
+
+<br>Parents:<a href="#textfield_0">textfield</a>, <a href="#lcblocks_0">lcblocks</a>
+<br>
+<hr>
+
+
+
+<div class="documentation">
 Gnuplot
 </div>
 <br>
@@ -5302,7 +6630,7 @@ The key is the color of the foreground of the plot, specified in the gnuplot tag
 <br>
 </li>
 <li>
-<a name="label_4"></a>
+<a name="label_5"></a>
 <h3>Element <span class="nomtitre">label</span>
 </h3>type: <a href="#lonplot--label_0">lonplot--label</a>
 <br>
@@ -6002,7 +7330,7 @@ Size of minor tic mark (plot coordinates)
 
 </div>
 
-<br>Parents:<a href="#randomlabel_0">randomlabel</a>, <a href="#bgimg_0">bgimg</a>, <a href="#lcblocks_0">lcblocks</a>
+<br>Parents:<a href="#randomlabel_0">randomlabel</a>, <a href="#bgimg_0">bgimg</a>, <a href="#randomlist_0">randomlist</a>, <a href="#blockText_0">blockText</a>
 <br>
 <hr>
 
@@ -7051,1572 +8379,10 @@ Value restriction based on xs:string
 
 
 <div class="documentation">
-Random label
+Non-HTML block elements mixed with text
 </div>
 <br>
 
-
-<a name="randomlabel_0"></a>
-<h3>Element <span class="nomtitre">randomlabel</span>
-</h3>
-
-
-<div class="documentation">
-Randomly labeled image
-
-This shows a specified image with images or text labels randomly assigned to a set of specific locations. Those locations may also have values assigned to them. A hash is generated that contains the mapping of labels to locations, labels to values, and locations to values.
-</div>
-<br>
-
-
-<div class="indentation">
-Choice between:<ul>
-<li>
-<a name="labelgroup_0"></a>
-<h3>Element <span class="nomtitre">labelgroup</span>
-</h3>type: <a href="#randomlabel--labelgroup_0">randomlabel--labelgroup</a>
-<br>
-
-
-<div class="documentation">
-One is required, but multiple are allowed. This declares a group of locations and labels associated with them.
-</div>
-<br>
-
-
-<br>
-</li>
-<li>
-<a name="bgimg_0"></a>
-<h3>Element <span class="nomtitre">bgimg</span>
-</h3>
-
-
-<div class="documentation">
-???
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-Choice between:<ul>
-<li>
-<a href="#gnuplot_0">gnuplot</a>
-<br>
-</li>
-</ul>
-
-</div>
-
-<br>
-</li>
-</ul>
-Attribute <span class="nomattribut">bgimg</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Either a fully qualified URL for an external image or a LON-CAPA resource. It supports relative references (../images/apicture.gif). The image must either be a GIF or JPEG.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-
-
-<div class="documentation">
-The width of the image in pixels.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-
-
-<div class="documentation">
-The height of the image in pixels.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">texwidth</span>:
-    <div class="indentation">optional<br>type: <a href="#decimal-or-perl_0">decimal-or-perl</a>
-<br>
-
-
-<div class="documentation">
-The width of the image in millimeters.
-</div>
-<br>
-
-
-</div>
-
-</div>
-
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#hintpart_0">hintpart</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#notsolved_0">notsolved</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-<a name="randomlabel--labelgroup_0"></a>
-<h3>Complex type <span class="nomtitre">randomlabel--labelgroup</span>
-</h3>
-<div class="indentation">
-
-
-<div class="documentation">Group of Labels</div>
-<br>
-
-Choice between:<ul>
-<li>
-<a name="label_5"></a>
-<h3>Element <span class="nomtitre">label</span>
-</h3>type: <a href="#randomlabel--label_0">randomlabel--label</a>
-<br>
-<br>
-</li>
-<li>
-<a name="location_9"></a>
-<h3>Element <span class="nomtitre">location</span>
-</h3>type: <a href="#randomlabel--location_0">randomlabel--location</a>
-<br>
-
-
-<div class="documentation">
-declares a location on the image that a label should appear at
-</div>
-<br>
-
-
-<br>
-</li>
-</ul>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-This is the name of the group.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">type</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-the type of labels in this group
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>text</tt>
-</li>
-
-<li>
-<tt>image</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">texsize</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-TeX font size
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>\tiny</tt>
-</li>
-
-<li>
-<tt>\scriptsize</tt>
-</li>
-
-<li>
-<tt>\footnotesize</tt>
-</li>
-
-<li>
-<tt>\small</tt>
-</li>
-
-<li>
-<tt>\normalsize</tt>
-</li>
-
-<li>
-<tt>\large</tt>
-</li>
-
-<li>
-<tt>\Large</tt>
-</li>
-
-<li>
-<tt>\LARGE</tt>
-</li>
-
-<li>
-<tt>\huge</tt>
-</li>
-
-<li>
-<tt>\Huge</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-
-</div>
-<hr>
-
-<a name="randomlabel--label_0"></a>
-<h3>Complex type <span class="nomtitre">randomlabel--label</span>
-</h3>Can contain text<br>
-<div class="indentation">
-
-
-<div class="documentation">Label Text or Path to image</div>
-<br>
-
-Choice between:<ul>
-<li>
-<a href="#text_2">text</a>
-<br>
-</li>
-<li>
-<a href="#import_0">import</a>
-<br>
-</li>
-<li>
-<a href="#block_0">block</a>
-<br>
-</li>
-<li>
-<a href="#while_0">while</a>
-<br>
-</li>
-<li>
-<a href="#tex_0">tex</a>
-<br>
-</li>
-<li>
-<a href="#problemtype_0">problemtype</a>
-<br>
-</li>
-<li>
-<a href="#randomlist_0">randomlist</a>
-<br>
-</li>
-<li>
-<a href="#script_0">script</a>
-<br>
-</li>
-<li>
-<a href="#display_1">display</a>
-<br>
-</li>
-<li>
-<a href="#postanswerdate_0">postanswerdate</a>
-<br>
-</li>
-<li>
-<a href="#preduedate_0">preduedate</a>
-<br>
-</li>
-<li>
-<a href="#web_0">web</a>
-<br>
-</li>
-<li>
-<a href="#parserlib_0">parserlib</a>
-<br>
-</li>
-<li>
-<a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
-<br>
-</li>
-</ul>
-Attribute <span class="nomattribut">description</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-
-</div>
-<hr>
-
-<a name="randomlabel--location_0"></a>
-<h3>Complex type <span class="nomtitre">randomlabel--location</span>
-</h3>
-<div class="indentation">
-
-
-<div class="documentation">Label Location</div>
-<br>
-
-Attribute <span class="nomattribut">x</span>:
-    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-</div>
-Attribute <span class="nomattribut">y</span>:
-    <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-</div>
-Attribute <span class="nomattribut">value</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-
-</div>
-<hr>
-
-
-
-<div class="documentation">
-List of elements that insert something if a condition is verified.
-</div>
-<br>
-
-
-<a name="inserts_0"></a>
-<h3>Group <span class="nomtitre">inserts</span>
-</h3>
-Choice between:<ul>
-<li>
-<a href="#displaytitle_0">displaytitle</a>
-<br>
-</li>
-<li>
-<a href="#displayduedate_0">displayduedate</a>
-<br>
-</li>
-<li>
-<a href="#preduedate_0">preduedate</a>
-<br>
-</li>
-<li>
-<a href="#postanswerdate_0">postanswerdate</a>
-<br>
-</li>
-</ul>
-
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#while_0">while</a>, <a href="#solved_0">solved</a>, <a href="#notsolved_0">notsolved</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-
-
-<div class="documentation">
-List of common block elements that cannot be used anywhere text is used.
-</div>
-<br>
-
-
-<a name="lcblocks_0"></a>
-<h3>Group <span class="nomtitre">lcblocks</span>
-</h3>
-Choice between:<ul>
-<li>
-<a href="#import_0">import</a>
-<br>
-</li>
-<li>
-<a href="#block_0">block</a>
-<br>
-</li>
-<li>
-<a href="#while_0">while</a>
-<br>
-</li>
-<li>
-<a href="#tex_0">tex</a>
-<br>
-</li>
-<li>
-<a href="#problemtype_0">problemtype</a>
-<br>
-</li>
-<li>
-<a href="#randomlist_0">randomlist</a>
-<br>
-</li>
-<li>
-<a href="#script_0">script</a>
-<br>
-</li>
-<li>
-<a href="#display_1">display</a>
-<br>
-</li>
-<li>
-<a href="#window_0">window</a>
-<br>
-</li>
-<li>
-<a href="#gnuplot_0">gnuplot</a>
-<br>
-</li>
-<li>
-<a href="#organicstructure_0">organicstructure</a>
-<br>
-</li>
-</ul>
-
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#hintpart_0">hintpart</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#while_0">while</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#notsolved_0">notsolved</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-
-
-<div class="documentation">
-Problem block elements that cannot be used anywhere text is used.
-</div>
-<br>
-
-
-<a name="part_0"></a>
-<h3>Element <span class="nomtitre">part</span>
-</h3>
-
-
-<div class="documentation">
-Problem Part
-
-This must be below problem if it is going to be used. It does many of the same tasks as problem, but allows multiple separate problems to exist in a single file.
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-Choice between:<ul>
-<li>
-<a href="#text_2">text</a>
-<br>
-</li>
-<li>
-<a href="#responses_0">responses</a>
-<br>
-</li>
-<li>
-<a href="#lcblocks_0">lcblocks</a>
-<br>
-</li>
-<li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
-<a href="#parameter_0">parameter</a>
-<br>
-</li>
-<li>
-<a href="#randomlabel_0">randomlabel</a>
-<br>
-</li>
-<li>
-<a href="#parserlib_0">parserlib</a>
-<br>
-</li>
-<li>
-<a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
-<br>
-</li>
-</ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Part ID
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">display</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Displayed Part Description
-</div>
-<br>
-
-
-</div>
-
-</div>
-
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#block_0">block</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-<a name="import_0"></a>
-<h3>Element <span class="nomtitre">import</span>
-</h3>
-
-
-<div class="documentation">
-Import a File
-
-This causes the parse to read in the file named in the body of the tag and parse it as if the entire text of the file had existed at the location of the tag.
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">importmode</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-Import as
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>problem</tt>
-</li>
-
-<li>
-<tt>part</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-
-</div>
-
-<br>Parents:<a href="#lcblocks_0">lcblocks</a>, <a href="#head.misc_0">head.misc</a>
-<br>
-<hr>
-
-<a name="allow_0"></a>
-<h3>Element <span class="nomtitre">allow</span>
-</h3>
-
-
-<div class="documentation">File Dependencies</div>
-<br>
-
-
-<div class="indentation">
-Attribute <span class="nomattribut">src</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-File Spec
-</div>
-<br>
-
-
-</div>
-
-</div>
-
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-<a name="parserlib_0"></a>
-<h3>Element <span class="nomtitre">parserlib</span>
-</h3>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Import Tag Definitions
-
-The enclosed filename contains definitions for new tags.
-</div>
-<br>
-
-
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#hintpart_0">hintpart</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#block_0">block</a>, <a href="#while_0">while</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#notsolved_0">notsolved</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-<a name="script_0"></a>
-<h3>Element <span class="nomtitre">script</span>
-</h3>
-
-
-<div class="documentation">
-Perl Script Block
-
-If the attribute type is set to &ldquo;loncapa/perl&rdquo; the enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-Attribute <span class="nomattribut">type</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut"></span>:
-    <div class="indentation">optional<br>
-</div>
-
-</div>
-
-<br>Parents:<a href="#lcblocks_0">lcblocks</a>
-<br>
-<hr>
-
-<a name="scriptlib_0"></a>
-<h3>Element <span class="nomtitre">scriptlib</span>
-</h3>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Import Script Library
-
-The enclosed filename contains Perl code to run in the safe space.
-</div>
-<br>
-
-
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#hintpart_0">hintpart</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#block_0">block</a>, <a href="#while_0">while</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#randomlist_0">randomlist</a>, <a href="#solved_0">solved</a>, <a href="#notsolved_0">notsolved</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-<a name="meta_0"></a>
-<h3>Element <span class="nomtitre">meta</span>
-</h3>
-
-
-<div class="documentation">Custom Metadata</div>
-<br>
-
-
-<div class="indentation">
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">content</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-
-</div>
-
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-<a name="problemtype_0"></a>
-<h3>Element <span class="nomtitre">problemtype</span>
-</h3>
-
-
-<div class="documentation">
-Problem Type Block
-
-Allows you to show or hide output based on what the problem-type parameter is set to in the course.
-Will only show the output text when the problem is set to the type of exam or survey in the course.
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-Choice between:<ul>
-<li>
-<a href="#text_2">text</a>
-<br>
-</li>
-<li>
-<a href="#responses_0">responses</a>
-<br>
-</li>
-<li>
-<a href="#lcblocks_0">lcblocks</a>
-<br>
-</li>
-<li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
-<a href="#randomlabel_0">randomlabel</a>
-<br>
-</li>
-<li>
-<a href="#web_0">web</a>
-<br>
-</li>
-<li>
-<a href="#parserlib_0">parserlib</a>
-<br>
-</li>
-<li>
-<a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
-<br>
-</li>
-</ul>
-Attribute <span class="nomattribut">mode</span>:
-    <div class="indentation">optional<br>
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>show</tt>
-</li>
-
-<li>
-<tt>hide</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-Attribute <span class="nomattribut">for</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-When used as type(s)
-
-Comma-separated list of values among:
-exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry)(\s*,\s*(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry))*</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-
-</div>
-
-<br>Parents:<a href="#lcblocks_0">lcblocks</a>
-<br>
-<hr>
-
-<a name="parameter_0"></a>
-<h3>Element <span class="nomtitre">parameter</span>
-</h3>
-
-
-<div class="documentation">
-Parameters for a part
-
-parameter is exactly the same as responseparam, but should appear outside of a response tag.
-</div>
-<br>
-
-
-<div class="indentation">
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">type</span>:
-    <div class="indentation">required<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">description</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">default</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-
-</div>
-
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#part_0">part</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-<a name="displayduedate_0"></a>
-<h3>Element <span class="nomtitre">displayduedate</span>
-</h3>
-
-
-<div class="documentation">
-This will insert the current due date if one is set in the document.
-It is generated to be inside a table of 1x1 elements.
-</div>
-<br>
-
-
-<div class="indentation">
-Attribute <span class="nomattribut">style</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-style=&ldquo;plain&rdquo; Makes the due date appear without any boxing. If the parameter value is other than &ldquo;plain&rdquo;, or if the style parameter is omitted, the due date will be displayed within a box.
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">format</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Allows you to control the format of the due date. This is an arbitrary string that can contain any of the following formatting items:
-
-%a Replaced by the abbreviated weekday name according to the current locale.
-%A Replaced by the full weekday name according to the current locale.
-%b The abbreviated month name according to the current locale.
-%B The full month name according to the current locale.
-%c The preferred date and time representation for the current locale (the default format string is just this).
-%C The century number as a two digit integer
-%d The day of the month as a decimal number. Leading zeroes are shown for single digit day numbers.
-%D Equivalent to %m/%d/%y
-%e Like %d but a leadnig zero is replaced by a space.
-%F Equivalent to %Y-%m-%d
-%G The four digit year number.
-%g The two digit year numbger.
-%H The hour as a two digit number in the range 00 thorugh 23.
-%I The hour as a two digit number in the range 00 through 12.
-%j The day your the year in the range 001 through 366.
-%k The hour (24 hour clock), single digits are preceded by a blank.
-%l Like %k but using a 12 hour clock.
-%m The month as a two digit decimal number in the range 01 through 12.
-%M The minute as a two digit decimal number in the range 00 through 59.
-%n A newline character.
-%p AM or PM depending on the time value.
-%P am or pm.
-%r The time in am or pm notation.
-%R Time in 24 hour notatinon (%H:%M). See also %T below.
-%s Number of seconds since midnight of January 1, 1970.
-%S The second as a decimal number int the range 00 through 59.
-%t A horizontal tab character.
-%T The time in 24 hour notation (%H:%M:%S).
-%u Day of the week as a decimal number with Monday as 1.
-%U The week number of the current year in the range 00 through 53. Week 1 is the week containing the first Sunday of the year.
-%V Same as %U but week 1 is the first week with at least 4 days, with Monday being the first day of a week.
-%w Day of the week as a decimal integer in the range 0 through 7, Sunday is 0.
-%W Week number of the current year in the range 00 through 53, where the first Monday of the year is the first day of week 01.
-%x The preferred date notation in the current locale without the time.
-%X The preferred time notation in the current locale without the date.
-%y The year as a decimal number without the century (range 00 through 99).
-%Y The year as a decimal number including the century.
-%% A % character.
-%+ Date and time in the form returned by the Unix date command. 
-</div>
-<br>
-
-
-</div>
-
-</div>
-
-<br>Parents:<a href="#inserts_0">inserts</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>
-<br>
-<hr>
-
-<a name="displaytitle_0"></a>
-<h3>Element <span class="nomtitre">displaytitle</span>
-</h3>
-
-
-<div class="documentation">
-This will insert the title of the problem from the metadata of the problem. Only the first displaytitle in a problem will show the title; this allows clean usage of displaytitle in LON-CAPA style files.
-</div>
-<br>
-
-
-<div class="indentation">
-Attribute <span class="nomattribut">style</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-
-</div>
-
-<br>Parents:<a href="#inserts_0">inserts</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>
-<br>
-<hr>
-
-<a name="window_0"></a>
-<h3>Element <span class="nomtitre">window</span>
-</h3>
-
-
-<div class="documentation">
-Text In Separate Window
-
-This creates a link that when clicked shows the intervening information in a pop-up window. By default the window will be 500 pixels wide and 200 pixels tall, and the link text will be a superscript * (so as to look like a footnote). These can be changed using the attributes.
-When printing, the included text will get turned into a real footnote.
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-Choice between:<ul>
-<li>
-<a href="#text_2">text</a>
-<br>
-</li>
-<li>
-<a href="#lcblocks_0">lcblocks</a>
-<br>
-</li>
-<li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
-<a href="#randomlabel_0">randomlabel</a>
-<br>
-</li>
-<li>
-<a href="#web_0">web</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
-<br>
-</li>
-</ul>
-Attribute <span class="nomattribut">linktext</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Text of Link
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-</div>
-Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-</div>
-Attribute <span class="nomattribut">printtext</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Printed text (optional)
-</div>
-<br>
-
-
-</div>
-
-</div>
-
-<br>Parents:<a href="#lcblocks_0">lcblocks</a>
-<br>
-<hr>
-
-<a name="block_0"></a>
-<h3>Element <span class="nomtitre">block</span>
-</h3>
-
-
-<div class="documentation">
-Conditional Block
-
-This has a required argument condition that is evaluated. If the condition is true, everything inside the tag is evaluated; otherwise, everything inside the block tag is skipped.
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-Choice between:<ul>
-<li>
-<a href="#text_2">text</a>
-<br>
-</li>
-<li>
-<a href="#responses_0">responses</a>
-<br>
-</li>
-<li>
-<a href="#lcblocks_0">lcblocks</a>
-<br>
-</li>
-<li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
-<a href="#part_0">part</a>
-<br>
-</li>
-<li>
-<a href="#randomlabel_0">randomlabel</a>
-<br>
-</li>
-<li>
-<a href="#web_0">web</a>
-<br>
-</li>
-<li>
-<a href="#parserlib_0">parserlib</a>
-<br>
-</li>
-<li>
-<a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
-<br>
-</li>
-</ul>
-Attribute <span class="nomattribut">condition</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Test Condition
-</div>
-<br>
-
-
-</div>
-
-</div>
-
-<br>Parents:<a href="#lcblocks_0">lcblocks</a>
-<br>
-<hr>
-
-<a name="while_0"></a>
-<h3>Element <span class="nomtitre">while</span>
-</h3>
-
-
-<div class="documentation">
-While Loop Block
-
-This implements a while loop. The required attribute condition is a Perl scriptlet that when evaluated results in a true or false value. If true, the entirety of the text between the whiles is parsed. The condition is tested again, etc. If false, it goes to the next tag.
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-Choice between:<ul>
-<li>
-<a href="#text_2">text</a>
-<br>
-</li>
-<li>
-<a href="#lcblocks_0">lcblocks</a>
-<br>
-</li>
-<li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
-<a href="#web_0">web</a>
-<br>
-</li>
-<li>
-<a href="#parserlib_0">parserlib</a>
-<br>
-</li>
-<li>
-<a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
-<br>
-</li>
-</ul>
-Attribute <span class="nomattribut">condition</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Test Condition
-</div>
-<br>
-
-
-</div>
-
-</div>
-
-<br>Parents:<a href="#lcblocks_0">lcblocks</a>
-<br>
-<hr>
-
-<a name="startpartmarker_0"></a>
-<h3>Element <span class="nomtitre">startpartmarker</span>
-</h3>
-
-
-<div class="documentation">Problem Part: Marker for Start of New Part</div>
-<br>
-
-
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-<a name="endpartmarker_0"></a>
-<h3>Element <span class="nomtitre">endpartmarker</span>
-</h3>
-
-
-<div class="documentation">Problem Part: Marker for End of New Part</div>
-<br>
-
-
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-<a name="postanswerdate_0"></a>
-<h3>Element <span class="nomtitre">postanswerdate</span>
-</h3>
-
-
-<div class="documentation">
-After Answer Date Block
-
-Everything inside is skipped if the problem is before the answer date.
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-Choice between:<ul>
-<li>
-<a href="#text_2">text</a>
-<br>
-</li>
-<li>
-<a href="#lcblocks_0">lcblocks</a>
-<br>
-</li>
-<li>
-<a href="#displayduedate_0">displayduedate</a>
-<br>
-</li>
-<li>
-<a href="#displaytitle_0">displaytitle</a>
-<br>
-</li>
-<li>
-<a href="#randomlabel_0">randomlabel</a>
-<br>
-</li>
-<li>
-<a href="#parserlib_0">parserlib</a>
-<br>
-</li>
-<li>
-<a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
-<br>
-</li>
-</ul>
-
-</div>
-
-<br>Parents:<a href="#inserts_0">inserts</a>, <a href="#randomlist_0">randomlist</a>
-<br>
-<hr>
-
-<a name="preduedate_0"></a>
-<h3>Element <span class="nomtitre">preduedate</span>
-</h3>
-
-
-<div class="documentation">
-Before Due Date Block
-
-Everything inside is skipped if the problem is after the due date.
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-Choice between:<ul>
-<li>
-<a href="#text_2">text</a>
-<br>
-</li>
-<li>
-<a href="#responses_0">responses</a>
-<br>
-</li>
-<li>
-<a href="#lcblocks_0">lcblocks</a>
-<br>
-</li>
-<li>
-<a href="#displayduedate_0">displayduedate</a>
-<br>
-</li>
-<li>
-<a href="#displaytitle_0">displaytitle</a>
-<br>
-</li>
-<li>
-<a href="#randomlabel_0">randomlabel</a>
-<br>
-</li>
-<li>
-<a href="#parserlib_0">parserlib</a>
-<br>
-</li>
-<li>
-<a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
-<br>
-</li>
-</ul>
-
-</div>
-
-<br>Parents:<a href="#inserts_0">inserts</a>, <a href="#randomlist_0">randomlist</a>
-<br>
-<hr>
-
-<a name="randomlist_0"></a>
-<h3>Element <span class="nomtitre">randomlist</span>
-</h3>
-
-
-<div class="documentation">
-Randomly Parsed Block
-
-The enclosed tags are parsed in a stable random order. The optional attribute show=&ldquo;N&rdquo; restricts the number of tags inside that are actually parsed to no more than N. N can equal the total tags inside. The randomlist tag can be used to randomize problem parts by wrapping the &lt;part&gt; tags with a randomlist tag. Note that when randomlist wraps &lt;part&gt; tags, that all students will work all parts only if show=&ldquo;N&rdquo; where N is the total number of parts wrapped. When N is less than the total number of parts wrapped, there will be gaps in the assessment chart, and also in the table of submissions for each student, corresponding to those parts which are never available to that particular student.
-</div>
-<br>
-
-
-<div class="indentation">
-Choice between:<ul>
-<li>
-<a href="#responses_0">responses</a>
-<br>
-</li>
-<li>
-<a href="#lcblocks_0">lcblocks</a>
-<br>
-</li>
-<li>
-<a href="#img_0">img</a>
-<br>
-</li>
-<li>
-<a href="#postanswerdate_0">postanswerdate</a>
-<br>
-</li>
-<li>
-<a href="#preduedate_0">preduedate</a>
-<br>
-</li>
-<li>
-<a href="#parserlib_0">parserlib</a>
-<br>
-</li>
-<li>
-<a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
-<br>
-</li>
-</ul>
-Attribute <span class="nomattribut">show</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-
-
-<div class="documentation">
-Maximum Tags to Show
-</div>
-<br>
-
-
-</div>
-
-</div>
-
-<br>Parents:<a href="#lcblocks_0">lcblocks</a>
-<br>
-<hr>
-
-<a name="solved_0"></a>
-<h3>Element <span class="nomtitre">solved</span>
-</h3>
-
-
-<div class="documentation">
-Block For After Solved
-
-Everything inside is skipped if the problem is &ldquo;not solved&rdquo;.
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-Choice between:<ul>
-<li>
-<a href="#text_2">text</a>
-<br>
-</li>
-<li>
-<a href="#lcblocks_0">lcblocks</a>
-<br>
-</li>
-<li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
-<a href="#parserlib_0">parserlib</a>
-<br>
-</li>
-<li>
-<a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-</ul>
-
-</div>
-
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#while_0">while</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-<a name="notsolved_0"></a>
-<h3>Element <span class="nomtitre">notsolved</span>
-</h3>
-
-
-<div class="documentation">
-Block For When Not Solved
-
-Everything inside is skipped if the problem is &ldquo;solved&rdquo;.
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-Choice between:<ul>
-<li>
-<a href="#text_2">text</a>
-<br>
-</li>
-<li>
-<a href="#responses_0">responses</a>
-<br>
-</li>
-<li>
-<a href="#lcblocks_0">lcblocks</a>
-<br>
-</li>
-<li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
-<a href="#randomlabel_0">randomlabel</a>
-<br>
-</li>
-<li>
-<a href="#web_0">web</a>
-<br>
-</li>
-<li>
-<a href="#parserlib_0">parserlib</a>
-<br>
-</li>
-<li>
-<a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-</ul>
-
-</div>
-
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#part_0">part</a>, <a href="#problemtype_0">problemtype</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#while_0">while</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#preduedate_0">preduedate</a>, <a href="#randomlist_0">randomlist</a>, <a href="#div_0">div</a>
-<br>
-<hr>
-
-<a name="web_0"></a>
-<h3>Element <span class="nomtitre">web</span>
-</h3>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">Web Only Block</div>
-<br>
-
-
-<br>Parents:<a href="#textfield_0">textfield</a>, <a href="#hintpart_0">hintpart</a>, <a href="#problemtype_0">problemtype</a>, <a href="#window_0">window</a>, <a href="#block_0">block</a>, <a href="#while_0">while</a>, <a href="#notsolved_0">notsolved</a>
-<br>
-<hr>
-
-<a name="tex_0"></a>
-<h3>Element <span class="nomtitre">tex</span>
-</h3>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">Print Only Block</div>
-<br>
-
-
-<br>Parents:<a href="#textfield_0">textfield</a>, <a href="#lcblocks_0">lcblocks</a>
-<br>
-<hr>
 
 <a name="display_1"></a>
 <h3>Element <span class="nomtitre">display</span>
@@ -8632,7 +8398,7 @@ The intervening Perl script is evaluated in the safe space and the return value 
 <br>
 
 
-<br>Parents:<a href="#lcblocks_0">lcblocks</a>
+<br>Parents:<a href="#randomlist_0">randomlist</a>, <a href="#blockText_0">blockText</a>
 <br>
 <hr>
 
@@ -8708,17 +8474,9 @@ Value restriction based on xs:string<ul>
 
 </div>
 
-<br>Parents:<a href="#lcblocks_0">lcblocks</a>
+<br>Parents:<a href="#randomlist_0">randomlist</a>, <a href="#blockText_0">blockText</a>
 <br>
 <hr>
-
-
-
-<div class="documentation">
-Non-HTML block elements mixed with text
-</div>
-<br>
-
 
 <a name="languageblock_0"></a>
 <h3>Element <span class="nomtitre">languageblock</span>
@@ -9619,83 +9377,6 @@ to display the parsed view of a variable&rsquo;s contents
 <br>
 <hr>
 
-<a name="displayweight_0"></a>
-<h3>Element <span class="nomtitre">displayweight</span>
-</h3>
-
-
-<div class="documentation">
-Displays the number of points awarded for this problem or problem part.
-</div>
-<br>
-
-
-<br>Parents:<a href="#inlineText_0">inlineText</a>
-<br>
-<hr>
-
-<a name="displaystudentphoto_0"></a>
-<h3>Element <span class="nomtitre">displaystudentphoto</span>
-</h3>
-
-<div class="indentation">
-Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-</div>
-Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
-<br>
-</div>
-Attribute <span class="nomattribut">align</span>:
-    <div class="indentation">optional<br>
-
-
-<div class="documentation">
-note: this attribute is not supported in HTML5, css should be used instead !
-</div>
-<br>
-
-
-Possible values:<ul>
-<li>perl</li>
-<li>
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>left</tt>
-</li>
-
-<li>
-<tt>right</tt>
-</li>
-
-<li>
-<tt>middle</tt>
-</li>
-
-<li>
-<tt>top</tt>
-</li>
-
-<li>
-<tt>bottom</tt>
-</li>
-
-</ul>
-
-</li>
-</ul>
-
-
-</div>
-
-</div>
-
-<br>Parents:<a href="#inlineText_0">inlineText</a>
-<br>
-<hr>
-
 
 
 <div class="documentation">
@@ -9726,6 +9407,18 @@ Choice between:<ul>
 <h3>Group <span class="nomtitre">blockText</span>
 </h3>
 Choice between:<ul>
+<li>
+<a href="#display_1">display</a>
+<br>
+</li>
+<li>
+<a href="#gnuplot_0">gnuplot</a>
+<br>
+</li>
+<li>
+<a href="#organicstructure_0">organicstructure</a>
+<br>
+</li>
 <li>
 <a href="#languageblock_0">languageblock</a>
 <br>
@@ -9873,14 +9566,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#displayweight_0">displayweight</a>
-<br>
-</li>
-<li>
-<a href="#displaystudentphoto_0">displaystudentphoto</a>
-<br>
-</li>
-<li>
 <a href="#span_0">span</a>
 <br>
 </li>
@@ -9946,14 +9631,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#big_0">big</a>
-<br>
-</li>
-<li>
-<a href="#font_2">font</a>
-<br>
-</li>
-<li>
-<a href="#basefont_0">basefont</a>
 <br>
 </li>
 <li>
@@ -10037,7 +9714,7 @@ Value restriction based on xs:token<ul>
 
 </div>
 
-<br>Parents:<a href="#htmlhead_0">htmlhead</a>, <a href="#title_2">title</a>, <a href="#htmlMeta_0">htmlMeta</a>, <a href="#style_3">style</a>, <a href="#htmlbody_0">htmlbody</a>
+<br>Parents:<a href="#htmlhead_0">htmlhead</a>, <a href="#title_2">title</a>, <a href="#htmlMeta_0">htmlMeta</a>, <a href="#style_1">style</a>, <a href="#htmlbody_0">htmlbody</a>
 <br>
 <hr>
 
@@ -10149,7 +9826,7 @@ script statements, which may include CDATA sections
 <br>
 </li>
 <li>
-<a href="#style_3">style</a>
+<a href="#style_1">style</a>
 <br>
 </li>
 <li>
@@ -10415,7 +10092,7 @@ Attribute <span class="nomattribut">media</span>:
 <br>
 <hr>
 
-<a name="style_3"></a>
+<a name="style_1"></a>
 <h3>Element <span class="nomtitre">style</span>
 </h3>
 
@@ -10722,10 +10399,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#allow_0">allow</a>
-<br>
-</li>
-<li>
 <a href="#meta_0">meta</a>
 <br>
 </li>
@@ -10751,14 +10424,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#notsolved_0">notsolved</a>
-<br>
-</li>
-<li>
-<a href="#startpartmarker_0">startpartmarker</a>
-<br>
-</li>
-<li>
-<a href="#endpartmarker_0">endpartmarker</a>
 <br>
 </li>
 </ul>
@@ -11488,72 +11153,6 @@ This feature is obsolete. Although it may still work in some browsers, its use i
 </div>
 <br>
 
-
-<br>Parents:<a href="#inlineText_0">inlineText</a>
-<br>
-<hr>
-
-<a name="font_2"></a>
-<h3>Element <span class="nomtitre">font</span>
-</h3>
-
-
-<div class="documentation">
-This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
-</div>
-<br>
-
-Can contain text<br>
-<div class="indentation">
-
-
-Attribute <span class="nomattribut">color</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">face</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">size</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-
-
-
-</div>
-
-<br>Parents:<a href="#inlineText_0">inlineText</a>
-<br>
-<hr>
-
-<a name="basefont_0"></a>
-<h3>Element <span class="nomtitre">basefont</span>
-</h3>
-
-
-<div class="documentation">
-This feature is obsolete. Although it may still work in some browsers, its use is discouraged since it could be removed at any time. Try to avoid using it.
-</div>
-<br>
-
-
-<div class="indentation">
-Attribute <span class="nomattribut">color</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">face</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">size</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-
-</div>
 
 <br>Parents:<a href="#inlineText_0">inlineText</a>
 <br>
@@ -12907,8 +12506,6 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#algebra_0">algebra</a>
 <br>
-<a href="#allow_0">allow</a>
-<br>
 <a href="#answer_3">answer</a>
             (under caparesponse--answergroup)
           <br>
@@ -12948,8 +12545,6 @@ Value restriction based on xs:string<ul>
 <a href="#backgroundplot_0">backgroundplot</a>
 <br>
 <a href="#base_0">base</a>
-<br>
-<a href="#basefont_0">basefont</a>
 <br>
 <a href="#bgimg_0">bgimg</a>
             (under randomlabel)
@@ -13020,14 +12615,6 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#display_1">display</a>
 <br>
-<a href="#displayduedate_0">displayduedate</a>
-<br>
-<a href="#displaystudentphoto_0">displaystudentphoto</a>
-<br>
-<a href="#displaytitle_0">displaytitle</a>
-<br>
-<a href="#displayweight_0">displayweight</a>
-<br>
 <a href="#div_0">div</a>
 <br>
 <a href="#dl_0">dl</a>
@@ -13043,8 +12630,6 @@ Value restriction based on xs:string<ul>
 <a href="#em_0">em</a>
 <br>
 <a href="#embed_0">embed</a>
-<br>
-<a href="#endpartmarker_0">endpartmarker</a>
 <br>
 <a href="#essayresponse_0">essayresponse</a>
 <br>
@@ -13099,8 +12684,6 @@ Value restriction based on xs:string<ul>
 <a href="#foilgroup_4">foilgroup</a>
             (under imageresponse)
           <br>
-<a href="#font_2">font</a>
-<br>
 <a href="#form_1">form</a>
 <br>
 <a href="#formulahint_0">formulahint</a>
@@ -13223,10 +12806,10 @@ Value restriction based on xs:string<ul>
 <a href="#key_0">key</a>
 <br>
 <a href="#label_4">label</a>
-            (under gnuplot)
+            (under randomlabel--labelgroup)
           <br>
 <a href="#label_5">label</a>
-            (under randomlabel--labelgroup)
+            (under gnuplot)
           <br>
 <a href="#label_6">label</a>
 <br>
@@ -13248,7 +12831,7 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#location_0">location</a>
 <br>
-<a href="#location_9">location</a>
+<a href="#location_7">location</a>
             (under randomlabel--labelgroup)
           <br>
 <a href="#location-or-perl_0">location-or-perl</a>
@@ -13457,15 +13040,13 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#standalone_0">standalone</a>
 <br>
-<a href="#startpartmarker_0">startpartmarker</a>
-<br>
 <a href="#stringhint_0">stringhint</a>
 <br>
 <a href="#stringresponse_0">stringresponse</a>
 <br>
 <a href="#strong_0">strong</a>
 <br>
-<a href="#style_3">style</a>
+<a href="#style_1">style</a>
 <br>
 <a href="#sub_0">sub</a>
 <br>
