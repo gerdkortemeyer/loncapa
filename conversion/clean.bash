@@ -28,21 +28,36 @@ fi
 namenoext="${filename%.*}"
 newpath="$dir/${namenoext}_clean$ext"
 
-
-# warning: using constant temp file names here prevents running several instances at the same time
-perl $MY_HOME/pre_tidy.pl "$pathname" >/tmp/pretidy.txt
+pretidytmp=$(mktemp)
+tidycfg=$(mktemp)
+perl $MY_HOME/pre_tidy.pl "$pathname" "$tidycfg" >"$pretidytmp"
 if [ $? -ne 0 ]; then
   echo "pre_tidy error for $pathname"
+  rm -f "$pretidytmp" "$tidycfg"
   exit
 fi
-tidy -config /tmp/tidycfg.txt -o /tmp/posttidy.txt /tmp/pretidy.txt
+posttidytmp=$(mktemp)
+tidy -config "$tidycfg" -o "$posttidytmp" "$pretidytmp"
 if [ $? -eq 2 ]; then
   echo "tidy error for $pathname"
-  exit
-fi
-cat /tmp/posttidy.txt | sed -e 's/ xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"//' | perl $MY_HOME/post_tidy.pl > "$newpath"
-if [ $? -ne 0 ]; then
-  echo "post_tidy error for $pathname"
+  rm -f "$pretidytmp" "$tidycfg" "$posttidytmp"
   exit
 fi
 
+posttidytmp2=$(mktemp)
+cat "$posttidytmp" | sed -e 's/ xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"//' | perl $MY_HOME/post_tidy.pl > "$posttidytmp2"
+if [ $? -ne 0 ]; then
+  echo "post_tidy error for $pathname"
+  rm -f "$pretidytmp" "$tidycfg" "$posttidytmp" "$posttidytmp2"
+  exit
+fi
+
+# pretty print
+xmllint --format "$posttidytmp2" > "$newpath"
+
+# for debug:
+#cp "$pretidytmp" /tmp/pretidy.txt
+#cp "$posttidytmp" /tmp/posttidy.txt
+
+# cleanup
+rm -f "$pretidytmp" "$tidycfg" "$posttidytmp" "$posttidytmp2"

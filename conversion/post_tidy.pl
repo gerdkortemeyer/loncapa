@@ -28,4 +28,3 @@ my $results = $stylesheet->transform($source);
 
 print $stylesheet->output_as_bytes($results);
 
-unlink ('/tmp/tidycfg.txt', '/tmp/pretidy.txt');

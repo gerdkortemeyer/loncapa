@@ -34,6 +34,8 @@ if (!defined $RES_DIR) {
 
 my $lines = guess_encoding_and_read($ARGV[0]);
 
+my $tidycfg = $ARGV[1];
+
 binmode(STDOUT, ":utf8");
 
 fix_cdata_elements($lines);
@@ -315,7 +317,7 @@ sub next_tag {
 }
 
 ##
-# Creates the tidy configuration file in /tmp/tidycfg.txt based on sty imports.
+# Creates the tidy configuration file in $tidycfg based on sty imports.
 ##
 sub create_tidycfg {
   my @blocks = @block_elements; # updated list of block elements
@@ -340,7 +342,7 @@ sub create_tidycfg {
   push(@inlines, 'inlinefont');
   my @empties = @empty_elements;
   push(@empties, 'emptyfont');
-  open(my $fh, ">", '/tmp/tidycfg.txt') or die "cannot write in /tmp/tidycfg.txt: $!";
+  open(my $fh, ">", $tidycfg) or die "cannot write in $tidycfg: $!";
   print $fh "new-blocklevel-tags:";
   print $fh join(',', @blocks);
   print $fh "\n";
@@ -364,7 +366,7 @@ wrap: 0
 
 newline: LF
 
-indent: auto
+indent: no
 
 show-warnings: no
 
