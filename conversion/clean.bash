@@ -44,20 +44,12 @@ if [ $? -eq 2 ]; then
   exit
 fi
 
-posttidytmp2=$(mktemp)
-cat "$posttidytmp" | sed -e 's/ xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"//' | perl $MY_HOME/post_tidy.pl > "$posttidytmp2"
+cat "$posttidytmp" | sed -e 's/ xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"//' | perl $MY_HOME/post_tidy.pl > "$newpath"
 if [ $? -ne 0 ]; then
   echo "post_tidy error for $pathname"
-  rm -f "$pretidytmp" "$tidycfg" "$posttidytmp" "$posttidytmp2"
+  rm -f "$pretidytmp" "$tidycfg" "$posttidytmp"
   exit
 fi
 
-# pretty print
-xmllint --format "$posttidytmp2" > "$newpath"
-
-# for debug:
-#cp "$pretidytmp" /tmp/pretidy.txt
-#cp "$posttidytmp" /tmp/posttidy.txt
-
 # cleanup
-rm -f "$pretidytmp" "$tidycfg" "$posttidytmp" "$posttidytmp2"
+rm -f "$pretidytmp" "$tidycfg" "$posttidytmp"

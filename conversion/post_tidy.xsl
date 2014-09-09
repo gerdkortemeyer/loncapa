@@ -26,7 +26,7 @@
   <xsl:template match="problem|foil|item|hintgroup|hintpart|label|part|problemtype|window|block|while|postanswerdate|preduedate|solved|notsolved|languageblock|translated|lang|instructorcomment|windowlink|togglebox|standalone|htmlbody|div">
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
-      <xsl:call-template name="paragraphs"/>
+      <xsl:apply-templates select="node()"/>
     </xsl:copy>
   </xsl:template>
   
@@ -241,9 +241,8 @@
   <xsl:template match="allow">
   </xsl:template>
   
-  <xsl:template match="br">
-    <!-- replaced by paragraphs -->
-  </xsl:template>
+  <!--<xsl:template match="br">
+  </xsl:template>-->
   
   
   <xsl:template match = "@*|node()">
@@ -259,6 +258,8 @@
   
 <!-- Reorganize a block by moving text and inline elements inside paragraphs, to avoid mixing text and block elements.
   br elements are replaced by new paragraphs. -->
+<!-- unfortunately, responses are sometimes used like inline elements (no line break before or after),
+so we can't add paragraphs automatically
   <xsl:template name="paragraphs">
     <xsl:variable name="inline-elements">|textline|display|img|windowlink|m|chem|num|parse|algebra|displayweight|displaystudentphoto|inlinefont|span|a|strong|em|b|i|sup|sub|code|kbd|samp|tt|ins|del|var|small|big|font|basefont|hr|input|select|textarea|label|button|u|</xsl:variable>
     <xsl:choose>
@@ -294,5 +295,6 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+-->
 
 </xsl:stylesheet>
