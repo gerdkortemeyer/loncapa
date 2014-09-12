@@ -160,6 +160,7 @@ Definitions.prototype.define = function() {
     });
     this.infix("*", 120, 120);
     this.infix("/", 120, 120);
+    this.infix("%", 120, 120);
     this.infix("+", 100, 100);
     this.operator("-", Operator.BINARY, 100, 134, function(p) {
         // nud (prefix operator)
