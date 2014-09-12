@@ -2830,9 +2830,9 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="p">
-      <TITRE>P</TITRE>
+      <TITRE>Paragraph</TITRE>
       <DOCUMENTATION>
-        Paragraph
+        The HTML &lt;p&gt; element (or HTML Paragraph Element) represents a paragraph of text. Paragraphs are block-level elements.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="ul">
@@ -3243,7 +3243,7 @@
     <STRINGS_ELEMENT element="map">
       <TITRE>Map</TITRE>
       <DOCUMENTATION>
-        The HTML &lt;area&gt; element defines a hot-spot region on an image, and optionally associates it with a hypertext link. This element is used only within a &lt;map&gt; element.
+        The HTML &lt;map&gt; element is used with &lt;area&gt; elements to define an image map (a clickable link area).
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
@@ -3263,6 +3263,9 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="area">
       <TITRE>Area</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;area&gt; element defines a hot-spot region on an image, and optionally associates it with a hypertext link. This element is used only within a &lt;map&gt; element.
+      </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="shape">
         <TITRE>shape</TITRE>
       </STRINGS_ATTRIBUT>

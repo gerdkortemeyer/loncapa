@@ -89,7 +89,7 @@
         <xs:element ref="htmlhead"/>
         <xs:element ref="htmlbody"/>
         <xs:element ref="problem"/>
-        <xs:group ref="text"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -101,9 +101,8 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
+        <xs:group ref="text-with-responses"/>
         <xs:group ref="responses"/>
-        <xs:group ref="lcblocks"/>
         <xs:group ref="inserts"/>
         <xs:element ref="part"/>
         <xs:element ref="meta"/>
@@ -124,21 +123,31 @@
   </xs:annotation>
   <xs:group name="responses">
     <xs:choice>
+      <xs:group ref="inlineResponses"/>
+      <xs:group ref="blockResponses"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="inlineResponses">
+    <xs:choice>
       <xs:element ref="stringresponse"/>
-      <xs:element ref="essayresponse"/>
-      <xs:element ref="radiobuttonresponse"/>
       <xs:element ref="optionresponse"/>
-      <xs:element ref="matchresponse"/>
-      <xs:element ref="rankresponse"/>
-      <xs:element ref="imageresponse"/>
       <xs:element ref="numericalresponse"/>
       <xs:element ref="formularesponse"/>
       <xs:element ref="mathresponse"/>
-      <xs:element ref="functionplotresponse"/>
       <xs:element ref="organicresponse"/>
       <xs:element ref="reactionresponse"/>
       <xs:element ref="customresponse"/>
       <xs:element ref="externalresponse"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="blockResponses">
+    <xs:choice>
+      <xs:element ref="essayresponse"/>
+      <xs:element ref="radiobuttonresponse"/>
+      <xs:element ref="matchresponse"/>
+      <xs:element ref="rankresponse"/>
+      <xs:element ref="imageresponse"/>
+      <xs:element ref="functionplotresponse"/>
     </xs:choice>
   </xs:group>
   
@@ -315,8 +324,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text"/>
-      <xs:group ref="lcblocks"/>
+      <xs:group ref="text-without-responses"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
@@ -489,8 +497,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text"/>
-      <xs:group ref="lcblocks"/>
+      <xs:group ref="text-without-responses"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
@@ -622,8 +629,7 @@
       <xs:documentation>Item</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text"/>
-      <xs:group ref="lcblocks"/>
+      <xs:group ref="text-without-responses"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
@@ -658,8 +664,7 @@
       <xs:documentation>Foil</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text"/>
-      <xs:group ref="lcblocks"/>
+      <xs:group ref="text-without-responses"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
@@ -736,8 +741,7 @@
       <xs:documentation>Foil</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text"/>
-      <xs:group ref="lcblocks"/>
+      <xs:group ref="text-without-responses"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
@@ -862,8 +866,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text"/>
-      <xs:group ref="lcblocks"/>
+      <xs:group ref="text-without-responses"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
@@ -1060,7 +1063,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="maxima" name="cas">
+      <xs:attribute name="cas" use="required">
         <xs:annotation>
           <xs:documentation>
             Algebra System. Maxima and R are supported.
@@ -2102,6 +2105,8 @@
         ???
       </xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+    </xs:complexType>
   </xs:element>
   
   <xs:annotation>
@@ -2117,7 +2122,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
+        <xs:group ref="text-without-responses"/>
         <xs:element ref="hintpart"/>
         <xs:element ref="stringhint"/>
         <xs:element ref="radiobuttonhint"/>
@@ -2149,8 +2154,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:group ref="lcblocks"/>
+        <xs:group ref="text-without-responses"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -2583,17 +2587,9 @@
       <xs:documentation>Label Text or Path to image</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text"/>
-      <xs:element ref="import"/>
-      <xs:element ref="block"/>
-      <xs:element ref="while"/>
-      <xs:element ref="tex"/>
-      <xs:element ref="problemtype"/>
-      <xs:element ref="randomlist"/>
-      <xs:element ref="script"/>
-      <xs:element ref="postanswerdate"/>
+      <xs:group ref="text-without-responses"/>
       <xs:element ref="preduedate"/>
-      <xs:element ref="web"/>
+      <xs:element ref="postanswerdate"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="solved"/>
@@ -2624,25 +2620,6 @@
   
   <xs:annotation>
     <xs:documentation>
-      List of common block elements that cannot be used anywhere text is used.
-    </xs:documentation>
-  </xs:annotation>
-  <xs:group name="lcblocks">
-    <xs:choice>
-      <xs:element ref="import"/>
-      <xs:element ref="block"/>
-      <xs:element ref="while"/>
-      <xs:element ref="tex"/>
-      <xs:element ref="web"/>
-      <xs:element ref="problemtype"/>
-      <xs:element ref="randomlist"/>
-      <xs:element ref="script"/>
-      <xs:element ref="window"/>
-    </xs:choice>
-  </xs:group>
-  
-  <xs:annotation>
-    <xs:documentation>
       Problem block elements that cannot be used anywhere text is used.
     </xs:documentation>
   </xs:annotation>
@@ -2656,9 +2633,8 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
+        <xs:group ref="text-with-responses"/>
         <xs:group ref="responses"/>
-        <xs:group ref="lcblocks"/>
         <xs:group ref="inserts"/>
         <xs:element ref="parameter"/>
         <xs:element ref="randomlabel"/>
@@ -2752,7 +2728,7 @@
       <xs:attribute name="content" type="xs:string"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="problemtype">
+  <xs:complexType mixed="true" name="problemtype-base">
     <xs:annotation>
       <xs:documentation>
         Problem Type Block
@@ -2761,51 +2737,69 @@
         Will only show the output text when the problem is set to the type of exam or survey in the course.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:group ref="responses"/>
-        <xs:group ref="lcblocks"/>
-        <xs:group ref="inserts"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="solved"/>
-        <xs:element ref="notsolved"/>
-      </xs:choice>
-      <xs:attribute default="show" name="mode">
-        <xs:simpleType>
-          <xs:union memberTypes="perl">
-            <xs:simpleType>
-              <xs:restriction base="xs:string">
-                <xs:enumeration value="show"/>
-                <xs:enumeration value="hide"/>
-              </xs:restriction>
-            </xs:simpleType>
-          </xs:union>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute default="exam" name="for">
-        <xs:annotation>
-          <xs:documentation>
-            When used as type(s)
-            
-            Comma-separated list of values among:
-            exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
-          </xs:documentation>
-        </xs:annotation>
-        <xs:simpleType>
-          <xs:union memberTypes="perl">
-            <xs:simpleType>
-              <xs:restriction base="xs:string">
-                <xs:pattern value="(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry)(\s*,\s*(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry))*"/>
-              </xs:restriction>
-            </xs:simpleType>
-          </xs:union>
-        </xs:simpleType>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
+    <xs:attribute default="show" name="mode">
+      <xs:simpleType>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="show"/>
+              <xs:enumeration value="hide"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="exam" name="for">
+      <xs:annotation>
+        <xs:documentation>
+          When used as type(s)
+          
+          Comma-separated list of values among:
+          exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:pattern value="(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry)(\s*,\s*(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry))*"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="problemtype-with-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="problemtype-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-responses"/>
+          <xs:group ref="responses"/>
+          <xs:group ref="inserts"/>
+          <xs:element ref="randomlabel"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+          <xs:element ref="solved"/>
+          <xs:element ref="notsolved"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="problemtype-without-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="problemtype-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-without-responses"/>
+          <xs:group ref="inserts"/>
+          <xs:element ref="randomlabel"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+          <xs:element ref="solved"/>
+          <xs:element ref="notsolved"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:element name="parameter">
     <xs:annotation>
       <xs:documentation>
@@ -2833,8 +2827,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:group ref="lcblocks"/>
+        <xs:group ref="text-without-responses"/>
         <xs:group ref="inserts"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="solved"/>
@@ -2858,7 +2851,7 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-  <xs:element name="block">
+  <xs:complexType mixed="true" name="block-base">
     <xs:annotation>
       <xs:documentation>
         Conditional Block
@@ -2866,28 +2859,46 @@
         This has a required argument condition that is evaluated. If the condition is true, everything inside the tag is evaluated; otherwise, everything inside the block tag is skipped.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:group ref="responses"/>
-        <xs:group ref="lcblocks"/>
-        <xs:group ref="inserts"/>
-        <xs:element ref="part"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="solved"/>
-        <xs:element ref="notsolved"/>
-      </xs:choice>
-      <xs:attribute name="condition" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Test Condition
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
+    <xs:attribute name="condition" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Test Condition
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="block-with-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="block-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-responses"/>
+          <xs:group ref="responses"/>
+          <xs:group ref="inserts"/>
+          <xs:element ref="part"/>
+          <xs:element ref="randomlabel"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+          <xs:element ref="solved"/>
+          <xs:element ref="notsolved"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="block-without-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="block-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-without-responses"/>
+          <xs:group ref="inserts"/>
+          <xs:element ref="randomlabel"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+          <xs:element ref="solved"/>
+          <xs:element ref="notsolved"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:element name="while">
     <xs:annotation>
       <xs:documentation>
@@ -2898,8 +2909,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:group ref="lcblocks"/>
+        <xs:group ref="text-without-responses"/>
         <xs:group ref="inserts"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -2925,8 +2935,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:group ref="lcblocks"/>
+        <xs:group ref="text-without-responses"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -2945,9 +2954,8 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
+        <xs:group ref="text-with-responses"/>
         <xs:group ref="responses"/>
-        <xs:group ref="lcblocks"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -2956,7 +2964,7 @@
       </xs:choice>
     </xs:complexType>
   </xs:element>
-  <xs:element name="randomlist">
+  <xs:complexType name="randomlist-base">
     <xs:annotation>
       <xs:documentation>
         Randomly Parsed Block
@@ -2964,30 +2972,83 @@
         The enclosed tags are parsed in a stable random order. The optional attribute show=“N” restricts the number of tags inside that are actually parsed to no more than N. N can equal the total tags inside. The randomlist tag can be used to randomize problem parts by wrapping the &lt;part&gt; tags with a randomlist tag. Note that when randomlist wraps &lt;part&gt; tags, that all students will work all parts only if show=“N” where N is the total number of parts wrapped. When N is less than the total number of parts wrapped, there will be gaps in the assessment chart, and also in the table of submissions for each student, corresponding to those parts which are never available to that particular student.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="responses"/>
-        <xs:group ref="lcblocks"/>
-        <xs:element ref="display"/>
-        <xs:element ref="gnuplot"/>
-        <xs:element ref="organicstructure"/>
-        <xs:element ref="img"/>
-        <xs:element ref="postanswerdate"/>
-        <xs:element ref="preduedate"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="solved"/>
-        <xs:element ref="notsolved"/>
-      </xs:choice>
-      <xs:attribute name="show" type="int-or-perl">
-        <xs:annotation>
-          <xs:documentation>
-            Maximum Tags to Show
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
+    <xs:attribute name="show" type="int-or-perl">
+      <xs:annotation>
+        <xs:documentation>
+          Maximum Tags to Show
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="randomlist-with-responses">
+    <xs:complexContent>
+      <xs:extension base="randomlist-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="responses"/>
+          <xs:element ref="img"/>
+          <xs:element ref="postanswerdate"/>
+          <xs:element ref="preduedate"/>
+          <xs:element name="block" type="block-with-responses"/>
+          <xs:element ref="while"/>
+          <xs:element name="problemtype" type="problemtype-with-responses"/>
+          <xs:element ref="window"/>
+          <xs:element ref="display"/>
+          <xs:element ref="gnuplot"/>
+          <xs:element ref="organicstructure"/>
+          <xs:element ref="instructorcomment"/>
+          <xs:element ref="drawimage"/>
+          
+          <xs:element name="section" type="section-with-responses"/>
+          <xs:element name="ul" type="ul-with-responses"/>
+          <xs:element name="ol" type="ol-with-responses"/>
+          <xs:element name="table" type="table-with-responses"/>
+          <xs:element name="dl" type="dl-with-responses"/>
+          <xs:element ref="object"/>
+          <xs:element ref="applet"/>
+          <xs:element ref="embed"/>
+          <xs:element ref="video"/>
+          <xs:element ref="audio"/>
+          <xs:element ref="canvas"/>
+          <xs:element ref="form"/>
+          <xs:element ref="iframe"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="randomlist-without-responses">
+    <xs:complexContent>
+      <xs:extension base="randomlist-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:element ref="img"/>
+          <xs:element ref="postanswerdate"/>
+          <xs:element ref="preduedate"/>
+          <xs:element name="block" type="block-without-responses"/>
+          <xs:element ref="while"/>
+          <xs:element name="problemtype" type="problemtype-without-responses"/>
+          <xs:element ref="window"/>
+          <xs:element ref="display"/>
+          <xs:element ref="gnuplot"/>
+          <xs:element ref="organicstructure"/>
+          <xs:element ref="instructorcomment"/>
+          <xs:element ref="drawimage"/>
+          
+          <xs:element name="section" type="section-without-responses"/>
+          <xs:element name="ul" type="ul-without-responses"/>
+          <xs:element name="ol" type="ol-without-responses"/>
+          <xs:element name="table" type="table-without-responses"/>
+          <xs:element name="dl" type="dl-without-responses"/>
+          <xs:element ref="object"/>
+          <xs:element ref="applet"/>
+          <xs:element ref="embed"/>
+          <xs:element ref="video"/>
+          <xs:element ref="audio"/>
+          <xs:element ref="canvas"/>
+          <xs:element ref="form"/>
+          <xs:element ref="iframe"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:element name="solved">
     <xs:annotation>
       <xs:documentation>
@@ -2998,8 +3059,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:group ref="lcblocks"/>
+        <xs:group ref="text-without-responses"/>
         <xs:group ref="inserts"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -3016,9 +3076,8 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
+        <xs:group ref="text-with-responses"/>
         <xs:group ref="responses"/>
-        <xs:group ref="lcblocks"/>
         <xs:group ref="inserts"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
@@ -3026,10 +3085,15 @@
       </xs:choice>
     </xs:complexType>
   </xs:element>
-  <xs:element name="web" type="xs:string">
+  <xs:element name="web">
     <xs:annotation>
       <xs:documentation>Web Only Block</xs:documentation>
     </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+      </xs:choice>
+    </xs:complexType>
   </xs:element>
   <xs:element name="tex" type="xs:string">
     <xs:annotation>
@@ -4059,7 +4123,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="include" type="xs:string"/>
       <xs:attribute name="exclude" type="xs:string"/>
@@ -4076,7 +4140,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
+        <xs:group ref="text-without-responses"/>
         <xs:element ref="lang"/>
       </xs:choice>
     </xs:complexType>
@@ -4091,7 +4155,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="which" type="xs:string"/>
       <xs:attribute name="other" type="xs:string"/>
@@ -4100,7 +4164,7 @@
   <xs:element name="instructorcomment">
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4114,7 +4178,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="href" type="xs:string"/>
       <xs:attribute name="height" type="int-or-perl">
@@ -4142,7 +4206,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="heading" type="xs:string">
         <xs:annotation>
@@ -4182,7 +4246,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4448,17 +4512,38 @@
   
   <xs:annotation>
     <xs:documentation>
-      List of block and inline elements mixed with text
+      List of block and inline elements mixed with text. These elements can contain responses.
     </xs:documentation>
   </xs:annotation>
-  <xs:group name="text">
+  <xs:group name="text-with-responses">
     <xs:choice>
-      <xs:group ref="blockText"/>
-      <xs:group ref="inlineText"/>
+      <xs:group ref="blocks-with-responses"/>
+      <xs:group ref="inlines"/>
     </xs:choice>
   </xs:group>
-  <xs:group name="blockText">
+  <xs:annotation>
+    <xs:documentation>
+      List of block and inline elements mixed with text. These elements cannot contain responses.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:group name="text-without-responses">
     <xs:choice>
+      <xs:group ref="blocks-without-responses"/>
+      <xs:group ref="inlines"/>
+    </xs:choice>
+  </xs:group>
+  
+  <xs:group name="blocks-with-responses">
+    <xs:choice>
+      <xs:element ref="import"/>
+      <xs:element name="block" type="block-with-responses"/>
+      <xs:element ref="while"/>
+      <xs:element ref="tex"/>
+      <xs:element ref="web"/>
+      <xs:element name="problemtype" type="problemtype-with-responses"/>
+      <xs:element name="randomlist" type="randomlist-with-responses"/>
+      <xs:element ref="script"/>
+      <xs:element ref="window"/>
       <xs:element ref="display"/>
       <xs:element ref="gnuplot"/>
       <xs:element ref="organicstructure"/>
@@ -4471,16 +4556,17 @@
       <xs:element ref="comment"/>
       <xs:element ref="drawimage"/>
       
-      <xs:element ref="section"/>
+      <xs:element name="section" type="section-with-responses"/>
       <xs:group ref="heading"/>
-      <xs:element ref="div"/>
-      <xs:element ref="p"/>
-      <xs:element ref="ul"/>
-      <xs:element ref="ol"/>
-      <xs:element ref="table"/>
-      <xs:element ref="dl"/>
+      <xs:element name="div" type="div-with-responses"/>
+      <xs:element name="p" type="p-with-responses"/>
+      <xs:element name="ul" type="ul-with-responses"/>
+      <xs:element name="ol" type="ol-with-responses"/>
+      <xs:element name="table" type="table-with-responses"/>
+      <xs:element name="dl" type="dl-with-responses"/>
       <xs:element ref="pre"/>
       <xs:element ref="noscript"/>
+      <xs:element ref="hr"/>
       <xs:element ref="blockquote"/>
       <xs:element ref="object"/>
       <xs:element ref="applet"/>
@@ -4494,7 +4580,54 @@
       <xs:element ref="iframe"/>
     </xs:choice>
   </xs:group>
-  <xs:group name="inlineText">
+  <xs:group name="blocks-without-responses">
+    <xs:choice>
+      <xs:element ref="import"/>
+      <xs:element name="block" type="block-without-responses"/>
+      <xs:element ref="while"/>
+      <xs:element ref="tex"/>
+      <xs:element ref="web"/>
+      <xs:element name="problemtype" type="problemtype-without-responses"/>
+      <xs:element name="randomlist" type="randomlist-without-responses"/>
+      <xs:element ref="script"/>
+      <xs:element ref="window"/>
+      <xs:element ref="display"/>
+      <xs:element ref="gnuplot"/>
+      <xs:element ref="organicstructure"/>
+      <xs:element ref="languageblock"/>
+      <xs:element ref="translated"/>
+      <xs:element ref="instructorcomment"/>
+      <xs:element ref="windowlink"/>
+      <xs:element ref="togglebox"/>
+      <xs:element ref="standalone"/>
+      <xs:element ref="comment"/>
+      <xs:element ref="drawimage"/>
+      
+      <xs:element name="section" type="section-without-responses"/>
+      <xs:group ref="heading"/>
+      <xs:element name="div" type="div-without-responses"/>
+      <xs:element name="p" type="p-without-responses"/>
+      <xs:element name="ul" type="ul-without-responses"/>
+      <xs:element name="ol" type="ol-without-responses"/>
+      <xs:element name="table" type="table-without-responses"/>
+      <xs:element name="dl" type="dl-without-responses"/>
+      <xs:element ref="pre"/>
+      <xs:element ref="noscript"/>
+      <xs:element ref="hr"/>
+      <xs:element ref="blockquote"/>
+      <xs:element ref="object"/>
+      <xs:element ref="applet"/>
+      <xs:element ref="embed"/>
+      <xs:element ref="video"/>
+      <xs:element ref="audio"/>
+      <xs:element ref="map"/>
+      <xs:element ref="canvas"/>
+      <xs:element ref="form"/>
+      <xs:element ref="fieldset"/>
+      <xs:element ref="iframe"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="inlines">
     <xs:choice>
       <xs:element ref="img"/>
       <xs:element ref="m"/>
@@ -4520,7 +4653,6 @@
       <xs:element ref="var"/>
       <xs:element ref="small"/>
       <xs:element ref="big"/>
-      <xs:element ref="hr"/>
       <xs:element ref="br"/>
       <xs:element ref="input"/>
       <xs:element ref="select"/>
@@ -4529,7 +4661,6 @@
       <xs:element ref="button"/>
     </xs:choice>
   </xs:group>
-  
   
   <xs:annotation>
     <xs:documentation>
@@ -4558,7 +4689,7 @@
   </xs:attributeGroup>
   <xs:complexType mixed="true" name="inlineBaseType">
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="inlineText"/>
+      <xs:group ref="inlines"/>
     </xs:choice>
   </xs:complexType>
   <xs:group name="heading">
@@ -4734,7 +4865,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blockText"/>
+        <xs:group ref="blocks-without-responses"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4750,20 +4881,34 @@
       <xs:attribute name="onunload" type="xs:string"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="section">
+  <xs:complexType name="section-base">
     <xs:annotation>
       <xs:documentation>
         The HTML Section Element (&lt;section&gt;) represents a generic section of a document, i.e., a thematic grouping of content, typically with a heading. Each &lt;section&gt; should be identified, typically by including a heading (h1-h6 element) as a child of the &lt;section&gt; element.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blockText"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:ID"/>
-      <xs:attribute name="class" type="xs:NMTOKENS"/>
-    </xs:complexType>
-  </xs:element>
+    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="class" type="xs:NMTOKENS"/>
+  </xs:complexType>
+  <xs:complexType name="section-with-responses">
+    <xs:complexContent>
+      <xs:extension base="section-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="blocks-with-responses"/>
+          <xs:group ref="blockResponses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="section-without-responses">
+    <xs:complexContent>
+      <xs:extension base="section-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="blocks-without-responses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:element name="h1" type="headerContent">
     <xs:annotation>
       <xs:documentation>
@@ -4812,88 +4957,162 @@
       </xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:element name="div">
+  <xs:complexType mixed="true" name="div-base">
     <xs:annotation>
       <xs:documentation>
         The HTML &lt;div&gt; element (or HTML Document Division Element) is the generic container for flow content, which does not inherently represent anything. It can be used to group elements for styling purposes (using the class or id attributes), or because they share attribute values, such as lang. It should be used only when no other semantic element (such as &lt;article&gt; or &lt;nav&gt;) is appropriate.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-        <xs:group ref="responses"/>
-        <xs:group ref="lcblocks"/>
-        <xs:group ref="inserts"/>
-        <xs:element ref="part"/>
-        <xs:element ref="meta"/>
-        <xs:element ref="parameter"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="solved"/>
-        <xs:element ref="notsolved"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:ID"/>
-      <xs:attribute name="class" type="xs:NMTOKENS"/>
-      <xs:attribute name="style" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="p">
+    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="class" type="xs:NMTOKENS"/>
+    <xs:attribute name="style" type="xs:string"/>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="div-with-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="div-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-responses"/>
+          <xs:group ref="responses"/>
+          <xs:group ref="inserts"/>
+          <xs:element ref="part"/>
+          <xs:element ref="meta"/>
+          <xs:element ref="parameter"/>
+          <xs:element ref="randomlabel"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+          <xs:element ref="solved"/>
+          <xs:element ref="notsolved"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="div-without-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="div-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-without-responses"/>
+          <xs:group ref="inserts"/>
+          <xs:element ref="part"/>
+          <xs:element ref="meta"/>
+          <xs:element ref="parameter"/>
+          <xs:element ref="randomlabel"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+          <xs:element ref="solved"/>
+          <xs:element ref="notsolved"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="p-base">
     <xs:annotation>
       <xs:documentation>
-        Paragraph
+        The HTML &lt;p&gt; element (or HTML Paragraph Element) represents a paragraph of text. Paragraphs are block-level elements.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:complexContent mixed="true">
-        <xs:extension base="inlineBaseType">
-          <xs:attribute name="id" type="xs:ID"/>
-          <xs:attribute name="class" type="xs:NMTOKENS"/>
-          <xs:attribute name="style" type="xs:string"/>
-        </xs:extension>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="ul">
+    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="class" type="xs:NMTOKENS"/>
+    <xs:attribute name="style" type="xs:string"/>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="p-with-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="p-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="inlines"/>
+          <xs:group ref="inlineResponses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="p-without-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="p-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="inlines"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ul-base">
     <xs:annotation>
       <xs:documentation>
         Unordered list
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
-      <xs:sequence maxOccurs="unbounded">
-        <xs:element ref="li"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="ol">
+  </xs:complexType>
+  <xs:complexType name="ul-with-responses">
+    <xs:complexContent>
+      <xs:extension base="ul-base">
+        <xs:sequence maxOccurs="unbounded">
+          <xs:element name="li" type="li-with-responses"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ul-without-responses">
+    <xs:complexContent>
+      <xs:extension base="ul-base">
+        <xs:sequence maxOccurs="unbounded">
+          <xs:element name="li" type="li-without-responses"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ol-base">
     <xs:annotation>
       <xs:documentation>
         Ordered list
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
-      <xs:sequence maxOccurs="unbounded">
-        <xs:element ref="li"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="li">
+  </xs:complexType>
+  <xs:complexType name="ol-with-responses">
+    <xs:complexContent>
+      <xs:extension base="ol-base">
+        <xs:sequence maxOccurs="unbounded">
+          <xs:element name="li" type="li-with-responses"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ol-without-responses">
+    <xs:complexContent>
+      <xs:extension base="ol-base">
+        <xs:sequence maxOccurs="unbounded">
+          <xs:element name="li" type="li-without-responses"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="li-base">
     <xs:annotation>
       <xs:documentation>
         List item
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:ID"/>
-      <xs:attribute name="class" type="xs:NMTOKENS"/>
-      <xs:attribute name="style" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="dl">
+    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="class" type="xs:NMTOKENS"/>
+    <xs:attribute name="style" type="xs:string"/>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="li-with-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="li-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-responses"/>
+          <xs:group ref="responses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="li-without-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="li-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-without-responses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="dl-base">
     <xs:annotation>
       <xs:documentation>
         The HTML &lt;dl&gt; Element (or HTML Description List Element) encloses a list of pairs of terms and descriptions. Common uses for this element are to implement a glossary or to display metadata (a list of key-value pairs).
@@ -4901,13 +5120,19 @@
         Prior to HTML5, &lt;dl&gt; was known as a Definition List.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded">
-        <xs:element ref="dt"/>
-        <xs:element ref="dd"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
+  </xs:complexType>
+  <xs:complexType name="dl-with-responses">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element ref="dt"/>
+      <xs:element name="dd" type="dd-with-responses"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="dl-without-responses">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element ref="dt"/>
+      <xs:element name="dd" type="dd-without-responses"/>
+    </xs:choice>
+  </xs:complexType>
   <xs:element name="dt" type="inlineBaseType">
     <xs:annotation>
       <xs:documentation>
@@ -4915,49 +5140,93 @@
       </xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:element name="dd">
+  <xs:complexType mixed="true" name="dd-base">
     <xs:annotation>
       <xs:documentation>
         The HTML &lt;dd&gt; Element (or HTML Description Element) indicates the description of a term in a description list (&lt;dl&gt;) element. This element can occur only as a child element of a definition list and it must follow a &lt;dt&gt; element.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blockText"/>
-        <xs:group ref="inlineText"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="table">
+  </xs:complexType>
+  <xs:complexType name="dd-with-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="dd-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-responses"/>
+          <xs:group ref="responses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="dd-without-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="dd-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-without-responses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="table-base">
     <xs:annotation>
       <xs:documentation>
         Table
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
-      <xs:sequence maxOccurs="unbounded">
-        <xs:element ref="tr"/>
-      </xs:sequence>
-      <xs:attribute name="style" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="tr">
+    <xs:attribute name="style" type="xs:string"/>
+  </xs:complexType>
+  <xs:complexType name="table-with-responses">
+    <xs:complexContent>
+      <xs:extension base="table-base">
+        <xs:sequence maxOccurs="unbounded">
+          <xs:element name="tr" type="tr-with-responses"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="table-without-responses">
+    <xs:complexContent>
+      <xs:extension base="table-base">
+        <xs:sequence maxOccurs="unbounded">
+          <xs:element name="tr" type="tr-without-responses"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="tr-base">
     <xs:annotation>
       <xs:documentation>
         Table row
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
-      <xs:choice>
-        <xs:sequence maxOccurs="unbounded">
-          <xs:element ref="th"/>
-        </xs:sequence>
-        <xs:sequence maxOccurs="unbounded">
-          <xs:element ref="td"/>
-        </xs:sequence>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
+  </xs:complexType>
+  <xs:complexType name="tr-with-responses">
+    <xs:complexContent>
+      <xs:extension base="tr-base">
+        <xs:choice>
+          <xs:sequence maxOccurs="unbounded">
+            <xs:element ref="th"/>
+          </xs:sequence>
+          <xs:sequence maxOccurs="unbounded">
+            <xs:element name="td" type="td-with-responses"/>
+          </xs:sequence>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="tr-without-responses">
+    <xs:complexContent>
+      <xs:extension base="tr-base">
+        <xs:choice>
+          <xs:sequence maxOccurs="unbounded">
+            <xs:element ref="th"/>
+          </xs:sequence>
+          <xs:sequence maxOccurs="unbounded">
+            <xs:element name="td" type="td-without-responses"/>
+          </xs:sequence>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:simpleType name="html-align">
     <xs:restriction base="xs:string">
       <xs:enumeration value="left"/>
@@ -4966,21 +5235,35 @@
       <xs:enumeration value="justify"/>
     </xs:restriction>
   </xs:simpleType>
-  <xs:element name="td">
+  <xs:complexType mixed="true" name="td-base">
     <xs:annotation>
       <xs:documentation>
         Table cell
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
-      </xs:choice>
-      <xs:attribute name="colspan" type="xs:int"/>
-      <xs:attribute name="rowspan" type="xs:int"/>
-      <xs:attribute name="align" type="html-align"/>
-    </xs:complexType>
-  </xs:element>
+    <xs:attribute name="colspan" type="xs:int"/>
+    <xs:attribute name="rowspan" type="xs:int"/>
+    <xs:attribute name="align" type="html-align"/>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="td-with-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="td-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-responses"/>
+          <xs:group ref="responses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="td-without-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="td-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-without-responses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:element name="th">
     <xs:annotation>
       <xs:documentation>
@@ -4989,7 +5272,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="colspan" type="xs:int"/>
       <xs:attribute name="rowspan" type="xs:int"/>
@@ -5004,7 +5287,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="inlineText"/>
+        <xs:group ref="inlines"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:ID"/>
       <xs:attribute name="class" type="xs:NMTOKENS"/>
@@ -5024,17 +5307,17 @@
       <xs:attribute name="title" type="xs:string"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="strong" type="inlineBaseType">
-    <xs:annotation>
-      <xs:documentation>
-        Strong emphasis
-      </xs:documentation>
-    </xs:annotation>
-  </xs:element>
   <xs:element name="em" type="inlineBaseType">
     <xs:annotation>
       <xs:documentation>
         Emphasis
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="strong" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        Strong emphasis
       </xs:documentation>
     </xs:annotation>
   </xs:element>
@@ -5159,6 +5442,8 @@
         The HTML &lt;br&gt; Element (or HTML Line Break Element) produces a line break in text (carriage-return). It is useful for writing a poem or an address, where the division of lines is significant.
       </xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+    </xs:complexType>
   </xs:element>
   <xs:element name="hr">
     <xs:annotation>
@@ -5178,9 +5463,9 @@
         The HTML &lt;blockquote&gt; Element (or HTML Block Quotation Element) indicates that the enclosed text is an extended quotation. Usually, this is rendered visually by indentation (see Notes for how to change it). A URL for the source of the quotation may be given using the cite attribute, while a text representation of the source can be given using the &lt;cite&gt; element.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blockText"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="cite" type="xs:anyURI"/>
     </xs:complexType>
@@ -5205,8 +5490,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="param"/>
-        <xs:group ref="blockText"/>
-        <xs:group ref="inlineText"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="classid" type="xs:string">
         <xs:annotation>
@@ -5360,8 +5644,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="param"/>
-        <xs:group ref="blockText"/>
-        <xs:group ref="inlineText"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="codebase" type="xs:anyURI"/>
       <xs:attribute name="archive"/>
@@ -5460,13 +5743,13 @@
   <xs:element name="map">
     <xs:annotation>
       <xs:documentation>
-        The HTML &lt;area&gt; element defines a hot-spot region on an image, and optionally associates it with a hypertext link. This element is used only within a &lt;map&gt; element.
+        The HTML &lt;map&gt; element is used with &lt;area&gt; elements to define an image map (a clickable link area).
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:choice>
         <xs:choice maxOccurs="unbounded">
-          <xs:group ref="blockText"/>
+          <xs:group ref="blocks-without-responses"/>
         </xs:choice>
         <xs:element maxOccurs="unbounded" ref="area"/>
       </xs:choice>
@@ -5478,6 +5761,11 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="area">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;area&gt; element defines a hot-spot region on an image, and optionally associates it with a hypertext link. This element is used only within a &lt;map&gt; element.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:attribute default="rect" name="shape">
         <xs:simpleType>
@@ -5515,8 +5803,8 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blockText"/>
-        <xs:group ref="inlineText"/>
+        <xs:group ref="blocks-without-responses"/>
+        <xs:group ref="inlines"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:ID"/>
       <xs:attribute name="class" type="xs:NMTOKENS"/>
@@ -5546,7 +5834,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blockText"/>
+        <xs:group ref="blocks-without-responses"/>
       </xs:choice>
       <xs:attribute name="action" type="xs:anyURI" use="required"/>
       <xs:attribute default="get" name="method">
@@ -5567,8 +5855,7 @@
   <xs:element name="label">
     <xs:annotation>
       <xs:documentation>
-        Each label must not contain more than ONE field
-        Label elements shouldn't be nested.
+        The HTML &lt;label&gt; Element represents a caption for an item in a user interface. It can be associated with a control either by placing the control element inside the label element, or by using the for attribute. Such a control is called the labeled control of the label element.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -5605,7 +5892,7 @@
   <xs:element name="input">
     <xs:annotation>
       <xs:documentation>
-        form control
+        The HTML &lt;input&gt; element is used to create interactive controls for web-based forms in order to accept data from user. 
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -5652,7 +5939,7 @@
   <xs:element name="select">
     <xs:annotation>
       <xs:documentation>
-        option selector
+        The HTML select (&lt;select&gt;) element represents a control that presents a menu of options. The options within the menu are represented by &lt;option&gt; elements, which can be grouped by &lt;optgroup&gt; elements. Options can be pre-selected for the user.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -5685,7 +5972,7 @@
   <xs:element name="optgroup">
     <xs:annotation>
       <xs:documentation>
-        option group
+        In a Web form, the HTML &lt;optgroup&gt; element  creates a grouping of options within a &lt;select&gt; element.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -5705,7 +5992,7 @@
   <xs:element name="option">
     <xs:annotation>
       <xs:documentation>
-        selectable choice
+        In a Web form, the HTML &lt;option&gt; element is used to create a control representing an item within a &lt;select&gt;, an &lt;optgroup&gt; or a &lt;datalist&gt; HTML5 element.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -5730,7 +6017,7 @@
   <xs:element name="textarea">
     <xs:annotation>
       <xs:documentation>
-        multi-line text field
+        The HTML &lt;textarea&gt; element represents a multi-line plain-text editing control.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -5758,17 +6045,17 @@
   <xs:element name="fieldset">
     <xs:annotation>
       <xs:documentation>
-        The fieldset element is used to group form fields.
-        Only one legend element should occur in the content
-        and if present should only be preceded by whitespace.
+        The HTML &lt;fieldset&gt; element is used to group several controls as well as labels (&lt;label&gt;) within a web form.
+        
+        Only one legend element should occur in the content, and if present should only be preceded by whitespace.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:sequence>
         <xs:element ref="legend"/>
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="blockText"/>
-          <xs:group ref="inlineText"/>
+          <xs:group ref="blocks-without-responses"/>
+          <xs:group ref="inlines"/>
         </xs:choice>
       </xs:sequence>
     </xs:complexType>
@@ -5776,7 +6063,7 @@
   <xs:element name="legend">
     <xs:annotation>
       <xs:documentation>
-        fieldset label
+        The HTML &lt;legend&gt; Element (or HTML Legend Field Element) represents a caption for the content of its parent &lt;fieldset&gt;.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -5794,10 +6081,15 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="button">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;button&gt; Element represents a clickable button.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blockText"/>
-        <xs:group ref="inlineText"/>
+        <xs:group ref="blocks-without-responses"/>
+        <xs:group ref="inlines"/>
       </xs:choice>
       <xs:attribute name="name"/>
       <xs:attribute name="value"/>
