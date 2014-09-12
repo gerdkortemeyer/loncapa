@@ -111,9 +111,43 @@ sub we_are_homeserver {
    return (&homeserver(@_) eq &Apache::lc_connection_utils::host_name());
 }
 
+#
+# Handle tokens to transfer data between servers
+# e.g., session data at handovers
+#
+
+# Get a token on local machine for remote machine
+#
+sub get_token_data {
+   return &Apache::lc_json_utils::perl_to_json(&Apache::lc_memcached::lookup_token(@_));
+}
+
+# Set a token on local machine
+#
+sub set_token_data {
+   my ($tokendata)=@_;
+   my $id=&long_unique_id();
+   &Apache::lc_memcached::insert_token($id,$tokendata);
+   return $id;
+}
+ 
+# Get a token from a remote machine
+#
+sub get_remote_token {
+   my ($host,$id)=@_;
+   if ($id=~/\W/) { return undef; }   
+   my ($code,$reply)=&Apache::lc_dispatcher::command_dispatch($host,"get_token_data","{ token : '$id' }");
+   if ($code eq HTTP_OK) {
+      return &Apache::lc_json_utils::json_to_perl($reply);
+   } else {
+      return undef;
+   }
+}
+
 BEGIN {
 # Register the local homeserver routine for external call through connection_handle
    &Apache::lc_connection_handle::register('homeserver',undef,undef,undef,\&local_homeserver,'entity','domain');
+   &Apache::lc_connection_handle::register('get_token_data',undef,undef,undef,\&get_token_data,'token');
 }
 1;
 __END__

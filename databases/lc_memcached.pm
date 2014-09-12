@@ -167,6 +167,19 @@ sub lookup_metadata {
 }
 
 #
+# Tokens
+#
+sub insert_token {
+   my ($token,$tokendata)=@_;
+   &mset("token:$token",$tokendata,&lc_medium_expire());
+}
+
+sub lookup_token {
+   my ($token)=@_;
+   return &mget("token:$token");
+}
+
+#
 # Caching table of contents
 #
 sub insert_toc {

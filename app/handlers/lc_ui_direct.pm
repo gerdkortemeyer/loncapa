@@ -22,7 +22,7 @@ use strict;
 use Apache2::RequestRec();
 use Apache2::Const qw(:common :http);
 use Apache::lc_entity_sessions();
-use Apache::lc_entity_sessions();
+use Apache::lc_entity_utils();
 use CGI::Cookie ();
 
 # ==== Main handler
@@ -31,6 +31,13 @@ sub handler {
 # Get request object
    my $r = shift;
    my %content=&Apache::lc_entity_sessions::posted_content();
+# Can come in for many reasons.
+# Do we have a referrer?
+   if (($content{'origin'}) && ($content{'token'})) {
+      my $tokendata=&Apache::lc_entity_utils::get_remote_token($content{'origin'},$content{'token'});
+   }
+
+
 # Attempt to open a session
 #    my $sessionid=&Apache::lc_entity_sessions::open_session($username,$domain,$content{'password'});
 #       if ($sessionid) {
