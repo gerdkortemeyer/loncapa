@@ -162,6 +162,7 @@ Definitions.prototype.define = function() {
     });
     this.infix("*", 120, 120);
     this.infix("/", 120, 120);
+    this.infix("%", 120, 120);
     this.infix("+", 100, 100);
     this.operator("-", Operator.BINARY, 100, 134, function(p) {
         // nud (prefix operator)
@@ -1408,10 +1409,32 @@ through which recipients can access the Corresponding Source.
 var handleChange = function(math_object) {
     // math_object has 3 fields: ta, output_div, oldtxt
     // we need to pass this object instead of the values because oldtxt will change
-    var ta, output_div, txt, parser, output, root;
+    var ta, output_div, txt, parser, output, root, test1, test2;
     ta = math_object.ta;
     output_div = math_object.output_div;
     txt = ta.value;
+    
+    // automatically add brackets to something like "1;2;3", for LON-CAPA:
+    // NOTE: this is ugly and sometimes adds brackets to error messages
+    test1 = '';
+    test2 = txt;
+    while (test2 != test1) {
+      test1 = test2;
+      test2 = test1.replace(/\[[^\[\]]*\]/g, '');
+    }
+    if (test2.split("[").length == test2.split("]").length) {
+      test1 = '';
+      while (test2 != test1) {
+        test1 = test2;
+        test2 = test1.replace(/\([^\(\)]*\)/g, '');
+      }
+      if (test2.split("(").length == test2.split(")").length) {
+        if (test2.indexOf(Definitions.ARG_SEPARATOR) != -1) {
+          txt = '['+txt+']';
+        }
+      }
+    }
+    
     if (txt != math_object.oldtxt) {
         math_object.oldtxt = txt;
         while (output_div.firstChild != null)

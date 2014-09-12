@@ -12,7 +12,7 @@ use XML::LibXML;
 my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','numericalresponse','array','unit','answergroup','formularesponse','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','stringresponse','essayresponse','externalresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','customresponse','mathresponse','textfield','hiddensubmission','optionresponse','radiobuttonresponse','rankresponse','matchresponse','organicresponse','reactionresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody');
 my @block_html = ('html','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','pre','noscript','blockquote','object','applet','embed','map','form','fieldset','iframe');
 my @all_block = (@block_elements, @block_html);
-my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td');
+my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
 my @preserve_elements = ('script','answer');
 
 
@@ -108,7 +108,7 @@ sub pretty {
         } elsif ($child->nodeType == XML_TEXT_NODE) {
           my $text = $child->nodeValue;
           # collapse newlines
-          $text =~ s/\n *\n/\n/g;
+          $text =~ s/\n( *\n)+/\n/g;
           # indent
           if (defined $next) {
             $text =~ s/\n */$newline_indent/ge;
@@ -117,6 +117,37 @@ sub pretty {
             $text =~ s/\n *$/$newline_indent_last/e;
           }
           $node->replaceChild($result_doc->createTextNode($text), $child);
+        }
+      }
+      
+      # removes whitespace at the beginning of paragraphs
+      if ($name eq 'p' && defined $node->firstChild && $node->firstChild->nodeType == XML_TEXT_NODE) {
+        my $text = $node->firstChild->nodeValue;
+        $text =~ s/^\s*//;
+        if ($text eq '') {
+          $node->removeChild($node->firstChild);
+        } else {
+          $node->replaceChild($result_doc->createTextNode($text), $node->firstChild);
+        }
+      }
+    } elsif (in_array(\@preserve_elements, $name)) {
+      # collapse newlines at the beginning and the end of scripts
+      if (defined $node->firstChild && $node->firstChild->nodeType == XML_TEXT_NODE) {
+        my $text = $node->firstChild->nodeValue;
+        $text =~ s/^\n( *\n)+/\n/;
+        if ($text eq '') {
+          $node->removeChild($node->firstChild);
+        } else {
+          $node->replaceChild($result_doc->createTextNode($text), $node->firstChild);
+        }
+      }
+      if (defined $node->lastChild && $node->lastChild->nodeType == XML_TEXT_NODE) {
+        my $text = $node->lastChild->nodeValue;
+        $text =~ s/\n( *\n)+$/\n/;
+        if ($text eq '') {
+          $node->removeChild($node->lastChild);
+        } else {
+          $node->replaceChild($result_doc->createTextNode($text), $node->lastChild);
         }
       }
     }

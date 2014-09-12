@@ -23,10 +23,11 @@
     </loncapa>
   </xsl:template>
   
-  <xsl:template match="problem|foil|item|hintgroup|hintpart|label|part|problemtype|window|block|while|postanswerdate|preduedate|solved|notsolved|languageblock|translated|lang|instructorcomment|windowlink|togglebox|standalone|htmlbody|div">
+  <!-- elements that can contain paragraphs -->
+  <xsl:template match="problem|foil|item|hintgroup|hintpart|part|problemtype|window|block|while|postanswerdate|preduedate|solved|notsolved|languageblock|translated|lang|instructorcomment|windowlink|togglebox|standalone|div">
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
-      <xsl:apply-templates select="node()"/>
+      <xsl:call-template name="paragraphs"/>
     </xsl:copy>
   </xsl:template>
   
@@ -86,6 +87,7 @@
   </xsl:template>
 
   <xsl:template match="blockfont">
+    <!-- just get rid of them
     <xsl:if test="node()">
       <xsl:variable name="csscolor"><xsl:call-template name="color"/></xsl:variable>
       <xsl:variable name="csssize"><xsl:call-template name="size"/></xsl:variable>
@@ -93,22 +95,24 @@
       <xsl:variable name="symbol"><xsl:call-template name="has-symbol"/></xsl:variable>
       <xsl:choose>
         <xsl:when test="$csscolor = '' and $csssize = '' and $cssface = '' and $symbol != 'yes'">
-          <xsl:apply-templates select="node()"/>
+          <xsl:call-template name="paragraphs"/>
         </xsl:when>
         <xsl:otherwise>
           <div style="{$csscolor}{$csssize}{$cssface}">
             <xsl:choose>
-              <xsl:when test="$symbol = 'yes'"> <!-- we will not do that test recursively -->
+              <xsl:when test="$symbol = 'yes'">
                 <xsl:call-template name="symbol-content"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:apply-templates select="node()"/>
+                <xsl:call-template name="paragraphs"/>
               </xsl:otherwise>
             </xsl:choose>
           </div>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
+    -->
+    <xsl:call-template name="paragraphs"/>
   </xsl:template>
 
   <xsl:template name="color">
@@ -191,7 +195,7 @@
       </xsl:when>
       <xsl:otherwise>
         <div style="text-align: center; margin: 0 auto">
-          <xsl:apply-templates select="node()"/>
+          <xsl:call-template name="paragraphs"/>
         </div>
       </xsl:otherwise>
     </xsl:choose>
@@ -241,9 +245,32 @@
   <xsl:template match="allow">
   </xsl:template>
   
-  <!--<xsl:template match="br">
-  </xsl:template>-->
+  <xsl:template match="br">
+    <!--
+      <xsl:copy>
+        <xsl:if test="@clear!=''">
+          <xsl:attribute name="style"><xsl:value-of select="concat('clear: ', @clear)"/></xsl:attribute>
+        </xsl:if>
+      </xsl:copy>
+    -->
+  </xsl:template>
   
+  <xsl:template match="p">
+    <xsl:choose>
+      <xsl:when test="count(*)+count(text()[normalize-space(.)!='']) &gt; 0">
+        <xsl:call-template name="paragraphs"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy>
+          <xsl:for-each select="@*">
+            <xsl:attribute name="{translate(name(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')}">
+              <xsl:value-of select="."/>
+            </xsl:attribute>
+          </xsl:for-each>
+        </xsl:copy>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
   
   <xsl:template match = "@*|node()">
     <xsl:copy>
@@ -258,16 +285,13 @@
   
 <!-- Reorganize a block by moving text and inline elements inside paragraphs, to avoid mixing text and block elements.
   br elements are replaced by new paragraphs. -->
-<!-- unfortunately, responses are sometimes used like inline elements (no line break before or after),
-so we can't add paragraphs automatically
   <xsl:template name="paragraphs">
-    <xsl:variable name="inline-elements">|textline|display|img|windowlink|m|chem|num|parse|algebra|displayweight|displaystudentphoto|inlinefont|span|a|strong|em|b|i|sup|sub|code|kbd|samp|tt|ins|del|var|small|big|font|basefont|hr|input|select|textarea|label|button|u|</xsl:variable>
+    <xsl:variable name="inline-elements">|startouttext|endouttext|stringresponse|optionresponse|numericalresponse|formularesponse|mathresponse|organicresponse|reactionresponse|customresponse|externalresponse|textline|display|img|windowlink|m|chem|num|parse|algebra|displayweight|displaystudentphoto|inlinefont|span|a|strong|em|b|i|sup|sub|code|kbd|samp|tt|ins|del|var|small|big|font|basefont|input|select|textarea|label|button|u|</xsl:variable>
+    <xsl:variable name="ignored-inline">|startouttext|endouttext|displayweight|displaystudentphoto|</xsl:variable>
     <xsl:choose>
       <xsl:when test="count(*[not(contains($inline-elements, concat('|',name(),'|')))]) &gt; 0">
-        <xsl:if test="count(*[not(contains($inline-elements, concat('|',name(),'|')))][1]/preceding-sibling::*)!=0 or normalize-space(*[not(contains($inline-elements, concat('|',name(),'|')))][1]/preceding-sibling::node())!=''">
-          <p>
-            <xsl:apply-templates select="*[not(contains($inline-elements, concat('|',name(),'|')))][1]/preceding-sibling::node()"/>
-          </p>
+        <xsl:if test="count(*[not(contains($inline-elements, concat('|',name(),'|')))][1]/preceding-sibling::*[not(contains($ignored-inline, concat('|',name(),'|')))])!=0 or normalize-space(*[not(contains($inline-elements, concat('|',name(),'|')))][1]/preceding-sibling::node())!=''">
+          <p><xsl:apply-templates select="*[not(contains($inline-elements, concat('|',name(),'|')))][1]/preceding-sibling::node()"/></p>
         </xsl:if>
         <xsl:for-each select="*[not(contains($inline-elements, concat('|',name(),'|')))]">
           <xsl:if test="not(contains($inline-elements, concat('|',name(),'|')))">
@@ -275,26 +299,19 @@ so we can't add paragraphs automatically
           </xsl:if>
           <xsl:if test="position()!=last()">
             <xsl:variable name="next" select="generate-id(following-sibling::*[not(contains($inline-elements, concat('|',name(),'|')))][1])"/>
-            <xsl:if test="count(following-sibling::*[generate-id(following-sibling::*[not(contains($inline-elements, concat('|',name(),'|')))][1]) = $next])!=0 or normalize-space(following-sibling::node()[generate-id(following-sibling::*[not(contains($inline-elements, concat('|',name(),'|')))][1]) = $next])!=''">
-              <p>
-                <xsl:apply-templates select="following-sibling::node()[generate-id(following-sibling::*[not(contains($inline-elements, concat('|',name(),'|')))][1]) = $next]"/>
-              </p>
+            <xsl:if test="count(following-sibling::*[generate-id(following-sibling::*[not(contains($inline-elements, concat('|',name(),'|')))][1]) = $next][not(contains($ignored-inline, concat('|',name(),'|')))])!=0 or normalize-space(following-sibling::node()[generate-id(following-sibling::*[not(contains($inline-elements, concat('|',name(),'|')))][1]) = $next])!=''">
+              <p><xsl:apply-templates select="following-sibling::node()[generate-id(following-sibling::*[not(contains($inline-elements, concat('|',name(),'|')))][1]) = $next]"/></p>
             </xsl:if>
           </xsl:if>
         </xsl:for-each>
-        <xsl:if test="count(*[not(contains($inline-elements, concat('|',name(),'|')))][position()=last()]/following-sibling::*)!=0 or normalize-space(*[not(contains($inline-elements, concat('|',name(),'|')))][position()=last()]/following-sibling::node())!=''">
-          <p>
-            <xsl:apply-templates select="*[not(contains($inline-elements, concat('|',name(),'|')))][position()=last()]/following-sibling::node()"/>
-          </p>
+        <xsl:if test="count(*[not(contains($inline-elements, concat('|',name(),'|')))][position()=last()]/following-sibling::*[not(contains($ignored-inline, concat('|',name(),'|')))])!=0 or normalize-space(*[not(contains($inline-elements, concat('|',name(),'|')))][position()=last()]/following-sibling::node())!=''">
+          <p><xsl:apply-templates select="*[not(contains($inline-elements, concat('|',name(),'|')))][position()=last()]/following-sibling::node()"/></p>
         </xsl:if>
       </xsl:when>
-      <xsl:otherwise>
-        <p>
-          <xsl:apply-templates/>
-        </p>
-      </xsl:otherwise>
+      <xsl:when test="count(*)+count(text()[normalize-space(.)!='']) &gt; 0">
+        <p><xsl:apply-templates/></p>
+      </xsl:when>
     </xsl:choose>
   </xsl:template>
--->
 
 </xsl:stylesheet>

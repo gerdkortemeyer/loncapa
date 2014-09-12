@@ -150,21 +150,31 @@
   </xs:annotation>
   <xs:group name="responses">
     <xs:choice>
+      <xs:group ref="inlineResponses"/>
+      <xs:group ref="blockResponses"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="inlineResponses">
+    <xs:choice>
       <xs:element ref="stringresponse"/>
-      <xs:element ref="essayresponse"/>
-      <xs:element ref="radiobuttonresponse"/>
       <xs:element ref="optionresponse"/>
-      <xs:element ref="matchresponse"/>
-      <xs:element ref="rankresponse"/>
-      <xs:element ref="imageresponse"/>
       <xs:element ref="numericalresponse"/>
       <xs:element ref="formularesponse"/>
       <xs:element ref="mathresponse"/>
-      <xs:element ref="functionplotresponse"/>
       <xs:element ref="organicresponse"/>
       <xs:element ref="reactionresponse"/>
       <xs:element ref="customresponse"/>
       <xs:element ref="externalresponse"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="blockResponses">
+    <xs:choice>
+      <xs:element ref="essayresponse"/>
+      <xs:element ref="radiobuttonresponse"/>
+      <xs:element ref="matchresponse"/>
+      <xs:element ref="rankresponse"/>
+      <xs:element ref="imageresponse"/>
+      <xs:element ref="functionplotresponse"/>
       <xs:element ref="dataresponse"/>
     </xs:choice>
   </xs:group>
@@ -1107,7 +1117,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="maxima" name="cas">
+      <xs:attribute name="cas" use="required">
         <xs:annotation>
           <xs:documentation>
             Algebra System. Maxima and R are supported.
@@ -2196,6 +2206,8 @@
         ???
       </xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+    </xs:complexType>
   </xs:element>
   
   <xs:annotation>
@@ -5375,7 +5387,7 @@
   <xs:element name="p">
     <xs:annotation>
       <xs:documentation>
-        Paragraph
+        The HTML &lt;p&gt; element (or HTML Paragraph Element) represents a paragraph of text. Paragraphs are block-level elements.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -5737,6 +5749,8 @@
         The HTML &lt;br&gt; Element (or HTML Line Break Element) produces a line break in text (carriage-return). It is useful for writing a poem or an address, where the division of lines is significant.
       </xs:documentation>
     </xs:annotation>
+    <xs:complexType>
+    </xs:complexType>
   </xs:element>
   <xs:element name="hr">
     <xs:annotation>
@@ -5967,7 +5981,7 @@
   <xs:element name="map">
     <xs:annotation>
       <xs:documentation>
-        The HTML &lt;area&gt; element defines a hot-spot region on an image, and optionally associates it with a hypertext link. This element is used only within a &lt;map&gt; element.
+        The HTML &lt;map&gt; element is used with &lt;area&gt; elements to define an image map (a clickable link area).
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
