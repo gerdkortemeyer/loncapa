@@ -8,9 +8,21 @@ $(document).ready(function() {
    breadcrumbbar();
    notificationbox();
    checknotificationbox();
-   dashboard();
    headerright();
    headermiddle();
+   var destination=getParameterByName(location.search,'direct');
+   if (destination) {
+      var components=destination.split('/');
+      if (components[0]=='asset') {
+         display_asset(destination);
+      } else if (components[0]=='course_asset') {
+         display_course_asset(components[1]);
+      } else {
+         dashboard();
+      }
+   } else {
+      dashboard();
+   }
 });
 
 $( window ).resize(function() {

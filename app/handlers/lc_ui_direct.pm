@@ -22,13 +22,23 @@ use strict;
 use Apache2::RequestRec();
 use Apache2::Const qw(:common :http);
 use Apache::lc_entity_sessions();
+use Apache::lc_entity_sessions();
+use CGI::Cookie ();
 
 # ==== Main handler
 #
 sub handler {
 # Get request object
    my $r = shift;
-   $r->headers_out->set('Location' => '/');
+   my %content=&Apache::lc_entity_sessions::posted_content();
+# Attempt to open a session
+#    my $sessionid=&Apache::lc_entity_sessions::open_session($username,$domain,$content{'password'});
+#       if ($sessionid) {
+#       # Successfully opened a session, set the cookie
+#             my $cookie = CGI::Cookie->new(-name=>'lcsession',-value=>$sessionid);
+#                   $r->headers_out->add('Set-Cookie' => $cookie);
+#                         $r->err_headers_out->add('Set-Cookie' => $cookie);
+   $r->headers_out->set('Location' => '/?direct='.$content{path});
    return REDIRECT;
 }
 1;
