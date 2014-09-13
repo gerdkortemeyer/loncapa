@@ -10,7 +10,14 @@ $(document).ready(function() {
    checknotificationbox();
    headerright();
    headermiddle();
-   var destination=getParameterByName(location.search,'direct');
+   directjump(getParameterByName(location.search,'direct'));
+});
+
+$( window ).resize(function() {
+   checknotificationbox();
+});
+
+function directjump(destination) {
    if (destination) {
       var components=destination.split('/');
       if (components[0]=='asset') {
@@ -23,11 +30,7 @@ $(document).ready(function() {
    } else {
       dashboard();
    }
-});
-
-$( window ).resize(function() {
-   checknotificationbox();
-});
+}
 
 function getParameterByName(query,name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");

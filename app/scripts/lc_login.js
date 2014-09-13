@@ -33,19 +33,7 @@ $(document).ready(function() {
                 }
                 if (response=='yes') {
                    parent.headerright();
-                   var redirect=parent.getCookieByName(document.cookie,'lcredirect');
-                   if (redirect) {
-                      var components=redirect.split('/');
-                      if (components[0]=='asset') {
-                         parent.display_asset(redirect);
-                      } else if (components[0]=='course_asset') {
-                         parent.display_course_asset(components[1]);
-                      } else {
-                         parent.dashboard();
-                      }
-                   } else {
-                      parent.dashboard();
-                   }
+                   parent.directjump(parent.getCookieByName(document.cookie,'lcredirect'));
                 }
              },
              error: function(xhr, ajaxOptions, errorThrown) {

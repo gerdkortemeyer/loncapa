@@ -42,10 +42,14 @@ sub handler {
 #    my $sessionid=&Apache::lc_entity_sessions::open_session($username,$domain,$content{'password'});
 #       if ($sessionid) {
 #       # Successfully opened a session, set the cookie
-#             my $cookie = CGI::Cookie->new(-name=>'lcsession',-value=>$sessionid);
-#                   $r->headers_out->add('Set-Cookie' => $cookie);
-#                         $r->err_headers_out->add('Set-Cookie' => $cookie);
-   $r->headers_out->set('Location' => '/?direct='.$content{path});
+#
+#FIXME: debug only
+   my $location=$content{'path'};
+#
+
+   my $cookie = CGI::Cookie->new(-name=>'lcredirect',-value=>$location);
+   $r->err_headers_out->add('Set-Cookie' => $cookie);
+   $r->headers_out->set('Location' => '/?direct='.$location);
    return REDIRECT;
 }
 1;
