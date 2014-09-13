@@ -33,6 +33,8 @@ $(document).ready(function() {
                 }
                 if (response=='yes') {
                    parent.headerright();
+                   var redirect=parent.getCookieByName(document.cookie,'lcredirect');
+ 
                    parent.dashboard();
                 }
              },

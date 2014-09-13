@@ -36,6 +36,17 @@ function getParameterByName(query,name) {
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
+function getCookieByName(cookie,name) {
+   var output=null;
+   $.each(cookie.split(';'),function(index,value) {
+       pair=value.split('=');
+       key=unescape(pair[0].replace(' ',''));
+       value=unescape(pair[1].replace(' ',''));
+       if (key==name) { output=value }
+   });
+   return output;
+}
+
 function display_modal(newuri) {
     $.blockUI({
                  message: '<iframe id="lcmodal" width="100%" height="100%" src="'+newuri+'" />',
