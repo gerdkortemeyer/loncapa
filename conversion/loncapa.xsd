@@ -4992,7 +4992,6 @@
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-without-responses"/>
           <xs:group ref="inserts"/>
-          <xs:element ref="part"/>
           <xs:element ref="meta"/>
           <xs:element ref="parameter"/>
           <xs:element ref="randomlabel"/>
@@ -5122,16 +5121,24 @@
     </xs:annotation>
   </xs:complexType>
   <xs:complexType name="dl-with-responses">
-    <xs:choice maxOccurs="unbounded">
-      <xs:element ref="dt"/>
-      <xs:element name="dd" type="dd-with-responses"/>
-    </xs:choice>
+    <xs:complexContent>
+      <xs:extension base="dl-base">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="dt"/>
+          <xs:element name="dd" type="dd-with-responses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="dl-without-responses">
-    <xs:choice maxOccurs="unbounded">
-      <xs:element ref="dt"/>
-      <xs:element name="dd" type="dd-without-responses"/>
-    </xs:choice>
+    <xs:complexContent>
+      <xs:extension base="dl-base">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="dt"/>
+          <xs:element name="dd" type="dd-without-responses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:element name="dt" type="inlineBaseType">
     <xs:annotation>
@@ -5147,7 +5154,7 @@
       </xs:documentation>
     </xs:annotation>
   </xs:complexType>
-  <xs:complexType name="dd-with-responses">
+  <xs:complexType mixed="true" name="dd-with-responses">
     <xs:complexContent mixed="true">
       <xs:extension base="dd-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -5157,7 +5164,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="dd-without-responses">
+  <xs:complexType mixed="true" name="dd-without-responses">
     <xs:complexContent mixed="true">
       <xs:extension base="dd-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -5972,7 +5979,7 @@
   <xs:element name="optgroup">
     <xs:annotation>
       <xs:documentation>
-        In a Web form, the HTML &lt;optgroup&gt; element  creates a grouping of options within a &lt;select&gt; element.
+        In a Web form, the HTML &lt;optgroup&gt; element creates a grouping of options within a &lt;select&gt; element.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -6054,8 +6061,7 @@
       <xs:sequence>
         <xs:element ref="legend"/>
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="blocks-without-responses"/>
-          <xs:group ref="inlines"/>
+          <xs:group ref="text-without-responses"/>
         </xs:choice>
       </xs:sequence>
     </xs:complexType>
@@ -6088,8 +6094,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blocks-without-responses"/>
-        <xs:group ref="inlines"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="name"/>
       <xs:attribute name="value"/>
