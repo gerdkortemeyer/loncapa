@@ -28,14 +28,42 @@ use CGI::Cookie ();
 # ==== Main handler
 #
 sub handler {
-# Get request object
+# Get request object and posted content
    my $r = shift;
    my %content=&Apache::lc_entity_sessions::posted_content();
 # Can come in for many reasons.
-# Do we have a referrer?
-   if (($content{'origin'}) && ($content{'token'})) {
-      my $tokendata=&Apache::lc_entity_utils::get_remote_token($content{'origin'},$content{'token'});
+# Maybe we get token data - do we have a referrer?
+   my $tokendata;
+   if (($content{'referrer'}) && ($content{'token'})) {
+      $tokendata=&Apache::lc_entity_utils::get_remote_token($content{'referrer'},$content{'token'});
+      unless ($tokendata) {
+         &logwarning("Unable to retrieve token data from ($content{'referrer'})($content{'token'})");
+      }
    }
+# Should this user be logged in? Look for flag
+   my $sessionid;
+   if ($tokendata->{'authenticated'}) {
+      my ($current_entity,$current_domain)=&Apache::lc_entity_sessions::user_entity_domain();
+# If that does not agree with the with token data, or does not exist, open a new session
+      unless (($tokendata->{'user_entity'} eq $current_entity)
+           && ($tokendata->{'user_domain'} eq $current_domain)) {
+         $sessionid=&Apache::lc_entity_sessions::open_session_entity_domain($tokendata->{'user_entity'},$tokendata->{'user_domain'});
+         if ($sessionid) {
+# Was able to open a new session
+         } else {
+# Oops! Why not?
+            &logwarning("Unable to open transferred session for ($tokendata->{'user_entity'})($tokendata->{'user_domain'})");
+         }
+      }
+   }
+# Is this user logged in?
+   my ($user_entity,$user_domain)=&Apache::lc_entity_sessions::user_entity_domain();
+# If the user is logged in and a certain course/community is desired, enter it
+   if (($user_entity) && ($user_domain) && 
+       ($tokendata->{'course_entity'}) && ($tokendata->{'course_domain'})) {
+   }
+# Are we in a course?
+   my ($course_entity,$course_domain)=&Apache::lc_entity_sessions::course_entity_domain();
 
 
 # Attempt to open a session

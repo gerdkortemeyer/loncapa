@@ -39,6 +39,8 @@ use vars qw($lc_session);
 
 #
 # Sessions are always on the local machine
+# This is the normal routine, which takes username and password
+# Returns session ID
 #
 sub open_session {
    my ($username,$domain,$password)=@_;
@@ -53,6 +55,16 @@ sub open_session {
       &lognotice("Failed attempt to login by entity ($entity) domain ($domain)");
       return undef;
    }
+   return &open_session_entity_domain($entity,$domain);
+}
+
+#
+# This routine opens a session for entity, domain
+# No questions asked, used for example when transfering sessions
+# Returns session ID
+#
+sub open_session_entity_domain {
+   my ($entity,$domain)=@_;
 # Get profile and roles
    my $data=&load_session_data($entity,$domain);
 # Okay, looks like we are in business
