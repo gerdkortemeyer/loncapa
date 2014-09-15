@@ -50,6 +50,10 @@ function getCookieByName(cookie,name) {
    return output;
 }
 
+function deleteCookie(name) {
+   document.cookie = name+'=; expires=Thu, 01 Jan 1970 00:00:00 GMT;';
+}
+
 function display_modal(newuri) {
     $.blockUI({
                  message: '<iframe id="lcmodal" width="100%" height="100%" src="'+newuri+'" />',

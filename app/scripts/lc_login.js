@@ -33,7 +33,9 @@ $(document).ready(function() {
                 }
                 if (response=='yes') {
                    parent.headerright();
-                   parent.directjump(parent.getCookieByName(document.cookie,'lcredirect'));
+                   var redirect=parent.getCookieByName(document.cookie,'lcredirect');
+                   parent.deleteCookie('lcredirect');
+                   parent.directjump(redirect);
                 }
              },
              error: function(xhr, ajaxOptions, errorThrown) {
