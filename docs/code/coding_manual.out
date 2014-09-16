@@ -41,6 +41,7 @@
 \BOOKMARK [1][-]{section.4.1}{Accessing handlers}{chapter.4}
 \BOOKMARK [1][-]{section.4.2}{Accessing assets}{chapter.4}
 \BOOKMARK [1][-]{section.4.3}{System Pages}{chapter.4}
+\BOOKMARK [1][-]{section.4.4}{Deep Links}{chapter.4}
 \BOOKMARK [0][-]{chapter.5}{Network}{}
 \BOOKMARK [1][-]{section.5.1}{Overview}{chapter.5}
 \BOOKMARK [1][-]{section.5.2}{Nodes}{chapter.5}
@@ -75,6 +76,8 @@
 \BOOKMARK [2][-]{subsection.8.3.1}{Assets}{section.8.3}
 \BOOKMARK [2][-]{subsection.8.3.2}{Tables of Content}{section.8.3}
 \BOOKMARK [1][-]{section.8.4}{Programmatic access}{chapter.8}
+\BOOKMARK [1][-]{section.8.5}{Tokens}{chapter.8}
+\BOOKMARK [1][-]{section.8.6}{Namespaces}{chapter.8}
 \BOOKMARK [0][-]{chapter.9}{XML}{}
 \BOOKMARK [1][-]{section.9.1}{Structure of Documents}{chapter.9}
 \BOOKMARK [2][-]{subsection.9.1.1}{Classic LON-CAPA Content}{section.9.1}

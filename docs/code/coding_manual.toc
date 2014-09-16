@@ -41,6 +41,7 @@
 \contentsline {section}{\numberline {4.1}Accessing handlers}{11}{section.4.1}
 \contentsline {section}{\numberline {4.2}Accessing assets}{11}{section.4.2}
 \contentsline {section}{\numberline {4.3}System Pages}{12}{section.4.3}
+\contentsline {section}{\numberline {4.4}Deep Links}{12}{section.4.4}
 \contentsline {chapter}{\numberline {5}Network}{13}{chapter.5}
 \contentsline {section}{\numberline {5.1}Overview}{13}{section.5.1}
 \contentsline {section}{\numberline {5.2}Nodes}{13}{section.5.2}
@@ -84,6 +85,8 @@
 \contentsline {subsection}{\numberline {8.3.1}Assets}{27}{subsection.8.3.1}
 \contentsline {subsection}{\numberline {8.3.2}Tables of Content}{27}{subsection.8.3.2}
 \contentsline {section}{\numberline {8.4}Programmatic access}{28}{section.8.4}
+\contentsline {section}{\numberline {8.5}Tokens}{28}{section.8.5}
+\contentsline {section}{\numberline {8.6}Namespaces}{28}{section.8.6}
 \contentsline {chapter}{\numberline {9}XML}{29}{chapter.9}
 \contentsline {section}{\numberline {9.1}Structure of Documents}{29}{section.9.1}
 \contentsline {subsection}{\numberline {9.1.1}Classic LON-CAPA Content}{29}{subsection.9.1.1}
