@@ -107,11 +107,10 @@ sub handler {
       }
    }
    my $location_cookie=CGI::Cookie->new(-name=>'lcredirect',-value=>$location);
+   $r->err_headers_out->add('Set-Cookie' => $location_cookie);
    if ($sessionid) {
       my $session_cookie=CGI::Cookie->new(-name=>'lcsession',-value=>$sessionid);
-      $r->err_headers_out->add('Set-Cookie' => [$location_cookie,$session_cookie]);
-   } else {
-      $r->err_headers_out->add('Set-Cookie' => $location_cookie);
+      $r->err_headers_out->add('Set-Cookie' => $session_cookie);
    }
    $r->headers_out->set('Location' => '/?direct='.$location);
    return REDIRECT;

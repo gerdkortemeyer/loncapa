@@ -44,7 +44,11 @@ function getCookieByName(cookie,name) {
    $.each(cookie.split(';'),function(index,value) {
        pair=value.split('=');
        key=unescape(pair[0].replace(' ',''));
-       value=unescape(pair[1].replace(' ',''));
+       if (pair[1]) {
+          value=unescape(pair[1].replace(' ',''));
+       } else {
+          value='';
+       }
        if (key==name) { output=value }
    });
    return output;
