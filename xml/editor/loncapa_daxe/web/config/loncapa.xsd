@@ -105,7 +105,7 @@
         <xs:group ref="responses"/>
         <xs:group ref="inserts"/>
         <xs:element ref="part"/>
-        <xs:element ref="meta"/>
+        <xs:element ref="lcmeta"/>
         <xs:element ref="parameter"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
@@ -2106,7 +2106,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-    </xs:complexType>
+        </xs:complexType>
   </xs:element>
   
   <xs:annotation>
@@ -2697,16 +2697,15 @@
       </xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:element name="script">
+  <xs:element name="perl">
     <xs:annotation>
       <xs:documentation>
-        Perl Script Block
+        Perl Script
         
-        If the attribute type is set to “loncapa/perl” the enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
+        The enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
-      <xs:attribute name="type" type="xs:string"/>
       <xs:attribute fixed="preserve" ref="xml:space"/>
     </xs:complexType>
   </xs:element>
@@ -2719,9 +2718,14 @@
       </xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:element name="meta">
+  <xs:element name="lcmeta">
     <xs:annotation>
-      <xs:documentation>Custom Metadata</xs:documentation>
+      <xs:documentation>
+        LON-CAPA Metadata.
+        
+        Recognized names:
+        abstract, author, authorspace, avetries, avetries_list, clear, comefrom, comefrom_list, copyright, correct, count, course, course_list, courserestricted, creationdate, dependencies, depth, difficulty, difficulty_list, disc, disc_list, domain, end, field, firstname, generation, goto, goto_list, groupname, helpful, highestgradelevel, hostname, id, keynum, keywords, language, lastname, lastrevisiondate, lowestgradelevel, middlename, mime, modifyinguser, notes, owner, permanentemail, scope, sequsage, sequsage_list, standards, start, stdno, stdno_list, subject, technical, title, url, username, value, version.
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:attribute name="name" type="xs:string"/>
@@ -4542,6 +4546,7 @@
       <xs:element ref="web"/>
       <xs:element name="problemtype" type="problemtype-with-responses"/>
       <xs:element name="randomlist" type="randomlist-with-responses"/>
+      <xs:element ref="perl"/>
       <xs:element ref="script"/>
       <xs:element ref="window"/>
       <xs:element ref="display"/>
@@ -4589,6 +4594,7 @@
       <xs:element ref="web"/>
       <xs:element name="problemtype" type="problemtype-without-responses"/>
       <xs:element name="randomlist" type="randomlist-without-responses"/>
+      <xs:element ref="perl"/>
       <xs:element ref="script"/>
       <xs:element ref="window"/>
       <xs:element ref="display"/>
@@ -4667,6 +4673,43 @@
       HTML
     </xs:documentation>
   </xs:annotation>
+  <xs:attributeGroup name="coreattrs">
+    <xs:annotation>
+      <xs:documentation>
+        core attributes common to most HTML elements
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="id" type="xs:ID">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute defines a unique identifier (ID) which must be unique in the whole document. Its purpose is to identify the element when linking (using a fragment identifier), scripting, or styling (with CSS).
+          
+          Usage note:
+          - This attribute's value is an opaque string: this means that web author must not use it to convey any information. Particular meaning, for example semantic meaning, must not be derived from the string.
+          - This attribute's value must not contain white spaces. Browsers treat non-conforming IDs that contains white spaces as if the white space is part of the ID. In contrast to the class attribute, which allows space-separated values, elements can only have one single ID defined through the id attribute. Note that an element may have several IDs, but the others should be set by another means, such as via a script interfacing with the DOM interface of the element.
+          - Using characters except ASCII letters and digits, '_', '-' and '.' may cause compatibility problems, as they weren't allowed in HTML 4. Though this restriction has been lifted in HTML 5, an ID should start with a letter for compatibility.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="class" type="xs:NMTOKENS">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute is a space-separated list of the classes of the element. Classes allows CSS and Javascript to select and access specific elements via the class selectors or functions like the DOM method document.getElementsByClassName.
+          
+          Usage note: Though the specification doesn't put requirements on the name of classes, web developers are encouraged to use names that describe the semantic purpose of the element, rather to the presentation of the element (e.g., attribute to describe an attribute rather than italics, although an element of this class may be presented by italics). Semantic names remain logical even if the presentation of the page changes.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="style" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute contains CSS styling declarations to be applied to the element. Note that it is recommended for styles to be defined in a separate file or files. This attribute and the &lt;style&gt; element have mainly the purpose of allowing for quick styling, for example for testing purposes.
+          
+          Usage note: This attribute must not be used to convey semantic information. Even if all styling is removed, a page should remain semantically correct. Typically it shouldn't be used to hide irrelevant information; this should be done using the hidden attribute.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
   <xs:attributeGroup name="i18n">
     <xs:annotation>
       <xs:documentation>
@@ -4711,29 +4754,15 @@
       <xs:element ref="sub"/>
       <xs:element ref="i"/>
     </xs:choice>
-    <xs:attribute name="id" type="xs:ID"/>
-    <xs:attribute name="class" type="xs:NMTOKENS"/>
-    <xs:attribute name="style" type="xs:string"/>
+    <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
   
   <xs:group name="head.misc">
     <xs:sequence>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="script" type="htmlScript">
-          <xs:annotation>
-            <xs:documentation>
-              script statements, which may include CDATA sections
-            </xs:documentation>
-          </xs:annotation>
-        </xs:element>
+        <xs:element ref="script"/>
         <xs:element ref="style"/>
-        <xs:element name="meta" type="htmlMeta">
-          <xs:annotation>
-            <xs:documentation>
-              generic metainformation
-            </xs:documentation>
-          </xs:annotation>
-        </xs:element>
+        <xs:element ref="meta"/>
         <xs:element ref="link"/>
         <xs:element ref="import"/>
       </xs:choice>
@@ -4794,14 +4823,28 @@
       <xs:attribute name="id" type="xs:ID"/>
     </xs:complexType>
   </xs:element>
-  <xs:complexType name="htmlMeta">
-    <xs:attributeGroup ref="i18n"/>
-    <xs:attribute name="id" type="xs:ID"/>
-    <xs:attribute name="http-equiv"/>
-    <xs:attribute name="name"/>
-    <xs:attribute name="content" use="required"/>
-    <xs:attribute name="scheme"/>
-  </xs:complexType>
+  <xs:element name="meta">
+    <xs:annotation>
+      <xs:documentation>
+        Note: LON-CAPA metadata should be defined with the lcmeta element instead of meta. This is only for HTML.
+        
+        The HTML &lt;meta&gt; Element represents any metadata information that cannot be represented by one of the other meta-related elements (&lt;base&gt;, &lt;link&gt;, &lt;script&gt;, &lt;style&gt; or &lt;title&gt;).
+        According to the attributes set, the kind of metadata can be one of the following:
+        - if the name is set, a document-level metadata, applying to the whole page;
+        - if the http-equiv is set, a pragma directive, i.e. information normally given from the webserver on how the webpage should be served;
+        - if the charset is set, a charset declaration, i.e. the charset used for the serialized-form of the webpage; HTML5
+        - if the itemprop is set, a user-defined metadata, transparent for the user-agent as the semantics of the metadata is user-specific.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="i18n"/>
+      <xs:attribute name="id" type="xs:ID"/>
+      <xs:attribute name="http-equiv"/>
+      <xs:attribute name="name"/>
+      <xs:attribute name="content" use="required"/>
+      <xs:attribute name="scheme"/>
+    </xs:complexType>
+  </xs:element>
   <xs:simpleType name="MediaDesc">
     <xs:annotation>
       <xs:documentation>
@@ -4843,20 +4886,66 @@
       <xs:attribute fixed="preserve" ref="xml:space"/>
     </xs:complexType>
   </xs:element>
-  <xs:complexType mixed="true" name="htmlScript">
-    <xs:attribute name="id" type="xs:ID"/>
-    <xs:attribute name="charset" type="xs:string"/>
-    <xs:attribute name="type" type="xs:string" use="required"/>
-    <xs:attribute name="src" type="xs:anyURI"/>
-    <xs:attribute name="defer">
-      <xs:simpleType>
-        <xs:restriction base="xs:token">
-          <xs:enumeration value="defer"/>
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:attribute>
-    <xs:attribute fixed="preserve" ref="xml:space"/>
-  </xs:complexType>
+  <xs:element name="script">
+    <xs:annotation>
+      <xs:documentation>
+        This is only for browser-interpreted Javascript (LON-CAPA Perl scripts should use the perl element).
+        
+        The HTML &lt;script&gt; element is used to embed or reference an executable script within an HTML or XHTML document.
+        
+        Scripts without async or defer attributes, as well as inline scripts, are fetched and executed immediately, before the browser continues to parse the page.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="src" type="xs:anyURI">
+        <xs:annotation>
+          <xs:documentation>
+            This attribute specifies the URI of an external script; this can be used as an alternative to embedding a script directly within a document. script elements with an src attribute specified should not have a script embedded within its tags.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="text/javascript" name="type" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            This attribute identifies the scripting language of code embedded within a script element or referenced via the element’s src attribute. This is specified as a MIME type; examples of supported MIME types include text/javascript, text/ecmascript, application/javascript, and application/ecmascript.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="language" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Like the type attribute, this attribute identifies the scripting language in use. Unlike the type attribute, however, this attribute’s possible values were never standardized. The type attribute should be used instead.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="defer">
+        <xs:annotation>
+          <xs:documentation>
+            This Boolean attribute is set to indicate to a browser that the script is meant to be executed after the document has been parsed. Since this feature hasn't yet been implemented by all other major browsers, authors should not assume that the script’s execution will actually be deferred. The defer attribute shouldn't be used on scripts that don't have the src attribute. Since Gecko 1.9.2, the defer attribute is ignored on scripts that don't have the src attribute. However, in Gecko 1.9.1 even inline scripts are deferred if the defer attribute is set.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="defer"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="async">
+        <xs:annotation>
+          <xs:documentation>
+            HTML5 only.
+            Set this Boolean attribute to indicate that the browser should, if possible, execute the script asynchronously. It has no effect on inline scripts (i.e., scripts that don't have the src attribute).
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="async"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute fixed="preserve" ref="xml:space"/>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="noscript">
     <xs:annotation>
       <xs:documentation>
@@ -4887,8 +4976,7 @@
         The HTML Section Element (&lt;section&gt;) represents a generic section of a document, i.e., a thematic grouping of content, typically with a heading. Each &lt;section&gt; should be identified, typically by including a heading (h1-h6 element) as a child of the &lt;section&gt; element.
       </xs:documentation>
     </xs:annotation>
-    <xs:attribute name="id" type="xs:ID"/>
-    <xs:attribute name="class" type="xs:NMTOKENS"/>
+    <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
   <xs:complexType name="section-with-responses">
     <xs:complexContent>
@@ -4963,9 +5051,7 @@
         The HTML &lt;div&gt; element (or HTML Document Division Element) is the generic container for flow content, which does not inherently represent anything. It can be used to group elements for styling purposes (using the class or id attributes), or because they share attribute values, such as lang. It should be used only when no other semantic element (such as &lt;article&gt; or &lt;nav&gt;) is appropriate.
       </xs:documentation>
     </xs:annotation>
-    <xs:attribute name="id" type="xs:ID"/>
-    <xs:attribute name="class" type="xs:NMTOKENS"/>
-    <xs:attribute name="style" type="xs:string"/>
+    <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
   <xs:complexType mixed="true" name="div-with-responses">
     <xs:complexContent mixed="true">
@@ -4975,7 +5061,6 @@
           <xs:group ref="responses"/>
           <xs:group ref="inserts"/>
           <xs:element ref="part"/>
-          <xs:element ref="meta"/>
           <xs:element ref="parameter"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
@@ -4992,8 +5077,6 @@
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-without-responses"/>
           <xs:group ref="inserts"/>
-          <xs:element ref="part"/>
-          <xs:element ref="meta"/>
           <xs:element ref="parameter"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
@@ -5010,9 +5093,7 @@
         The HTML &lt;p&gt; element (or HTML Paragraph Element) represents a paragraph of text. Paragraphs are block-level elements.
       </xs:documentation>
     </xs:annotation>
-    <xs:attribute name="id" type="xs:ID"/>
-    <xs:attribute name="class" type="xs:NMTOKENS"/>
-    <xs:attribute name="style" type="xs:string"/>
+    <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
   <xs:complexType mixed="true" name="p-with-responses">
     <xs:complexContent mixed="true">
@@ -5039,6 +5120,7 @@
         Unordered list
       </xs:documentation>
     </xs:annotation>
+    <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
   <xs:complexType name="ul-with-responses">
     <xs:complexContent>
@@ -5064,6 +5146,7 @@
         Ordered list
       </xs:documentation>
     </xs:annotation>
+    <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
   <xs:complexType name="ol-with-responses">
     <xs:complexContent>
@@ -5089,9 +5172,7 @@
         List item
       </xs:documentation>
     </xs:annotation>
-    <xs:attribute name="id" type="xs:ID"/>
-    <xs:attribute name="class" type="xs:NMTOKENS"/>
-    <xs:attribute name="style" type="xs:string"/>
+    <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
   <xs:complexType mixed="true" name="li-with-responses">
     <xs:complexContent mixed="true">
@@ -5120,18 +5201,27 @@
         Prior to HTML5, &lt;dl&gt; was known as a Definition List.
       </xs:documentation>
     </xs:annotation>
+    <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
   <xs:complexType name="dl-with-responses">
-    <xs:choice maxOccurs="unbounded">
-      <xs:element ref="dt"/>
-      <xs:element name="dd" type="dd-with-responses"/>
-    </xs:choice>
+    <xs:complexContent>
+      <xs:extension base="dl-base">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="dt"/>
+          <xs:element name="dd" type="dd-with-responses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="dl-without-responses">
-    <xs:choice maxOccurs="unbounded">
-      <xs:element ref="dt"/>
-      <xs:element name="dd" type="dd-without-responses"/>
-    </xs:choice>
+    <xs:complexContent>
+      <xs:extension base="dl-base">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="dt"/>
+          <xs:element name="dd" type="dd-without-responses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:element name="dt" type="inlineBaseType">
     <xs:annotation>
@@ -5147,7 +5237,7 @@
       </xs:documentation>
     </xs:annotation>
   </xs:complexType>
-  <xs:complexType name="dd-with-responses">
+  <xs:complexType mixed="true" name="dd-with-responses">
     <xs:complexContent mixed="true">
       <xs:extension base="dd-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -5157,7 +5247,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="dd-without-responses">
+  <xs:complexType mixed="true" name="dd-without-responses">
     <xs:complexContent mixed="true">
       <xs:extension base="dd-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -5169,10 +5259,34 @@
   <xs:complexType name="table-base">
     <xs:annotation>
       <xs:documentation>
-        Table
+        The HTML Table Element (&lt;table&gt;) represents data in two dimensions or more.
       </xs:documentation>
     </xs:annotation>
-    <xs:attribute name="style" type="xs:string"/>
+    <xs:attributeGroup ref="coreattrs"/>
+    <xs:attribute name="border" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>
+          This integer attribute defines, in pixels, the size of the frame surrounding the table. If set to 0, it implies that the frame attribute is set to void.
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, the CSS properties border, border-color, border-width and border-style should be used.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="cellpadding" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute defines the space between the content of a cell and the border, displayed or not, of it. If it is a pixel length, this pixel-sized space will be applied on all four sides; if it is a percentage length, the content will be centered and the total vertical space (top and bottom) will represent this percentage. The same is true for the total horizontal space (left and right).
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, use the CSS property border-collapse with the value collapse on the  &lt;table&gt; element itself, and the property padding on the &lt;td&gt;.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="cellspacing" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute defines the size, in percentage or in pixels, of the space between two cells (both horizontally and vertically), between the top of the table and the cells of the first row, the left of the table and the first column, the right of the table and the last column and the bottom of the table and the last row.
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, use the CSS property border-collapse with the value collapse on the  &lt;table&gt; element itself, and the property margin on the &lt;td&gt; element.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="table-with-responses">
     <xs:complexContent>
@@ -5198,6 +5312,7 @@
         Table row
       </xs:documentation>
     </xs:annotation>
+    <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
   <xs:complexType name="tr-with-responses">
     <xs:complexContent>
@@ -5241,6 +5356,7 @@
         Table cell
       </xs:documentation>
     </xs:annotation>
+    <xs:attributeGroup ref="coreattrs"/>
     <xs:attribute name="colspan" type="xs:int"/>
     <xs:attribute name="rowspan" type="xs:int"/>
     <xs:attribute name="align" type="html-align"/>
@@ -5274,6 +5390,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text-without-responses"/>
       </xs:choice>
+      <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute name="colspan" type="xs:int"/>
       <xs:attribute name="rowspan" type="xs:int"/>
       <xs:attribute name="align" type="html-align"/>
@@ -5289,9 +5406,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlines"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:ID"/>
-      <xs:attribute name="class" type="xs:NMTOKENS"/>
-      <xs:attribute name="style" type="xs:string"/>
+      <xs:attributeGroup ref="coreattrs"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="a">
@@ -5443,7 +5558,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-    </xs:complexType>
+        </xs:complexType>
   </xs:element>
   <xs:element name="hr">
     <xs:annotation>
@@ -5452,9 +5567,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="id" type="xs:ID"/>
-      <xs:attribute name="class" type="xs:NMTOKENS"/>
-      <xs:attribute name="style" type="xs:string"/>
+      <xs:attributeGroup ref="coreattrs"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="blockquote">
@@ -5806,9 +5919,7 @@
         <xs:group ref="blocks-without-responses"/>
         <xs:group ref="inlines"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:ID"/>
-      <xs:attribute name="class" type="xs:NMTOKENS"/>
-      <xs:attribute name="style" type="xs:string"/>
+      <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute default="300" name="width" type="htmlLength">
         <xs:annotation>
           <xs:documentation>
@@ -5972,7 +6083,7 @@
   <xs:element name="optgroup">
     <xs:annotation>
       <xs:documentation>
-        In a Web form, the HTML &lt;optgroup&gt; element  creates a grouping of options within a &lt;select&gt; element.
+        In a Web form, the HTML &lt;optgroup&gt; element creates a grouping of options within a &lt;select&gt; element.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -6054,8 +6165,7 @@
       <xs:sequence>
         <xs:element ref="legend"/>
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="blocks-without-responses"/>
-          <xs:group ref="inlines"/>
+          <xs:group ref="text-without-responses"/>
         </xs:choice>
       </xs:sequence>
     </xs:complexType>
@@ -6088,8 +6198,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blocks-without-responses"/>
-        <xs:group ref="inlines"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="name"/>
       <xs:attribute name="value"/>

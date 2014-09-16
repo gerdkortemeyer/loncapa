@@ -2186,7 +2186,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-    </xs:complexType>
+        </xs:complexType>
   </xs:element>
   
   <xs:annotation>
@@ -5131,6 +5131,43 @@
       HTML
     </xs:documentation>
   </xs:annotation>
+  <xs:attributeGroup name="coreattrs">
+    <xs:annotation>
+      <xs:documentation>
+        core attributes common to most HTML elements
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="id" type="xs:ID">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute defines a unique identifier (ID) which must be unique in the whole document. Its purpose is to identify the element when linking (using a fragment identifier), scripting, or styling (with CSS).
+          
+          Usage note:
+          - This attribute's value is an opaque string: this means that web author must not use it to convey any information. Particular meaning, for example semantic meaning, must not be derived from the string.
+          - This attribute's value must not contain white spaces. Browsers treat non-conforming IDs that contains white spaces as if the white space is part of the ID. In contrast to the class attribute, which allows space-separated values, elements can only have one single ID defined through the id attribute. Note that an element may have several IDs, but the others should be set by another means, such as via a script interfacing with the DOM interface of the element.
+          - Using characters except ASCII letters and digits, '_', '-' and '.' may cause compatibility problems, as they weren't allowed in HTML 4. Though this restriction has been lifted in HTML 5, an ID should start with a letter for compatibility.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="class" type="xs:NMTOKENS">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute is a space-separated list of the classes of the element. Classes allows CSS and Javascript to select and access specific elements via the class selectors or functions like the DOM method document.getElementsByClassName.
+          
+          Usage note: Though the specification doesn't put requirements on the name of classes, web developers are encouraged to use names that describe the semantic purpose of the element, rather to the presentation of the element (e.g., attribute to describe an attribute rather than italics, although an element of this class may be presented by italics). Semantic names remain logical even if the presentation of the page changes.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="style" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute contains CSS styling declarations to be applied to the element. Note that it is recommended for styles to be defined in a separate file or files. This attribute and the &lt;style&gt; element have mainly the purpose of allowing for quick styling, for example for testing purposes.
+          
+          Usage note: This attribute must not be used to convey semantic information. Even if all styling is removed, a page should remain semantically correct. Typically it shouldn't be used to hide irrelevant information; this should be done using the hidden attribute.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
   <xs:attributeGroup name="i18n">
     <xs:annotation>
       <xs:documentation>
@@ -5175,9 +5212,7 @@
       <xs:element ref="sub"/>
       <xs:element ref="i"/>
     </xs:choice>
-    <xs:attribute name="id" type="xs:ID"/>
-    <xs:attribute name="class" type="xs:NMTOKENS"/>
-    <xs:attribute name="style" type="xs:string"/>
+    <xs:attributeGroup ref="coreattrs"/>
     <xs:attribute name="TeXsize" type="xs:int"/>
   </xs:complexType>
   
@@ -5418,9 +5453,7 @@
         The HTML &lt;div&gt; element (or HTML Document Division Element) is the generic container for flow content, which does not inherently represent anything. It can be used to group elements for styling purposes (using the class or id attributes), or because they share attribute values, such as lang. It should be used only when no other semantic element (such as &lt;article&gt; or &lt;nav&gt;) is appropriate.
       </xs:documentation>
     </xs:annotation>
-    <xs:attribute name="id" type="xs:ID"/>
-    <xs:attribute name="class" type="xs:NMTOKENS"/>
-    <xs:attribute name="style" type="xs:string"/>
+    <xs:attributeGroup ref="coreattrs"/>
     <xs:attribute name="align">
       <xs:simpleType>
         <xs:restriction base="xs:string">
@@ -5478,9 +5511,7 @@
         The HTML &lt;p&gt; element (or HTML Paragraph Element) represents a paragraph of text. Paragraphs are block-level elements.
       </xs:documentation>
     </xs:annotation>
-    <xs:attribute name="id" type="xs:ID"/>
-    <xs:attribute name="class" type="xs:NMTOKENS"/>
-    <xs:attribute name="style" type="xs:string"/>
+    <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
   <xs:complexType mixed="true" name="p-with-responses">
     <xs:complexContent mixed="true">
@@ -5507,6 +5538,7 @@
         Unordered list
       </xs:documentation>
     </xs:annotation>
+    <xs:attributeGroup ref="coreattrs"/>
     <xs:attribute name="type" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="ul-with-responses">
@@ -5533,6 +5565,7 @@
         Ordered list
       </xs:documentation>
     </xs:annotation>
+    <xs:attributeGroup ref="coreattrs"/>
     <xs:attribute name="type" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="ol-with-responses">
@@ -5559,11 +5592,9 @@
         List item
       </xs:documentation>
     </xs:annotation>
+    <xs:attributeGroup ref="coreattrs"/>
     <xs:attribute name="type" type="xs:string"/>
     <xs:attribute name="value" type="xs:string"/>
-    <xs:attribute name="id" type="xs:ID"/>
-    <xs:attribute name="class" type="xs:NMTOKENS"/>
-    <xs:attribute name="style" type="xs:string"/>
   </xs:complexType>
   <xs:complexType mixed="true" name="li-with-responses">
     <xs:complexContent mixed="true">
@@ -5592,6 +5623,7 @@
         Prior to HTML5, &lt;dl&gt; was known as a Definition List.
       </xs:documentation>
     </xs:annotation>
+    <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
   <xs:complexType name="dl-with-responses">
     <xs:complexContent>
@@ -5649,15 +5681,38 @@
   <xs:complexType name="table-base">
     <xs:annotation>
       <xs:documentation>
-        Table
+        The HTML Table Element (&lt;table&gt;) represents data in two dimensions or more.
       </xs:documentation>
     </xs:annotation>
-    <xs:attribute name="border" type="xs:string"/>
+    <xs:attributeGroup ref="coreattrs"/>
+    <xs:attribute name="border" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>
+          This integer attribute defines, in pixels, the size of the frame surrounding the table. If set to 0, it implies that the frame attribute is set to void.
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, the CSS properties border, border-color, border-width and border-style should be used.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="cellpadding" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute defines the space between the content of a cell and the border, displayed or not, of it. If it is a pixel length, this pixel-sized space will be applied on all four sides; if it is a percentage length, the content will be centered and the total vertical space (top and bottom) will represent this percentage. The same is true for the total horizontal space (left and right).
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, use the CSS property border-collapse with the value collapse on the  &lt;table&gt; element itself, and the property padding on the &lt;td&gt;.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="cellspacing" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute defines the size, in percentage or in pixels, of the space between two cells (both horizontally and vertically), between the top of the table and the cells of the first row, the left of the table and the first column, the right of the table and the last column and the bottom of the table and the last row.
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, use the CSS property border-collapse with the value collapse on the  &lt;table&gt; element itself, and the property margin on the &lt;td&gt; element.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="TeXwidth" type="xs:int"/>
     <xs:attribute name="TeXtheme" type="xs:string"/>
     <xs:attribute name="align" type="xs:string"/>
     <xs:attribute name="rules" type="xs:string"/>
-    <xs:attribute name="style" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="table-with-responses">
     <xs:complexContent>
@@ -5683,6 +5738,7 @@
         Table row
       </xs:documentation>
     </xs:annotation>
+    <xs:attributeGroup ref="coreattrs"/>
     <xs:attribute name="align" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="tr-with-responses">
@@ -5727,6 +5783,7 @@
         Table cell
       </xs:documentation>
     </xs:annotation>
+    <xs:attributeGroup ref="coreattrs"/>
     <xs:attribute name="colspan" type="xs:int"/>
     <xs:attribute name="rowspan" type="xs:int"/>
     <xs:attribute name="align" type="html-align"/>
@@ -5761,6 +5818,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text-without-responses"/>
       </xs:choice>
+      <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute name="colspan" type="xs:int"/>
       <xs:attribute name="rowspan" type="xs:int"/>
       <xs:attribute name="align" type="html-align"/>
@@ -5777,9 +5835,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlines"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:ID"/>
-      <xs:attribute name="class" type="xs:NMTOKENS"/>
-      <xs:attribute name="style" type="xs:string"/>
+      <xs:attributeGroup ref="coreattrs"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="a">
@@ -5963,7 +6019,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-    </xs:complexType>
+        </xs:complexType>
   </xs:element>
   <xs:element name="hr">
     <xs:annotation>
@@ -5972,9 +6028,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:attribute name="id" type="xs:ID"/>
-      <xs:attribute name="class" type="xs:NMTOKENS"/>
-      <xs:attribute name="style" type="xs:string"/>
+      <xs:attributeGroup ref="coreattrs"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="blockquote">

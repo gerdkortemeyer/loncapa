@@ -22,7 +22,7 @@
       <MENU_INSERTION nom="tex"/>
       <MENU_INSERTION nom="web"/>
       <MENU_INSERTION nom="while"/>
-      <MENU_INSERTION nom="meta"/>
+      <MENU_INSERTION nom="lcmeta"/>
     </MENU>
     <MENU nom="Responses">
       <MENU nom="Text">
@@ -106,6 +106,7 @@
     </MENU>
     <MENU nom="Block">
       <MENU nom="Scripts">
+        <MENU_INSERTION nom="perl"/>
         <MENU_INSERTION nom="script"/>
         <MENU_INSERTION nom="display"/>
       </MENU>
@@ -283,6 +284,12 @@
     <AFFICHAGE_ELEMENT element="part" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="import" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="parserlib" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="perl" type="lcdblock">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+      <AFFICHAGE_ATTRIBUT attribut="type">
+        <VALEUR_SUGGEREE>loncapa/perl</VALEUR_SUGGEREE>
+      </AFFICHAGE_ATTRIBUT>
+    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="script" type="lcdblock">
       <PARAMETRE nom="police" valeur="Monospaced"/>
       <AFFICHAGE_ATTRIBUT attribut="type">
@@ -290,7 +297,7 @@
       </AFFICHAGE_ATTRIBUT>
     </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="scriptlib" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="meta" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="lcmeta" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="problemtype" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="parameter" type="vide">
       <PARAMETRE nom="attributsVisibles" valeur="true"/>
@@ -340,6 +347,7 @@
     
     <AFFICHAGE_ELEMENT element="htmlhead" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="base" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="meta" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="link" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="style" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="noscript" type="lcdblock"/>
@@ -2235,13 +2243,51 @@
         The enclosed filename contains definitions for new tags.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="script">
-      <TITRE>Perl Script or Javascript Block</TITRE>
+    <STRINGS_ELEMENT element="perl">
+      <TITRE>Perl Script</TITRE>
       <DOCUMENTATION>
-        If the attribute type is set to &#8220;loncapa/perl&#8221; the enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
+        The enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
       </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="script">
+      <TITRE>Javascript</TITRE>
+      <DOCUMENTATION>
+        This is only for browser-interpreted Javascript (LON-CAPA Perl scripts should use the perl element).
+        
+        The HTML &lt;script&gt; element is used to embed or reference an executable script within an HTML or XHTML document.
+        
+        Scripts without async or defer attributes, as well as inline scripts, are fetched and executed immediately, before the browser continues to parse the page.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="src">
+        <TITRE>src</TITRE>
+        <DOCUMENTATION>
+          This attribute specifies the URI of an external script; this can be used as an alternative to embedding a script directly within a document. script elements with an src attribute specified should not have a script embedded within its tags.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="type">
         <TITRE>type</TITRE>
+        <DOCUMENTATION>
+          This attribute identifies the scripting language of code embedded within a script element or referenced via the element&#8217;s src attribute. This is specified as a MIME type; examples of supported MIME types include text/javascript, text/ecmascript, application/javascript, and application/ecmascript.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="language">
+        <TITRE>language</TITRE>
+        <DOCUMENTATION>
+          Like the type attribute, this attribute identifies the scripting language in use. Unlike the type attribute, however, this attribute&#8217;s possible values were never standardized. The type attribute should be used instead.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="defer">
+        <TITRE>defer</TITRE>
+        <DOCUMENTATION>
+          This Boolean attribute is set to indicate to a browser that the script is meant to be executed after the document has been parsed. Since this feature hasn't yet been implemented by all other major browsers, authors should not assume that the script&#8217;s execution will actually be deferred. The defer attribute shouldn't be used on scripts that don't have the src attribute. Since Gecko 1.9.2, the defer attribute is ignored on scripts that don't have the src attribute. However, in Gecko 1.9.1 even inline scripts are deferred if the defer attribute is set.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="async">
+        <TITRE>async</TITRE>
+        <DOCUMENTATION>
+          HTML5 only.
+          Set this Boolean attribute to indicate that the browser should, if possible, execute the script asynchronously. It has no effect on inline scripts (i.e., scripts that don't have the src attribute).
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="scriptlib">
@@ -2250,8 +2296,12 @@
         The enclosed filename contains Perl code to run in the safe space.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="meta">
-      <TITRE>Custom Metadata</TITRE>
+    <STRINGS_ELEMENT element="lcmeta">
+      <TITRE>LON-CAPA Metadata</TITRE>
+      <DOCUMENTATION>
+        Recognized names:
+        abstract, author, authorspace, avetries, avetries_list, clear, comefrom, comefrom_list, copyright, correct, count, course, course_list, courserestricted, creationdate, dependencies, depth, difficulty, difficulty_list, disc, disc_list, domain, end, field, firstname, generation, goto, goto_list, groupname, helpful, highestgradelevel, hostname, id, keynum, keywords, language, lastname, lastrevisiondate, lowestgradelevel, middlename, mime, modifyinguser, notes, owner, permanentemail, scope, sequsage, sequsage_list, standards, start, stdno, stdno_list, subject, technical, title, url, username, value, version.
+      </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
       </STRINGS_ATTRIBUT>
@@ -2706,6 +2756,28 @@
         <TITRE>id</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="meta">
+      <TITRE>HTML meta</TITRE>
+      <DOCUMENTATION>
+        Note: LON-CAPA metadata should be defined with the lcmeta element ("LON-CAPA Metadata") instead of meta. This is only for HTML.
+        
+        The HTML &lt;meta&gt; Element represents any metadata information that cannot be represented by one of the other meta-related elements (&lt;base&gt;, &lt;link&gt;, &lt;script&gt;, &lt;style&gt; or &lt;title&gt;).
+        According to the attributes set, the kind of metadata can be one of the following:
+        - if the name is set, a document-level metadata, applying to the whole page;
+        - if the http-equiv is set, a pragma directive, i.e. information normally given from the webserver on how the webpage should be served;
+        - if the charset is set, a charset declaration, i.e. the charset used for the serialized-form of the webpage; HTML5
+        - if the itemprop is set, a user-defined metadata, transparent for the user-agent as the semantics of the metadata is user-specific.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="content">
+        <TITRE>content</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="http-equiv">
+        <TITRE>http-equiv</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="link">
       <TITRE>Link</TITRE>
       <DOCUMENTATION>
@@ -2876,8 +2948,32 @@
     <STRINGS_ELEMENT element="table">
       <TITRE>Table</TITRE>
       <DOCUMENTATION>
-        Table
+        The HTML Table Element (&lt;table&gt;) represents data in two dimensions or more.
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="style">
+        <TITRE>style</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="border">
+        <TITRE>border</TITRE>
+        <DOCUMENTATION>
+          This integer attribute defines, in pixels, the size of the frame surrounding the table. If set to 0, it implies that the frame attribute is set to void.
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, the CSS properties border, border-color, border-width and border-style should be used.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="cellpadding">
+        <TITRE>cellpadding</TITRE>
+        <DOCUMENTATION>
+          This attribute defines the space between the content of a cell and the border, displayed or not, of it. If it is a pixel length, this pixel-sized space will be applied on all four sides; if it is a percentage length, the content will be centered and the total vertical space (top and bottom) will represent this percentage. The same is true for the total horizontal space (left and right).
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, use the CSS property border-collapse with the value collapse on the  &lt;table&gt; element itself, and the property padding on the &lt;td&gt;.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="cellspacing">
+        <TITRE>cellspacing</TITRE>
+        <DOCUMENTATION>
+          This attribute defines the size, in percentage or in pixels, of the space between two cells (both horizontally and vertically), between the top of the table and the cells of the first row, the left of the table and the first column, the right of the table and the last column and the bottom of the table and the last row.
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, use the CSS property border-collapse with the value collapse on the  &lt;table&gt; element itself, and the property margin on the &lt;td&gt; element.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="tr">
       <TITRE>Table Row</TITRE>

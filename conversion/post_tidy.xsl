@@ -19,6 +19,7 @@
           <htmlbody><xsl:apply-templates select="@*"/></htmlbody>
         </xsl:if>
       </xsl:for-each>
+      <xsl:apply-templates select="/html/head/meta"/>
       <xsl:apply-templates/>
     </loncapa>
   </xsl:template>
@@ -47,6 +48,19 @@
   
   <xsl:template match="htmlbody">
     <xsl:apply-templates/>
+  </xsl:template>
+  
+  <xsl:template match="meta">
+    <xsl:variable name="names">|abstract|author|authorspace|avetries|avetries_list|clear|comefrom|comefrom_list|copyright|correct|count|course|course_list|courserestricted|creationdate|dependencies|depth|difficulty|difficulty_list|disc|disc_list|domain|end|field|firstname|generation|goto|goto_list|groupname|helpful|highestgradelevel|hostname|id|keynum|keywords|language|lastname|lastrevisiondate|lowestgradelevel|middlename|mime|modifyinguser|notes|owner|permanentemail|scope|sequsage|sequsage_list|standards|start|stdno|stdno_list|subject|technical|title|url|username|value|version|</xsl:variable>
+    <xsl:if test="contains($names, concat('|',translate(@name|@NAME, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'|'))">
+      <lcmeta name="{translate(@name|@NAME, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')}" content="{@content|@CONTENT}"/>
+    </xsl:if>
+  </xsl:template>
+  
+  <xsl:template match="script[@type='loncapa/perl']">
+    <perl>
+      <xsl:apply-templates/>
+    </perl>
   </xsl:template>
   
   <xsl:template match="emptyfont">
@@ -121,7 +135,7 @@
       <xsl:for-each select="@color|@COLOR">
         <xsl:choose>
           <xsl:when test="starts-with(., 'x')">
-            <xsl:value-of select="concat('#', substring(., 1))"/>
+            <xsl:value-of select="concat('#', substring(., 2))"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="."/>
@@ -203,11 +217,46 @@
   
   
   <xsl:template match="table">
+    <!-- turning some deprecated attributes into CSS (@border, @cellpadding and @cellspacing are not changed) -->
     <table>
       <xsl:choose>
-        <xsl:when test="parent::center">
-          <xsl:apply-templates select="@*[name()!='style']"/>
-          <xsl:attribute name="style">margin-left:auto; margin-right:auto;<xsl:value-of select="@style"/></xsl:attribute>
+        <xsl:when test="parent::center or @align or @width or @height or @bgcolor">
+          <xsl:apply-templates select="@*[name()!='style' and name()!='align' and name()!='width' and name()!='height' and name()!='bgcolor']"/>
+          <xsl:attribute name="style">
+            <xsl:if test="parent::center or normalize-space(@align)='center'">
+              <xsl:text>margin-left:auto; margin-right:auto; </xsl:text>
+            </xsl:if>
+            <xsl:if test="normalize-space(@align)='left' or normalize-space(@align)='right'">
+              <xsl:text>float:</xsl:text>
+              <xsl:value-of select="normalize-space(@align)"/>
+              <xsl:text>; </xsl:text>
+            </xsl:if>
+            <xsl:if test="normalize-space(@width)!=''">
+              <xsl:text>width:</xsl:text>
+              <xsl:choose>
+                <xsl:when test="contains(@width, '%')">
+                  <xsl:value-of select="@width"/><xsl:text>; </xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="@width"/><xsl:text>px; </xsl:text>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
+            <!-- note: the height attribute is removed with no replacement -->
+            <xsl:if test="normalize-space(@bgcolor)!=''">
+              <xsl:text>background-color:</xsl:text>
+              <xsl:choose>
+                <xsl:when test="starts-with(@bgcolor, 'x')">
+                  <xsl:value-of select="concat('#', substring(@bgcolor, 2))"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="@bgcolor"/>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:text>; </xsl:text>
+            </xsl:if>
+            <xsl:value-of select="@style"/>
+          </xsl:attribute>
         </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates select="@*"/>
