@@ -268,6 +268,42 @@ sub transfer_uploaded {
 }
 
 # =============================================================
+# Get/Set the rights for a file
+# =============================================================
+#
+sub modify_right {
+   my ($entity,$domain,$type,$target_domain,$target_entity,$value)=@_;
+   unless (($type eq 'grade') ||
+           ($type eq 'use') || 
+           ($type eq 'view') || 
+           ($type eq 'edit')) {
+      return undef;
+   }
+   my $rights;
+   if ($target_domain) {
+      if ($target_entity) {
+         $rights->{$type}->{'domain'}->{$target_domain}->{'entity'}->{$target_entity}=$value;
+      } else {
+         $rights->{$type}->{'domain'}->{$target_domain}->{'any'}=$value;
+      }
+   } else {
+      $rights->{$type}->{'any'}=$value;
+   }
+   return &set_rights($entity,$domain,$rights);
+}
+
+sub get_rights {
+   my ($entity,$domain)=@_;
+   my $metadata=&dump_metadata($entity,$domain);
+   return $metadata->{'rights'};
+}
+
+sub set_rights {
+   my ($entity,$domain,$rights)=@_;
+   return &store_metadata($entity,$domain,{ 'rights' => $rights });
+}
+
+# =============================================================
 # Get some raw metadata, only on homeserver where file is
 # =============================================================
 #
