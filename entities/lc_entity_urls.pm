@@ -272,7 +272,7 @@ sub transfer_uploaded {
 # =============================================================
 #
 sub modify_right {
-   my ($entity,$domain,$type,$target_domain,$target_entity,$value)=@_;
+   my ($entity,$domain,$type,$target_domain,$target_entity,$target_section,$value)=@_;
    unless (($type eq 'grade') ||
            ($type eq 'use') || 
            ($type eq 'view') || 
@@ -282,7 +282,11 @@ sub modify_right {
    my $rights;
    if ($target_domain) {
       if ($target_entity) {
-         $rights->{$type}->{'domain'}->{$target_domain}->{'entity'}->{$target_entity}=$value;
+         if ($target_section) {
+            $rights->{$type}->{'domain'}->{$target_domain}->{'entity'}->{$target_entity}->{'section'}->{$target_section}=$value;
+         } else {
+            $rights->{$type}->{'domain'}->{$target_domain}->{'entity'}->{$target_entity}->{'any'}=$value;
+         }
       } else {
          $rights->{$type}->{'domain'}->{$target_domain}->{'any'}=$value;
       }

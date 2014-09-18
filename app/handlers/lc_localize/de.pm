@@ -162,6 +162,8 @@ use utf8;
 
 'Drag and CTRL: copy' => 'Ziehen und Strg: kopieren',
 
+'Done' => 'Fertig',
+
 'Success.' => 'Erfolg.',
 
 'Failure.' => 'Fehlschlag.',
@@ -305,6 +307,8 @@ use utf8;
 'EMail' => 'EMail',
 
 '-' => '-',
+
+'Course/Community' => 'Kurs/Gemeinschaft',
 
 'Course entered.' => 'Kurs ausgewählt.',
 

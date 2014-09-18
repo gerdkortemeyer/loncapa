@@ -51,14 +51,19 @@ sub start_lcdatatable_html {
       $output.=&courselist();
    } elsif ($class eq 'portfoliomanager') {
       $output.=&portfoliomanager();
+   } elsif ($class eq 'rightsmanager') {
+      $output.=&rightsmanager();
    }
    $output.='</table><br clear="all" />';
    return $output;
 }
 
+#
+# Produce the header for the portfolio manager table
+# The remainder is loaded dynamically
+#
 sub portfoliomanager {
    my ($p,$safe,$stack,$token)=@_;
-# Header
    return '<thead>'.
           '<tr><td colspan="15">'.
             '<a href="#" class="lcselecttoggle" onClick="select_all()">'.&mt('Select All').'</a>'.
@@ -79,6 +84,16 @@ sub portfoliomanager {
                &mt('Last Modified').'</th><th>&nbsp;</th></tr></thead>';
 }
 
+#
+# Produce the header for the rights manager (change status) table
+# The remainder is loaded dynamically
+#
+sub rightsmanager {
+   my ($p,$safe,$stack,$token)=@_;
+   return '<thead>'.
+          '<tr><th>&nbsp;</th><th>&nbsp;</th><th>'.&mt('Activity').'</th><th>'.&mt('Domain').'</th><th>'.
+               &mt('Course/Community').'</th><th>'.&mt('Section/Group').'</th></tr></thead>';
+}
 
 
 #
