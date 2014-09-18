@@ -73,6 +73,24 @@ function display_modal(newuri) {
     $("#lcmodal").focus();
 }
 
+function display_large_modal(newuri) {
+    $.blockUI({
+                 message: '<iframe id="lcmodal" width="100%" height="100%" src="'+newuri+'" />',
+                 css: {
+                      border: 'none',
+                      padding: '15px',
+                      top: '2%',
+                      left: '2%',
+                      width: '94%',
+                      height: '94%',
+                      backgroundColor: '#ffffff',
+                      'border-radius': '10px'
+                      }
+                 });
+    $("#lcmodal").focus();
+}
+
+
 function hide_modal() {
    $.unblockUI();
 }

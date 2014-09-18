@@ -29,7 +29,7 @@ function change_title(entity,domain,url,title) {
 }
 
 function change_status(entity,domain,url) {
-   parent.display_modal('/modals/lc_change_status.html?domain='+domain+'&entity='+entity+'&url='+url);
+   parent.display_large_modal('/modals/lc_display_status.html?domain='+domain+'&entity='+entity+'&url='+url);
 }
 
 function init_datatable() {
