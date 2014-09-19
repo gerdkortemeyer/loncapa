@@ -6,7 +6,7 @@ function init_datatable() {
 
    var noCache = parent.no_cache_value();
    $('#rightslist').dataTable( {
-      "sAjaxSource" : '/publisher?command=listrights&entity='+entity+'&domain='+domain+'&noCache='+noCache,
+      "sAjaxSource" : '/change_status?command=listrights&entity='+entity+'&domain='+domain+'&noCache='+noCache,
       "bAutoWidth": false, 
       "bStateSave": true,
       "oLanguage" : {
@@ -30,7 +30,7 @@ function reload_listing() {
 
 function list_title() {
    $.ajax({
-        url : '/publisher',
+        url : '/change_status',
         type: "POST",
         data: 'command=listtitle&entity='+entity+'&domain='+domain+'&url='+url,
         success: function(data){
