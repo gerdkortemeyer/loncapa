@@ -1,5 +1,6 @@
 var entity;
 var domain;
+var url;
 
 function init_datatable() {
 
@@ -31,7 +32,7 @@ function list_title() {
    $.ajax({
         url : '/publisher',
         type: "POST",
-        data: 'command=listtitle&entity='+entity+'&domain='+domain,
+        data: 'command=listtitle&entity='+entity+'&domain='+domain+'&url='+url,
         success: function(data){
             $('#fileinfo').html(data);
         },
@@ -41,6 +42,7 @@ function list_title() {
 $(document).ready(function() {
      entity=parent.getParameterByName(location.search,'entity');
      domain=parent.getParameterByName(location.search,'domain');
+     url=parent.getParameterByName(location.search,'url');
      list_title();
      init_datatable(); 
      $('#donebutton').click(function() {

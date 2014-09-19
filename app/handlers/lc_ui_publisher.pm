@@ -34,13 +34,38 @@ use Apache::lc_file_utils();
 use Apache::lc_xml_utils();
 use HTML::Entities;
 
+sub listtitle {
+   my ($entity,$domain,$url)=@_;
+   return $domain.' '.$entity.' '.$url;
+}
+
+sub listrights {
+   my ($entity,$domain)=@_;
+   my $output;
+   $output->{'aaData'}=[];
+       push(@{$output->{'aaData'}},
+            [
+                'Test',
+                'Test',
+                'Test',
+                'Test',
+                'Test',
+                'Test'
+            ]
+           );
+   return &Apache::lc_json_utils::perl_to_json($output);
+
+}
 
 sub handler {
    my $r = shift;
    my %content=&Apache::lc_entity_sessions::posted_content();
-$r->print($content{'entity'}.' '.$content{'domain'});
-
-# $r->content_type('application/json; charset=utf-8');
+   if ($content{'command'} eq 'listtitle') {
+      $r->print(&listtitle($content{'entity'},$content{'domain'},$content{'url'}));
+   } elsif ($content{'command'} eq 'listrights') {
+      $r->content_type('application/json; charset=utf-8');
+      $r->print(&listrights($content{'entity'},$content{'domain'}));
+   }
    return OK;
 }
 1;
