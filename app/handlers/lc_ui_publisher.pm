@@ -52,17 +52,21 @@ sub add_right {
       $typedisplay=&mt('Clone (make derivatives)');
    } elsif ($type eq 'use') {
       $typedisplay=&mt('Use/assign in courses/communities');
+   } elsif ($type eq 'edit') {
+      $typedisplay=&mt('Edit');
    }
    my $domaindisplay;
    if ($domain) {
       $domaindisplay=&Apache::lc_ui_utils::get_domain_name($domain);
    }
    my $entitydisplay;
+   my $userflag=0;
    if (($entity) && ($domain)) {
       my $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
       if ($profile->{'title'}) {
          $entitydisplay=$profile->{'title'};
       } else {
+         $userflag=1;
          $entitydisplay=$profile->{'lastname'}.', '.$profile->{'firstname'}.' '.$profile->{'middlename'};
       }
    }
@@ -72,7 +76,7 @@ sub add_right {
           $typedisplay,
           ($domain?$domaindisplay:'<i>'.&mt('any').'</i>'),
           ($entity?$entitydisplay:'<i>'.&mt('any').'</i>'),
-          ($section?$section:'<i>'.&mt('any').'</i>') ]);
+          ($section?$section:($userflag?'-':'<i>'.&mt('any').'</i>')) ]);
 }
 
 sub listrights {

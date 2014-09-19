@@ -312,6 +312,8 @@ use utf8;
 
 'View' => 'Betrachten',
 
+'Edit' => 'Editieren',
+
 'Grade by instructor' => 'Benoten durch Lehrpersonal',
 
 'Clone (make derivatives)' => 'Clonen (Derivate erzeugen)',
