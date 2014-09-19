@@ -19,11 +19,11 @@ through which recipients can access the Corresponding Source.
 */
 
 var handleChange = function(math_object) {
-    // math_object has 3 fields: ta, output_div, oldtxt
+    // math_object has 3 fields: ta, output_node, oldtxt
     // we need to pass this object instead of the values because oldtxt will change
-    var ta, output_div, txt, parser, output, root, test1, test2;
+    var ta, output_node, txt, parser, output, root, test1, test2;
     ta = math_object.ta;
-    output_div = math_object.output_div;
+    output_node = math_object.output_node;
     txt = ta.value;
     
     // automatically add brackets to something like "1;2;3", for LON-CAPA:
@@ -49,9 +49,9 @@ var handleChange = function(math_object) {
     
     if (txt != math_object.oldtxt) {
         math_object.oldtxt = txt;
-        while (output_div.firstChild != null)
-            output_div.removeChild(output_div.firstChild);
-        output_div.removeAttribute("title");
+        while (output_node.firstChild != null)
+            output_node.removeChild(output_node.firstChild);
+        output_node.removeAttribute("title");
         if (txt != "") {
             parser = math_object.parser;
             try {
@@ -60,24 +60,24 @@ var handleChange = function(math_object) {
                     var math = document.createElement("math");
                     math.setAttribute("display", "block");
                     math.appendChild(root.toMathML());
-                    output_div.appendChild(math);
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, output_div]);
+                    output_node.appendChild(math);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, output_node]);
                 }
             } catch (e) {
                 output = "error: " + e;
-                output_div.setAttribute("title", output);
+                output_node.setAttribute("title", output);
                 if (e instanceof ParseException) {
-                    output_div.appendChild(document.createTextNode(txt.substring(0, e.from)));
+                    output_node.appendChild(document.createTextNode(txt.substring(0, e.from)));
                     var span = document.createElement('span');
                     span.appendChild(document.createTextNode(txt.substring(e.from, e.to + 1)));
                     span.className = 'math-error';
-                    output_div.appendChild(span);
+                    output_node.appendChild(span);
                     if (e.to < txt.length - 1) {
-                        output_div.appendChild(document.createTextNode(txt.substring(e.to + 1)));
+                        output_node.appendChild(document.createTextNode(txt.substring(e.to + 1)));
                     }
                 } else {
                     var tn = document.createTextNode(output);
-                    output_div.appendChild(tn);
+                    output_node.appendChild(tn);
                 }
             }
         }
@@ -99,11 +99,20 @@ var initEditors = function() {
     for (var i=0; i<math_inputs.length; i++) {
         var ta = math_inputs[i];
         if (ta.nodeName == "TEXTAREA" || ta.nodeName == "INPUT") {
-            var output_div = document.createElement("div");
+            var output_node = document.createElement("span");
+            output_node.setAttribute("style", "display:none");
             if (ta.nextSibling)
-                ta.parentNode.insertBefore(output_div, ta.nextSibling);
+                ta.parentNode.insertBefore(output_node, ta.nextSibling);
             else
-                ta.parentNode.appendChild(output_div);
+                ta.parentNode.appendChild(output_node);
+            var hideNode = function(node) {
+                return function(e) { node.setAttribute("style", "display:none"); };
+            };
+            var showNode = function(node) {
+                return function(e) { node.setAttribute("style", "display: inline-block; background-color: #FFFFE0"); };
+            };
+            ta.addEventListener("blur", hideNode(output_node), false);
+            ta.addEventListener("focus", showNode(output_node), false);
             var implicit_operators = (ta.getAttribute("data-implicit_operators") === "true");
             var unit_mode = (ta.getAttribute("data-unit_mode") === "true");
             var constants = ta.getAttribute("data-constants");
@@ -112,18 +121,18 @@ var initEditors = function() {
             var oldtxt = "";
             math_objects[i] = {
                 "ta": ta,
-                "output_div": output_div,
+                "output_node": output_node,
                 "oldtxt": oldtxt,
                 "parser": new Parser(implicit_operators, unit_mode, constants)
             };
             var changeObjectN = function(n) {
                 return function(e) { handleChange(math_objects[n]); };
-            }
+            };
             var startChange = changeObjectN(i);
             if (ta.value != oldtxt)
-                startChange();
-            ta.addEventListener('change', startChange , false);
-            ta.addEventListener('keyup', startChange , false);
+                startChange(); // process non-empty fields even though they are not visible yet
+            ta.addEventListener('change', startChange, false);
+            ta.addEventListener('keyup', startChange, false);
         }
     }
 }
