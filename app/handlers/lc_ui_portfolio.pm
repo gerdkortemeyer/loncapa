@@ -79,6 +79,7 @@ sub verify_url {
 sub publication_status_link {
    my ($entity,$domain,$url,$obsolete,$modified,$published)=@_;
    my $led='red';
+   my $publishedflag=0;
    my $status=&mt('Unpublished');
    if ($obsolete) {
       $led='black';
@@ -90,11 +91,12 @@ sub publication_status_link {
       } else {
          $led='green';
          $status=&mt('Published');
+         $publishedflag=1;
       }
    }
    my $inner=&Apache::lc_xml_utils::file_icon('special','led_'.$led).'&nbsp'.$status;
    if (&edit_permission($url)) {
-      return '<a href="#" onClick="change_status(\''.$entity.'\',\''.$domain.
+      return '<a href="#" onClick="'.($publishedflag?'change_status':'publisher').'(\''.$entity.'\',\''.$domain.
           '\',\''.&Apache::lc_ui_utils::query_encode($url).'\')" class="lcdirlink">'.
                   $inner.'</a>',
    } else {

@@ -32,6 +32,11 @@ function change_status(entity,domain,url) {
    parent.display_large_modal('/modals/lc_change_status.html?domain='+domain+'&entity='+entity+'&url='+url);
 }
 
+function publisher(entity,domain,url) {
+   parent.display_large_modal('/modals/lc_publisher.html?domain='+domain+'&entity='+entity+'&url='+url);
+}
+
+
 function init_datatable() {
 
    var noCache = parent.no_cache_value();
