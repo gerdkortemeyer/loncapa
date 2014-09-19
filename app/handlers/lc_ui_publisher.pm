@@ -36,25 +36,63 @@ use HTML::Entities;
 
 sub listtitle {
    my ($entity,$domain,$url)=@_;
-   return $domain.' '.$entity.' '.$url;
+   my $metadata=&Apache::lc_entity_urls::dump_metadata($entity,$domain);
+   my ($filename)=($url=~/\/([^\/]+)$/);
+   return $filename.($metadata->{'title'}?' ('.$metadata->{'title'}.')':'');
+}
+
+sub add_right {
+   my ($output,$type,$domain,$entity,$section)=@_;
+   push(@{$output->{'aaData'}},
+        [ undef,
+          'Activity',
+          $type,
+          ($domain?$domain:'<i>'.&mt('any').'</i>'),
+          ($entity?$entity:'<i>'.&mt('any').'</i>'),
+          ($section?$section:'<i>'.&mt('any').'</i>') ]);
 }
 
 sub listrights {
    my ($entity,$domain)=@_;
    my $output;
    $output->{'aaData'}=[];
-       push(@{$output->{'aaData'}},
-            [
-                'Test',
-                'Test',
-                'Test',
-                'Test',
-                'Test',
-                'Test'
-            ]
-           );
+   my $rights=&Apache::lc_entity_urls::get_rights($entity,$domain);
+   foreach my $type (sort(keys(%{$rights}))) {
+      foreach my $domain_type (sort(keys(%{$rights->{$type}}))) {
+         if ($domain_type eq 'any') {
+            if ($rights->{$type}->{$domain_type}) {
+               &add_right($output,$type);
+            }
+         } else {
+            foreach my $domain (sort(keys(%{$rights->{$type}->{$domain_type}}))) {
+               foreach my $entity_type (sort(keys(%{$rights->{$type}->{$domain_type}->{$domain}}))) {
+                  if ($entity_type eq 'any') {
+                     if ($rights->{$type}->{$domain_type}->{$domain}->{$entity_type}) {
+                        &add_right($output,$type,$domain);
+                     }
+                  } else {
+                     foreach my $entity (sort(keys(%{$rights->{$type}->{$domain_type}->{$domain}->{$entity_type}}))) {
+                        foreach my $section_type (sort(keys(%{$rights->{$type}->{$domain_type}->{$domain}->{$entity_type}->{$entity}}))) {
+                           if ($section_type eq 'any') {
+                              if ($rights->{$type}->{$domain_type}->{$domain}->{$entity_type}->{$entity}->{$section_type}) {
+                                 &add_right($output,$type,$domain,$entity);
+                              }
+                           } else {
+                              foreach my $section (sort(keys(%{$rights->{$type}->{$domain_type}->{$domain}->{$entity_type}->{$entity}->{$section_type}}))) {
+                                 if ($rights->{$type}->{$domain_type}->{$domain}->{$entity_type}->{$entity}->{$section_type}->{$section}) {
+                                    &add_right($output,$type,$domain,$entity,$section);
+                                 }
+                              }
+                           }
+                        }
+                     }  
+                  }
+               }
+            }
+         }
+      }
+   }
    return &Apache::lc_json_utils::perl_to_json($output);
-
 }
 
 sub handler {

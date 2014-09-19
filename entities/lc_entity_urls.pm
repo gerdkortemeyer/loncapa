@@ -276,7 +276,8 @@ sub modify_right {
    unless (($type eq 'grade') ||
            ($type eq 'use') || 
            ($type eq 'view') || 
-           ($type eq 'edit')) {
+           ($type eq 'edit') ||
+           ($type eq 'clone')) {
       return undef;
    }
    my $rights;
