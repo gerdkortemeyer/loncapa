@@ -57,10 +57,50 @@
     </xsl:if>
   </xsl:template>
   
-  <xsl:template match="script[@type='loncapa/perl']">
-    <perl>
-      <xsl:apply-templates/>
-    </perl>
+  <xsl:template match="script">
+    <xsl:choose>
+      <xsl:when test="@type='loncapa/perl'">
+        <perl>
+          <xsl:apply-templates/>
+        </perl>
+      </xsl:when>
+      <xsl:otherwise>
+        <!-- remove // added by tidy at the start and end -->
+        <xsl:copy>
+          <xsl:for-each select="@*">
+            <xsl:attribute name="{translate(name(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')}">
+              <xsl:value-of select="."/>
+            </xsl:attribute>
+          </xsl:for-each>
+          <xsl:choose>
+            <xsl:when test="starts-with(normalize-space(.),'//') and substring(normalize-space(.), string-length(normalize-space(.))-1)='//'">
+              <xsl:call-template name="substring-before-last">
+                <xsl:with-param name="s" select="substring-after(.,'//')"/>
+                <xsl:with-param name="delim" select="'//'"/>
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="node()"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:copy>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
+  <xsl:template name="substring-before-last">
+    <xsl:param name="s"/>
+    <xsl:param name="delim"/>
+    <xsl:if test="contains($s, $delim)">
+      <xsl:value-of select="substring-before($s, $delim)"/>
+      <xsl:if test="contains(substring-after($s, $delim), $delim)">
+        <xsl:value-of select="$delim"/>
+        <xsl:call-template name="substring-before-last">
+          <xsl:with-param name="s" select="substring-after($s,$delim)"/>
+          <xsl:with-param name="delim" select="$delim"/>
+        </xsl:call-template>
+      </xsl:if>
+    </xsl:if>
   </xsl:template>
   
   <xsl:template match="emptyfont">
