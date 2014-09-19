@@ -308,6 +308,18 @@ use utf8;
 
 '-' => '-',
 
+'any' => 'alle',
+
+'View' => 'Betrachten',
+
+'Grade by instructor' => 'Benoten durch Lehrpersonal',
+
+'Clone (make derivatives)' => 'Clonen (Derivate erzeugen)',
+
+'Use/assign in courses/communities' => 'Verwenden/Aufgeben in Kursen/Gemeinschaften',
+
+'Allowed Activity' => 'Erlaubte Aktivität',
+
 'Course/Community' => 'Kurs/Gemeinschaft',
 
 'Course entered.' => 'Kurs ausgewählt.',

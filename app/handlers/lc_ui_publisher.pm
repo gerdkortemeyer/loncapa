@@ -43,10 +43,20 @@ sub listtitle {
 
 sub add_right {
    my ($output,$type,$domain,$entity,$section)=@_;
+   my $typedisplay;
+   if ($type eq 'view') {
+      $typedisplay=&mt('View');
+   } elsif ($type eq 'grade') {
+      $typedisplay=&mt('Grade by instructor');
+   } elsif ($type eq 'clone') {
+      $typedisplay=&mt('Clone (make derivatives)');
+   } elsif ($type eq 'use') {
+      $typedisplay=&mt('Use/assign in courses/communities');
+   }  
    push(@{$output->{'aaData'}},
         [ undef,
           'Activity',
-          $type,
+          $typedisplay,
           ($domain?$domain:'<i>'.&mt('any').'</i>'),
           ($entity?$entity:'<i>'.&mt('any').'</i>'),
           ($section?$section:'<i>'.&mt('any').'</i>') ]);
