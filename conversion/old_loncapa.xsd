@@ -2172,7 +2172,7 @@
   <xs:element name="hiddensubmission">
     <xs:annotation>
       <xs:documentation>
-        ???
+        This creates a hidden form field with the given value.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -2182,11 +2182,11 @@
   <xs:element name="hiddenline">
     <xs:annotation>
       <xs:documentation>
-        ???
+        This creates a hidden form field with the old response value.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-        </xs:complexType>
+    </xs:complexType>
   </xs:element>
   
   <xs:annotation>
@@ -5697,7 +5697,7 @@
       <xs:annotation>
         <xs:documentation>
           This attribute defines the space between the content of a cell and the border, displayed or not, of it. If it is a pixel length, this pixel-sized space will be applied on all four sides; if it is a percentage length, the content will be centered and the total vertical space (top and bottom) will represent this percentage. The same is true for the total horizontal space (left and right).
-          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, use the CSS property border-collapse with the value collapse on the  &lt;table&gt; element itself, and the property padding on the &lt;td&gt;.
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, use the CSS property border-collapse with the value collapse on the &lt;table&gt; element itself, and the property padding on the &lt;td&gt;.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -5705,7 +5705,7 @@
       <xs:annotation>
         <xs:documentation>
           This attribute defines the size, in percentage or in pixels, of the space between two cells (both horizontally and vertically), between the top of the table and the cells of the first row, the left of the table and the first column, the right of the table and the last column and the bottom of the table and the last row.
-          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, use the CSS property border-collapse with the value collapse on the  &lt;table&gt; element itself, and the property margin on the &lt;td&gt; element.
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, use the CSS property border-collapse with the value collapse on the &lt;table&gt; element itself, and the property margin on the &lt;td&gt; element.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -6019,7 +6019,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-        </xs:complexType>
+    </xs:complexType>
   </xs:element>
   <xs:element name="hr">
     <xs:annotation>
