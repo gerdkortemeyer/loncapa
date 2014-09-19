@@ -320,7 +320,7 @@ use utf8;
 
 'Allowed Activity' => 'Erlaubte Aktivität',
 
-'Course/Community' => 'Kurs/Gemeinschaft',
+'Course/Community or User' => 'Kurs/Gemeinschaft oder Nutzer',
 
 'Course entered.' => 'Kurs ausgewählt.',
 

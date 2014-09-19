@@ -92,7 +92,7 @@ sub rightsmanager {
    my ($p,$safe,$stack,$token)=@_;
    return '<thead>'.
           '<tr><th>&nbsp;</th><th>&nbsp;</th><th>'.&mt('Allowed Activity').'</th><th>'.&mt('Domain').'</th><th>'.
-               &mt('Course/Community').'</th><th>'.&mt('Section/Group').'</th></tr></thead>';
+               &mt('Course/Community or User').'</th><th>'.&mt('Section/Group').'</th></tr></thead>';
 }
 
 

@@ -52,13 +52,26 @@ sub add_right {
       $typedisplay=&mt('Clone (make derivatives)');
    } elsif ($type eq 'use') {
       $typedisplay=&mt('Use/assign in courses/communities');
-   }  
+   }
+   my $domaindisplay;
+   if ($domain) {
+      $domaindisplay=&Apache::lc_ui_utils::get_domain_name($domain);
+   }
+   my $entitydisplay;
+   if (($entity) && ($domain)) {
+      my $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
+      if ($profile->{'title'}) {
+         $entitydisplay=$profile->{'title'};
+      } else {
+         $entitydisplay=$profile->{'lastname'}.', '.$profile->{'firstname'}.' '.$profile->{'middlename'};
+      }
+   }
    push(@{$output->{'aaData'}},
         [ undef,
           'Activity',
           $typedisplay,
-          ($domain?$domain:'<i>'.&mt('any').'</i>'),
-          ($entity?$entity:'<i>'.&mt('any').'</i>'),
+          ($domain?$domaindisplay:'<i>'.&mt('any').'</i>'),
+          ($entity?$entitydisplay:'<i>'.&mt('any').'</i>'),
           ($section?$section:'<i>'.&mt('any').'</i>') ]);
 }
 
