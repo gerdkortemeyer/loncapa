@@ -212,6 +212,11 @@ sub recover_link {
    return &action_link('user-trash-recover','Recover',$onclick);
 }
 
+sub publish_link {
+   my ($onclick)=@_;
+   return &action_link('publish','Publish',$onclick);
+}
+
 
 1;
 __END__

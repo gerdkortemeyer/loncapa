@@ -96,8 +96,7 @@ sub publication_status_link {
    }
    my $inner=&Apache::lc_xml_utils::file_icon('special','led_'.$led).'&nbsp'.$status;
    if (&edit_permission($url)) {
-      return '<a href="#" onClick="'.($publishedflag?'change_status':'publisher').'(\''.$entity.'\',\''.$domain.
-          '\',\''.&Apache::lc_ui_utils::query_encode($url).'\')" class="lcdirlink">'.
+      return '<a href="#" onClick="'.&action_jump(($publishedflag?'change_status':'publisher'),$entity,$domain,$url).'" class="lcdirlink">'.
                   $inner.'</a>',
    } else {
       return $inner;
@@ -142,6 +141,14 @@ sub change_title {
        &logerror("Storing new title failed for ($entity) ($domain)");
        return 'error';
    }
+}
+
+#
+# Generate a function call
+#
+sub action_jump {
+   my ($which,$entity,$domain,$url)=@_;
+   return $which."('".$entity."','".$domain."','".&Apache::lc_ui_utils::query_encode($url)."')";
 }
 
 # ======================================================================
@@ -192,6 +199,10 @@ sub listdirectory {
        if (ref($file->{'metadata'}->{'urldata'}) eq 'HASH') {
           $obsolete=$file->{'metadata'}->{'urldata'}->{&Apache::lc_entity_urls::url_encode($file->{'url'})}->{'obsolete'};
        }
+# Published?
+       my $published=0;
+# Modified?
+       my $modified=0;
 # Don't show it unless asked for
        unless ($showhidden) {
           if ($obsolete) { next; }
@@ -212,6 +223,7 @@ sub listdirectory {
        if ($file->{'type'} eq 'file') {
 # It's a file, so we have dates, etc
           if ($file->{'metadata'}->{'current_version'}) {
+             $published=1;
              $version=$file->{'metadata'}->{'current_version'};
              ($display_first_date,$sort_first_date)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{1}));
@@ -220,13 +232,16 @@ sub listdirectory {
           }
           ($display_last_modified,$sort_last_modified)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'filedata'}->{'wrk'}->{'modified'}));
-          $status=&publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,0,0);
+          $status=&publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,$modified,$published);
+# Action links
           unless ($obsolete) {
-             $actionicons.=&Apache::lc_ui_utils::remove_link("alert('Remove')");
+             $actionicons.=&Apache::lc_ui_utils::remove_link(&action_jump("remove",$file->{'entity'},$file->{'domain'},$file->{'url'}));
           } else {
-             $actionicons.=&Apache::lc_ui_utils::recover_link("alert('Recover')");
+             $actionicons.=&Apache::lc_ui_utils::recover_link(&action_jump("recover",$file->{'entity'},$file->{'domain'},$file->{'url'}));
           }
-
+          unless (($published) || ($obsolete)) {
+             $actionicons.=&Apache::lc_ui_utils::publish_link(&action_jump("publisher",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+          }
           $sort_size=$file->{'metadata'}->{'filedata'}->{'wrk'}->{'size'};
           $size=&Apache::lc_ui_localize::human_readable_size($sort_size);
           $filename=$file->{'filename'};

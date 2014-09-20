@@ -318,6 +318,8 @@ use utf8;
 
 'Delete' => 'Löschen',
 
+'Publish' => 'Veröffentlichen',
+
 'any' => 'alle',
 
 'View' => 'Betrachten',
