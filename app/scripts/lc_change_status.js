@@ -14,7 +14,7 @@ function init_datatable() {
       },
       "aoColumns" : [
          { "bVisible": false },
-         null,
+         { "bSortable": false },
          null,
          null,
          null,

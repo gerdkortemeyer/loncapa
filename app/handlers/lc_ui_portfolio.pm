@@ -166,7 +166,8 @@ sub listdirectory {
    $uppath=~s/[^\/]+\/$//;
    if ($uppath=~/^[^\/]+\//) {
       push(@{$output->{'aaData'}},
-            ['&nbsp;',
+            ['',
+             '&nbsp;',
              &Apache::lc_xml_utils::file_icon('special','dir_up'),
              '0',
              '<i><a href="#" onClick="set_path(\''.$uppath.'\')" class="lcdirlink">'.&mt('Parent directory').'</a></i>',
@@ -239,6 +240,7 @@ sub listdirectory {
             [&encode_entities(
                &Apache::lc_json_utils::perl_to_json({'entity' => $file->{'entity'}, 'domain' => $file->{'domain'}, 'url' => $file->{'url'}}),
                          '\W'),
+             '',
              &Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}),
              $sort_type,
              $filename,

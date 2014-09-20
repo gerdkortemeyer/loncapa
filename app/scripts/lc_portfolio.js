@@ -60,19 +60,20 @@ function init_datatable() {
       },
       "aoColumns" : [
          { "bVisible": false },
-         {"iDataSort": 2},
+         { "bSortable": false },
+         {"iDataSort": 3},
          { "bVisible": false },
          null,
          null,
          null,
-         {"iDataSort": 7, "bVisible": false },
+         {"iDataSort": 8, "bVisible": false },
          {"bVisible": false },
          null,
-         {"iDataSort": 10, "bVisible": false },
+         {"iDataSort": 11, "bVisible": false },
          { "bVisible": false },
-         {"iDataSort": 12, "bVisible": false },
+         {"iDataSort": 13, "bVisible": false },
          { "bVisible": false },
-         {"iDataSort": 14, "bVisible": false },
+         {"iDataSort": 15, "bVisible": false },
          { "bVisible": false }
       ]
     } );
