@@ -47,6 +47,8 @@ mkdir /home/httpd/html/images
 cp app/images/* /home/httpd/html/images
 mkdir /home/httpd/html/images/fileicons
 cp app/images/fileicons/* /home/httpd/html/images/fileicons
+mkdir /home/httpd/html/images/actionicons
+cp app/images/actionicons/* /home/httpd/html/images/actionicons
 mkdir /home/httpd/html/scripts
 if [ ! -d /home/httpd/html/scripts/mathjax ]; then
    unzip app/scripts/v2.3-latest -d /home/httpd/html/scripts

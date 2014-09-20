@@ -240,7 +240,7 @@ sub listdirectory {
             [&encode_entities(
                &Apache::lc_json_utils::perl_to_json({'entity' => $file->{'entity'}, 'domain' => $file->{'domain'}, 'url' => $file->{'url'}}),
                          '\W'),
-             '',
+             &Apache::lc_ui_utils::remove_link("alert('Remove')"),
              &Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}),
              $sort_type,
              $filename,

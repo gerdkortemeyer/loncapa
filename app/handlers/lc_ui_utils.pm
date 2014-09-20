@@ -168,5 +168,44 @@ sub timezone_choices {
    return ($default,\@timezones);
 }
 
+# ==== Action icons
+#
+sub action_icon {
+   my ($which,$title)=@_;
+   $title=&mt($title);
+   return '<img src="/images/actionicons/'.$which.'.png" alt="'.$title.'" title="'.$title.'" />';
+}
+
+sub action_link {
+   my ($which,$title,$onclick)=@_;
+   if ($onclick) {
+      $onclick=~s/\'/\"/gs;
+      return "<a href='#' class='lcdirlink' onclick='$onclick'>".
+             &action_icon($which,$title)."</a>";
+   } else {
+      return &action_icon($which,$title);
+   }
+}
+
+sub copy_link {
+   my ($onclick)=@_;
+   return &action_link('edit-copy','Copy',$onclick);
+}
+
+sub cut_link {
+   my ($onclick)=@_;
+   return &action_link('edit-cut','Cut',$onclick);
+}
+
+sub delete_link {
+   my ($onclick)=@_; 
+   return &action_link('user-delete','Delete',$onclick);
+}
+
+sub remove_link {
+   my ($onclick)=@_;
+   return &action_link('user-trash','Remove',$onclick);
+}
+
 1;
 __END__
