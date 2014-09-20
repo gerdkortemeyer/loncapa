@@ -235,7 +235,7 @@ sub listdirectory {
           $status=&publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,$modified,$published);
 # Action links
           unless ($obsolete) {
-             $actionicons.=&Apache::lc_ui_utils::remove_link(&action_jump("remove",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+             $actionicons.=&Apache::lc_ui_utils::remove_link(&action_jump("removefile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
           } else {
              $actionicons.=&Apache::lc_ui_utils::recover_link(&action_jump("recover",$file->{'entity'},$file->{'domain'},$file->{'url'}));
           }
@@ -304,6 +304,25 @@ sub listpath {
    return &Apache::lc_json_utils::perl_to_json(\@splitpath); 
 }
 
+# ========================================================
+# Obsoleting
+# ========================================================
+#
+sub remove {
+   my ($entity,$domain,$url)=@_;
+&logdebug("remove $entity $domain $url");
+   return 'ok';
+}
+
+sub recover {
+   my ($entity,$domain,$url)=@_;
+&logdebug("Recover $entity $domain $url");
+
+   return 'ok';
+}
+
+
+
 sub handler {
    my $r = shift;
    my %content=&Apache::lc_entity_sessions::posted_content();
@@ -318,6 +337,10 @@ sub handler {
       $r->print(&listpath($path));
    } elsif ($content{'command'} eq 'changetitle') {
       $r->print(&change_title($content{'entity'},$content{'domain'},$content{'url'},$content{'title'}));
+   } elsif ($content{'command'} eq 'remove') {
+      $r->print(&remove($content{'entity'},$content{'domain'},$content{'url'}));
+   } elsif ($content{'command'} eq 'recover') {
+      $r->print(&recover($content{'entity'},$content{'domain'},$content{'url'}));
    }
    return OK;
 }

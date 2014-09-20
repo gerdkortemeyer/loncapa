@@ -36,6 +36,51 @@ function publisher(entity,domain,url) {
    parent.display_large_modal('/modals/lc_publisher.html?domain='+domain+'&entity='+entity+'&url='+url);
 }
 
+function recover(entity,domain,url) {
+         $.ajax({
+             url: '/portfolio',
+             type:'POST',
+             data: { 'command' : 'recover',
+                     'entity'  : entity,
+                     'domain'  : domain,
+                     'url'     : url },
+             success: function(response) {
+                if (response=='error') {
+                   $('.lcstandard').hide();
+                   $('.lcerror').show();
+                } else {
+                   reload_listing();
+                }
+             },
+             error: function(xhr, ajaxOptions, errorThrown) {
+                $('.lcstandard').hide();
+                $('.lcerror').show();
+             }
+         });         
+}
+
+function removefile(entity,domain,url) {
+         $.ajax({
+             url: '/portfolio',
+             type:'POST',
+             data: { 'command' : 'remove',
+                     'entity'  : entity,
+                     'domain'  : domain,
+                     'url'     : url },
+             success: function(response) {
+                if (response=='error') {
+                   $('.lcstandard').hide();
+                   $('.lcerror').show();
+                } else {
+                   reload_listing();
+                }
+             },
+             error: function(xhr, ajaxOptions, errorThrown) {
+                $('.lcstandard').hide();
+                $('.lcerror').show();
+             }
+         });
+}
 
 function init_datatable() {
 
