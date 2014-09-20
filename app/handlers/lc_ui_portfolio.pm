@@ -310,14 +310,38 @@ sub listpath {
 #
 sub remove {
    my ($entity,$domain,$url)=@_;
-&logdebug("remove $entity $domain $url");
-   return 'ok';
+   unless (&edit_permission($url)) {
+      &logwarning("No edit portfolio permission ($url)");
+      return 'error';
+   }
+   unless (&verify_url($entity,$url)) {
+      &logwarning("Mismatch ($entity) ($domain) ($url)");
+      return 'error';
+   }
+   if (&Apache::lc_entity_urls::make_obsolete('/asset/-/-/'.$url)) {
+      return 'ok';
+   } else {
+       &logerror("Making obsolete failed for ($entity) ($domain)");
+       return 'error';
+   }
 }
 
 sub recover {
    my ($entity,$domain,$url)=@_;
-&logdebug("Recover $entity $domain $url");
-
+   unless (&edit_permission($url)) {
+      &logwarning("No edit portfolio permission ($url)");
+      return 'error';
+   }
+   unless (&verify_url($entity,$url)) {
+      &logwarning("Mismatch ($entity) ($domain) ($url)");
+      return 'error';
+   }
+   if (&Apache::lc_entity_urls::un_obsolete('/asset/-/-/'.$url)) {
+      return 'ok';
+   } else {
+       &logerror("Unobsoleting failed for ($entity) ($domain)");
+       return 'error';
+   }
    return 'ok';
 }
 

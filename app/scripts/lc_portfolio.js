@@ -43,7 +43,7 @@ function recover(entity,domain,url) {
              data: { 'command' : 'recover',
                      'entity'  : entity,
                      'domain'  : domain,
-                     'url'     : url },
+                     'url'     : unescape(url) },
              success: function(response) {
                 if (response=='error') {
                    $('.lcstandard').hide();
@@ -66,7 +66,7 @@ function removefile(entity,domain,url) {
              data: { 'command' : 'remove',
                      'entity'  : entity,
                      'domain'  : domain,
-                     'url'     : url },
+                     'url'     : unescape(url) },
              success: function(response) {
                 if (response=='error') {
                    $('.lcstandard').hide();
