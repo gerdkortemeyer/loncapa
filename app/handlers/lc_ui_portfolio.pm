@@ -208,6 +208,7 @@ sub listdirectory {
        my $display_last_modified=&mt('Never');
        my $sort_last_modified=0;
        my $sort_type='1';
+       my $actionicons='';
        if ($file->{'type'} eq 'file') {
 # It's a file, so we have dates, etc
           if ($file->{'metadata'}->{'current_version'}) {
@@ -220,6 +221,12 @@ sub listdirectory {
           ($display_last_modified,$sort_last_modified)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'filedata'}->{'wrk'}->{'modified'}));
           $status=&publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,0,0);
+          unless ($obsolete) {
+             $actionicons.=&Apache::lc_ui_utils::remove_link("alert('Remove')");
+          } else {
+             $actionicons.=&Apache::lc_ui_utils::recover_link("alert('Recover')");
+          }
+
           $sort_size=$file->{'metadata'}->{'filedata'}->{'wrk'}->{'size'};
           $size=&Apache::lc_ui_localize::human_readable_size($sort_size);
           $filename=$file->{'filename'};
@@ -240,7 +247,7 @@ sub listdirectory {
             [&encode_entities(
                &Apache::lc_json_utils::perl_to_json({'entity' => $file->{'entity'}, 'domain' => $file->{'domain'}, 'url' => $file->{'url'}}),
                          '\W'),
-             &Apache::lc_ui_utils::remove_link("alert('Remove')"),
+             $actionicons,
              &Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}),
              $sort_type,
              $filename,

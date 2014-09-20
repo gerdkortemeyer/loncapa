@@ -207,5 +207,11 @@ sub remove_link {
    return &action_link('user-trash','Remove',$onclick);
 }
 
+sub recover_link {
+   my ($onclick)=@_;
+   return &action_link('user-trash-recover','Recover',$onclick);
+}
+
+
 1;
 __END__

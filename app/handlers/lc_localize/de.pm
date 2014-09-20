@@ -308,6 +308,16 @@ use utf8;
 
 '-' => '-',
 
+'Cut' => 'Ausschneiden',
+
+'Copy' => 'Kopieren',
+
+'Remove' => 'Entfernen',
+
+'Recover' => 'Wiederherstellen',
+
+'Delete' => 'Löschen',
+
 'any' => 'alle',
 
 'View' => 'Betrachten',
