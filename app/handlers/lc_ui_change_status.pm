@@ -48,7 +48,7 @@ sub action_jump {
 
 
 sub add_right {
-   my ($output,$type,$domain,$entity,$section)=@_;
+   my ($output,$rentity,$rdomain,$type,$domain,$entity,$section)=@_;
    my $typedisplay;
    if ($type eq 'view') {
       $typedisplay=&mt('View');
@@ -76,10 +76,12 @@ sub add_right {
          $entitydisplay=$profile->{'lastname'}.', '.$profile->{'firstname'}.' '.$profile->{'middlename'};
       }
    }
-   my $activity;
    push(@{$output->{'aaData'}},
         [ undef,
-          $activity,
+          &Apache::lc_ui_utils::delete_link(&action_jump("deleterule",$rentity,$rdomain,
+               &Apache::lc_ui_utils::query_encode(&encode_entities(
+                  &Apache::lc_json_utils::perl_to_json({'type' => $type, 'entity' => $entity, 'domain' => $domain, 'section' => $section}),
+                         '\W')))),
           $typedisplay,
           ($domain?$domaindisplay:'<i>'.&mt('any').'</i>'),
           ($entity?$entitydisplay:'<i>'.&mt('any').'</i>'),
@@ -87,34 +89,39 @@ sub add_right {
 }
 
 sub listrights {
-   my ($entity,$domain)=@_;
+   my ($rentity,$rdomain)=@_;
    my $output;
    $output->{'aaData'}=[];
-   my $rights=&Apache::lc_entity_urls::get_rights($entity,$domain);
+#FIXME: debug
+&add_right($output,$rentity,$rdomain,'view','msu','rqerqfqw421rf','007');
+
+
+
+   my $rights=&Apache::lc_entity_urls::get_rights($rentity,$rdomain);
    foreach my $type (sort(keys(%{$rights}))) {
       foreach my $domain_type (sort(keys(%{$rights->{$type}}))) {
          if ($domain_type eq 'any') {
             if ($rights->{$type}->{$domain_type}) {
-               &add_right($output,$type);
+               &add_right($output,$rentity,$rdomain,$type);
             }
          } else {
             foreach my $domain (sort(keys(%{$rights->{$type}->{$domain_type}}))) {
                foreach my $entity_type (sort(keys(%{$rights->{$type}->{$domain_type}->{$domain}}))) {
                   if ($entity_type eq 'any') {
                      if ($rights->{$type}->{$domain_type}->{$domain}->{$entity_type}) {
-                        &add_right($output,$type,$domain);
+                        &add_right($output,$rentity,$rdomain,$type,$domain);
                      }
                   } else {
                      foreach my $entity (sort(keys(%{$rights->{$type}->{$domain_type}->{$domain}->{$entity_type}}))) {
                         foreach my $section_type (sort(keys(%{$rights->{$type}->{$domain_type}->{$domain}->{$entity_type}->{$entity}}))) {
                            if ($section_type eq 'any') {
                               if ($rights->{$type}->{$domain_type}->{$domain}->{$entity_type}->{$entity}->{$section_type}) {
-                                 &add_right($output,$type,$domain,$entity);
+                                 &add_right($output,$rentity,$rdomain,$type,$domain,$entity);
                               }
                            } else {
                               foreach my $section (sort(keys(%{$rights->{$type}->{$domain_type}->{$domain}->{$entity_type}->{$entity}->{$section_type}}))) {
                                  if ($rights->{$type}->{$domain_type}->{$domain}->{$entity_type}->{$entity}->{$section_type}->{$section}) {
-                                    &add_right($output,$type,$domain,$entity,$section);
+                                    &add_right($output,$type,$rentity,$rdomain,$domain,$entity,$section);
                                  }
                               }
                            }
