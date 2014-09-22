@@ -118,6 +118,175 @@
   
   <xs:annotation>
     <xs:documentation>
+      Groups of block and inline elements.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:group name="text-with-responses">
+    <xs:annotation>
+      <xs:documentation>
+        List of block and inline elements mixed with text. These elements can contain responses.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:group ref="blocks-with-responses"/>
+      <xs:group ref="inlines"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="text-without-responses">
+    <xs:annotation>
+      <xs:documentation>
+        List of block and inline elements mixed with text. These elements cannot contain responses.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:group ref="blocks-without-responses"/>
+      <xs:group ref="inlines"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="blocks-with-responses">
+    <xs:choice>
+      <xs:element ref="import"/>
+      <xs:element name="block" type="block-with-responses"/>
+      <xs:element ref="while"/>
+      <xs:element ref="tex"/>
+      <xs:element ref="web"/>
+      <xs:element ref="standalone"/>
+      <xs:element name="problemtype" type="problemtype-with-responses"/>
+      <xs:element name="randomlist" type="randomlist-with-responses"/>
+      <xs:element ref="perl"/>
+      <xs:element ref="display"/>
+      <xs:element ref="languageblock"/>
+      <xs:element ref="translated"/>
+      <xs:element ref="window"/>
+      <xs:element ref="windowlink"/>
+      <xs:element ref="togglebox"/>
+      <xs:element ref="instructorcomment"/>
+      <xs:element ref="comment"/>
+      <xs:element ref="gnuplot"/>
+      <xs:element ref="organicstructure"/>
+      <xs:element ref="drawimage"/>
+      
+      <xs:element ref="script"/>
+      <xs:element name="section" type="section-with-responses"/>
+      <xs:group ref="heading"/>
+      <xs:element name="div" type="div-with-responses"/>
+      <xs:element name="p" type="p-with-responses"/>
+      <xs:element name="ul" type="ul-with-responses"/>
+      <xs:element name="ol" type="ol-with-responses"/>
+      <xs:element name="table" type="table-with-responses"/>
+      <xs:element name="dl" type="dl-with-responses"/>
+      <xs:element ref="pre"/>
+      <xs:element ref="noscript"/>
+      <xs:element ref="hr"/>
+      <xs:element ref="blockquote"/>
+      <xs:element ref="object"/>
+      <xs:element ref="applet"/>
+      <xs:element ref="embed"/>
+      <xs:element ref="video"/>
+      <xs:element ref="audio"/>
+      <xs:element ref="map"/>
+      <xs:element ref="canvas"/>
+      <xs:element ref="form"/>
+      <xs:element ref="fieldset"/>
+      <xs:element ref="iframe"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="blocks-without-responses">
+    <xs:choice>
+      <xs:element ref="import"/>
+      <xs:element name="block" type="block-without-responses"/>
+      <xs:element ref="while"/>
+      <xs:element ref="tex"/>
+      <xs:element ref="web"/>
+      <xs:element ref="standalone"/>
+      <xs:element name="problemtype" type="problemtype-without-responses"/>
+      <xs:element name="randomlist" type="randomlist-without-responses"/>
+      <xs:element ref="perl"/>
+      <xs:element ref="display"/>
+      <xs:element ref="languageblock"/>
+      <xs:element ref="translated"/>
+      <xs:element ref="window"/>
+      <xs:element ref="windowlink"/>
+      <xs:element ref="togglebox"/>
+      <xs:element ref="instructorcomment"/>
+      <xs:element ref="comment"/>
+      <xs:element ref="gnuplot"/>
+      <xs:element ref="organicstructure"/>
+      <xs:element ref="drawimage"/>
+      
+      <xs:element ref="script"/>
+      <xs:element name="section" type="section-without-responses"/>
+      <xs:group ref="heading"/>
+      <xs:element name="div" type="div-without-responses"/>
+      <xs:element name="p" type="p-without-responses"/>
+      <xs:element name="ul" type="ul-without-responses"/>
+      <xs:element name="ol" type="ol-without-responses"/>
+      <xs:element name="table" type="table-without-responses"/>
+      <xs:element name="dl" type="dl-without-responses"/>
+      <xs:element ref="pre"/>
+      <xs:element ref="noscript"/>
+      <xs:element ref="hr"/>
+      <xs:element ref="blockquote"/>
+      <xs:element ref="object"/>
+      <xs:element ref="applet"/>
+      <xs:element ref="embed"/>
+      <xs:element ref="video"/>
+      <xs:element ref="audio"/>
+      <xs:element ref="map"/>
+      <xs:element ref="canvas"/>
+      <xs:element ref="form"/>
+      <xs:element ref="fieldset"/>
+      <xs:element ref="iframe"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="inlines">
+    <xs:choice>
+      <xs:element ref="m"/>
+      <xs:element ref="chem"/>
+      <xs:element ref="num"/>
+      <xs:element ref="parse"/>
+      <xs:element ref="algebra"/>
+      
+      <xs:element ref="span"/>
+      <xs:element ref="a"/>
+      <xs:element ref="strong"/>
+      <xs:element ref="em"/>
+      <xs:element ref="b"/>
+      <xs:element ref="i"/>
+      <xs:element ref="sup"/>
+      <xs:element ref="sub"/>
+      <xs:element ref="code"/>
+      <xs:element ref="kbd"/>
+      <xs:element ref="samp"/>
+      <xs:element ref="tt"/>
+      <xs:element ref="ins"/>
+      <xs:element ref="del"/>
+      <xs:element ref="var"/>
+      <xs:element ref="small"/>
+      <xs:element ref="big"/>
+      <xs:element ref="br"/>
+      <xs:element ref="img"/>
+      <xs:element ref="input"/>
+      <xs:element ref="select"/>
+      <xs:element ref="textarea"/>
+      <xs:element ref="label"/>
+      <xs:element ref="button"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="inserts">
+    <xs:annotation>
+      <xs:documentation>
+        List of elements that insert something if a condition is verified.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element ref="preduedate"/>
+      <xs:element ref="postanswerdate"/>
+    </xs:choice>
+  </xs:group>
+  
+  <xs:annotation>
+    <xs:documentation>
       List of responses
     </xs:documentation>
   </xs:annotation>
@@ -2106,7 +2275,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-    </xs:complexType>
+        </xs:complexType>
   </xs:element>
   
   <xs:annotation>
@@ -2605,505 +2774,6 @@
     <xs:attribute name="y" type="int-or-perl" use="required"/>
     <xs:attribute name="value" type="xs:string"/>
   </xs:complexType>
-  
-  <xs:annotation>
-    <xs:documentation>
-      List of elements that insert something if a condition is verified.
-    </xs:documentation>
-  </xs:annotation>
-  <xs:group name="inserts">
-    <xs:choice>
-      <xs:element ref="preduedate"/>
-      <xs:element ref="postanswerdate"/>
-    </xs:choice>
-  </xs:group>
-  
-  <xs:annotation>
-    <xs:documentation>
-      Problem block elements that cannot be used anywhere text is used.
-    </xs:documentation>
-  </xs:annotation>
-  <xs:element name="part">
-    <xs:annotation>
-      <xs:documentation>
-        Problem Part
-        
-        This must be below problem if it is going to be used. It does many of the same tasks as problem, but allows multiple separate problems to exist in a single file.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-with-responses"/>
-        <xs:group ref="responses"/>
-        <xs:group ref="inserts"/>
-        <xs:element ref="parameter"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="solved"/>
-        <xs:element ref="notsolved"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Part ID
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="display" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Displayed Part Description
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="import">
-    <xs:annotation>
-      <xs:documentation>
-        Import a File
-        
-        This causes the parse to read in the file named in the body of the tag and parse it as if the entire text of the file had existed at the location of the tag.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="importmode">
-        <xs:annotation>
-          <xs:documentation>
-            Import as
-          </xs:documentation>
-        </xs:annotation>
-        <xs:simpleType>
-          <xs:union memberTypes="perl">
-            <xs:simpleType>
-              <xs:restriction base="xs:string">
-                <xs:enumeration value="problem"/>
-                <xs:enumeration value="part"/>
-              </xs:restriction>
-            </xs:simpleType>
-          </xs:union>
-        </xs:simpleType>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="parserlib" type="xs:string">
-    <xs:annotation>
-      <xs:documentation>
-        Import Tag Definitions
-        
-        The enclosed filename contains definitions for new tags.
-      </xs:documentation>
-    </xs:annotation>
-  </xs:element>
-  <xs:element name="perl">
-    <xs:annotation>
-      <xs:documentation>
-        Perl Script
-        
-        The enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:attribute fixed="preserve" ref="xml:space"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="scriptlib" type="xs:string">
-    <xs:annotation>
-      <xs:documentation>
-        Import Script Library
-        
-        The enclosed filename contains Perl code to run in the safe space.
-      </xs:documentation>
-    </xs:annotation>
-  </xs:element>
-  <xs:element name="lcmeta">
-    <xs:annotation>
-      <xs:documentation>
-        LON-CAPA Metadata.
-        
-        Recognized names:
-        abstract, author, authorspace, avetries, avetries_list, clear, comefrom, comefrom_list, copyright, correct, count, course, course_list, courserestricted, creationdate, dependencies, depth, difficulty, difficulty_list, disc, disc_list, domain, end, field, firstname, generation, goto, goto_list, groupname, helpful, highestgradelevel, hostname, id, keynum, keywords, language, lastname, lastrevisiondate, lowestgradelevel, middlename, mime, modifyinguser, notes, owner, permanentemail, scope, sequsage, sequsage_list, standards, start, stdno, stdno_list, subject, technical, title, url, username, value, version.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="content" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:complexType mixed="true" name="problemtype-base">
-    <xs:annotation>
-      <xs:documentation>
-        Problem Type Block
-        
-        Allows you to show or hide output based on what the problem-type parameter is set to in the course.
-        Will only show the output text when the problem is set to the type of exam or survey in the course.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute default="show" name="mode">
-      <xs:simpleType>
-        <xs:union memberTypes="perl">
-          <xs:simpleType>
-            <xs:restriction base="xs:string">
-              <xs:enumeration value="show"/>
-              <xs:enumeration value="hide"/>
-            </xs:restriction>
-          </xs:simpleType>
-        </xs:union>
-      </xs:simpleType>
-    </xs:attribute>
-    <xs:attribute default="exam" name="for">
-      <xs:annotation>
-        <xs:documentation>
-          When used as type(s)
-          
-          Comma-separated list of values among:
-          exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
-        </xs:documentation>
-      </xs:annotation>
-      <xs:simpleType>
-        <xs:union memberTypes="perl">
-          <xs:simpleType>
-            <xs:restriction base="xs:string">
-              <xs:pattern value="(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry)(\s*,\s*(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry))*"/>
-            </xs:restriction>
-          </xs:simpleType>
-        </xs:union>
-      </xs:simpleType>
-    </xs:attribute>
-  </xs:complexType>
-  <xs:complexType mixed="true" name="problemtype-with-responses">
-    <xs:complexContent mixed="true">
-      <xs:extension base="problemtype-base">
-        <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="text-with-responses"/>
-          <xs:group ref="responses"/>
-          <xs:group ref="inserts"/>
-          <xs:element ref="randomlabel"/>
-          <xs:element ref="parserlib"/>
-          <xs:element ref="scriptlib"/>
-          <xs:element ref="solved"/>
-          <xs:element ref="notsolved"/>
-        </xs:choice>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType mixed="true" name="problemtype-without-responses">
-    <xs:complexContent mixed="true">
-      <xs:extension base="problemtype-base">
-        <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="text-without-responses"/>
-          <xs:group ref="inserts"/>
-          <xs:element ref="randomlabel"/>
-          <xs:element ref="parserlib"/>
-          <xs:element ref="scriptlib"/>
-          <xs:element ref="solved"/>
-          <xs:element ref="notsolved"/>
-        </xs:choice>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="parameter">
-    <xs:annotation>
-      <xs:documentation>
-        Parameters for a part
-        
-        parameter is exactly the same as responseparam, but should appear outside of a response tag.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="type" type="xs:string" use="required"/>
-      <xs:attribute name="description" type="xs:string"/>
-      <xs:attribute name="default" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="window">
-    <xs:annotation>
-      <xs:documentation>
-        Text In Separate Window
-        
-        This creates a link that when clicked shows the intervening information in a pop-up window. By default the window will be 500 pixels wide and 200 pixels tall, and the link text will be a superscript * (so as to look like a footnote). These can be changed using the attributes.
-        When printing, the included text will get turned into a real footnote.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
-        <xs:group ref="inserts"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="solved"/>
-        <xs:element ref="notsolved"/>
-      </xs:choice>
-      <xs:attribute name="linktext" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Text of Link
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute default="200" name="height" type="int-or-perl"/>
-      <xs:attribute default="500" name="width" type="int-or-perl"/>
-      <xs:attribute name="printtext" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Printed text (optional)
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:complexType mixed="true" name="block-base">
-    <xs:annotation>
-      <xs:documentation>
-        Conditional Block
-        
-        This has a required argument condition that is evaluated. If the condition is true, everything inside the tag is evaluated; otherwise, everything inside the block tag is skipped.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="condition" type="xs:string">
-      <xs:annotation>
-        <xs:documentation>
-          Test Condition
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:complexType>
-  <xs:complexType mixed="true" name="block-with-responses">
-    <xs:complexContent mixed="true">
-      <xs:extension base="block-base">
-        <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="text-with-responses"/>
-          <xs:group ref="responses"/>
-          <xs:group ref="inserts"/>
-          <xs:element ref="part"/>
-          <xs:element ref="randomlabel"/>
-          <xs:element ref="parserlib"/>
-          <xs:element ref="scriptlib"/>
-          <xs:element ref="solved"/>
-          <xs:element ref="notsolved"/>
-        </xs:choice>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType mixed="true" name="block-without-responses">
-    <xs:complexContent mixed="true">
-      <xs:extension base="block-base">
-        <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="text-without-responses"/>
-          <xs:group ref="inserts"/>
-          <xs:element ref="randomlabel"/>
-          <xs:element ref="parserlib"/>
-          <xs:element ref="scriptlib"/>
-          <xs:element ref="solved"/>
-          <xs:element ref="notsolved"/>
-        </xs:choice>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="while">
-    <xs:annotation>
-      <xs:documentation>
-        While Loop Block
-        
-        This implements a while loop. The required attribute condition is a Perl scriptlet that when evaluated results in a true or false value. If true, the entirety of the text between the whiles is parsed. The condition is tested again, etc. If false, it goes to the next tag.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
-        <xs:group ref="inserts"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="solved"/>
-        <xs:element ref="notsolved"/>
-      </xs:choice>
-      <xs:attribute name="condition" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Test Condition
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="postanswerdate">
-    <xs:annotation>
-      <xs:documentation>
-        After Answer Date Block
-        
-        Everything inside is skipped if the problem is before the answer date.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="solved"/>
-        <xs:element ref="notsolved"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="preduedate">
-    <xs:annotation>
-      <xs:documentation>
-        Before Due Date Block
-        
-        Everything inside is skipped if the problem is after the due date.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-with-responses"/>
-        <xs:group ref="responses"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="scriptlib"/>
-        <xs:element ref="solved"/>
-        <xs:element ref="notsolved"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:complexType name="randomlist-base">
-    <xs:annotation>
-      <xs:documentation>
-        Randomly Parsed Block
-        
-        The enclosed tags are parsed in a stable random order. The optional attribute show=“N” restricts the number of tags inside that are actually parsed to no more than N. N can equal the total tags inside. The randomlist tag can be used to randomize problem parts by wrapping the &lt;part&gt; tags with a randomlist tag. Note that when randomlist wraps &lt;part&gt; tags, that all students will work all parts only if show=“N” where N is the total number of parts wrapped. When N is less than the total number of parts wrapped, there will be gaps in the assessment chart, and also in the table of submissions for each student, corresponding to those parts which are never available to that particular student.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="show" type="int-or-perl">
-      <xs:annotation>
-        <xs:documentation>
-          Maximum Tags to Show
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:complexType>
-  <xs:complexType name="randomlist-with-responses">
-    <xs:complexContent>
-      <xs:extension base="randomlist-base">
-        <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="responses"/>
-          <xs:element ref="img"/>
-          <xs:element ref="postanswerdate"/>
-          <xs:element ref="preduedate"/>
-          <xs:element name="block" type="block-with-responses"/>
-          <xs:element ref="while"/>
-          <xs:element name="problemtype" type="problemtype-with-responses"/>
-          <xs:element ref="window"/>
-          <xs:element ref="display"/>
-          <xs:element ref="gnuplot"/>
-          <xs:element ref="organicstructure"/>
-          <xs:element ref="instructorcomment"/>
-          <xs:element ref="drawimage"/>
-          
-          <xs:element name="section" type="section-with-responses"/>
-          <xs:element name="ul" type="ul-with-responses"/>
-          <xs:element name="ol" type="ol-with-responses"/>
-          <xs:element name="table" type="table-with-responses"/>
-          <xs:element name="dl" type="dl-with-responses"/>
-          <xs:element ref="object"/>
-          <xs:element ref="applet"/>
-          <xs:element ref="embed"/>
-          <xs:element ref="video"/>
-          <xs:element ref="audio"/>
-          <xs:element ref="canvas"/>
-          <xs:element ref="form"/>
-          <xs:element ref="iframe"/>
-        </xs:choice>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="randomlist-without-responses">
-    <xs:complexContent>
-      <xs:extension base="randomlist-base">
-        <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:element ref="img"/>
-          <xs:element ref="postanswerdate"/>
-          <xs:element ref="preduedate"/>
-          <xs:element name="block" type="block-without-responses"/>
-          <xs:element ref="while"/>
-          <xs:element name="problemtype" type="problemtype-without-responses"/>
-          <xs:element ref="window"/>
-          <xs:element ref="display"/>
-          <xs:element ref="gnuplot"/>
-          <xs:element ref="organicstructure"/>
-          <xs:element ref="instructorcomment"/>
-          <xs:element ref="drawimage"/>
-          
-          <xs:element name="section" type="section-without-responses"/>
-          <xs:element name="ul" type="ul-without-responses"/>
-          <xs:element name="ol" type="ol-without-responses"/>
-          <xs:element name="table" type="table-without-responses"/>
-          <xs:element name="dl" type="dl-without-responses"/>
-          <xs:element ref="object"/>
-          <xs:element ref="applet"/>
-          <xs:element ref="embed"/>
-          <xs:element ref="video"/>
-          <xs:element ref="audio"/>
-          <xs:element ref="canvas"/>
-          <xs:element ref="form"/>
-          <xs:element ref="iframe"/>
-        </xs:choice>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="solved">
-    <xs:annotation>
-      <xs:documentation>
-        Block For After Solved
-        
-        Everything inside is skipped if the problem is “not solved”.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
-        <xs:group ref="inserts"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="scriptlib"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="notsolved">
-    <xs:annotation>
-      <xs:documentation>
-        Block For When Not Solved
-        
-        Everything inside is skipped if the problem is “solved”.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-with-responses"/>
-        <xs:group ref="responses"/>
-        <xs:group ref="inserts"/>
-        <xs:element ref="randomlabel"/>
-        <xs:element ref="parserlib"/>
-        <xs:element ref="scriptlib"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="web">
-    <xs:annotation>
-      <xs:documentation>Web Only Block</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="tex" type="xs:string">
-    <xs:annotation>
-      <xs:documentation>Print Only Block</xs:documentation>
-    </xs:annotation>
-  </xs:element>
   
   <xs:annotation>
     <xs:documentation>
@@ -4067,9 +3737,478 @@
   
   <xs:annotation>
     <xs:documentation>
+      Problem block elements that cannot be used anywhere text is used.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:element name="part">
+    <xs:annotation>
+      <xs:documentation>
+        Problem Part
+        
+        Provides a logical division in a problem, with an indivisible group of questions and responses.
+        Two parts can be graded as right or wrong independantly.
+        A part also provides a granularity level for parameters (weight, tolerance, ...).
+        It is possible to display parts one at a time.
+        
+        This element can only be inserted directly under problem.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-with-responses"/>
+        <xs:group ref="responses"/>
+        <xs:group ref="inserts"/>
+        <xs:element ref="parameter"/>
+        <xs:element ref="randomlabel"/>
+        <xs:element ref="parserlib"/>
+        <xs:element ref="scriptlib"/>
+        <xs:element ref="solved"/>
+        <xs:element ref="notsolved"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Part ID
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="display" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Displayed Part Description
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parserlib" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        Import Tag Definitions
+        
+        The enclosed filename contains definitions for new tags.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="scriptlib" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        Import Script Library
+        
+        The enclosed filename contains Perl code to run in the safe space.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="lcmeta">
+    <xs:annotation>
+      <xs:documentation>
+        LON-CAPA Metadata.
+        
+        Recognized names:
+        abstract, author, authorspace, avetries, avetries_list, clear, comefrom, comefrom_list, copyright, correct, count, course, course_list, courserestricted, creationdate, dependencies, depth, difficulty, difficulty_list, disc, disc_list, domain, end, field, firstname, generation, goto, goto_list, groupname, helpful, highestgradelevel, hostname, id, keynum, keywords, language, lastname, lastrevisiondate, lowestgradelevel, middlename, mime, modifyinguser, notes, owner, permanentemail, scope, sequsage, sequsage_list, standards, start, stdno, stdno_list, subject, technical, title, url, username, value, version.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="content" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="parameter">
+    <xs:annotation>
+      <xs:documentation>
+        Parameters for a part
+        
+        parameter is exactly the same as responseparam, but should appear outside of a response tag.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="type" type="xs:string" use="required"/>
+      <xs:attribute name="description" type="xs:string"/>
+      <xs:attribute name="default" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="preduedate">
+    <xs:annotation>
+      <xs:documentation>
+        Before Due Date Block
+        
+        Everything inside is skipped if the problem is after the due date.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-with-responses"/>
+        <xs:group ref="responses"/>
+        <xs:element ref="randomlabel"/>
+        <xs:element ref="parserlib"/>
+        <xs:element ref="scriptlib"/>
+        <xs:element ref="solved"/>
+        <xs:element ref="notsolved"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="postanswerdate">
+    <xs:annotation>
+      <xs:documentation>
+        After Answer Date Block
+        
+        Everything inside is skipped if the problem is before the answer date.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+        <xs:element ref="randomlabel"/>
+        <xs:element ref="parserlib"/>
+        <xs:element ref="scriptlib"/>
+        <xs:element ref="solved"/>
+        <xs:element ref="notsolved"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="solved">
+    <xs:annotation>
+      <xs:documentation>
+        Block For After Solved
+        
+        Everything inside is skipped if the problem is “not solved”.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+        <xs:group ref="inserts"/>
+        <xs:element ref="parserlib"/>
+        <xs:element ref="scriptlib"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="notsolved">
+    <xs:annotation>
+      <xs:documentation>
+        Block For When Not Solved
+        
+        Everything inside is skipped if the problem is “solved”.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-with-responses"/>
+        <xs:group ref="responses"/>
+        <xs:group ref="inserts"/>
+        <xs:element ref="randomlabel"/>
+        <xs:element ref="parserlib"/>
+        <xs:element ref="scriptlib"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:annotation>
+    <xs:documentation>
       Non-HTML block elements mixed with text
     </xs:documentation>
   </xs:annotation>
+  <xs:element name="import">
+    <xs:annotation>
+      <xs:documentation>
+        Import a File
+        
+        This causes the parse to read in the file named in the body of the tag and parse it as if the entire text of the file had existed at the location of the tag.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="importmode">
+        <xs:annotation>
+          <xs:documentation>
+            Import as
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="problem"/>
+                <xs:enumeration value="part"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType mixed="true" name="block-base">
+    <xs:annotation>
+      <xs:documentation>
+        Conditional Block
+        
+        This has a required argument condition that is evaluated. If the condition is true, everything inside the tag is evaluated; otherwise, everything inside the block tag is skipped.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="condition" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Test Condition
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="block-with-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="block-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-responses"/>
+          <xs:group ref="responses"/>
+          <xs:group ref="inserts"/>
+          <xs:element ref="part"/>
+          <xs:element ref="randomlabel"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+          <xs:element ref="solved"/>
+          <xs:element ref="notsolved"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="block-without-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="block-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-without-responses"/>
+          <xs:group ref="inserts"/>
+          <xs:element ref="randomlabel"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+          <xs:element ref="solved"/>
+          <xs:element ref="notsolved"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="while">
+    <xs:annotation>
+      <xs:documentation>
+        While Loop Block
+        
+        This implements a while loop. The required attribute condition is a Perl scriptlet that when evaluated results in a true or false value. If true, the entirety of the text between the whiles is parsed. The condition is tested again, etc. If false, it goes to the next tag.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+        <xs:group ref="inserts"/>
+        <xs:element ref="parserlib"/>
+        <xs:element ref="scriptlib"/>
+        <xs:element ref="solved"/>
+        <xs:element ref="notsolved"/>
+      </xs:choice>
+      <xs:attribute name="condition" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Test Condition
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tex" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Print Only Block</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="web">
+    <xs:annotation>
+      <xs:documentation>Web Only Block</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="standalone">
+    <xs:annotation>
+      <xs:documentation>
+        Everything in between the start and end tag is shown only on the web and only if the resource is not part of a course.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType mixed="true" name="problemtype-base">
+    <xs:annotation>
+      <xs:documentation>
+        Problem Type Block
+        
+        Allows you to show or hide output based on what the problem-type parameter is set to in the course.
+        Will only show the output text when the problem is set to the type of exam or survey in the course.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute default="show" name="mode">
+      <xs:simpleType>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="show"/>
+              <xs:enumeration value="hide"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute default="exam" name="for">
+      <xs:annotation>
+        <xs:documentation>
+          When used as type(s)
+          
+          Comma-separated list of values among:
+          exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:pattern value="(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry)(\s*,\s*(exam|survey|surveycred|anonsurvey|anonsurveycred|problem|practice|randomizetry))*"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="problemtype-with-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="problemtype-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-responses"/>
+          <xs:group ref="responses"/>
+          <xs:group ref="inserts"/>
+          <xs:element ref="randomlabel"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+          <xs:element ref="solved"/>
+          <xs:element ref="notsolved"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="problemtype-without-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="problemtype-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-without-responses"/>
+          <xs:group ref="inserts"/>
+          <xs:element ref="randomlabel"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+          <xs:element ref="solved"/>
+          <xs:element ref="notsolved"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="randomlist-base">
+    <xs:annotation>
+      <xs:documentation>
+        Randomly Parsed Block
+        
+        The enclosed tags are parsed in a stable random order. The optional attribute show=“N” restricts the number of tags inside that are actually parsed to no more than N. N can equal the total tags inside. The randomlist tag can be used to randomize problem parts by wrapping the &lt;part&gt; tags with a randomlist tag. Note that when randomlist wraps &lt;part&gt; tags, that all students will work all parts only if show=“N” where N is the total number of parts wrapped. When N is less than the total number of parts wrapped, there will be gaps in the assessment chart, and also in the table of submissions for each student, corresponding to those parts which are never available to that particular student.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="show" type="int-or-perl">
+      <xs:annotation>
+        <xs:documentation>
+          Maximum Tags to Show
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="randomlist-with-responses">
+    <xs:complexContent>
+      <xs:extension base="randomlist-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="responses"/>
+          <xs:element ref="img"/>
+          <xs:element ref="postanswerdate"/>
+          <xs:element ref="preduedate"/>
+          <xs:element name="block" type="block-with-responses"/>
+          <xs:element ref="while"/>
+          <xs:element name="problemtype" type="problemtype-with-responses"/>
+          <xs:element ref="window"/>
+          <xs:element ref="display"/>
+          <xs:element ref="gnuplot"/>
+          <xs:element ref="organicstructure"/>
+          <xs:element ref="instructorcomment"/>
+          <xs:element ref="drawimage"/>
+          
+          <xs:element name="section" type="section-with-responses"/>
+          <xs:element name="ul" type="ul-with-responses"/>
+          <xs:element name="ol" type="ol-with-responses"/>
+          <xs:element name="table" type="table-with-responses"/>
+          <xs:element name="dl" type="dl-with-responses"/>
+          <xs:element ref="object"/>
+          <xs:element ref="applet"/>
+          <xs:element ref="embed"/>
+          <xs:element ref="video"/>
+          <xs:element ref="audio"/>
+          <xs:element ref="canvas"/>
+          <xs:element ref="form"/>
+          <xs:element ref="iframe"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="randomlist-without-responses">
+    <xs:complexContent>
+      <xs:extension base="randomlist-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:element ref="img"/>
+          <xs:element ref="postanswerdate"/>
+          <xs:element ref="preduedate"/>
+          <xs:element name="block" type="block-without-responses"/>
+          <xs:element ref="while"/>
+          <xs:element name="problemtype" type="problemtype-without-responses"/>
+          <xs:element ref="window"/>
+          <xs:element ref="display"/>
+          <xs:element ref="gnuplot"/>
+          <xs:element ref="organicstructure"/>
+          <xs:element ref="instructorcomment"/>
+          <xs:element ref="drawimage"/>
+          
+          <xs:element name="section" type="section-without-responses"/>
+          <xs:element name="ul" type="ul-without-responses"/>
+          <xs:element name="ol" type="ol-without-responses"/>
+          <xs:element name="table" type="table-without-responses"/>
+          <xs:element name="dl" type="dl-without-responses"/>
+          <xs:element ref="object"/>
+          <xs:element ref="applet"/>
+          <xs:element ref="embed"/>
+          <xs:element ref="video"/>
+          <xs:element ref="audio"/>
+          <xs:element ref="canvas"/>
+          <xs:element ref="form"/>
+          <xs:element ref="iframe"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="perl">
+    <xs:annotation>
+      <xs:documentation>
+        Perl Script
+        
+        The enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute fixed="preserve" ref="xml:space"/>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="display" type="xs:string">
     <xs:annotation>
       <xs:documentation>
@@ -4078,46 +4217,6 @@
         The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
       </xs:documentation>
     </xs:annotation>
-  </xs:element>
-  <xs:element name="organicstructure">
-    <xs:annotation>
-      <xs:documentation>Organic Structure</xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:attribute name="width" type="int-or-perl">
-        <xs:annotation>
-          <xs:documentation>
-            Width (pixels)
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="texwidth" type="decimal-or-perl">
-        <xs:annotation>
-          <xs:documentation>
-            TeXwidth (mm)
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="molecule" type="xs:string" use="required">
-        <xs:annotation>
-          <xs:documentation>
-            JME string
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute default="reaction" name="options">
-        <xs:simpleType>
-          <xs:union memberTypes="perl">
-            <xs:simpleType>
-              <xs:restriction base="xs:string">
-                <xs:enumeration value="reaction"/>
-                <xs:enumeration value="border"/>
-              </xs:restriction>
-            </xs:simpleType>
-          </xs:union>
-        </xs:simpleType>
-      </xs:attribute>
-    </xs:complexType>
   </xs:element>
   <xs:element name="languageblock">
     <xs:annotation>
@@ -4165,11 +4264,39 @@
       <xs:attribute name="other" type="xs:string"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="instructorcomment">
+  <xs:element name="window">
+    <xs:annotation>
+      <xs:documentation>
+        Text In Separate Window
+        
+        This creates a link that when clicked shows the intervening information in a pop-up window. By default the window will be 500 pixels wide and 200 pixels tall, and the link text will be a superscript * (so as to look like a footnote). These can be changed using the attributes.
+        When printing, the included text will get turned into a real footnote.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text-without-responses"/>
+        <xs:group ref="inserts"/>
+        <xs:element ref="randomlabel"/>
+        <xs:element ref="solved"/>
+        <xs:element ref="notsolved"/>
       </xs:choice>
+      <xs:attribute name="linktext" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Text of Link
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="200" name="height" type="int-or-perl"/>
+      <xs:attribute default="500" name="width" type="int-or-perl"/>
+      <xs:attribute name="printtext" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Printed text (optional)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="windowlink">
@@ -4242,10 +4369,10 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-  <xs:element name="standalone">
+  <xs:element name="instructorcomment">
     <xs:annotation>
       <xs:documentation>
-        Everything in between the start and end tag is shown only on the web and only if the resource is not part of a course.
+        Comment that is hidden if form.instructor_comments='hide'.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -4258,8 +4385,49 @@
     <xs:annotation>
       <xs:documentation>
         Allows one to comment out sections of code in a balanced manner, or to provide a comment description of how a problem works.
+        The content is ignored.
       </xs:documentation>
     </xs:annotation>
+  </xs:element>
+  <xs:element name="organicstructure">
+    <xs:annotation>
+      <xs:documentation>Organic Structure</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="width" type="int-or-perl">
+        <xs:annotation>
+          <xs:documentation>
+            Width (pixels)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="texwidth" type="decimal-or-perl">
+        <xs:annotation>
+          <xs:documentation>
+            TeXwidth (mm)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="molecule" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            JME string
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="reaction" name="options">
+        <xs:simpleType>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="reaction"/>
+                <xs:enumeration value="border"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
   </xs:element>
   <xs:element name="drawimage">
     <xs:annotation>
@@ -4360,103 +4528,6 @@
       Non-HTML inline elements mixed with text
     </xs:documentation>
   </xs:annotation>
-  <xs:element name="img">
-    <xs:annotation>
-      <xs:documentation>Image</xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:attribute name="src" type="xs:string" use="required">
-        <xs:annotation>
-          <xs:documentation>
-            Image URL
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="alt" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Textual description of the image. If the image cannot be rendered by the target browser, this description is displayed instead.
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="width" type="int-or-perl">
-        <xs:annotation>
-          <xs:documentation>
-            width (pixel)
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="height" type="int-or-perl">
-        <xs:annotation>
-          <xs:documentation>
-            height (pixel)
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="texwidth" type="decimal-or-perl">
-        <xs:annotation>
-          <xs:documentation>
-            TeXwidth (mm)
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="texheight" type="decimal-or-perl">
-        <xs:annotation>
-          <xs:documentation>
-            TeXheight (mm)
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="align">
-        <xs:annotation>
-          <xs:documentation>
-            Specifies the alignment of the image relative to the enclosing text paragraph:
-            - bottom: The image will be aligned so that its bottom will be at the baseline of the surrounding text.
-            - middle: The image will be aligned so that its center-line will be at the baseline of the surrounding text.
-            - top: The image will be aligned so that its top will be at the baseline of the surrounding text.
-            - left: The image will be placed so that it is at the left of the surrounding text. The surrounding text will fill in the region to the right of the image.
-            - right: The image will be placed so that it is at the right of the surrounding text. The surrounding text will fill in the region to the left of the image.
-          </xs:documentation>
-        </xs:annotation>
-        <xs:simpleType>
-          <xs:union memberTypes="perl">
-            <xs:simpleType>
-              <xs:restriction base="xs:string">
-                <xs:enumeration value="bottom"/>
-                <xs:enumeration value="middle"/>
-                <xs:enumeration value="top"/>
-                <xs:enumeration value="left"/>
-                <xs:enumeration value="right"/>
-              </xs:restriction>
-            </xs:simpleType>
-          </xs:union>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute name="texwrap">
-        <xs:annotation>
-          <xs:documentation>
-            Allows you to select how the LaTeX document will attempt to wrap text around a horizontally aligned image.
-            parbox: \newline and \parbox will be used to place the image. This method ensures that text will not be wrapped on top of the image, however very little text will appear next to the image itself.
-            parpic: The picins package \parpic command will be used to place the image. This will wrap the remainder of the paragraph containing the picture around the image.
-            If, however, there is insufficient text to fill the space to the left or right of the image, the next paragraph may be wrapped on top of the image. In addition, \parpic does not always honor the end of the page, causing the image to extend below the page footer.
-          </xs:documentation>
-        </xs:annotation>
-        <xs:simpleType>
-          <xs:union memberTypes="perl">
-            <xs:simpleType>
-              <xs:restriction base="xs:string">
-                <xs:enumeration value="none"/>
-                <xs:enumeration value="parbox"/>
-                <xs:enumeration value="parpic"/>
-                <xs:enumeration value="wrapfigure"/>
-              </xs:restriction>
-            </xs:simpleType>
-          </xs:union>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute default="no" name="encrypturl" type="yesno-or-perl"/>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="m">
     <xs:annotation>
       <xs:documentation>
@@ -4514,159 +4585,6 @@
     </xs:annotation>
   </xs:element>
   
-  <xs:annotation>
-    <xs:documentation>
-      List of block and inline elements mixed with text. These elements can contain responses.
-    </xs:documentation>
-  </xs:annotation>
-  <xs:group name="text-with-responses">
-    <xs:choice>
-      <xs:group ref="blocks-with-responses"/>
-      <xs:group ref="inlines"/>
-    </xs:choice>
-  </xs:group>
-  <xs:annotation>
-    <xs:documentation>
-      List of block and inline elements mixed with text. These elements cannot contain responses.
-    </xs:documentation>
-  </xs:annotation>
-  <xs:group name="text-without-responses">
-    <xs:choice>
-      <xs:group ref="blocks-without-responses"/>
-      <xs:group ref="inlines"/>
-    </xs:choice>
-  </xs:group>
-  
-  <xs:group name="blocks-with-responses">
-    <xs:choice>
-      <xs:element ref="import"/>
-      <xs:element name="block" type="block-with-responses"/>
-      <xs:element ref="while"/>
-      <xs:element ref="tex"/>
-      <xs:element ref="web"/>
-      <xs:element name="problemtype" type="problemtype-with-responses"/>
-      <xs:element name="randomlist" type="randomlist-with-responses"/>
-      <xs:element ref="perl"/>
-      <xs:element ref="script"/>
-      <xs:element ref="window"/>
-      <xs:element ref="display"/>
-      <xs:element ref="gnuplot"/>
-      <xs:element ref="organicstructure"/>
-      <xs:element ref="languageblock"/>
-      <xs:element ref="translated"/>
-      <xs:element ref="instructorcomment"/>
-      <xs:element ref="windowlink"/>
-      <xs:element ref="togglebox"/>
-      <xs:element ref="standalone"/>
-      <xs:element ref="comment"/>
-      <xs:element ref="drawimage"/>
-      
-      <xs:element name="section" type="section-with-responses"/>
-      <xs:group ref="heading"/>
-      <xs:element name="div" type="div-with-responses"/>
-      <xs:element name="p" type="p-with-responses"/>
-      <xs:element name="ul" type="ul-with-responses"/>
-      <xs:element name="ol" type="ol-with-responses"/>
-      <xs:element name="table" type="table-with-responses"/>
-      <xs:element name="dl" type="dl-with-responses"/>
-      <xs:element ref="pre"/>
-      <xs:element ref="noscript"/>
-      <xs:element ref="hr"/>
-      <xs:element ref="blockquote"/>
-      <xs:element ref="object"/>
-      <xs:element ref="applet"/>
-      <xs:element ref="embed"/>
-      <xs:element ref="video"/>
-      <xs:element ref="audio"/>
-      <xs:element ref="map"/>
-      <xs:element ref="canvas"/>
-      <xs:element ref="form"/>
-      <xs:element ref="fieldset"/>
-      <xs:element ref="iframe"/>
-    </xs:choice>
-  </xs:group>
-  <xs:group name="blocks-without-responses">
-    <xs:choice>
-      <xs:element ref="import"/>
-      <xs:element name="block" type="block-without-responses"/>
-      <xs:element ref="while"/>
-      <xs:element ref="tex"/>
-      <xs:element ref="web"/>
-      <xs:element name="problemtype" type="problemtype-without-responses"/>
-      <xs:element name="randomlist" type="randomlist-without-responses"/>
-      <xs:element ref="perl"/>
-      <xs:element ref="script"/>
-      <xs:element ref="window"/>
-      <xs:element ref="display"/>
-      <xs:element ref="gnuplot"/>
-      <xs:element ref="organicstructure"/>
-      <xs:element ref="languageblock"/>
-      <xs:element ref="translated"/>
-      <xs:element ref="instructorcomment"/>
-      <xs:element ref="windowlink"/>
-      <xs:element ref="togglebox"/>
-      <xs:element ref="standalone"/>
-      <xs:element ref="comment"/>
-      <xs:element ref="drawimage"/>
-      
-      <xs:element name="section" type="section-without-responses"/>
-      <xs:group ref="heading"/>
-      <xs:element name="div" type="div-without-responses"/>
-      <xs:element name="p" type="p-without-responses"/>
-      <xs:element name="ul" type="ul-without-responses"/>
-      <xs:element name="ol" type="ol-without-responses"/>
-      <xs:element name="table" type="table-without-responses"/>
-      <xs:element name="dl" type="dl-without-responses"/>
-      <xs:element ref="pre"/>
-      <xs:element ref="noscript"/>
-      <xs:element ref="hr"/>
-      <xs:element ref="blockquote"/>
-      <xs:element ref="object"/>
-      <xs:element ref="applet"/>
-      <xs:element ref="embed"/>
-      <xs:element ref="video"/>
-      <xs:element ref="audio"/>
-      <xs:element ref="map"/>
-      <xs:element ref="canvas"/>
-      <xs:element ref="form"/>
-      <xs:element ref="fieldset"/>
-      <xs:element ref="iframe"/>
-    </xs:choice>
-  </xs:group>
-  <xs:group name="inlines">
-    <xs:choice>
-      <xs:element ref="img"/>
-      <xs:element ref="m"/>
-      <xs:element ref="chem"/>
-      <xs:element ref="num"/>
-      <xs:element ref="parse"/>
-      <xs:element ref="algebra"/>
-      
-      <xs:element ref="span"/>
-      <xs:element ref="a"/>
-      <xs:element ref="strong"/>
-      <xs:element ref="em"/>
-      <xs:element ref="b"/>
-      <xs:element ref="i"/>
-      <xs:element ref="sup"/>
-      <xs:element ref="sub"/>
-      <xs:element ref="code"/>
-      <xs:element ref="kbd"/>
-      <xs:element ref="samp"/>
-      <xs:element ref="tt"/>
-      <xs:element ref="ins"/>
-      <xs:element ref="del"/>
-      <xs:element ref="var"/>
-      <xs:element ref="small"/>
-      <xs:element ref="big"/>
-      <xs:element ref="br"/>
-      <xs:element ref="input"/>
-      <xs:element ref="select"/>
-      <xs:element ref="textarea"/>
-      <xs:element ref="label"/>
-      <xs:element ref="button"/>
-    </xs:choice>
-  </xs:group>
   
   <xs:annotation>
     <xs:documentation>
@@ -5558,7 +5476,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-    </xs:complexType>
+        </xs:complexType>
   </xs:element>
   <xs:element name="hr">
     <xs:annotation>
@@ -5583,7 +5501,103 @@
       <xs:attribute name="cite" type="xs:anyURI"/>
     </xs:complexType>
   </xs:element>
-  
+  <xs:element name="img">
+    <xs:annotation>
+      <xs:documentation>Image</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="src" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            Image URL
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="alt" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Textual description of the image. If the image cannot be rendered by the target browser, this description is displayed instead.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="width" type="int-or-perl">
+        <xs:annotation>
+          <xs:documentation>
+            width (pixel)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="height" type="int-or-perl">
+        <xs:annotation>
+          <xs:documentation>
+            height (pixel)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="texwidth" type="decimal-or-perl">
+        <xs:annotation>
+          <xs:documentation>
+            TeXwidth (mm)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="texheight" type="decimal-or-perl">
+        <xs:annotation>
+          <xs:documentation>
+            TeXheight (mm)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="align">
+        <xs:annotation>
+          <xs:documentation>
+            Specifies the alignment of the image relative to the enclosing text paragraph:
+            - bottom: The image will be aligned so that its bottom will be at the baseline of the surrounding text.
+            - middle: The image will be aligned so that its center-line will be at the baseline of the surrounding text.
+            - top: The image will be aligned so that its top will be at the baseline of the surrounding text.
+            - left: The image will be placed so that it is at the left of the surrounding text. The surrounding text will fill in the region to the right of the image.
+            - right: The image will be placed so that it is at the right of the surrounding text. The surrounding text will fill in the region to the left of the image.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="bottom"/>
+                <xs:enumeration value="middle"/>
+                <xs:enumeration value="top"/>
+                <xs:enumeration value="left"/>
+                <xs:enumeration value="right"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="texwrap">
+        <xs:annotation>
+          <xs:documentation>
+            Allows you to select how the LaTeX document will attempt to wrap text around a horizontally aligned image.
+            parbox: \newline and \parbox will be used to place the image. This method ensures that text will not be wrapped on top of the image, however very little text will appear next to the image itself.
+            parpic: The picins package \parpic command will be used to place the image. This will wrap the remainder of the paragraph containing the picture around the image.
+            If, however, there is insufficient text to fill the space to the left or right of the image, the next paragraph may be wrapped on top of the image. In addition, \parpic does not always honor the end of the page, causing the image to extend below the page footer.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="none"/>
+                <xs:enumeration value="parbox"/>
+                <xs:enumeration value="parpic"/>
+                <xs:enumeration value="wrapfigure"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute default="no" name="encrypturl" type="yesno-or-perl"/>
+    </xs:complexType>
+  </xs:element>
   <xs:simpleType name="htmlLength">
     <xs:annotation>
       <xs:documentation>

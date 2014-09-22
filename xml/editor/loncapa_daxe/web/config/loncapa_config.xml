@@ -13,6 +13,7 @@
       <MENU_INSERTION nom="parserlib"/>
       <MENU_INSERTION nom="import"/>
       <MENU_INSERTION nom="block"/>
+      <MENU_INSERTION nom="while"/>
       <MENU_INSERTION nom="problemtype"/>
       <MENU_INSERTION nom="preduedate"/>
       <MENU_INSERTION nom="postanswerdate"/>
@@ -21,7 +22,7 @@
       <MENU_INSERTION nom="notsolved"/>
       <MENU_INSERTION nom="tex"/>
       <MENU_INSERTION nom="web"/>
-      <MENU_INSERTION nom="while"/>
+      <MENU_INSERTION nom="standalone"/>
       <MENU_INSERTION nom="lcmeta"/>
     </MENU>
     <MENU nom="Responses">
@@ -107,7 +108,6 @@
     <MENU nom="Block">
       <MENU nom="Scripts">
         <MENU_INSERTION nom="perl"/>
-        <MENU_INSERTION nom="script"/>
         <MENU_INSERTION nom="display"/>
       </MENU>
       <MENU nom="Gnuplot">
@@ -140,20 +140,18 @@
         <MENU_INSERTION nom="polygon"/>
         <MENU_INSERTION nom="image"/>
       </MENU>
-      <MENU_INSERTION nom="organicstructure"/>
-      <MENU_INSERTION nom="window"/>
-      <MENU_INSERTION nom="parameter"/>
-    </MENU>
-    <MENU nom="Text">
-      <MENU_INSERTION nom="img"/>
       <MENU_INSERTION nom="languageblock"/>
       <MENU_INSERTION nom="translated"/>
       <MENU_INSERTION nom="lang"/>
-      <MENU_INSERTION nom="instructorcomment"/>
+      <MENU_INSERTION nom="window"/>
       <MENU_INSERTION nom="windowlink"/>
       <MENU_INSERTION nom="togglebox"/>
-      <MENU_INSERTION nom="standalone"/>
+      <MENU_INSERTION nom="instructorcomment"/>
       <MENU_INSERTION nom="comment"/>
+      <MENU_INSERTION nom="organicstructure"/>
+      <MENU_INSERTION nom="parameter"/>
+    </MENU>
+    <MENU nom="Text">
       <MENU_INSERTION nom="m"/>
       <MENU_INSERTION nom="num"/>
       <MENU_INSERTION nom="parse"/>
@@ -172,12 +170,14 @@
       <MENU_INSERTION nom="dd"/>
       <MENU_INSERTION nom="pre"/>
       <MENU_INSERTION nom="code"/>
+      <MENU_INSERTION nom="img"/>
       <MENU_INSERTION nom="object"/>
       <MENU_INSERTION nom="video"/>
       <MENU_INSERTION nom="source"/>
       <MENU_INSERTION nom="audio"/>
       <MENU_INSERTION nom="map"/>
       <MENU_INSERTION nom="area"/>
+      <MENU_INSERTION nom="script"/>
     </MENU>
   </MENUS>
   
@@ -282,23 +282,9 @@
     <AFFICHAGE_ELEMENT element="location" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     
     <AFFICHAGE_ELEMENT element="part" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="import" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="parserlib" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="perl" type="lcdblock">
-      <PARAMETRE nom="police" valeur="Monospaced"/>
-      <AFFICHAGE_ATTRIBUT attribut="type">
-        <VALEUR_SUGGEREE>loncapa/perl</VALEUR_SUGGEREE>
-      </AFFICHAGE_ATTRIBUT>
-    </AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="script" type="lcdblock">
-      <PARAMETRE nom="police" valeur="Monospaced"/>
-      <AFFICHAGE_ATTRIBUT attribut="type">
-        <VALEUR_SUGGEREE>loncapa/perl</VALEUR_SUGGEREE>
-      </AFFICHAGE_ATTRIBUT>
-    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="scriptlib" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="lcmeta" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="problemtype" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="parameter" type="vide">
       <PARAMETRE nom="attributsVisibles" valeur="true"/>
       <AFFICHAGE_ATTRIBUT attribut="type">
@@ -309,36 +295,43 @@
         <VALEUR_SUGGEREE>date</VALEUR_SUGGEREE>
       </AFFICHAGE_ATTRIBUT>
     </AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="window" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="block" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="while" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="postanswerdate" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="preduedate" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="randomlist" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="postanswerdate" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="solved" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="notsolved" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="web" type="lcdblock"/>
+    
+    <AFFICHAGE_ELEMENT element="import" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="block" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="while" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="tex" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="web" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="standalone" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="problemtype" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="randomlist" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="perl" type="lcdblock">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+      <AFFICHAGE_ATTRIBUT attribut="type">
+        <VALEUR_SUGGEREE>loncapa/perl</VALEUR_SUGGEREE>
+      </AFFICHAGE_ATTRIBUT>
+    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="display" type="string">
       <PARAMETRE nom="police" valeur="Monospaced"/>
     </AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="organicstructure" type="lcdblock"/>
-    
     <AFFICHAGE_ELEMENT element="languageblock" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="translated" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="lang" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="instructorcomment" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="window" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="windowlink" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="togglebox" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="standalone" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="instructorcomment" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="comment" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="organicstructure" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="drawimage" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="line" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="arc" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="fill" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="point" type="vide"/>
     
-    <AFFICHAGE_ELEMENT element="img" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="m" type="texmathjax"/>
     <AFFICHAGE_ELEMENT element="num" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="algebra" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
@@ -350,6 +343,12 @@
     <AFFICHAGE_ELEMENT element="meta" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="link" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="style" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="script" type="lcdblock">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+      <AFFICHAGE_ATTRIBUT attribut="type">
+        <VALEUR_SUGGEREE>loncapa/perl</VALEUR_SUGGEREE>
+      </AFFICHAGE_ATTRIBUT>
+    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="noscript" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="htmlbody" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="section" type="lcdblock"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
@@ -433,6 +432,7 @@
     <AFFICHAGE_ELEMENT element="br" type="br"/>
     <AFFICHAGE_ELEMENT element="hr" type="hr"/>
     <AFFICHAGE_ELEMENT element="blockquote" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="img" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="object" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="param" type="vide"/>
     <AFFICHAGE_ELEMENT element="embed" type="lcdblock"/>
@@ -2144,7 +2144,6 @@
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    
     <STRINGS_ELEMENT element="xlabel">
       <TITRE>Plot x-label</TITRE>
     </STRINGS_ELEMENT>
@@ -2216,7 +2215,14 @@
     <STRINGS_ELEMENT element="part">
       <TITRE>Problem Part</TITRE>
       <DOCUMENTATION>
-        This must be below problem if it is going to be used. It does many of the same tasks as problem, but allows multiple separate problems to exist in a single file.
+        Problem Part
+        
+        Provides a logical division in a problem, with an indivisible group of questions and responses.
+        Two parts can be graded as right or wrong independantly.
+        A part also provides a granularity level for parameters (weight, tolerance, ...).
+        It is possible to display parts one at a time.
+        
+        This element can only be inserted directly under problem.
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>part ID</TITRE>
@@ -2225,70 +2231,11 @@
         <TITRE>displayed part description</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="import">
-      <TITRE>Import a File</TITRE>
-      <DOCUMENTATION>
-        This causes the parse to read in the file named in the body of the tag and parse it as if the entire text of the file had existed at the location of the tag.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="importmode">
-        <TITRE>import as</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="parserlib">
       <TITRE>Import Tag Definitions</TITRE>
       <DOCUMENTATION>
         The enclosed filename contains definitions for new tags.
       </DOCUMENTATION>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="perl">
-      <TITRE>Perl Script</TITRE>
-      <DOCUMENTATION>
-        The enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
-      </DOCUMENTATION>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="script">
-      <TITRE>Javascript</TITRE>
-      <DOCUMENTATION>
-        This is only for browser-interpreted Javascript (LON-CAPA Perl scripts should use the perl element).
-        
-        The HTML &lt;script&gt; element is used to embed or reference an executable script within an HTML or XHTML document.
-        
-        Scripts without async or defer attributes, as well as inline scripts, are fetched and executed immediately, before the browser continues to parse the page.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="src">
-        <TITRE>src</TITRE>
-        <DOCUMENTATION>
-          This attribute specifies the URI of an external script; this can be used as an alternative to embedding a script directly within a document. script elements with an src attribute specified should not have a script embedded within its tags.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="type">
-        <TITRE>type</TITRE>
-        <DOCUMENTATION>
-          This attribute identifies the scripting language of code embedded within a script element or referenced via the element&#8217;s src attribute. This is specified as a MIME type; examples of supported MIME types include text/javascript, text/ecmascript, application/javascript, and application/ecmascript.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="language">
-        <TITRE>language</TITRE>
-        <DOCUMENTATION>
-          Like the type attribute, this attribute identifies the scripting language in use. Unlike the type attribute, however, this attribute&#8217;s possible values were never standardized. The type attribute should be used instead.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="defer">
-        <TITRE>defer</TITRE>
-        <DOCUMENTATION>
-          This Boolean attribute is set to indicate to a browser that the script is meant to be executed after the document has been parsed. Since this feature hasn't yet been implemented by all other major browsers, authors should not assume that the script&#8217;s execution will actually be deferred. The defer attribute shouldn't be used on scripts that don't have the src attribute. Since Gecko 1.9.2, the defer attribute is ignored on scripts that don't have the src attribute. However, in Gecko 1.9.1 even inline scripts are deferred if the defer attribute is set.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="async">
-        <TITRE>async</TITRE>
-        <DOCUMENTATION>
-          HTML5 only.
-          Set this Boolean attribute to indicate that the browser should, if possible, execute the script asynchronously. It has no effect on inline scripts (i.e., scripts that don't have the src attribute).
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="scriptlib">
       <TITRE>Import Script Library</TITRE>
@@ -2309,25 +2256,6 @@
         <TITRE>content</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="problemtype">
-      <TITRE>Problem Type Block</TITRE>
-      <DOCUMENTATION>
-        Allows you to show or hide output based on what the problem-type parameter is set to in the course.
-        Will only show the output text when the problem is set to the type of exam or survey in the course.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="mode">
-        <TITRE>mode</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="for">
-        <TITRE>for</TITRE>
-        <DOCUMENTATION>
-          When used as type(s)
-          
-          Comma-separated list of values among:
-          exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="parameter">
       <TITRE>Parameters for a part</TITRE>
       <DOCUMENTATION>
@@ -2346,23 +2274,41 @@
         <TITRE>default</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="window">
-      <TITRE>Text In Separate Window</TITRE>
+    <STRINGS_ELEMENT element="preduedate">
+      <TITRE>Before Due Date Block</TITRE>
       <DOCUMENTATION>
-        This creates a link that when clicked shows the intervening information in a pop-up window. By default the window will be 500 pixels wide and 200 pixels tall, and the link text will be a superscript * (so as to look like a footnote). These can be changed using the attributes.
-        When printing, the included text will get turned into a real footnote.
+        Everything inside is skipped if the problem is after the due date.
       </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="linktext">
-        <TITRE>text of link</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="postanswerdate">
+      <TITRE>After Answer Date Block</TITRE>
+      <DOCUMENTATION>
+        Everything inside is skipped if the problem is before the answer date.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="solved">
+      <TITRE>Block For After Solved</TITRE>
+      <DOCUMENTATION>
+        Everything inside is skipped if the problem is &#8220;not solved&#8221;.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="notsolved">
+      <TITRE>Block For When Not Solved</TITRE>
+      <DOCUMENTATION>
+        Everything inside is skipped if the problem is &#8220;solved&#8221;.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    
+    <STRINGS_ELEMENT element="import">
+      <TITRE>Import a File</TITRE>
+      <DOCUMENTATION>
+        This causes the parse to read in the file named in the body of the tag and parse it as if the entire text of the file had existed at the location of the tag.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
       </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="height">
-        <TITRE>height</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="width">
-        <TITRE>width</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="printtext">
-        <TITRE>printed text</TITRE>
+      <STRINGS_ATTRIBUT attribut="importmode">
+        <TITRE>import as</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="block">
@@ -2383,17 +2329,36 @@
         <TITRE>test condition</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="postanswerdate">
-      <TITRE>After Answer Date Block</TITRE>
+    <STRINGS_ELEMENT element="tex">
+      <TITRE>Print Only Block</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="web">
+      <TITRE>Web Only Block</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="standalone">
+      <TITRE>Standalone Block</TITRE>
       <DOCUMENTATION>
-        Everything inside is skipped if the problem is before the answer date.
+        Everything in between the start and end tag is shown only on the web and only if the resource is not part of a course.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="preduedate">
-      <TITRE>Before Due Date Block</TITRE>
+    <STRINGS_ELEMENT element="problemtype">
+      <TITRE>Problem Type Block</TITRE>
       <DOCUMENTATION>
-        Everything inside is skipped if the problem is after the due date.
+        Allows you to show or hide output based on what the problem-type parameter is set to in the course.
+        Will only show the output text when the problem is set to the type of exam or survey in the course.
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="mode">
+        <TITRE>mode</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="for">
+        <TITRE>for</TITRE>
+        <DOCUMENTATION>
+          When used as type(s)
+          
+          Comma-separated list of values among:
+          exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="randomlist">
       <TITRE>Randomly Parsed Block</TITRE>
@@ -2404,47 +2369,17 @@
         <TITRE>maximum tags to show</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="solved">
-      <TITRE>Block For After Solved</TITRE>
+    <STRINGS_ELEMENT element="perl">
+      <TITRE>Perl Script</TITRE>
       <DOCUMENTATION>
-        Everything inside is skipped if the problem is &#8220;not solved&#8221;.
+        The enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
       </DOCUMENTATION>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="notsolved">
-      <TITRE>Block For When Not Solved</TITRE>
-      <DOCUMENTATION>
-        Everything inside is skipped if the problem is &#8220;solved&#8221;.
-      </DOCUMENTATION>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="web">
-      <TITRE>Web Only Block</TITRE>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="tex">
-      <TITRE>Print Only Block</TITRE>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="display">
       <TITRE>Display Script Result Block</TITRE>
       <DOCUMENTATION>
         The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
       </DOCUMENTATION>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="organicstructure">
-      <TITRE>Organic Structure</TITRE>
-      <STRINGS_ATTRIBUT attribut="width">
-        <TITRE>width (pixels)</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="texwidth">
-        <TITRE>TeXwidth (mm)</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="molecule">
-        <TITRE>molecule</TITRE>
-        <DOCUMENTATION>
-          JME string
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="options">
-        <TITRE>options</TITRE>
-      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="languageblock">
       <TITRE>Language Block</TITRE>
@@ -2481,8 +2416,24 @@
         <TITRE>other</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="instructorcomment">
-      <TITRE>Instructor Comment</TITRE>
+    <STRINGS_ELEMENT element="window">
+      <TITRE>Text In Separate Window</TITRE>
+      <DOCUMENTATION>
+        This creates a link that when clicked shows the intervening information in a pop-up window. By default the window will be 500 pixels wide and 200 pixels tall, and the link text will be a superscript * (so as to look like a footnote). These can be changed using the attributes.
+        When printing, the included text will get turned into a real footnote.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="linktext">
+        <TITRE>text of link</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="printtext">
+        <TITRE>printed text</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="windowlink">
       <TITRE>Window Link</TITRE>
@@ -2538,17 +2489,36 @@
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="standalone">
-      <TITRE>Standalone Block</TITRE>
+    <STRINGS_ELEMENT element="instructorcomment">
+      <TITRE>Instructor Comment</TITRE>
       <DOCUMENTATION>
-        Everything in between the start and end tag is shown only on the web and only if the resource is not part of a course.
+        Comment that is hidden if form.instructor_comments='hide'.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="comment">
       <TITRE>Comment</TITRE>
       <DOCUMENTATION>
         Allows one to comment out sections of code in a balanced manner, or to provide a comment description of how a problem works.
+        The content is ignored.
       </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="organicstructure">
+      <TITRE>Organic Structure</TITRE>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width (pixels)</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="texwidth">
+        <TITRE>TeXwidth (mm)</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="molecule">
+        <TITRE>molecule</TITRE>
+        <DOCUMENTATION>
+          JME string
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="options">
+        <TITRE>options</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="drawimage">
       <TITRE>Draw Image</TITRE>
@@ -2638,53 +2608,6 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     
-    <STRINGS_ELEMENT element="img">
-      <TITRE>Image</TITRE>
-      <STRINGS_ATTRIBUT attribut="src">
-        <TITRE>image URL</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="alt">
-        <TITRE>alt</TITRE>
-        <DOCUMENTATION>
-          Textual description of the image. If the image cannot be rendered by the target browser, this description is displayed instead.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="width">
-        <TITRE>width (pixel)</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="height">
-        <TITRE>height (pixel)</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="TeXwidth">
-        <TITRE>TeX width (mm)</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="TeXheight">
-        <TITRE>TeX height (mm)</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="align">
-        <TITRE>align</TITRE>
-        <DOCUMENTATION>
-          Specifies the alignment of the image relative to the enclosing text paragraph:
-          - bottom: The image will be aligned so that its bottom will be at the baseline of the surrounding text.
-          - middle: The image will be aligned so that its center-line will be at the baseline of the surrounding text.
-          - top: The image will be aligned so that its top will be at the baseline of the surrounding text.
-          - left: The image will be placed so that it is at the left of the surrounding text. The surrounding text will fill in the region to the right of the image.
-          - right: The image will be placed so that it is at the right of the surrounding text. The surrounding text will fill in the region to the left of the image.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="TeXwrap">
-        <TITRE>TeX wrap</TITRE>
-        <DOCUMENTATION>
-          Allows you to select how the LaTeX document will attempt to wrap text around a horizontally aligned image.
-          parbox: \newline and \parbox will be used to place the image. This method ensures that text will not be wrapped on top of the image, however very little text will appear next to the image itself.
-          parpic: The picins package \parpic command will be used to place the image. This will wrap the remainder of the paragraph containing the picture around the image.
-          If, however, there is insufficient text to fill the space to the left or right of the image, the next paragraph may be wrapped on top of the image. In addition, \parpic does not always honor the end of the page, causing the image to extend below the page footer.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="encrypturl">
-        <TITRE>encrypt url</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="m">
       <TITRE>TeX</TITRE>
       <DOCUMENTATION>
@@ -2824,6 +2747,47 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="space">
         <TITRE>xml:space</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="script">
+      <TITRE>Javascript</TITRE>
+      <DOCUMENTATION>
+        This is only for browser-interpreted Javascript (LON-CAPA Perl scripts should use the perl element).
+        
+        The HTML &lt;script&gt; element is used to embed or reference an executable script within an HTML or XHTML document.
+        
+        Scripts without async or defer attributes, as well as inline scripts, are fetched and executed immediately, before the browser continues to parse the page.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="src">
+        <TITRE>src</TITRE>
+        <DOCUMENTATION>
+          This attribute specifies the URI of an external script; this can be used as an alternative to embedding a script directly within a document. script elements with an src attribute specified should not have a script embedded within its tags.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+        <DOCUMENTATION>
+          This attribute identifies the scripting language of code embedded within a script element or referenced via the element&#8217;s src attribute. This is specified as a MIME type; examples of supported MIME types include text/javascript, text/ecmascript, application/javascript, and application/ecmascript.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="language">
+        <TITRE>language</TITRE>
+        <DOCUMENTATION>
+          Like the type attribute, this attribute identifies the scripting language in use. Unlike the type attribute, however, this attribute&#8217;s possible values were never standardized. The type attribute should be used instead.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="defer">
+        <TITRE>defer</TITRE>
+        <DOCUMENTATION>
+          This Boolean attribute is set to indicate to a browser that the script is meant to be executed after the document has been parsed. Since this feature hasn't yet been implemented by all other major browsers, authors should not assume that the script&#8217;s execution will actually be deferred. The defer attribute shouldn't be used on scripts that don't have the src attribute. Since Gecko 1.9.2, the defer attribute is ignored on scripts that don't have the src attribute. However, in Gecko 1.9.1 even inline scripts are deferred if the defer attribute is set.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="async">
+        <TITRE>async</TITRE>
+        <DOCUMENTATION>
+          HTML5 only.
+          Set this Boolean attribute to indicate that the browser should, if possible, execute the script asynchronously. It has no effect on inline scripts (i.e., scripts that don't have the src attribute).
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="noscript">
@@ -3154,6 +3118,53 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="cite">
         <TITRE>cite</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="img">
+      <TITRE>Image</TITRE>
+      <STRINGS_ATTRIBUT attribut="src">
+        <TITRE>image URL</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="alt">
+        <TITRE>alt</TITRE>
+        <DOCUMENTATION>
+          Textual description of the image. If the image cannot be rendered by the target browser, this description is displayed instead.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width (pixel)</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height (pixel)</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="TeXwidth">
+        <TITRE>TeX width (mm)</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="TeXheight">
+        <TITRE>TeX height (mm)</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="align">
+        <TITRE>align</TITRE>
+        <DOCUMENTATION>
+          Specifies the alignment of the image relative to the enclosing text paragraph:
+          - bottom: The image will be aligned so that its bottom will be at the baseline of the surrounding text.
+          - middle: The image will be aligned so that its center-line will be at the baseline of the surrounding text.
+          - top: The image will be aligned so that its top will be at the baseline of the surrounding text.
+          - left: The image will be placed so that it is at the left of the surrounding text. The surrounding text will fill in the region to the right of the image.
+          - right: The image will be placed so that it is at the right of the surrounding text. The surrounding text will fill in the region to the left of the image.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="TeXwrap">
+        <TITRE>TeX wrap</TITRE>
+        <DOCUMENTATION>
+          Allows you to select how the LaTeX document will attempt to wrap text around a horizontally aligned image.
+          parbox: \newline and \parbox will be used to place the image. This method ensures that text will not be wrapped on top of the image, however very little text will appear next to the image itself.
+          parpic: The picins package \parpic command will be used to place the image. This will wrap the remainder of the paragraph containing the picture around the image.
+          If, however, there is insufficient text to fill the space to the left or right of the image, the next paragraph may be wrapped on top of the image. In addition, \parpic does not always honor the end of the page, causing the image to extend below the page footer.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="encrypturl">
+        <TITRE>encrypt url</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="object">
