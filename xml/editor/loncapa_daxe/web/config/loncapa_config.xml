@@ -285,8 +285,7 @@
     <AFFICHAGE_ELEMENT element="parserlib" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="scriptlib" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="lcmeta" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="parameter" type="vide">
-      <PARAMETRE nom="attributsVisibles" valeur="true"/>
+    <AFFICHAGE_ELEMENT element="parameter" type="lcdblock">
       <AFFICHAGE_ATTRIBUT attribut="type">
         <VALEUR_SUGGEREE>tolerance</VALEUR_SUGGEREE>
         <VALEUR_SUGGEREE>int</VALEUR_SUGGEREE>
@@ -548,6 +547,9 @@
       <TITRE>Collection of Foils</TITRE>
       <STRINGS_ATTRIBUT attribut="options">
         <TITRE>options</TITRE>
+        <DOCUMENTATION>
+          Perl list of possible foil values.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="texoptions">
         <TITRE>print options</TITRE>
@@ -2221,8 +2223,6 @@
         Two parts can be graded as right or wrong independantly.
         A part also provides a granularity level for parameters (weight, tolerance, ...).
         It is possible to display parts one at a time.
-        
-        This element can only be inserted directly under problem.
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>part ID</TITRE>
@@ -2257,7 +2257,7 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="parameter">
-      <TITRE>Parameters for a part</TITRE>
+      <TITRE>Parameter for a part</TITRE>
       <DOCUMENTATION>
         parameter is exactly the same as responseparam, but should appear outside of a response tag.
       </DOCUMENTATION>
@@ -2818,39 +2818,41 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="h1">
-      <TITRE>Lvl 1 Header</TITRE>
+      <TITRE>Lvl 1 Title</TITRE>
       <DOCUMENTATION>
-        Level 1 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
+        
+        Inside HTML5 sections, all the heading elements can be h1 (they don't need to be h1, h2, ...). Web browsers determine the level of the heading based on the depth in the section tree.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="h2">
-      <TITRE>Lvl 2 Header</TITRE>
+      <TITRE>Lvl 2 Title</TITRE>
       <DOCUMENTATION>
-        Level 2 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="h3">
-      <TITRE>Lvl 3 Header</TITRE>
+      <TITRE>Lvl 3 Title</TITRE>
       <DOCUMENTATION>
-        Level 3 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="h4">
-      <TITRE>Lvl 4 Header</TITRE>
+      <TITRE>Lvl 4 Title</TITRE>
       <DOCUMENTATION>
-        Level 4 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="h5">
-      <TITRE>Lvl 5 Header</TITRE>
+      <TITRE>Lvl 5 Title</TITRE>
       <DOCUMENTATION>
-        Level 5 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="h6">
-      <TITRE>Lvl 6 Header</TITRE>
+      <TITRE>Lvl 6 Title</TITRE>
       <DOCUMENTATION>
-        Level 6 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="div">

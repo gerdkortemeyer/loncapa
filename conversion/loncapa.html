@@ -1626,7 +1626,7 @@ Attribute <span class="nomattribut">options</span>:
 
 
 <div class="documentation">
-List of options
+Perl list of possible foil values.
 </div>
 <br>
 
@@ -7992,8 +7992,6 @@ Provides a logical division in a problem, with an indivisible group of questions
 Two parts can be graded as right or wrong independantly.
 A part also provides a granularity level for parameters (weight, tolerance, ...).
 It is possible to display parts one at a time.
-
-This element can only be inserted directly under problem.
 </div>
 <br>
 
@@ -8140,7 +8138,7 @@ Attribute <span class="nomattribut">content</span>:
 
 
 <div class="documentation">
-Parameters for a part
+Parameter for a part
 
 parameter is exactly the same as responseparam, but should appear outside of a response tag.
 </div>
@@ -10768,8 +10766,11 @@ Choice between:<ul>
 
 
 <div class="documentation">
-Level 1 header (most important).
+Level 1 title (most important).
+
 A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
+
+Inside HTML5 sections, all the heading elements can be h1 (they don't need to be h1, h2, ...). Web browsers determine the level of the heading based on the depth in the section tree.
 </div>
 <br>
 
@@ -10785,7 +10786,8 @@ A heading element briefly describes the topic of the section it introduces. Head
 
 
 <div class="documentation">
-Level 2 header
+Level 2 title
+
 A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
 </div>
 <br>
@@ -10802,7 +10804,8 @@ A heading element briefly describes the topic of the section it introduces. Head
 
 
 <div class="documentation">
-Level 3 header
+Level 3 title
+
 A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
 </div>
 <br>
@@ -10819,7 +10822,8 @@ A heading element briefly describes the topic of the section it introduces. Head
 
 
 <div class="documentation">
-Level 4 header
+Level 4 title
+
 A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
 </div>
 <br>
@@ -10836,7 +10840,8 @@ A heading element briefly describes the topic of the section it introduces. Head
 
 
 <div class="documentation">
-Level 5 header
+Level 5 title
+
 A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
 </div>
 <br>
@@ -10853,7 +10858,8 @@ A heading element briefly describes the topic of the section it introduces. Head
 
 
 <div class="documentation">
-Level 6 header
+Level 6 title
+
 A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
 </div>
 <br>
@@ -10906,10 +10912,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#parameter_0">parameter</a>
-<br>
-</li>
-<li>
 <a href="#randomlabel_0">randomlabel</a>
 <br>
 </li>
@@ -10949,10 +10951,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
-<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>

@@ -589,7 +589,7 @@
     <xs:attribute name="options" use="required">
       <xs:annotation>
         <xs:documentation>
-          List of options
+          Perl list of possible foil values.
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
@@ -3749,8 +3749,6 @@
         Two parts can be graded as right or wrong independantly.
         A part also provides a granularity level for parameters (weight, tolerance, ...).
         It is possible to display parts one at a time.
-        
-        This element can only be inserted directly under problem.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -3816,7 +3814,7 @@
   <xs:element name="parameter">
     <xs:annotation>
       <xs:documentation>
-        Parameters for a part
+        Parameter for a part
         
         parameter is exactly the same as responseparam, but should appear outside of a response tag.
       </xs:documentation>
@@ -4918,15 +4916,19 @@
   <xs:element name="h1" type="headerContent">
     <xs:annotation>
       <xs:documentation>
-        Level 1 header (most important).
+        Level 1 title (most important).
+        
         A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
+        
+        Inside HTML5 sections, all the heading elements can be h1 (they don't need to be h1, h2, ...). Web browsers determine the level of the heading based on the depth in the section tree.
       </xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:element name="h2" type="headerContent">
     <xs:annotation>
       <xs:documentation>
-        Level 2 header
+        Level 2 title
+        
         A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </xs:documentation>
     </xs:annotation>
@@ -4934,7 +4936,8 @@
   <xs:element name="h3" type="headerContent">
     <xs:annotation>
       <xs:documentation>
-        Level 3 header
+        Level 3 title
+        
         A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </xs:documentation>
     </xs:annotation>
@@ -4942,7 +4945,8 @@
   <xs:element name="h4" type="headerContent">
     <xs:annotation>
       <xs:documentation>
-        Level 4 header
+        Level 4 title
+        
         A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </xs:documentation>
     </xs:annotation>
@@ -4950,7 +4954,8 @@
   <xs:element name="h5" type="headerContent">
     <xs:annotation>
       <xs:documentation>
-        Level 5 header
+        Level 5 title
+        
         A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </xs:documentation>
     </xs:annotation>
@@ -4958,7 +4963,8 @@
   <xs:element name="h6" type="headerContent">
     <xs:annotation>
       <xs:documentation>
-        Level 6 header
+        Level 6 title
+        
         A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </xs:documentation>
     </xs:annotation>
@@ -4979,7 +4985,6 @@
           <xs:group ref="responses"/>
           <xs:group ref="inserts"/>
           <xs:element ref="part"/>
-          <xs:element ref="parameter"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
@@ -4995,7 +5000,6 @@
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-without-responses"/>
           <xs:group ref="inserts"/>
-          <xs:element ref="parameter"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
