@@ -41,6 +41,12 @@ sub listtitle {
    return $filename.($metadata->{'title'}?' ('.$metadata->{'title'}.')':'');
 }
 
+sub action_jump {
+   my ($which,$entity,$domain,$rule)=@_;
+   return $which."('".$entity."','".$domain."','".$rule."')";
+}
+
+
 sub add_right {
    my ($output,$type,$domain,$entity,$section)=@_;
    my $typedisplay;
@@ -70,9 +76,10 @@ sub add_right {
          $entitydisplay=$profile->{'lastname'}.', '.$profile->{'firstname'}.' '.$profile->{'middlename'};
       }
    }
+   my $activity;
    push(@{$output->{'aaData'}},
         [ undef,
-          'Activity',
+          $activity,
           $typedisplay,
           ($domain?$domaindisplay:'<i>'.&mt('any').'</i>'),
           ($entity?$entitydisplay:'<i>'.&mt('any').'</i>'),
