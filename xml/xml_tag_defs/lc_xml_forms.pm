@@ -192,7 +192,7 @@ sub cancelbutton {
 # === Generate a single input field
 
 sub inputfield {
-   my ($type,$id,$name,$size,$default,$locked)=@_;
+   my ($type,$id,$name,$size,$default,$locked,$onchange)=@_;
    if ($type eq 'text') {
       unless ($size) { $size=40; }
       return '<input class="lcformtextinput" type="text" id="'.$id.'" name="'.$name.'" size="'.$size.'" value="'.$default.'" autocomplete="off"'.
@@ -240,7 +240,7 @@ sub inputfield {
    } elsif ($type eq 'rolemodifiabledomains') {
       my ($defaultdomain,$domain_short,$domain_name)=&domain_choices('rolemodifiable');
       unless ($default) { $default=$defaultdomain; }
-      return &selectfield($id,$name,$domain_short,$domain_name,$default);
+      return &selectfield($id,$name,$domain_short,$domain_name,$default,$locked,$onchange);
    } elsif ($type eq 'usersearch') {
       return &usersearch($id,$name,$default);
    } elsif ($type eq 'symbolic') {

@@ -56,12 +56,16 @@ sub new_right {
    my ($output,$rentity,$rdomain)=@_;
    push(@{$output->{'aaData'}},
         [ undef,
+# Type
           &Apache::lc_ui_utils::delete_link("discardrule()"),
+          &Apache::lc_xml_forms::hidden_label('newtype','Allowed Activity').
           &Apache::lc_xml_forms::selectfield('newtype','newtype',
              ['view','grade','clone','use','edit'],
              [&mt('View'),&mt('Grade by instructor'),&mt('Clone (make derivatives)'),&mt('Use/assign in courses/communities'),&mt('Edit')],
-             'view'),
-          'newdomain',
+             'view',0,'type_update()'),
+# Domain
+          &Apache::lc_xml_forms::hidden_label('newdomain','Domain').
+          &Apache::lc_xml_forms::inputfield('rolemodifiabledomains','newdomain','newdomain',undef,undef,undef,'type_update()'),
           'newentity',
           'newsection' ]);
 }
