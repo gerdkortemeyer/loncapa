@@ -174,10 +174,10 @@ sub course_entity_domain {
 # Enter a course
 #
 sub enter_course {
-   my ($courseid,$domain)=@_;
-   &Apache::lc_entity_courses::set_last_accessed($courseid,$domain);
-   &Apache::lc_entity_users::set_last_accessed(&user_entity_domain(),$courseid,$domain);
-   &update_session({ 'current_course' => { 'entity' => $courseid, 'domain' => $domain }});
+   my ($entity,$domain)=@_;
+   &Apache::lc_entity_courses::set_last_accessed($entity,$domain);
+   &Apache::lc_entity_users::set_last_accessed(&user_entity_domain(),$entity,$domain);
+   &update_session({ 'current_course' => { 'entity' => $entity, 'domain' => $domain }});
 }
 
 #
