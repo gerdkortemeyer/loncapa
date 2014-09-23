@@ -14,6 +14,9 @@ function init_datatable(destroy,newrule) {
       "oLanguage" : {
          "sUrl" : "/datatable_i14n"
       },
+      "fnInitComplete": function(oSettings, json) {
+          if (newrule==1) { type_update(); }
+      },
       "aoColumns" : [
          { "bVisible": false },
          { "bSortable": false },
@@ -71,6 +74,10 @@ function discardrule() {
 function saverules() {
    savechanges=false;
    alert("Saving");
+}
+
+function type_update() {
+   $('#newtype_edit').attr('disabled','disabled');
 }
 
 $(document).ready(function() {

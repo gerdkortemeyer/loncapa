@@ -314,7 +314,7 @@ sub selectfield {
    }
    my $selectfield='<select class="lcformselectinput" id="'.$id.'" name="'.$name.'"'.$changecall.$disabled.'>';
    for (my $i=0;$i<=$#{$values};$i++) {
-          $selectfield.='<option value="'.$values->[$i].'"'.($values->[$i]=~/^($default)$/?' selected="selected"':'').'>'.
+          $selectfield.='<option id="'.$id.'_'.$values->[$i].'" value="'.$values->[$i].'"'.($values->[$i]=~/^($default)$/?' selected="selected"':'').'>'.
                          $choices->[$i].'</option>';
    }
    $selectfield.='</select>';
