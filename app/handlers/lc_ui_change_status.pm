@@ -41,12 +41,36 @@ sub listtitle {
    return $filename.($metadata->{'title'}?' ('.$metadata->{'title'}.')':'');
 }
 
+#
+# Produces an action link to a function
+#
 sub action_jump {
    my ($which,$entity,$domain,$rule)=@_;
    return $which."('".$entity."','".$domain."','".$rule."')";
 }
 
+#
+# Make the edit line for a new rule
+#
+sub new_right {
+   my ($output,$rentity,$rdomain)=@_;
+   push(@{$output->{'aaData'}},
+        [ undef,
+          &Apache::lc_ui_utils::delete_link("discardrule()"),
+          &Apache::lc_xml_forms::selectfield('newtype','newtype',
+             ['view','grade','clone','use','edit'],
+             [&mt('View'),&mt('Grade by instructor'),&mt('Clone (make derivatives)'),&mt('Use/assign in courses/communities'),&mt('Edit')],
+             'view'),
+          'newdomain',
+          'newentity',
+          'newsection' ]);
+}
 
+#
+# Produces an output line in the rights table
+# rentity and rdomain are the asset's
+# the remainder are of the rule
+#
 sub add_right {
    my ($output,$rentity,$rdomain,$type,$domain,$entity,$section)=@_;
    my $typedisplay;
@@ -88,16 +112,20 @@ sub add_right {
           ($section?$section:($userflag?'-':'<i>'.&mt('any').'</i>')) ]);
 }
 
+#
+# List all the rights in JSON
+#
 sub listrights {
-   my ($rentity,$rdomain)=@_;
+   my ($rentity,$rdomain,$newrule)=@_;
    my $output;
    $output->{'aaData'}=[];
-#FIXME: debug
-&add_right($output,$rentity,$rdomain,'view','msu','rqerqfqw421rf','007');
-
-
-
+# Do we add an edit line?
+   if ($newrule) {
+      &new_right($output,$rentity,$rdomain);
+   }
+# Retrieve rights
    my $rights=&Apache::lc_entity_urls::get_rights($rentity,$rdomain);
+# List all active ones
    foreach my $type (sort(keys(%{$rights}))) {
       foreach my $domain_type (sort(keys(%{$rights->{$type}}))) {
          if ($domain_type eq 'any') {
@@ -143,7 +171,7 @@ sub handler {
       $r->print(&listtitle($content{'entity'},$content{'domain'},$content{'url'}));
    } elsif ($content{'command'} eq 'listrights') {
       $r->content_type('application/json; charset=utf-8');
-      $r->print(&listrights($content{'entity'},$content{'domain'}));
+      $r->print(&listrights($content{'entity'},$content{'domain'},$content{'newrule'}));
    }
    return OK;
 }

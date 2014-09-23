@@ -1,12 +1,13 @@
 var entity;
 var domain;
 var url;
+var savechanges;
 
-function init_datatable(destroy) {
+function init_datatable(destroy,newrule) {
 
    var noCache = parent.no_cache_value();
    $('#rightslist').dataTable( {
-      "sAjaxSource" : '/change_status?command=listrights&entity='+entity+'&domain='+domain+'&noCache='+noCache,
+      "sAjaxSource" : '/change_status?command=listrights&entity='+entity+'&domain='+domain+'&newrule='+newrule+'&noCache='+noCache,
       "bAutoWidth": false,
       "bDestroy"  : destroy,
       "bStateSave": true,
@@ -24,8 +25,8 @@ function init_datatable(destroy) {
     } );
 }
 
-function reload_listing() {
-   init_datatable(true);
+function reload_listing(newrule) {
+   init_datatable(true,newrule);
 }
 
 function list_title() {
@@ -52,7 +53,7 @@ function deleterule(entity,domain,rule) {
                    $('.lcstandard').hide();
                    $('.lcerror').show();
                 } else {
-                   reload_listing();
+                   reload_listing(0);
                 }
              },
              error: function(xhr, ajaxOptions, errorThrown) {
@@ -62,13 +63,29 @@ function deleterule(entity,domain,rule) {
          });
 }
 
+function discardrule() {
+   savechanges=false;
+   reload_listing(0);
+}
+
+function saverules() {
+   savechanges=false;
+   alert("Saving");
+}
+
 $(document).ready(function() {
+     savechanges=false;
      entity=parent.getParameterByName(location.search,'entity');
      domain=parent.getParameterByName(location.search,'domain');
      url=parent.getParameterByName(location.search,'url');
      list_title();
-     init_datatable(false); 
+     init_datatable(false,0); 
      $('#donebutton').click(function() {
+        if (savechanges) { saverules(); }
         parent.hide_modal();
+     });
+     $('#addbutton').click(function() {
+        if (savechanges) { saverules(); }
+        reload_listing(1);
      });
 });
