@@ -18,6 +18,8 @@ through which recipients can access the Corresponding Source.
 
 */
 
+"use strict";
+
 /**
  * Parsed tree node. ENode.toMathML(hcolors) contains the code for the transformation into MathML.
  * @constructor

@@ -18,6 +18,8 @@ through which recipients can access the Corresponding Source.
 
 */
 
+"use strict";
+
 /**
  * String tokenizer. Recognizes only names, numbers, and parser operators.
  * @constructor

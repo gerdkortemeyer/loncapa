@@ -18,6 +18,8 @@ through which recipients can access the Corresponding Source.
 
 */
 
+"use strict";
+
 /**
  * Parse exception
  * @constructor

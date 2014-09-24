@@ -18,6 +18,8 @@ through which recipients can access the Corresponding Source.
 
 */
 
+"use strict";
+
 var handleChange = function(math_object) {
     // math_object has 3 fields: ta, output_node, oldtxt
     // we need to pass this object instead of the values because oldtxt will change
@@ -126,7 +128,15 @@ var initEditors = function() {
                 "parser": new Parser(implicit_operators, unit_mode, constants)
             };
             var changeObjectN = function(n) {
-                return function(e) { handleChange(math_objects[n]); };
+                return function(e) {
+                  var obj = math_objects[n];
+                  if (document.activeElement == obj.ta) {
+                    // this is useful if there is data in the field with the page default focus
+                    // (there might not be a focus event for the active element)
+                    obj.output_node.setAttribute("style", "display: inline-block; background-color: #FFFFE0");
+                  }
+                  handleChange(obj);
+                };
             };
             var startChange = changeObjectN(i);
             if (ta.value != oldtxt)
