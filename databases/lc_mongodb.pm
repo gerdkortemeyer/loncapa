@@ -107,6 +107,8 @@ sub query_course_profiles {
 
 #
 # Profile cache for searches
+# - for both users and courses, using
+# same cache as no overlap in search terms
 #
 sub update_profiles_cache {
    my ($entity,$domain,$data)=@_;
@@ -122,6 +124,8 @@ sub update_profiles_cache {
    }
 }
 
+# Query against the cache
+#
 sub query_user_profiles_cache {
    my ($domain,$term1,$term2)=@_;
    unless ($term1) { $term1=''; }
@@ -139,6 +143,17 @@ sub query_user_profiles_cache {
                                                {'profile.lastname'  => qr/\Q$term1\E/i}] })->all;
    }
 }
+
+sub query_course_profiles_cache {
+   my ($domain,$term)=@_;
+   unless ($profiles_cache) { &init_mongo(); }
+   return $profiles_cache->find({ 'domain' => $domain,
+                                  '$or' => [{'profile.title'    => qr/\Q$term\E/i},
+                                            {'profile.courseid' => qr/\Q$term\E/i}] })->all;
+}
+
+
+
 
 #
 # Namespaces

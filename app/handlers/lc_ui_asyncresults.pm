@@ -51,6 +51,8 @@ sub handler {
       } else {
          $r->print('{ "count" : "0" }');
       }
+   } elsif ($job->{'command'} eq 'coursesearch') {
+      $r->print(&Apache::lc_json_utils::perl_to_json(&Apache::lc_entity_courses::query_course_profiles_result($job->{'domain'},$job->{'term'})));
    } else {
       $r->print('{ "error" : "1"} ');
    }
