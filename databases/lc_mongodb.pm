@@ -92,14 +92,17 @@ sub query_user_profiles {
    } else {
       return $profiles->find({ 'domain' => $domain,
                                '$or' => [{'profile.firstname' => qr/\Q$term1\E/i},
-                                         {'profile.lastname'  => qr/\Q$term1\E/i}] })->all;
+                                         {'profile.lastname'  => qr/\Q$term1\E/i},
+                                         {'profile.username'  => qr/\Q$term1\E/i}] })->all;
    }
 }
 
 sub query_course_profiles {
-   my ($term)=@_;
+   my ($domain,$term)=@_;
    unless ($profiles) { &init_mongo(); }
-   return $profiles->find({'profile.title' => qr/\Q$term\E/i})->all;
+   return $profiles->find({ 'domain' => $domain,
+                            '$or' => [{'profile.title'    => qr/\Q$term\E/i},
+                                      {'profile.courseid' => qr/\Q$term\E/i}] })->all;
 }
 
 #

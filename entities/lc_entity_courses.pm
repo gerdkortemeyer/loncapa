@@ -78,7 +78,8 @@ sub local_make_new_course {
 # Take ownership
    &Apache::lc_postgresql::insert_homeserver($entity,$domain,&Apache::lc_connection_utils::host_name());
 # Start course profile
-   &Apache::lc_mongodb::insert_profile($entity,$domain,{ created => &Apache::lc_date_utils::now2str() });
+   &Apache::lc_mongodb::insert_profile($entity,$domain,{ created  => &Apache::lc_date_utils::now2str(),
+                                                         courseid => $courseid });
 # Start empty table of contents
    &initialize_contents($entity,$domain);
 # Return the entity
@@ -132,7 +133,7 @@ sub local_query_course_profiles {
    my $data=undef;
    my $count=0;
    foreach my $course (@rawdata) {
-      foreach my $namepart ('type','title','instid') {
+      foreach my $namepart ('type','title') {
          $data->{$course->{'domain'}}->{$course->{'entity'}}->{$namepart}=$course->{'profile'}->{$namepart};
       }
       $count++;
@@ -177,9 +178,10 @@ sub query_course_profiles_result {
    my $data=undef;
    my $count=0;
    foreach my $course (@rawdata) {
-      foreach my $namepart ('type','title','instid') {
+      foreach my $namepart ('type','title') {
          $data->{'records'}->{$course->{'domain'}}->{$course->{'entity'}}->{$namepart}=$course->{'profile'}->{$namepart};
       }
+      $data->{'records'}->{$course->{'domain'}}->{$course->{'entity'}}->{'courseid'}=&entity_to_course($course->{'entity'},$course->{'domain'});
       $count++;
       if ($count>100) { last; }
    }
@@ -467,6 +469,7 @@ BEGIN {
    &Apache::lc_connection_handle::register('course_to_entity',undef,undef,undef,\&local_course_to_entity,'courseid','domain');
    &Apache::lc_connection_handle::register('entity_to_course',undef,undef,undef,\&local_entity_to_course,'entity','domain');
    &Apache::lc_connection_handle::register('make_new_course',undef,undef,undef,\&local_make_new_course,'courseid','domain');
+  &Apache::lc_connection_handle::register('query_course_profiles',undef,undef,undef,\&local_json_query_course_profiles,'domain','term');
 }
 
 1;
