@@ -465,6 +465,25 @@ sub courselist {
    return @classlist;
 }
 
+#
+# Return a list of the sections in a course
+#
+sub coursesectionlist {
+   my ($entity,$domain)=@_;
+   my %sections=();
+   my $raw_classlist=&Apache::lc_entity_roles::lookup_entity_rolelist($entity,$domain);
+   my @classlist=();
+   foreach my $row (@{$raw_classlist}) {
+      my ($roleentity,$roledomain,$rolesection,
+          $userentity,$userdomain,
+          $role,
+          $startdate,$enddate,
+          $manualenrollentity,$manualenrolldomain)=@{$row};
+      $sections{&Apache::lc_entity_roles::norm_section($rolesection)}=1;
+   }
+   return keys(%sections);
+}
+
 BEGIN {
    &Apache::lc_connection_handle::register('course_to_entity',undef,undef,undef,\&local_course_to_entity,'courseid','domain');
    &Apache::lc_connection_handle::register('entity_to_course',undef,undef,undef,\&local_entity_to_course,'entity','domain');

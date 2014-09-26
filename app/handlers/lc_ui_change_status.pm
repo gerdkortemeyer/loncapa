@@ -175,6 +175,21 @@ sub listrights {
    return &Apache::lc_json_utils::perl_to_json($output);
 }
 
+# Called to build section display for courses
+#
+sub listsections {
+   my ($courseid,$coursedomain)=@_;
+   my $courseentity=&Apache::lc_entity_courses::course_to_entity($courseid,$coursedomain);
+   unless ($courseentity) {
+      return '[]';
+   }
+   my @sections=&Apache::lc_entity_courses::coursesectionlist($courseentity,$coursedomain);
+   return &Apache::lc_json_utils::perl_to_json(\@sections);
+}
+
+#
+# Main handler
+
 sub handler {
    my $r = shift;
    my %content=&Apache::lc_entity_sessions::posted_content();
@@ -183,6 +198,9 @@ sub handler {
    } elsif ($content{'command'} eq 'listrights') {
       $r->content_type('application/json; charset=utf-8');
       $r->print(&listrights($content{'entity'},$content{'domain'},$content{'newrule'}));
+   } elsif ($content{'command'} eq 'listsections') {
+      $r->content_type('application/json; charset=utf-8');
+      $r->print(&listsections($content{'courseid'},$content{'coursedomain'}));
    }
    return OK;
 }
