@@ -3,6 +3,7 @@
 # this builds dist/LC_math_editor.min.js using google closure compiler with compressjs.
 # It must be run in the math_editor directory.
 
+cd "$(dirname "$0")"
 mkdir -p dist
 tmp=$(mktemp)
 cat <<% >$tmp

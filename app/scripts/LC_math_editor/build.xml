@@ -4,7 +4,7 @@
     <property description="YUICompressor" name="YUICompressor" value="lib/yuicompressor-2.4.2.jar"/>
     
     <target name="concatjs" description="concat src .js files">
-        <concat destfile="dist/math_editor.js">
+        <concat destfile="dist/LC_math_editor.js">
             <!-- encapsulate and export some classes in the namespace LCMATH -->
             <header>
 var LCMATH = function () {
@@ -24,17 +24,17 @@ var LCMATH = function () {
         </concat>
     </target>
     
-    <target name="compression" description="compress math_editor.js">
+    <target name="compression" description="compress LC_math_editor.js">
         <apply executable="java">
           <fileset dir="dist">
-            <include name="math_editor.js" />
+            <include name="LC_math_editor.js" />
           </fileset>
           <arg line="-jar" />
           <arg path="${YUICompressor}" />
           <arg value="--charset" />
           <arg value="UTF-8" />
           <arg value="-o" />
-          <arg value="dist/math_editor.min.js" />
+          <arg value="dist/LC_math_editor.min.js" />
         </apply>
     </target>
     

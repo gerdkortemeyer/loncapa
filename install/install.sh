@@ -66,7 +66,7 @@ cp -r app/scripts/ckeditor/plugins/lcmath /home/httpd/html/scripts/ckeditor/plug
 cp app/scripts/jquery* /home/httpd/html/scripts
 cp app/scripts/lc* /home/httpd/html/scripts
 cp -R app/scripts/jstree /home/httpd/html/scripts/
-cp app/scripts/math_editor/dist/math_editor.min.js /home/httpd/html/scripts/
+cp app/scripts/LC_math_editor/dist/LC_math_editor.min.js /home/httpd/html/scripts/
 chown -R www:www /home/httpd/html/scripts/*
 chmod -R a+rx /home/httpd/html/scripts/*
 mkdir /home/httpd/html/css
