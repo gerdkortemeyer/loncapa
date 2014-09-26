@@ -76,8 +76,12 @@ function saverules() {
    alert("Saving");
 }
 
-function entitysearch() { 
-   usersearch('new');
+function entitysearch() {
+   if ($('#new_entitytype').val()=='user') {
+      usersearch('new');
+   } else {
+      coursesearch('new');
+   }
 }
 
 function type_update() {
