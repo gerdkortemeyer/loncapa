@@ -28,28 +28,28 @@ fi
 namenoext="${filename%.*}"
 newpath="$dir/${namenoext}_clean$ext"
 
-pretidytmp=$(mktemp)
-tidycfg=$(mktemp)
-perl $MY_HOME/pre_tidy.pl "$pathname" "$tidycfg" >"$pretidytmp"
+prexmltmp=$(mktemp)
+perl $MY_HOME/pre_xml.pl "$pathname" >"$prexmltmp"
 if [ $? -ne 0 ]; then
-  echo "pre_tidy error for $pathname"
-  rm -f "$pretidytmp" "$tidycfg"
+  echo "pre_xml error for $pathname"
+  rm -f "$prexmltmp"
   exit
 fi
-posttidytmp=$(mktemp)
-tidy -config "$tidycfg" -o "$posttidytmp" "$pretidytmp"
+postxmltmp=$(mktemp)
+cat "$prexmltmp" | perl $MY_HOME/html_to_xml.pl >"$postxmltmp"
 if [ $? -eq 2 ]; then
-  echo "tidy error for $pathname"
-  rm -f "$pretidytmp" "$tidycfg" "$posttidytmp"
+  echo "html_to_xml error for $pathname"
+  rm -f "$prexmltmp" "$postxmltmp"
   exit
 fi
-
-cat "$posttidytmp" | sed -e 's/ xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"//' | perl $MY_HOME/post_tidy.pl > "$newpath"
+cp "$prexmltmp" /tmp/prexml.txt
+cp "$postxmltmp" /tmp/postxml.txt
+cat "$postxmltmp" | perl $MY_HOME/post_xml.pl > "$newpath"
 if [ $? -ne 0 ]; then
-  echo "post_tidy error for $pathname"
-  rm -f "$pretidytmp" "$tidycfg" "$posttidytmp"
+  echo "post_xml error for $pathname"
+  rm -f "$prexmltmp" "$postxmltmp"
   exit
 fi
 
 # cleanup
-rm -f "$pretidytmp" "$tidycfg" "$posttidytmp"
+rm -f "$prexmltmp" "$postxmltmp"

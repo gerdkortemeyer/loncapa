@@ -4,22 +4,21 @@
 
   <xsl:output method="xml" indent="no" encoding="UTF-8"/>
 
+  <xsl:variable name="inline-elements">|startouttext|endouttext|stringresponse|optionresponse|numericalresponse|formularesponse|mathresponse|organicresponse|reactionresponse|customresponse|externalresponse|textline|display|img|windowlink|m|chem|num|parse|algebra|displayweight|displaystudentphoto|span|a|strong|em|b|i|sup|sub|code|kbd|samp|tt|ins|del|var|small|big|font|basefont|input|select|textarea|label|button|u|</xsl:variable>
+  
   <xsl:template match="/">
     <loncapa>
-      <xsl:if test="/html/head/title!='' or //htmlhead/*[name()!='title']">
+      <xsl:for-each select="//head">
         <htmlhead>
-          <xsl:apply-templates select="/html/head/title"/>
-          <xsl:for-each select="//htmlhead">
-            <xsl:apply-templates/>
-          </xsl:for-each>
+          <xsl:apply-templates select="*[name()!='meta']"/>
         </htmlhead>
-      </xsl:if>
-      <xsl:for-each select="//htmlbody">
+      </xsl:for-each>
+      <xsl:for-each select="//body">
         <xsl:if test="@*">
           <htmlbody><xsl:apply-templates select="@*"/></htmlbody>
         </xsl:if>
       </xsl:for-each>
-      <xsl:apply-templates select="/html/head/meta"/>
+      <xsl:apply-templates select="//meta"/>
       <xsl:apply-templates/>
     </loncapa>
   </xsl:template>
@@ -43,13 +42,6 @@
     <xsl:apply-templates/>
   </xsl:template>
   
-  <xsl:template match="htmlhead">
-  </xsl:template>
-  
-  <xsl:template match="htmlbody">
-    <xsl:apply-templates/>
-  </xsl:template>
-  
   <xsl:template match="meta">
     <xsl:variable name="names">|abstract|author|authorspace|avetries|avetries_list|clear|comefrom|comefrom_list|copyright|correct|count|course|course_list|courserestricted|creationdate|dependencies|depth|difficulty|difficulty_list|disc|disc_list|domain|end|field|firstname|generation|goto|goto_list|groupname|helpful|highestgradelevel|hostname|id|keynum|keywords|language|lastname|lastrevisiondate|lowestgradelevel|middlename|mime|modifyinguser|notes|owner|permanentemail|scope|sequsage|sequsage_list|standards|start|stdno|stdno_list|subject|technical|title|url|username|value|version|</xsl:variable>
     <xsl:if test="contains($names, concat('|',translate(@name|@NAME, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'|'))">
@@ -67,11 +59,7 @@
       <xsl:otherwise>
         <!-- remove // added by tidy at the start and end -->
         <xsl:copy>
-          <xsl:for-each select="@*">
-            <xsl:attribute name="{translate(name(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')}">
-              <xsl:value-of select="."/>
-            </xsl:attribute>
-          </xsl:for-each>
+          <xsl:apply-templates select="@*"/>
           <xsl:choose>
             <xsl:when test="starts-with(normalize-space(.),'//') and substring(normalize-space(.), string-length(normalize-space(.))-1)='//'">
               <xsl:call-template name="substring-before-last">
@@ -103,72 +91,34 @@
     </xsl:if>
   </xsl:template>
   
-  <xsl:template match="emptyfont">
-    <!-- just get rid of them
-    <xsl:element name="font">
-      <xsl:apply-templates select="@*|node()"/>
-    </xsl:element>
-    -->
+  <xsl:template match="font">
+    <!-- empty font elements and fonts containing block elements have already been removed -->
+    <xsl:variable name="csscolor"><xsl:call-template name="color"/></xsl:variable>
+    <xsl:variable name="csssize"><xsl:call-template name="size"/></xsl:variable>
+    <xsl:variable name="cssface"><xsl:call-template name="face"/></xsl:variable>
+    <xsl:variable name="symbol"><xsl:call-template name="has-symbol"/></xsl:variable>
+    <xsl:choose>
+      <xsl:when test="$csscolor = '' and $csssize = '' and $cssface = '' and $symbol = 'yes'">
+        <xsl:call-template name="symbol-content"/>
+      </xsl:when>
+      <xsl:when test="$csscolor = '' and $csssize = '' and $cssface = '' and $symbol != 'yes'">
+        <xsl:apply-templates select="node()"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <span style="{$csscolor}{$csssize}{$cssface}">
+          <xsl:choose>
+            <xsl:when test="$symbol = 'yes'">
+              <xsl:call-template name="symbol-content"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="node()"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </span>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
-
-  <xsl:template match="inlinefont">
-    <xsl:if test="node()">
-      <xsl:variable name="csscolor"><xsl:call-template name="color"/></xsl:variable>
-      <xsl:variable name="csssize"><xsl:call-template name="size"/></xsl:variable>
-      <xsl:variable name="cssface"><xsl:call-template name="face"/></xsl:variable>
-      <xsl:variable name="symbol"><xsl:call-template name="has-symbol"/></xsl:variable>
-      <xsl:choose>
-        <xsl:when test="$csscolor = '' and $csssize = '' and $cssface = '' and $symbol = 'yes'">
-          <xsl:call-template name="symbol-content"/>
-        </xsl:when>
-        <xsl:when test="$csscolor = '' and $csssize = '' and $cssface = '' and $symbol != 'yes'">
-          <xsl:apply-templates select="node()"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <span style="{$csscolor}{$csssize}{$cssface}">
-            <xsl:choose>
-              <xsl:when test="$symbol = 'yes'">
-                <xsl:call-template name="symbol-content"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:apply-templates select="node()"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </span>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:if>
-  </xsl:template>
-
-  <xsl:template match="blockfont">
-    <!-- just get rid of them
-    <xsl:if test="node()">
-      <xsl:variable name="csscolor"><xsl:call-template name="color"/></xsl:variable>
-      <xsl:variable name="csssize"><xsl:call-template name="size"/></xsl:variable>
-      <xsl:variable name="cssface"><xsl:call-template name="face"/></xsl:variable>
-      <xsl:variable name="symbol"><xsl:call-template name="has-symbol"/></xsl:variable>
-      <xsl:choose>
-        <xsl:when test="$csscolor = '' and $csssize = '' and $cssface = '' and $symbol != 'yes'">
-          <xsl:call-template name="paragraphs"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <div style="{$csscolor}{$csssize}{$cssface}">
-            <xsl:choose>
-              <xsl:when test="$symbol = 'yes'">
-                <xsl:call-template name="symbol-content"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:call-template name="paragraphs"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </div>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:if>
-    -->
-    <xsl:call-template name="paragraphs"/>
-  </xsl:template>
-
+  
   <xsl:template name="color">
     <xsl:if test="@color|@COLOR">
       <xsl:text>color:</xsl:text>
@@ -351,11 +301,7 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:copy>
-          <xsl:for-each select="@*">
-            <xsl:attribute name="{translate(name(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')}">
-              <xsl:value-of select="."/>
-            </xsl:attribute>
-          </xsl:for-each>
+          <xsl:apply-templates select="@*"/>
         </xsl:copy>
       </xsl:otherwise>
     </xsl:choose>
@@ -363,19 +309,13 @@
   
   <xsl:template match = "@*|node()">
     <xsl:copy>
-      <xsl:for-each select="@*">
-        <xsl:attribute name="{translate(name(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')}">
-          <xsl:value-of select="."/>
-        </xsl:attribute>
-      </xsl:for-each>
-      <xsl:apply-templates select="node()"/>
+      <xsl:apply-templates select="@*|node()"/>
     </xsl:copy>
   </xsl:template>
   
 <!-- Reorganize a block by moving text and inline elements inside paragraphs, to avoid mixing text and block elements.
   br elements are replaced by new paragraphs. -->
   <xsl:template name="paragraphs">
-    <xsl:variable name="inline-elements">|startouttext|endouttext|stringresponse|optionresponse|numericalresponse|formularesponse|mathresponse|organicresponse|reactionresponse|customresponse|externalresponse|textline|display|img|windowlink|m|chem|num|parse|algebra|displayweight|displaystudentphoto|inlinefont|span|a|strong|em|b|i|sup|sub|code|kbd|samp|tt|ins|del|var|small|big|font|basefont|input|select|textarea|label|button|u|</xsl:variable>
     <xsl:variable name="ignored-inline">|startouttext|endouttext|displayweight|displaystudentphoto|</xsl:variable>
     <xsl:choose>
       <xsl:when test="count(*[not(contains($inline-elements, concat('|',name(),'|')))]) &gt; 0">
