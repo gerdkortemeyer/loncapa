@@ -76,8 +76,8 @@ function saverules() {
    alert("Saving");
 }
 
-function entitysearch() {
-   alert("Search");
+function entitysearch() { 
+   usersearch('new');
 }
 
 function type_update() {

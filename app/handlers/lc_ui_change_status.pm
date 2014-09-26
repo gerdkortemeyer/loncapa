@@ -58,21 +58,22 @@ sub new_right {
         [ undef,
 # Type
           &Apache::lc_ui_utils::delete_link("discardrule()"),
-          &Apache::lc_xml_forms::hidden_label('newtype','Allowed Activity').
-          &Apache::lc_xml_forms::selectfield('newtype','newtype',
+          &Apache::lc_xml_forms::hidden_label('new_type','Allowed Activity').
+          &Apache::lc_xml_forms::selectfield('new_type','newtype',
              ['view','grade','clone','use','edit'],
              [&mt('View'),&mt('Grade by instructor'),&mt('Clone (make derivatives)'),&mt('Use/assign in courses/communities'),&mt('Edit')],
              'view',0,'type_update()'),
 # Domain
-          &Apache::lc_xml_forms::hidden_label('newdomain','Domain').
-          &Apache::lc_xml_forms::inputfield('rolemodifiabledomains','newdomain','newdomain',undef,undef,undef,'type_update()'),
+          &Apache::lc_xml_forms::hidden_label('new_domain','Domain').
+          &Apache::lc_xml_forms::inputfield('rolemodifiabledomains','new_domain','new_domain',undef,undef,undef,'type_update()'),
 # Entity
-          &Apache::lc_xml_forms::selectfield('newentitytype','newentitytype',
+          &Apache::lc_xml_forms::selectfield('new_entitytype','new_entitytype',
              ['user','course'],[&mt('User'),&mt('Course/Community')],
-             'user',0,'entitysearch()').'<br />'.
-          &Apache::lc_xml_forms::hidden_label('newentity','Entity').
-          '<input type="text" id="newentity" size="40" autocomplete="off" onkeyup="entitysearch()" />'.
-          '<br /><div id="entityresults" class="lcautocompleteresults"></div>',
+             'user',0,'entitysearch()')."&nbsp;&nbsp;<span id='new_resultdisplay'>---</span>".
+          &Apache::lc_xml_forms::hidden_field('new_username','').'<br />'.
+          &Apache::lc_xml_forms::hidden_label('new_search','Entity').
+          '<input type="text" id="new_search" size="40" autocomplete="off" onkeyup="entitysearch()" />'.
+          '<br /><div id="new_results" class="lcautocompleteresults"></div>',
           'newsection' ]);
 }
 
