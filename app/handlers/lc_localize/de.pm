@@ -336,6 +336,8 @@ use utf8;
 
 'Course/Community or User' => 'Kurs/Gemeinschaft oder Nutzer',
 
+'Course/Community' => 'Kurs/Gemeinschaft',
+
 'Course entered.' => 'Kurs ausgewählt.',
 
 'Community entered.' => 'Gemeinschaft ausgewählt.',

@@ -76,6 +76,10 @@ function saverules() {
    alert("Saving");
 }
 
+function entitysearch() {
+   alert("Search");
+}
+
 function type_update() {
    $('#newtype_edit').attr('disabled','disabled');
 }

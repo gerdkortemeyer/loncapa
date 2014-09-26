@@ -66,7 +66,13 @@ sub new_right {
 # Domain
           &Apache::lc_xml_forms::hidden_label('newdomain','Domain').
           &Apache::lc_xml_forms::inputfield('rolemodifiabledomains','newdomain','newdomain',undef,undef,undef,'type_update()'),
-          'newentity',
+# Entity
+          &Apache::lc_xml_forms::selectfield('newentitytype','newentitytype',
+             ['user','course'],[&mt('User'),&mt('Course/Community')],
+             'user',0,'entitysearch()').'<br />'.
+          &Apache::lc_xml_forms::hidden_label('newentity','Entity').
+          '<input type="text" id="newentity" size="40" autocomplete="off" onkeyup="entitysearch()" />'.
+          '<br /><div id="entityresults" class="lcautocompleteresults"></div>',
           'newsection' ]);
 }
 
