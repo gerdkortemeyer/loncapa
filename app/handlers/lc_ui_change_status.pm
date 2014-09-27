@@ -202,6 +202,8 @@ sub handler {
    } elsif ($content{'command'} eq 'listsections') {
       $r->content_type('application/json; charset=utf-8');
       $r->print(&listsections($content{'courseid'},$content{'coursedomain'}));
+   } elsif ($content{'command'} eq 'save') {
+      &logdebug(join(',',map{ $_.'='.$content{$_} } keys(%content)));
    }
    return OK;
 }

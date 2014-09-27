@@ -74,7 +74,24 @@ function discardrule() {
 
 function saverules() {
    savechanges=false;
-   alert("Saving");
+   $.ajax({
+             url: '/change_status',
+             type:'POST',
+             async: false,
+             data: $('#rulelistform').serialize()+"&command=save&entity="+entity+"&domain="+domain,
+             success: function(response) {
+                if (response=='error') {
+                   $('.lcstandard').hide();
+                   $('.lcerror').show();
+                } else {
+                   reload_listing(0);
+                }
+             },
+             error: function(xhr, ajaxOptions, errorThrown) {
+                $('.lcstandard').hide();
+                $('.lcerror').show();
+             }
+   });
 }
 
 function entitysearch() {
