@@ -60,7 +60,7 @@ sub new_right {
           &Apache::lc_ui_utils::delete_link("discardrule()").
           &Apache::lc_ui_utils::add_link("addrule()"),
           &Apache::lc_xml_forms::hidden_label('new_type','Allowed Activity').
-          &Apache::lc_xml_forms::selectfield('new_type','newtype',
+          &Apache::lc_xml_forms::selectfield('new_type','new_type',
              ['view','grade','clone','use','edit'],
              [&mt('View'),&mt('Grade by instructor'),&mt('Clone (make derivatives)'),&mt('Use/assign in courses/communities'),&mt('Edit')],
              'view',0,'type_update()'),
@@ -188,6 +188,14 @@ sub listsections {
    return &Apache::lc_json_utils::perl_to_json(\@sections);
 }
 
+# Save the rights
+#
+sub saverights {
+   my ($entity,$domain,$rtype,$rdomain,$rusername,$rsection)=@_;
+   &logdebug("$entity - $domain - $rtype - $rdomain - $rusername - $rsection");
+   return 'ok';
+}
+
 #
 # Main handler
 
@@ -203,7 +211,8 @@ sub handler {
       $r->content_type('application/json; charset=utf-8');
       $r->print(&listsections($content{'courseid'},$content{'coursedomain'}));
    } elsif ($content{'command'} eq 'save') {
-      &logdebug(join(',',map{ $_.'='.$content{$_} } keys(%content)));
+      $r->print(&saverights($content{'entity'},$content{'domain'},
+                            $content{'new_type'},$content{'new_domain'},$content{'new_username'},$content{'new_section'}));
    }
    return OK;
 }

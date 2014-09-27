@@ -111,7 +111,7 @@ function addrule() {
 function type_update() {
    savechanges=true;
    clearTimeout(searchrepeat);
-   $('#newtype_edit').attr('disabled','disabled');
+   $('#new_type_edit').attr('disabled','disabled');
 }
 
 function section_update() {
@@ -121,7 +121,7 @@ function section_update() {
      $.getJSON( '/change_status', "command=listsections&courseid="+
                                 escape($('#new_username').val())+"&coursedomain="+
                                 escape($('#new_domain').val()), function( data ) {
-       var newselect = "<select><option value=''></option>";
+       var newselect = "<select id='new_section' name='new_section'><option value=''></option>";
        $.each(data,function(index,value) {
            newselect+="<option value='"+escape(value)+"'>"+value+"</option>";
        });
