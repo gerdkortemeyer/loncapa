@@ -72,6 +72,9 @@ function setsearchusername(id,username) {
       $('#'+id+'_resultdisplay').html('---');
    }
    $("#"+id+"_username").val(username);
+   if (typeof(section_update)=== "function") { 
+      section_update(id);
+   }
 }
 
 function coursesearch(id) {

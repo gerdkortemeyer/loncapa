@@ -29,6 +29,7 @@ function init_datatable(destroy,newrule) {
 }
 
 function reload_listing(newrule) {
+   clearTimeout(searchrepeat);
    init_datatable(true,newrule);
 }
 
@@ -82,15 +83,19 @@ function entitysearch() {
    } else {
       coursesearch('new');
    }
+   section_update();
 }
 
 function type_update() {
+   clearTimeout(searchrepeat);
    $('#newtype_edit').attr('disabled','disabled');
-section_update();
 }
 
 function section_update() {
-  $.getJSON( '/change_status', "command=listsections&courseid="+
+   if (($('#new_entitytype').val()=='course') &&
+       ($('#new_username').val()) &&
+       ($('#new_domain'))) {
+     $.getJSON( '/change_status', "command=listsections&courseid="+
                                 escape($('#new_username').val())+"&coursedomain="+
                                 escape($('#new_domain').val()), function( data ) {
        var newselect = "<select><option value=''></option>";
@@ -99,7 +104,10 @@ function section_update() {
        });
        newselect+="</select>";
        $("#newsectionspan").html(newselect);
-   });
+     });
+   } else {
+       $("#newsectionspan").html('');
+   }
 }
 
 $(document).ready(function() {
