@@ -86,7 +86,13 @@ function entitysearch() {
    section_update();
 }
 
+function addrule() {
+   saverules();
+   reload_listing(0);
+}
+
 function type_update() {
+   savechanges=true;
    clearTimeout(searchrepeat);
    $('#newtype_edit').attr('disabled','disabled');
 }

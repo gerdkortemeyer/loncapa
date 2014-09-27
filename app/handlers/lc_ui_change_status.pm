@@ -57,7 +57,8 @@ sub new_right {
    push(@{$output->{'aaData'}},
         [ undef,
 # Type
-          &Apache::lc_ui_utils::delete_link("discardrule()"),
+          &Apache::lc_ui_utils::delete_link("discardrule()").
+          &Apache::lc_ui_utils::add_link("addrule()"),
           &Apache::lc_xml_forms::hidden_label('new_type','Allowed Activity').
           &Apache::lc_xml_forms::selectfield('new_type','newtype',
              ['view','grade','clone','use','edit'],

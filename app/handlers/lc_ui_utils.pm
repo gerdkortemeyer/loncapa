@@ -217,6 +217,10 @@ sub publish_link {
    return &action_link('publish','Publish',$onclick);
 }
 
+sub add_link {
+   my ($onclick)=@_;
+   return &action_link('list-add','Add',$onclick);
+}
 
 1;
 __END__

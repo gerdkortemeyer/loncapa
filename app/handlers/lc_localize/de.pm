@@ -320,6 +320,8 @@ use utf8;
 
 'Publish' => 'Veröffentlichen',
 
+'Add' => 'Hinzufügen',
+
 'any' => 'alle',
 
 'View' => 'Betrachten',
