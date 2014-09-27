@@ -241,6 +241,12 @@ sub inputfield {
       my ($defaultdomain,$domain_short,$domain_name)=&domain_choices('rolemodifiable');
       unless ($default) { $default=$defaultdomain; }
       return &selectfield($id,$name,$domain_short,$domain_name,$default,$locked,$onchange);
+   } elsif ($type eq 'rolemodifiabledomains_empty') {
+      my ($defaultdomain,$domain_short,$domain_name)=&domain_choices('rolemodifiable');
+      unshift(@{$domain_short},'');
+      unshift(@{$domain_name},'');
+      unless ($default) { $default=''; }
+      return &selectfield($id,$name,$domain_short,$domain_name,$default,$locked,$onchange);
    } elsif ($type eq 'usersearch') {
       return &usersearch($id,$name,$default);
    } elsif ($type eq 'symbolic') {

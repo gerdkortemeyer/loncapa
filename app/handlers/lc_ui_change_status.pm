@@ -66,7 +66,7 @@ sub new_right {
              'view',0,'type_update()'),
 # Domain
           &Apache::lc_xml_forms::hidden_label('new_domain','Domain').
-          &Apache::lc_xml_forms::inputfield('rolemodifiabledomains','new_domain','new_domain',undef,undef,undef,'type_update()'),
+          &Apache::lc_xml_forms::inputfield('rolemodifiabledomains_empty','new_domain','new_domain',undef,undef,undef,'type_update()'),
 # Entity
           &Apache::lc_xml_forms::selectfield('new_entitytype','new_entitytype',
              ['user','course'],[&mt('User'),&mt('Course/Community')],
