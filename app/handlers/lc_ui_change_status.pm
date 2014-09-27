@@ -74,7 +74,7 @@ sub new_right {
           &Apache::lc_xml_forms::hidden_label('new_search','Entity').
           '<input type="text" id="new_search" size="40" autocomplete="off" onkeyup="entitysearch()" />'.
           '<br /><div id="new_results" class="lcautocompleteresults"></div>',
-          'newsection' ]);
+          '<span id="newsectionspan"></span>' ]);
 }
 
 #

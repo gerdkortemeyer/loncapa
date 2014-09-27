@@ -86,6 +86,20 @@ function entitysearch() {
 
 function type_update() {
    $('#newtype_edit').attr('disabled','disabled');
+section_update();
+}
+
+function section_update() {
+  $.getJSON( '/change_status', "command=listsections&courseid="+
+                                escape($('#new_username').val())+"&coursedomain="+
+                                escape($('#new_domain').val()), function( data ) {
+       var newselect = "<select><option value=''></option>";
+       $.each(data,function(index,value) {
+           newselect+="<option value='"+escape(value)+"'>"+value+"</option>";
+       });
+       newselect+="</select>";
+       $("#newsectionspan").html(newselect);
+   });
 }
 
 $(document).ready(function() {

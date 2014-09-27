@@ -481,7 +481,7 @@ sub coursesectionlist {
           $manualenrollentity,$manualenrolldomain)=@{$row};
       $sections{&Apache::lc_entity_roles::norm_section($rolesection)}=1;
    }
-   return keys(%sections);
+   return sort { substr('00000000'.$a,-8) cmp substr('00000000'.$b,-8) } (keys(%sections));
 }
 
 BEGIN {
