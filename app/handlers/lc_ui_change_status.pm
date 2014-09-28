@@ -193,14 +193,16 @@ sub listsections {
 sub saverights {
    my ($entity,$domain,$entitytype,$rtype,$rdomain,$rusername,$rsection)=@_;
    my $rentity;
-   if ($entitytype eq 'user') {
-      $rentity=&Apache::lc_entity_users::username_to_entity($rusername,$rdomain);
-   } else {
-      $rentity=&Apache::lc_entity_courses::course_to_entity($rusername,$rdomain);
-   }
-   unless ($rentity) {
-      &logwarning("Could not find entity for [$entitytype]: [$rusername] [$rdomain]");
-      return 'error';
+   if ($rusername) {
+      if ($entitytype eq 'user') {
+         $rentity=&Apache::lc_entity_users::username_to_entity($rusername,$rdomain);
+      } else {
+         $rentity=&Apache::lc_entity_courses::course_to_entity($rusername,$rdomain);
+      }
+      unless ($rentity) {
+         &logwarning("Could not find entity for [$entitytype]: [$rusername] [$rdomain]");
+         return 'error';
+      }
    }  
    unless (&Apache::lc_entity_urls::modify_right($entity,$domain,$rtype,$rdomain,$rentity,$rsection,1)) {
       &logwarning("Could not save rights for [$entity] [$domain]");
@@ -209,6 +211,19 @@ sub saverights {
    return 'ok';
 }
 
+sub delrights {
+   my ($entity,$domain,$rule)=@_;
+   my $rule=&Apache::lc_json_utils::json_to_perl(&Apache::lc_ui_utils::query_unencode(&decode_entities($rule)));
+   unless ($rule->{'type'}) {
+      return 'error';
+   }
+   unless (&Apache::lc_entity_urls::modify_right($entity,$domain,
+                                                 $rule->{'type'},$rule->{'domain'},$rule->{'entity'},$rule->{'section'},0)) {
+      &logwarning("Could not delete rights for [$entity] [$domain]");
+      return 'error';
+   }
+   return 'ok';
+}
 #
 # Main handler
 
@@ -226,7 +241,9 @@ sub handler {
    } elsif ($content{'command'} eq 'save') {
       $r->print(&saverights($content{'entity'},$content{'domain'},$content{'new_entitytype'},
                             $content{'new_type'},$content{'new_domain'},$content{'new_username'},$content{'new_section'}));
-   }
+   } elsif ($content{'command'} eq 'delete') {
+      $r->print(&delrights($content{'entity'},$content{'domain'},$content{'rule'}));
+   } 
    return OK;
 }
 1;

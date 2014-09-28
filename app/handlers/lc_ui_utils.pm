@@ -58,6 +58,11 @@ sub query_encode {
    return &uri_escape(@_[0]);
 }
 
+sub query_unencode {
+   return &uri_unescape(@_[0]);
+}
+
+
 # ==== Another domain name
 #
 sub get_domain_name {
