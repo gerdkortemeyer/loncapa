@@ -161,7 +161,7 @@ sub listrights {
                            } else {
                               foreach my $section (sort(keys(%{$rights->{$type}->{$domain_type}->{$domain}->{$entity_type}->{$entity}->{$section_type}}))) {
                                  if ($rights->{$type}->{$domain_type}->{$domain}->{$entity_type}->{$entity}->{$section_type}->{$section}) {
-                                    &add_right($output,$type,$rentity,$rdomain,$domain,$entity,$section);
+                                    &add_right($output,$rentity,$rdomain,$type,$domain,$entity,$section);
                                  }
                               }
                            }
@@ -191,8 +191,21 @@ sub listsections {
 # Save the rights
 #
 sub saverights {
-   my ($entity,$domain,$rtype,$rdomain,$rusername,$rsection)=@_;
-   &logdebug("$entity - $domain - $rtype - $rdomain - $rusername - $rsection");
+   my ($entity,$domain,$entitytype,$rtype,$rdomain,$rusername,$rsection)=@_;
+   my $rentity;
+   if ($entitytype eq 'user') {
+      $rentity=&Apache::lc_entity_users::username_to_entity($rusername,$rdomain);
+   } else {
+      $rentity=&Apache::lc_entity_courses::course_to_entity($rusername,$rdomain);
+   }
+   unless ($rentity) {
+      &logwarning("Could not find entity for [$entitytype]: [$rusername] [$rdomain]");
+      return 'error';
+   }  
+   unless (&Apache::lc_entity_urls::modify_right($entity,$domain,$rtype,$rdomain,$rentity,$rsection,1)) {
+      &logwarning("Could not save rights for [$entity] [$domain]");
+      return 'error';
+   }
    return 'ok';
 }
 
@@ -211,7 +224,7 @@ sub handler {
       $r->content_type('application/json; charset=utf-8');
       $r->print(&listsections($content{'courseid'},$content{'coursedomain'}));
    } elsif ($content{'command'} eq 'save') {
-      $r->print(&saverights($content{'entity'},$content{'domain'},
+      $r->print(&saverights($content{'entity'},$content{'domain'},$content{'new_entitytype'},
                             $content{'new_type'},$content{'new_domain'},$content{'new_username'},$content{'new_section'}));
    }
    return OK;
