@@ -10,6 +10,9 @@ use Cwd 'abs_path';
 use XML::LibXSLT;
 use XML::LibXML;
 
+use HTML::TokeParser; # used to parse sty files
+use Env qw(RES_DIR); # path of res directory parent (without the / at the end)
+
 no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
 
 my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','numericalresponse','array','unit','answergroup','formularesponse','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','stringresponse','essayresponse','externalresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','customresponse','mathresponse','textfield','hiddensubmission','optionresponse','radiobuttonresponse','rankresponse','matchresponse','organicresponse','reactionresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
@@ -19,10 +22,6 @@ my @no_newline_inside = ('import','parserlib','scriptlib','data','function','lab
 my @preserve_elements = ('script','answer','perl');
 
 binmode(STDIN, ':encoding(UTF-8)');
-
-my $dir = dirname(abs_path(__FILE__));
-
-my $xslt = XML::LibXSLT->new();
 
 open(my $in, "<-");
 
@@ -34,6 +33,8 @@ my $root = create_new_structure($dom_doc);
 
 remove_elements($root, ['startouttext','endouttext','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow']);
 
+add_sty_blocks($ARGV[0], $root); # must come before the subs using @all_block
+
 # TODO: something with styles containing block elements
 
 fix_fonts($root);
@@ -44,7 +45,11 @@ remove_bad_cdata_sections($root);
 
 fix_tables($root);
 
-replace_center($root); # note: this must come after fix_tables
+fix_lists($root);
+
+replace_center($root); # must come after fix_tables
+
+fix_div($root);
 
 fix_paragraphs_inside($root);
 
@@ -152,6 +157,130 @@ sub remove_elements {
         remove_elements($child, $to_remove);
       }
     }
+  }
+}
+
+# use the linked sty files to guess which newly defined elements should be considered blocks
+# @param {string} fn - the initial .problem file path
+sub add_sty_blocks {
+  my ($fn, $root) = @_;
+  my @parserlibs = $dom_doc->getElementsByTagName('parserlib');
+  my @libs = ();
+  foreach my $parserlib (@parserlibs) {
+    if (defined $parserlib->firstChild && $parserlib->firstChild->nodeType == XML_TEXT_NODE) {
+      my $value = $parserlib->firstChild->nodeValue;
+      $value =~ s/^\s+|\s+$//g;
+      if ($value ne '') {
+        push(@libs, $value);
+      }
+    }
+  }
+  my ($name, $path, $suffix) = fileparse($fn);
+  foreach my $sty (@libs) {
+    if (substr($sty, 0, 1) eq '/') {
+      $sty = $RES_DIR.$sty;
+    } else {
+      $sty = $path.$sty;
+    }
+    my $new_elements = parse_sty($sty);
+    better_guess($root, $new_elements);
+    my $new_blocks = $new_elements->{'block'};
+    my $new_inlines = $new_elements->{'inline'};
+    push(@all_block, @{$new_blocks});
+    #push(@inlines, @{$new_inlines}); # we are not using a list of inline elements at this point
+  }
+}
+
+##
+# Parses a sty file and returns lists of block and inline elements.
+# @param {string} fn - the file path
+##
+sub parse_sty {
+  my ($fn) = @_;
+  my @blocks = ();
+  my @inlines = ();
+  my $p = HTML::TokeParser->new($fn);
+  if (! $p) {
+    die "post_xml.pl: parse_sty: Error reading $fn\n";
+  }
+  $p->empty_element_tags(1);
+  my $in_definetag = 0;
+  my $in_render = 0;
+  my %newtags = ();
+  my $newtag = '';
+  my $is_block = 0;
+  while (my $token = $p->get_token) {
+    if ($token->[0] eq 'S') {
+      my $tag = lc($token->[1]);
+      if ($tag eq 'definetag') {
+        $in_definetag = 1;
+        $is_block = 0;
+        my $attributes = $token->[2];
+        $newtag = $attributes->{'name'};
+        if (substr($newtag, 0, 1) eq '/') {
+          $newtag = substr($newtag, 1);
+        }
+      } elsif ($in_definetag && $tag eq 'render') {
+        $in_render = 1;
+        $is_block = 0;
+      } elsif ($in_render) {
+        if (in_array(\@all_block, $tag)) {
+          $is_block = 1;
+        }
+      }
+    } elsif ($token->[0] eq 'E') {
+      my $tag = lc($token->[1]);
+      if ($tag eq 'definetag') {
+        $in_definetag = 0;
+        if (defined $newtags{$newtag}) {
+          $newtags{$newtag} = $newtags{$newtag} || $is_block;
+        } else {
+          $newtags{$newtag} = $is_block;
+        }
+      } elsif ($in_definetag && $tag eq 'render') {
+        $in_render = 0;
+      }
+    }
+  }
+  foreach $newtag (keys(%newtags)) {
+    if ($newtags{$newtag} == 1) {
+      push(@blocks, $newtag);
+    } else {
+      push(@inlines, $newtag);
+    }
+  }
+  return {'block'=>\@blocks, 'inline'=>\@inlines};
+}
+
+##
+# marks as block the elements that contain block elements in the input file
+# @param {string} fn - the file path
+# @param {Hash<string,Array>} new_elements - contains arrays in 'block' and 'inline'
+##
+sub better_guess {
+  my ($root, $new_elements) = @_;
+  my $new_blocks = $new_elements->{'block'};
+  my $new_inlines = $new_elements->{'inline'};
+  
+  my @change = (); # change these elements from inline to block
+  foreach my $tag (@{$new_inlines}) {
+    my @nodes = $dom_doc->getElementsByTagName($tag);
+    NODE_LOOP: foreach my $node (@nodes) {
+      for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
+        if ($child->nodeType == XML_ELEMENT_NODE) {
+          if (in_array(\@all_block, $child->nodeName) || in_array($new_blocks, $child->nodeName)) {
+            push(@change, $tag);
+            last NODE_LOOP;
+          }
+        }
+      }
+    }
+  }
+  foreach my $inline (@change) {
+    my $index = 0;
+    $index++ until $new_inlines->[$index] eq $inline;
+    splice(@{$new_inlines}, $index, 1);
+    push(@{$new_blocks}, $inline);
   }
 }
 
@@ -314,7 +443,8 @@ sub fix_tables {
     } else {
       $css = '';
     }
-    if ($table->parentNode->nodeName eq 'center' || (defined $align && lc($align) eq 'center')) {
+    if ($table->parentNode->nodeName eq 'center' || (defined $align && lc($align) eq 'center') ||
+        (defined $table->parentNode->getAttribute('align') && $table->parentNode->getAttribute('align') eq 'center')) {
       $css .= 'margin-left:auto; margin-right:auto; ';
     }
     if (defined $align && (lc($align) eq 'left' || lc($align) eq 'right')) {
@@ -342,6 +472,35 @@ sub fix_tables {
   }
 }
 
+# replaces ul/ul by ul/li/ul and the same for ol (using the previous li if possible)
+sub fix_lists {
+  my ($root) = @_;
+  my @uls = $dom_doc->getElementsByTagName('ul');
+  my @ols = $dom_doc->getElementsByTagName('ol');
+  my @lists = (@uls, @ols);
+  foreach my $list (@lists) {
+    my $next;
+    for (my $child=$list->firstChild; defined $child; $child=$next) {
+      $next = $child->nextSibling;
+      if ($child->nodeType == XML_ELEMENT_NODE && in_array(['ul','ol'], $child->nodeName)) {
+        my $previous = $child->previousNonBlankSibling(); # note: non-DOM method
+        $list->removeChild($child);
+        if (defined $previous && $previous->nodeType == XML_ELEMENT_NODE && $previous->nodeName eq 'li') {
+          $previous->appendChild($child);
+        } else {
+          my $li = $dom_doc->createElement('li');
+          $li->appendChild($child);
+          if (!defined $next) {
+            $list->appendChild($li);
+          } else {
+            $list->insertBefore($li, $next);
+          }
+        }
+      }
+    }
+  }
+}
+
 # replace center by a div or remove it if there is a table inside
 sub replace_center {
   my ($root) = @_;
@@ -359,6 +518,27 @@ sub replace_center {
         $div->appendChild($child);
       }
       $center->parentNode->replaceChild($div, $center);
+    }
+  }
+}
+
+# replaces <div align="center"> by <div style="text-align:center;">
+sub fix_div {
+  my ($root) = @_;
+  my @divs = $dom_doc->getElementsByTagName('div');
+  foreach my $div (@divs) {
+    my $align = get_non_empty_attribute($div, 'align');
+    if (defined $align) {
+      my $style = get_non_empty_attribute($div, 'style');
+      if (defined $style) {
+        $style =~ s/;$//;
+        $style .= '; ';
+      } else {
+        $style = '';
+      }
+      $style .= 'text-align:'.lc($align).';';
+      $div->setAttribute('style', $style);
+      $div->removeAttribute('align');
     }
   }
 }
