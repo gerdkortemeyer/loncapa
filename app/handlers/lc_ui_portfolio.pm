@@ -112,7 +112,7 @@ sub publication_status_link {
 #
 sub change_title_link {
    my ($entity,$domain,$url,$title)=@_;
-   my $inner=($title?$title:'-');
+   my $inner=($title=~/\S/?$title:'-');
    if (&edit_permission($url)) {
       return '<a href="#" onClick="change_title(\''.$entity.'\',\''.$domain.
           '\',\''.&Apache::lc_ui_utils::query_encode($url).

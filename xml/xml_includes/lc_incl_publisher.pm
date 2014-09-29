@@ -43,12 +43,16 @@ our @EXPORT = qw(incl_publisher_screens);
 sub incl_publisher_screens {
 # Get posted content
    my %content=&Apache::lc_entity_sessions::posted_content();
+   my $metadata=&Apache::lc_entity_urls::dump_metadata($content{'entity'},$content{'domain'});
    my $output='';
-#FIXME
    $output.=&Apache::lc_xml_forms::hidden_field('entity',$content{'entity'}).
             &Apache::lc_xml_forms::hidden_field('domain',$content{'domain'}).
             &Apache::lc_xml_forms::hidden_field('url',$content{'url'});
-   $output.=$content{'entity'}.' '.$content{'domain'}.' '.$content{'url'};
+   if ($content{'stage_two'}) {
+   } else {
+      $output.='<h1>'.&mt('Title').'</h1>';
+      $output.=&Apache::lc_xml_forms::inputfield('text','title','title',40,$metadata->{'title'});
+   }
    return $output;
 }
 

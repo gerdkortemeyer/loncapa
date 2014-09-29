@@ -195,7 +195,7 @@ sub inputfield {
    my ($type,$id,$name,$size,$default,$locked,$onchange)=@_;
    if ($type eq 'text') {
       unless ($size) { $size=40; }
-      return '<input class="lcformtextinput" type="text" id="'.$id.'" name="'.$name.'" size="'.$size.'" value="'.$default.'" autocomplete="off"'.
+      return '<input class="lcformtextinput" type="text" id="'.$id.'" name="'.$name.'" size="'.$size.'" value="'.&Apache::lc_xml_utils::form_escape($default).'" autocomplete="off"'.
              ($locked?' disabled="disabled"':'').' />';
    } elsif ($type eq 'textarea') {
       return '<textarea class="ckeditor" id="'.$id.'" name="'.$name.'">'.$default.'</textarea>';

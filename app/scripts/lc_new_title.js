@@ -9,6 +9,7 @@ $(document).ready(function() {
      title=parent.getParameterByName(location.search,'title');
      $('#newtitle').val(title);
      $('#storebutton').click(function() {
+       if ($('#newtitle').val()) {
          $.ajax({
              url: '/portfolio',
              type:'POST',
@@ -30,7 +31,8 @@ $(document).ready(function() {
                 $('.lcstandard').hide();
                 $('.lcerror').show();
              }
-         });         
+         });
+       }
      });
      $('#cancelbutton').click(function() {
         parent.hide_modal();
