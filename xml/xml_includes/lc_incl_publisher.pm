@@ -45,7 +45,10 @@ sub incl_publisher_screens {
    my %content=&Apache::lc_entity_sessions::posted_content();
    my $output='';
 #FIXME
-   $output="Hello World";
+   $output.=&Apache::lc_xml_forms::hidden_field('entity',$content{'entity'}).
+            &Apache::lc_xml_forms::hidden_field('domain',$content{'domain'}).
+            &Apache::lc_xml_forms::hidden_field('url',$content{'url'});
+   $output.=$content{'entity'}.' '.$content{'domain'}.' '.$content{'url'};
    return $output;
 }
 

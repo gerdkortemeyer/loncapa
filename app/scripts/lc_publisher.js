@@ -23,7 +23,7 @@ $(document).ready(function() {
      domain=parent.getParameterByName(location.search,'domain');
      url=parent.getParameterByName(location.search,'url');
      list_title();
-     $('#cancelbutton').click(function() {
+     $('#cancel').click(function() {
         parent.hide_modal();
      });
 });
