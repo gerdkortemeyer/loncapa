@@ -44,7 +44,7 @@ if [ $? -eq 2 ]; then
 fi
 cp "$prexmltmp" /tmp/prexml.txt
 cp "$postxmltmp" /tmp/postxml.txt
-cat "$postxmltmp" | perl $MY_HOME/post_xml.pl > "$newpath"
+cat "$postxmltmp" | perl $MY_HOME/post_xml.pl "$pathname" > "$newpath"
 if [ $? -ne 0 ]; then
   echo "post_xml error for $pathname"
   rm -f "$prexmltmp" "$postxmltmp"
