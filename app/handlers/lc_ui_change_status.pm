@@ -32,6 +32,7 @@ use Apache::lc_authorize;
 use Apache::lc_xml_forms();
 use Apache::lc_file_utils();
 use Apache::lc_xml_utils();
+use Apache::lc_ui_portfolio();
 use HTML::Entities;
 
 sub listtitle {
@@ -191,7 +192,11 @@ sub listsections {
 # Save the rights
 #
 sub saverights {
-   my ($entity,$domain,$entitytype,$rtype,$rdomain,$rusername,$rsection)=@_;
+   my ($entity,$domain,$url,$entitytype,$rtype,$rdomain,$rusername,$rsection)=@_;
+   unless ((&Apache::lc_ui_portfolio::edit_permission($url)) && (&Apache::lc_ui_portfolio::verify_url($entity,$url))) {
+      &logwarning("Attempting to add rights for [$entity] [$domain] [$url] - not authorized");
+      return 'error';
+   }
    my $rentity;
    if ($rusername) {
       if ($entitytype eq 'user') {
@@ -212,7 +217,11 @@ sub saverights {
 }
 
 sub delrights {
-   my ($entity,$domain,$rule)=@_;
+   my ($entity,$domain,$url,$rule)=@_;
+   unless ((&Apache::lc_ui_portfolio::edit_permission($url)) && (&Apache::lc_ui_portfolio::verify_url($entity,$url))) {
+      &logwarning("Attempting to delete rights for [$entity] [$domain] [$url] - not authorized");
+      return 'error';
+   }
    my $rule=&Apache::lc_json_utils::json_to_perl(&Apache::lc_ui_utils::query_unencode(&decode_entities($rule)));
    unless ($rule->{'type'}) {
       return 'error';
@@ -239,10 +248,10 @@ sub handler {
       $r->content_type('application/json; charset=utf-8');
       $r->print(&listsections($content{'courseid'},$content{'coursedomain'}));
    } elsif ($content{'command'} eq 'save') {
-      $r->print(&saverights($content{'entity'},$content{'domain'},$content{'new_entitytype'},
+      $r->print(&saverights($content{'entity'},$content{'domain'},$content{'url'},$content{'new_entitytype'},
                             $content{'new_type'},$content{'new_domain'},$content{'new_username'},$content{'new_section'}));
    } elsif ($content{'command'} eq 'delete') {
-      $r->print(&delrights($content{'entity'},$content{'domain'},$content{'rule'}));
+      $r->print(&delrights($content{'entity'},$content{'domain'},$content{'url'},$content{'rule'}));
    } 
    return OK;
 }

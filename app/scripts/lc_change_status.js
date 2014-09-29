@@ -51,6 +51,7 @@ function deleterule(entity,domain,rule) {
              data: { 'command' : 'delete',
                      'entity'  : entity,
                      'domain'  : domain,
+                     'url'     : url,
                      'rule'    : unescape(rule) },
              success: function(response) {
                 if (response=='error') {
@@ -78,7 +79,7 @@ function saverules() {
              url: '/change_status',
              type:'POST',
              async: false,
-             data: $('#rulelistform').serialize()+"&command=save&entity="+entity+"&domain="+domain,
+             data: $('#rulelistform').serialize()+"&command=save&entity="+entity+"&domain="+domain+"&url="+escape(url),
              success: function(response) {
                 if (response=='error') {
                    $('.lcstandard').hide();
