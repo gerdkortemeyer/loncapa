@@ -1,5 +1,6 @@
 use strict;
 use JSON::DWIW;
+use utf8;
 
 open(IN,"taxotrans.txt");
 my %en=();
@@ -27,7 +28,8 @@ while (my $line=<IN>) {
           my @array=split(/\,/,$against);
           $taxo->{$t1}->{'sub'}->{$t2}->{'sub'}->{$t3}->{'con'}=\@array;
        }
-   } elsif ($t2) { 
+   }
+   if ($t2) { 
        $taxo->{$t1}->{'sub'}->{$t2}->{'lang'}->{'en'}=$en{$t2};
        $taxo->{$t1}->{'sub'}->{$t2}->{'lang'}->{'de'}=$de{$t2};
        if ($for) {
@@ -38,7 +40,8 @@ while (my $line=<IN>) {
           my @array=split(/\,/,$against);
           $taxo->{$t1}->{'sub'}->{$t2}->{'con'}=\@array;
        }
-   } elsif ($t1) {
+   }
+   if ($t1) {
        $taxo->{$t1}->{'lang'}->{'en'}=$en{$t1};
        $taxo->{$t1}->{'lang'}->{'de'}=$de{$t1};
        if ($for) {
