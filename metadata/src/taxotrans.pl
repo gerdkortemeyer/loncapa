@@ -1,13 +1,55 @@
 use strict;
-my %keywords=();
+use JSON::DWIW;
+
+open(IN,"taxotrans.txt");
+my %en=();
+my %de=();
+while (my $line=<IN>) {
+   chomp($line);
+   my ($term,$e,$d)=split(/\s*\:\s*/,$line);
+   $en{$term}=$e;
+   $de{$term}=$d;
+}
+close(IN);
+my $taxo;
 open(IN,"taxonomy.dat");
 while (my $line=<IN>) {
-   my ($taxo,$for,$against)=split(/\s+/,$line);
-   foreach my $item (split(/\:/,$taxo)) {
-      $keywords{$item}=1;
+   my ($tax,$for,$against)=split(/\s+/,$line);
+   my ($t1,$t2,$t3)=split(/\:/,$tax);
+   if ($t3) {
+       $taxo->{$t1}->{'sub'}->{$t2}->{'sub'}->{$t3}->{'lang'}->{'en'}=$en{$t3};
+       $taxo->{$t1}->{'sub'}->{$t2}->{'sub'}->{$t3}->{'lang'}->{'de'}=$de{$t3};
+       if ($for) {
+          my @array=split(/\,/,$for);
+          $taxo->{$t1}->{'sub'}->{$t2}->{'sub'}->{$t3}->{'pro'}=\@array;
+       }
+       if ($against) {
+          my @array=split(/\,/,$against);
+          $taxo->{$t1}->{'sub'}->{$t2}->{'sub'}->{$t3}->{'con'}=\@array;
+       }
+   } elsif ($t2) { 
+       $taxo->{$t1}->{'sub'}->{$t2}->{'lang'}->{'en'}=$en{$t2};
+       $taxo->{$t1}->{'sub'}->{$t2}->{'lang'}->{'de'}=$de{$t2};
+       if ($for) {
+          my @array=split(/\,/,$for);
+          $taxo->{$t1}->{'sub'}->{$t2}->{'pro'}=\@array;
+       }
+       if ($against) {
+          my @array=split(/\,/,$against);
+          $taxo->{$t1}->{'sub'}->{$t2}->{'con'}=\@array;
+       }
+   } elsif ($t1) {
+       $taxo->{$t1}->{'lang'}->{'en'}=$en{$t1};
+       $taxo->{$t1}->{'lang'}->{'de'}=$de{$t1};
+       if ($for) {
+          my @array=split(/\,/,$for);
+          $taxo->{$t1}->{'pro'}=\@array;
+       }
+       if ($against) {
+          my @array=split(/\,/,$against);
+          $taxo->{$t1}->{'con'}=\@array;
+       }
    }
 }
 close(IN);
-foreach my $key (keys(%keywords)) {
-   print $key."\n";
-}
+print JSON::DWIW->to_json($taxo, { pretty => 1 });

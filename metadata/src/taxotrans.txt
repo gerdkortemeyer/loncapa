@@ -1,249 +1,249 @@
-civil
-statistics
-potentials
-integrals
-logarithmic
-inheritance
-rotationaldynamics
-citric_acid_cycle
-rocks
-digestive
-calculus
-fourier
-temperature
-sound
-kinetictheory
-history
-thermodynamics
-elements
-measurement
-phylogeny
-interest
-membranes
-mendel
-relativity
-functions
-gluconeogenesis
-mixtures
-introduction
-medicine
-linearkinematics
-gravity
-invertebrates
-statements
-solidstate
-energy
-oceanscoasts
-volcanism
-mirrorslenses
-solidsfluids
-english
-ecosystems
-programming
-proteinfunction
-rings
-biomes
-redox
-anatomy
-ionic
-quantum
-fatty_acid_catabolism
-plants
-cells
-electromagnetism
-advertising
-vectors
-scientificmethod
-transcription
-meiosis
-ketones
-mitosis
-electrostatics
-inorganic
-planetarygeology
-geology
-viruses
-diversity
-sensory
-units
-amino_acid_catabolism
-deformationmountains
-fractions
-glaciers
-cellcycle
-ph
-massconservation
-waterresources
-circulatory
-geometry
-translation
-reproductive
-capacitance
-multimedia
-ecology
-finance
-data
-polynomial
-extrema
-lipids
-orbitals
-opticalinstruments
-mortages
-development
-electrochem
-accounting
-polarity
-futures
-gaslaws
-periodictable
-complex
-colloidssuspensions
-bonds
-nucleicacids
-biochemistry
-highenergy
-mechanics
-mechanisms
-languages
-means
-matrices
-shell
-lifehistory
-accircuits
-trigonometric
-weatheringerosion
-mendeliangenetics
-water
-dccircuits
-proteinstructure
-lymphatic
-heat
-covalent
-evolution
-earthquakesinterior
-carbohydrates
-botany
-bacteria
-linalg
-alkanes
-hardyweinberg
-chemistry
-reproduction
-equations
-lineardynamics
-numbers
-fungi
-imprinting
-kinetics
-oxidative_phosphorylation
-emwaves
-aldehydes
-microscopy
-disorders
-organelles
-rate
-conservation
-matter
-protists
-glycolysis
-immunity
-signaling
-biosynthesis
-bonding
-engineering
-proteins
-biotechnology
-booleanlogic
-astronomy
-earthresources
-respiration
-recombination
-populations
-alkenes
-cytoskeleton
-wave
-platetectonics
-transport
-linear
-division
-climatechange
-processes
-climate
-motor
-bioinformatics
-biology
-derivatives
-distributions
-organicchemistry
-series
-endocrine
-physics
-design
-compression
-optics
-french
-production
-descriptive
-muscular
-alcohols
-organisms
-selection
-nutrition
-repair
-linearmomentum
-nervous
-domains
-genetics
-payroll
-finiteautomata
-bayesian
-urea_cycle
-skeletal
-waterprocesses
-geologictime
-photosynthesis
-exponential
-reactions
-community
-mathematics
-regulation
-mutation
-stereo
-computerscience
-nuclear
-genomics
-organic
-rna
-replication
-statics
-vertebrates
-rotationalkinematics
-minerals
-classification
-earthhistory
-modern
-engines
-acidsbases
-dna
-electrical
-interference
-windsdeserts
-states
-enzymes
-solutions
-pentose_phosphate_pathway
-urinary
-angularmomentum
-magnetism
-inductance
-classes
-genes
-earthsystems
-compounds
-behavior
-recombinantdna
-oscillation
-reversible
-metabolism
-structure
-massmovement
+civil : Civil : Tiefbau 
+statistics : Statistics : Statistik
+potentials : Potentials : Potentiale
+integrals : Integrals : Integrale
+logarithmic : Logarithmic : Logarithmisch
+inheritance : Inheritance : Vererbung
+rotationaldynamics : Rotational Dynamics : Rotationsdynamik
+citric_acid_cycle : Citric Acid Cycle : Zitronensäure-Zyklus
+rocks : Rocks : Gestein
+digestive : Digestive : Verdauung
+calculus : Calculus : Analysis
+fourier : Fourier : Fourier
+temperature : Temperature : Temperatur
+sound : Sound : Schall
+kinetictheory : Kinetic Theory : Kinetische Theorie
+history : History : Geschichte
+thermodynamics : Thermodynamics : Thermodynamik
+elements : Elements : Elemente
+measurement : Measurement : Messung
+phylogeny : Phylogeny : Phylogenie
+interest : Interest : Zinsen
+membranes : Membranes : Membranen
+mendel : Mendel : Mendel
+relativity : Relativity : Relativität
+functions : Functions : Funktionen
+gluconeogenesis : Gluconeogenesis : Glukoneogenese
+mixtures : Mixtures : Mischungen
+introduction : Introduction: Einführung
+medicine : Medicine : Medizin
+linearkinematics : Linear Kinematics : Lineare Kinematik
+gravity : Gravity : Schwerkraft
+invertebrates : Invertebrates: Wirbellose
+statements : Statements: Abschluss
+solidstate : Solid State : Festkörper
+energy : Energy : Energie
+oceanscoasts : Oceans and Coasts : Ozeane und Küsten
+volcanism : Volcanism : Vulkanisch
+mirrorslenses : Mirrors and Lenses : Spiegel und Linsen
+solidsfluids : Solids and Fluids : Feststoffe und Fluide
+english: English : Englisch
+ecosystems : Ecosystems : Ökosysteme
+programming : Programming : Programmierung
+proteinfunction : Protein Functions : Proteinfunktionen
+rings : Rings : Ringe
+biomes : Biomes : Biome
+redox : Redox : Redox
+anatomy : Anatomy : Anatomie
+ionic : Ionic : Ionisch
+quantum : Quantum : Quanten
+fatty_acid_catabolism : Fatty Acid Catabolism : Fettsäurekatabolismus
+plants : Plants : Pflanzen
+cells : Cells : Zellen
+electromagnetism : Electromagnetism : Elektromagnetismus
+advertising : Advertising : Werbung
+vectors : Vectors : Vektoren
+scientificmethod : Scientific Method : Wissenschaftliche Methode
+transcription : Transcription : Transkription
+meiosis : Meiosis : Meiose
+ketones : Ketones : Ketone
+mitosis : Mitosis : Mitose
+electrostatics : Electrostatics : Elektrostatik
+inorganic : Inorganic : Anorganisch
+planetarygeology : Planetary Geology : Planetengeologie
+geology : Geology : Geologie
+viruses : Viruses : Viren
+diversity : Diversity : Vielfalt
+sensory : Sensory : Sensorisch
+units : Units : Einheiten
+amino_acid_catabolism : Amino Acid Catabolism : Aminosäurekatabolismus
+deformationmountains : Deformation and Mountains : Deformation und Berge
+fractions : Fractions : Bruchzahlen
+glaciers : Glaciers : Gletscher
+cellcycle : Cell Cycle : Zellzyklus
+ph : pH : pH
+massconservation : Mass Conservation : Masseerhaltung
+waterresources : Water Resources : Wasserressourcen
+circulatory : Circulatory : Kreislauf
+geometry : Geometry : Geometrie
+translation : Translation : Translation
+reproductive : Reproductive : Fortpflanzung
+capacitance : Capacitance : Kapazität
+multimedia : Multimedia : Multimedial
+ecology : Ecology : Ökologie
+finance : Finance : Finanz
+data : Data : Daten
+polynomial : Polynomial : Polynome
+extrema : Extrema : Extrema
+lipids : Lipids : Lipide
+orbitals : Orbitals : Orbitale
+opticalinstruments : Optical Instruments : Optische Instrumente
+mortages : Mortages : Hypotheken
+development : Development : Entwicklung
+electrochem : Electrochemistry : Elektrochemie
+accounting : Accounting : Buchhaltung
+polarity : Polarity : Polarität
+futures : Futures : Termingeschäfte
+gaslaws : Gas Laws : Gasgesetze
+periodictable : Periodic Table : Periodensystem
+complex : Complex : Komplex
+colloidssuspensions : Colloids and Suspensions : Kolloide und Suspensionen
+bonds : Bonds : Bindungen
+nucleicacids : Nucleic Acids : Nukleinsäuren
+biochemistry : Biochemistry : Biochemie
+highenergy : High Energy : Hochenergie
+mechanics : Mechanics : Mechanik
+mechanisms : Mechanisms : Mechanismen
+languages : Languages : Sprachen
+means : Means : Mittelwerte
+matrices : Matrices : Matrizen
+shell : Shell : Schale
+lifehistory : Life History : Geschichte des Lebens
+accircuits : AC Circuits : Wechselstromkreise
+trigonometric : Trigonometric : Trigonomisch
+weatheringerosion : Weatherung and Erosion : Verwitterung und Erosion
+mendeliangenetics : Mendelian Genetics : Mendelsche Genetik
+water : Water : Wasser
+dccircuits : DC Circuits : Gleichstromkreise
+proteinstructure : Protein Structure : Proteinstruktur
+lymphatic : Lymphatic : Lymphatisch
+heat : Heat : Wärme
+covalent : Covalent : Kovalent
+evolution : Evolution : Evolution
+earthquakesinterior : Earthquakes and Interior : Erdbeben und Inneres
+carbohydrates : Carbohydrates : Kohlenhydrate
+botany : Botany : Botanik
+bacteria : Bacteria : Bakterien
+linalg : Linear Algebra : Lineare Algebra
+alkanes : Alkanes : Alkane
+hardyweinberg : Hardy-Weinberg : Hardy-Weinberg
+chemistry : Chemistry : Chemie
+reproduction : Reproduction : Fortpflanzung
+equations : Equations : Gleichungen
+lineardynamics : Linear Dynamics : Lineare Dynamik
+numbers : Numbers : Zahlen
+fungi : Fungi : Pilze
+imprinting : Imprinting : Prägung
+kinetics : Kinetics : Kinetik
+oxidative_phosphorylation : Oxidative Phosphorylation : Oxidative Phosphorylierung
+emwaves : Electromagnetic Waves : Elektromagnetische Wellen
+aldehydes : Aldehydes : Aldehyde
+microscopy : Microcopy : Mikroskopie
+disorders : Disorders : Störungen
+organelles : Organelles : Organellen
+rate : Rate : Raten
+conservation : Conservation : Erhaltung
+matter : Matter : Materie
+protists : Protists : Protisten
+glycolysis : Glycolysis : Glykolyse
+immunity : Immunity : Immunität
+signaling : Signaling : Signalisierung
+biosynthesis : Biosynthesis : Biosynthese
+bonding : Bonding : Verbindungen
+engineering : Engineering : Maschinenbau
+proteins : Proteins : Proteine
+biotechnology : Biotechnology : Biotechnologie
+booleanlogic : Boolean Logic : Boolesche Logik
+astronomy : Astronomy : Astronomie
+earthresources : Earth Resources : Irdische Ressourcen
+respiration : Respiration : Atmung
+recombination : Recombination : Rekombination
+populations : Populations : Bevölkerungen
+alkenes : Alkenes : Alkene
+cytoskeleton : Cytoskeleton : Zytoskelett
+wave : Wave : Welle
+platetectonics : Plate Tectonics : Plattentektonik
+transport : Transport : Transport
+linear : Linear : Linear
+division : Division : Teilung
+climatechange : Climate Change : Klimawechsel
+processes : Processes : Prozesse
+climate : Climate : Klima
+motor : Motor : Motor
+bioinformatics : Bioinformatics : Bioinformatik
+biology : Biology
+derivatives : Derivatives : Ableitungen
+distributions : Distributions : Verteilungen
+organicchemistry : Organic Chemistry : Organische Chemie
+series : Series : Serien
+endocrine : Endocrine : Endokrin
+physics : Physics : Physik
+design : Design : Design
+compression : Compression : Kompression
+optics : Optics : Optik
+french : French : Französisch
+production : Production : Produktion
+descriptive : Descriptive : Beschreibend
+muscular : Muscular : Muskeln
+alcohols : Alcohols : Alkohole
+organisms : Organisms : Organismen
+selection : Selection : Auswahl
+nutrition : Nutrition : Ernährung
+repair : Repair : Reparatur
+linearmomentum : Linear Momentum : Linearer Impuls
+nervous : Nervous : Nerven
+domains : Domains : Domänen
+genetics : Genetics : Genetik
+payroll : Payroll : Gehaltsliste
+finiteautomata : Finite Automata : Finite Automaten
+bayesian : Bayesian : Bayes 
+urea_cycle : Urea Cycle : Harnstoffzyklus
+skeletal : Skeletal : Skelett
+waterprocesses : Water Processes : Wasserprozesse
+geologictime : Geologic Time : Geologische Zeit
+photosynthesis : Photosynthesis : Photosynthese
+exponential : Exponential : Exponentiell
+reactions : Reactions : Reaktionen
+community : Community : Gemeinschaft
+mathematics : Mathematics : Mathematik
+regulation : Regulation : Regulierung
+mutation : Mutation : Mutation
+stereo : Stereo : Stereo
+computerscience : Computer Science : Informatik
+nuclear : Nuclear : Kern
+genomics : Genomics : Genomik
+organic : Organic : Organisch
+rna : RNA : RNA
+replication : Replication : Replikation
+statics : Statics : Statik
+vertebrates : Vertebrates : Wirbeltiere
+rotationalkinematics : Rotational Kinematics : Rotationskinematik
+minerals : Minerals : Minerale
+classification : Classification : Klassifikation
+earthhistory : Earth History : Erdgeschichte
+modern : Modern : Modern
+engines : Engines : Maschinen
+acidsbases : Acids and Bases : Säuren und Laugen
+dna : DNA : DNA
+electrical : Electrical : Elekto
+interference : Interference : Interferenz
+windsdeserts : Winds and Deserts : Winde und Wüsten
+states : States : Zustände
+enzymes : Enzymes : Enzyme
+solutions : Solutions : Lösungen
+pentose_phosphate_pathway : Pentose Phosphate Pathway : Pentosephosphatweg
+urinary : Urinary : Harn
+angularmomentum : Angular Momentum : Drehimpuls 
+magnetism : Magnetism : Magnetismus
+inductance : Inductance : Induktivität
+classes : Classes : Klassen
+genes : Genes : Gene
+earthsystems : Earth Systems : Irdische Systeme
+compounds : Compounds : Verbindungen
+behavior : Behavior : Verhalten
+recombinantdna : Recombinant DNA : rekombinante DNA
+oscillation : Oscillation : Schwingung
+reversible : Reversible : Umkehrbar
+metabolism : Metabolism : Stoffwechsel
+structure : Structure : Structur
+massmovement : Mass Movement : Massenbewegung
