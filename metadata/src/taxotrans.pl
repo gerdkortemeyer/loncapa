@@ -16,6 +16,11 @@ my $taxo;
 open(IN,"taxonomy.dat");
 while (my $line=<IN>) {
    my ($tax,$for,$against)=split(/\s+/,$line);
+   my $cross='';
+   if ($for=~/\:/) { 
+      $cross=$for;
+      $for='';
+   }
    my ($t1,$t2,$t3)=split(/\:/,$tax);
    if ($t3) {
        $taxo->{$t1}->{'sub'}->{$t2}->{'sub'}->{$t3}->{'lang'}->{'en'}=$en{$t3};
@@ -27,6 +32,9 @@ while (my $line=<IN>) {
        if ($against) {
           my @array=split(/\,/,$against);
           $taxo->{$t1}->{'sub'}->{$t2}->{'sub'}->{$t3}->{'con'}=\@array;
+       }
+       if ($cross) {
+          $taxo->{$t1}->{'sub'}->{$t2}->{'sub'}->{$t3}->{'cross'}=[$cross];
        }
    }
    if ($t2) { 
