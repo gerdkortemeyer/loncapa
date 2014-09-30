@@ -15,7 +15,7 @@ use Env qw(RES_DIR); # path of res directory parent (without the / at the end)
 
 no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
 
-my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','numericalresponse','array','unit','answergroup','formularesponse','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','stringresponse','essayresponse','externalresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','customresponse','mathresponse','textfield','hiddensubmission','optionresponse','radiobuttonresponse','rankresponse','matchresponse','organicresponse','reactionresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
+my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','externalresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','customresponse','textfield','hiddensubmission','optionresponse','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
 my @block_html = ('html','head','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
 my @all_block = (@block_elements, @block_html);
 my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
@@ -548,8 +548,8 @@ sub fix_paragraphs_inside {
   my ($node) = @_;
   # blocks in which paragrahs will be added:
   my @blocks_with_p = ('problem','foil','item','hintgroup','hintpart','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','windowlink','togglebox','standalone','div');
-  if (in_array(\@blocks_with_p, $node->nodeName)) {
-    # add a paragraph containing everything inside, paragraphs inside paragraphs will be fixed afterwards
+  if (in_array(\@blocks_with_p, $node->nodeName) && scalar(@{$node->nonBlankChildNodes()}) > 0) {
+    # if non-empty, add a paragraph containing everything inside, paragraphs inside paragraphs will be fixed afterwards
     my $doc = $node->ownerDocument;
     my $p = $doc->createElement('p');
     my $next;
@@ -577,8 +577,6 @@ sub fix_paragraphs_inside {
 # fixes paragraphs inside paragraphs (without a block in-between)
 sub fix_paragraph {
   my ($p) = @_;
-  # inline elements that can be split in half if there is a paragraph inside (currently all HTML):
-  my @splitable_inline = ('span', 'a', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'code', 'kbd', 'samp', 'tt', 'ins', 'del', 'var', 'small', 'big', 'font', 'u');
   my $block = find_first_block($p);
   if (defined $block) {
     my $trees = clone_ancestor_around_node($p, $block);
@@ -596,6 +594,12 @@ sub fix_paragraph {
         $replacement->appendChild($first);
       } else {
         $replacement->appendChild($left);
+        # fix paragraphs inside, in case one of the descendants can have paragraphs inside (like numericalresponse/hintgroup):
+        my $next;
+        for (my $child=$left->firstChild; defined $child; $child=$next) {
+          $next = $child->nextSibling;
+          fix_paragraphs_inside($child);
+        }
       }
     }
     my $n = $middle->firstChild;
@@ -631,12 +635,15 @@ sub fix_paragraph {
           # replace the whole p by this block, forgetting about intermediate inline elements
           $n->parentNode->removeChild($n);
           if ($n->nodeName eq 'br') {
-            # replace a br by a p
-            $n = $doc->createElement('p');
+            # replace a br by a paragraph if there was nothing before in the paragraph,
+            # otherwise remove it because it already broke the paragraph in half
+            if (!defined $left) {
+              $replacement->appendChild($middle);
+            }
           } else {
             fix_paragraphs_inside($n);
+            $replacement->appendChild($n);
           }
-          $replacement->appendChild($n);
         }
         last;
       }
@@ -667,19 +674,30 @@ sub fix_paragraph {
       }
     }
     $p->parentNode->replaceChild($replacement, $p);
+  } else {
+    # fix paragraphs inside, in case one of the descendants can have paragraphs inside (like numericalresponse/hintgroup):
+    my $next;
+    for (my $child=$p->firstChild; defined $child; $child=$next) {
+      $next = $child->nextSibling;
+      fix_paragraphs_inside($child);
+    }
   }
 }
 
 sub find_first_block {
   my ($node) = @_;
+  # inline elements that can be split in half if there is a paragraph inside (currently all HTML):
+  my @splitable_inline = ('span', 'a', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'code', 'kbd', 'samp', 'tt', 'ins', 'del', 'var', 'small', 'big', 'font', 'u');
   for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
     if ($child->nodeType == XML_ELEMENT_NODE) {
       if (in_array(\@all_block, $child->nodeName) || $child->nodeName eq 'br') {
         return($child);
       }
-      my $block = find_first_block($child);
-      if (defined $block) {
-        return($block);
+      if (in_array(\@splitable_inline, $child->nodeName)) {
+        my $block = find_first_block($child);
+        if (defined $block) {
+          return($block);
+        }
       }
     }
   }
@@ -843,12 +861,12 @@ sub pretty {
           my $text = $child->nodeValue;
           # collapse newlines
           $text =~ s/\n([\t ]*\n)+/\n/g;
-          # indent
+          # indent and remove spaces and tabs before newlines
           if (defined $next) {
-            $text =~ s/\n[\t ]*/$newline_indent/ge;
+            $text =~ s/[\t ]*\n[\t ]*/$newline_indent/ge;
           } else {
-            $text =~ s/\n[\t ]*/$newline_indent/ge;
-            $text =~ s/\n[\t ]*$/$newline_indent_last/e;
+            $text =~ s/[\t ]*\n[\t ]*/$newline_indent/ge;
+            $text =~ s/[\t ]*\n[\t ]*$/$newline_indent_last/e;
           }
           $child->setData($text);
         }
