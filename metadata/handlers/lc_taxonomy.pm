@@ -42,6 +42,37 @@ sub first_level {
    return %terms;
 }
 
+sub second_level {
+   my ($lang,$first)=@_;
+   unless ($lang) { $lang='en'; }
+   my %terms;
+   unless ($taxonomy) { &load_taxonomy() }
+   foreach my $key (keys(%{$taxonomy->{$first}->{'sub'}})) {
+      $terms{$key}=$taxonomy->{$first}->{'sub'}->{$key}->{'lang'}->{$lang};
+      unless ($terms{$key}) {
+         $terms{$key}=$taxonomy->{$first}->{'sub'}->{$key}->{'lang'}->{'en'};
+      }
+   }
+   return %terms;
+}
+
+sub third_level {
+   my ($lang,$first,$second)=@_;
+   unless ($lang) { $lang='en'; }
+   my %terms;
+   unless ($taxonomy) { &load_taxonomy() }
+   foreach my $key (keys(%{$taxonomy->{$first}->{'sub'}->{$second}->{'sub'}})) {
+      $terms{$key}=$taxonomy->{$first}->{'sub'}->{$second}->{'sub'}->{$key}->{'lang'}->{$lang};
+      unless ($terms{$key}) {
+         $terms{$key}=$taxonomy->{$first}->{'sub'}->{$second}->{'sub'}->{$key}->{'lang'}->{'en'};
+      }
+   }
+   return %terms;
+}
+
+
+
+
 sub load_taxonomy {
    $taxonomy=&Apache::lc_json_utils::json_to_perl(
                         &Apache::lc_file_utils::readfile(&lc_conf_dir().'taxonomy.json')
