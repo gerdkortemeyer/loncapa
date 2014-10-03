@@ -54,6 +54,8 @@ sub incl_publisher_screens {
                &Apache::lc_xml_forms::table_input_field('title','title','Title','text',40,$metadata->{'title'}).
                &Apache::lc_xml_forms::table_input_field('language','language','Language','contentlanguage',undef,$metadata->{'language'}).
                &Apache::lc_xml_forms::form_table_end();
+#FIXME: should go in next screen
+      $output.=&Apache::lc_xml_forms::inputfield('taxonomy','newtaxo','newtaxo',undef,'physics:mechanics:kinematics');
    }
    return $output;
 }

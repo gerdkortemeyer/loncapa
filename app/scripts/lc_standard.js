@@ -211,6 +211,8 @@ function coursesearchdisplay(id) {
    }
 }
 
-
+function taxoselect(id) {
+   alert(id);
+}
 
 

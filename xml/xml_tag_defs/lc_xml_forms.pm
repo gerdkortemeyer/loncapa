@@ -219,6 +219,8 @@ sub inputfield {
    } elsif ($type eq 'contentlanguage') {
       my ($default,$language_short,$language_name)=&content_language_choices($default);
       return &selectfield($id,$name,$language_short,$language_name,$default);
+   } elsif ($type eq 'taxonomy') {
+      return &taxonomyfield($id,$name,$default);
    } elsif ($type eq 'timezone') {
       my ($default,$timezones)=&timezone_choices($default);
       return &selectfield($id,$name,$timezones,$timezones,$default);
@@ -259,6 +261,21 @@ sub inputfield {
    }
 }
 
+# ==== Taxonomy field
+#
+sub taxonomyfield {
+   my ($id,$name,$default)=@_;
+   unless ($name) {
+      $name=$id;
+   }
+   my ($first_default,$second_default,$third_default)=split(/\s*\:\s*/,$default);
+   my $output="<fieldset id='$id' name='$name' class='lctaxonomyselect'>";
+   $output.="<select id='".$id."_first' onchange='taxoselect(\"".$id."\")'><option value='".$first_default."'>-</option></select>";
+   $output.="<select id='".$id."_second' onchange='taxoselect(\"".$id."\")'><option value='".$second_default."'>-</option></select>";
+   $output.="<select id='".$id."_third' onchange='taxoselect(\"".$id."\")'><option value='".$third_default."'>-</option></select>";
+   $output.='</fieldset>';
+   return $output;
+}
 
 # ==== Bring up a username search field
 #
@@ -275,6 +292,7 @@ sub usersearch {
    $output.=&hidden_field($id.'_username','');
    $output.='<br /><div id="'.$id.'_results" class="lcautocompleteresults"></div>';
    $output.='</fieldset>';
+   return $output;
 }
 
 # ==== Bring up a math editor field
