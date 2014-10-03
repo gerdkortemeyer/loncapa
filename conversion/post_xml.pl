@@ -639,8 +639,12 @@ sub fix_div {
 sub fix_paragraphs_inside {
   my ($node) = @_;
   # blocks in which paragrahs will be added:
-  my @blocks_with_p = ('problem','foil','item','hintgroup','hintpart','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','windowlink','togglebox','standalone','div');
-  if (in_array(\@blocks_with_p, $node->nodeName) && scalar(@{$node->nonBlankChildNodes()}) > 0) {
+  my @blocks_with_p = ('problem','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','togglebox','web','standalone');
+  my @fix_p_if_br_or_p = ('foil','item','text','label','hintgroup','hintpart','windowlink','div','li','dd','td','th','blockquote');
+  if ((in_array(\@blocks_with_p, $node->nodeName) && scalar(@{$node->nonBlankChildNodes()}) > 0) ||
+      (in_array(\@fix_p_if_br_or_p, $node->nodeName) &&
+      (scalar(@{$node->getChildrenByTagName('br')}) > 0 ||
+       scalar(@{$node->getChildrenByTagName('p')}) > 0))) {
     # if non-empty, add a paragraph containing everything inside, paragraphs inside paragraphs will be fixed afterwards
     my $doc = $node->ownerDocument;
     my $p = $doc->createElement('p');
