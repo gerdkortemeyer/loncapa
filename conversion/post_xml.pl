@@ -15,6 +15,7 @@ use Env qw(RES_DIR); # path of res directory parent (without the / at the end)
 no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
 
 my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','externalresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','customresponse','textfield','hiddensubmission','optionresponse','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
+my @inline_responses = ('stringresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse');
 my @block_html = ('html','head','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
 my @all_block = (@block_elements, @block_html);
 my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
@@ -639,8 +640,12 @@ sub fix_div {
 sub fix_paragraphs_inside {
   my ($node) = @_;
   # blocks in which paragrahs will be added:
-  my @blocks_with_p = ('problem','foil','item','hintgroup','hintpart','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','windowlink','togglebox','standalone','div');
-  if (in_array(\@blocks_with_p, $node->nodeName) && scalar(@{$node->nonBlankChildNodes()}) > 0) {
+  my @blocks_with_p = ('problem','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','togglebox','web','standalone');
+  my @fix_p_if_br_or_p = ('foil','item','text','label','hintgroup','hintpart','windowlink','div','li','dd','td','th','blockquote');
+  if ((in_array(\@blocks_with_p, $node->nodeName) && scalar(@{$node->nonBlankChildNodes()}) > 0) ||
+      (in_array(\@fix_p_if_br_or_p, $node->nodeName) &&
+      (scalar(@{$node->getChildrenByTagName('br')}) > 0 ||
+       scalar(@{$node->getChildrenByTagName('p')}) > 0))) {
     # if non-empty, add a paragraph containing everything inside, paragraphs inside paragraphs will be fixed afterwards
     my $doc = $node->ownerDocument;
     my $p = $doc->createElement('p');
@@ -898,7 +903,8 @@ sub pretty {
   my $type = $node->nodeType;
   if ($type == XML_ELEMENT_NODE) {
     my $name = $node->nodeName;
-    if (in_array(\@all_block, $name) && !in_array(\@preserve_elements, $name)) {
+    if ((in_array(\@all_block, $name) || in_array(\@inline_responses, $name)) &&
+        !in_array(\@preserve_elements, $name)) {
       # make sure there is a newline at the beginning and at the end if there is anything inside
       if (defined $node->firstChild && !in_array(\@no_newline_inside, $name)) {
         my $first = $node->firstChild;
