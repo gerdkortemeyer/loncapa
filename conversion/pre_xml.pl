@@ -10,7 +10,7 @@ use Encode::Guess;
 
 # list of elements inside which < and > might not be turned into entities
 # unfortunately, answer can sometimes contain the elements vector and value...
-my @cdata_elements = ('script', 'answer', 'm');
+my @cdata_elements = ('answer', 'm'); # not script because the HTML parser will handle it
 
 
 my $lines = guess_encoding_and_read($ARGV[0]);

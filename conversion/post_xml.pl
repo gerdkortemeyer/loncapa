@@ -7,7 +7,6 @@ use warnings;
 use File::Basename;
 use Cwd 'abs_path';
 
-use XML::LibXSLT;
 use XML::LibXML;
 
 use HTML::TokeParser; # used to parse sty files
@@ -35,7 +34,8 @@ remove_elements($root, ['startouttext','endouttext','startpartmarker','endpartma
 
 add_sty_blocks($ARGV[0], $root); # must come before the subs using @all_block
 
-# TODO: something with styles containing block elements
+fix_block_styles($root);
+$root->normalize();
 
 fix_fonts($root);
 
@@ -281,6 +281,98 @@ sub better_guess {
     $index++ until $new_inlines->[$index] eq $inline;
     splice(@{$new_inlines}, $index, 1);
     push(@{$new_blocks}, $inline);
+  }
+}
+
+# When a style element contains a block, move the style inside the block where it is allowed.
+# When a style is used where it is not allowed, move it inside its children or remove it.
+sub fix_block_styles {
+  my ($element) = @_;
+  # list of elements that can contain style elements:
+  my @containing_styles = ('loncapa','problem','foil','item','text','hintgroup','hintpart','label','part','preduedate','postanswerdate','solved','notsolved','block','while','web','standalone','problemtype','languageblock','translated','lang','window','windowlink','togglebox','instructorcomment','div','p','li','dd','td','th','blockquote','object','applet','fieldset','button');
+  my @styles = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'u');
+  if (in_array(\@styles, $element->nodeName)) {
+    # move spaces out of the style element
+    if (defined $element->firstChild && $element->firstChild->nodeType == XML_TEXT_NODE) {
+      my $child = $element->firstChild;
+      if ($child->nodeValue =~ /^(\s+)(\S.*)$/s) {
+        $element->parentNode->insertBefore($dom_doc->createTextNode($1), $element);
+        $child->setData($2);
+      }
+    }
+    if (defined $element->lastChild && $element->lastChild->nodeType == XML_TEXT_NODE) {
+      my $child = $element->lastChild;
+      if ($child->nodeValue =~ /^(.*\S)(\s+)$/s) {
+        $element->parentNode->insertAfter($dom_doc->createTextNode($2), $element);
+        $child->setData($1);
+      }
+    }
+    
+    my $found_block = 0;
+    for (my $child=$element->firstChild; defined $child; $child=$child->nextSibling) {
+      if ($child->nodeType == XML_ELEMENT_NODE && in_array(\@all_block, $child->nodeName)) {
+        $found_block = 1;
+        last;
+      }
+    }
+    my $no_style_here = !in_array(\@containing_styles, $element->parentNode->nodeName);
+    if ($found_block || $no_style_here) {
+      # there is a block or the style is not allowed here,
+      # the style element has to be replaced by its modified children
+      my $s; # a clone of the style
+      my $next;
+      for (my $child=$element->firstChild; defined $child; $child=$next) {
+        $next = $child->nextSibling;
+        if ($child->nodeType == XML_ELEMENT_NODE && (in_array(\@all_block, $child->nodeName) ||
+            $child->nodeName eq 'br' || $no_style_here)) {
+          # block node or inline node when the style is not allowed:
+          # move all children inside the style, and make the style the only child
+          $s = $element->cloneNode();
+          my $next2;
+          for (my $child2=$child->firstChild; defined $child2; $child2=$next2) {
+            $next2 = $child2->nextSibling;
+            $child->removeChild($child2);
+            $s->appendChild($child2);
+          }
+          $child->appendChild($s);
+          $s = undef;
+        } elsif (($child->nodeType == XML_TEXT_NODE && $child->nodeValue !~ /^\s*$/) ||
+            $child->nodeType == XML_ELEMENT_NODE) {
+          # if the style is allowed, move text and inline nodes inside the style
+          if (!$no_style_here) {
+            if (!defined $s) {
+              $s = $element->cloneNode();
+              $element->insertBefore($s, $child);
+            }
+            $element->removeChild($child);
+            $s->appendChild($child);
+          }
+        } else {
+          # do not put other nodes inside the style
+          $s = undef;
+        }
+      }
+      # now replace by children and fix them
+      my $parent = $element->parentNode;
+      for (my $child=$element->firstChild; defined $child; $child=$next) {
+        $next = $child->nextSibling;
+        $element->removeChild($child);
+        $parent->insertBefore($child, $element);
+        if ($child->nodeType == XML_ELEMENT_NODE) {
+          fix_block_styles($child);
+        }
+      }
+      $parent->removeChild($element);
+      return;
+    }
+  }
+  # otherwise fix all children
+  my $next;
+  for (my $child=$element->firstChild; defined $child; $child=$next) {
+  $next = $child->nextSibling;
+    if ($child->nodeType == XML_ELEMENT_NODE) {
+      fix_block_styles($child);
+    }
   }
 }
 
@@ -777,7 +869,7 @@ sub remove_empty_style {
   my ($root) = @_;
   # actually, preserve some elements like ins when they have whitespace, only remove if they are empty
   my @remove_if_empty = ('span', 'a', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'code', 'kbd', 'samp', 'tt', 'ins', 'del', 'var', 'small', 'big', 'font', 'u');
-  my @remove_if_blank = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'var', 'small', 'big', 'font', 'u');
+  my @remove_if_blank = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'font', 'u');
   foreach my $name (@remove_if_empty) {
     my @nodes = $dom_doc->getElementsByTagName($name);
     foreach my $node (@nodes) {
