@@ -32,12 +32,30 @@ use Apache::lc_authorize;
 use Apache::lc_xml_forms();
 use Apache::lc_file_utils();
 use Apache::lc_xml_utils();
+use Apache::lc_taxonomy();
 use HTML::Entities;
+
+sub taxonomy {
+   my ($level,$first,$second)=@_;
+   my %taxo;
+   if ($level eq 'first') {
+      %taxo=&Apache::lc_taxonomy::first_level(&Apache::lc_ui_localize::context_language());
+   } elsif ($level eq 'second') {
+      %taxo=&Apache::lc_taxonomy::second_level(&Apache::lc_ui_localize::context_language(),$first);
+   } else {
+      %taxo=&Apache::lc_taxonomy::third_level(&Apache::lc_ui_localize::context_language(),$first,$second);
+   }
+   return &Apache::lc_json_utils::perl_to_json(\%taxo);
+}
+
 
 sub handler {
    my $r = shift;
    my %content=&Apache::lc_entity_sessions::posted_content();
-   $r->print("Publisher");
+   if ($content{'command'} eq 'taxonomy') {
+      $r->content_type('application/json; charset=utf-8');
+      $r->print(&taxonomy($content{'level'},$content{'first'},$content{'second'}));
+   }
    return OK;
 }
 1;
