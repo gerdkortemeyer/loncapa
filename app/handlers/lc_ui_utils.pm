@@ -162,16 +162,24 @@ sub language_choices {
 
 sub content_language_choices {
    my ($default)=@_;
-   my @codes=&all_language_codes();
+# Retrieve names
    my @names=&all_language_names();
-   my %language_choices;
-   for (my $i=0; $i<=$#codes; $i++) {
-       $language_choices{&mt($names[$i])}=$codes[$i];
+   my %codes=();
+   for (my $i=0; $i<=$#names; $i++) {
+      my $code=&language2code($names[$i]);
+# Remove the parenthetical clarifications
+      $names[$i]=~s/\s*\(.+$//;
+# Translate
+      $names[$i]=&mt($names[$i]);
+# Assign code
+      $codes{$names[$i]}=$code;
    }
+# Output arrays
    my $language_short;
    my $language_name;
-   foreach my $key (sort(keys(%language_choices))) {
-       push(@{$language_short},$language_choices{$key});
+# Sort in order of translated language
+   foreach my $key (sort(@names)) {
+       push(@{$language_short},$codes{$key});
        push(@{$language_name},$key);
    }
    my $default;
