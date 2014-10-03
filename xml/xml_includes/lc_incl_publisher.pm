@@ -50,8 +50,10 @@ sub incl_publisher_screens {
             &Apache::lc_xml_forms::hidden_field('url',$content{'url'});
    if ($content{'stage_two'}) {
    } else {
-      $output.='<h1>'.&mt('Title').'</h1>';
-      $output.=&Apache::lc_xml_forms::inputfield('text','title','title',40,$metadata->{'title'});
+      $output.=&Apache::lc_xml_forms::form_table_start().
+               &Apache::lc_xml_forms::table_input_field('title','title','Title','text',40,$metadata->{'title'}).
+               &Apache::lc_xml_forms::table_input_field('language','language','Language','contentlanguage',undef,$metadata->{'language'}).
+               &Apache::lc_xml_forms::form_table_end();
    }
    return $output;
 }

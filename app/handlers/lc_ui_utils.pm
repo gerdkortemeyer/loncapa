@@ -24,7 +24,7 @@ use Apache::lc_ui_localize;
 use Apache::lc_entity_sessions();
 use Apache::lc_entity_courses();
 use Apache::lc_authorize;
-
+use Locale::Language;
 
 use Apache::lc_logs;
 use URI::Escape;
@@ -34,7 +34,7 @@ use Data::Dumper;
 require Exporter;
 
 our @ISA = qw (Exporter);
-our @EXPORT = qw(clean_username clean_domain domain_choices domain_name language_choices timezone_choices modifiable_role_choices);
+our @EXPORT = qw(clean_username clean_domain domain_choices domain_name language_choices content_language_choices timezone_choices modifiable_role_choices);
 
 # ==== Clean up usernames and domains
 #
@@ -154,6 +154,28 @@ sub language_choices {
    }
    my $default;
    if ($type eq 'user') {
+      $default=&Apache::lc_ui_localize::context_language();
+   }
+   unless ($default) { $default='en'; }
+   return ($default,$language_short,$language_name);
+}
+
+sub content_language_choices {
+   my ($default)=@_;
+   my @codes=&all_language_codes();
+   my @names=&all_language_names();
+   my %language_choices;
+   for (my $i=0; $i<=$#codes; $i++) {
+       $language_choices{&mt($names[$i])}=$codes[$i];
+   }
+   my $language_short;
+   my $language_name;
+   foreach my $key (sort(keys(%language_choices))) {
+       push(@{$language_short},$language_choices{$key});
+       push(@{$language_name},$key);
+   }
+   my $default;
+   unless ($default) {
       $default=&Apache::lc_ui_localize::context_language();
    }
    unless ($default) { $default='en'; }
