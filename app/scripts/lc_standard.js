@@ -211,8 +211,44 @@ function coursesearchdisplay(id) {
    }
 }
 
-function taxoselect(id) {
-   alert(id);
+function loadtaxo(id,which,first,second,preselect) {
+   var noCache = parent.no_cache_value();
+   $.getJSON( "/publisher", { "noCache" : noCache,
+                              "level"   : which,
+                              "first"   : first,
+                              "second"  : second,
+                              "command" : "taxonomy" },
+       function( data ) {
+           var content='';
+           $.each( data, function( index, val ) {
+               $.each( val, function( key, value ) {
+                    content+="<option value='"+key+"'>"+value+"</option>";
+               });
+           });
+           $('#'+id+'_'+which).html(content);
+           if (preselect) {
+              $('#'+id+'_'+which).val(preselect);
+           }
+       });
+
+}
+
+function taxoselect(id,which) {
+   var firstselected=$('#'+id+'_first').val();
+   var secondselected=$('#'+id+'_second').val();
+   var thirdselected=$('#'+id+'_third').val();
+   if (which=="all") {
+      loadtaxo(id,'first',firstselected,secondselected,firstselected);
+      loadtaxo(id,'second',firstselected,secondselected,secondselected);
+      loadtaxo(id,'third',firstselected,secondselected,thirdselected);
+   }
+   if (which=="first") {
+      loadtaxo(id,'second',firstselected,secondselected);
+      loadtaxo(id,'third',firstselected,secondselected);
+   }
+   if (which=="second") {
+      loadtaxo(id,'third',firstselected,secondselected);
+   }
 }
 
 

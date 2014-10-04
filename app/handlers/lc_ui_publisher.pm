@@ -45,7 +45,13 @@ sub taxonomy {
    } else {
       %taxo=&Apache::lc_taxonomy::third_level(&Apache::lc_ui_localize::context_language(),$first,$second);
    }
-   return &Apache::lc_json_utils::perl_to_json(\%taxo);
+   my %inverse=reverse(%taxo);
+   my @output;
+   push(@output, { '' => '-' });
+   foreach my $key (sort(keys(%inverse))) {
+       push(@output,{ $inverse{$key} => $key });
+   }
+   return &Apache::lc_json_utils::perl_to_json(\@output);
 }
 
 

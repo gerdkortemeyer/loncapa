@@ -270,10 +270,11 @@ sub taxonomyfield {
    }
    my ($first_default,$second_default,$third_default)=split(/\s*\:\s*/,$default);
    my $output="<fieldset id='$id' name='$name' class='lctaxonomyselect'>";
-   $output.="<select id='".$id."_first' onchange='taxoselect(\"".$id."\")'><option value='".$first_default."'>-</option></select>";
-   $output.="<select id='".$id."_second' onchange='taxoselect(\"".$id."\")'><option value='".$second_default."'>-</option></select>";
-   $output.="<select id='".$id."_third' onchange='taxoselect(\"".$id."\")'><option value='".$third_default."'>-</option></select>";
+   $output.="<select id='".$id."_first' onchange='taxoselect(\"".$id."\",\"first\")'><option value='".$first_default."'>-</option></select>";
+   $output.="<select id='".$id."_second' onchange='taxoselect(\"".$id."\",\"second\")'><option value='".$second_default."'>-</option></select>";
+   $output.="<select id='".$id."_third'><option value='".$third_default."'>-</option></select>";
    $output.='</fieldset>';
+   $output.="\n<script>taxoselect('".$id."','all');</script>\n";
    return $output;
 }
 
