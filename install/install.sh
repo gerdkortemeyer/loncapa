@@ -28,6 +28,8 @@ cp conf/units.json /home/loncapa/conf
 cp conf/constants.json /home/loncapa/conf
 cp conf/extensions.json /home/loncapa/conf
 cp metadata/conf/*.json /home/loncapa/conf
+mkdir /home/loncapa/conf/non_keyword
+cp metadata/conf/non_keyword* /home/loncapa/conf/non_keyword
 cp metadata/handlers/*pm /home/httpd/lib/perl/Apache
 cp app/handlers/*pm /home/httpd/lib/perl/Apache
 mkdir /home/httpd/lib/perl/Apache/lc_localize
