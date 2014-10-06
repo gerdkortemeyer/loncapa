@@ -954,6 +954,21 @@ sub remove_empty_style {
   my @remove_if_blank = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'font', 'u');
   foreach my $name (@remove_if_empty) {
     my @nodes = $dom_doc->getElementsByTagName($name);
+    while (scalar(@nodes) > 0) {
+      my $node = pop(@nodes);
+      if (!defined $node->firstChild) {
+        my $parent = $node->parentNode;
+        $parent->removeChild($node);
+        $parent->normalize();
+        # now that we removed the node, check if the parent has become an empty style, and so on
+        while (defined $parent && in_array(\@remove_if_empty, $parent->nodeName) && !defined $parent->firstChild) {
+          my $grandparent = $parent->parentNode;
+          $grandparent->removeChild($parent);
+          remove_reference_from_array(\@nodes, $parent);
+          $parent = $grandparent;
+        }
+      }
+    }
     foreach my $node (@nodes) {
       if (!defined $node->firstChild) {
         $node->parentNode->removeChild($node);
@@ -962,15 +977,26 @@ sub remove_empty_style {
   }
   foreach my $name (@remove_if_blank) {
     my @nodes = $dom_doc->getElementsByTagName($name);
-    foreach my $node (@nodes) {
+    while (scalar(@nodes) > 0) {
+      my $node = pop(@nodes);
       if (defined $node->firstChild && !defined $node->firstChild->nextSibling && $node->firstChild->nodeType == XML_TEXT_NODE) {
         if ($node->firstChild->nodeValue =~ /^\s*$/) {
+          my $parent = $node->parentNode;
           replace_by_children($node);
+          $parent->normalize();
+          # now that we removed the node, check if the parent has become a style with only whitespace, and so on
+          while (defined $parent && in_array(\@remove_if_blank, $parent->nodeName) &&
+              !defined $parent->firstChild->nextSibling && $parent->firstChild->nodeType == XML_TEXT_NODE &&
+              $parent->firstChild->nodeValue =~ /^\s*$/) {
+            my $grandparent = $parent->parentNode;
+            replace_by_children($parent);
+            remove_reference_from_array(\@nodes, $parent);
+            $parent = $grandparent;
+          }
         }
       }
     }
   }
-  $root->normalize();
 }
 
 # pretty-print using im-memory DOM tree
@@ -1101,6 +1127,26 @@ sub in_array {
     }
   }
   return 0;
+}
+
+# returns the index of a reference in an array
+sub index_of_reference {
+  my ($array, $ref) = @_;
+  for (my $i=0; $i<scalar(@{$array}); $i++) {
+    if ($array->[$i] == $ref) {
+      return $i;
+    }
+  }
+  return -1;
+}
+
+# if found, removes a reference from an array, otherwise do nothing
+sub remove_reference_from_array {
+  my ($array, $ref) = @_;
+  my $index = index_of_reference($array, $ref);
+  if ($index != -1) {
+    splice(@$array, $index, 1);
+  }
 }
 
 # replaces a node by its children
