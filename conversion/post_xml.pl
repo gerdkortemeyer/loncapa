@@ -286,11 +286,18 @@ sub better_guess {
 }
 
 # When a style element contains a block, move the style inside the block where it is allowed.
+# style/block/other -> block/style/other
 # When a style is used where it is not allowed, move it inside its children or remove it.
+# element_not_containing_styles/style/other -> element_not_containing_styles/other/style (except if other is a style)
+# The fix is not perfect in the case of element_not_containing_styles/style1/style2/block/text (style1 will be lost):
+# element_not_containing_styles/style1/style2/block/text -> element_not_containing_styles/block/style2/text
+# (a solution to this problem would be to merge the styles in a span)
+# NOTE: .sty defined elements are not considered like elements containing styles
 sub fix_block_styles {
   my ($element) = @_;
   # list of elements that can contain style elements:
-  my @containing_styles = ('loncapa','problem','foil','item','text','hintgroup','hintpart','label','part','preduedate','postanswerdate','solved','notsolved','block','while','web','standalone','problemtype','languageblock','translated','lang','window','windowlink','togglebox','instructorcomment','div','p','li','dd','td','th','blockquote','object','applet','fieldset','button');
+  my @containing_styles = ('loncapa','problem','foil','item','text','hintgroup','hintpart','label','part','preduedate','postanswerdate','solved','notsolved','block','while','web','standalone','problemtype','languageblock','translated','lang','window','windowlink','togglebox','instructorcomment','div','p','li','dd','td','th','blockquote','object','applet','fieldset','button',
+  'span','strong','em','b','i','sup','sub','code','kbd','samp','tt','ins','del','var','small','big','u','font');
   my @styles = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'u');
   if (in_array(\@styles, $element->nodeName)) {
     # move spaces out of the style element
@@ -326,16 +333,19 @@ sub fix_block_styles {
         $next = $child->nextSibling;
         if ($child->nodeType == XML_ELEMENT_NODE && (in_array(\@all_block, $child->nodeName) ||
             $child->nodeName eq 'br' || $no_style_here)) {
-          # block node or inline node when the style is not allowed:
-          # move all children inside the style, and make the style the only child
-          $s = $element->cloneNode();
-          my $next2;
-          for (my $child2=$child->firstChild; defined $child2; $child2=$next2) {
-            $next2 = $child2->nextSibling;
-            $child->removeChild($child2);
-            $s->appendChild($child2);
+          # avoid inverting a style with a style with $no_style_here (that would cause endless recursion)
+          if (!$no_style_here || !in_array(\@styles, $child->nodeName)) {
+            # block node or inline node when the style is not allowed:
+            # move all children inside the style, and make the style the only child
+            $s = $element->cloneNode();
+            my $next2;
+            for (my $child2=$child->firstChild; defined $child2; $child2=$next2) {
+              $next2 = $child2->nextSibling;
+              $child->removeChild($child2);
+              $s->appendChild($child2);
+            }
+            $child->appendChild($s);
           }
-          $child->appendChild($s);
           $s = undef;
         } elsif (($child->nodeType == XML_TEXT_NODE && $child->nodeValue !~ /^\s*$/) ||
             $child->nodeType == XML_ELEMENT_NODE) {
@@ -370,7 +380,7 @@ sub fix_block_styles {
   # otherwise fix all children
   my $next;
   for (my $child=$element->firstChild; defined $child; $child=$next) {
-  $next = $child->nextSibling;
+    $next = $child->nextSibling;
     if ($child->nodeType == XML_ELEMENT_NODE) {
       fix_block_styles($child);
     }
