@@ -525,7 +525,7 @@ sub remove_bad_cdata_sections {
   }
 }
 
-# try to fix table attributes
+# try to fix table attributes, and create missing cells at the end of table rows
 sub fix_tables {
   my ($root) = @_;
   my @tables = $dom_doc->getElementsByTagName('table');
@@ -571,6 +571,63 @@ sub fix_tables {
     }
     if ($css ne '') {
       $table->setAttribute('style', $css);
+    }
+    fix_cells($table);
+    foreach my $tbody ($table->getChildrenByTagName('tbody')) {
+      fix_cells($tbody);
+    }
+    foreach my $thead ($table->getChildrenByTagName('thead')) {
+      fix_cells($thead);
+    }
+    foreach my $tfoot ($table->getChildrenByTagName('tfoot')) {
+      fix_cells($tfoot);
+    }
+  }
+}
+
+# create missing cells at the end of table rows
+sub fix_cells {
+  my ($table) = @_; # could actually be table, tbody, thead or tfoot
+  my @nb_cells = ();
+  my $max_nb_cells = 0;
+  my @rowspans = ();
+  my @trs = $table->getChildrenByTagName('tr');
+  foreach my $tr (@trs) {
+    my $nb_cells;
+    if (defined $rowspans[0]) {
+      $nb_cells = shift(@rowspans);
+    } else {
+      $nb_cells = 0;
+    }
+    foreach my $td ($tr->getChildrenByTagName('td')) {
+      my $colspan = $td->getAttribute('colspan');
+      if (defined $colspan && $colspan =~ /^\s*[0-9]+\s*$/) {
+        $nb_cells += $colspan;
+      } else {
+        $nb_cells++;
+      }
+      my $rowspan = $td->getAttribute('rowspan');
+      if (defined $rowspan && $rowspan =~ /^\s*[0-9]+\s*$/) {
+        for (my $i=0; $i < $rowspan-1; $i++) {
+          if (!defined $rowspans[$i]) {
+            $rowspans[$i] = 1;
+          } else {
+            $rowspans[$i]++;
+          }
+        }
+      }
+    }
+    push(@nb_cells, $nb_cells);
+    if ($nb_cells > $max_nb_cells) {
+      $max_nb_cells = $nb_cells;
+    }
+  }
+  foreach my $tr (@trs) {
+    my $nb_cells = shift(@nb_cells);
+    if ($nb_cells < $max_nb_cells) {
+      for (1..($max_nb_cells - $nb_cells)) {
+        $tr->appendChild($dom_doc->createElement('td'));
+      }
     }
   }
 }
