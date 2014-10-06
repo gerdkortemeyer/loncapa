@@ -693,12 +693,22 @@ sub fix_paragraph {
     my $middle = $trees->{'middle'};
     my $right = $trees->{'right'};
     if (defined $left) {
-      if (!defined $left->firstChild->nextSibling &&
-          $left->firstChild->nodeType == XML_TEXT_NODE && $left->firstChild->nodeValue =~ /^\s*$/) {
-        # this was just blank text, it should not create a new paragraph
-        my $first = $left->firstChild;
-        $left->removeChild($first);
-        $replacement->appendChild($first);
+      my $paragraph_needed = 0;
+      for (my $child=$left->firstChild; defined $child; $child=$child->nextSibling) {
+        if (($child->nodeType == XML_TEXT_NODE && $child->nodeValue !~ /^\s*$/) ||
+            $child->nodeType == XML_ELEMENT_NODE || $child->nodeType == XML_CDATA_SECTION_NODE ||
+            $child->nodeType == XML_ENTITY_NODE || $child->nodeType == XML_ENTITY_REF_NODE) {
+          $paragraph_needed = 1;
+        }
+      }
+      if (!$paragraph_needed) {
+        # this was just blank text or comments, it should not create a new paragraph
+        my $next;
+        for (my $child=$left->firstChild; defined $child; $child=$next) {
+          $next = $child->nextSibling;
+          $left->removeChild($child);
+          $replacement->appendChild($child);
+        }
       } else {
         $replacement->appendChild($left);
         # fix paragraphs inside, in case one of the descendants can have paragraphs inside (like numericalresponse/hintgroup):
