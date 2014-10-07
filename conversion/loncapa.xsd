@@ -2275,7 +2275,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-        </xs:complexType>
+            </xs:complexType>
   </xs:element>
   
   <xs:annotation>
@@ -5213,8 +5213,13 @@
   <xs:complexType name="table-with-responses">
     <xs:complexContent>
       <xs:extension base="table-base">
-        <xs:sequence maxOccurs="unbounded">
-          <xs:element name="tr" type="tr-with-responses"/>
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="thead"/>
+          <xs:element minOccurs="0" ref="tfoot"/>
+          <xs:choice>
+            <xs:element maxOccurs="unbounded" name="tbody" type="tbody-with-responses"/>
+            <xs:element maxOccurs="unbounded" name="tr" type="tr-with-responses"/>
+          </xs:choice>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -5222,11 +5227,44 @@
   <xs:complexType name="table-without-responses">
     <xs:complexContent>
       <xs:extension base="table-base">
-        <xs:sequence maxOccurs="unbounded">
-          <xs:element name="tr" type="tr-without-responses"/>
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="thead"/>
+          <xs:element minOccurs="0" ref="tfoot"/>
+          <xs:choice>
+            <xs:element maxOccurs="unbounded" name="tbody" type="tbody-without-responses"/>
+            <xs:element maxOccurs="unbounded" name="tr" type="tr-without-responses"/>
+          </xs:choice>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="thead">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="tr" type="tr-without-responses"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tfoot">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="tr" type="tr-without-responses"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="tbody-with-responses">
+    <xs:sequence>
+      <xs:choice>
+        <xs:element maxOccurs="unbounded" name="tr" type="tr-with-responses"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="tbody-without-responses">
+    <xs:sequence>
+      <xs:choice>
+        <xs:element maxOccurs="unbounded" name="tr" type="tr-without-responses"/>
+      </xs:choice>
+    </xs:sequence>
   </xs:complexType>
   <xs:complexType name="tr-base">
     <xs:annotation>
@@ -5480,7 +5518,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-        </xs:complexType>
+            </xs:complexType>
   </xs:element>
   <xs:element name="hr">
     <xs:annotation>
