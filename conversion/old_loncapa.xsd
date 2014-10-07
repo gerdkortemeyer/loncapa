@@ -19,7 +19,7 @@
   </xs:annotation>
   <xs:simpleType name="perl">
     <xs:restriction base="xs:string">
-      <xs:pattern value="((\$|\&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{][^$&amp;\]\}]+[\]\}])*(\([^$&amp;\)]+\))*"/>
+      <xs:pattern value="((\$|\&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{][^\]\}]+[\]\}])*(\([^$&amp;\)]+\))*"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="int-or-perl">
@@ -168,7 +168,6 @@
       <xs:element name="problemtype" type="problemtype-with-responses"/>
       <xs:element name="randomlist" type="randomlist-with-responses"/>
       <xs:element ref="script"/>
-      <xs:element ref="display"/>
       <xs:element ref="languageblock"/>
       <xs:element ref="translated"/>
       <xs:element ref="window"/>
@@ -213,7 +212,6 @@
       <xs:element name="problemtype" type="problemtype-without-responses"/>
       <xs:element name="randomlist" type="randomlist-without-responses"/>
       <xs:element ref="script"/>
-      <xs:element ref="display"/>
       <xs:element ref="languageblock"/>
       <xs:element ref="translated"/>
       <xs:element ref="window"/>
@@ -249,6 +247,7 @@
   </xs:group>
   <xs:group name="inlines">
     <xs:choice>
+      <xs:element ref="display"/>
       <xs:element ref="m"/>
       <xs:element ref="chem"/>
       <xs:element ref="num"/>
@@ -4567,15 +4566,6 @@
       <xs:attribute fixed="preserve" ref="xml:space"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="display" type="xs:string">
-    <xs:annotation>
-      <xs:documentation>
-        Display Script Result Block
-        
-        The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
-      </xs:documentation>
-    </xs:annotation>
-  </xs:element>
   <xs:element name="languageblock">
     <xs:annotation>
       <xs:documentation>
@@ -4896,6 +4886,15 @@
       Non-HTML inline elements mixed with text
     </xs:documentation>
   </xs:annotation>
+  <xs:element name="display" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        Display Script Result Block
+        
+        The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
   <xs:element name="m">
     <xs:annotation>
       <xs:documentation>

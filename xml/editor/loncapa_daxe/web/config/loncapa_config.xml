@@ -108,7 +108,6 @@
     <MENU nom="Block">
       <MENU nom="Scripts">
         <MENU_INSERTION nom="perl"/>
-        <MENU_INSERTION nom="display"/>
       </MENU>
       <MENU nom="Gnuplot">
         <MENU_INSERTION nom="gnuplot"/>
@@ -152,6 +151,7 @@
       <MENU_INSERTION nom="parameter"/>
     </MENU>
     <MENU nom="Text">
+      <MENU_INSERTION nom="display"/>
       <MENU_INSERTION nom="m"/>
       <MENU_INSERTION nom="num"/>
       <MENU_INSERTION nom="parse"/>
@@ -313,9 +313,6 @@
         <VALEUR_SUGGEREE>loncapa/perl</VALEUR_SUGGEREE>
       </AFFICHAGE_ATTRIBUT>
     </AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="display" type="string">
-      <PARAMETRE nom="police" valeur="Monospaced"/>
-    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="languageblock" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="translated" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="lang" type="lcdblock"/>
@@ -331,6 +328,9 @@
     <AFFICHAGE_ELEMENT element="fill" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="point" type="vide"/>
     
+    <AFFICHAGE_ELEMENT element="display" type="string">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="m" type="texmathjax"/>
     <AFFICHAGE_ELEMENT element="num" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="algebra" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
@@ -2375,12 +2375,6 @@
         The enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="display">
-      <TITRE>Display Script Result Block</TITRE>
-      <DOCUMENTATION>
-        The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
-      </DOCUMENTATION>
-    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="languageblock">
       <TITRE>Language Block</TITRE>
       <DOCUMENTATION>
@@ -2608,6 +2602,12 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     
+    <STRINGS_ELEMENT element="display">
+      <TITRE>Display Script Result Block</TITRE>
+      <DOCUMENTATION>
+        The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="m">
       <TITRE>TeX</TITRE>
       <DOCUMENTATION>
