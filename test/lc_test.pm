@@ -37,6 +37,8 @@ use Apache::lc_entity_authentication();
 use Apache::lc_spreadsheets();
 use Apache::lc_mongodb();
 use Apache::lc_entity_namespace();
+use Apache::lc_asset_xml();
+use utf8;
 
 use Data::Dumper;
 
@@ -46,7 +48,13 @@ sub handler {
 # Get request object
    my $r = shift;
 
-   $r->print("Test Handler\n");
+   $r->print("Test Handler Tästing");
+
+   my ($output,$stack)=&Apache::lc_asset_xml::target_render('/home/www/Desktop/test.html','meta');
+
+   $r->print("Output:\n$output\n---\nStack: ".Dumper($stack));
+
+   return OK;
 
 
 $r->print("\neeble zaphod:".Dumper(&Apache::lc_entity_users::query_user_profiles('msu','eeble zaphod')));

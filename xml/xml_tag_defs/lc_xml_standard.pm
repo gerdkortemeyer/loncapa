@@ -24,7 +24,7 @@ use Apache::lc_ui_localize;
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_html_html start_head_html start_script_html);
+our @EXPORT = qw(start_html_html start_head_html start_script_html start_script_meta start_title_meta);
 
 sub start_html_html {
    my ($p,$safe,$stack,$token)=@_;
@@ -77,7 +77,16 @@ sub start_script_meta {
    return '';
 }
 
-
+sub start_title_meta {
+   my ($p,$safe,$stack,$token)=@_;
+# Title should have no embedded tags, just plain text - but make sure
+   my $title=&Apache::lc_xml_utils::textonly($p->get_text('/title'));
+# Remember
+   $stack->{'metadata'}->{'title'}=$title;
+   $p->get_token;
+   pop(@{$stack->{'tags'}});
+   return $title;
+}
 
 1;
 __END__

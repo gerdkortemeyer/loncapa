@@ -21,6 +21,7 @@ package Apache::lc_xml_utils;
 use strict;
 use Apache::lc_ui_localize;
 use HTML::Entities();
+use locale;
 
 # Produces an error message with the right style and localization
 #
@@ -59,6 +60,15 @@ sub file_icon {
    my ($type,$name)=@_;
    my $icon=&Apache::lc_file_utils::file_icon($type,$name);
    return '<img class="lcfileicon" src="/images/fileicons/'.$icon.'.gif" alt="'.$icon.'" />';
+}
+
+# Extract only text
+#
+sub textonly {
+   my ($text)=@_;
+   $text=~s/\<[^\>]+\>//gs;
+   $text=&HTML::Entities::decode_entities($text);
+   return $text;
 }
    
 1;
