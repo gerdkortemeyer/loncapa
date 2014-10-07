@@ -55,8 +55,8 @@ sub guess_encoding_and_read {
     my $decoded_windows = decode('cp1252', $data);
     my $decoded_mac = decode('MacRoman', $data);
     # try to use frequent non-ASCII characters to distinguish the encodings (mostly German, Spanish, Portuguese)
-    my $score_windows = $decoded_windows =~ tr/ßáàäâãçéèêëíñóöôõúüÄÉÑÖÜ¿¡’“”//;
-    my $score_mac = $decoded_mac =~ tr/ßáàäâãçéèêëíñóöôõúüÄÉÑÖÜ¿¡’“”//;
+    my $score_windows = $decoded_windows =~ tr/ßáàäâãçéèêëíñóöôõúüÄÉÑÖÜ¿¡’“”±//;
+    my $score_mac = $decoded_mac =~ tr/ßáàäâãçéèêëíñóöôõúüÄÉÑÖÜ¿¡’“”±//;
     if ($score_windows >= $score_mac) {
       $decoded = $decoded_windows;
       print STDERR "; guess=cp1252 ($score_windows cp1252 >= $score_mac MacRoman)\n";
