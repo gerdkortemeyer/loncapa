@@ -669,15 +669,29 @@ sub replace_center {
     if ($center->getChildrenByTagName('table')->size() > 0) { # note: getChildrenByTagName is not DOM (LibXML specific)
       replace_by_children($center);
     } else {
-      my $div = $dom_doc->createElement('div');
-      $div->setAttribute('style', 'text-align: center; margin: 0 auto');
+      # use p or div ? check if there is a block inside
+      my $found_block = 0;
+      for (my $child=$center->firstChild; defined $child; $child=$child->nextSibling) {
+        if ($child->nodeType == XML_ELEMENT_NODE && in_array(\@all_block, $child->nodeName)) {
+          $found_block = 1;
+          last;
+        }
+      }
+      my $new_node;
+      if ($found_block) {
+        $new_node = $dom_doc->createElement('div');
+        $new_node->setAttribute('style', 'text-align: center; margin: 0 auto');
+      } else {
+        $new_node = $dom_doc->createElement('p');
+        $new_node->setAttribute('style', 'text-align: center');
+      }
       my $next;
       for (my $child=$center->firstChild; defined $child; $child=$next) {
         $next = $child->nextSibling;
         $center->removeChild($child);
-        $div->appendChild($child);
+        $new_node->appendChild($child);
       }
-      $center->parentNode->replaceChild($div, $center);
+      $center->parentNode->replaceChild($new_node, $center);
     }
   }
 }
