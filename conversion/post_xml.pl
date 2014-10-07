@@ -50,7 +50,7 @@ fix_lists($root);
 
 replace_center($root); # must come after fix_tables
 
-fix_div($root);
+fix_align_attribute($root);
 
 fix_paragraphs_inside($root);
 
@@ -683,22 +683,29 @@ sub replace_center {
 }
 
 # replaces <div align="center"> by <div style="text-align:center;">
-sub fix_div {
+# also for p and h1..h6
+sub fix_align_attribute {
   my ($root) = @_;
-  my @divs = $dom_doc->getElementsByTagName('div');
-  foreach my $div (@divs) {
-    my $align = get_non_empty_attribute($div, 'align');
+  my @nodes = $dom_doc->getElementsByTagName('div');
+  push(@nodes, $dom_doc->getElementsByTagName('p'));
+  for (my $i=1; $i<=6; $i++) {
+    push(@nodes, $dom_doc->getElementsByTagName('h'.$i));
+  }
+  foreach my $node (@nodes) {
+    my $align = get_non_empty_attribute($node, 'align');
     if (defined $align) {
-      my $style = get_non_empty_attribute($div, 'style');
+      my $style = get_non_empty_attribute($node, 'style');
       if (defined $style) {
-        $style =~ s/;$//;
+        $style =~ s/text-align\s*:\s*$align\s*;?//i;
+        $style =~ s/\s*$//;
+        $style =~ s/\s*;$//;
         $style .= '; ';
       } else {
         $style = '';
       }
       $style .= 'text-align:'.lc($align).';';
-      $div->setAttribute('style', $style);
-      $div->removeAttribute('align');
+      $node->setAttribute('style', $style);
+      $node->removeAttribute('align');
     }
   }
 }
