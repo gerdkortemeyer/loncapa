@@ -29,6 +29,7 @@ namenoext="${filename%.*}"
 newpath="$dir/${namenoext}_clean$ext"
 
 prexmltmp=$(mktemp)
+echo "converting $pathname..."
 perl $MY_HOME/pre_xml.pl "$pathname" >"$prexmltmp"
 if [ $? -ne 0 ]; then
   echo "pre_xml error for $pathname"
@@ -42,8 +43,8 @@ if [ $? -eq 2 ]; then
   rm -f "$prexmltmp" "$postxmltmp"
   exit
 fi
-cp "$prexmltmp" /tmp/prexml.txt
-cp "$postxmltmp" /tmp/postxml.txt
+#cp "$prexmltmp" /tmp/prexml.txt # for debug
+#cp "$postxmltmp" /tmp/postxml.txt # for debug
 cat "$postxmltmp" | perl $MY_HOME/post_xml.pl "$pathname" > "$newpath"
 if [ $? -ne 0 ]; then
   echo "post_xml error for $pathname"
