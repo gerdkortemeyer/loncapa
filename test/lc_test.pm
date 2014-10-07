@@ -54,6 +54,8 @@ sub handler {
 
    $r->print("Output:\n$output\n---\nStack: ".Dumper($stack));
 
+   $r->print($stack->{'metadata'}->{'title'});
+   $r->print("\n<pre>\n".&Apache::lc_json_utils::perl_to_json($stack,{ pretty => 1 })."</pre>");
    return OK;
 
 

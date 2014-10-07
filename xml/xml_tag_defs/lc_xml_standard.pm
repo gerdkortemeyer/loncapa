@@ -24,7 +24,7 @@ use Apache::lc_ui_localize;
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_html_html start_head_html start_script_html start_script_meta start_title_meta);
+our @EXPORT = qw(start_html_html start_head_html start_script_html start_script_meta start_title_meta start_meta_meta);
 
 sub start_html_html {
    my ($p,$safe,$stack,$token)=@_;
@@ -86,6 +86,15 @@ sub start_title_meta {
    $p->get_token;
    pop(@{$stack->{'tags'}});
    return $title;
+}
+
+
+sub start_meta_meta {
+   my ($p,$safe,$stack,$token)=@_;
+   if (($token->[2]->{'name'}) && ($token->[2]->{'content'}=~/\S/)) {
+      $stack->{'metadata'}->{'hardcoded'}->{$token->[2]->{'name'}}=$token->[2]->{'content'};
+   }
+   return '';
 }
 
 1;
