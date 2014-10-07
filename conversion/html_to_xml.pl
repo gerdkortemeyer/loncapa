@@ -8,7 +8,7 @@ use warnings;
 use HTML::Parser ();
 
 my @empty = ('br','meta','hr'); # always closing, end tags are ignored
-my @block_html = ('html','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','table','tbody','tr','td','th','dl','pre','noscript','blockquote','object','applet','embed','map','form','fieldset','iframe');
+#my @block_html = ('html','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','table','tbody','tr','td','th','dl','pre','noscript','blockquote','object','applet','embed','map','form','fieldset','iframe');
 
 
 my $p = HTML::Parser->new( api_version => 3,

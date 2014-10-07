@@ -31,7 +31,7 @@ close($in);
 
 my $root = create_new_structure($dom_doc);
 
-remove_elements($root, ['startouttext','endouttext','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow']);
+remove_elements($root, ['startouttext','startoutext','endouttext','endoutext','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow']);
 
 add_sty_blocks($ARGV[0], $root); # must come before the subs using @all_block
 
@@ -447,7 +447,7 @@ sub fix_fonts {
           $css .= 'font-size:'.$value.';';
         }
         if (defined $face) {
-          if (lc($face) ne 'symbol') {
+          if (lc($face) ne 'symbol' && lc($face) ne 'bold') {
             $css .= 'font-family:'.$face.';';
           }
         }
