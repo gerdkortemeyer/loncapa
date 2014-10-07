@@ -43,7 +43,13 @@ sub perl_eval {
    return '';
 }
 
-
+sub start_perl_meta {
+   my ($p,$safe,$stack,$token)=@_;
+   $p->get_text('/perl');
+   $p->get_token;
+   pop(@{$stack->{'tags'}});
+   return '';
+}
 
 1;
 __END__

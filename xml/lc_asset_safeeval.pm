@@ -130,12 +130,18 @@ sub init_safe {
   return $safeeval;
 }
 
+#
+# Returns a snippet of text with variables evaluated
+#
 sub texteval {
    my ($safeeval,$text)=@_;
    $text=~s/\"/\\\"/gs;
    return $safeeval->reval('"'.$text.'"');
 }
 
+#
+# Executes code inside of safeeval
+#
 sub codeeval {
    my ($safeeval,$code)=@_;
    return $safeeval->reval($code);

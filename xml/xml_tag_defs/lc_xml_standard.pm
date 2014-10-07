@@ -69,5 +69,15 @@ sub start_script_html {
    }
 }
 
+sub start_script_meta {
+   my ($p,$safe,$stack,$token)=@_;
+   $p->get_text('/script');
+   $p->get_token;
+   pop(@{$stack->{'tags'}});
+   return '';
+}
+
+
+
 1;
 __END__
