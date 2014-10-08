@@ -25,6 +25,9 @@
   <xs:simpleType name="int-or-perl">
     <xs:union memberTypes="xs:int perl"/>
   </xs:simpleType>
+  <xs:simpleType name="non-negative-int-or-perl">
+    <xs:union memberTypes="xs:nonNegativeInteger perl"/>
+  </xs:simpleType>
   <xs:simpleType name="decimal-or-perl">
     <xs:union memberTypes="xs:decimal perl"/>
   </xs:simpleType>
@@ -6212,14 +6215,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="width" type="xs:nonNegativeInteger">
+      <xs:attribute name="width" type="non-negative-int-or-perl">
         <xs:annotation>
           <xs:documentation>
             The displayed width of the resource, in CSS pixels.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="height" type="xs:nonNegativeInteger">
+      <xs:attribute name="height" type="non-negative-int-or-perl">
         <xs:annotation>
           <xs:documentation>
             The displayed height of the resource, in CSS pixels.
@@ -6245,8 +6248,8 @@
       <xs:attribute name="object"/>
       <xs:attribute name="alt" type="xs:string"/>
       <xs:attribute name="name" type="xs:NMTOKEN"/>
-      <xs:attribute name="width" type="xs:nonNegativeInteger" use="required"/>
-      <xs:attribute name="height" type="xs:nonNegativeInteger" use="required"/>
+      <xs:attribute name="width" type="non-negative-int-or-perl" use="required"/>
+      <xs:attribute name="height" type="non-negative-int-or-perl" use="required"/>
       <xs:attribute name="hspace" type="xs:nonNegativeInteger"/>
       <xs:attribute name="vspace" type="xs:nonNegativeInteger"/>
     </xs:complexType>
