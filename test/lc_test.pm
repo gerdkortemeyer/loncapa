@@ -38,6 +38,7 @@ use Apache::lc_spreadsheets();
 use Apache::lc_mongodb();
 use Apache::lc_entity_namespace();
 use Apache::lc_asset_xml();
+use Apache::lc_metadata();
 use utf8;
 
 use Data::Dumper;
@@ -56,6 +57,12 @@ sub handler {
 
    $r->print($stack->{'metadata'}->{'title'});
    $r->print("\n<pre>\n".&Apache::lc_json_utils::perl_to_json($stack,{ pretty => 1 })."</pre>");
+
+   my ($metadata)=&Apache::lc_metadata::gather_metadata('/home/www/Desktop/test.html');
+   $r->print("\n---\nMeta: ".Dumper($metadata));
+
+
+
    return OK;
 
 
