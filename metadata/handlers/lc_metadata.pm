@@ -46,12 +46,21 @@ sub detect_languages {
    my $total=0;
    my %languagewords=();
    foreach my $word (@{$words}) {
+      $total++;
       foreach my $language (&lc_meta_detect_langs()) {
          if ($nonwords->{$language}->{$word}) {
             $languagewords{$language}++;
          }
       }
    }
+   unless ($total) { return []; }
+   my $languagesfound;
+   foreach my $language (&lc_meta_detect_langs()) {
+      if ($languagewords{$language}/$total>0.1) {
+         push(@{$languagesfound},$language);
+      }
+   }
+   return $languagesfound;
 }
 
 
@@ -72,5 +81,6 @@ sub load_nonwords {
        }
    }
 }
+
 1;
 __END__
