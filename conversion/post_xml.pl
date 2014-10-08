@@ -14,7 +14,7 @@ use Env qw(RES_DIR); # path of res directory parent (without the / at the end)
 
 no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
 
-my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','externalresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','customresponse','textfield','hiddensubmission','optionresponse','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
+my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','externalresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','customresponse','textfield','hiddensubmission','optionresponse','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','tex','web','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
 my @inline_responses = ('stringresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse');
 my @block_html = ('html','head','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
 my @all_block = (@block_elements, @block_html);
@@ -395,7 +395,7 @@ sub fix_fonts {
   foreach my $font (@fonts) {
     my $block = 0;
     for (my $child=$font->firstChild; defined $child; $child=$child->nextSibling) {
-      if (in_array(\@all_block, $child->nodeName)) {
+      if (in_array(\@all_block, $child->nodeName) || in_array(\@inline_responses, $child->nodeName)) {
         $block = 1;
         last;
       }
@@ -728,8 +728,8 @@ sub fix_align_attribute {
 sub fix_paragraphs_inside {
   my ($node) = @_;
   # blocks in which paragrahs will be added:
-  my @blocks_with_p = ('problem','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','togglebox','web','standalone');
-  my @fix_p_if_br_or_p = ('foil','item','text','label','hintgroup','hintpart','windowlink','div','li','dd','td','th','blockquote');
+  my @blocks_with_p = ('problem','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','togglebox','standalone');
+  my @fix_p_if_br_or_p = ('foil','item','text','label','hintgroup','hintpart','web','windowlink','div','li','dd','td','th','blockquote');
   if ((in_array(\@blocks_with_p, $node->nodeName) && scalar(@{$node->nonBlankChildNodes()}) > 0) ||
       (in_array(\@fix_p_if_br_or_p, $node->nodeName) &&
       (scalar(@{$node->getChildrenByTagName('br')}) > 0 ||
