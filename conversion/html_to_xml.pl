@@ -7,7 +7,9 @@ use utf8;
 use warnings;
 use HTML::Parser ();
 
-my @empty = ('br','meta','hr'); # always closing, end tags are ignored
+# always closing, end tags are ignored:
+my @empty = ('base','br','col','hr','img','input','keygen','link','meta','param','source','track','wbr');
+
 #my @block_html = ('html','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','table','tbody','tr','td','th','dl','pre','noscript','blockquote','object','applet','embed','map','form','fieldset','iframe');
 
 
