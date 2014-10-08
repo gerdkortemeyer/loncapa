@@ -26,15 +26,51 @@ use Apache::lc_parameters;
 use Apache::lc_logs;
 use Apache::lc_json_utils();
 use Apache::lc_file_utils();
+use locale;
+
+my $nonwords;
+
+sub split_words {
+   my ($text)=@_;
+   my @words=split(/\s+/s,$text);
+   foreach my $word (@words) {
+      $word=lc($word);
+   }
+   return \@words;
+}
+
+
+sub detect_languages {
+   my ($metadata,$words)=@_;
+   unless ($nonwords) { &load_nonwords(); }
+   my $total=0;
+   my %languagewords=();
+   foreach my $word (@{$words}) {
+      foreach my $language (&lc_meta_detect_langs()) {
+         if ($nonwords->{$language}->{$word}) {
+            $languagewords{$language}++;
+         }
+      }
+   }
+}
 
 
 sub gather_metadata {
    my ($fn)=@_;
    my ($output,$stack)=&Apache::lc_asset_xml::target_render($fn,'meta');
    my $metadata=$stack->{'metadata'};
+   my $words=&split_words($output);
+   $metadata->{'suggested'}->{'languages'}=&detect_languages($metadata,$words);
    return $metadata;
 }
 
-
+sub load_nonwords {
+   foreach my $language (&lc_meta_detect_langs()) {
+       my $content=&Apache::lc_file_utils::readfile(&lc_conf_dir().'/non_keyword/non_keyword_'.$language.'.txt');
+       foreach my $word (split(/\s+/s,$content)) {
+          $nonwords->{$language}->{$word}=1;
+       }
+   }
+}
 1;
 __END__
