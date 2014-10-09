@@ -1,0 +1,5 @@
+\chapter{Interface Programming}
+
+Pages in LON-CAPA are typically controlled by an HTML, a JavaScript, and a Perl script file located in the {\tt loncapa/app} directory.  {\tt loncapa/app/html/pages} contains simple HTML pages which are displayed to the user.  The HTML file will usually load a JavaScript file located in {\tt loncapa/app/scripts} control client-side functionality.  Server-side functionality is controlled by Perl modules located in {\tt loncapa/app/handlers}.
+
+Let's look at the Portfolio space as an example to see how these different files are used.  Clicking on {\tt Places->Portfolio} from the menu runs a JavaScript function which loads {\tt loncapa/app/html/pages/lc\_portfolio.html}.  This is a minimal page that defines the framework of HTML elements and loads the JavaScript file {\tt loncapa/app/scripts/lc\_portfolio.js}

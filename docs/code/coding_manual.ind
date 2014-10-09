@@ -21,32 +21,32 @@
 
   \indexspace
 
-  \item Daxe, \hyperpage{41}
+  \item Daxe, \hyperpage{43}
   \item deep linking, \hyperpage{12}
 
   \indexspace
 
-  \item encoding, \hyperpage{33}
+  \item encoding, \hyperpage{35}
   \item entities, \hyperpage{19}
-  \item equation editor, \hyperpage{37}
-  \item equation parser, \hyperpage{38}
-  \item equation syntax, \hyperpage{39}
+  \item equation editor, \hyperpage{39}
+  \item equation parser, \hyperpage{40}
+  \item equation syntax, \hyperpage{41}
 
   \indexspace
 
   \item Github, \hyperpage{10}
-  \item graphical editor, \hyperpage{41}
+  \item graphical editor, \hyperpage{43}
   \item groups, \hyperpage{19}
 
   \indexspace
 
   \item homeserver, \hyperpage{15}, \hyperpage{20}, \hyperpage{25--27}
-  \item HTML pages, \hyperpage{31}
+  \item HTML pages, \hyperpage{33}
 
   \indexspace
 
   \item installation, \hyperpage{9}
-  \item internationalization, \hyperpage{5}, \hyperpage{33}
+  \item internationalization, \hyperpage{5}, \hyperpage{35}
 
   \indexspace
 
@@ -61,7 +61,7 @@
 
   \indexspace
 
-  \item math, \hyperpage{37}
+  \item math, \hyperpage{39}
   \item memcached, \hyperpage{27}
   \item metadata, \hyperpage{20}
   \item MongoDB, \hyperpage{20}, \hyperpage{25}
@@ -76,7 +76,7 @@
   \item portfolio, \hyperpage{20}
   \item PostgreSQL, \hyperpage{25}
   \item privileges, \hyperpage{7}
-  \item problems, \hyperpage{31}
+  \item problems, \hyperpage{33}
   \item profiles, \hyperpage{20}
   \item publication, \hyperpage{20}
 
@@ -84,11 +84,12 @@
 
   \item realms, \hyperpage{21}
   \item replication, \hyperpage{12}, \hyperpage{17}, \hyperpage{27}
-  \item roles, \hyperpage{7}, \hyperpage{21}, \hyperpage{26}, \hyperpage{34}
+  \item roles, \hyperpage{7}, \hyperpage{21}, \hyperpage{26}, 
+		\hyperpage{36}
 
   \indexspace
 
-  \item safeeval, \hyperpage{32}
+  \item safeeval, \hyperpage{34}
   \item scalability, \hyperpage{7}
   \item sections, \hyperpage{19}
   \item SSL, \hyperpage{6}
@@ -99,10 +100,10 @@
 
   \indexspace
 
-  \item unicode, \hyperpage{33}
+  \item unicode, \hyperpage{35}
   \item usernames, \hyperpage{19}, \hyperpage{25}
   \item users, \hyperpage{19}, \hyperpage{25}
-  \item utf-8, \hyperpage{33}
+  \item utf-8, \hyperpage{35}
 
   \indexspace
 
@@ -110,7 +111,7 @@
 
   \indexspace
 
-  \item XML, \hyperpage{29}
-  \item XML parser, \hyperpage{12}, \hyperpage{31}
+  \item XML, \hyperpage{31}
+  \item XML parser, \hyperpage{12}, \hyperpage{33}
 
 \end{theindex}
