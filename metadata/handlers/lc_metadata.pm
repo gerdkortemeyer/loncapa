@@ -41,7 +41,7 @@ sub split_words {
 
 
 sub detect_languages {
-   my ($metadata,$words)=@_;
+   my ($words)=@_;
    unless ($nonwords) { &load_nonwords(); }
    my $total=0;
    my %languagewords=();
@@ -63,13 +63,38 @@ sub detect_languages {
    return $languagesfound;
 }
 
+sub detect_keywords {
+   my ($words,$languages)=@_;
+   my %keywords=();
+   foreach my $word (@{$words}) {
+# no single entities or numbers
+       unless ($word) { next; }
+       if ($word=~/\&.+\;/) { next; }
+       if ($word=~/\d/) { next; }
+# no nonwords
+       my $is=1;
+       foreach my $language (&lc_meta_detect_langs()) {
+          if ($nonwords->{$language}->{$word}) {
+             $is=0;
+             last;
+          }
+       }
+       if ($is) {
+          $keywords{$word}++;
+       }
+   }
+   my @keywordarray=keys(%keywords);
+   return \@keywordarray;
+}
 
 sub gather_metadata {
    my ($fn)=@_;
    my ($output,$stack)=&Apache::lc_asset_xml::target_render($fn,'meta');
    my $metadata=$stack->{'metadata'};
    my $words=&split_words($output);
-   $metadata->{'suggested'}->{'languages'}=&detect_languages($metadata,$words);
+   $metadata->{'suggested'}->{'languages'}=&detect_languages($words);
+#   $metadata->{'suggested'}->{'taxonomy'}=&Apache::lc_taxonomy::detect_taxonomy($words,$metadata->{'suggested'}->{'languages'});
+   $metadata->{'suggested'}->{'keywords'}=&detect_keywords($words,$metadata->{'suggested'}->{'languages'});
    return $metadata;
 }
 
