@@ -1,5 +1,16 @@
 \chapter{Interface Programming}
-
-Pages in LON-CAPA are typically controlled by an HTML, a JavaScript, and a Perl script file located in the {\tt loncapa/app} directory.  {\tt loncapa/app/html/pages} contains simple HTML pages which are displayed to the user.  The HTML file will usually load a JavaScript file located in {\tt loncapa/app/scripts} control client-side functionality.  Server-side functionality is controlled by Perl modules located in {\tt loncapa/app/handlers}.
-
-Let's look at the Portfolio space as an example to see how these different files are used.  Clicking on {\tt Places->Portfolio} from the menu runs a JavaScript function which loads {\tt loncapa/app/html/pages/lc\_portfolio.html}.  This is a minimal page that defines the framework of HTML elements and loads the JavaScript file {\tt loncapa/app/scripts/lc\_portfolio.js}
+\label{interfaceprogramming}
+\section{Interface Pages}
+\subsection{General Mechanism}
+Interface pages (as opposed to asset pages) in LON-CAPA are typically controlled by an HTML, a JavaScript, and a Perl script file located in the {\tt loncapa/app} directory.
+\begin{itemize}
+\item  {\tt loncapa/app/html/pages} and {\tt loncapa/app/html/modals} contain the HTML/XML framework which is displayed to the user. The page contains the general layout, and it combines HTML-tags with LON-CAPA XML-tags. As this
+page is processed by the parser (see Chapter~\ref{xmlparser} on page~\pageref{xmlparser}), the LON-CAPA tags are replaced by dynamically generated HTML on the way to the browser.
+\item The HTML file will usually load JavaScript files located in {\tt loncapa/app/scripts} to control client-side functionality.
+\item As the scripts make AJAX requests\index{AJAX} to update parts of the page, server-side functionality is provided by Perl modules located in {\tt loncapa/app/handlers}. These modules often return simple text or JSON,\index{JSON} which is processed client-side and injected into the page.
+\end{itemize}
+In rare cases, XML-tags establish areas which are not updated by client-side JavaScript, but which require server-side functionality. Usually, this is the case when server-provided data is not
+structured enough to map well into JSON, e.g., when targeted follow-up questions in various formats need to be generated on the fly. The handlers for this server-side generated HTML, which is then
+directly injected into the page, are located in {\tt loncapa/xml/xml\_includes}.
+\subsection{An Example}
+Let's look at the Portfolio space as an example to see how these different files are used.  Clicking on {\tt Places->Portfolio} from the menu runs a JavaScript function which loads {\tt loncapa/app/html/pages/lc\_portfolio.html}.  This is a minimal page that defines the framework of HTML elements and loads the JavaScript file {\tt loncapa/app/scripts/lc\_portfolio.js}, in addition to other scripts that are loaded when the parser processes the {\tt $<$html$>$}-tag.

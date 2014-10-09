@@ -2,6 +2,7 @@
 
   \item access server, \hyperpage{13}
   \item accessibility, \hyperpage{5}
+  \item AJAX, \hyperpage{29}
   \item assessments, \hyperpage{27}
   \item assetid, \hyperpage{28}
   \item assets, \hyperpage{11}, \hyperpage{20}, \hyperpage{27}
@@ -50,6 +51,7 @@
 
   \indexspace
 
+  \item JSON, \hyperpage{29}
   \item json, \hyperpage{27}
 
   \indexspace
@@ -84,8 +86,7 @@
 
   \item realms, \hyperpage{21}
   \item replication, \hyperpage{12}, \hyperpage{17}, \hyperpage{27}
-  \item roles, \hyperpage{7}, \hyperpage{21}, \hyperpage{26}, 
-		\hyperpage{36}
+  \item roles, \hyperpage{7}, \hyperpage{21}, \hyperpage{26}, \hyperpage{36}
 
   \indexspace
 

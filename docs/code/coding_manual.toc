@@ -88,6 +88,9 @@
 \contentsline {section}{\numberline {8.5}Tokens}{28}{section.8.5}
 \contentsline {section}{\numberline {8.6}Namespaces}{28}{section.8.6}
 \contentsline {chapter}{\numberline {9}Interface Programming}{29}{chapter.9}
+\contentsline {section}{\numberline {9.1}Interface Pages}{29}{section.9.1}
+\contentsline {subsection}{\numberline {9.1.1}General Mechanism}{29}{subsection.9.1.1}
+\contentsline {subsection}{\numberline {9.1.2}An Example}{29}{subsection.9.1.2}
 \contentsline {chapter}{\numberline {10}XML}{31}{chapter.10}
 \contentsline {section}{\numberline {10.1}Structure of Documents}{31}{section.10.1}
 \contentsline {subsection}{\numberline {10.1.1}Classic LON-CAPA Content}{31}{subsection.10.1.1}
