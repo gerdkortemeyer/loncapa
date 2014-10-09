@@ -72,6 +72,36 @@ sub third_level {
 
 sub detect_taxonomy {
    my ($words,$languages)=@_;
+   unless ($#{$languages}>=0) { $languages=['en']; }
+   my %foundtaxonomies=();
+   unless ($taxonomy) { &load_taxonomy() }
+# First level
+   foreach my $firstkey (%{$taxonomy}) {
+      if ($taxonomy->{$firstkey}->{'pro'}) {
+&logdebug("pro $firstkey");
+      }
+      if ($taxonomy->{$firstkey}->{'con'}) {
+&logdebug("con $firstkey");
+      }
+# Second level
+      foreach my $secondkey (keys(%{$taxonomy->{$firstkey}->{'sub'}})) {
+         if ($taxonomy->{$firstkey}->{'sub'}->{$secondkey}->{'pro'}) {
+&logdebug("pro $firstkey:$secondkey");
+         }
+         if ($taxonomy->{$firstkey}->{'sub'}->{$secondkey}->{'con'}) {
+&logdebug("con $firstkey:$secondkey");
+         }
+# Third level
+         foreach my $thirdkey (keys(%{$taxonomy->{$firstkey}->{'sub'}->{$secondkey}->{'sub'}})) {
+            if ($taxonomy->{$firstkey}->{'sub'}->{$secondkey}->{'sub'}->{$thirdkey}->{'pro'}) {
+&logdebug("pro $firstkey:$secondkey:$thirdkey");
+            }
+            if ($taxonomy->{$firstkey}->{'sub'}->{$secondkey}->{'sub'}->{$thirdkey}->{'con'}) {
+&logdebug("con $firstkey:$secondkey:$thirdkey");
+            }
+         }
+      }
+   }
    return {};
 }
 
