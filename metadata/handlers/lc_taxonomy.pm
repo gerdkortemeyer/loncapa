@@ -70,8 +70,10 @@ sub third_level {
    return %terms;
 }
 
-
-
+sub detect_taxonomy {
+   my ($words,$languages)=@_;
+   return {};
+}
 
 sub load_taxonomy {
    $taxonomy=&Apache::lc_json_utils::json_to_perl(

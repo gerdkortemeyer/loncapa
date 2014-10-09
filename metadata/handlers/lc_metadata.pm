@@ -26,15 +26,22 @@ use Apache::lc_parameters;
 use Apache::lc_logs;
 use Apache::lc_json_utils();
 use Apache::lc_file_utils();
+use Apache::lc_taxonomy();
 use locale;
 
 my $nonwords;
 
 sub split_words {
    my ($text)=@_;
-   my @words=split(/\s+/s,$text);
-   foreach my $word (@words) {
-      $word=lc($word);
+   my @words;
+   my @rawwords=split(/\s+/s,$text);
+   foreach my $word (@rawwords) {
+      unless ($word) { next; }
+      if ($word=~/\&.+\;/) { next; }
+      if ($word=~/\d/) { next; }
+      $word=~s/[\.\;\"\:\'\,]+$//s;
+      $word=~s/^[\.\;\"\:\'\,]+//s;
+      push(@words,lc($word));
    }
    return \@words;
 }
@@ -67,10 +74,6 @@ sub detect_keywords {
    my ($words,$languages)=@_;
    my %keywords=();
    foreach my $word (@{$words}) {
-# no single entities or numbers
-       unless ($word) { next; }
-       if ($word=~/\&.+\;/) { next; }
-       if ($word=~/\d/) { next; }
 # no nonwords
        my $is=1;
        foreach my $language (&lc_meta_detect_langs()) {
@@ -93,7 +96,7 @@ sub gather_metadata {
    my $metadata=$stack->{'metadata'};
    my $words=&split_words($output);
    $metadata->{'suggested'}->{'languages'}=&detect_languages($words);
-#   $metadata->{'suggested'}->{'taxonomy'}=&Apache::lc_taxonomy::detect_taxonomy($words,$metadata->{'suggested'}->{'languages'});
+   $metadata->{'suggested'}->{'taxonomy'}=&Apache::lc_taxonomy::detect_taxonomy($words,$metadata->{'suggested'}->{'languages'});
    $metadata->{'suggested'}->{'keywords'}=&detect_keywords($words,$metadata->{'suggested'}->{'languages'});
    return $metadata;
 }
