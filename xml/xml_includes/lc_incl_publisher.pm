@@ -29,7 +29,9 @@ use Apache::lc_xml_gadgets();
 use Apache::lc_entity_users();
 use Apache::lc_entity_roles();
 use Apache::lc_entity_profile();
+use Apache::lc_metadata();
 use Apache::lc_logs;
+use Apache::lc_parameters;
 use Apache2::Const qw(:common);
 
 
@@ -50,6 +52,11 @@ sub incl_publisher_screens {
             &Apache::lc_xml_forms::hidden_field('url',$content{'url'});
    if ($content{'stage_two'}) {
    } else {
+      my $parserextensions=&lc_match_parser();
+      my $newmetadata;
+      if ($content{'url'}=~/\.$parserextensions$/i) {
+         $newmetadata=&Apache::lc_metadata::gather_metadata(&Apache::lc_entity_urls::asset_resource_filename($content{'entity'},$content{'domain'},'wrk','-'));
+      }
       $output.=&Apache::lc_xml_forms::form_table_start().
                &Apache::lc_xml_forms::table_input_field('title','title','Title','text',40,$metadata->{'title'}).
                &Apache::lc_xml_forms::table_input_field('language','language','Language','contentlanguage',undef,$metadata->{'language'}).

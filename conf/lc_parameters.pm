@@ -27,7 +27,7 @@ require Exporter;
 our @ISA = qw (Exporter);
 our @EXPORT = qw(lc_home_dir lc_certs_dir lc_cluster_dir lc_cluster_table lc_cluster_manager lc_conf_dir 
                  lc_roles_defs lc_log_dir lc_res_dir lc_wrk_dir lc_short_expire lc_medium_expire lc_long_expire
-                 lc_meta_detect_langs);
+                 lc_meta_detect_langs lc_match_parser);
 
 sub lc_home_dir {
    return '/home/loncapa/';
@@ -84,6 +84,10 @@ sub lc_long_expire {
 sub lc_meta_detect_langs {
    return ('de','en');
 }
+
+sub lc_match_parser {
+   return "(xml|html|htm|xhtml|xhtm)";
+} 
 
 1;
 __END__
