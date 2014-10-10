@@ -14,8 +14,8 @@ use Env qw(RES_DIR); # path of res directory parent (without the / at the end)
 
 no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
 
-my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','externalresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','customresponse','textfield','hiddensubmission','optionresponse','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','tex','web','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
-my @inline_responses = ('stringresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse');
+my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','textfield','hiddensubmission','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','tex','web','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
+my @inline_responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse');
 my @block_html = ('html','head','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
 my @all_block = (@block_elements, @block_html);
 my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
@@ -730,7 +730,7 @@ sub fix_paragraphs_inside {
   # blocks in which paragrahs will be added:
   my @blocks_with_p = ('problem','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','togglebox','standalone');
   my @fix_p_if_br_or_p = ('foil','item','text','label','hintgroup','hintpart','web','windowlink','div','li','dd','td','th','blockquote');
-  if ((in_array(\@blocks_with_p, $node->nodeName) && scalar(@{$node->nonBlankChildNodes()}) > 0) ||
+  if ((in_array(\@blocks_with_p, $node->nodeName) && paragraph_needed($node)) ||
       (in_array(\@fix_p_if_br_or_p, $node->nodeName) &&
       (scalar(@{$node->getChildrenByTagName('br')}) > 0 ||
        scalar(@{$node->getChildrenByTagName('p')}) > 0))) {
@@ -759,6 +759,20 @@ sub fix_paragraphs_inside {
   }
 }
 
+# returns 1 if a paragraph is needed inside this node (assuming the parent can have paragraphs)
+sub paragraph_needed {
+  my ($node) = @_;
+  for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
+    if (($child->nodeType == XML_TEXT_NODE && $child->nodeValue !~ /^\s*$/) ||
+        ($child->nodeType == XML_ELEMENT_NODE && !in_array(\@inline_responses, $child->nodeName)) ||
+        $child->nodeType == XML_CDATA_SECTION_NODE ||
+        $child->nodeType == XML_ENTITY_NODE || $child->nodeType == XML_ENTITY_REF_NODE) {
+      return(1);
+    }
+  }
+  return(0);
+}
+
 # fixes paragraphs inside paragraphs (without a block in-between)
 sub fix_paragraph {
   my ($p) = @_;
@@ -771,16 +785,8 @@ sub fix_paragraph {
     my $middle = $trees->{'middle'};
     my $right = $trees->{'right'};
     if (defined $left) {
-      my $paragraph_needed = 0;
-      for (my $child=$left->firstChild; defined $child; $child=$child->nextSibling) {
-        if (($child->nodeType == XML_TEXT_NODE && $child->nodeValue !~ /^\s*$/) ||
-            $child->nodeType == XML_ELEMENT_NODE || $child->nodeType == XML_CDATA_SECTION_NODE ||
-            $child->nodeType == XML_ENTITY_NODE || $child->nodeType == XML_ENTITY_REF_NODE) {
-          $paragraph_needed = 1;
-        }
-      }
-      if (!$paragraph_needed) {
-        # this was just blank text or comments, it should not create a new paragraph
+      if (!paragraph_needed($left)) {
+        # this was just blank text, comments or inline responses, it should not create a new paragraph
         my $next;
         for (my $child=$left->firstChild; defined $child; $child=$next) {
           $next = $child->nextSibling;
@@ -864,8 +870,18 @@ sub fix_paragraph {
         $replacement->appendChild($first);
       }
       if (defined $right->firstChild) {
-        $replacement->appendChild($right);
-        fix_paragraph($right);
+        if (paragraph_needed($right)) {
+          $replacement->appendChild($right);
+          fix_paragraph($right);
+        } else {
+          # this was just blank text, comments or inline responses, it should not create a new paragraph
+          my $next;
+          for (my $child=$right->firstChild; defined $child; $child=$next) {
+            $next = $child->nextSibling;
+            $right->removeChild($child);
+            $replacement->appendChild($child);
+          }
+        }
       }
     }
     $p->parentNode->replaceChild($replacement, $p);
