@@ -334,12 +334,13 @@
         An internal textline tag is necessary for the student’s response to go in. It can check the string for either case or order.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
         <xs:element ref="hiddenline"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -400,7 +401,7 @@
         Query for a long text or a line, possibly with spell checking.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
@@ -408,6 +409,7 @@
         <xs:element ref="textline"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -426,11 +428,12 @@
         The value of the foils can only be true, false, or unused.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element name="foilgroup" type="radiobuttonresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -539,11 +542,12 @@
         The foilgroup is required to have an options attribute which should be a perl list of possible options for the student.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element name="foilgroup" type="optionresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -701,11 +705,12 @@
         Query for matches betweens items from two lists.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="foilgroup" type="matchresponse--foilgroup"/>
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -862,11 +867,12 @@
         Query to sort a list of items in the right order.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element name="foilgroup" type="rankresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -939,11 +945,12 @@
         Query for the selection of an image in a list.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element name="foilgroup" type="imageresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -1059,13 +1066,14 @@
         A significant figures parameter tells the system how many significant figures there are in the problem, as either a single number, e.g. 3, or a range of acceptable values, expressed as min,max. The system will check to make sure that the student’s answer contains this many significant digits, useful in many scientific calculations.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
         <xs:element ref="hiddenline"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -1105,13 +1113,14 @@
     <xs:annotation>
       <xs:documentation>Query for a formula.</xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
         <xs:element ref="hiddenline"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -1209,7 +1218,7 @@
         MathResponse is extremely powerful, as it tests answers for conditions rather than agreement with a particular correct answer. An unfortunate byproduct, however, is that it cannot be analyzed by several of the LON-CAPA statistics tools.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="answer" type="mathresponse--answer">
           <xs:annotation>
@@ -1224,6 +1233,7 @@
         <xs:element ref="textline"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -1283,11 +1293,12 @@
         Examples can be functions that have certain slopes, curvature, maxima or minima at specified independent coordinate values. The students create their answer by dragging the curves and adjusting the slopes.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="functionplotelements"/>
         <xs:element ref="functionplotruleset"/>
         <xs:element ref="hintgroup"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -1943,12 +1954,13 @@
         Query for an organic chemical structure with a molecular editor.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
         <xs:element ref="hiddenline"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -2009,12 +2021,13 @@
         Query for a chemical reaction.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textline"/>
         <xs:element ref="hiddenline"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -2041,7 +2054,7 @@
         The use of this response type is generally discouraged, since the responses will not be analyzable by the LON-CAPA statistics tools.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="answer" type="customresponse--answer"/>
         <xs:element ref="hintgroup"/>
@@ -2050,6 +2063,7 @@
         <xs:element ref="textline"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
@@ -2103,13 +2117,14 @@
         - message: optional message to have shown to the student.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="textline"/>
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
+        <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
