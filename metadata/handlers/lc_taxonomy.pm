@@ -28,6 +28,10 @@ use Apache::lc_file_utils();
 
 my $taxonomy;
 
+#
+# Return hashes of first, second, and third level
+# taxonomy options
+#
 sub first_level {
    my ($lang)=@_;
    unless ($lang) { $lang='en'; }
@@ -70,39 +74,71 @@ sub third_level {
    return %terms;
 }
 
+#
+# Try to automatically assign some taxonomies
+# based on indicative and counter-indicative
+# keywords
+#
+
+sub found_a_term {
+   my ($words,$wordlist)=@_;
+   foreach my $term (@{$wordlist}) {
+      foreach my $word (@{$words}) {
+         if ($word eq $term) { 
+            return 1; 
+         }
+      }
+   }
+   return 0;
+}
+
+sub check_procon {
+   my ($procon,$words,$term,%foundtaxonomies)=@_;
+   if ($procon->{'pro'}) {
+      if (&found_a_term($words,$procon->{'pro'})) {
+         $foundtaxonomies{$term}++;
+      }
+   }
+   if ($procon->{'con'}) {
+      if (&found_a_term($words,$procon->{'con'})) {
+         delete($foundtaxonomies{$term});
+      }
+   }
+   return %foundtaxonomies;
+}
+
 sub detect_taxonomy {
-   my ($words,$languages)=@_;
-   unless ($#{$languages}>=0) { $languages=['en']; }
+   my ($words)=@_;
    my %foundtaxonomies=();
    unless ($taxonomy) { &load_taxonomy() }
 # First level
    foreach my $firstkey (%{$taxonomy}) {
-      if ($taxonomy->{$firstkey}->{'pro'}) {
-&logdebug("pro $firstkey");
-      }
-      if ($taxonomy->{$firstkey}->{'con'}) {
-&logdebug("con $firstkey");
+      unless (ref{$firstkey} eq 'HASH') { 
+         %foundtaxonomies=&check_procon($taxonomy->{$firstkey},$words,$firstkey,%foundtaxonomies);
       }
 # Second level
       foreach my $secondkey (keys(%{$taxonomy->{$firstkey}->{'sub'}})) {
-         if ($taxonomy->{$firstkey}->{'sub'}->{$secondkey}->{'pro'}) {
-&logdebug("pro $firstkey:$secondkey");
-         }
-         if ($taxonomy->{$firstkey}->{'sub'}->{$secondkey}->{'con'}) {
-&logdebug("con $firstkey:$secondkey");
-         }
+         %foundtaxonomies=&check_procon($taxonomy->{$firstkey}->{'sub'}->{$secondkey},$words,"$firstkey:$secondkey",%foundtaxonomies);
 # Third level
          foreach my $thirdkey (keys(%{$taxonomy->{$firstkey}->{'sub'}->{$secondkey}->{'sub'}})) {
-            if ($taxonomy->{$firstkey}->{'sub'}->{$secondkey}->{'sub'}->{$thirdkey}->{'pro'}) {
-&logdebug("pro $firstkey:$secondkey:$thirdkey");
-            }
-            if ($taxonomy->{$firstkey}->{'sub'}->{$secondkey}->{'sub'}->{$thirdkey}->{'con'}) {
-&logdebug("con $firstkey:$secondkey:$thirdkey");
-            }
+            %foundtaxonomies=&check_procon($taxonomy->{$firstkey}->{'sub'}->{$secondkey}->{'sub'}->{$thirdkey},$words,"$firstkey:$secondkey:$thirdkey",%foundtaxonomies);
          }
       }
    }
-   return {};
+# Filter out less specific
+   my @taxonomyterms=();
+   foreach my $taxo (sort(keys(%foundtaxonomies))) {
+      if ($#taxonomyterms>=0) {
+         if ($taxo=~/^\Q$taxonomyterms[-1]\E/) {
+            $taxonomyterms[-1]=$taxo;
+         } else {
+            push(@taxonomyterms,$taxo);
+         }
+      } else {
+         push(@taxonomyterms,$taxo);
+      }
+   }
+   return \@taxonomyterms; 
 }
 
 sub load_taxonomy {

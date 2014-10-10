@@ -96,7 +96,7 @@ sub gather_metadata {
    my $metadata=$stack->{'metadata'};
    my $words=&split_words($output);
    $metadata->{'suggested'}->{'languages'}=&detect_languages($words);
-   $metadata->{'suggested'}->{'taxonomy'}=&Apache::lc_taxonomy::detect_taxonomy($words,$metadata->{'suggested'}->{'languages'});
+   $metadata->{'suggested'}->{'taxonomy'}=&Apache::lc_taxonomy::detect_taxonomy($words);
    $metadata->{'suggested'}->{'keywords'}=&detect_keywords($words,$metadata->{'suggested'}->{'languages'});
    return $metadata;
 }
