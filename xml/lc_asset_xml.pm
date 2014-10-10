@@ -130,7 +130,7 @@ sub parser {
    for (my $i=0;$i<=$#{$stack->{'tags'}};$i++) {
       &error($stack,'missing_ending',{'expected' => $stack->{'tags'}->[$i]->{'name'} });
    }
-   return ($output,$stack);
+   return $output;
 }
 
 
@@ -142,11 +142,11 @@ sub target_render {
    my $p=HTML::TokeParser->new($fn);
    $p->empty_element_tags(1);
    my $safe=&Apache::lc_asset_safeeval::init_safe();
-   my $stack;
+   my $stack={};
    my $status;
 #FIXME: actually find status
-   my ($output,$finalstack)=&parser($p,$safe,$stack,$status,$target);
-   return ($output,$finalstack);
+   my $output=&parser($p,$safe,$stack,$status,$target);
+   return ($output,$stack);
 }
 
 
@@ -158,7 +158,7 @@ sub handler {
    unless (-e $fn) {
       return HTTP_NOT_FOUND;
    }
-   $r->print((&target_render($fn,'html'))[0]);
+   $r->print(&target_render($fn,'html'));
    return OK;
 }
 

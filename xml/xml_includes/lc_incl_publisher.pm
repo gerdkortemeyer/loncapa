@@ -56,6 +56,12 @@ sub incl_publisher_screens {
       my $newmetadata;
       if ($content{'url'}=~/\.$parserextensions$/i) {
          $newmetadata=&Apache::lc_metadata::gather_metadata(&Apache::lc_entity_urls::asset_resource_filename($content{'entity'},$content{'domain'},'wrk','-'));
+         unless ($newmetadata) {
+            &logerror('Attempt to publish ['.$content{'entity'}.'] ['.$content{'domain'}.'] failed');
+            return &Apache::lc_xml_utils::error_message('A problem occured, please try again later.').'<script>$(".lcerror").show()</script>';
+         }
+         if ($newmetadata->{'errors'}) {
+         }
       }
       $output.=&Apache::lc_xml_forms::form_table_start().
                &Apache::lc_xml_forms::table_input_field('title','title','Title','text',40,$metadata->{'title'}).

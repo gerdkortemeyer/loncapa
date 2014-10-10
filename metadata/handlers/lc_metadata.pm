@@ -94,6 +94,9 @@ sub gather_metadata {
    my ($fn)=@_;
    my ($output,$stack)=&Apache::lc_asset_xml::target_render($fn,'meta');
    my $metadata=$stack->{'metadata'};
+   if ($stack->{'errors'}) {
+      $metadata->{'errors'}=$stack->{'errors'};
+   }
    my $words=&split_words($output);
    $metadata->{'suggested'}->{'languages'}=&detect_languages($words);
    $metadata->{'suggested'}->{'taxonomy'}=&Apache::lc_taxonomy::detect_taxonomy($words);
