@@ -61,6 +61,13 @@ sub incl_publisher_screens {
             return &Apache::lc_xml_utils::error_message('A problem occured, please try again later.').'<script>$(".lcerror").show()</script>';
          }
          if ($newmetadata->{'errors'}) {
+            $output.=&Apache::lc_xml_utils::problem_message('The document has errors and cannot be published.').'<script>$(".lcproblem").show()</script>';
+            $output.='<ul class="lcstandard">';
+            foreach my $error (@{$newmetadata->{'errors'}}) {
+               $output.='<li>'.&mt($error->{'type'}.': [_1] [_2]',$error->{'expected'},$error->{'found'}).'</li>';
+            }
+            $output.='</ul>';
+            return $output;
          }
       }
       $output.=&Apache::lc_xml_forms::form_table_start().

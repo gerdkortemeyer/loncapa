@@ -158,7 +158,7 @@ sub handler {
    unless (-e $fn) {
       return HTTP_NOT_FOUND;
    }
-   $r->print(&target_render($fn,'html'));
+   $r->print((&target_render($fn,'html'))[0]);
    return OK;
 }
 
