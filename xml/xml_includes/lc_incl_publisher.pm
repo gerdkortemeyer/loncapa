@@ -49,18 +49,21 @@ sub taxonomyinput {
 
 sub languageinput {
    my ($oldmeta,$newmeta)=@_;
-   my $lang='';
-&logdebug("Old:".Dumper($oldmeta));
-&logdebug($#{$oldmeta->{'languages'}});
-&logdebug("New:".Dumper($newmeta));
-&logdebug($#{$newmeta->{'suggested'}->{'languages'}});
-   if ($#{$oldmeta->{'languages'}}==0) {
-      $lang=${$oldmeta->{'languages'}}[0];
-   } elsif ($#{$newmeta->{'suggested'}->{'languages'}}==0) {
-      $lang=${$newmeta->{'suggested'}->{'languages'}}[0];
-&logdebug("Language:".$lang);
+   if ($oldmeta->{'languages'}) {
+      my $output='';
+      for (my $i=0; $i<=$#{$oldmeta->{'languages'}}; $i++) {
+         $output.=&Apache::lc_xml_forms::table_input_field('language'.$i,'language'.$i,'Language','contentlanguage',undef,${$oldmeta->{'languages'}}[$i]); 
+      }
+      return $output;
+   } elsif ($newmeta->{'suggested'}->{'languages'}) {
+      my $output='';
+      for (my $i=0; $i<=$#{$newmeta->{'suggested'}->{'languages'}}; $i++) { 
+         $output.=&Apache::lc_xml_forms::table_input_field('language'.$i,'language'.$i,'Language','contentlanguage',undef,${$newmeta->{'suggested'}->{'languages'}}[$i]);
+      }
+      return $output;
+   } else {
+      return &Apache::lc_xml_forms::table_input_field('language0','language0','Language','contentlanguage');
    }
-   return &Apache::lc_xml_forms::table_input_field('language','language','Language','contentlanguage',undef,$lang);
 }
 
 sub incl_publisher_screens {

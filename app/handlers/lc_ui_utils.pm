@@ -182,7 +182,6 @@ sub content_language_choices {
        push(@{$language_short},$codes{$key});
        push(@{$language_name},$key);
    }
-   my $default;
    unless ($default) {
       $default=&Apache::lc_ui_localize::context_language();
    }
