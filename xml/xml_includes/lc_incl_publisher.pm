@@ -42,6 +42,27 @@ our @ISA = qw(Exporter);
 # Export all tags that this module defines in the list below
 our @EXPORT = qw(incl_publisher_screens);
 
+sub taxonomyinput {
+   my ($oldmeta,$newmeta)=@_;
+   return &Apache::lc_xml_forms::inputfield('taxonomy','newtaxo','newtaxo',undef,'physics:mechanics:linearkinematics');
+}
+
+sub languageinput {
+   my ($oldmeta,$newmeta)=@_;
+   my $lang='';
+&logdebug("Old:".Dumper($oldmeta));
+&logdebug($#{$oldmeta->{'languages'}});
+&logdebug("New:".Dumper($newmeta));
+&logdebug($#{$newmeta->{'suggested'}->{'languages'}});
+   if ($#{$oldmeta->{'languages'}}==0) {
+      $lang=${$oldmeta->{'languages'}}[0];
+   } elsif ($#{$newmeta->{'suggested'}->{'languages'}}==0) {
+      $lang=${$newmeta->{'suggested'}->{'languages'}}[0];
+&logdebug("Language:".$lang);
+   }
+   return &Apache::lc_xml_forms::table_input_field('language','language','Language','contentlanguage',undef,$lang);
+}
+
 sub incl_publisher_screens {
 # Get posted content
    my %content=&Apache::lc_entity_sessions::posted_content();
@@ -70,12 +91,13 @@ sub incl_publisher_screens {
             return $output;
          }
       }
+# We can go ahead with the publication, figure out what we take
       $output.=&Apache::lc_xml_forms::form_table_start().
-               &Apache::lc_xml_forms::table_input_field('title','title','Title','text',40,$metadata->{'title'}).
-               &Apache::lc_xml_forms::table_input_field('language','language','Language','contentlanguage',undef,$metadata->{'language'}).
-               &Apache::lc_xml_forms::form_table_end();
-#FIXME: should go in next screen
-      $output.=&Apache::lc_xml_forms::inputfield('taxonomy','newtaxo','newtaxo',undef,'physics:mechanics:linearkinematics');
+               &Apache::lc_xml_forms::table_input_field('title','title','Title','text',40,($metadata->{'title'}?$metadata->{'title'}:$newmetadata->{'title'})).
+               &languageinput($metadata,$newmetadata).
+               &Apache::lc_xml_forms::form_table_end().
+               &taxonomyinput($metadata,$newmetadata);
+$output.='<pre>'.Dumper($metadata).Dumper($newmetadata).'</pre>';
    }
    return $output;
 }

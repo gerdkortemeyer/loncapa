@@ -74,6 +74,29 @@ sub third_level {
    return %terms;
 }
 
+
+#
+# Give the full names for a taxonomy
+#
+sub full_name {
+   my ($lang,$first,$second,$third)=@_;
+   unless ($lang) { $lang='en'; }
+   unless ($taxonomy) { &load_taxonomy(); }
+   my $firstfull='';
+   my $secondfull='';
+   my $thirdfull='';
+   if ($first) {
+      $firstfull=$taxonomy->{$first}->{'lang'}->{$lang};
+   }
+   if ($second) {
+      $secondfull=$taxonomy->{$first}->{'sub'}->{$second}->{'lang'}->{$lang};
+   }
+   if ($third) {
+      $thirdfull=$taxonomy->{$first}->{'sub'}->{$second}->{'sub'}->{$third}->{'lang'}->{$lang};
+   }
+   return ($firstfull,$secondfull,$thirdfull);
+}
+
 #
 # Try to automatically assign some taxonomies
 # based on indicative and counter-indicative
