@@ -2,11 +2,6 @@ var entity;
 var domain;
 var url;
 
-function reload_listing() {
-   $('#rightslist').dataTable().fnDestroy();
-   init_datatable();
-}
-
 function list_title() {
    $.ajax({
         url : '/change_status',
@@ -26,4 +21,15 @@ $(document).ready(function() {
      $('#cancel').click(function() {
         parent.hide_modal();
      });
+     $("#continue").click(function() {
+        $.ajax({
+        url : '/publisher_screens',
+        type: "POST",
+        data : $('#publisherform').serialize(),
+        success: function(data){
+            $('#publisher_screens').html(data);
+        }
+      });
+     });
+
 });

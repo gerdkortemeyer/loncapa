@@ -76,6 +76,7 @@ sub incl_publisher_screens {
             &Apache::lc_xml_forms::hidden_field('url',$content{'url'});
    if ($content{'stage_two'}) {
    } else {
+# First screen
       my $parserextensions=&lc_match_parser();
       my $newmetadata;
       if ($content{'url'}=~/\.$parserextensions$/i) {
@@ -99,7 +100,7 @@ sub incl_publisher_screens {
                &Apache::lc_xml_forms::table_input_field('title','title','Title','text',40,($metadata->{'title'}?$metadata->{'title'}:$newmetadata->{'title'})).
                &languageinput($metadata,$newmetadata).
                &Apache::lc_xml_forms::form_table_end().
-               &taxonomyinput($metadata,$newmetadata);
+               &Apache::lc_xml_forms::triggerbutton('addlanguage','Add Language');
 $output.='<pre>'.Dumper($metadata).Dumper($newmetadata).'</pre>';
    }
    return $output;

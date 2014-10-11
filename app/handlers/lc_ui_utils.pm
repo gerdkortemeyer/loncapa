@@ -175,8 +175,8 @@ sub content_language_choices {
       $codes{$names[$i]}=$code;
    }
 # Output arrays
-   my $language_short;
-   my $language_name;
+   my $language_short=['-'];
+   my $language_name=['-'];
 # Sort in order of translated language
    foreach my $key (sort(@names)) {
        push(@{$language_short},$codes{$key});
