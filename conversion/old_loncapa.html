@@ -52,7 +52,7 @@ Shared simple types.
 Value restriction based on xs:string<ul>
 
 <li>
-<tt>((\$|\&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{][^$&amp;\]\}]+[\]\}])*(\([^$&amp;\)]+\))*</tt>
+<tt>((\$|\&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{][^\]\}]+[\]\}])*(\([^$&amp;\)]+\))*</tt>
 </li>
 
 </ul>
@@ -64,6 +64,15 @@ Value restriction based on xs:string<ul>
 </h3>
 Possible values:<ul>
 <li>xs:int perl</li>
+</ul>
+
+<hr>
+
+<a name="non-negative-int-or-perl_0"></a>
+<h3>Simple type <span class="nomtitre">non-negative-int-or-perl</span>
+</h3>
+Possible values:<ul>
+<li>xs:nonNegativeInteger perl</li>
 </ul>
 
 <hr>
@@ -407,7 +416,7 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#dataresponse_0">dataresponse</a>, <a href="#hintgroup_0">hintgroup</a>, <a href="#hintpart_0">hintpart</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#web_0">web</a>, <a href="#standalone_0">standalone</a>, <a href="#languageblock_0">languageblock</a>, <a href="#translated_0">translated</a>, <a href="#lang_0">lang</a>, <a href="#window_0">window</a>, <a href="#windowlink_0">windowlink</a>, <a href="#togglebox_0">togglebox</a>, <a href="#instructorcomment_0">instructorcomment</a>, <a href="#th_0">th</a>, <a href="#blockquote_0">blockquote</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
+<br>Parents:<a href="#dataresponse_0">dataresponse</a>, <a href="#hintgroup_0">hintgroup</a>, <a href="#hintpart_0">hintpart</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#web_0">web</a>, <a href="#standalone_0">standalone</a>, <a href="#languageblock_0">languageblock</a>, <a href="#translated_0">translated</a>, <a href="#lang_0">lang</a>, <a href="#window_0">window</a>, <a href="#windowlink_0">windowlink</a>, <a href="#togglebox_0">togglebox</a>, <a href="#instructorcomment_0">instructorcomment</a>, <a href="#comment_0">comment</a>, <a href="#th_0">th</a>, <a href="#blockquote_0">blockquote</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
 <br>
 <hr>
 
@@ -458,10 +467,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#script_0">script</a>
-<br>
-</li>
-<li>
-<a href="#display_2">display</a>
 <br>
 </li>
 <li>
@@ -658,10 +663,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#display_2">display</a>
-<br>
-</li>
-<li>
 <a href="#languageblock_0">languageblock</a>
 <br>
 </li>
@@ -809,6 +810,10 @@ Choice between:<ul>
 <h3>Group <span class="nomtitre">inlines</span>
 </h3>
 Choice between:<ul>
+<li>
+<a href="#display_2">display</a>
+<br>
+</li>
 <li>
 <a href="#m_0">m</a>
 <br>
@@ -5230,7 +5235,7 @@ This creates a hidden form field with the old response value.
 
 
 <div class="indentation">
-    
+            
 </div>
 
 <br>Parents:<a href="#stringresponse_0">stringresponse</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#customresponse_0">customresponse</a>, <a href="#externalresponse_0">externalresponse</a>, <a href="#dataresponse_0">dataresponse</a>
@@ -9926,24 +9931,6 @@ Attribute <span class="nomattribut"></span>:
 <br>
 <hr>
 
-<a name="display_2"></a>
-<h3>Element <span class="nomtitre">display</span>
-</h3>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-Display Script Result Block
-
-The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
-</div>
-<br>
-
-
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
-<br>
-<hr>
-
 <a name="languageblock_0"></a>
 <h3>Element <span class="nomtitre">languageblock</span>
 </h3>
@@ -10276,8 +10263,7 @@ Choice between:<ul>
 
 <a name="comment_0"></a>
 <h3>Element <span class="nomtitre">comment</span>
-</h3>type: <tt>xs:string</tt>
-<br>
+</h3>
 
 
 <div class="documentation">
@@ -10286,6 +10272,16 @@ The content is ignored.
 </div>
 <br>
 
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text-without-responses_0">text-without-responses</a>
+<br>
+</li>
+</ul>
+
+</div>
 
 <br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
 <br>
@@ -10703,6 +10699,24 @@ Non-HTML inline elements mixed with text
 </div>
 <br>
 
+
+<a name="display_2"></a>
+<h3>Element <span class="nomtitre">display</span>
+</h3>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Display Script Result Block
+
+The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
+</div>
+<br>
+
+
+<br>Parents:<a href="#inlines_0">inlines</a>
+<br>
+<hr>
 
 <a name="m_0"></a>
 <h3>Element <span class="nomtitre">m</span>
@@ -12333,11 +12347,29 @@ Attribute <span class="nomattribut">rules</span>:
 
 Sequence with:<ul>
 <li>
+<a href="#thead_0">thead</a>
+<br>
+</li>
+<li>
+<a href="#tfoot_0">tfoot</a>
+<br>
+</li>
+<li>Choice between:<ul>
+<li>
+<a name="tbody_0"></a>
+<h3>Element <span class="nomtitre">tbody</span>
+</h3>type: <a href="#tbody-with-responses_0">tbody-with-responses</a>
+<br>
+<br>
+</li>
+<li>
 <a name="tr_0"></a>
 <h3>Element <span class="nomtitre">tr</span>
 </h3>type: <a href="#tr-with-responses_0">tr-with-responses</a>
 <br>
 <br>
+</li>
+</ul>
 </li>
 </ul>
 
@@ -12354,6 +12386,22 @@ Sequence with:<ul>
 
 Sequence with:<ul>
 <li>
+<a href="#thead_0">thead</a>
+<br>
+</li>
+<li>
+<a href="#tfoot_0">tfoot</a>
+<br>
+</li>
+<li>Choice between:<ul>
+<li>
+<a name="tbody_1"></a>
+<h3>Element <span class="nomtitre">tbody</span>
+</h3>type: <a href="#tbody-without-responses_0">tbody-without-responses</a>
+<br>
+<br>
+</li>
+<li>
 <a name="tr_1"></a>
 <h3>Element <span class="nomtitre">tr</span>
 </h3>type: <a href="#tr-without-responses_0">tr-without-responses</a>
@@ -12361,8 +12409,108 @@ Sequence with:<ul>
 <br>
 </li>
 </ul>
+</li>
+</ul>
 
 
+
+</div>
+<hr>
+
+<a name="thead_0"></a>
+<h3>Element <span class="nomtitre">thead</span>
+</h3>
+
+<div class="indentation">
+Sequence with:<ul>
+<li>
+<a name="tr_2"></a>
+<h3>Element <span class="nomtitre">tr</span>
+</h3>type: <a href="#tr-without-responses_0">tr-without-responses</a>
+<br>
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">align</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+
+</div>
+
+<br>
+<br>
+<hr>
+
+<a name="tfoot_0"></a>
+<h3>Element <span class="nomtitre">tfoot</span>
+</h3>
+
+<div class="indentation">
+Sequence with:<ul>
+<li>
+<a name="tr_3"></a>
+<h3>Element <span class="nomtitre">tr</span>
+</h3>type: <a href="#tr-without-responses_0">tr-without-responses</a>
+<br>
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">align</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+
+</div>
+
+<br>
+<br>
+<hr>
+
+<a name="tbody-with-responses_0"></a>
+<h3>Complex type <span class="nomtitre">tbody-with-responses</span>
+</h3>
+<div class="indentation">
+Sequence with:<ul>
+<li>Choice between:<ul>
+<li>
+<a name="tr_4"></a>
+<h3>Element <span class="nomtitre">tr</span>
+</h3>type: <a href="#tr-with-responses_0">tr-with-responses</a>
+<br>
+<br>
+</li>
+</ul>
+</li>
+</ul>
+Attribute <span class="nomattribut">align</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+
+</div>
+<hr>
+
+<a name="tbody-without-responses_0"></a>
+<h3>Complex type <span class="nomtitre">tbody-without-responses</span>
+</h3>
+<div class="indentation">
+Sequence with:<ul>
+<li>Choice between:<ul>
+<li>
+<a name="tr_5"></a>
+<h3>Element <span class="nomtitre">tr</span>
+</h3>type: <a href="#tr-without-responses_0">tr-without-responses</a>
+<br>
+<br>
+</li>
+</ul>
+</li>
+</ul>
+Attribute <span class="nomattribut">align</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
 
 </div>
 <hr>
@@ -13042,7 +13190,7 @@ The HTML &lt;br&gt; Element (or HTML Line Break Element) produces a line break i
 
 
 <div class="indentation">
-    
+            
 </div>
 
 <br>Parents:<a href="#inlines_0">inlines</a>
@@ -13584,7 +13732,7 @@ The MIME type to use to select the plug-in to instantiate.
 
 </div>
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <tt>xs:nonNegativeInteger</tt>
+    <div class="indentation">optional<br>type: <a href="#non-negative-int-or-perl_0">non-negative-int-or-perl</a>
 <br>
 
 
@@ -13596,7 +13744,7 @@ The displayed width of the resource, in CSS pixels.
 
 </div>
 Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <tt>xs:nonNegativeInteger</tt>
+    <div class="indentation">optional<br>type: <a href="#non-negative-int-or-perl_0">non-negative-int-or-perl</a>
 <br>
 
 
@@ -13658,11 +13806,11 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">required<br>type: <tt>xs:nonNegativeInteger</tt>
+    <div class="indentation">required<br>type: <a href="#non-negative-int-or-perl_0">non-negative-int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">required<br>type: <tt>xs:nonNegativeInteger</tt>
+    <div class="indentation">required<br>type: <a href="#non-negative-int-or-perl_0">non-negative-int-or-perl</a>
 <br>
 </div>
 Attribute <span class="nomattribut">hspace</span>:
@@ -15017,6 +15165,8 @@ Value restriction based on xs:string<ul>
 <a href="#meta_1">meta</a>
             (under head.misc)
           <br>
+<a href="#non-negative-int-or-perl_0">non-negative-int-or-perl</a>
+<br>
 <a href="#noscript_0">noscript</a>
 <br>
 <a href="#notsolved_0">notsolved</a>
@@ -15254,6 +15404,16 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#Task_0">Task</a>
 <br>
+<a href="#tbody_0">tbody</a>
+            (under table-with-responses)
+          <br>
+<a href="#tbody_1">tbody</a>
+            (under table-without-responses)
+          <br>
+<a href="#tbody-without-responses_0">tbody-without-responses</a>
+<br>
+<a href="#tbody-with-responses_0">tbody-with-responses</a>
+<br>
 <a href="#td_0">td</a>
             (under tr-with-responses)
           <br>
@@ -15284,7 +15444,11 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#text-with-responses_0">text-with-responses</a>
 <br>
+<a href="#tfoot_0">tfoot</a>
+<br>
 <a href="#th_0">th</a>
+<br>
+<a href="#thead_0">thead</a>
 <br>
 <a href="#tic_0">tic</a>
 <br>
@@ -15300,6 +15464,18 @@ Value restriction based on xs:string<ul>
           <br>
 <a href="#tr_1">tr</a>
             (under table-without-responses)
+          <br>
+<a href="#tr_2">tr</a>
+            (under thead)
+          <br>
+<a href="#tr_3">tr</a>
+            (under tfoot)
+          <br>
+<a href="#tr_4">tr</a>
+            (under tbody-with-responses)
+          <br>
+<a href="#tr_5">tr</a>
+            (under tbody-without-responses)
           <br>
 <a href="#translated_0">translated</a>
 <br>
