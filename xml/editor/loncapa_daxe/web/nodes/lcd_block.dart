@@ -238,7 +238,7 @@ class LCDBlock extends DaxeNode {
   
   @override
   bool newlineInside() {
-    return(true);
+    return(hasContent);
   }
   
   @override
