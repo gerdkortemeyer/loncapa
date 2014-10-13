@@ -56,6 +56,8 @@ fix_paragraphs_inside($root);
 
 remove_empty_style($root);
 
+fix_empty_lc_elements($root);
+
 pretty($root);
 
 print $dom_doc->toString();
@@ -1032,6 +1034,24 @@ sub remove_empty_style {
           }
         }
       }
+    }
+  }
+}
+
+# remove whitespace inside LON-CAPA elements that have an empty content-model (HTML ones are handled by html_to_xml)
+sub fix_empty_lc_elements {
+  my ($node) = @_;
+  my @lcempty = ('arc','axis','backgroundplot','drawoptionlist','drawvectorsum','fill','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','hiddenline','hiddensubmission','key','line','location','organicstructure','parameter','plotobject','plotvector','responseparam','spline','textline','xlabel','ylabel');
+  if (in_array(\@lcempty, $node->nodeName)) {
+    if (defined $node->firstChild && !defined $node->firstChild->nextSibling &&
+        $node->firstChild->nodeType == XML_TEXT_NODE && $node->firstChild->nodeValue =~ /^\s*$/) {
+      $node->removeChild($node->firstChild);
+    }
+    return;
+  }
+  for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
+    if ($child->nodeType == XML_ELEMENT_NODE) {
+      fix_empty_lc_elements($child);
     }
   }
 }
