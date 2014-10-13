@@ -208,8 +208,8 @@
     <AFFICHAGE_ELEMENT element="answer" type="lcdblock">
       <PARAMETRE nom="police" valeur="Monospaced"/>
     </AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="vector" type="typesimple"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="value" type="typesimple"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="vector" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="value" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="mathresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotelements" type="lcdblock"/>
@@ -279,7 +279,7 @@
     <AFFICHAGE_ELEMENT element="randomlabel" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="bgimg" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="labelgroup" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="location" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="location" type="lcdblock"/>
     
     <AFFICHAGE_ELEMENT element="part" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="parserlib" type="lcdblock"/>
