@@ -21,6 +21,18 @@ $(document).ready(function() {
      $('#cancel').click(function() {
         parent.hide_modal();
      });
+     
+     $("#addlanguage").click(function() {
+        $.ajax({
+        url : '/publisher_screens',
+        type: "POST",
+        data : $('#publisherform').serialize()+"&addlanguage=1&returnstage=one",
+        success: function(data){
+            $('#publisher_screens').html(data);
+        }
+      });
+     });
+
      $("#continue").click(function() {
         $.ajax({
         url : '/publisher_screens',

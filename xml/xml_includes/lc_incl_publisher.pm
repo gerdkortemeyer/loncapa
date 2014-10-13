@@ -71,10 +71,17 @@ sub incl_publisher_screens {
    my %content=&Apache::lc_entity_sessions::posted_content();
    my $metadata=&Apache::lc_entity_urls::dump_metadata($content{'entity'},$content{'domain'});
    my $output='';
+# Remember what we are talking about
    $output.=&Apache::lc_xml_forms::hidden_field('entity',$content{'entity'}).
             &Apache::lc_xml_forms::hidden_field('domain',$content{'domain'}).
             &Apache::lc_xml_forms::hidden_field('url',$content{'url'});
-   if ($content{'stage_two'}) {
+# Figure out the stage (which screen in the sequence)
+# Override can be used to direct back to a previous screen if needed
+   my $stage=$content{'stage'};
+   if ($content{'returnstage'}) {
+      $stage=$content{'returnstage'};
+   }
+   if ($stage eq 'two') {
    } else {
 # First screen
       my $parserextensions=&lc_match_parser();
@@ -100,7 +107,8 @@ sub incl_publisher_screens {
                &Apache::lc_xml_forms::table_input_field('title','title','Title','text',40,($metadata->{'title'}?$metadata->{'title'}:$newmetadata->{'title'})).
                &languageinput($metadata,$newmetadata).
                &Apache::lc_xml_forms::form_table_end().
-               &Apache::lc_xml_forms::triggerbutton('addlanguage','Add Language');
+               &Apache::lc_xml_forms::triggerbutton('addlanguage','Add Language').
+               &Apache::lc_xml_forms::hidden_field('stage','two');
 $output.='<pre>'.Dumper($metadata).Dumper($newmetadata).'</pre>';
    }
    return $output;
