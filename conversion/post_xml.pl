@@ -635,6 +635,7 @@ sub fix_cells {
 }
 
 # replaces ul/ul by ul/li/ul and the same for ol (using the previous li if possible)
+# also adds a ul element when a li has no ul/ol ancestor
 sub fix_lists {
   my ($root) = @_;
   my @uls = $dom_doc->getElementsByTagName('ul');
@@ -658,6 +659,44 @@ sub fix_lists {
             $list->insertBefore($li, $next);
           }
         }
+      }
+    }
+  }
+  my @lis = $dom_doc->getElementsByTagName('li');
+  foreach my $li (@lis) {
+    my $found_list_ancestor = 0;
+    my $ancestor = $li->parentNode;
+    while (defined $ancestor) {
+      if ($ancestor->nodeName eq 'ul' || $ancestor->nodeName eq 'ol') {
+        $found_list_ancestor = 1;
+        last;
+      }
+      $ancestor = $ancestor->parentNode;
+    }
+    if (!$found_list_ancestor) {
+      # replace li by ul and add li under ul
+      my $ul = $dom_doc->createElement('ul');
+      $li->parentNode->insertBefore($ul, $li);
+      $li->parentNode->removeChild($li);
+      $ul->appendChild($li);
+      # add all other li afterwards inside ul (there might be text nodes in-between)
+      my $next = $ul->nextSibling;
+      while (defined $next) {
+        my $next_next = $next->nextSibling;
+        if ($next->nodeType == XML_TEXT_NODE && $next->nodeValue =~ /^\s*$/ &&
+            defined $next_next && $next_next->nodeType == XML_ELEMENT_NODE && $next_next->nodeName eq 'li') {
+          $next->parentNode->removeChild($next);
+          $ul->appendChild($next);
+          $next = $next_next;
+          $next_next = $next_next->nextSibling;
+        }
+        if ($next->nodeType == XML_ELEMENT_NODE && $next->nodeName eq 'li') {
+          $next->parentNode->removeChild($next);
+          $ul->appendChild($next);
+        } else {
+          last;
+        }
+        $next = $next_next;
       }
     }
   }
