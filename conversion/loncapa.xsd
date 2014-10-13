@@ -4380,13 +4380,18 @@
       </xs:choice>
     </xs:complexType>
   </xs:element>
-  <xs:element name="comment" type="xs:string">
+  <xs:element name="comment">
     <xs:annotation>
       <xs:documentation>
         Allows one to comment out sections of code in a balanced manner, or to provide a comment description of how a problem works.
         The content is ignored.
       </xs:documentation>
     </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+      </xs:choice>
+    </xs:complexType>
   </xs:element>
   <xs:element name="organicstructure">
     <xs:annotation>
