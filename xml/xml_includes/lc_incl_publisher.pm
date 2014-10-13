@@ -66,6 +66,50 @@ sub languageinput {
    }
 }
 
+#
+# Stage one asks title and language
+#
+sub stage_one {
+   my ($metadata,%content)=@_;
+   my $output='';
+   my $parserextensions=&lc_match_parser();
+   my $newmetadata;
+# Can this content be parsed? If yes, get what we can. If it does not parse correctly, give up now
+   if ($content{'url'}=~/\.$parserextensions$/i) {
+      $newmetadata=&Apache::lc_metadata::gather_metadata(&Apache::lc_entity_urls::asset_resource_filename($content{'entity'},$content{'domain'},'wrk','-'));
+      unless ($newmetadata) {
+         &logerror('Attempt to publish ['.$content{'entity'}.'] ['.$content{'domain'}.'] failed');
+         return &Apache::lc_xml_utils::error_message('A problem occured, please try again later.').'<script>$(".lcerror").show()</script>';
+      }
+      if ($newmetadata->{'errors'}) {
+         $output.=&Apache::lc_xml_utils::problem_message('The document has errors and cannot be published.').'<script>$(".lcproblem").show()</script>';
+         $output.='<ul class="lcstandard">';
+         foreach my $error (@{$newmetadata->{'errors'}}) {
+            $output.='<li>'.&mt($error->{'type'}.': [_1] [_2]',$error->{'expected'},$error->{'found'}).'</li>';
+         }
+         $output.='</ul>';
+         return $output;
+      }
+   }
+# We can go ahead
+   $output.=&Apache::lc_xml_forms::form_table_start().
+            &Apache::lc_xml_forms::table_input_field('title','title','Title','text',40,($metadata->{'title'}?$metadata->{'title'}:$newmetadata->{'title'})).
+            &languageinput($metadata,$newmetadata).
+            &Apache::lc_xml_forms::form_table_end().
+            &Apache::lc_xml_forms::triggerbutton('addlanguage','Add Language').
+            &Apache::lc_xml_forms::hidden_field('stage','two');
+   return $output;
+}
+
+#
+# See if we learned anything that should be stored
+#
+sub storedata {
+   my ($metadata,%content)=@_;
+   my $output='';
+   return $output;
+}
+
 sub incl_publisher_screens {
 # Get posted content
    my %content=&Apache::lc_entity_sessions::posted_content();
@@ -81,36 +125,14 @@ sub incl_publisher_screens {
    if ($content{'returnstage'}) {
       $stage=$content{'returnstage'};
    }
+# Anything to store?
+   $output.=&storedata($metadata,%content);
    if ($stage eq 'two') {
    } else {
-# First screen
-      my $parserextensions=&lc_match_parser();
-      my $newmetadata;
-      if ($content{'url'}=~/\.$parserextensions$/i) {
-         $newmetadata=&Apache::lc_metadata::gather_metadata(&Apache::lc_entity_urls::asset_resource_filename($content{'entity'},$content{'domain'},'wrk','-'));
-         unless ($newmetadata) {
-            &logerror('Attempt to publish ['.$content{'entity'}.'] ['.$content{'domain'}.'] failed');
-            return &Apache::lc_xml_utils::error_message('A problem occured, please try again later.').'<script>$(".lcerror").show()</script>';
-         }
-         if ($newmetadata->{'errors'}) {
-            $output.=&Apache::lc_xml_utils::problem_message('The document has errors and cannot be published.').'<script>$(".lcproblem").show()</script>';
-            $output.='<ul class="lcstandard">';
-            foreach my $error (@{$newmetadata->{'errors'}}) {
-               $output.='<li>'.&mt($error->{'type'}.': [_1] [_2]',$error->{'expected'},$error->{'found'}).'</li>';
-            }
-            $output.='</ul>';
-            return $output;
-         }
-      }
-# We can go ahead with the publication, figure out what we take
-      $output.=&Apache::lc_xml_forms::form_table_start().
-               &Apache::lc_xml_forms::table_input_field('title','title','Title','text',40,($metadata->{'title'}?$metadata->{'title'}:$newmetadata->{'title'})).
-               &languageinput($metadata,$newmetadata).
-               &Apache::lc_xml_forms::form_table_end().
-               &Apache::lc_xml_forms::triggerbutton('addlanguage','Add Language').
-               &Apache::lc_xml_forms::hidden_field('stage','two');
-$output.='<pre>'.Dumper($metadata).Dumper($newmetadata).'</pre>';
+       $output.=&stage_one($metadata,%content);
    }
+#FIXME: debug
+   $output.='<pre>'.Dumper($metadata).'</pre>';
    return $output;
 }
 
