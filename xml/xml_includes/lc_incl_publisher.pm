@@ -48,22 +48,27 @@ sub taxonomyinput {
 }
 
 sub languageinput {
-   my ($oldmeta,$newmeta)=@_;
+   my ($oldmeta,$newmeta,$add)=@_;
+   my $output='';
+   my $max=0;
    if ($oldmeta->{'languages'}) {
-      my $output='';
       for (my $i=0; $i<=$#{$oldmeta->{'languages'}}; $i++) {
          $output.=&Apache::lc_xml_forms::table_input_field('language'.$i,'language'.$i,'Language','contentlanguage',undef,${$oldmeta->{'languages'}}[$i]); 
       }
-      return $output;
+      $max=$#{$oldmeta->{'languages'}};
    } elsif ($newmeta->{'suggested'}->{'languages'}) {
-      my $output='';
       for (my $i=0; $i<=$#{$newmeta->{'suggested'}->{'languages'}}; $i++) { 
          $output.=&Apache::lc_xml_forms::table_input_field('language'.$i,'language'.$i,'Language','contentlanguage',undef,${$newmeta->{'suggested'}->{'languages'}}[$i]);
       }
-      return $output;
+      $max=$#{$newmeta->{'suggested'}->{'languages'}};
    } else {
-      return &Apache::lc_xml_forms::table_input_field('language0','language0','Language','contentlanguage');
+      $output.=&Apache::lc_xml_forms::table_input_field('language0','language0','Language','contentlanguage');
    }
+   if ($add) {
+      $max++;
+      $output.=&Apache::lc_xml_forms::table_input_field('language'.$max,'language'.$max,'Language','contentlanguage',undef,'-');
+   }
+   return $output;
 }
 
 #
@@ -94,20 +99,34 @@ sub stage_one {
 # We can go ahead
    $output.=&Apache::lc_xml_forms::form_table_start().
             &Apache::lc_xml_forms::table_input_field('title','title','Title','text',40,($metadata->{'title'}?$metadata->{'title'}:$newmetadata->{'title'})).
-            &languageinput($metadata,$newmetadata).
+            &languageinput($metadata,$newmetadata,$content{'addlanguage'}).
             &Apache::lc_xml_forms::form_table_end().
-            &Apache::lc_xml_forms::triggerbutton('addlanguage','Add Language').
+            &Apache::lc_xml_forms::triggerbutton('addlanguage','Add Language').'<script>attach_language()</script>'.
             &Apache::lc_xml_forms::hidden_field('stage','two');
    return $output;
 }
 
 #
 # See if we learned anything that should be stored
+# Update metadata if needed
 #
 sub storedata {
    my ($metadata,%content)=@_;
-   my $output='';
-   return $output;
+   my $storemeta;
+   $content{'title'}=~s/^\s+//s;
+   $content{'title'}=~s/\s+$//s;
+   if ($content{'title'}) {
+      if ($content{'title'} ne $metadata->{'title'}) {
+         $storemeta->{'title'}=$content{'title'};
+      }
+   }
+   if ($storemeta) {
+      unless (&Apache::lc_entity_urls::store_metadata($content{'entity'},$content{'domain'},$storemeta)) {
+         &logerror('Attempt to store metadata for ['.$content{'entity'}.'] ['.$content{'domain'}.'] failed');
+         return &Apache::lc_xml_utils::error_message('A problem occured, please try again later.').'<script>$(".lcerror").show()</script>';
+      }
+   }
+   return '';
 }
 
 sub incl_publisher_screens {
@@ -127,6 +146,8 @@ sub incl_publisher_screens {
    }
 # Anything to store?
    $output.=&storedata($metadata,%content);
+# Reload to make sure we have the latest data
+   $metadata=&Apache::lc_entity_urls::dump_metadata($content{'entity'},$content{'domain'});
    if ($stage eq 'two') {
    } else {
        $output.=&stage_one($metadata,%content);

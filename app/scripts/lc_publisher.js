@@ -9,9 +9,24 @@ function list_title() {
         data: 'command=listtitle&entity='+entity+'&domain='+domain+'&url='+url,
         success: function(data){
             $('#fileinfo').html(data);
-        },
+        }
       }); 
 }
+
+function attach_language() {
+    $("#addlanguage").click(function() {
+        $.ajax({
+        url : '/publisher_screens',
+        type: "POST",
+        data : $('#publisherform').serialize()+"&addlanguage=1&returnstage=one",
+        success: function(data){
+            $('#publisher_screens').html(data);
+        },
+        complete: attach_language()
+      });
+     });
+}
+
 
 $(document).ready(function() {
      entity=parent.getParameterByName(location.search,'entity');
@@ -19,18 +34,8 @@ $(document).ready(function() {
      url=parent.getParameterByName(location.search,'url');
      list_title();
      $('#cancel').click(function() {
+        parent.document.getElementById('contentframe').contentWindow.reload_listing();
         parent.hide_modal();
-     });
-     
-     $("#addlanguage").click(function() {
-        $.ajax({
-        url : '/publisher_screens',
-        type: "POST",
-        data : $('#publisherform').serialize()+"&addlanguage=1&returnstage=one",
-        success: function(data){
-            $('#publisher_screens').html(data);
-        }
-      });
      });
 
      $("#continue").click(function() {
