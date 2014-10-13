@@ -248,6 +248,7 @@
       <xs:element ref="num"/>
       <xs:element ref="parse"/>
       <xs:element ref="algebra"/>
+      <xs:element ref="textline"/>
       
       <xs:element ref="span"/>
       <xs:element ref="a"/>
@@ -338,7 +339,6 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
-        <xs:element ref="textline"/>
         <xs:element ref="hiddenline"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
@@ -406,7 +406,6 @@
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textfield"/>
-        <xs:element ref="textline"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
         <xs:group ref="text-without-responses"/>
@@ -1070,7 +1069,6 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
-        <xs:element ref="textline"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
         <xs:element ref="hiddenline"/>
         <xs:group ref="text-without-responses"/>
@@ -1117,7 +1115,6 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
-        <xs:element ref="textline"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
         <xs:element ref="hiddenline"/>
         <xs:group ref="text-without-responses"/>
@@ -1230,7 +1227,6 @@
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textfield"/>
-        <xs:element ref="textline"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
         <xs:group ref="text-without-responses"/>
@@ -1958,7 +1954,6 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
-        <xs:element ref="textline"/>
         <xs:element ref="hiddenline"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
@@ -2025,7 +2020,6 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
-        <xs:element ref="textline"/>
         <xs:element ref="hiddenline"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
@@ -2060,7 +2054,6 @@
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textfield"/>
-        <xs:element ref="textline"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
         <xs:group ref="text-without-responses"/>
@@ -2120,7 +2113,6 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="hintgroup"/>
-        <xs:element ref="textline"/>
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
@@ -2236,7 +2228,8 @@
   <xs:element name="textline">
     <xs:annotation>
       <xs:documentation>
-        Single Line Text Entry Area
+        Single Line Text Entry Area. Displays a field to enter text for a response.
+        Should only be used inside stringresponse, numericalresponse, formularesponse, mathresponse, organicresponse, reactionresponse and customresponse.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -2292,7 +2285,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-            </xs:complexType>
+                </xs:complexType>
   </xs:element>
   
   <xs:annotation>
@@ -5535,7 +5528,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-            </xs:complexType>
+                </xs:complexType>
   </xs:element>
   <xs:element name="hr">
     <xs:annotation>

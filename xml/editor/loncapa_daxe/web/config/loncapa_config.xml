@@ -1435,6 +1435,10 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="textline">
       <TITRE>Single Line Text Entry Area</TITRE>
+      <DOCUMENTATION>
+        Single Line Text Entry Area. Displays a field to enter text for a response.
+        Should only be used inside stringresponse, numericalresponse, formularesponse, mathresponse, organicresponse, reactionresponse and customresponse.
+      </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="size">
         <TITRE>size</TITRE>
         <DOCUMENTATION>
