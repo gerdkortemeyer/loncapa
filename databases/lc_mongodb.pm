@@ -221,6 +221,19 @@ sub update_metadata {
    return $metadata->update({ entity => $entity, domain => $domain },$newdata);
 }
 
+sub delete_metadata_keys {
+   my ($entity,$domain,$keys)=@_;
+   unless ($metadata) { &init_mongo(); }
+   my $data=$metadata->find_one({ entity => $entity, domain => $domain });
+   foreach my $key (@{$keys}) {
+      delete($data->{'metadata'}->{$key});
+   }
+   $data->{'entity'}=$entity;
+   $data->{'domain'}=$domain;
+   delete($data->{'_id'});
+   return $metadata->update({ entity => $entity, domain => $domain },$data);
+}
+
 sub dump_metadata {
    my ($entity,$domain)=@_;
    unless ($metadata) { &init_mongo(); }

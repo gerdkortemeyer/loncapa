@@ -335,10 +335,12 @@ sub local_store_file_vitals {
 # =============================================================
 #
 # Called with the entity, the domain, and the new metadata as hash pointer
+# Takes optional array references of keys that should be completely flushed
+# - if those keys are not in the new metadata, they will be gone
 # Returns full updated metadata as hash pointer
 #
 sub local_store_metadata {
-   my ($entity,$domain,$newmetadata)=@_;
+   my ($entity,$domain,$newmetadata,$refreshkeys)=@_;
 # Do we already have metadata? If not, do it now
    my $oldmetadata=&local_dump_metadata($entity,$domain);
    unless ($oldmetadata) {
@@ -347,10 +349,19 @@ sub local_store_metadata {
          &logwarning("Could not generate metadata record for [$entity] [$domain]");
       }
    }
+# Any keys that should be completely flushed/deleted?
+   if ($refreshkeys) {
+      unless (&Apache::lc_mongodb::delete_metadata_keys($entity,$domain,$refreshkeys)) {
+         &logerror("Could not flush keys from metadata [$entity] [$domain]");
+         return undef;
+      }
+   }
 # Attempt to update the metadata
-   unless (&Apache::lc_mongodb::update_metadata($entity,$domain,$newmetadata)) {
-      &logerror("Could not store metadata [$entity] [$domain]");
-      return undef;
+   if ($newmetadata) {
+      unless (&Apache::lc_mongodb::update_metadata($entity,$domain,$newmetadata)) {
+         &logerror("Could not store metadata [$entity] [$domain]");
+         return undef;
+      }
    }
 # Now see if it updated correctly, and to what
    my $updatedmetadata=&local_dump_metadata($entity,$domain);
@@ -368,9 +379,10 @@ sub local_store_metadata {
 # Returns full updated metadata in JSON
 #
 sub local_json_store_metadata {
-   my ($entity,$domain,$newmetajson)=@_;
+   my ($entity,$domain,$newmetajson,$refreshkeys)=@_;
    return &Apache::lc_json_utils::perl_to_json(
-       &local_store_metadata($entity,$domain,&Apache::lc_json_utils::json_to_perl($newmetajson))
+       &local_store_metadata($entity,$domain,&Apache::lc_json_utils::json_to_perl($newmetajson),
+                                             &Apache::lc_json_utils::json_to_perl($refreshkeys))
                                               );
 }
 
@@ -378,12 +390,16 @@ sub local_json_store_metadata {
 # The remote call for storing metadata
 #
 sub remote_store_metadata {
-   my ($host,$entity,$domain,$newmetadata)=@_;
+   my ($host,$entity,$domain,$newmetadata,$refreshkeys)=@_;
    unless ($host) {
       &logwarning("Cannot store metadata, no homewserver for [$entity] [$domain]");
       return undef;
    }
+# Put refreshkeys into JSON
+   unless ($refreshkeys) { $refreshkeys=[]; }
+   my $refresh_json=&Apache::lc_json_utils::perl_to_json($newmetadata);
 # Put the new metadata into JSON
+   unless ($newmetadata) { $newmetadata={}; }
    my $fields_json=&Apache::lc_json_utils::perl_to_json($newmetadata);
    unless ($fields_json) {
       &logerror("Could not store metadata for [$entity] [$domain], no valid hash given");
@@ -393,7 +409,8 @@ sub remote_store_metadata {
    my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'store_metadata',
                               &Apache::lc_json_utils::perl_to_json({ entity => $entity,
                                                                      domain => $domain,
-                                                                     fields_json => $fields_json
+                                                                     fields_json => $fields_json,
+                                                                     refresh_json => $refresh_json
                                                                       }));
 # If okay, cache and return
    if ($code eq HTTP_OK) {
@@ -410,11 +427,11 @@ sub remote_store_metadata {
 }
 
 sub store_metadata {
-   my ($entity,$domain,$newmetadata)=@_;
+   my ($entity,$domain,$newmetadata,$refreshkeys)=@_;
    if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
-      return &local_store_metadata($entity,$domain,$newmetadata);
+      return &local_store_metadata($entity,$domain,$newmetadata,$refreshkeys);
    } else {
-      return &remote_dump_metadata(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
+      return &remote_store_metadata(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain,$newmetadata,$refreshkeys);
    }
 }
 

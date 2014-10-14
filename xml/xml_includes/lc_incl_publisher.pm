@@ -113,6 +113,8 @@ sub stage_one {
 sub storedata {
    my ($metadata,%content)=@_;
    my $storemeta;
+   my $refreshkeys;
+   my $storeflag=0;
    $content{'title'}=~s/^\s+//s;
    $content{'title'}=~s/\s+$//s;
    if ($content{'title'}) {
@@ -120,8 +122,19 @@ sub storedata {
          $storemeta->{'title'}=$content{'title'};
       }
    }
+   if ($content{'language0'}) {
+      my $n=0;
+      $storemeta->{'languages'}=[];
+      push(@{$refreshkeys},'languages');
+      while ($content{'language'.$n}) {
+         if ($content{'language'.$n} ne '-') {
+            push(@{$storemeta->{'languages'}},$content{'language'.$n});
+         }
+         $n++;
+      }
+   }
    if ($storemeta) {
-      unless (&Apache::lc_entity_urls::store_metadata($content{'entity'},$content{'domain'},$storemeta)) {
+      unless (&Apache::lc_entity_urls::store_metadata($content{'entity'},$content{'domain'},$storemeta,$refreshkeys)) {
          &logerror('Attempt to store metadata for ['.$content{'entity'}.'] ['.$content{'domain'}.'] failed');
          return &Apache::lc_xml_utils::error_message('A problem occured, please try again later.').'<script>$(".lcerror").show()</script>';
       }
