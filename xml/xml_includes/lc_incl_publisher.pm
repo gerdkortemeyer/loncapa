@@ -78,22 +78,22 @@ sub taxonomyinput {
    my ($oldmeta,$newmeta,$add)=@_;
    my $output='';
    my $max=0;
-   if ($oldmeta->{'languages'}) {
-      for (my $i=0; $i<=$#{$oldmeta->{'languages'}}; $i++) {
-         $output.=&Apache::lc_xml_forms::table_input_field('language'.$i,'language'.$i,'Language','contentlanguage',undef,${$oldmeta->{'languages'}}[$i]);
+   if ($oldmeta->{'taxonomy'}) {
+      for (my $i=0; $i<=$#{$oldmeta->{'taxonomy'}}; $i++) {
+         $output.=&Apache::lc_xml_forms::table_input_field('taxonomy'.$i,'taxonomy'.$i,'Taxonomy','taxonomy',undef,${$oldmeta->{'taxonomy'}}[$i]);
       }
-      $max=$#{$oldmeta->{'languages'}};
-   } elsif ($newmeta->{'suggested'}->{'languages'}) {
-      for (my $i=0; $i<=$#{$newmeta->{'suggested'}->{'languages'}}; $i++) {
-         $output.=&Apache::lc_xml_forms::table_input_field('language'.$i,'language'.$i,'Language','contentlanguage',undef,${$newmeta->{'suggested'}->{'languages'}}[$i]);
+      $max=$#{$oldmeta->{'taxonomy'}};
+   } elsif ($newmeta->{'suggested'}->{'taxonomy'}) {
+      for (my $i=0; $i<=$#{$newmeta->{'suggested'}->{'taxonomy'}}; $i++) {
+         $output.=&Apache::lc_xml_forms::table_input_field('taxonomy'.$i,'taxonomy'.$i,'Taxonomy','taxonomy',undef,${$newmeta->{'suggested'}->{'taxonomy'}}[$i]);
       }
-      $max=$#{$newmeta->{'suggested'}->{'languages'}};
+      $max=$#{$newmeta->{'suggested'}->{'taxonomy'}};
    } else {
-      $output.=&Apache::lc_xml_forms::table_input_field('language0','language0','Language','contentlanguage');
+      $output.=&Apache::lc_xml_forms::table_input_field('taxonomy0','taxonomy0','Taxomomy','taxonomy');
    }
    if ($add) {
       $max++;
-      $output.=&Apache::lc_xml_forms::table_input_field('language'.$max,'language'.$max,'Language','contentlanguage',undef,'-');
+      $output.=&Apache::lc_xml_forms::table_input_field('taxonomy'.$max,'taxonomy'.$max,'Taxonomy','taxonomy');
    }
    return $output;
 }
