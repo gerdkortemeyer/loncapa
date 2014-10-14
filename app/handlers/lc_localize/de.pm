@@ -234,6 +234,8 @@ use utf8;
 
 'Add Language' => 'Sprache hinzufügen',
 
+'Add Taxonomy' => 'Taxonomy hinzufügen',
+
 'The document has errors and cannot be published.' => 'Das Dokument hat Fehler und kann nicht veröffentlicht werden.',
 
 'unexpected_ending: [_1] [_2]' => 'Statt des Endes von &lt;[_1]&gt; wurde &lt;/[_2]&gt; gefunden.',

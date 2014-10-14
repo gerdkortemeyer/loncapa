@@ -72,6 +72,34 @@ sub languageinput {
 }
 
 #
+# Taxonomy input
+#
+sub taxonomyinput {
+   my ($oldmeta,$newmeta,$add)=@_;
+   my $output='';
+   my $max=0;
+   if ($oldmeta->{'languages'}) {
+      for (my $i=0; $i<=$#{$oldmeta->{'languages'}}; $i++) {
+         $output.=&Apache::lc_xml_forms::table_input_field('language'.$i,'language'.$i,'Language','contentlanguage',undef,${$oldmeta->{'languages'}}[$i]);
+      }
+      $max=$#{$oldmeta->{'languages'}};
+   } elsif ($newmeta->{'suggested'}->{'languages'}) {
+      for (my $i=0; $i<=$#{$newmeta->{'suggested'}->{'languages'}}; $i++) {
+         $output.=&Apache::lc_xml_forms::table_input_field('language'.$i,'language'.$i,'Language','contentlanguage',undef,${$newmeta->{'suggested'}->{'languages'}}[$i]);
+      }
+      $max=$#{$newmeta->{'suggested'}->{'languages'}};
+   } else {
+      $output.=&Apache::lc_xml_forms::table_input_field('language0','language0','Language','contentlanguage');
+   }
+   if ($add) {
+      $max++;
+      $output.=&Apache::lc_xml_forms::table_input_field('language'.$max,'language'.$max,'Language','contentlanguage',undef,'-');
+   }
+   return $output;
+}
+
+
+#
 # Stage one asks title and language
 #
 sub stage_one {
@@ -105,6 +133,29 @@ sub stage_one {
             &Apache::lc_xml_forms::hidden_field('stage','two');
    return $output;
 }
+
+#
+# Stage two asks for taxonomies and keywords
+#
+sub stage_two {
+   my ($metadata,%content)=@_;
+   my $output='';
+   my $parserextensions=&lc_match_parser();
+   my $newmetadata;
+   if ($content{'url'}=~/\.$parserextensions$/i) {
+      $newmetadata=&Apache::lc_metadata::gather_metadata(&Apache::lc_entity_urls::asset_resource_filename($content{'entity'},$content{'domain'},'wrk','-'));
+   }
+   $output.='<pre>'.Dumper($newmetadata).'</pre>';
+   $output.=&Apache::lc_xml_forms::form_table_start().
+            &taxonomyinput($metadata,$newmetadata,$content{'addtaxonomy'}).
+            &Apache::lc_xml_forms::form_table_end().
+            &Apache::lc_xml_forms::triggerbutton('addtaxonomy','Add Taxonomy').'<script>attach_taxonomy()</script>'.
+            &Apache::lc_xml_forms::hidden_field('stage','three');
+   return $output;
+}
+
+
+
 
 #
 # See if we learned anything that should be stored
@@ -162,6 +213,7 @@ sub incl_publisher_screens {
 # Reload to make sure we have the latest data
    $metadata=&Apache::lc_entity_urls::dump_metadata($content{'entity'},$content{'domain'});
    if ($stage eq 'two') {
+       $output.=&stage_two($metadata,%content);
    } else {
        $output.=&stage_one($metadata,%content);
    }

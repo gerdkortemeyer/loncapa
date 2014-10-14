@@ -27,6 +27,20 @@ function attach_language() {
      });
 }
 
+function attach_taxonomy() {
+    $("#addtaxonomy").click(function() {
+        $.ajax({
+        url : '/publisher_screens',
+        type: "POST",
+        data : $('#publisherform').serialize()+"&addtaxonomy=1&returnstage=two",
+        success: function(data){
+            $('#publisher_screens').html(data);
+        },
+        complete: attach_taxonomy()
+      });
+     });
+}
+
 
 $(document).ready(function() {
      entity=parent.getParameterByName(location.search,'entity');
