@@ -133,7 +133,7 @@ BEGIN {
                                             \&local_json_dump_namespace,'entity','domain','name');
 }
 \end{verbatim}
-The first argument is the command name, the following three arguments will be used for additional security, the next argument is the pointer to the subroutine that deals with this, and the remaining arguments are the named arguments of the function.
+The first argument is the command name, the following three arguments will be used for additional security (not yet implemented), the next argument is the pointer to the subroutine that deals with this, and the remaining arguments are the named arguments of the function.
 \subsection{Local versus remote}
 Routines need to determine if the data is local or remote, depending on the homeserver of the entity, like so:
 \begin{verbatim}
