@@ -135,10 +135,8 @@ sub detect_taxonomy {
    my %foundtaxonomies=();
    unless ($taxonomy) { &load_taxonomy() }
 # First level
-   foreach my $firstkey (%{$taxonomy}) {
-      unless (ref{$firstkey} eq 'HASH') { 
-         %foundtaxonomies=&check_procon($taxonomy->{$firstkey},$words,$firstkey,%foundtaxonomies);
-      }
+   foreach my $firstkey (keys(%{$taxonomy})) {
+      %foundtaxonomies=&check_procon($taxonomy->{$firstkey},$words,$firstkey,%foundtaxonomies);
 # Second level
       foreach my $secondkey (keys(%{$taxonomy->{$firstkey}->{'sub'}})) {
          %foundtaxonomies=&check_procon($taxonomy->{$firstkey}->{'sub'}->{$secondkey},$words,"$firstkey:$secondkey",%foundtaxonomies);
