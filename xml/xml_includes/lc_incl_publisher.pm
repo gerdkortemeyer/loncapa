@@ -135,7 +135,7 @@ sub stage_one {
 }
 
 #
-# Stage two asks for taxonomies and keywords
+# Stage two asks for taxonomies
 #
 sub stage_two {
    my ($metadata,%content)=@_;
@@ -145,7 +145,6 @@ sub stage_two {
    if ($content{'url'}=~/\.$parserextensions$/i) {
       $newmetadata=&Apache::lc_metadata::gather_metadata(&Apache::lc_entity_urls::asset_resource_filename($content{'entity'},$content{'domain'},'wrk','-'));
    }
-   $output.='<pre>'.Dumper($newmetadata).'</pre>';
    $output.=&Apache::lc_xml_forms::form_table_start().
             &taxonomyinput($metadata,$newmetadata,$content{'addtaxonomy'}).
             &Apache::lc_xml_forms::form_table_end().
@@ -153,6 +152,25 @@ sub stage_two {
             &Apache::lc_xml_forms::hidden_field('stage','three');
    return $output;
 }
+
+#
+# Stage three asks for keywords
+#
+sub stage_three {
+   my ($metadata,%content)=@_;
+   my $output='';
+   my $parserextensions=&lc_match_parser();
+   my $newmetadata;
+   if ($content{'url'}=~/\.$parserextensions$/i) {
+      $newmetadata=&Apache::lc_metadata::gather_metadata(&Apache::lc_entity_urls::asset_resource_filename($content{'entity'},$content{'domain'},'wrk','-'));
+   }
+   $output.='<pre>'.Dumper($newmetadata).'</pre>';
+   $output.=&Apache::lc_xml_forms::form_table_start().
+            &Apache::lc_xml_forms::form_table_end().
+            &Apache::lc_xml_forms::hidden_field('stage','four');
+   return $output;
+}
+
 
 
 
@@ -240,6 +258,8 @@ sub incl_publisher_screens {
    $metadata=&Apache::lc_entity_urls::dump_metadata($content{'entity'},$content{'domain'});
    if ($stage eq 'two') {
        $output.=&stage_two($metadata,%content);
+   } elsif ($stage eq 'three') {
+       $output.=&stage_three($metadata,%content);
    } else {
        $output.=&stage_one($metadata,%content);
    }

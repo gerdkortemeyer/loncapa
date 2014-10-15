@@ -3435,7 +3435,7 @@
             "lang":
                 {
                     "en":"Engineering",
-                    "de":"Maschinenbau"
+                    "de":"Ingenieurswissenschaften"
                 },
             "sub":
                 {
@@ -3444,7 +3444,15 @@
                             "lang":
                                 {
                                     "en":"Electrical",
-                                    "de":"Elekto"
+                                    "de":"Elektrotechnik"
+                                }
+                        },
+                    "mechanical":
+                        {
+                            "lang":
+                                {
+                                    "en":"Mechanical",
+                                    "de":"Maschinenbau"
                                 }
                         },
                     "civil":
