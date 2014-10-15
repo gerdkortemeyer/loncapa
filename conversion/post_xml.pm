@@ -29,7 +29,7 @@ my $dom_doc;
 # Parses the XML document and fixes many things to turn it into a LON-CAPA 3 document
 # Returns the text of the document.
 sub post_xml {
-  my ($text) = @_;
+  my ($text, $new_path) = @_;
   
   $dom_doc = XML::LibXML->load_xml(string => $text);
 
@@ -55,6 +55,8 @@ sub post_xml {
   replace_center($root); # must come after fix_tables
 
   fix_align_attribute($root);
+  
+  fix_parts($root);
 
   fix_paragraphs_inside($root);
 
@@ -64,7 +66,9 @@ sub post_xml {
 
   pretty($root);
 
-  return $dom_doc->toString();
+  open my $out, '>', $new_path;
+  print $out $dom_doc->toString(); # byte string !
+  close $out;
 }
 
 sub create_new_structure {
@@ -766,6 +770,59 @@ sub fix_align_attribute {
       $node->setAttribute('style', $style);
       $node->removeAttribute('align');
     }
+  }
+}
+
+sub fix_parts {
+  my ($root) = @_;
+  my @responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse','essayresponse','radiobuttonresponse','matchresponse','rankresponse','imageresponse','functionplotresponse');
+  my @parts = $dom_doc->getElementsByTagName('part');
+  my $with_parts = (scalar(@parts) > 0);
+  my $one_not_in_part = 0;
+  my $all_in_parts = 1;
+  foreach my $response_tag (@responses) {
+    my @response_nodes = $dom_doc->getElementsByTagName($response_tag);
+    foreach my $response (@response_nodes) {
+      my $in_part = 0;
+      my $ancestor = $response->parentNode;
+      while (defined $ancestor) {
+        if ($ancestor->nodeName eq 'part') {
+          if ($in_part) {
+            die "part in part !!!";
+          }
+          $in_part = 1;
+        }
+        $ancestor = $ancestor->parentNode;
+      }
+      $one_not_in_part = $one_not_in_part || !$in_part;
+      $all_in_parts = $all_in_parts && $in_part;
+    }
+  }
+  if ($with_parts && $one_not_in_part) {
+    die "parts are used but at least one response is not in a part";
+  }
+  if ($all_in_parts) {
+    return;
+  }
+  # we are now in the case where parts are not used at all
+  if (scalar(@responses) == 0) {
+    # no response, no need to create a part
+    return;
+  }
+  # there is at least one response, we will move everything inside problem in a part
+  my @problems = $dom_doc->getElementsByTagName('problem');
+  if (scalar(@problems) != 1) {
+    die "there is a response but no problem or more than one";
+  }
+  foreach my $problem (@problems) {
+    my $part = $dom_doc->createElement('part');
+    my $next;
+    for (my $child=$problem->firstChild; defined $child; $child=$next) {
+      $next = $child->nextSibling;
+      $problem->removeChild($child);
+      $part->appendChild($child);
+    }
+    $problem->appendChild($part);
   }
 }
 

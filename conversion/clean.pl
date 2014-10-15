@@ -35,11 +35,8 @@ try {
 };
 
 try {
-  $text = post_xml::post_xml($text);
+  $text = post_xml::post_xml($text, $newpath);
 } catch {
   die "post_xml error for $pathname: $_\n";
 };
 
-open my $out, '>:encoding(UTF-8)', $newpath;
-print $out $text;
-close $out;
