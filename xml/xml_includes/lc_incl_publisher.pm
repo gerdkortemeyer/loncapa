@@ -175,17 +175,22 @@ sub storedata {
    }
    if ($content{'language0'}) {
       my $n=0;
+      my %already=();
       $storemeta->{'languages'}=[];
       push(@{$refreshkeys},'languages');
       while ($content{'language'.$n}) {
          if ($content{'language'.$n} ne '-') {
-            push(@{$storemeta->{'languages'}},$content{'language'.$n});
+            unless ($already{$content{'language'.$n}}) {
+               push(@{$storemeta->{'languages'}},$content{'language'.$n});
+               $already{$content{'language'.$n}}=1;
+            }
          }
          $n++;
       }
    }
    if ($content{'taxonomy0_first'}) {
       my $n=0;
+      my %already=();
       $storemeta->{'taxonomy'}=[];
       push(@{$refreshkeys},'taxonomy');
       while ($content{'taxonomy'.$n.'_first'}) {
@@ -196,8 +201,11 @@ sub storedata {
             }
             if (($content{'taxonomy'.$n.'_third'}) && ($content{'taxonomy'.$n.'_third'} ne '-')) {
                $term.=':'.$content{'taxonomy'.$n.'_third'};
-            } 
-            push(@{$storemeta->{'taxonomy'}},$term);
+            }
+            unless ($already{$term}) { 
+               push(@{$storemeta->{'taxonomy'}},$term);
+               $already{$term}=1;
+            }
          }
          $n++;
       }
