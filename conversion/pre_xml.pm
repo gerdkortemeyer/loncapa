@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+package pre_xml;
+
 use strict;
 use utf8;
 
@@ -7,26 +9,26 @@ use Encode;
 use Encode::Byte;
 use Encode::Guess;
 
-
 # list of elements inside which < and > might not be turned into entities
 # unfortunately, answer can sometimes contain the elements vector and value...
 my @cdata_elements = ('answer', 'm'); # not script because the HTML parser will handle it
 
 
-my $lines = guess_encoding_and_read($ARGV[0]);
+# Reads a LON-CAPA 2 file, guesses the encoding, fixes characters in cdata_elements, fixes HTML entities,
+# and returns the converted text.
+sub pre_xml {
+  my ($filepath) = @_;
+  
+  my $lines = guess_encoding_and_read($filepath);
 
-my $tidycfg = $ARGV[1];
+  binmode(STDOUT, ":utf8");
 
-binmode(STDOUT, ":utf8");
+  fix_cdata_elements($lines);
 
-fix_cdata_elements($lines);
-
-fix_html_entities($lines);
-
-foreach my $line (@{$lines}) {
-  print $line;
+  fix_html_entities($lines);
+  
+  return(join('', @$lines));
 }
-
 
 
 ##
@@ -226,3 +228,5 @@ sub in_array_ignore_case {
   return 0;
 }
 
+1;
+__END__

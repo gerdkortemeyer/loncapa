@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
-# This takes non-well-formed UTF-8 LC+HTML from standard input and outputs well-formed but non-valid XML LC+XHTML.
+
+package html_to_xml;
 
 use strict;
 use utf8;
@@ -13,27 +14,34 @@ my @empty = ('base','br','col','hr','img','input','keygen','link','meta','param'
 #my @block_html = ('html','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','table','tbody','tr','td','th','dl','pre','noscript','blockquote','object','applet','embed','map','form','fieldset','iframe');
 
 
-my $p = HTML::Parser->new( api_version => 3,
-                        start_h => [\&start, "tagname, attr, attrseq"],
-                        end_h   => [\&end,   "tagname"],
-                        text_h  => [\&text, "dtext"],
-                        comment_h  => [\&comment, "tokens"],
-                        declaration_h  => [\&declaration, "tokens"],
-                        process_h  => [\&process, "token0"],
-                      );
-# NOTE: by default, the HTML parser turns all attribute and elements names to lowercase
-$p->empty_element_tags(1);
-my @stack = ();
-my $root_found = 0;
-binmode(STDIN, ':encoding(UTF-8)');
-binmode(STDOUT, ':encoding(UTF-8)');
-print "<?xml version='1.0' encoding='UTF-8'?>\n";
-open(my $in, '<-') || die "html_to_xml: can't open stdin";
-$p->parse_file($in);
-for (my $i=scalar(@stack)-1; $i>=0; $i--) {
-  print '</'.$stack[$i].'>';
-}
+my $result;
+my @stack;
+my $root_found;
 
+
+# This takes non-well-formed UTF-8 LC+HTML and returns well-formed but non-valid XML LC+XHTML.
+sub html_to_xml {
+  my($text) = @_;
+  $result = '';
+  @stack = ();
+  my $p = HTML::Parser->new( api_version => 3,
+                          start_h => [\&start, "tagname, attr, attrseq"],
+                          end_h   => [\&end,   "tagname"],
+                          text_h  => [\&text, "dtext"],
+                          comment_h  => [\&comment, "tokens"],
+                          declaration_h  => [\&declaration, "tokens"],
+                          process_h  => [\&process, "token0"],
+                        );
+  # NOTE: by default, the HTML parser turns all attribute and elements names to lowercase
+  $p->empty_element_tags(1);
+  $root_found = 0;
+  $result .= "<?xml version='1.0' encoding='UTF-8'?>\n";
+  $p->parse($text);
+  for (my $i=scalar(@stack)-1; $i>=0; $i--) {
+    $result .= '</'.$stack[$i].'>';
+  }
+  return $result;
+}
 
 sub start {
   my($tagname, $attr, $attrseq) = @_;
@@ -88,7 +96,7 @@ sub start {
 #       }
 #     }
 #   }
-  print '<'.$tagname;
+  $result .= '<'.$tagname;
   foreach my $att_name (@$attrseq) {
     my $att_name_modified = $att_name;
     $att_name_modified =~ s/["'\/=\s]//g;
@@ -100,13 +108,13 @@ sub start {
       $att_value =~ s/</&lt;/g;
       $att_value =~ s/>/&gt;/g;
       $att_value =~ s/"/&quot;/g;
-      print ' '.$att_name_modified.'="'.$att_value.'"';
+      $result .= ' '.$att_name_modified.'="'.$att_value.'"';
     }
   }
   if (index_of(\@empty, $tagname) != -1) {
-    print '/>';
+    $result .= '/>';
   } else {
-    print '>';
+    $result .= '>';
     push(@stack, $tagname);
   }
   # reopen the styles, if any
@@ -125,7 +133,7 @@ sub end {
   for (my $i=scalar(@stack)-1; $i>=0; $i--) {
     if ($stack[$i] eq $tagname) {
       for (my $j=scalar(@stack)-1; $j>$i; $j--) {
-        print '</'.$stack[$j].'>';
+        $result .= '</'.$stack[$j].'>';
       }
       splice(@stack, $i, scalar(@stack)-$i);
       $found = 1;
@@ -133,9 +141,9 @@ sub end {
     }
   }
   if ($found) {
-    print '</'.$tagname.'>';
+    $result .= '</'.$tagname.'>';
   } elsif ($tagname eq 'p') {
-    print '<p/>';
+    $result .= '<p/>';
   }
 }
 
@@ -148,26 +156,26 @@ sub text {
   $dtext =~ s/</&lt;/g;
   $dtext =~ s/>/&gt;/g;
   $dtext =~ s/"/&quot;/g;
-  print $dtext;
+  $result .= $dtext;
 }
 
 sub comment {
   my($tokens) = @_;
   for (@$tokens) {
-    print '<!--'.$_.'-->';
+    $result .= '<!--'.$_.'-->';
   }
 }
 
 sub declaration {
   my($tokens) = @_;
-  print '<!';
-  print join(' ', @$tokens);
-  print '>';
+  $result .= '<!';
+  $result .= join(' ', @$tokens);
+  $result .= '>';
 }
 
 sub process {
   my($token0) = @_;
-  print '<?'.$token0.'>';
+  $result .= '<?'.$token0.'>';
 }
 
 sub index_of {
@@ -189,3 +197,6 @@ sub last_index_of {
   }
   return -1;
 }
+
+1;
+__END__

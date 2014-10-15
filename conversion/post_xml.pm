@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+package post_xml;
+
 use strict;
 use utf8;
 use warnings;
@@ -21,47 +23,49 @@ my @all_block = (@block_elements, @block_html);
 my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
 my @preserve_elements = ('script','answer','perl');
 
-binmode(STDIN, ':encoding(UTF-8)');
 
-open(my $in, "<-");
+my $dom_doc;
 
-my $dom_doc = XML::LibXML->load_xml(IO => $in);
+# Parses the XML document and fixes many things to turn it into a LON-CAPA 3 document
+# Returns the text of the document.
+sub post_xml {
+  my ($text) = @_;
+  
+  $dom_doc = XML::LibXML->load_xml(string => $text);
 
-close($in);
+  my $root = create_new_structure($dom_doc);
 
-my $root = create_new_structure($dom_doc);
+  remove_elements($root, ['startouttext','startoutext','endouttext','endoutext','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow']);
 
-remove_elements($root, ['startouttext','startoutext','endouttext','endoutext','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow']);
+  add_sty_blocks($ARGV[0], $root); # must come before the subs using @all_block
 
-add_sty_blocks($ARGV[0], $root); # must come before the subs using @all_block
+  fix_block_styles($root);
+  $root->normalize();
 
-fix_block_styles($root);
-$root->normalize();
+  fix_fonts($root);
 
-fix_fonts($root);
+  replace_script_by_perl($root);
 
-replace_script_by_perl($root);
+  remove_bad_cdata_sections($root);
 
-remove_bad_cdata_sections($root);
+  fix_tables($root);
 
-fix_tables($root);
+  fix_lists($root);
 
-fix_lists($root);
+  replace_center($root); # must come after fix_tables
 
-replace_center($root); # must come after fix_tables
+  fix_align_attribute($root);
 
-fix_align_attribute($root);
+  fix_paragraphs_inside($root);
 
-fix_paragraphs_inside($root);
+  remove_empty_style($root);
 
-remove_empty_style($root);
+  fix_empty_lc_elements($root);
 
-fix_empty_lc_elements($root);
+  pretty($root);
 
-pretty($root);
-
-print $dom_doc->toString();
-
+  return $dom_doc->toString();
+}
 
 sub create_new_structure {
   my ($doc) = @_;
@@ -1268,3 +1272,6 @@ sub get_non_empty_attribute {
   }
   return(undef);
 }
+
+1;
+__END__
