@@ -104,8 +104,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-with-responses"/>
-        <xs:group ref="responses"/>
+        <xs:group ref="text-without-responses"/>
         <xs:group ref="inserts"/>
         <xs:element ref="part"/>
         <xs:element ref="lcmeta"/>

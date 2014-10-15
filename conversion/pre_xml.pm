@@ -27,6 +27,8 @@ sub pre_xml {
 
   fix_html_entities($lines);
   
+  fix_comma_attribute($lines);
+  
   return(join('', @$lines));
 }
 
@@ -154,6 +156,15 @@ sub fix_html_entities {
   my ($lines) = @_;
   foreach my $line (@{$lines}) {
     $line =~ s/\&nbsp;/&#xA0;/g;
+  }
+}
+
+
+# fixes ,="," attributes (something must have generated them at some point)
+sub fix_comma_attribute {
+  my ($lines) = @_;
+  foreach my $line (@{$lines}) {
+    $line =~ s/,=","//g;
   }
 }
 
