@@ -48,6 +48,8 @@ sub first_level {
 
 sub second_level {
    my ($lang,$first)=@_;
+   unless ($first) { return (); }
+   if ($first eq '-') { return (); }
    unless ($lang) { $lang='en'; }
    my %terms;
    unless ($taxonomy) { &load_taxonomy() }
@@ -62,6 +64,10 @@ sub second_level {
 
 sub third_level {
    my ($lang,$first,$second)=@_;
+   unless ($first) { return (); }
+   if ($first eq '-') { return (); }
+   unless ($second) { return (); }
+   if ($second eq '-') { return (); }
    unless ($lang) { $lang='en'; }
    my %terms;
    unless ($taxonomy) { &load_taxonomy() }
