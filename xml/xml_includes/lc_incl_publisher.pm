@@ -184,6 +184,24 @@ sub storedata {
          $n++;
       }
    }
+   if ($content{'taxonomy0_first'}) {
+      my $n=0;
+      $storemeta->{'taxonomy'}=[];
+      push(@{$refreshkeys},'taxonomy');
+      while ($content{'taxonomy'.$n.'_first'}) {
+         if ($content{'taxonomy'.$n.'_first'} ne '-') {
+            my $term=$content{'taxonomy'.$n.'_first'};
+            if (($content{'taxonomy'.$n.'_second'}) && ($content{'taxonomy'.$n.'_second'} ne '-')) {
+               $term.=':'.$content{'taxonomy'.$n.'_second'};
+            }
+            if (($content{'taxonomy'.$n.'_third'}) && ($content{'taxonomy'.$n.'_third'} ne '-')) {
+               $term.=':'.$content{'taxonomy'.$n.'_third'};
+            } 
+            push(@{$storemeta->{'taxonomy'}},$term);
+         }
+         $n++;
+      }
+   }
    if ($storemeta) {
       unless (&Apache::lc_entity_urls::store_metadata($content{'entity'},$content{'domain'},$storemeta,$refreshkeys)) {
          &logerror('Attempt to store metadata for ['.$content{'entity'}.'] ['.$content{'domain'}.'] failed');

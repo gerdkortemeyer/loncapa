@@ -47,7 +47,7 @@ sub taxonomy {
    }
    my %inverse=reverse(%taxo);
    my @output;
-   push(@output, { '' => '-' });
+   push(@output, { '-' => '-' });
    foreach my $key (sort(keys(%inverse))) {
        push(@output,{ $inverse{$key} => $key });
    }
