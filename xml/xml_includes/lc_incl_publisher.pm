@@ -98,6 +98,13 @@ sub taxonomyinput {
    return $output;
 }
 
+#
+# Keyboard input
+#
+sub keywordinput {
+   my ($oldmeta,$newmeta)=@_;
+   return 'Stuff';
+}
 
 #
 # Stage one asks title and language
@@ -165,13 +172,15 @@ sub stage_three {
       $newmetadata=&Apache::lc_metadata::gather_metadata(&Apache::lc_entity_urls::asset_resource_filename($content{'entity'},$content{'domain'},'wrk','-'));
    }
    $output.='<pre>'.Dumper($newmetadata).'</pre>';
-   $output.=&Apache::lc_xml_forms::wordbubble('stuff','stuff','Stuff',1).
+   $output.='<p>'.&Apache::lc_xml_utils::standard_message('Select the keywords').'<br />'.
+            &keywordinput($metadata,$newmetadata).'<br />&nbsp;<br />'.
+            &Apache::lc_xml_forms::form_table_start().
+            &Apache::lc_xml_forms::table_input_field('addkey','addkey','Additional keywords','text',40).
+            &Apache::lc_xml_forms::form_table_end().
+            &Apache::lc_xml_forms::triggerbutton('addkeywords','Add Keywords').'<script>attach_keywords()</script></p>'.
             &Apache::lc_xml_forms::hidden_field('stage','four');
    return $output;
 }
-
-
-
 
 
 #

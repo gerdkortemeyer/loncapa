@@ -41,6 +41,20 @@ function attach_taxonomy() {
      });
 }
 
+function attach_keywords() {
+    $("#addkeywords").click(function() {
+        $.ajax({
+        url : '/publisher_screens',
+        type: "POST",
+        data : $('#publisherform').serialize()+"&returnstage=three",
+        success: function(data){
+            $('#publisher_screens').html(data);
+        },
+        complete: attach_keywords()
+      });
+     });
+}
+
 
 $(document).ready(function() {
      entity=parent.getParameterByName(location.search,'entity');
