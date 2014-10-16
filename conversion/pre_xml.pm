@@ -23,11 +23,17 @@ sub pre_xml {
 
   binmode(STDOUT, ":utf8");
 
+  remove_control_characters($lines);
+  
   fix_cdata_elements($lines);
 
   fix_html_entities($lines);
   
-  fix_comma_attribute($lines);
+  fix_missing_quotes($lines);
+  
+  remove_doctype($lines);
+  
+  add_root($lines);
   
   return(join('', @$lines));
 }
@@ -39,40 +45,58 @@ sub pre_xml {
 ##
 sub guess_encoding_and_read {
   my ($fn) = @_;
+  no warnings "utf8";
   local $/ = undef;
   open(my $fh, "<", $fn) or die "cannot read $fn: $!";
   binmode $fh;
   my $data = <$fh>; # we need to read the whole file to test if font is a block or inline element
-  # NOTE: this list is too ambigous, Encode::Guess refuses to even try a guess
-  #Encode::Guess->set_suspects(qw/ascii UTF-8 iso-8859-1 MacRoman cp1252/);
-  my $decoder = Encode::Guess->guess($data); # ascii, utf8 and UTF-16/32 with BOM
   my $decoded;
-  if (ref($decoder)) {
-    $decoded = $decoder->decode($data);
-  } else {
-    print STDERR "Warning: encoding is not UTF-8 for $fn";
-    # NOTE: cp1252 is identical to iso-8859-1 but with additionnal characters in range 128-159
-    # instead of control codes. We can assume that these control codes are not used, so there
-    # is no need to test for iso-8859-1.
-    # The main problem here is to distinguish between cp1252 and MacRoman.
-    # see http://www.alanwood.net/demos/charsetdiffs.html#f
-    my $decoded_windows = decode('cp1252', $data);
-    my $decoded_mac = decode('MacRoman', $data);
-    # try to use frequent non-ASCII characters to distinguish the encodings (mostly German, Spanish, Portuguese)
-    my $score_windows = $decoded_windows =~ tr/ßáàäâãçéèêëíñóöôõúüÄÉÑÖÜ¿¡’“”±//;
-    my $score_mac = $decoded_mac =~ tr/ßáàäâãçéèêëíñóöôõúüÄÉÑÖÜ¿¡’“”±//;
-    if ($score_windows >= $score_mac) {
-      $decoded = $decoded_windows;
-      print STDERR "; guess=cp1252 ($score_windows cp1252 >= $score_mac MacRoman)\n";
+  if (length($data) > 0) {
+    # NOTE: this list is too ambigous, Encode::Guess refuses to even try a guess
+    #Encode::Guess->set_suspects(qw/ascii UTF-8 iso-8859-1 MacRoman cp1252/);
+    my $decoder = Encode::Guess->guess($data); # ascii, utf8 and UTF-16/32 with BOM
+    if (ref($decoder)) {
+      $decoded = $decoder->decode($data);
     } else {
-      print STDERR "; guess=MacRoman ($score_mac MacRoman > $score_windows cp1252)\n";
-      $decoded = $decoded_mac;
+      print STDERR "Warning: encoding is not UTF-8 for $fn";
+      # NOTE: cp1252 is identical to iso-8859-1 but with additionnal characters in range 128-159
+      # instead of control codes. We can assume that these control codes are not used, so there
+      # is no need to test for iso-8859-1.
+      # The main problem here is to distinguish between cp1252 and MacRoman.
+      # see http://www.alanwood.net/demos/charsetdiffs.html#f
+      my $decoded_windows = decode('cp1252', $data);
+      my $decoded_mac = decode('MacRoman', $data);
+      # try to use frequent non-ASCII characters to distinguish the encodings (languages: mostly German, Spanish, Portuguese)
+      # í has been removed because it conflicts with ’ and ’ is more frequent
+      # ± has been removed because it is, suprisingly, the same code in both encodings !
+      my $score_windows = $decoded_windows =~ tr/ßáàäâãçéèêëñóöôõúüÄÉÑÖÜ¿¡‘’“” °½–—…//;
+      my $score_mac = $decoded_mac =~ tr/ßáàäâãçéèêëñóöôõúüÄÉÑÖÜ¿¡‘’“” °½–—…//;
+      if ($score_windows >= $score_mac) {
+        $decoded = $decoded_windows;
+        print STDERR "; guess=cp1252 ($score_windows cp1252 >= $score_mac MacRoman)\n";
+      } else {
+        print STDERR "; guess=MacRoman ($score_mac MacRoman > $score_windows cp1252)\n";
+        $decoded = $decoded_mac;
+      }
     }
+  } else {
+    $decoded = '';
   }
   my @lines = split(/^/m, $decoded);
   return \@lines;
 }
 
+
+##
+# Removes some control characters
+# @param {Array<string>} lines
+##
+sub remove_control_characters {
+  my ($lines) = @_;
+  foreach my $line (@{$lines}) {
+    $line =~ s/[\x07\x0B\x0C\x13]//g;
+  }
+}
 
 ##
 # Replaces < and > characters by &lt; and &gt; in cdata elements (listed in @cdata_elements).
@@ -160,12 +184,46 @@ sub fix_html_entities {
 }
 
 
-# fixes ,="," attributes (something must have generated them at some point)
-sub fix_comma_attribute {
+# Tries to fix things like <font color="#990000" face="Verdana,>
+# without breaking <a b="c>d">
+# This is only fixing tags when there is a single tag in a line (it is impossible to fix in the general case).
+sub fix_missing_quotes {
   my ($lines) = @_;
   foreach my $line (@{$lines}) {
-    $line =~ s/,=","//g;
+    my $n_inf = $line =~ tr/<//;
+    my $n_sup = $line =~ tr/>//;
+    if ($n_inf == 1 && $n_sup == 1) {
+      my $ind_inf = index($line, '<');
+      my $ind_sup = index($line, '>');
+      if ($ind_inf != -1 && $ind_sup != -1 && $ind_inf < $ind_sup) {
+        my $n_quotes = substr($line, $ind_inf, $ind_sup) =~ tr/"//;
+        if ($n_quotes % 2 != 0) {
+          # add a quote before > when there is an odd number of quotes inside <>
+          $line =~ s/>/">/;
+        }
+      }
+    }
   }
+}
+
+
+# remove doctypes, without assuming they are at the beginning
+sub remove_doctype {
+  my ($lines) = @_;
+  foreach my $line (@{$lines}) {
+    $line =~ s/<!DOCTYPE[^>]*>//;
+  }
+}
+
+
+# Adds a <loncapa> root element, enclosing things outside of the problem element.
+sub add_root {
+  my ($lines) = @_;
+  my $line1 = $lines->[0];
+  $line1 =~ s/<\?.*\?>//; # remove any PI, it would cause problems later anyway
+  $line1 = '<loncapa>'.$line1;
+  $lines->[0] = $line1;
+  $lines->[scalar(@$lines)-1] = $lines->[scalar(@$lines)-1]."</loncapa>";
 }
 
 

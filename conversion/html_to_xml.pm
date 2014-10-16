@@ -16,7 +16,6 @@ my @empty = ('base','br','col','hr','img','input','keygen','link','meta','param'
 
 my $result;
 my @stack;
-my $root_found;
 
 
 # This takes non-well-formed UTF-8 LC+HTML and returns well-formed but non-valid XML LC+XHTML.
@@ -34,7 +33,6 @@ sub html_to_xml {
                         );
   # NOTE: by default, the HTML parser turns all attribute and elements names to lowercase
   $p->empty_element_tags(1);
-  $root_found = 0;
   $result .= "<?xml version='1.0' encoding='UTF-8'?>\n";
   $p->parse($text);
   for (my $i=scalar(@stack)-1; $i>=0; $i--) {
@@ -46,17 +44,7 @@ sub html_to_xml {
 sub start {
   my($tagname, $attr, $attrseq) = @_;
   #$tagname = lc($tagname); this is done by default by the parser
-  if ($tagname =~ /[<\+"'\/=\s]/) {
-    print STDERR "bad start tag:'".$tagname."'";
-    $tagname =~ s/[<\+"'\/=\s]//g;
-  }
-  if (scalar(@stack) == 0) {
-    if ($root_found == 0) {
-      $root_found = 1;
-    } else {
-      return; # after root: ignored
-    }
-  }
+  $tagname = fix_tag($tagname);
   if ($tagname eq 'li') {
     my $ind_li = last_index_of(\@stack, 'li');
     my $ind_ul = last_index_of(\@stack, 'ul');
@@ -70,6 +58,12 @@ sub start {
     if ($ind_td != -1 && ($ind_tr == -1 || $ind_tr < $ind_td)) {
       # close the td
       end('td');
+    }
+  } elsif ($tagname eq 'num') {
+    my $ind_num = last_index_of(\@stack, 'num');
+    if ($ind_num != -1) {
+      # close the num
+      end('num');
     }
   }
 
@@ -97,11 +91,17 @@ sub start {
 #     }
 #   }
   $result .= '<'.$tagname;
+  my %seen = ();
   foreach my $att_name (@$attrseq) {
     my $att_name_modified = $att_name;
-    $att_name_modified =~ s/["'\/=\s]//g;
-    $att_name_modified =~ s/^[0-9]*$//;
-    if ($att_name_modified ne '') {
+    $att_name_modified =~ s/[^\-a-zA-Z0-9_:.]//g;
+    $att_name_modified =~ s/^[\-.0-9]*//;
+    if ($att_name_modified ne '' && index($att_name_modified, ':') == -1) {
+      if ($seen{$att_name_modified}) {
+        print STDERR "Warning: Ignoring duplicate attribute: $att_name\n";
+        next;
+      }
+      $seen{$att_name_modified}++;
       my $att_value = $attr->{$att_name};
       $att_value =~ s/^[“”]|[“”]$//g;
       $att_value =~ s/&/&amp;/g;
@@ -125,7 +125,7 @@ sub start {
 
 sub end {
   my($tagname) = @_;
-  #$tagname = lc($tagname); this is done by default by the parser
+  $tagname = fix_tag($tagname);
   if (index_of(\@empty, $tagname) != -1) {
     return;
   }
@@ -149,9 +149,6 @@ sub end {
 
 sub text {
   my($dtext) = @_;
-  if (scalar(@stack) == 0 && $root_found == 1) {
-    return; # after root: ignored
-  }
   $dtext =~ s/&/&amp;/g;
   $dtext =~ s/</&lt;/g;
   $dtext =~ s/>/&gt;/g;
@@ -161,8 +158,10 @@ sub text {
 
 sub comment {
   my($tokens) = @_;
-  for (@$tokens) {
-    $result .= '<!--'.$_.'-->';
+  foreach my $comment (@$tokens) {
+    $comment =~ s/--/-/g;
+    $comment =~ s/^-|-$//g;
+    $result .= '<!--'.$comment.'-->';
   }
 }
 
@@ -196,6 +195,31 @@ sub last_index_of {
     }
   }
   return -1;
+}
+
+sub fix_tag {
+  my ($tag) = @_;
+  #$tag = lc($tag); this is done by default by the parser
+  if ($tag =~ /[<\+"'\/=\s,;:]/) {
+    print STDERR "Warning: bad start tag:'".$tag."'";
+    if ($tag =~ /<[a-zA-Z]/) {
+      $tag =~ s/^[^<]*<//; # a<b -> b
+    }
+    if ($tag =~ /[a-zA-Z]\//) {
+      $tag =~ s/\/.*$//; # a/b -> a
+    }
+    if ($tag =~ /:/) {
+      # a:b -> b except when : at the end
+      if ($tag =~ /^[^:]*:$/) {
+        $tag =~ s/://;
+      } else {
+        $tag =~ s/^.*://;
+      }
+    }
+    $tag =~ s/[<\+"'\/=\s,;:]//g;
+    print STDERR " (converted to $tag)\n";
+  }
+  return($tag);
 }
 
 1;
