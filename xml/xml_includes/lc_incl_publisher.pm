@@ -103,7 +103,12 @@ sub taxonomyinput {
 #
 sub keywordinput {
    my ($oldmeta,$newmeta)=@_;
-   return 'Stuff';
+   my %taxokeywords=&Apache::lc_taxonomy::prokeywords($oldmeta->{'taxonomy'});
+   my $output='';
+   foreach my $key (keys(%taxokeywords)) {
+      $output.=&Apache::lc_xml_forms::wordbubble($key,$key,$key).' ';
+   }
+   return $output;
 }
 
 #

@@ -133,6 +133,7 @@ h3 {
    margin: 3px;
    color: #000000;
    background: #dddddd;
+   white-space:nowrap;
    border-radius: 5px 5px 5px 5px;
 }
 

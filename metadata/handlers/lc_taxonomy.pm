@@ -168,6 +168,44 @@ sub detect_taxonomy {
    return \@taxonomyterms; 
 }
 
+sub allpro {
+   my ($proarray,%foundkeywords)=@_;
+   foreach my $term (@{$proarray}) {
+      $foundkeywords{$term}++;
+   }
+   return %foundkeywords;
+}
+
+#
+# Return all "pro" keywords from the passed taxonomies
+#
+sub prokeywords {
+   my ($usedtaxos)=@_;
+   unless ($usedtaxos) { return (); }
+   my %foundkeywords=();
+   unless ($taxonomy) { &load_taxonomy() }
+   foreach my $taxo (@{$usedtaxos}) {
+      my ($first,$second,$third)=split(/\:/,$taxo);
+      if ($first) {
+         if ($taxonomy->{$first}->{'pro'}) {
+            %foundkeywords=&allpro($taxonomy->{$first}->{'pro'},%foundkeywords);
+         }
+      }
+      if ($second) {
+         if ($taxonomy->{$first}->{'sub'}->{$second}->{'pro'}) {
+            %foundkeywords=&allpro($taxonomy->{$first}->{'sub'}->{$second}->{'pro'},%foundkeywords);
+         }
+      }
+      if ($third) {
+         if ($taxonomy->{$first}->{'sub'}->{$second}->{'sub'}->{$third}->{'pro'}) {
+            %foundkeywords=&allpro($taxonomy->{$first}->{'sub'}->{$second}->{'sub'}->{$third}->{'pro'},%foundkeywords);
+         }
+      }
+   }
+   return %foundkeywords;
+}
+
+
 sub load_taxonomy {
    $taxonomy=&Apache::lc_json_utils::json_to_perl(
                         &Apache::lc_file_utils::readfile(&lc_conf_dir().'taxonomy.json')
