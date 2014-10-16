@@ -48,6 +48,8 @@ sub post_xml {
 
   remove_bad_cdata_sections($root);
 
+  fix_style_element($root);
+  
   fix_tables($root);
 
   fix_lists($root);
@@ -73,15 +75,8 @@ sub post_xml {
 
 sub create_new_structure {
   my ($doc) = @_;
-  # move everything in the document under a new 'loncapa' root element
-  my $root = $dom_doc->createElement('loncapa');
-  my $next;
-  for (my $child=$doc->firstChild; defined $child; $child=$next) {
-    $next = $child->nextSibling;
-    $doc->removeChild($child);
-    $root->appendChild($child);
-  }
-  $dom_doc->setDocumentElement($root);
+  # the 'loncapa' root element has already been added in pre_xml
+  my $root = $dom_doc->documentElement;
   # replace html elements by the content
   my @htmls = $dom_doc->getElementsByTagName('html');
   foreach my $html (@htmls) {
@@ -419,6 +414,9 @@ sub fix_fonts {
       my $color = get_non_empty_attribute($font, 'color');
       my $size = get_non_empty_attribute($font, 'size');
       my $face = get_non_empty_attribute($font, 'face');
+      if (defined $face) {
+        $face =~ s/^,|,$//;
+      }
       if (!defined $color && !defined $size && !defined $face) {
         # useless font element: replace this node by its content
         replace_by_children($font);
@@ -535,6 +533,21 @@ sub remove_bad_cdata_sections {
   }
 }
 
+# removes "<!--" and "-->" at the beginning and end of style elements
+sub fix_style_element {
+  my ($root) = @_;
+  my @styles = $dom_doc->getElementsByTagName('style');
+  foreach my $style (@styles) {
+    if (defined $style->firstChild && $style->firstChild->nodeType == XML_TEXT_NODE &&
+        !defined $style->firstChild->nextSibling) {
+      my $text = $style->firstChild->nodeValue;
+      if ($text =~ /^\s*<!--(.*)-->\s*$/s) {
+        $style->firstChild->setData($1);
+      }
+    }
+  }
+}
+
 # try to fix table attributes, and create missing cells at the end of table rows
 sub fix_tables {
   my ($root) = @_;
@@ -609,20 +622,22 @@ sub fix_cells {
     } else {
       $nb_cells = 0;
     }
-    foreach my $td ($tr->getChildrenByTagName('td')) {
-      my $colspan = $td->getAttribute('colspan');
-      if (defined $colspan && $colspan =~ /^\s*[0-9]+\s*$/) {
-        $nb_cells += $colspan;
-      } else {
-        $nb_cells++;
-      }
-      my $rowspan = $td->getAttribute('rowspan');
-      if (defined $rowspan && $rowspan =~ /^\s*[0-9]+\s*$/) {
-        for (my $i=0; $i < $rowspan-1; $i++) {
-          if (!defined $rowspans[$i]) {
-            $rowspans[$i] = 1;
-          } else {
-            $rowspans[$i]++;
+    for (my $cell=$tr->firstChild; defined $cell; $cell=$cell->nextSibling) {
+      if ($cell->nodeName eq 'td' || $cell->nodeName eq 'th') {
+        my $colspan = $cell->getAttribute('colspan');
+        if (defined $colspan && $colspan =~ /^\s*[0-9]+\s*$/) {
+          $nb_cells += $colspan;
+        } else {
+          $nb_cells++;
+        }
+        my $rowspan = $cell->getAttribute('rowspan');
+        if (defined $rowspan && $rowspan =~ /^\s*[0-9]+\s*$/) {
+          for (my $i=0; $i < $rowspan-1; $i++) {
+            if (!defined $rowspans[$i]) {
+              $rowspans[$i] = 1;
+            } else {
+              $rowspans[$i]++;
+            }
           }
         }
       }
@@ -952,9 +967,7 @@ sub fix_paragraph {
       }
       $n = $n->firstChild;
       if (defined $n && defined $n->nextSibling) {
-        print STDERR "Error in post_xml.fix_paragraph: block not found\n";
-        exit(-1);
-        last;
+        die "Error in post_xml.fix_paragraph: block not found";
       }
     }
     if (defined $right) {
@@ -1030,8 +1043,7 @@ sub clone_ancestor_around_node {
     }
   }
   if (!defined $middle_node) {
-    print STDERR "error in split_ancestor_around_node: middle not found\n";
-    exit(-1);
+    die "error in split_ancestor_around_node: middle not found";
   }
   if (defined $middle_node->previousSibling) {
     $left = $ancestor->cloneNode(0);
@@ -1230,8 +1242,9 @@ sub pretty {
         }
       }
       
-      # removes whitespace at the beginning and end of paragraphs
-      if ($name eq 'p' && defined $node->firstChild && $node->firstChild->nodeType == XML_TEXT_NODE) {
+      # removes whitespace at the beginning and end of p td and th
+      my @to_trim = ('p','td','th');
+      if (in_array(\@to_trim, $name) && defined $node->firstChild && $node->firstChild->nodeType == XML_TEXT_NODE) {
         my $text = $node->firstChild->nodeValue;
         $text =~ s/^\s*//;
         if ($text eq '') {
@@ -1240,7 +1253,7 @@ sub pretty {
           $node->firstChild->setData($text);
         }
       }
-      if ($name eq 'p' && defined $node->lastChild && $node->lastChild->nodeType == XML_TEXT_NODE) {
+      if (in_array(\@to_trim, $name) && defined $node->lastChild && $node->lastChild->nodeType == XML_TEXT_NODE) {
         my $text = $node->lastChild->nodeValue;
         $text =~ s/\s*$//;
         if ($text eq '') {
