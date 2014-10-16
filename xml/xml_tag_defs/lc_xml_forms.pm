@@ -286,7 +286,7 @@ sub wordbubble {
       $name=$id;
    }
    return '<span class="lcwordbubble"><input type="checkbox" id="'.$id.'" name="'.$name.'"'.
-          ($checked?' checked="checked"':'').' /><label for="'.$id.'">'.$term.'</label></span>';
+          ($checked?' checked="checked"':'').' value="'.&Apache::lc_xml_utils::form_escape($term).'" /><label for="'.$id.'">'.$term.'</label></span>';
 }
 
 # ==== Bring up a username search field

@@ -103,11 +103,21 @@ sub taxonomyinput {
 #
 sub keywordinput {
    my ($oldmeta,$newmeta)=@_;
-   my %taxokeywords=&Apache::lc_taxonomy::prokeywords($oldmeta->{'taxonomy'});
    my $output='';
-   foreach my $key (keys(%taxokeywords)) {
-      $output.=&Apache::lc_xml_forms::wordbubble($key,$key,$key).' ';
+   my $n=0;
+   if ($oldmeta->{'keywords'}) {
+      foreach my $key (@{$oldmeta->{'keywords'}}) {
+         $n++;
+         $output.=&Apache::lc_xml_forms::wordbubble('key'.$n,'key'.$n,$key,1).' ';
+      }
+   } elsif ($newmeta->{'suggested'}->{'keywords'}) {
+      my %taxokeywords=&Apache::lc_taxonomy::prokeywords($oldmeta->{'taxonomy'});
+      foreach my $key (@{$newmeta->{'suggested'}->{'keywords'}}) {
+         $n++;
+         $output.=&Apache::lc_xml_forms::wordbubble('key'.$n,'key'.$n,$key,$taxokeywords{$key}).' ';
+      }
    }
+   $output.=&Apache::lc_xml_forms::hidden_field('maxkey',$n);
    return $output;
 }
 
