@@ -232,6 +232,10 @@ use utf8;
 "Zhuang" => "Zhuang",
 "Zulu" => "Zulu",
 
+'Select the taxonomy categories' => 'Wählen Sie die Taxonomie-Kategorien',
+
+'Select the languages' => 'Wählen Sie die Sprachen aus',
+
 'Add Language' => 'Sprache hinzufügen',
 
 'Add Taxonomy' => 'Taxonomy hinzufügen',

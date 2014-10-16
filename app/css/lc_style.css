@@ -126,6 +126,22 @@ h3 {
    color: #ffffff;
 }
 
+.lcwordbubble {
+   font-family: sans-serif;
+   font-size: 14px;
+   padding: 6px;
+   margin: 3px;
+   color: #000000;
+   background: #dddddd;
+   border-radius: 5px 5px 5px 5px;
+}
+
+.lctaxonomyselect {
+   display: inline;
+   margin: 3px;
+   background: #dddddd;
+   border-radius: 5px 5px 5px 5px;
+}
 
 .lcformtabledescription {
    font-family: sans-serif;

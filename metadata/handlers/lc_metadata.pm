@@ -27,6 +27,7 @@ use Apache::lc_logs;
 use Apache::lc_json_utils();
 use Apache::lc_file_utils();
 use Apache::lc_taxonomy();
+use Apache::lc_asset_xml();
 use locale;
 
 my $nonwords;

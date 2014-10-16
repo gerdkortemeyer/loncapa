@@ -53,20 +53,20 @@ sub languageinput {
    my $max=0;
    if ($oldmeta->{'languages'}) {
       for (my $i=0; $i<=$#{$oldmeta->{'languages'}}; $i++) {
-         $output.=&Apache::lc_xml_forms::table_input_field('language'.$i,'language'.$i,'Language','contentlanguage',undef,${$oldmeta->{'languages'}}[$i]); 
+         $output.=&Apache::lc_xml_forms::inputfield('contentlanguage','language'.$i,'language'.$i,undef,${$oldmeta->{'languages'}}[$i]); 
       }
       $max=$#{$oldmeta->{'languages'}};
    } elsif ($newmeta->{'suggested'}->{'languages'}) {
       for (my $i=0; $i<=$#{$newmeta->{'suggested'}->{'languages'}}; $i++) { 
-         $output.=&Apache::lc_xml_forms::table_input_field('language'.$i,'language'.$i,'Language','contentlanguage',undef,${$newmeta->{'suggested'}->{'languages'}}[$i]);
+         $output.=&Apache::lc_xml_forms::inputfield('contentlanguage','language'.$i,'language'.$i,undef,${$newmeta->{'suggested'}->{'languages'}}[$i]);
       }
       $max=$#{$newmeta->{'suggested'}->{'languages'}};
    } else {
-      $output.=&Apache::lc_xml_forms::table_input_field('language0','language0','Language','contentlanguage');
+      $output.=&Apache::lc_xml_forms::inputfield('contentlanguage','language0','language0',undef,'-');
    }
    if ($add) {
       $max++;
-      $output.=&Apache::lc_xml_forms::table_input_field('language'.$max,'language'.$max,'Language','contentlanguage',undef,'-');
+      $output.=&Apache::lc_xml_forms::inputfield('contentlanguage','language'.$max,'language'.$max,undef,'-');
    }
    return $output;
 }
@@ -80,20 +80,20 @@ sub taxonomyinput {
    my $max=0;
    if ($oldmeta->{'taxonomy'}) {
       for (my $i=0; $i<=$#{$oldmeta->{'taxonomy'}}; $i++) {
-         $output.=&Apache::lc_xml_forms::table_input_field('taxonomy'.$i,'taxonomy'.$i,'Taxonomy','taxonomy',undef,${$oldmeta->{'taxonomy'}}[$i]);
+         $output.=&Apache::lc_xml_forms::taxonomyfield('taxonomy'.$i,'taxonomy'.$i,${$oldmeta->{'taxonomy'}}[$i]);
       }
       $max=$#{$oldmeta->{'taxonomy'}};
    } elsif ($newmeta->{'suggested'}->{'taxonomy'}) {
       for (my $i=0; $i<=$#{$newmeta->{'suggested'}->{'taxonomy'}}; $i++) {
-         $output.=&Apache::lc_xml_forms::table_input_field('taxonomy'.$i,'taxonomy'.$i,'Taxonomy','taxonomy',undef,${$newmeta->{'suggested'}->{'taxonomy'}}[$i]);
+         $output.=&Apache::lc_xml_forms::taxonomyfield('taxonomy'.$i,'taxonomy'.$i,${$newmeta->{'suggested'}->{'taxonomy'}}[$i]);
       }
       $max=$#{$newmeta->{'suggested'}->{'taxonomy'}};
    } else {
-      $output.=&Apache::lc_xml_forms::table_input_field('taxonomy0','taxonomy0','Taxomomy','taxonomy');
+      $output.=&Apache::lc_xml_forms::taxonomyfield('taxonomy0','taxonomy0');
    }
    if ($add) {
       $max++;
-      $output.=&Apache::lc_xml_forms::table_input_field('taxonomy'.$max,'taxonomy'.$max,'Taxonomy','taxonomy');
+      $output.=&Apache::lc_xml_forms::taxonomyfield('taxonomy'.$max,'taxonomy'.$max);
    }
    return $output;
 }
@@ -127,9 +127,10 @@ sub stage_one {
 # We can go ahead
    $output.=&Apache::lc_xml_forms::form_table_start().
             &Apache::lc_xml_forms::table_input_field('title','title','Title','text',40,($metadata->{'title'}?$metadata->{'title'}:$newmetadata->{'title'})).
-            &languageinput($metadata,$newmetadata,$content{'addlanguage'}).
-            &Apache::lc_xml_forms::form_table_end().
-            &Apache::lc_xml_forms::triggerbutton('addlanguage','Add Language').'<script>attach_language()</script>'.
+            &Apache::lc_xml_forms::form_table_end().'<p>'.
+            &Apache::lc_xml_utils::standard_message('Select the languages').'<br />'.
+            &languageinput($metadata,$newmetadata,$content{'addlanguage'}).'<br />&nbsp;<br />'.
+            &Apache::lc_xml_forms::triggerbutton('addlanguage','Add Language').'<script>attach_language()</script></p>'.
             &Apache::lc_xml_forms::hidden_field('stage','two');
    return $output;
 }
@@ -145,10 +146,9 @@ sub stage_two {
    if ($content{'url'}=~/\.$parserextensions$/i) {
       $newmetadata=&Apache::lc_metadata::gather_metadata(&Apache::lc_entity_urls::asset_resource_filename($content{'entity'},$content{'domain'},'wrk','-'));
    }
-   $output.=&Apache::lc_xml_forms::form_table_start().
-            &taxonomyinput($metadata,$newmetadata,$content{'addtaxonomy'}).
-            &Apache::lc_xml_forms::form_table_end().
-            &Apache::lc_xml_forms::triggerbutton('addtaxonomy','Add Taxonomy').'<script>attach_taxonomy()</script>'.
+   $output.='<p>'.&Apache::lc_xml_utils::standard_message('Select the taxonomy categories').'<br />'.
+            &taxonomyinput($metadata,$newmetadata,$content{'addtaxonomy'}).'<br />&nbsp;<br />'.
+            &Apache::lc_xml_forms::triggerbutton('addtaxonomy','Add Taxonomy').'<script>attach_taxonomy()</script></p>'.
             &Apache::lc_xml_forms::hidden_field('stage','three');
    return $output;
 }
@@ -165,8 +165,7 @@ sub stage_three {
       $newmetadata=&Apache::lc_metadata::gather_metadata(&Apache::lc_entity_urls::asset_resource_filename($content{'entity'},$content{'domain'},'wrk','-'));
    }
    $output.='<pre>'.Dumper($newmetadata).'</pre>';
-   $output.=&Apache::lc_xml_forms::form_table_start().
-            &Apache::lc_xml_forms::form_table_end().
+   $output.=&Apache::lc_xml_forms::wordbubble('stuff','stuff','Stuff',1).
             &Apache::lc_xml_forms::hidden_field('stage','four');
    return $output;
 }

@@ -278,6 +278,17 @@ sub taxonomyfield {
    return $output;
 }
 
+# ==== Word bubble
+#
+sub wordbubble {
+   my ($id,$name,$term,$checked)=@_;
+   unless ($name) {
+      $name=$id;
+   }
+   return '<span class="lcwordbubble"><input type="checkbox" id="'.$id.'" name="'.$name.'"'.
+          ($checked?' checked="checked"':'').' /><label for="'.$id.'">'.$term.'</label></span>';
+}
+
 # ==== Bring up a username search field
 #
 sub usersearch {
