@@ -18,6 +18,7 @@ no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
 
 my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','textfield','hiddensubmission','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','tex','web','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
 my @inline_responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse');
+my @responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse','essayresponse','radiobuttonresponse','matchresponse','rankresponse','imageresponse','functionplotresponse');
 my @block_html = ('html','head','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
 my @all_block = (@block_elements, @block_html);
 my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
@@ -43,6 +44,8 @@ sub post_xml {
   $root->normalize();
 
   fix_fonts($root);
+  
+  replace_u($root);
 
   replace_script_by_perl($root);
 
@@ -59,7 +62,9 @@ sub post_xml {
   fix_align_attribute($root);
   
   fix_parts($root);
-
+  
+  change_hints($root);
+  
   fix_paragraphs_inside($root);
 
   remove_empty_style($root);
@@ -82,10 +87,11 @@ sub create_new_structure {
   foreach my $html (@htmls) {
     replace_by_children($html);
   }
-  # replace head by htmlhead
+  # replace head by htmlhead, insert all style elements inside
   my $current_node = undef;
   my @heads = $dom_doc->getElementsByTagName('head');
-  if (scalar(@heads) > 0) {
+  my @styles = $dom_doc->getElementsByTagName('style');
+  if (scalar(@heads) > 0 || scalar(@styles) > 0) {
     my $htmlhead = $doc->createElement('htmlhead');
     foreach my $head (@heads) {
       my $next;
@@ -95,6 +101,10 @@ sub create_new_structure {
         $htmlhead->appendChild($child);
       }
       $head->parentNode->removeChild($head);
+    }
+    foreach my $style (@styles) {
+      $style->parentNode->removeChild($style);
+      $htmlhead->appendChild($style);
     }
     insert_after_or_first($root, $htmlhead, $current_node);
     $current_node = $htmlhead;
@@ -485,6 +495,23 @@ sub fix_fonts {
   $root->normalize();
 }
 
+# replaces u by <span style="text-decoration: underline">
+sub replace_u {
+  my ($root) = @_;
+  my @us = $dom_doc->getElementsByTagName('u');
+  foreach my $u (@us) {
+    my $span = $dom_doc->createElement('span');
+    $span->setAttribute('style', 'text-decoration: underline');
+    my $next;
+    for (my $child=$u->firstChild; defined $child; $child=$next) {
+      $next = $child->nextSibling;
+      $u->removeChild($child);
+      $span->appendChild($child);
+    }
+    $u->parentNode->replaceChild($span, $u);
+  }
+}
+
 # replaces all script[@type='loncapa/perl'] by a perl element
 sub replace_script_by_perl {
   my ($root) = @_;
@@ -513,20 +540,13 @@ sub remove_bad_cdata_sections {
     foreach my $node (@nodes) {
       if (defined $node->firstChild && $node->firstChild->nodeType == XML_TEXT_NODE) {
         my $value = $node->firstChild->nodeValue;
-        $value =~ s/^\s+|\s+$//g;
-        if (index($value, '<![CDATA[') == 0) {
-          $value = substr($value, length('<![CDATA['));
-        }
-        if (index($value, '<!--') == 0) {
-          $value = substr($value, length('<!--'));
-        }
-        if (index($value, ']]>') == length($value) - length(']]>')) {
-          $value = substr($value, 0, length($value) - length(']]>'));
-        }
-        if (index($value, '//-->') == length($value) - length('//-->')) {
-          $value = substr($value, 0, length($value) - length('//-->'));
-        }
+        $value =~ s/^(\s*)<!\[CDATA\[/$1/;
+        $value =~ s/^(\s*)(\/\/)?\s*<!--/$1/;
+        $value =~ s/\]\]>(\s*)$/$1/;
+        $value =~ s/(\/\/)?\s*-->(\s*)$/$1/;
         $value = "\n".$value."\n";
+        $value =~ s/\s*(\n[ \t]*)/$1/;
+        $value =~ s/\s+$/\n/;
         $node->firstChild->setData($value);
       }
     }
@@ -788,9 +808,9 @@ sub fix_align_attribute {
   }
 }
 
+# checks for errors and adds a part if a problem with responses has no part
 sub fix_parts {
   my ($root) = @_;
-  my @responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse','essayresponse','radiobuttonresponse','matchresponse','rankresponse','imageresponse','functionplotresponse');
   my @parts = $dom_doc->getElementsByTagName('part');
   my $with_parts = (scalar(@parts) > 0);
   my $one_not_in_part = 0;
@@ -841,12 +861,147 @@ sub fix_parts {
   }
 }
 
+# changes the hints according to the new schema
+# for instance, replaces
+# <numericalresponse><hintgroup>text1<numericalhint name="c"/><hintpart on="c">text2</hintpart></hintgroup></numericalresponse>
+# by
+# <numericalresponse><numericalhint name="c"/></numericalresponse><hint>text1</hint><hint on="c">text2</hint>
+sub change_hints {
+  my ($root) = @_;
+  
+  # check if there is a hintpart or *hint outside of a hintgroup
+  my @subhint_tags = ('hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint');
+  foreach my $subhint_tag (@subhint_tags) {
+    my @subhints = $dom_doc->getElementsByTagName($subhint_tag);
+    foreach my $subhint (@subhints) {
+      my $found_hintgroup = 0;
+      my $ancestor = $subhint->parentNode;
+      while (defined $ancestor) {
+        if ($ancestor->nodeName eq 'hintgroup') {
+          $found_hintgroup = 1;
+          last;
+        }
+        $ancestor = $ancestor->parentNode;
+      }
+      if (!$found_hintgroup) {
+        print STDERR "Warning: hint found outside of a hintgroup\n";
+        # create a new hintgroup for the next step
+        my $hintgroup = $dom_doc->createElement('hintgroup');
+        $subhint->parentNode->insertAfter($hintgroup, $subhint);
+        $subhint->parentNode->removeChild($subhint);
+        $hintgroup->appendChild($subhint);
+      }
+    }
+  }
+  
+  # replace hintgroups, move non-*hints outside of the response
+  my @hintgroups = $dom_doc->getElementsByTagName('hintgroup');
+  foreach my $hintgroup (@hintgroups) {
+    my $response;
+    my $ancestor = $hintgroup->parentNode;
+    while (defined $ancestor) {
+      if (in_array(\@responses, $ancestor->nodeName)) {
+        $response = $ancestor;
+        last;
+      }
+      $ancestor = $ancestor->parentNode;
+    }
+    my $move_after; # hints will be added after this node
+    if (defined $response) {
+      $move_after = $response;
+    } else {
+      $move_after = $hintgroup;
+    }
+    while (defined $move_after->nextSibling && ($move_after->nextSibling->nodeName eq 'hint' ||
+        ($move_after->nextSibling->nodeType == XML_TEXT_NODE && $move_after->nextSibling->nodeValue eq "\n"))) {
+      $move_after = $move_after->nextSibling;
+    }
+    my $next;
+    my $hint;
+    for (my $child=$hintgroup->firstChild; defined $child; $child=$next) {
+      $next = $child->nextSibling;
+      $hintgroup->removeChild($child);
+      if ($child->nodeName =~ /hint$/) {
+        if (defined $hint) {
+          $hint = undef;
+        }
+        if (!defined $response) {
+          print STDERR "Warning: *hint outside of a response\n";
+        }
+        $hintgroup->parentNode->insertAfter($child, $hintgroup);
+      } elsif ($child->nodeName eq 'hintpart') {
+        if (defined $hint) {
+          $hint = undef;
+        }
+        $child->setNodeName('hint');
+        if (defined $hintgroup->getAttribute('showoncorrect') && $hintgroup->getAttribute('showoncorrect') ne 'no') {
+          # note: this attribute value might be a Perl variable
+          $child->setAttribute('showoncorrect', $hintgroup->getAttribute('showoncorrect'));
+        }
+        $move_after->parentNode->insertAfter($child, $move_after);
+      } elsif ($child->nodeType == XML_TEXT_NODE && $child->nodeValue =~ /^\s*$/) {
+        # ignore blanks
+      } else {
+        if (!defined $hint) {
+          # create a new hint element for a hint without a condition
+          $hint = $dom_doc->createElement('hint');
+          if (defined $hintgroup->getAttribute('showoncorrect') && $hintgroup->getAttribute('showoncorrect') ne 'no') {
+            $hint->setAttribute('showoncorrect', $hintgroup->getAttribute('showoncorrect'));
+          }
+          my $newline_node;
+          if ($move_after->nodeType != XML_TEXT_NODE || $move_after->nodeValue ne "\n") {
+            $newline_node = $dom_doc->createTextNode("\n");
+            $move_after->parentNode->insertAfter($newline_node, $move_after);
+            $move_after = $newline_node;
+          }
+          $move_after->parentNode->insertAfter($hint, $move_after);
+          $move_after = $hint;
+          if (!defined $move_after->nextSibling || $move_after->nextSibling->nodeType != XML_TEXT_NODE ||
+              $move_after->nextSibling->nodeValue !~ "\n") {
+            $newline_node = $dom_doc->createTextNode("\n");
+            $move_after->parentNode->insertAfter($newline_node, $move_after);
+            $move_after = $newline_node;
+          }
+        }
+        $hint->appendChild($child);
+      }
+    }
+    if (defined $hintgroup->nextSibling && $hintgroup->nextSibling->nodeType == XML_TEXT_NODE &&
+        $hintgroup->nextSibling->nodeValue =~ /^\s*$/) {
+      # also remove blank afterwards
+      $hintgroup->parentNode->removeChild($hintgroup->nextSibling);
+    }
+    $hintgroup->parentNode->removeChild($hintgroup);
+  }
+  
+  # NOTE: there are problems when hint elements are block
+  # (they break paragraphs even with inline responses)
+  # and when they are inline
+  # (they have to be allowed everywhere, they can contains lots of text with blocks, and could trigger the creation of unnecessary paragraphs).
+  # Currently they are inline, with some exceptions in the conversion, like inline responses.
+  
+  # hints were blocks but are becoming inline; this removes blank text nodes at the beginning and the end of all hint elements
+  my @hints = $dom_doc->getElementsByTagName('hint');
+  foreach my $hint (@hints) {
+    if (defined $hint->firstChild && $hint->firstChild->nodeType == XML_TEXT_NODE) {
+      my $text = $hint->firstChild->nodeValue;
+      $text =~ s/^\s*//;
+      $hint->firstChild->setData($text);
+    }
+    if (defined $hint->lastChild && $hint->lastChild->nodeType == XML_TEXT_NODE) {
+      my $text = $hint->lastChild->nodeValue;
+      $text =~ s/\s*$//;
+      $hint->lastChild->setData($text);
+    }
+  }
+}
+
 # calls fix_paragraphs for all children
 sub fix_paragraphs_inside {
   my ($node) = @_;
   # blocks in which paragrahs will be added:
   my @blocks_with_p = ('problem','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','togglebox','standalone');
-  my @fix_p_if_br_or_p = ('foil','item','text','label','hintgroup','hintpart','web','windowlink','div','li','dd','td','th','blockquote');
+  my @fix_p_if_br_or_p = ('foil','item','text','label','hintgroup','hintpart','hint','web','windowlink','div','li','dd','td','th','blockquote');
   if ((in_array(\@blocks_with_p, $node->nodeName) && paragraph_needed($node)) ||
       (in_array(\@fix_p_if_br_or_p, $node->nodeName) &&
       (scalar(@{$node->getChildrenByTagName('br')}) > 0 ||
@@ -881,7 +1036,8 @@ sub paragraph_needed {
   my ($node) = @_;
   for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
     if (($child->nodeType == XML_TEXT_NODE && $child->nodeValue !~ /^\s*$/) ||
-        ($child->nodeType == XML_ELEMENT_NODE && !in_array(\@inline_responses, $child->nodeName)) ||
+        ($child->nodeType == XML_ELEMENT_NODE && !in_array(\@inline_responses, $child->nodeName) &&
+        $child->nodeName ne 'hint') ||
         $child->nodeType == XML_CDATA_SECTION_NODE ||
         $child->nodeType == XML_ENTITY_NODE || $child->nodeType == XML_ENTITY_REF_NODE) {
       return(1);
@@ -1175,7 +1331,7 @@ sub pretty {
   my $type = $node->nodeType;
   if ($type == XML_ELEMENT_NODE) {
     my $name = $node->nodeName;
-    if ((in_array(\@all_block, $name) || in_array(\@inline_responses, $name)) &&
+    if ((in_array(\@all_block, $name) || in_array(\@inline_responses, $name) || $name eq 'hint') &&
         !in_array(\@preserve_elements, $name)) {
       # make sure there is a newline at the beginning and at the end if there is anything inside
       if (defined $node->firstChild && !in_array(\@no_newline_inside, $name)) {

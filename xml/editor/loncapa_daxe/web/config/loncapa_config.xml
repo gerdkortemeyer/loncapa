@@ -186,13 +186,16 @@
     <AFFICHAGE_ELEMENT element="problem" type="lcdblock"/>
     
     <AFFICHAGE_ELEMENT element="stringresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="stringhint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="essayresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="radiobuttonresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="foilgroup" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="conceptgroup" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="foil" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="radiobuttonhint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="optionresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="drawoptionlist" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="optionhint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="matchresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="itemgroup" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="item" type="lcdblock"/>
@@ -203,14 +206,17 @@
     <AFFICHAGE_ELEMENT element="rectangle" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="text" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="numericalresponse" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="formularesponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="answergroup" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="answer" type="lcdblock">
       <PARAMETRE nom="police" valeur="Monospaced"/>
     </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="vector" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="value" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="numericalhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="formularesponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="formulahint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="mathresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="mathhint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotelements" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="spline" type="lcdblock"/>
@@ -232,8 +238,11 @@
     <AFFICHAGE_ELEMENT element="functionplotvectorsumrule" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotcustomrule" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="organicresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="organichint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="reactionresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="reactionhint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="customresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="customhint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="externalresponse" type="lcdblock"/>
     
     <AFFICHAGE_ELEMENT element="responseparam" type="lcdblock">
@@ -250,17 +259,7 @@
     <AFFICHAGE_ELEMENT element="hiddensubmission" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="hiddenline" type="lcdblock"/>
     
-    <AFFICHAGE_ELEMENT element="hintgroup" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="hintpart" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="stringhint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="radiobuttonhint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="optionhint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="numericalhint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="formulahint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="mathhint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="organichint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="reactionhint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="customhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="hint" type="lcdblock"/>
     
     <AFFICHAGE_ELEMENT element="gnuplot" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="title" type="lcdblock"/>
@@ -509,6 +508,34 @@
         <TITRE>pre-processor subroutine</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="stringhint">
+      <TITRE>String Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+        <TITRE_VALEUR valeur="cs">case sensitive, order important</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="ci">case insensitive, order important</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="mc">case insensitive, order unimportant</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="re">regular expression</TITRE_VALEUR>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="preprocess">
+        <TITRE>pre-processor subroutine</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="essayresponse">
       <TITRE>Response: Essay</TITRE>
       <DOCUMENTATION>
@@ -591,6 +618,31 @@
         <TITRE_VALEUR valeur="bottom">bottom</TITRE_VALEUR>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="radiobuttonhint">
+      <TITRE>Radiobutton Hint Condition</TITRE>
+      <DOCUMENTATION>
+        The radiobutton hint tag takes two parameters: answer and name. The name is the name of the hint condition, and the answer is an array. The first element of the array will be 'foil'; the remaining elements are the names of the foils that you require to have been checked by the student for the hint to be displayed. For example, if you create a radiobutton response problem with six foils named: granite, gabbro, gneiss, shale, sandstone and schist, and you want your hint named: igneous to be displayed when either granite or basalt had been checked your radiobutton hint would be as follows:
+        
+        &lt;radiobuttonhint answer="('foil','granite','gabbro')" name="igneous"&gt;&lt;/radiobuttonhint&gt;
+        
+        In order to trigger display of this hint you also need to create a hint element that will include a textblock that contains the text of the actual hint.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          should be at least a two element list: first the type (foil or concept) and then either the foil name(s) or the concept string(s), e.g., &#8220;(&#8217;foil&#8217;,&#8217;greaterthan&#8217;,&#8217;equal&#8217;)&#8221; if the condition should be triggered by the foils named &#8220;greaterthan&#8221; or &#8220;equal&#8221;
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="optionresponse">
       <TITRE>Response: Select from Options</TITRE>
       <DOCUMENTATION>
@@ -620,6 +672,29 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="drawoptionlist">
       <TITRE>Draw Option List</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="optionhint">
+      <TITRE>Option Response Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+        
+        There are two types of option response hint conditions: one for standalone foils and one for concept groups. In both cases the option hint tag includes two parameters: answer and name for standalone foils, and concept and name for foils grouped together in a concept group. For the answer parameter, the names and submitted values for each of the foils that are being included in the hint condition are provided in a hash, i.e., in the format: ('Foil1'= &gt; 'True','Foil2'= &gt; 'False'). In the case of a conditional hint for a concept group, the format of the concept parameter is also a hash that links the name of each concept group included in the hint condition to either 'correct' or 'incorrect' - e.g., &lt; optionhint concept="('buoyancy'= &gt; 'correct','density'= &gt; 'correct')" name="fluids" / &gt; If 'correct' is specified for a named concept then when the conditional hint is evaluated answers for each of the foils selected by a student must be correct for the hint action to be triggered. If anything other than 'correct' is provided in the concept hash in the optionhint tag then then students answers will be compared with the set answers for the foils in the concept group and as long as at least one answer is incorrect (i.e., the concept group was not correctly answered) then the corresponding hint action will be triggered.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="concept">
+        <TITRE>concept</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="matchresponse">
       <TITRE>Response: Match Two Lists</TITRE>
@@ -777,6 +852,60 @@
         <TITRE>pre-processor subroutine</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="answergroup">
+      <TITRE>Collection of Answers</TITRE>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+        <TITRE_VALEUR valeur="ordered">ordered</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="unordered">unordered</TITRE_VALEUR>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="answer">
+      <TITRE>Answer</TITRE>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="vector">
+      <TITRE>Vector</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="value">
+      <TITRE>Value</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="numericalhint">
+      <TITRE>Numerical Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          Numerical answer for which the conditional is provided.
+          Student submission of that answer in combination with the "unit" attribute in the hint condition will trigger the hint action specified in the &lt;hint&gt; element.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="unit">
+        <TITRE>unit</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="format">
+        <TITRE>format</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="preprocess">
+        <TITRE>pre-processor subroutine</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="formularesponse">
       <TITRE>Response: Formula</TITRE>
       <DOCUMENTATION>Query for a formula.</DOCUMENTATION>
@@ -804,28 +933,36 @@
         <TITRE>pre-processor subroutine</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="answergroup">
-      <TITRE>Collection of Answers</TITRE>
-      <STRINGS_ATTRIBUT attribut="type">
-        <TITRE>type</TITRE>
-        <TITRE_VALEUR valeur="ordered">ordered</TITRE_VALEUR>
-        <TITRE_VALEUR valeur="unordered">unordered</TITRE_VALEUR>
+    <STRINGS_ELEMENT element="formulahint">
+      <TITRE>Formula Hint Condition</TITRE>
+      <DOCUMENTATION>
+        The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt;hint&gt; element.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
       </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="answer">
-      <TITRE>Answer</TITRE>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="type">
-        <TITRE>type</TITRE>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          Formula answer for which the conditional is provided.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="vector">
-      <TITRE>Vector</TITRE>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="value">
-      <TITRE>Value</TITRE>
+      <STRINGS_ATTRIBUT attribut="samples">
+        <TITRE>sample points</TITRE>
+        <DOCUMENTATION>
+          Sample points (or range of points) over which sampling of the student&#8217;s submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples
+          parameter of the formula reponse element itself.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="preprocess">
+        <TITRE>pre-processor subroutine</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="mathresponse">
       <TITRE>Response: Math</TITRE>
@@ -854,6 +991,27 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="libraries">
         <TITRE>libraries</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="mathhint">
+      <TITRE>Math Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="cas">
+        <TITRE>algebra system</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="args">
+        <TITRE>argument array</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="functionplotresponse">
@@ -1315,6 +1473,24 @@
         <TITRE>width of correct answer image</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="organichint">
+      <TITRE>Organic Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="reactionresponse">
       <TITRE>Response: Chemical Reaction</TITRE>
       <DOCUMENTATION>
@@ -1333,6 +1509,24 @@
         <TITRE>initial reaction</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="reactionhint">
+      <TITRE>Reaction Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="customresponse">
       <TITRE>Response: Custom</TITRE>
       <DOCUMENTATION>
@@ -1347,6 +1541,23 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answerdisplay">
         <TITRE>string to display for answer</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="customhint">
+      <TITRE>Custom Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+        
+        Define the hint condition within an answer block inside of the customhint block. The condition is defined like how an answer is defined in customresponse where you need to return EXACT ANS to indicate when customhint criteria are met.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="externalresponse">
@@ -1474,227 +1685,24 @@
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     
-    <STRINGS_ELEMENT element="hintgroup">
+    <STRINGS_ELEMENT element="hint">
       <TITRE>Hint</TITRE>
       <DOCUMENTATION>
-        The first part of the hint is the condition, which includes a specification of the foil(s) and foil answer(s) required to trigger the hint. The answers specified in the hint condition are compared with the user's submission, and if the condition is met, the hint action included in the conditional hint block will be executed (for example this could be the display of a block of text). You can set multiple hint conditions for a particular problem. Hint conditions are identified by a name. The corresponding hint action includes this hint condition name in the "on" parameter. When a hint condition evaluates to true, the corresponding hint action is triggered. Besides providing hint actions within &lt; hintpart on="NAME" &gt; &lt; /hintpart &gt; tags for each named (NAME) hint condition, a hint can be designated for display if none of the conditional hints evaluate to true. The default hint is not displayed if the conditions were met for any of the conditional hints. The default hint action is included between &lt; hintpart on="default" &gt; &lt; /hintpart &gt; tags.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="showoncorrect">
-        <TITRE>show on correct</TITRE>
-        <DOCUMENTATION>
-          Show hint even if problem Correct
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="hintpart">
-      <TITRE>Conditional Hint</TITRE>
-      <DOCUMENTATION>
-        When a hint tag named the same as the on attribute evaluates to be correct, the hintpart will show.
-        If no other hintpart is to show then all hintparts with an on value set to &#8220;default&#8221; will show.
+        The hint can use a condition defined in a response by using the condition name in the "on" attribute. In this case, the hint will only display when the condition is verified.
+        If no other hint is to show then all hints with an on value set to &#8220;default&#8221; will show.
+        
+        This element must be inside a problem part.
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="on">
         <TITRE>on</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="stringhint">
-      <TITRE>String Hint Condition</TITRE>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
         <DOCUMENTATION>
-          Name of the hint condition.
-          Should be set to the value of which hintpart (Conditional Hint) will be shown.
+          Name of a hint condition defined in a response, or "default".
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
+      <STRINGS_ATTRIBUT attribut="showoncorrect">
+        <TITRE>showoncorrect</TITRE>
         <DOCUMENTATION>
-          Text string.
-          Should be set to the value of which hintpart will be shown.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="type">
-        <TITRE>type</TITRE>
-        <TITRE_VALEUR valeur="cs">case sensitive, order important</TITRE_VALEUR>
-        <TITRE_VALEUR valeur="ci">case insensitive, order important</TITRE_VALEUR>
-        <TITRE_VALEUR valeur="mc">case insensitive, order unimportant</TITRE_VALEUR>
-        <TITRE_VALEUR valeur="re">regular expression</TITRE_VALEUR>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="preprocess">
-        <TITRE>pre-processor subroutine</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="radiobuttonhint">
-      <TITRE>Radiobutton Hint Condition</TITRE>
-      <DOCUMENTATION>
-        Radiobutton Hint Condition
-        
-        The radiobutton hint tag takes two parameters: answer and name. The name is the name of the hint condition, and the answer is an array. The first element of the array will be 'foil'; the remaining elements are the names of the foils that you require to have been checked by the student for the hint to be displayed. For example, if you create a radiobutton response problem with six foils named: granite, gabbro, gneiss, shale, sandstone and schist, and you want your hint named: igneous to be displayed when either granite or basalt had been checked your radiobutton hint would be as follows:
-        
-        &lt;radiobuttonhint answer="('foil','granite','gabbro')" name="igneous"&gt;&lt;/radiobuttonhint&gt;
-        
-        In order to trigger display of this hint you also need to create a &lt; hintpart &gt; &lt; /hintpart &gt; block that will include a textblock that contains the text of the actual hint.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-        <DOCUMENTATION>
-          should be set to the value of which hintpart (Conditional Hint) will be shown
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
-        <DOCUMENTATION>
-          should be at least a two element list: first the type (foil or concept) and then either the foil name(s) or the concept string(s), e.g., &#8220;(&#8217;foil&#8217;,&#8217;greaterthan&#8217;,&#8217;equal&#8217;)&#8221; if the condition should be triggered by the foils named &#8220;greaterthan&#8221; or &#8220;equal&#8221;
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="optionhint">
-      <TITRE>Option Response Hint Condition</TITRE>
-      <DOCUMENTATION>
-        Option Response Hint Condition
-        
-        There are two types of option response hint conditions: one for standalone foils and one for concept groups. In both cases the option hint tag includes two parameters: answer and name for standalone foils, and concept and name for foils grouped together in a concept group. For the answer parameter, the names and submitted values for each of the foils that are being included in the hint condition are provided in a hash, i.e., in the format: ('Foil1'= &gt; 'True','Foil2'= &gt; 'False'). In the case of a conditional hint for a concept group, the format of the concept parameter is also a hash that links the name of each concept group included in the hint condition to either 'correct' or 'incorrect' - e.g., &lt; optionhint concept="('buoyancy'= &gt; 'correct','density'= &gt; 'correct')" name="fluids" / &gt; If 'correct' is specified for a named concept then when the conditional hint is evaluated answers for each of the foils selected by a student must be correct for the hint action to be triggered. If anything other than 'correct' is provided in the concept hash in the optionhint tag then then students answers will be compared with the set answers for the foils in the concept group and as long as at least one answer is incorrect (i.e., the concept group was not correctly answered) then the corresponding hint action will be triggered. 
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-        <DOCUMENTATION>
-          should be set to the value of which hintpart (Conditional Hint) will be shown
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="concept">
-        <TITRE>concept</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="numericalhint">
-      <TITRE>Numerical Hint Condition</TITRE>
-      <DOCUMENTATION>
-        Numerical Hint Condition
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-        <DOCUMENTATION>
-          Unique name given to the hint condition.
-          Should be set to the value of which hintpart will be shown.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
-        <DOCUMENTATION>
-          Numerical answer for which the conditional is provided.
-          Student submission of that answer in combination with the "unit" attribute in the hint condition will trigger the hint action specified in the &lt;hintpart&gt; element.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="unit">
-        <TITRE>unit</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="format">
-        <TITRE>format</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="preprocess">
-        <TITRE>pre-processor subroutine</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="formulahint">
-      <TITRE>Formula Hint Condition</TITRE>
-      <DOCUMENTATION>
-        The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt;hintpart&gt; element. 
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-        <DOCUMENTATION>
-          Unique name given to the hint condition.
-          Should be set to the value of which hintpart will be shown.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
-        <DOCUMENTATION>
-          Formula answer for which the conditional is provided.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="samples">
-        <TITRE>sample points</TITRE>
-        <DOCUMENTATION>
-          Sample points (or range of points) over which sampling of the student&#8217;s submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples
-          parameter of the formula reponse element itself.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="preprocess">
-        <TITRE>pre-processor subroutine</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="mathhint">
-      <TITRE>Math Hint Condition</TITRE>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="cas">
-        <TITRE>algebra system</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="args">
-        <TITRE>argument array</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="organichint">
-      <TITRE>Organic Hint Condition</TITRE>
-      <DOCUMENTATION>Organic Hint Condition</DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="reactionhint">
-      <TITRE>Reaction Hint Condition</TITRE>
-      <DOCUMENTATION>Reaction Hint Condition</DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="customhint">
-      <TITRE>Custom Hint Condition</TITRE>
-      <DOCUMENTATION>
-        Custom Hint Condition
-        
-        Define the hint condition within an answer block inside of the customhint block. The condition is defined like how an answer is defined in customresponse where you need to return EXACT ANS to indicate when customhint criteria are met.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-        <DOCUMENTATION>
-          should be set to the value of which hintpart (Conditional Hint) will be shown
+          Show hint even if problem Correct
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>

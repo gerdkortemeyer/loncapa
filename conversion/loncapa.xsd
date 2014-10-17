@@ -248,6 +248,7 @@
       <xs:element ref="parse"/>
       <xs:element ref="algebra"/>
       <xs:element ref="textline"/>
+      <xs:element ref="hint"/>
       
       <xs:element ref="span"/>
       <xs:element ref="a"/>
@@ -336,9 +337,9 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="hiddenline"/>
+        <xs:element ref="stringhint"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
@@ -388,6 +389,49 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
+  <xs:element name="stringhint">
+    <xs:annotation>
+      <xs:documentation>
+        String Hint Condition
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="responseparam"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            the name of the hint condition, to use in the "on" attribute of the hint element
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="answer" type="xs:string" use="required"/>
+      <xs:attribute default="cs" name="type">
+        <xs:simpleType>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="cs"/>
+                <xs:enumeration value="ci"/>
+                <xs:enumeration value="mc"/>
+                <xs:enumeration value="re"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="preprocess" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Pre-Processor Subroutine
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
   
   <xs:annotation>
     <xs:documentation>
@@ -402,7 +446,6 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
@@ -428,9 +471,9 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="hintgroup"/>
         <xs:element name="foilgroup" type="radiobuttonresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
+        <xs:element ref="radiobuttonhint"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
@@ -522,6 +565,39 @@
     </xs:attribute>
     <xs:attribute default="random" name="location" type="location-or-perl"/>
   </xs:complexType>
+  <xs:element name="radiobuttonhint">
+    <xs:annotation>
+      <xs:documentation>
+        Radiobutton Hint Condition
+        
+        The radiobutton hint tag takes two parameters: answer and name. The name is the name of the hint condition, and the answer is an array. The first element of the array will be 'foil'; the remaining elements are the names of the foils that you require to have been checked by the student for the hint to be displayed. For example, if you create a radiobutton response problem with six foils named: granite, gabbro, gneiss, shale, sandstone and schist, and you want your hint named: igneous to be displayed when either granite or basalt had been checked your radiobutton hint would be as follows:
+        
+        &lt;radiobuttonhint answer="('foil','granite','gabbro')" name="igneous"&gt;&lt;/radiobuttonhint&gt;
+        
+        In order to trigger display of this hint you also need to create a hint element that will include a textblock that contains the text of the actual hint.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="responseparam"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            the name of the hint condition, to use in the "on" attribute of the hint element
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="answer" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            should be at least a two element list: first the type (foil or concept) and then either the foil name(s) or the concept string(s), e.g., “(’foil’,’greaterthan’,’equal’)” if the condition should be triggered by the foils named “greaterthan” or “equal”
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
   
   <xs:annotation>
     <xs:documentation>
@@ -542,9 +618,9 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="hintgroup"/>
         <xs:element name="foilgroup" type="optionresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
+        <xs:element ref="optionhint"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
@@ -691,6 +767,32 @@
       <xs:documentation>Draw Option List</xs:documentation>
     </xs:annotation>
   </xs:complexType>
+  <xs:element name="optionhint">
+    <xs:annotation>
+      <xs:documentation>
+        Option Response Hint Condition
+        
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+        
+        There are two types of option response hint conditions: one for standalone foils and one for concept groups. In both cases the option hint tag includes two parameters: answer and name for standalone foils, and concept and name for foils grouped together in a concept group. For the answer parameter, the names and submitted values for each of the foils that are being included in the hint condition are provided in a hash, i.e., in the format: ('Foil1'= &gt; 'True','Foil2'= &gt; 'False'). In the case of a conditional hint for a concept group, the format of the concept parameter is also a hash that links the name of each concept group included in the hint condition to either 'correct' or 'incorrect' - e.g., &lt; optionhint concept="('buoyancy'= &gt; 'correct','density'= &gt; 'correct')" name="fluids" / &gt; If 'correct' is specified for a named concept then when the conditional hint is evaluated answers for each of the foils selected by a student must be correct for the hint action to be triggered. If anything other than 'correct' is provided in the concept hash in the optionhint tag then then students answers will be compared with the set answers for the foils in the concept group and as long as at least one answer is incorrect (i.e., the concept group was not correctly answered) then the corresponding hint action will be triggered. 
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="responseparam"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            the name of the hint condition, to use in the "on" attribute of the hint element
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="concept" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
   
   <xs:annotation>
     <xs:documentation>
@@ -706,7 +808,6 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="foilgroup" type="matchresponse--foilgroup"/>
-        <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
@@ -867,7 +968,6 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="hintgroup"/>
         <xs:element name="foilgroup" type="rankresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
         <xs:group ref="text-without-responses"/>
@@ -945,7 +1045,6 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="hintgroup"/>
         <xs:element name="foilgroup" type="imageresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
         <xs:group ref="text-without-responses"/>
@@ -1051,7 +1150,7 @@
   
   <xs:annotation>
     <xs:documentation>
-      Numerical response and formula response (both using caparesponse--answergroup).
+      Numerical response
     </xs:documentation>
   </xs:annotation>
   <xs:element name="numericalresponse">
@@ -1066,10 +1165,10 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
         <xs:element ref="hiddenline"/>
+        <xs:element ref="numericalhint"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
@@ -1094,44 +1193,6 @@
         <xs:annotation>
           <xs:documentation>
             You can format the number displayed by the computer as the answer. For instance, if the answer is one-third, the computer will display that it computed ".333333333" as the answer. If you'd like to shorten that, you can use the Format field. Format strings like "2E" (without the quotes) will display three significant digits in scientific notation. Format strings like "2f" will display two digits after the decimal point. Format strings like "2s" will round a number to 2 significant digits.
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="preprocess" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Pre-Processor Subroutine
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="formularesponse">
-    <xs:annotation>
-      <xs:documentation>Query for a formula.</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="hintgroup"/>
-        <xs:element ref="responseparam"/>
-        <xs:element name="answergroup" type="caparesponse--answergroup"/>
-        <xs:element ref="hiddenline"/>
-        <xs:group ref="text-without-responses"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="answer" type="xs:string"/>
-      <xs:attribute name="samples" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Sample Points.
-            
-            Format:
-            1. A comma-separated list of the variables you wish to interpret,
-            2. followed by “@” (not in quotes),
-            3. followed by any number of the following two things, separated by semi-colons:
-            (a) a comma-separated list of as many numbers as there are variables, which specifies one sampling point, OR
-            (b) a comma-separated list of as many numbers as there are variables, followed by a colon, followed by another list of as many numbers as there are variables, followed by a #, followed by an integer.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -1200,6 +1261,133 @@
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
+  <xs:element name="numericalhint">
+    <xs:annotation>
+      <xs:documentation>
+        Numerical Hint Condition
+        
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="responseparam"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            the name of the hint condition, to use in the "on" attribute of the hint element
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="answer" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Numerical answer for which the conditional is provided.
+            Student submission of that answer in combination with the "unit" attribute in the hint condition will trigger the hint action specified in the &lt;hint&gt; element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="unit" type="xs:string"/>
+      <xs:attribute name="format" type="xs:string"/>
+      <xs:attribute name="preprocess" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Pre-Processor Subroutine
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:annotation>
+    <xs:documentation>
+      Formula response (using caparesponse--answergroup like numericalresponse).
+    </xs:documentation>
+  </xs:annotation>
+  <xs:element name="formularesponse">
+    <xs:annotation>
+      <xs:documentation>Query for a formula.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="responseparam"/>
+        <xs:element name="answergroup" type="caparesponse--answergroup"/>
+        <xs:element ref="hiddenline"/>
+        <xs:element ref="formulahint"/>
+        <xs:group ref="text-without-responses"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="answer" type="xs:string"/>
+      <xs:attribute name="samples" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Sample Points.
+            
+            Format:
+            1. A comma-separated list of the variables you wish to interpret,
+            2. followed by “@” (not in quotes),
+            3. followed by any number of the following two things, separated by semi-colons:
+            (a) a comma-separated list of as many numbers as there are variables, which specifies one sampling point, OR
+            (b) a comma-separated list of as many numbers as there are variables, followed by a colon, followed by another list of as many numbers as there are variables, followed by a #, followed by an integer.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="preprocess" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Pre-Processor Subroutine
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="formulahint">
+    <xs:annotation>
+      <xs:documentation>
+        Formula Hint Condition
+        
+        The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt;hint&gt; element.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="responseparam"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            the name of the hint condition, to use in the "on" attribute of the hint element
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="answer" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Formula answer for which the conditional is provided.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="samples" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Sample points (or range of points) over which sampling of the student’s submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples
+            parameter of the formula reponse element itself.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="preprocess" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Pre-Processor Subroutine
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
   
   <xs:annotation>
     <xs:documentation>
@@ -1223,11 +1411,11 @@
             </xs:documentation>
           </xs:annotation>
         </xs:element>
-        <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
+        <xs:element ref="mathhint"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
@@ -1273,6 +1461,60 @@
     <xs:attribute name="type" type="xs:string"/>
     <xs:attribute fixed="preserve" ref="xml:space"/>
   </xs:complexType>
+  <xs:element name="mathhint">
+    <xs:annotation>
+      <xs:documentation>
+        Math Hint Condition
+        
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="responseparam"/>
+        <xs:element name="answer" type="mathhint--answer"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            the name of the hint condition, to use in the "on" attribute of the hint element
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="maxima" name="cas">
+        <xs:annotation>
+          <xs:documentation>
+            Algebra System
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="maxima"/>
+                <xs:enumeration value="R"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="args" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Argument Array
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType mixed="true" name="mathhint--answer">
+    <xs:annotation>
+      <xs:documentation>Hint algorithm</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="type" type="xs:string"/>
+    <xs:attribute fixed="preserve" ref="xml:space"/>
+  </xs:complexType>
   
   <xs:annotation>
     <xs:documentation>
@@ -1292,7 +1534,6 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="functionplotelements"/>
         <xs:element ref="functionplotruleset"/>
-        <xs:element ref="hintgroup"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
@@ -1951,9 +2192,10 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="hiddenline"/>
+        <xs:element ref="organichint"/>
+        <xs:element ref="stringhint"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
@@ -2003,6 +2245,29 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
+  <xs:element name="organichint">
+    <xs:annotation>
+      <xs:documentation>
+        Organic Hint Condition
+        
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="responseparam"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            the name of the hint condition, to use in the "on" attribute of the hint element
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="answer" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
   
   <xs:annotation>
     <xs:documentation>
@@ -2017,9 +2282,10 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="hiddenline"/>
+        <xs:element ref="reactionhint"/>
+        <xs:element ref="stringhint"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
@@ -2032,6 +2298,29 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reactionhint">
+    <xs:annotation>
+      <xs:documentation>
+        Reaction Hint Condition
+        
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="responseparam"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            the name of the hint condition, to use in the "on" attribute of the hint element
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="answer" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   
@@ -2050,11 +2339,11 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="answer" type="customresponse--answer"/>
-        <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
+        <xs:element ref="customhint"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
@@ -2086,6 +2375,38 @@
     <xs:attribute name="type" type="xs:string"/>
     <xs:attribute fixed="preserve" ref="xml:space"/>
   </xs:complexType>
+  <xs:element name="customhint">
+    <xs:annotation>
+      <xs:documentation>
+        Custom Hint Condition
+        
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+        
+        Define the hint condition within an answer block inside of the customhint block. The condition is defined like how an answer is defined in customresponse where you need to return EXACT ANS to indicate when customhint criteria are met.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="responseparam"/>
+        <xs:element name="answer" type="customhint--answer"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            the name of the hint condition, to use in the "on" attribute of the hint element
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType mixed="true" name="customhint--answer">
+    <xs:annotation>
+      <xs:documentation>Hint algorithm</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="type" type="xs:string"/>
+    <xs:attribute fixed="preserve" ref="xml:space"/>
+  </xs:complexType>
   
   <xs:annotation>
     <xs:documentation>
@@ -2111,7 +2432,6 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="hintgroup"/>
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
@@ -2292,42 +2612,15 @@
       Hints
     </xs:documentation>
   </xs:annotation>
-  <xs:element name="hintgroup">
+  <xs:element name="hint">
     <xs:annotation>
       <xs:documentation>
-        The first part of the hint is the condition, which includes a specification of the foil(s) and foil answer(s) required to trigger the hint. The answers specified in the hint condition are compared with the user's submission, and if the condition is met, the hint action included in the conditional hint block will be executed (for example this could be the display of a block of text). You can set multiple hint conditions for a particular problem. Hint conditions are identified by a name. The corresponding hint action includes this hint condition name in the "on" parameter. When a hint condition evaluates to true, the corresponding hint action is triggered. Besides providing hint actions within &lt; hintpart on="NAME" &gt; &lt; /hintpart &gt; tags for each named (NAME) hint condition, a hint can be designated for display if none of the conditional hints evaluate to true. The default hint is not displayed if the conditions were met for any of the conditional hints. The default hint action is included between &lt; hintpart on="default" &gt; &lt; /hintpart &gt; tags.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
-        <xs:element ref="hintpart"/>
-        <xs:element ref="stringhint"/>
-        <xs:element ref="radiobuttonhint"/>
-        <xs:element ref="optionhint"/>
-        <xs:element ref="numericalhint"/>
-        <xs:element ref="formulahint"/>
-        <xs:element ref="mathhint"/>
-        <xs:element ref="organichint"/>
-        <xs:element ref="reactionhint"/>
-        <xs:element ref="customhint"/>
-      </xs:choice>
-      <xs:attribute default="no" name="showoncorrect" type="yesno-or-perl">
-        <xs:annotation>
-          <xs:documentation>
-            Show hint even if problem Correct
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="hintpart">
-    <xs:annotation>
-      <xs:documentation>
-        Conditional Hint
+        Hint
         
-        When a hint tag named the same as the on attribute evaluates to be correct, the hintpart will show.
-        If no other hintpart is to show then all hintparts with an on value set to “default” will show.
+        The hint can use a condition defined in a response by using the condition name in the "on" attribute. In this case, the hint will only display when the condition is verified.
+        If no other hint is to show then all hints with an on value set to “default” will show.
+        
+        This element must be inside a problem part.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -2337,299 +2630,22 @@
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
       </xs:choice>
-      <xs:attribute name="on" type="xs:string" use="required"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="stringhint">
-    <xs:annotation>
-      <xs:documentation>
-        String Hint Condition
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string" use="required">
+      <xs:attribute name="on" type="xs:string">
         <xs:annotation>
           <xs:documentation>
-            Name of the hint condition.
-            Should be set to the value of which hintpart will be shown.
+            Name of a hint condition defined in a response, or "default".
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="answer" type="xs:string" use="required">
+      <xs:attribute default="no" name="showoncorrect" type="yesno-or-perl">
         <xs:annotation>
           <xs:documentation>
-            Text string.
-            Should be set to the value of which hintpart will be shown.
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute default="cs" name="type">
-        <xs:simpleType>
-          <xs:union memberTypes="perl">
-            <xs:simpleType>
-              <xs:restriction base="xs:string">
-                <xs:enumeration value="cs"/>
-                <xs:enumeration value="ci"/>
-                <xs:enumeration value="mc"/>
-                <xs:enumeration value="re"/>
-              </xs:restriction>
-            </xs:simpleType>
-          </xs:union>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute name="preprocess" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Pre-Processor Subroutine
+            Show hint even if problem Correct
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-  <xs:element name="radiobuttonhint">
-    <xs:annotation>
-      <xs:documentation>
-        Radiobutton Hint Condition
-        
-        The radiobutton hint tag takes two parameters: answer and name. The name is the name of the hint condition, and the answer is an array. The first element of the array will be 'foil'; the remaining elements are the names of the foils that you require to have been checked by the student for the hint to be displayed. For example, if you create a radiobutton response problem with six foils named: granite, gabbro, gneiss, shale, sandstone and schist, and you want your hint named: igneous to be displayed when either granite or basalt had been checked your radiobutton hint would be as follows:
-        
-        &lt;radiobuttonhint answer="('foil','granite','gabbro')" name="igneous"&gt;&lt;/radiobuttonhint&gt;
-        
-        In order to trigger display of this hint you also need to create a &lt; hintpart &gt; &lt; /hintpart &gt; block that will include a textblock that contains the text of the actual hint.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string" use="required">
-        <xs:annotation>
-          <xs:documentation>
-            should be set to the value of which hintpart will be shown
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="answer" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            should be at least a two element list: first the type (foil or concept) and then either the foil name(s) or the concept string(s), e.g., “(’foil’,’greaterthan’,’equal’)” if the condition should be triggered by the foils named “greaterthan” or “equal”
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="optionhint">
-    <xs:annotation>
-      <xs:documentation>
-        Option Response Hint Condition
-        
-        There are two types of option response hint conditions: one for standalone foils and one for concept groups. In both cases the option hint tag includes two parameters: answer and name for standalone foils, and concept and name for foils grouped together in a concept group. For the answer parameter, the names and submitted values for each of the foils that are being included in the hint condition are provided in a hash, i.e., in the format: ('Foil1'= &gt; 'True','Foil2'= &gt; 'False'). In the case of a conditional hint for a concept group, the format of the concept parameter is also a hash that links the name of each concept group included in the hint condition to either 'correct' or 'incorrect' - e.g., &lt; optionhint concept="('buoyancy'= &gt; 'correct','density'= &gt; 'correct')" name="fluids" / &gt; If 'correct' is specified for a named concept then when the conditional hint is evaluated answers for each of the foils selected by a student must be correct for the hint action to be triggered. If anything other than 'correct' is provided in the concept hash in the optionhint tag then then students answers will be compared with the set answers for the foils in the concept group and as long as at least one answer is incorrect (i.e., the concept group was not correctly answered) then the corresponding hint action will be triggered. 
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string" use="required">
-        <xs:annotation>
-          <xs:documentation>
-            should be set to the value of which hintpart will be shown
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="answer" type="xs:string"/>
-      <xs:attribute name="concept" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="numericalhint">
-    <xs:annotation>
-      <xs:documentation>
-        Numerical Hint Condition
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string" use="required">
-        <xs:annotation>
-          <xs:documentation>
-            Unique name given to the hint condition.
-            Should be set to the value of which hintpart will be shown.
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="answer" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Numerical answer for which the conditional is provided.
-            Student submission of that answer in combination with the "unit" attribute in the hint condition will trigger the hint action specified in the &lt;hintpart&gt; element.
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="unit" type="xs:string"/>
-      <xs:attribute name="format" type="xs:string"/>
-      <xs:attribute name="preprocess" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Pre-Processor Subroutine
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="formulahint">
-    <xs:annotation>
-      <xs:documentation>
-        Formula Hint Condition
-        
-        The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt;hintpart&gt; element.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string" use="required">
-        <xs:annotation>
-          <xs:documentation>
-            Unique name given to the hint condition.
-            Should be set to the value of which hintpart will be shown.
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="answer" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Formula answer for which the conditional is provided.
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="samples" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Sample points (or range of points) over which sampling of the student’s submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples
-            parameter of the formula reponse element itself.
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="preprocess" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Pre-Processor Subroutine
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="mathhint">
-    <xs:annotation>
-      <xs:documentation>Math Hint Condition</xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
-        <xs:element name="answer" type="mathhint--answer"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute default="maxima" name="cas">
-        <xs:annotation>
-          <xs:documentation>
-            Algebra System
-          </xs:documentation>
-        </xs:annotation>
-        <xs:simpleType>
-          <xs:union memberTypes="perl">
-            <xs:simpleType>
-              <xs:restriction base="xs:string">
-                <xs:enumeration value="maxima"/>
-                <xs:enumeration value="R"/>
-              </xs:restriction>
-            </xs:simpleType>
-          </xs:union>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute name="args" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>
-            Argument Array
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="organichint">
-    <xs:annotation>
-      <xs:documentation>Organic Hint Condition</xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="answer" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="reactionhint">
-    <xs:annotation>
-      <xs:documentation>Reaction Hint Condition</xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="answer" type="xs:string"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="customhint">
-    <xs:annotation>
-      <xs:documentation>
-        Custom Hint Condition
-        
-        Define the hint condition within an answer block inside of the customhint block. The condition is defined like how an answer is defined in customresponse where you need to return EXACT ANS to indicate when customhint criteria are met.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
-        <xs:element name="answer" type="customhint--answer"/>
-      </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string" use="required">
-        <xs:annotation>
-          <xs:documentation>
-            should be set to the value of which hintpart will be shown
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:complexType mixed="true" name="customhint--answer">
-    <xs:annotation>
-      <xs:documentation>Hint algorithm</xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="type" type="xs:string"/>
-    <xs:attribute fixed="preserve" ref="xml:space"/>
-  </xs:complexType>
-  <xs:complexType mixed="true" name="mathhint--answer">
-    <xs:annotation>
-      <xs:documentation>Hint algorithm</xs:documentation>
-    </xs:annotation>
-    <xs:attribute name="type" type="xs:string"/>
-    <xs:attribute fixed="preserve" ref="xml:space"/>
-  </xs:complexType>
   
   <xs:annotation>
     <xs:documentation>
