@@ -137,6 +137,12 @@ h3 {
    border-radius: 5px 5px 5px 5px;
 }
 
+.lcsimpleradio {
+   list-style: none;
+   display: block;
+   font-family: sans-serif;
+}
+
 .lctaxonomyselect {
    display: inline;
    margin: 3px;

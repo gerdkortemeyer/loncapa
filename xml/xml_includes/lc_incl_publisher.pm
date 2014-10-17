@@ -197,6 +197,17 @@ sub stage_three {
    return $output;
 }
 
+#
+# Stage four asks about rights
+#
+sub stage_four {
+   my ($metadata,%content)=@_;
+   my $output;
+$output.=&Apache::lc_xml_forms::radiobuttons('test','test',['optionA','optionB','optionC'],
+                                             ['Option A','Great Option B','My Option C'],
+                                             'optionB');
+   return $output;
+}
 
 #
 # See if we learned anything that should be stored
@@ -304,6 +315,8 @@ sub incl_publisher_screens {
        $output.=&stage_two($metadata,%content);
    } elsif ($stage eq 'three') {
        $output.=&stage_three($metadata,%content);
+   } elsif ($stage eq 'four') {
+       $output.=&stage_four($metadata,%content);
    } else {
        $output.=&stage_one($metadata,%content);
    }

@@ -289,6 +289,24 @@ sub wordbubble {
           ($checked?' checked="checked"':'').' value="'.&Apache::lc_xml_utils::form_escape($term).'" /><label for="'.$id.'">'.$term.'</label></span>';
 }
 
+# ==== Radio button
+#
+sub radiobuttons {
+   my ($id,$name,$options,$texts,$default)=@_;
+   unless ($name) {
+      $name=$id;
+   }
+   my $output='<ul id="'.$id.'" class="lcsimpleradio">';
+   for (my $n=0; $n<=$#{$options}; $n++) {
+      $output.='<li><input id="'.$id.$n.'" name="'.$name.'" value="'.${$options}[$n].'" type="radio"'.
+               ((${$options}[$n] eq $default)?' checked="checked"':'').
+               '><label for="'.$id.$n.'">'.${$texts}[$n].'</label></li>';
+   }
+   $output.='</ul>';
+   return $output;
+}
+
+
 # ==== Bring up a username search field
 #
 sub usersearch {
