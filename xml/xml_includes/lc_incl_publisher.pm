@@ -186,7 +186,6 @@ sub stage_three {
    if ($content{'url'}=~/\.$parserextensions$/i) {
       $newmetadata=&Apache::lc_metadata::gather_metadata(&Apache::lc_entity_urls::asset_resource_filename($content{'entity'},$content{'domain'},'wrk','-'));
    }
-   $output.='<pre>'.Dumper($newmetadata).'</pre>';
    $output.='<p>'.&Apache::lc_xml_utils::standard_message('Select the keywords').'<br />'.
             &keywordinput($metadata,$newmetadata).'<br />&nbsp;<br />'.
             &Apache::lc_xml_forms::form_table_start().
@@ -202,10 +201,27 @@ sub stage_three {
 #
 sub stage_four {
    my ($metadata,%content)=@_;
+   my $std_rights=&Apache::lc_entity_urls::standard_rights($content{'entity'},$content{'domain'},$content{'url'});
    my $output;
+# Viewing
+# Derivative
+#
+   $output.=
+            &Apache::lc_xml_forms::hidden_field('stage','five');
+
+
 $output.=&Apache::lc_xml_forms::radiobuttons('test','test',['optionA','optionB','optionC'],
                                              ['Option A','Great Option B','My Option C'],
                                              'optionB');
+   return $output;
+}
+
+#
+# Finalize
+#
+sub stage_five {
+   my ($metadata,%content)=@_;
+   my $output;
    return $output;
 }
 
@@ -317,6 +333,8 @@ sub incl_publisher_screens {
        $output.=&stage_three($metadata,%content);
    } elsif ($stage eq 'four') {
        $output.=&stage_four($metadata,%content);
+   } elsif ($stage eq 'five') {
+       $output.=&stage_five($metadata,%content);
    } else {
        $output.=&stage_one($metadata,%content);
    }

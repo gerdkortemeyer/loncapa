@@ -308,6 +308,13 @@ sub set_rights {
    return &store_metadata($entity,$domain,{ 'rights' => $rights });
 }
 
+sub standard_rights {
+   my ($entity,$domain,$url)=@_;
+   my $rights=&get_rights($entity,$domain);
+   my ($rversion_type,$rversion_arg,$rdomain,$rauthor,$rpath)=&split_url('/asset/-/-/'.$url);
+
+}
+
 # =============================================================
 # Get some raw metadata, only on homeserver where file is
 # =============================================================
