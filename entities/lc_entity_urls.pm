@@ -308,11 +308,56 @@ sub set_rights {
    return &store_metadata($entity,$domain,{ 'rights' => $rights });
 }
 
+#
+# Find out if we have standard rules, or if it is customized
+#
+
 sub standard_rights {
    my ($entity,$domain,$url)=@_;
    my $rights=&get_rights($entity,$domain);
    my ($rversion_type,$rversion_arg,$rdomain,$rauthor,$rpath)=&split_url('/asset/-/-/'.$url);
-
+   my $std={};
+   my $overall='none';
+   foreach my $type ('grade','use','view','edit','clone') {
+      $std->{$type}='none';
+      if ($rights->{$type}->{'any'}) {
+         $std->{$type}='systemwide';
+         $overall='standard';
+      } else {
+         foreach my $tdomain (keys(%{$rights->{$type}->{'domain'}})) {
+            if ($rights->{$type}->{'domain'}->{$tdomain}->{'any'}) {
+               if ($tdomain eq $rdomain) {
+                  if ($std->{$type} eq 'none') {
+                     $std->{$type}='domainwide';
+                     $overall='standard';
+                  } else {
+                     $std->{$type}='custom';
+                  }
+               } else {
+                  $std->{$type}='custom';
+               }
+            }
+            foreach my $tentity (keys(%{$rights->{$type}->{'domain'}->{$tdomain}->{'entity'}})) {
+               if ($rights->{$type}->{'domain'}->{$tdomain}->{'entity'}->{$tentity}) {
+                  if ($std->{$type} eq 'none') {
+                     if ($type eq 'grade') {
+                        $std->{$type}='course';
+                        $overall='standard';
+                     } else {
+                        $std->{$type}='custom';
+                     }
+                  } else {
+                     $std->{$type}='custom';
+                  }
+               }
+            }
+         }
+      }
+      if ($std->{$type} eq 'custom') {
+         $overall='custom';
+      }
+   }
+   return ($overall,$std);
 }
 
 # =============================================================

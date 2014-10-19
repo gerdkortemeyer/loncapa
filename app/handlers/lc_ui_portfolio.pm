@@ -24,6 +24,7 @@ use Apache2::Const qw(:common);
 use Apache::lc_entity_sessions();
 use Apache::lc_entity_courses();
 use Apache::lc_entity_users();
+use Apache::lc_entity_urls();
 use Apache::lc_ui_utils;
 use Apache::lc_json_utils();
 use Apache::lc_logs;
@@ -85,12 +86,14 @@ sub publication_status_link {
       $led='black';
       $status=&mt('Obsolete');
    } elsif ($published) {
+      my ($overall,$std)=&Apache::lc_entity_urls::standard_rights($entity,$domain,$url);
       if ($modified) {
          $led='orange';
          $status=&mt('Modified');
+         $publishedflag=1;
       } else {
          $led='green';
-         $status=&mt('Published');
+         $status=&mt('Published').'- '.$overall.' <pre>'.Dumper($std).'</pre>';
          $publishedflag=1;
       }
    }
