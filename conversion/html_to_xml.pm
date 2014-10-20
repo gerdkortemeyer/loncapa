@@ -159,8 +159,8 @@ sub text {
 sub comment {
   my($tokens) = @_;
   foreach my $comment (@$tokens) {
-    $comment =~ s/--/-/g;
-    $comment =~ s/^-|-$//g;
+    $comment =~ s/--/- /g;
+    $comment =~ s/^-|-$/ /g;
     $result .= '<!--'.$comment.'-->';
   }
 }
