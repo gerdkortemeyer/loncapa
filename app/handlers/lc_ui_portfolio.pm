@@ -171,7 +171,7 @@ sub rights_link {
          } elsif ($type eq 'clone') {  
             $description=&mt('Clone: [_1]',&mt($std->{$type}));
          }
-         $inner.='<li class="lcsmallwordbubble">'.$description.'</li>';         
+         $inner.='<li class="lcsmallwordbubble">'.$description.'</li> ';         
       } 
       $inner.='</ul>';
    }
