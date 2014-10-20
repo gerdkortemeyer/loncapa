@@ -238,6 +238,8 @@ use utf8;
 
 'Add Keywords' => 'Schlüsselwörter hinzufügen',
 
+'Rights' => 'Rechte',
+
 'Select the taxonomy categories' => 'Wählen Sie die Taxonomie-Kategorien',
 
 'Select the languages' => 'Wählen Sie die Sprachen aus',

@@ -147,6 +147,13 @@ sub change_title {
 }
 
 #
+# Rightslink
+#
+sub rights_link {
+   return '';
+}
+
+#
 # Generate a function call
 #
 sub action_jump {
@@ -181,6 +188,7 @@ sub listdirectory {
              &Apache::lc_xml_utils::file_icon('special','dir_up'),
              '0',
              '<i><a href="#" onClick="set_path(\''.$uppath.'\')" class="lcdirlink">'.&mt('Parent directory').'</a></i>',
+             '',
              '',
              '',
              '',
@@ -271,6 +279,7 @@ sub listdirectory {
              $filename,
              &change_title_link($file->{'entity'},$file->{'domain'},$file->{'url'},$file->{'metadata'}->{'title'}),
              $status,
+             &rights_link(),
              $size,
              $sort_size,
              $version,

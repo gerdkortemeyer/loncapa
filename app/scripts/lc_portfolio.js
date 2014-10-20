@@ -116,14 +116,15 @@ function init_datatable(destroy) {
          null,
          null,
          null,
-         {"iDataSort": 8, "bVisible": false },
+         {"bSortable":false },
+         {"iDataSort": 9, "bVisible": false },
          {"bVisible": false },
          null,
-         {"iDataSort": 11, "bVisible": false },
+         {"iDataSort": 12, "bVisible": false },
          { "bVisible": false },
-         {"iDataSort": 13, "bVisible": false },
+         {"iDataSort": 14, "bVisible": false },
          { "bVisible": false },
-         {"iDataSort": 15, "bVisible": false },
+         {"iDataSort": 16, "bVisible": false },
          { "bVisible": false }
       ]
     } );
