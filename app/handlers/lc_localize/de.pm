@@ -238,8 +238,6 @@ use utf8;
 
 'Add Keywords' => 'Schlüsselwörter hinzufügen',
 
-'Rights' => 'Rechte',
-
 'Select the taxonomy categories' => 'Wählen Sie die Taxonomie-Kategorien',
 
 'Select the languages' => 'Wählen Sie die Sprachen aus',
@@ -530,13 +528,31 @@ use utf8;
 
 'View' => 'Betrachten',
 
+'View: [_1]' => 'Betrachten: [_1]',
+
 'Edit' => 'Editieren',
+
+'Edit: [_1]' => 'Editieren: [_1]',
 
 'Grade by instructor' => 'Benoten durch Lehrpersonal',
 
+'Grade: [_1]' => 'Benoten: [_1]',
+
 'Clone (make derivatives)' => 'Clonen (Derivate erzeugen)',
 
+'Clone: [_1]' => 'Clonen: [_1]',
+
 'Use/assign in courses/communities' => 'Verwenden/Aufgeben in Kursen/Gemeinschaften',
+
+'Use: [_1]' => 'Verwenden: [_1]',
+
+'systemwide' => 'systemweit',
+
+'domainwide' => 'domänenweit',
+
+'course' => 'kursweit',
+
+'custom' => 'maßgeschneidert',
 
 'Allowed Activity' => 'Erlaubte Aktivität',
 

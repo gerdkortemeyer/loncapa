@@ -137,6 +137,23 @@ h3 {
    border-radius: 5px 5px 5px 5px;
 }
 
+.lcsmallwordbubble {
+   font-family: sans-serif;
+   font-size: 10px;
+   padding: 4px;
+   margin: 2px;
+   color: #000000;
+   background: #dddddd;
+   white-space:nowrap;
+   border-radius: 3px 3px 3px 3px;
+}
+
+.lcsmallwordlist {
+   list-style: none;
+   display: block;
+   font-family: sans-serif;
+}
+
 .lcsimpleradio {
    list-style: none;
    display: block;

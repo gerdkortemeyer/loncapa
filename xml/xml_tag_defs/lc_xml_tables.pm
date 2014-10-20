@@ -77,7 +77,7 @@ sub portfoliomanager {
             '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(15)">'.&mt('Last Modified').'</a>'.
             '</td></tr>'.
           '<tr><th>&nbsp;</th><th>&nbsp;</th><th>'.&mt('Type').'</th><th>&nbsp;</th><th>'.&mt('Name').'</th><th>'.
-               &mt('Title').'</th><th>'.&mt('Publication State').'</th><th>'.&mt('Rights').'</th><th>'.
+               &mt('Title').'</th><th>'.&mt('Publication State').'</th><th>'.&mt('Allowed Activity').'</th><th>'.
                &mt('File Size').'</th><th>&nbsp;</th><th>'.&mt('Version').'</th><th>'.
                &mt('First Published').'</th><th>&nbsp;</th><th>'.
                &mt('Last Published').'</th><th>&nbsp;</th><th>'.

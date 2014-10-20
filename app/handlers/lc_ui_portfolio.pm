@@ -86,21 +86,23 @@ sub publication_status_link {
       $led='black';
       $status=&mt('Obsolete');
    } elsif ($published) {
-      my ($overall,$std)=&Apache::lc_entity_urls::standard_rights($entity,$domain,$url);
       if ($modified) {
          $led='orange';
          $status=&mt('Modified');
-         $publishedflag=1;
       } else {
          $led='green';
-         $status=&mt('Published').'- '.$overall.' <pre>'.Dumper($std).'</pre>';
+         $status=&mt('Published');
          $publishedflag=1;
       }
    }
    my $inner=&Apache::lc_xml_utils::file_icon('special','led_'.$led).'&nbsp'.$status;
    if (&edit_permission($url)) {
-      return '<a href="#" onClick="'.&action_jump(($publishedflag?'change_status':'publisher'),$entity,$domain,$url).'" class="lcdirlink">'.
-                  $inner.'</a>',
+      if ($publishedflag) {
+         return $inner;
+      } else {
+         return '<a href="#" onClick="'.&action_jump('publisher',$entity,$domain,$url).'" class="lcdirlink">'.
+                  $inner.'</a>';
+      }
    } else {
       return $inner;
    }
@@ -150,7 +152,39 @@ sub change_title {
 # Rightslink
 #
 sub rights_link {
-   return '';
+   my ($entity,$domain,$url,$obsolete,$modified,$published)=@_;
+   my $inner='';
+   if ($published) {
+      my ($overall,$std)=&Apache::lc_entity_urls::standard_rights($entity,$domain,$url);
+      $inner.='<ul class="lcsmallwordlist">';
+      foreach my $type ('grade','use','view','edit','clone') {
+         if ($std->{$type} eq 'none') { next; }
+         my $description;
+         if ($type eq 'grade') {
+            $description=&mt('Grade: [_1]',&mt($std->{$type}));
+         } elsif ($type eq 'use') { 
+            $description=&mt('Use: [_1]',&mt($std->{$type}));
+         } elsif ($type eq 'view') {  
+            $description=&mt('View: [_1]',&mt($std->{$type}));
+         } elsif ($type eq 'edit') {  
+            $description=&mt('Edit: [_1]',&mt($std->{$type}));
+         } elsif ($type eq 'clone') {  
+            $description=&mt('Clone: [_1]',&mt($std->{$type}));
+         }
+         $inner.='<li class="lcsmallwordbubble">'.$description.'</li>';         
+      } 
+      $inner.='</ul>';
+   }
+   if (&edit_permission($url)) {
+      if ($published) {
+         return '<a href="#" onClick="'.&action_jump('change_status',$entity,$domain,$url).'" class="lcdirlink">'.
+                  $inner.'</a>';
+      } else {
+         return $inner;
+      }
+   } else {
+      return $inner;
+   }
 }
 
 #
@@ -227,6 +261,7 @@ sub listdirectory {
        my $size='';
        my $sort_size=-1;
        my $status='';
+       my $rights='';
        my $display_last_modified=&mt('Never');
        my $sort_last_modified=0;
        my $sort_type='1';
@@ -244,6 +279,7 @@ sub listdirectory {
           ($display_last_modified,$sort_last_modified)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'filedata'}->{'wrk'}->{'modified'}));
           $status=&publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,$modified,$published);
+          $rights=&rights_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,$modified,$published);
 # Action links
           unless ($obsolete) {
              $actionicons.=&Apache::lc_ui_utils::remove_link(&action_jump("removefile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
@@ -279,7 +315,7 @@ sub listdirectory {
              $filename,
              &change_title_link($file->{'entity'},$file->{'domain'},$file->{'url'},$file->{'metadata'}->{'title'}),
              $status,
-             &rights_link(),
+             $rights,
              $size,
              $sort_size,
              $version,
