@@ -94,7 +94,7 @@ sub guess_encoding_and_read {
 sub remove_control_characters {
   my ($lines) = @_;
   foreach my $line (@{$lines}) {
-    $line =~ s/[\x07\x0B\x0C\x13]//g;
+    $line =~ s/[\x07\x0B\x0C\x13\x1F]//g;
   }
 }
 

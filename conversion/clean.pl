@@ -14,11 +14,19 @@ use html_to_xml;
 use post_xml;
 
 
+# find the command-line argument encoding
+use I18N::Langinfo qw(langinfo CODESET);
+my $codeset = langinfo(CODESET);
+use Encode qw(decode);
+@ARGV = map { decode $codeset, $_ } @ARGV;
+
 # create a name for the clean file
 my $pathname = "$ARGV[0]";
 my($filename_no_ext, $dirs, $ext) = fileparse($pathname, qr/\.[^.]*/);
 my $newpath = "$dirs/${filename_no_ext}_clean$ext";
 
+binmode(STDOUT, ':encoding(UTF-8)');
+binmode(STDERR, ':encoding(UTF-8)');
 print "converting $pathname...\n";
 
 my $text;

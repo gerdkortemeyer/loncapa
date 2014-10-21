@@ -19,7 +19,7 @@ no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
 my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','textfield','hiddensubmission','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','tex','web','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
 my @inline_responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse');
 my @responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse','essayresponse','radiobuttonresponse','matchresponse','rankresponse','imageresponse','functionplotresponse');
-my @block_html = ('html','head','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
+my @block_html = ('html','head','body','section','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
 my @all_block = (@block_elements, @block_html);
 my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
 my @preserve_elements = ('script','answer','perl');
@@ -311,7 +311,7 @@ sub better_guess {
 sub fix_block_styles {
   my ($element) = @_;
   # list of elements that can contain style elements:
-  my @containing_styles = ('loncapa','problem','foil','item','text','hintgroup','hintpart','label','part','preduedate','postanswerdate','solved','notsolved','block','while','web','standalone','problemtype','languageblock','translated','lang','window','windowlink','togglebox','instructorcomment','div','p','li','dd','td','th','blockquote','object','applet','fieldset','button',
+  my @containing_styles = ('loncapa','problem','foil','item','text','hintgroup','hintpart','label','part','preduedate','postanswerdate','solved','notsolved','block','while','web','standalone','problemtype','languageblock','translated','lang','window','windowlink','togglebox','instructorcomment','section','div','p','li','dd','td','th','blockquote','object','applet','video','audio','canvas','fieldset','button',
   'span','strong','em','b','i','sup','sub','code','kbd','samp','tt','ins','del','var','small','big','u','font');
   my @styles = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'u');
   if (in_array(\@styles, $element->nodeName)) {
@@ -477,7 +477,9 @@ sub fix_fonts {
         for (my $child=$font->firstChild; defined $child; $child=$next) {
           $next = $child->nextSibling;
           if ($child->nodeType == XML_TEXT_NODE) {
-            $child->setData($child->nodeValue =~ tr/ABGDEZHQIKLMNXOPRSTUFCYWabgdezhqiklmnxoprVstufcywJjv¡/ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρςστυφχψωϑϕϖϒ/);
+            my $value = $child->nodeValue;
+            $value =~ tr/ABGDEZHQIKLMNXOPRSTUFCYWabgdezhqiklmnxoprVstufcywJjv¡/ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρςστυφχψωϑϕϖϒ/;
+            $child->setData($value);
           }
         }
       }
@@ -540,10 +542,15 @@ sub remove_bad_cdata_sections {
     foreach my $node (@nodes) {
       if (defined $node->firstChild && $node->firstChild->nodeType == XML_TEXT_NODE) {
         my $value = $node->firstChild->nodeValue;
-        $value =~ s/^(\s*)<!\[CDATA\[/$1/;
-        $value =~ s/^(\s*)(\/\/)?\s*<!--/$1/;
-        $value =~ s/\]\]>(\s*)$/$1/;
-        $value =~ s/(\/\/)?\s*-->(\s*)$/$1/;
+        # at the beginning:
+        $value =~ s/^(\s*)<!\[CDATA\[/$1/; # <![CDATA[
+        $value =~ s/^(\s*)\/\*\s*<!\[CDATA\[\s*\*\//$1/; # /* <![CDATA[ */
+        $value =~ s/^(\s*)(\/\/)?\s*<!--/$1/; # // <!--
+        # at the end:
+        $value =~ s/\]\]>(\s*)$/$1/; # ]]>
+        $value =~ s/(\/\/)?\s*-->(\s*)$/$2/; # // -->
+        $value =~ s/\/\*\s*\]\]>\s*\*\/(\s*)$/$1/; # /* ]]> */
+        
         $value = "\n".$value."\n";
         $value =~ s/\s*(\n[ \t]*)/$1/;
         $value =~ s/\s+$/\n/;
@@ -679,6 +686,7 @@ sub fix_cells {
 
 # replaces ul/ul by ul/li/ul and the same for ol (using the previous li if possible)
 # also adds a ul element when a li has no ul/ol ancestor
+# also replaces the deprecated type attribute by CSS
 sub fix_lists {
   my ($root) = @_;
   my @uls = $dom_doc->getElementsByTagName('ul');
@@ -686,6 +694,27 @@ sub fix_lists {
   my @lists = (@uls, @ols);
   foreach my $list (@lists) {
     my $next;
+    if (defined $list->getAttribute('type')) {
+      my $type = $list->getAttribute('type');
+      $type =~ s/^\s*|\s*$//;
+      $type = lc($type);
+      if (in_array(['circle','disc','square'], $type)) {
+        my $style = $list->getAttribute('style');
+        if (defined $style && index($style, 'list-style-type') != -1) {
+          $list->removeAttribute('type');
+        } else {
+          if (defined $style) {
+            $style =~ s/;\s*$//;
+            $style .= '; ';
+          } else {
+            $style = '';
+          }
+          $style .= 'list-style-type: '.$type;
+          $list->removeAttribute('type');
+          $list->setAttribute('style', $style);
+        }
+      }
+    }
     for (my $child=$list->firstChild; defined $child; $child=$next) {
       $next = $child->nextSibling;
       if ($child->nodeType == XML_ELEMENT_NODE && in_array(['ul','ol'], $child->nodeName)) {
