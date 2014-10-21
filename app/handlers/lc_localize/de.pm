@@ -360,6 +360,8 @@ use utf8;
 
 'Continue' => 'Weiter',
 
+'Back' => 'Zurück',
+
 'Upload complete.' => 'Hochladen beendet.',
 
 'Changes complete.' => 'Änderungen beendet.', 

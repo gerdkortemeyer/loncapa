@@ -108,6 +108,24 @@ $(document).ready(function() {
             }
         }
       });
+    });
+
+    $("#back").click(function() {
+        $.ajax({
+        url : '/publisher_screens',
+        type: "POST",
+        data : $('#publisherform').serialize()+"&returnstage="+($('#stage').val()-1),
+        success: function(data){
+            $('#publisher_screens').html(data);
+        },
+        complete: function(){
+            if ($('#stage').val()>1) {
+               show_back();
+            } else {
+               hide_back();
+            }
+        }
+      });
      });
 
 });
