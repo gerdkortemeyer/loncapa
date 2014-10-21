@@ -18,7 +18,7 @@ function attach_language() {
         $.ajax({
         url : '/publisher_screens',
         type: "POST",
-        data : $('#publisherform').serialize()+"&addlanguage=1&returnstage=one",
+        data : $('#publisherform').serialize()+"&addlanguage=1&returnstage=1",
         success: function(data){
             $('#publisher_screens').html(data);
         },
@@ -32,7 +32,7 @@ function attach_taxonomy() {
         $.ajax({
         url : '/publisher_screens',
         type: "POST",
-        data : $('#publisherform').serialize()+"&addtaxonomy=1&returnstage=two",
+        data : $('#publisherform').serialize()+"&addtaxonomy=1&returnstage=2",
         success: function(data){
             $('#publisher_screens').html(data);
         },
@@ -46,7 +46,7 @@ function attach_keywords() {
         $.ajax({
         url : '/publisher_screens',
         type: "POST",
-        data : $('#publisherform').serialize()+"&returnstage=three",
+        data : $('#publisherform').serialize()+"&returnstage=3",
         success: function(data){
             $('#publisher_screens').html(data);
         },
