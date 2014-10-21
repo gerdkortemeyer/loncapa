@@ -34,11 +34,3 @@ As one more example, let's see what happens when we go to Preferences.  Clicking
 If you are looking to change the structure or appearance of a page, then you will probably want to edit its associated HTML file located in {\tt loncapa/app/html/pages}.  Adding or changing client-side functionality will require editing the page's JavaScript file located in {\tt loncapa/app/scripts}.
 
 Server-side functionality is again controlled by Perl handlers located in {\tt loncapa/app/handlers}.  Data is passed to and retrieved from the server through AJAX/JSON requests that are placed in the page's JavaScript file.  Perl handlers operate at a low level and should not need to be modified very often.  There is probably already a Perl handler that will meet your needs.
-
-%Many of the menu options behave this way by replacing the iframe with simple HTML files.  The important contents of the page can be quickly changed without having to rebuild the entire page.  Most of the necessary JavaScript functions are already available after the initial loading of {\tt lc\_defaults.js}.
-
-%One of the menu options is Portfolio which onClick calls the JavaScript function, portfolio()
-
-%{\tt loncapa/app/scripts/lc\_default.js} also calls the JavaScript function, {\tt dashboard()}, which loads the Dashboard.  The function {\tt  diaplay\_asset(“/pages/lc\_dashboard.html”)} replaces the main iframe with the contents of {\tt lc\_dashboard.html}.
-
-%Let's look at the Portfolio space as an example to see how these different files are used.  Clicking on {\tt Places->Portfolio} from the menu runs a JavaScript function which loads {\tt loncapa/app/html/pages/lc\_portfolio.html}.  This is a minimal page that defines the framework of HTML elements and loads the JavaScript file {\tt loncapa/app/scripts/lc\_portfolio.js}, in addition to other scripts that are loaded when the parser processes the {\tt $<$html$>$}-tag.
