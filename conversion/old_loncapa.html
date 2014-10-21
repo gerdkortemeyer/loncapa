@@ -215,6 +215,90 @@ Possible values:<ul>
 
 
 <div class="documentation">
+Shared attributes
+</div>
+<br>
+
+Attribute <span class="nomattribut">TeXsize</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Size of LaTeX fonts used in printing.
+
+Possible values of TeXsize attribute:
+- tiny: smallest
+- scriptsize: very small
+- footnotesize: smaller
+- small: small
+- normalsize: normal
+- large: large
+- Large: larger
+- LARGE: even larger
+- huge: still larger
+- Huge: largest
+
+Note, that all parameters coincide with standard LaTeX commands for changing font size though you do not escape them.
+</div>
+<br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>tiny</tt>
+</li>
+
+<li>
+<tt>scriptsize</tt>
+</li>
+
+<li>
+<tt>footnotesize</tt>
+</li>
+
+<li>
+<tt>small</tt>
+</li>
+
+<li>
+<tt>normalsize</tt>
+</li>
+
+<li>
+<tt>large</tt>
+</li>
+
+<li>
+<tt>Large</tt>
+</li>
+
+<li>
+<tt>LARGE</tt>
+</li>
+
+<li>
+<tt>huge</tt>
+</li>
+
+<li>
+<tt>Huge</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
+</div>
+
+
+
+<div class="documentation">
 Problem (root element)
 </div>
 <br>
@@ -884,6 +968,10 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#samp_0">samp</a>
+<br>
+</li>
+<li>
+<a href="#cite_0">cite</a>
 <br>
 </li>
 <li>
@@ -5235,7 +5323,7 @@ This creates a hidden form field with the old response value.
 
 
 <div class="indentation">
-                
+
 </div>
 
 <br>Parents:<a href="#stringresponse_0">stringresponse</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#customresponse_0">customresponse</a>, <a href="#externalresponse_0">externalresponse</a>, <a href="#dataresponse_0">dataresponse</a>
@@ -6174,6 +6262,7 @@ Attribute <span class="nomattribut">TeXsize</span>:
 
 <div class="documentation">
 TeX font size
+Warning: as opposed to the TeXsize attribute in &lt;h1&gt;..&lt;h6&gt; &lt;font&gt; and &lt;basefont&gt;, this one requires a \ at the beginning of the values.
 </div>
 <br>
 
@@ -10979,7 +11068,7 @@ Usage note: This attribute must not be used to convey semantic information. Even
 
 </div>
 
-<br>Parents:<a href="#headerContent_0">headerContent</a>, <a href="#div-base_0">div-base</a>, <a href="#p-base_0">p-base</a>, <a href="#ul-base_0">ul-base</a>, <a href="#ol-base_0">ol-base</a>, <a href="#li-base_0">li-base</a>, <a href="#dl-base_0">dl-base</a>, <a href="#table-base_0">table-base</a>, <a href="#tr-base_0">tr-base</a>, <a href="#td-base_0">td-base</a>, <a href="#th_0">th</a>, <a href="#span_0">span</a>, <a href="#hr_0">hr</a>
+<br>Parents:<a href="#headerContent_0">headerContent</a>, <a href="#div-base_0">div-base</a>, <a href="#p-base_0">p-base</a>, <a href="#ul-base_0">ul-base</a>, <a href="#ol-base_0">ol-base</a>, <a href="#li-base_0">li-base</a>, <a href="#dl-base_0">dl-base</a>, <a href="#table-base_0">table-base</a>, <a href="#tr-base_0">tr-base</a>, <a href="#td-base_0">td-base</a>, <a href="#th_0">th</a>, <a href="#span_0">span</a>, <a href="#hr_0">hr</a>, <a href="#blockquote_0">blockquote</a>
 <br>
 <hr>
 
@@ -11107,9 +11196,8 @@ Choice between:<ul>
 <a href="#coreattrs_0">coreattrs</a>
 <br>
 <br>
-Attribute <span class="nomattribut">TeXsize</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
-<br>
+Attribute <span class="nomattribut"></span>:
+    <div class="indentation">optional<br>
 </div>
 
 </div>
@@ -12074,10 +12162,38 @@ List item
 Attribute <span class="nomattribut">type</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+This character attributes indicates the numbering type:
+
+    a: lowercase letters
+    A: uppercase letters
+    i: lowercase Roman numerals
+    I: uppercase Roman numerals
+    1: numbers
+
+This type overrides the one used by its parent &lt;ol&gt; element, if any.
+
+Usage note: This attribute has been deprecated: use the CSS list-style-type property instead.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">value</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:int</tt>
 <br>
+
+
+<div class="documentation">
+This integer attributes indicates the current ordinal value of the item in the list as defined by the &lt;ol&gt; element. The only allowed value for this attribute is a number, even if the list is displayed with Roman numerals or letters. List items that follow this one continue numbering from the value set. The value attribute has no meaning for unordered lists (&lt;ul&gt;) or for menus (&lt;menu&gt;).
+
+Note: This attribute was deprecated in HTML4, but reintroduced in HTML5.
+</div>
+<br>
+
+
 </div>
 
 </div>
@@ -12320,8 +12436,30 @@ Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&
 
 </div>
 Attribute <span class="nomattribut">TeXwidth</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Width of the table in %
+</div>
 <br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>[0-9]+\s*%</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
 </div>
 Attribute <span class="nomattribut">TeXtheme</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
@@ -12330,10 +12468,47 @@ Attribute <span class="nomattribut">TeXtheme</span>:
 Attribute <span class="nomattribut">align</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+Deprecated attribute.
+
+This enumerated attribute indicates how the table must be aligned in regard of the containing document. It may have the following values:
+
+- left, meaning that the table is to be displayed to the left of the document;
+- center, meaning that the table is to be displayed centered in the document;
+- right, meaning that the table is to be displayed to the right of the document.
+
+Note: 
+    Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the align attribute, the CSS properties "text-align" and "vertical-align" should be used.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">rules</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+Deprecated attribute.
+
+This enumerated attribute defines where rules, i.e. lines, should appear in a table. It can have the following values:
+
+- none, which indicates the no rules will be displayed; it is the default value;
+- groups, which will make the rules to be displayed between row groups (defined by the &lt;thead&gt;, &lt;tbody&gt; and &lt;tfoot&gt; elements) and between column groups (defined by the &lt;col&gt; and &lt;colgroup&gt; elements) only;
+- rows, which will make the rules to be displayed between rows;
+- columns, which will make the rules to be displayed between columns;
+- all, which wil make the rules to be displayed between rows and columns.
+
+Note:
+    The styling of the rules is browser-dependant and cannot be modified.
+    Do not use this attribute, as it has been deprecated: the rules should be defined and styled using CSS. use the CSS property border on the adequate &lt;thead&gt;, &lt;tbody&gt;, &lt;tfoot&gt;, &lt;col&gt; or &lt;colgroup&gt; elements.
+</div>
+<br>
+
+
 </div>
 
 </div>
@@ -12653,8 +12828,30 @@ Attribute <span class="nomattribut">align</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">TeXwidth</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Width of the cell in mm or another unit (cm, in, pt, pc)
+</div>
 <br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>\d*(\s+(mm|cm|in|pt|pc))?</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
 </div>
 
 </div>
@@ -12735,8 +12932,30 @@ Attribute <span class="nomattribut">align</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">TeXwidth</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+Width of the cell in mm or another unit (cm, in, pt, pc)
+</div>
 <br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>\d*(\s+(mm|cm|in|pt|pc))?</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
 </div>
 
 </div>
@@ -12977,6 +13196,32 @@ The HTML &lt;samp&gt; element is an element intended to identify sample output f
 <br>
 <hr>
 
+<a name="cite_0"></a>
+<h3>Element <span class="nomtitre">cite</span>
+</h3>type: <a href="#inlineBaseType_0">inlineBaseType</a>
+<br>
+
+
+<div class="documentation">
+The HTML &lt;cite&gt; Element (or HTML Citation Element) represents a reference to a creative work. It must include the title of a work, the name of the author, or a URL reference, which may be in an abbreviated form according to the conventions used for the addition of citation metadata.
+
+Usage Notes:
+
+    A creative work may include a book, a paper, an essay, a poem, a score, a song, a script, a film, a TV show, a game, a sculpture, a painting, a theater production, a play, an opera, a musical, an exhibition, a legal case report, a computer program, , a web site, a web page, a blog post or comment, a forum post or comment, a tweet, a written or oral statement, etc.
+    Use the cite attribute on a &lt;blockquote&gt; or &lt;q&gt; element to reference an online resource for a source.
+
+
+Style note:
+
+To avoid the default italic style from being used for the &lt;cite&gt; element use the CSS font-style property.
+</div>
+<br>
+
+
+<br>Parents:<a href="#inlines_0">inlines</a>
+<br>
+<hr>
+
 <a name="tt_0"></a>
 <h3>Element <span class="nomtitre">tt</span>
 </h3>type: <a href="#inlineBaseType_0">inlineBaseType</a>
@@ -13130,9 +13375,8 @@ Attribute <span class="nomattribut">size</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
 </div>
-Attribute <span class="nomattribut">TeXsize</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
-<br>
+Attribute <span class="nomattribut"></span>:
+    <div class="indentation">optional<br>
 </div>
 
 
@@ -13167,9 +13411,8 @@ Attribute <span class="nomattribut">size</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
 </div>
-Attribute <span class="nomattribut">TeXsize</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
-<br>
+Attribute <span class="nomattribut"></span>:
+    <div class="indentation">optional<br>
 </div>
 
 </div>
@@ -13190,7 +13433,7 @@ The HTML &lt;br&gt; Element (or HTML Line Break Element) produces a line break i
 
 
 <div class="indentation">
-                
+
 </div>
 
 <br>Parents:<a href="#inlines_0">inlines</a>
@@ -13226,7 +13469,7 @@ The HTML &lt;hr&gt; element represents a thematic break between paragraph-level 
 
 
 <div class="documentation">
-The HTML &lt;blockquote&gt; Element (or HTML Block Quotation Element) indicates that the enclosed text is an extended quotation. Usually, this is rendered visually by indentation (see Notes for how to change it). A URL for the source of the quotation may be given using the cite attribute, while a text representation of the source can be given using the &lt;cite&gt; element.
+The HTML &lt;blockquote&gt; Element (or HTML Block Quotation Element) indicates that the enclosed text is an extended quotation. Usually, this is rendered visually by indentation (to change &lt;blockquote&gt; indent, use CSS margin property). A URL for the source of the quotation may be given using the cite attribute, while a text representation of the source can be given using the &lt;cite&gt; element.
 </div>
 <br>
 
@@ -13238,12 +13481,12 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">cite</span>:
     <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">TeXwidth</span>:
-    <div class="indentation">optional<br>type: <tt>xs:int</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">align</span>:
@@ -13314,7 +13557,7 @@ Attribute <span class="nomattribut">width</span>:
 
 
 <div class="documentation">
-width (pixel)
+The width of the image in pixels or percent.
 </div>
 <br>
 
@@ -13326,21 +13569,35 @@ Attribute <span class="nomattribut">height</span>:
 
 
 <div class="documentation">
-height (pixel)
+The height of the image in pixels or percent.
 </div>
 <br>
 
 
 </div>
 Attribute <span class="nomattribut">TeXwidth</span>:
-    <div class="indentation">optional<br>type: <a href="#decimal-or-perl_0">decimal-or-perl</a>
-<br>
+    <div class="indentation">optional<br>
 
 
 <div class="documentation">
-TeXwidth (mm)
+Allows you to set the width of the image, in mm or %, as it will be rendered into the LaTeX document used to print the problem.
 </div>
 <br>
+
+
+Possible values:<ul>
+<li>perl</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>[0-9]+(\.[0-9]+)?(\s*%)?</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
 
 
 </div>
@@ -13350,7 +13607,7 @@ Attribute <span class="nomattribut">TeXheight</span>:
 
 
 <div class="documentation">
-TeXheight (mm)
+Allows you to set the height of the image, in mm, as it will be rendered into the LaTeX document used to print the problem.
 </div>
 <br>
 
@@ -14758,6 +15015,8 @@ Value restriction based on xs:string<ul>
 <a href="#caparesponse--vector_0">caparesponse--vector</a>
 <br>
 <a href="#chem_0">chem</a>
+<br>
+<a href="#cite_0">cite</a>
 <br>
 <a href="#ClosingParagraph_0">ClosingParagraph</a>
 <br>

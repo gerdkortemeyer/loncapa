@@ -78,6 +78,51 @@
   
   <xs:annotation>
     <xs:documentation>
+      Shared attributes
+    </xs:documentation>
+  </xs:annotation>
+  <xs:attribute default="normalsize" name="TeXsize">
+    <xs:annotation>
+      <xs:documentation>
+        Size of LaTeX fonts used in printing.
+        
+        Possible values of TeXsize attribute:
+        - tiny: smallest
+        - scriptsize: very small
+        - footnotesize: smaller
+        - small: small
+        - normalsize: normal
+        - large: large
+        - Large: larger
+        - LARGE: even larger
+        - huge: still larger
+        - Huge: largest
+        
+        Note, that all parameters coincide with standard LaTeX commands for changing font size though you do not escape them.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleType>
+      <xs:union memberTypes="perl">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="tiny"/>
+            <xs:enumeration value="scriptsize"/>
+            <xs:enumeration value="footnotesize"/>
+            <xs:enumeration value="small"/>
+            <xs:enumeration value="normalsize"/>
+            <xs:enumeration value="large"/>
+            <xs:enumeration value="Large"/>
+            <xs:enumeration value="LARGE"/>
+            <xs:enumeration value="huge"/>
+            <xs:enumeration value="Huge"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:union>
+    </xs:simpleType>
+  </xs:attribute>
+  
+  <xs:annotation>
+    <xs:documentation>
       Problem (root element)
     </xs:documentation>
   </xs:annotation>
@@ -270,6 +315,7 @@
       <xs:element ref="code"/>
       <xs:element ref="kbd"/>
       <xs:element ref="samp"/>
+      <xs:element ref="cite"/>
       <xs:element ref="tt"/>
       <xs:element ref="ins"/>
       <xs:element ref="del"/>
@@ -2341,7 +2387,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-                    </xs:complexType>
+    </xs:complexType>
   </xs:element>
   
   <xs:annotation>
@@ -2795,6 +2841,7 @@
       <xs:annotation>
         <xs:documentation>
           TeX font size
+          Warning: as opposed to the TeXsize attribute in &lt;h1&gt;..&lt;h6&gt; &lt;font&gt; and &lt;basefont&gt;, this one requires a \ at the beginning of the values.
         </xs:documentation>
       </xs:annotation>
       <xs:simpleType>
@@ -5081,7 +5128,7 @@
       <xs:element ref="i"/>
     </xs:choice>
     <xs:attributeGroup ref="coreattrs"/>
-    <xs:attribute name="TeXsize" type="xs:int"/>
+    <xs:attribute ref="TeXsize"/>
   </xs:complexType>
   
   <xs:element name="html">
@@ -5612,10 +5659,58 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="TeXwidth" type="xs:int"/>
+    <xs:attribute name="TeXwidth">
+      <xs:annotation>
+        <xs:documentation>
+          Width of the table in %
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:pattern value="[0-9]+\s*%"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
+      </xs:simpleType>
+    </xs:attribute>
     <xs:attribute name="TeXtheme" type="xs:string"/>
-    <xs:attribute name="align" type="xs:string"/>
-    <xs:attribute name="rules" type="xs:string"/>
+    <xs:attribute name="align" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Deprecated attribute.
+          
+          This enumerated attribute indicates how the table must be aligned in regard of the containing document. It may have the following values:
+          
+          - left, meaning that the table is to be displayed to the left of the document;
+          - center, meaning that the table is to be displayed centered in the document;
+          - right, meaning that the table is to be displayed to the right of the document.
+          
+          Note: 
+              Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the align attribute, the CSS properties "text-align" and "vertical-align" should be used.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="rules" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Deprecated attribute.
+          
+          This enumerated attribute defines where rules, i.e. lines, should appear in a table. It can have the following values:
+          
+          - none, which indicates the no rules will be displayed; it is the default value;
+          - groups, which will make the rules to be displayed between row groups (defined by the &lt;thead&gt;, &lt;tbody&gt; and &lt;tfoot&gt; elements) and between column groups (defined by the &lt;col&gt; and &lt;colgroup&gt; elements) only;
+          - rows, which will make the rules to be displayed between rows;
+          - columns, which will make the rules to be displayed between columns;
+          - all, which wil make the rules to be displayed between rows and columns.
+          
+          Note:
+              The styling of the rules is browser-dependant and cannot be modified.
+              Do not use this attribute, as it has been deprecated: the rules should be defined and styled using CSS. use the CSS property border on the adequate &lt;thead&gt;, &lt;tbody&gt;, &lt;tfoot&gt;, &lt;col&gt; or &lt;colgroup&gt; elements.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="table-with-responses">
     <xs:complexContent>
@@ -5732,7 +5827,22 @@
     <xs:attribute name="colspan" type="xs:int"/>
     <xs:attribute name="rowspan" type="xs:int"/>
     <xs:attribute name="align" type="html-align"/>
-    <xs:attribute name="TeXwidth" type="xs:int"/>
+    <xs:attribute name="TeXwidth">
+      <xs:annotation>
+        <xs:documentation>
+          Width of the cell in mm or another unit (cm, in, pt, pc)
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:union memberTypes="perl">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:pattern value="\d*(\s+(mm|cm|in|pt|pc))?"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:union>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType mixed="true" name="td-with-responses">
     <xs:complexContent mixed="true">
@@ -5767,7 +5877,22 @@
       <xs:attribute name="colspan" type="xs:int"/>
       <xs:attribute name="rowspan" type="xs:int"/>
       <xs:attribute name="align" type="html-align"/>
-      <xs:attribute name="TeXwidth" type="xs:int"/>
+      <xs:attribute name="TeXwidth">
+        <xs:annotation>
+          <xs:documentation>
+            Width of the cell in mm or another unit (cm, in, pt, pc)
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:pattern value="\d*(\s+(mm|cm|in|pt|pc))?"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="span">
@@ -5868,6 +5993,23 @@
       </xs:documentation>
     </xs:annotation>
   </xs:element>
+  <xs:element name="cite" type="inlineBaseType">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;cite&gt; Element (or HTML Citation Element) represents a reference to a creative work. It must include the title of a work, the name of the author, or a URL reference, which may be in an abbreviated form according to the conventions used for the addition of citation metadata.
+        
+        Usage Notes:
+        
+            A creative work may include a book, a paper, an essay, a poem, a score, a song, a script, a film, a TV show, a game, a sculpture, a painting, a theater production, a play, an opera, a musical, an exhibition, a legal case report, a computer program, , a web site, a web page, a blog post or comment, a forum post or comment, a tweet, a written or oral statement, etc.
+            Use the cite attribute on a &lt;blockquote&gt; or &lt;q&gt; element to reference an online resource for a source.
+        
+        
+        Style note:
+        
+        To avoid the default italic style from being used for the &lt;cite&gt; element use the CSS font-style property.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
   <xs:element name="tt" type="inlineBaseType">
     <xs:annotation>
       <xs:documentation>
@@ -5939,7 +6081,7 @@
           <xs:attribute name="color" type="xs:string"/>
           <xs:attribute name="face" type="xs:string"/>
           <xs:attribute name="size" type="xs:string"/>
-          <xs:attribute name="TeXsize" type="xs:int"/>
+          <xs:attribute ref="TeXsize"/>
         </xs:extension>
       </xs:complexContent>
     </xs:complexType>
@@ -5954,7 +6096,7 @@
       <xs:attribute name="color" type="xs:string"/>
       <xs:attribute name="face" type="xs:string"/>
       <xs:attribute name="size" type="xs:string"/>
-      <xs:attribute name="TeXsize" type="xs:int"/>
+      <xs:attribute ref="TeXsize"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="br">
@@ -5964,7 +6106,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-                    </xs:complexType>
+    </xs:complexType>
   </xs:element>
   <xs:element name="hr">
     <xs:annotation>
@@ -5979,15 +6121,15 @@
   <xs:element name="blockquote">
     <xs:annotation>
       <xs:documentation>
-        The HTML &lt;blockquote&gt; Element (or HTML Block Quotation Element) indicates that the enclosed text is an extended quotation. Usually, this is rendered visually by indentation (see Notes for how to change it). A URL for the source of the quotation may be given using the cite attribute, while a text representation of the source can be given using the &lt;cite&gt; element.
+        The HTML &lt;blockquote&gt; Element (or HTML Block Quotation Element) indicates that the enclosed text is an extended quotation. Usually, this is rendered visually by indentation (to change &lt;blockquote&gt; indent, use CSS margin property). A URL for the source of the quotation may be given using the cite attribute, while a text representation of the source can be given using the &lt;cite&gt; element.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text-without-responses"/>
       </xs:choice>
+      <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute name="cite" type="xs:anyURI"/>
-      <xs:attribute name="TeXwidth" type="xs:int"/>
       <xs:attribute name="align">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -6021,28 +6163,37 @@
       <xs:attribute name="width" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
-            width (pixel)
+            The width of the image in pixels or percent.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="height" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
-            height (pixel)
+            The height of the image in pixels or percent.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="TeXwidth" type="decimal-or-perl">
+      <xs:attribute name="TeXwidth">
         <xs:annotation>
           <xs:documentation>
-            TeXwidth (mm)
+            Allows you to set the width of the image, in mm or %, as it will be rendered into the LaTeX document used to print the problem.
           </xs:documentation>
         </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="perl">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:pattern value="[0-9]+(\.[0-9]+)?(\s*%)?"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="TeXheight" type="decimal-or-perl">
         <xs:annotation>
           <xs:documentation>
-            TeXheight (mm)
+            Allows you to set the height of the image, in mm, as it will be rendered into the LaTeX document used to print the problem.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
