@@ -2341,7 +2341,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-                </xs:complexType>
+                    </xs:complexType>
   </xs:element>
   
   <xs:annotation>
@@ -5472,8 +5472,32 @@
       </xs:documentation>
     </xs:annotation>
     <xs:attributeGroup ref="coreattrs"/>
-    <xs:attribute name="type" type="xs:string"/>
-    <xs:attribute name="value" type="xs:string"/>
+    <xs:attribute name="type" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          This character attributes indicates the numbering type:
+          
+              a: lowercase letters
+              A: uppercase letters
+              i: lowercase Roman numerals
+              I: uppercase Roman numerals
+              1: numbers
+          
+          This type overrides the one used by its parent &lt;ol&gt; element, if any.
+          
+          Usage note: This attribute has been deprecated: use the CSS list-style-type property instead.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="value" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>
+          This integer attributes indicates the current ordinal value of the item in the list as defined by the &lt;ol&gt; element. The only allowed value for this attribute is a number, even if the list is displayed with Roman numerals or letters. List items that follow this one continue numbering from the value set. The value attribute has no meaning for unordered lists (&lt;ul&gt;) or for menus (&lt;menu&gt;).
+          
+          Note: This attribute was deprecated in HTML4, but reintroduced in HTML5.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType mixed="true" name="li-with-responses">
     <xs:complexContent mixed="true">
@@ -5940,7 +5964,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-                </xs:complexType>
+                    </xs:complexType>
   </xs:element>
   <xs:element name="hr">
     <xs:annotation>

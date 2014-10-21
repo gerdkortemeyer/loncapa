@@ -696,9 +696,8 @@ sub fix_lists {
     my $next;
     if (defined $list->getAttribute('type')) {
       my $type = $list->getAttribute('type');
-      $type =~ s/^\s*|\s*$//;
-      $type = lc($type);
-      if (string_in_array(['circle','disc','square'], $type)) {
+      my $lst = list_style_type($type);
+      if (defined $lst) {
         my $style = $list->getAttribute('style');
         if (defined $style && index($style, 'list-style-type') != -1) {
           $list->removeAttribute('type');
@@ -709,7 +708,7 @@ sub fix_lists {
           } else {
             $style = '';
           }
-          $style .= 'list-style-type: '.$type;
+          $style .= 'list-style-type: '.$lst;
           $list->removeAttribute('type');
           $list->setAttribute('style', $style);
         }
@@ -736,6 +735,26 @@ sub fix_lists {
   }
   my @lis = $dom_doc->getElementsByTagName('li');
   foreach my $li (@lis) {
+    if (defined $li->getAttribute('type')) {
+      my $type = $li->getAttribute('type');
+      my $lst = list_style_type($type);
+      if (defined $lst) {
+        my $style = $li->getAttribute('style');
+        if (defined $style && index($style, 'list-style-type') != -1) {
+          $li->removeAttribute('type');
+        } else {
+          if (defined $style) {
+            $style =~ s/;\s*$//;
+            $style .= '; ';
+          } else {
+            $style = '';
+          }
+          $style .= 'list-style-type: '.$lst;
+          $li->removeAttribute('type');
+          $li->setAttribute('style', $style);
+        }
+      }
+    }
     my $found_list_ancestor = 0;
     my $ancestor = $li->parentNode;
     while (defined $ancestor) {
@@ -772,6 +791,31 @@ sub fix_lists {
       }
     }
   }
+}
+
+# returns the CSS list-style-type value equivalent to the given type attribute for a list or list item
+sub list_style_type {
+  my ($type) = @_;
+  my $value;
+  $type =~ s/^\s*|\s*$//;
+  if (lc($type) eq 'circle') {
+    $value = 'circle';
+  } elsif (lc($type) eq 'disc') {
+    $value = 'disc';
+  } elsif (lc($type) eq 'square') {
+    $value = 'square';
+  } elsif ($type eq 'a') {
+    $value = 'lower-latin';
+  } elsif ($type eq 'A') {
+    $value = 'upper-latin';
+  } elsif ($type eq 'i') {
+    $value = 'lower-roman';
+  } elsif ($type eq 'I') {
+    $value = 'upper-roman';
+  } elsif ($type eq '1') {
+    $value = 'decimal';
+  }
+  return $value;
 }
 
 # replace center by a div or remove it if there is a table inside
