@@ -116,9 +116,14 @@ sub parser {
 # An ending tag
          $output.=&process_tag('end',$token->[1],$p,$safe,$stack,$status,$target,$token);
 # Unexpected ending tags
-         if ($stack->{'tags'}->[-1]->{'name'} ne $token->[1]) {
-            &error($stack,'unexpected_ending',{'expected' => $stack->{'tags'}->[-1]->{'name'},
-                                               'found'    => $token->[1] });
+         if ($#{$stack->{'tags'}}>=0) {
+            if ($stack->{'tags'}->[-1]->{'name'} ne $token->[1]) {
+               &error($stack,'unexpected_ending',{'expected' => $stack->{'tags'}->[-1]->{'name'},
+                                                  'found'    => $token->[1] });
+            }
+         } else {
+            &error($stack,'unexpected_ending',{'expected' => '-',
+                                               'found'    => $token->[-1] });
          }
 # Pop the stack again
          pop(@{$stack->{'tags'}});

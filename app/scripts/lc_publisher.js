@@ -55,6 +55,29 @@ function attach_keywords() {
      });
 }
 
+function show_continue() {
+   $("#continue_span").show();
+}
+
+function hide_continue() {
+   $("#continue_span").hide();
+}
+function show_back() {
+   $("back_span").show();
+}
+
+function hide_back() {
+   $("#back_span").hide();
+}
+
+function show_finalize() {
+   $("finalize_span").show();
+}
+
+function hide_finalize() {
+   $("#finalize_span").hide();
+}
+
 
 $(document).ready(function() {
      entity=parent.getParameterByName(location.search,'entity');

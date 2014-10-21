@@ -94,6 +94,10 @@ h3 {
    visibility: hidden;
 }
 
+.lcoptional {
+   display: none;
+}
+
 .lcformtrigger {
    font-family: sans-serif;
    font-size: 14px;

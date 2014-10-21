@@ -338,8 +338,6 @@ sub incl_publisher_screens {
    } else {
        $output.=&stage_one($metadata,%content);
    }
-#FIXME: debug
-   $output.='<pre>'.Dumper($metadata).'</pre>';
    return $output;
 }
 

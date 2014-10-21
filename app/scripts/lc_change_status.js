@@ -143,6 +143,7 @@ $(document).ready(function() {
      init_datatable(false,0); 
      $('#donebutton').click(function() {
         if (savechanges) { saverules(); }
+        parent.document.getElementById('contentframe').contentWindow.reload_listing();
         parent.hide_modal();
      });
      $('#addbutton').click(function() {
