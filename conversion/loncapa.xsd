@@ -130,6 +130,8 @@
       </xs:documentation>
     </xs:annotation>
     <xs:choice>
+      <xs:group ref="responses"/>
+      <xs:element ref="hint"/>
       <xs:group ref="blocks-with-responses"/>
       <xs:group ref="inlines"/>
     </xs:choice>
@@ -166,6 +168,7 @@
       <xs:element ref="gnuplot"/>
       <xs:element ref="organicstructure"/>
       <xs:element ref="drawimage"/>
+      <xs:element ref="hintgroup"/>
       
       <xs:element ref="script"/>
       <xs:element name="section" type="section-with-responses"/>
@@ -240,6 +243,11 @@
     </xs:choice>
   </xs:group>
   <xs:group name="inlines">
+    <xs:annotation>
+      <xs:documentation>
+        Note: some responses and the hint element are also inline, but are not in this group.
+      </xs:documentation>
+    </xs:annotation>
     <xs:choice>
       <xs:element ref="display"/>
       <xs:element ref="m"/>
@@ -248,7 +256,6 @@
       <xs:element ref="parse"/>
       <xs:element ref="algebra"/>
       <xs:element ref="textline"/>
-      <xs:element ref="hint"/>
       
       <xs:element ref="span"/>
       <xs:element ref="a"/>
@@ -2642,13 +2649,26 @@
       Hints
     </xs:documentation>
   </xs:annotation>
+  <xs:element name="hintgroup">
+    <xs:annotation>
+      <xs:documentation>
+        Group of hints.
+        This is only useful when one wants to create several groups of conditional hints in a part, each one having its own default hint (a hint with on="default").
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="hint"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="hint">
     <xs:annotation>
       <xs:documentation>
         Hint
         
         The hint can use a condition defined in a response by using the condition name in the "on" attribute. In this case, the hint will only display when the condition is verified.
-        If no other hint is to show then all hints with an on value set to “default” will show.
+        If no other hint is to show in the part or (when there is one) in the group of hints, then all hints with an on value set to “default” will show.
         
         This element must be inside a problem part.
       </xs:documentation>
@@ -3809,7 +3829,6 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text-with-responses"/>
-        <xs:group ref="responses"/>
         <xs:group ref="inserts"/>
         <xs:element ref="parameter"/>
         <xs:element ref="randomlabel"/>
@@ -3893,7 +3912,6 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text-with-responses"/>
-        <xs:group ref="responses"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -3949,7 +3967,6 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text-with-responses"/>
-        <xs:group ref="responses"/>
         <xs:group ref="inserts"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
@@ -4013,7 +4030,6 @@
       <xs:extension base="block-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-responses"/>
-          <xs:group ref="responses"/>
           <xs:group ref="inserts"/>
           <xs:element ref="part"/>
           <xs:element ref="randomlabel"/>
@@ -4139,7 +4155,6 @@
       <xs:extension base="problemtype-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-responses"/>
-          <xs:group ref="responses"/>
           <xs:group ref="inserts"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
@@ -5042,7 +5057,6 @@
       <xs:extension base="div-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-responses"/>
-          <xs:group ref="responses"/>
           <xs:group ref="inserts"/>
           <xs:element ref="part"/>
           <xs:element ref="randomlabel"/>
@@ -5083,6 +5097,7 @@
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="inlines"/>
           <xs:group ref="inlineResponses"/>
+          <xs:element ref="hint"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -5161,7 +5176,6 @@
       <xs:extension base="li-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-responses"/>
-          <xs:group ref="responses"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -5224,7 +5238,6 @@
       <xs:extension base="dd-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-responses"/>
-          <xs:group ref="responses"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -5386,7 +5399,6 @@
       <xs:extension base="td-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-responses"/>
-          <xs:group ref="responses"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>

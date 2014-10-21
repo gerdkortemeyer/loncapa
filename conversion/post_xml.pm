@@ -136,7 +136,7 @@ sub create_new_structure {
     $meta->parentNode->removeChild($meta);
     my $name = $meta->getAttribute('name');
     my $content = $meta->getAttribute('content');
-    if (defined $name && defined $content && in_array(\@meta_names, lc($name))) {
+    if (defined $name && defined $content && string_in_array(\@meta_names, lc($name))) {
       my $lcmeta = $dom_doc->createElement('lcmeta');
       $lcmeta->setAttribute('name', lc($name));
       $lcmeta->setAttribute('content', $content);
@@ -167,7 +167,7 @@ sub remove_elements {
     $nextChild = $child->nextSibling;
     my $type = $node->nodeType;
     if ($type == XML_ELEMENT_NODE) {
-      if (in_array($to_remove, $child->nodeName)) {
+      if (string_in_array($to_remove, $child->nodeName)) {
         $node->removeChild($child);
       } else {
         remove_elements($child, $to_remove);
@@ -240,7 +240,7 @@ sub parse_sty {
         $in_render = 1;
         $is_block = 0;
       } elsif ($in_render) {
-        if (in_array(\@all_block, $tag)) {
+        if (string_in_array(\@all_block, $tag)) {
           $is_block = 1;
         }
       }
@@ -284,7 +284,7 @@ sub better_guess {
     NODE_LOOP: foreach my $node (@nodes) {
       for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
         if ($child->nodeType == XML_ELEMENT_NODE) {
-          if (in_array(\@all_block, $child->nodeName) || in_array($new_blocks, $child->nodeName)) {
+          if (string_in_array(\@all_block, $child->nodeName) || string_in_array($new_blocks, $child->nodeName)) {
             push(@change, $tag);
             last NODE_LOOP;
           }
@@ -314,7 +314,7 @@ sub fix_block_styles {
   my @containing_styles = ('loncapa','problem','foil','item','text','hintgroup','hintpart','label','part','preduedate','postanswerdate','solved','notsolved','block','while','web','standalone','problemtype','languageblock','translated','lang','window','windowlink','togglebox','instructorcomment','section','div','p','li','dd','td','th','blockquote','object','applet','video','audio','canvas','fieldset','button',
   'span','strong','em','b','i','sup','sub','code','kbd','samp','tt','ins','del','var','small','big','u','font');
   my @styles = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'u');
-  if (in_array(\@styles, $element->nodeName)) {
+  if (string_in_array(\@styles, $element->nodeName)) {
     # move spaces out of the style element
     if (defined $element->firstChild && $element->firstChild->nodeType == XML_TEXT_NODE) {
       my $child = $element->firstChild;
@@ -333,12 +333,12 @@ sub fix_block_styles {
     
     my $found_block = 0;
     for (my $child=$element->firstChild; defined $child; $child=$child->nextSibling) {
-      if ($child->nodeType == XML_ELEMENT_NODE && in_array(\@all_block, $child->nodeName)) {
+      if ($child->nodeType == XML_ELEMENT_NODE && string_in_array(\@all_block, $child->nodeName)) {
         $found_block = 1;
         last;
       }
     }
-    my $no_style_here = !in_array(\@containing_styles, $element->parentNode->nodeName);
+    my $no_style_here = !string_in_array(\@containing_styles, $element->parentNode->nodeName);
     if ($found_block || $no_style_here) {
       # there is a block or the style is not allowed here,
       # the style element has to be replaced by its modified children
@@ -346,10 +346,10 @@ sub fix_block_styles {
       my $next;
       for (my $child=$element->firstChild; defined $child; $child=$next) {
         $next = $child->nextSibling;
-        if ($child->nodeType == XML_ELEMENT_NODE && (in_array(\@all_block, $child->nodeName) ||
+        if ($child->nodeType == XML_ELEMENT_NODE && (string_in_array(\@all_block, $child->nodeName) ||
             $child->nodeName eq 'br' || $no_style_here)) {
           # avoid inverting a style with a style with $no_style_here (that would cause endless recursion)
-          if (!$no_style_here || !in_array(\@styles, $child->nodeName)) {
+          if (!$no_style_here || !string_in_array(\@styles, $child->nodeName)) {
             # block node or inline node when the style is not allowed:
             # move all children inside the style, and make the style the only child
             $s = $element->cloneNode();
@@ -410,7 +410,7 @@ sub fix_fonts {
   foreach my $font (@fonts) {
     my $block = 0;
     for (my $child=$font->firstChild; defined $child; $child=$child->nextSibling) {
-      if (in_array(\@all_block, $child->nodeName) || in_array(\@inline_responses, $child->nodeName)) {
+      if (string_in_array(\@all_block, $child->nodeName) || string_in_array(\@inline_responses, $child->nodeName)) {
         $block = 1;
         last;
       }
@@ -698,7 +698,7 @@ sub fix_lists {
       my $type = $list->getAttribute('type');
       $type =~ s/^\s*|\s*$//;
       $type = lc($type);
-      if (in_array(['circle','disc','square'], $type)) {
+      if (string_in_array(['circle','disc','square'], $type)) {
         my $style = $list->getAttribute('style');
         if (defined $style && index($style, 'list-style-type') != -1) {
           $list->removeAttribute('type');
@@ -717,7 +717,7 @@ sub fix_lists {
     }
     for (my $child=$list->firstChild; defined $child; $child=$next) {
       $next = $child->nextSibling;
-      if ($child->nodeType == XML_ELEMENT_NODE && in_array(['ul','ol'], $child->nodeName)) {
+      if ($child->nodeType == XML_ELEMENT_NODE && string_in_array(['ul','ol'], $child->nodeName)) {
         my $previous = $child->previousNonBlankSibling(); # note: non-DOM method
         $list->removeChild($child);
         if (defined $previous && $previous->nodeType == XML_ELEMENT_NODE && $previous->nodeName eq 'li') {
@@ -785,7 +785,7 @@ sub replace_center {
       # use p or div ? check if there is a block inside
       my $found_block = 0;
       for (my $child=$center->firstChild; defined $child; $child=$child->nextSibling) {
-        if ($child->nodeType == XML_ELEMENT_NODE && in_array(\@all_block, $child->nodeName)) {
+        if ($child->nodeType == XML_ELEMENT_NODE && string_in_array(\@all_block, $child->nodeName)) {
           $found_block = 1;
           last;
         }
@@ -895,10 +895,19 @@ sub fix_parts {
 # <numericalresponse><hintgroup>text1<numericalhint name="c"/><hintpart on="c">text2</hintpart></hintgroup></numericalresponse>
 # by
 # <numericalresponse><numericalhint name="c"/></numericalresponse><hint>text1</hint><hint on="c">text2</hint>
+# but keep hintgroup when it is useful
+# (when it is in a part containing more than 1 hintgroup containing a hinpart with on="default")
+# Also replaces "hint" elements (that should not exists) by their content.
 sub change_hints {
   my ($root) = @_;
   
-  # check if there is a hintpart or *hint outside of a hintgroup
+  # replace all "hint" elements by their children
+  foreach my $bad_hint ($dom_doc->getElementsByTagName('hint')) {
+    replace_by_children($bad_hint);
+  }
+  
+  # Check if there is a hintpart or *hint outside of a hintgroup.
+  # If so, put it inside a new hintgroup.
   my @subhint_tags = ('hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint');
   foreach my $subhint_tag (@subhint_tags) {
     my @subhints = $dom_doc->getElementsByTagName($subhint_tag);
@@ -923,28 +932,90 @@ sub change_hints {
     }
   }
   
-  # replace hintgroups, move non-*hints outside of the response
   my @hintgroups = $dom_doc->getElementsByTagName('hintgroup');
+  
+  # create a list of hintgroups that are in a part containing more than 1 hintgroup containing a hinpart with on="default"
+  my @hintgroups_to_preserve = ();
   foreach my $hintgroup (@hintgroups) {
+    # look for the ancestor part or problem (or if not found, the root element)
+    my $part_or_problem;
+    my $ancestor = $hintgroup->parentNode;
+    while (defined $ancestor) {
+      my $name = $ancestor->nodeName;
+      if ($name eq 'part' || $name eq 'problem') {
+        $part_or_problem = $ancestor;
+        last;
+      }
+      $ancestor = $ancestor->parentNode;
+    }
+    if (!defined $part_or_problem) {
+      $part_or_problem = $dom_doc->documentElement;
+    }
+    # check to see if there is more than 1 hintgroup containing a hinpart with on="default" in the part
+    my $nb_hintgroups_with_hintpart_default = 0;
+    my @hintgroups_in_part = $part_or_problem->getElementsByTagName('hintgroup');
+    foreach my $hintgroup_in_part (@hintgroups_in_part) {
+      my $default_hinpart = 0;
+      my @hintparts = $hintgroup_in_part->getElementsByTagName('hintpart');
+      foreach my $hintpart (@hintparts) {
+        my $on = $hintpart->getAttribute('on');
+        if (defined $on) {
+          $on =~ s/^\s*|\s*$//;
+          $on = lc($on);
+          if ($on eq 'default') {
+            $default_hinpart = 1;
+            last;
+          }
+        }
+      }
+      if ($default_hinpart) {
+        $nb_hintgroups_with_hintpart_default++;
+      }
+    }
+    if ($nb_hintgroups_with_hintpart_default > 1) {
+      push(@hintgroups_to_preserve, $hintgroup);
+    }
+  }
+  
+  # replace hintgroups when they are not necessary, move non-*hints outside of the response
+  foreach my $hintgroup (@hintgroups) {
+    # look for the response in the ancestors
     my $response;
     my $ancestor = $hintgroup->parentNode;
     while (defined $ancestor) {
-      if (in_array(\@responses, $ancestor->nodeName)) {
+      if (string_in_array(\@responses, $ancestor->nodeName)) {
         $response = $ancestor;
         last;
       }
       $ancestor = $ancestor->parentNode;
     }
-    my $move_after; # hints will be added after this node
+    
+    # look for a position to move the hints to
+    my $move_after; # if defined, hints will be added after this node
+    my $move_inside; # if defined, hints will be added inside this node
     if (defined $response) {
       $move_after = $response;
     } else {
       $move_after = $hintgroup;
     }
     while (defined $move_after->nextSibling && ($move_after->nextSibling->nodeName eq 'hint' ||
+        $move_after->nextSibling->nodeName eq 'hintgroup' ||
         ($move_after->nextSibling->nodeType == XML_TEXT_NODE && $move_after->nextSibling->nodeValue eq "\n"))) {
       $move_after = $move_after->nextSibling;
     }
+    
+    # position to move conditions to
+    my $move_conditions_after = $hintgroup;
+    
+    # recreate a hintgroup if necessary
+    if (object_in_array(\@hintgroups_to_preserve, $hintgroup)) {
+      my $new_hintgroup = $dom_doc->createElement('hintgroup');
+      $move_after->parentNode->insertAfter($new_hintgroup, $move_after);
+      $move_after = undef;
+      $move_inside = $new_hintgroup;
+    }
+    
+    # move the hints
     my $next;
     my $hint;
     for (my $child=$hintgroup->firstChild; defined $child; $child=$next) {
@@ -955,9 +1026,10 @@ sub change_hints {
           $hint = undef;
         }
         if (!defined $response) {
-          print STDERR "Warning: *hint outside of a response\n";
+          print STDERR "Warning: hint condition outside of a response\n";
         }
-        $hintgroup->parentNode->insertAfter($child, $hintgroup);
+        $move_conditions_after->parentNode->insertAfter($child, $move_conditions_after);
+        $move_conditions_after = $child;
       } elsif ($child->nodeName eq 'hintpart') {
         if (defined $hint) {
           $hint = undef;
@@ -967,7 +1039,12 @@ sub change_hints {
           # note: this attribute value might be a Perl variable
           $child->setAttribute('showoncorrect', $hintgroup->getAttribute('showoncorrect'));
         }
-        $move_after->parentNode->insertAfter($child, $move_after);
+        if (defined $move_inside) {
+          $move_inside->appendChild($child);
+        } else {
+          $move_after->parentNode->insertAfter($child, $move_after);
+          $move_after = $child;
+        }
       } elsif ($child->nodeType == XML_TEXT_NODE && $child->nodeValue =~ /^\s*$/) {
         # ignore blanks
       } else {
@@ -977,19 +1054,24 @@ sub change_hints {
           if (defined $hintgroup->getAttribute('showoncorrect') && $hintgroup->getAttribute('showoncorrect') ne 'no') {
             $hint->setAttribute('showoncorrect', $hintgroup->getAttribute('showoncorrect'));
           }
-          my $newline_node;
-          if ($move_after->nodeType != XML_TEXT_NODE || $move_after->nodeValue ne "\n") {
-            $newline_node = $dom_doc->createTextNode("\n");
-            $move_after->parentNode->insertAfter($newline_node, $move_after);
-            $move_after = $newline_node;
-          }
-          $move_after->parentNode->insertAfter($hint, $move_after);
-          $move_after = $hint;
-          if (!defined $move_after->nextSibling || $move_after->nextSibling->nodeType != XML_TEXT_NODE ||
-              $move_after->nextSibling->nodeValue !~ "\n") {
-            $newline_node = $dom_doc->createTextNode("\n");
-            $move_after->parentNode->insertAfter($newline_node, $move_after);
-            $move_after = $newline_node;
+          if (defined $move_inside) {
+            $move_inside->appendChild($hint);
+            $move_inside->appendChild($dom_doc->createTextNode("\n"));
+          } else {
+            my $newline_node;
+            if ($move_after->nodeType != XML_TEXT_NODE || $move_after->nodeValue ne "\n") {
+              $newline_node = $dom_doc->createTextNode("\n");
+              $move_after->parentNode->insertAfter($newline_node, $move_after);
+              $move_after = $newline_node;
+            }
+            $move_after->parentNode->insertAfter($hint, $move_after);
+            $move_after = $hint;
+            if (!defined $move_after->nextSibling || $move_after->nextSibling->nodeType != XML_TEXT_NODE ||
+                $move_after->nextSibling->nodeValue !~ "\n") {
+              $newline_node = $dom_doc->createTextNode("\n");
+              $move_after->parentNode->insertAfter($newline_node, $move_after);
+              $move_after = $newline_node;
+            }
           }
         }
         $hint->appendChild($child);
@@ -1031,8 +1113,8 @@ sub fix_paragraphs_inside {
   # blocks in which paragrahs will be added:
   my @blocks_with_p = ('problem','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','togglebox','standalone');
   my @fix_p_if_br_or_p = ('foil','item','text','label','hintgroup','hintpart','hint','web','windowlink','div','li','dd','td','th','blockquote');
-  if ((in_array(\@blocks_with_p, $node->nodeName) && paragraph_needed($node)) ||
-      (in_array(\@fix_p_if_br_or_p, $node->nodeName) &&
+  if ((string_in_array(\@blocks_with_p, $node->nodeName) && paragraph_needed($node)) ||
+      (string_in_array(\@fix_p_if_br_or_p, $node->nodeName) &&
       (scalar(@{$node->getChildrenByTagName('br')}) > 0 ||
        scalar(@{$node->getChildrenByTagName('p')}) > 0))) {
     # if non-empty, add a paragraph containing everything inside, paragraphs inside paragraphs will be fixed afterwards
@@ -1065,7 +1147,7 @@ sub paragraph_needed {
   my ($node) = @_;
   for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
     if (($child->nodeType == XML_TEXT_NODE && $child->nodeValue !~ /^\s*$/) ||
-        ($child->nodeType == XML_ELEMENT_NODE && !in_array(\@inline_responses, $child->nodeName) &&
+        ($child->nodeType == XML_ELEMENT_NODE && !string_in_array(\@inline_responses, $child->nodeName) &&
         $child->nodeName ne 'hint') ||
         $child->nodeType == XML_CDATA_SECTION_NODE ||
         $child->nodeType == XML_ENTITY_NODE || $child->nodeType == XML_ENTITY_REF_NODE) {
@@ -1107,7 +1189,7 @@ sub fix_paragraph {
     }
     my $n = $middle->firstChild;
     while (defined $n) {
-      if ($n->nodeType == XML_ELEMENT_NODE && (in_array(\@all_block, $n->nodeName) || $n->nodeName eq 'br')) {
+      if ($n->nodeType == XML_ELEMENT_NODE && (string_in_array(\@all_block, $n->nodeName) || $n->nodeName eq 'br')) {
         if ($n->nodeName eq 'p') {
           my $parent = $n->parentNode;
           # first apply recursion
@@ -1201,10 +1283,10 @@ sub find_first_block {
   my @splitable_inline = ('span', 'a', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'code', 'kbd', 'samp', 'tt', 'ins', 'del', 'var', 'small', 'big', 'font', 'u');
   for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
     if ($child->nodeType == XML_ELEMENT_NODE) {
-      if (in_array(\@all_block, $child->nodeName) || $child->nodeName eq 'br') {
+      if (string_in_array(\@all_block, $child->nodeName) || $child->nodeName eq 'br') {
         return($child);
       }
-      if (in_array(\@splitable_inline, $child->nodeName)) {
+      if (string_in_array(\@splitable_inline, $child->nodeName)) {
         my $block = find_first_block($child);
         if (defined $block) {
           return($block);
@@ -1297,7 +1379,7 @@ sub remove_empty_style {
         $parent->removeChild($node);
         $parent->normalize();
         # now that we removed the node, check if the parent has become an empty style, and so on
-        while (defined $parent && in_array(\@remove_if_empty, $parent->nodeName) && !defined $parent->firstChild) {
+        while (defined $parent && string_in_array(\@remove_if_empty, $parent->nodeName) && !defined $parent->firstChild) {
           my $grandparent = $parent->parentNode;
           $grandparent->removeChild($parent);
           remove_reference_from_array(\@nodes, $parent);
@@ -1321,7 +1403,7 @@ sub remove_empty_style {
           replace_by_children($node);
           $parent->normalize();
           # now that we removed the node, check if the parent has become a style with only whitespace, and so on
-          while (defined $parent && in_array(\@remove_if_blank, $parent->nodeName) &&
+          while (defined $parent && string_in_array(\@remove_if_blank, $parent->nodeName) &&
               !defined $parent->firstChild->nextSibling && $parent->firstChild->nodeType == XML_TEXT_NODE &&
               $parent->firstChild->nodeValue =~ /^\s*$/) {
             my $grandparent = $parent->parentNode;
@@ -1339,7 +1421,7 @@ sub remove_empty_style {
 sub fix_empty_lc_elements {
   my ($node) = @_;
   my @lcempty = ('arc','axis','backgroundplot','drawoptionlist','drawvectorsum','fill','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','hiddenline','hiddensubmission','key','line','location','organicstructure','parameter','plotobject','plotvector','responseparam','spline','textline','xlabel','ylabel');
-  if (in_array(\@lcempty, $node->nodeName)) {
+  if (string_in_array(\@lcempty, $node->nodeName)) {
     if (defined $node->firstChild && !defined $node->firstChild->nextSibling &&
         $node->firstChild->nodeType == XML_TEXT_NODE && $node->firstChild->nodeValue =~ /^\s*$/) {
       $node->removeChild($node->firstChild);
@@ -1360,10 +1442,10 @@ sub pretty {
   my $type = $node->nodeType;
   if ($type == XML_ELEMENT_NODE) {
     my $name = $node->nodeName;
-    if ((in_array(\@all_block, $name) || in_array(\@inline_responses, $name) || $name eq 'hint') &&
-        !in_array(\@preserve_elements, $name)) {
+    if ((string_in_array(\@all_block, $name) || string_in_array(\@inline_responses, $name) || $name eq 'hint') &&
+        !string_in_array(\@preserve_elements, $name)) {
       # make sure there is a newline at the beginning and at the end if there is anything inside
-      if (defined $node->firstChild && !in_array(\@no_newline_inside, $name)) {
+      if (defined $node->firstChild && !string_in_array(\@no_newline_inside, $name)) {
         my $first = $node->firstChild;
         if ($first->nodeType == XML_TEXT_NODE) {
           my $text = $first->nodeValue;
@@ -1391,7 +1473,7 @@ sub pretty {
       for (my $child=$node->firstChild; defined $child; $child=$next) {
         $next = $child->nextSibling;
         if ($child->nodeType == XML_ELEMENT_NODE) {
-          if (in_array(\@all_block, $child->nodeName)) {
+          if (string_in_array(\@all_block, $child->nodeName)) {
             # make sure there is a newline before and after a block element
             if (defined $child->previousSibling && $child->previousSibling->nodeType == XML_TEXT_NODE) {
               my $prev = $child->previousSibling;
@@ -1429,7 +1511,7 @@ sub pretty {
       
       # removes whitespace at the beginning and end of p td and th
       my @to_trim = ('p','td','th');
-      if (in_array(\@to_trim, $name) && defined $node->firstChild && $node->firstChild->nodeType == XML_TEXT_NODE) {
+      if (string_in_array(\@to_trim, $name) && defined $node->firstChild && $node->firstChild->nodeType == XML_TEXT_NODE) {
         my $text = $node->firstChild->nodeValue;
         $text =~ s/^\s*//;
         if ($text eq '') {
@@ -1438,7 +1520,7 @@ sub pretty {
           $node->firstChild->setData($text);
         }
       }
-      if (in_array(\@to_trim, $name) && defined $node->lastChild && $node->lastChild->nodeType == XML_TEXT_NODE) {
+      if (string_in_array(\@to_trim, $name) && defined $node->lastChild && $node->lastChild->nodeType == XML_TEXT_NODE) {
         my $text = $node->lastChild->nodeValue;
         $text =~ s/\s*$//;
         if ($text eq '') {
@@ -1447,7 +1529,7 @@ sub pretty {
           $node->lastChild->setData($text);
         }
       }
-    } elsif (in_array(\@preserve_elements, $name)) {
+    } elsif (string_in_array(\@preserve_elements, $name)) {
       # collapse newlines at the beginning and the end of scripts
       if (defined $node->firstChild && $node->firstChild->nodeType == XML_TEXT_NODE) {
         my $text = $node->firstChild->nodeValue;
@@ -1472,12 +1554,25 @@ sub pretty {
 }
 
 ##
-# Tests if a string is in an array (to avoid Smartmatch warnings with $value ~~ @array)
+# Tests if a string is in an array (using eq) (to avoid Smartmatch warnings with $value ~~ @array)
 ##
-sub in_array {
+sub string_in_array {
   my ($array, $value) = @_;
   foreach my $v (@{$array}) {
     if ($v eq $value) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
+##
+# Tests if an object is in an array (using ==)
+##
+sub object_in_array {
+  my ($array, $value) = @_;
+  foreach my $v (@{$array}) {
+    if ($v == $value) {
       return 1;
     }
   }

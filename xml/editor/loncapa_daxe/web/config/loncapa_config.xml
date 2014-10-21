@@ -81,17 +81,17 @@
         <MENU_INSERTION nom="externalresponse"/>
       </MENU>
       <MENU nom="Hints">
+        <MENU_INSERTION nom="hint"/>
         <MENU_INSERTION nom="hintgroup"/>
-        <MENU_INSERTION nom="hintpart"/>
-        <MENU_INSERTION nom="formulahint"/>
-        <MENU_INSERTION nom="numericalhint"/>
-        <MENU_INSERTION nom="reactionhint"/>
-        <MENU_INSERTION nom="organichint"/>
-        <MENU_INSERTION nom="optionhint"/>
-        <MENU_INSERTION nom="radiobuttonhint"/>
         <MENU_INSERTION nom="stringhint"/>
-        <MENU_INSERTION nom="customhint"/>
+        <MENU_INSERTION nom="radiobuttonhint"/>
+        <MENU_INSERTION nom="optionhint"/>
+        <MENU_INSERTION nom="numericalhint"/>
+        <MENU_INSERTION nom="formulahint"/>
         <MENU_INSERTION nom="mathhint"/>
+        <MENU_INSERTION nom="organichint"/>
+        <MENU_INSERTION nom="reactionhint"/>
+        <MENU_INSERTION nom="customhint"/>
       </MENU>
       <MENU nom="Common">
         <MENU_INSERTION nom="responseparam"/>
@@ -259,6 +259,7 @@
     <AFFICHAGE_ELEMENT element="hiddensubmission" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="hiddenline" type="lcdblock"/>
     
+    <AFFICHAGE_ELEMENT element="hintgroup" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="hint" type="lcdblock"/>
     
     <AFFICHAGE_ELEMENT element="gnuplot" type="lcdblock"/>
@@ -1685,11 +1686,17 @@
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     
+    <STRINGS_ELEMENT element="hintgroup">
+      <TITRE>Group of Hints</TITRE>
+      <DOCUMENTATION>
+        This is only useful when one wants to create several groups of conditional hints in a part, each one having its own default hint (a hint with on="default").
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="hint">
       <TITRE>Hint</TITRE>
       <DOCUMENTATION>
         The hint can use a condition defined in a response by using the condition name in the "on" attribute. In this case, the hint will only display when the condition is verified.
-        If no other hint is to show then all hints with an on value set to &#8220;default&#8221; will show.
+        If no other hint is to show in the part or (when there is one) in the group of hints, then all hints with an on value set to &#8220;default&#8221; will show.
         
         This element must be inside a problem part.
       </DOCUMENTATION>
