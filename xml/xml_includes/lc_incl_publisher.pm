@@ -134,7 +134,7 @@ sub stage_one {
       $newmetadata=&Apache::lc_metadata::gather_metadata(&Apache::lc_entity_urls::asset_resource_filename($content{'entity'},$content{'domain'},'wrk','-'));
       unless ($newmetadata) {
          &logerror('Attempt to publish ['.$content{'entity'}.'] ['.$content{'domain'}.'] failed');
-         return &Apache::lc_xml_utils::error_message('A problem occured, please try again later.').'<script>$(".lcerror").show()</script>';
+         return '<script>$(".lcerror").show()</script>';
       }
       if ($newmetadata->{'errors'}) {
          $output.=&Apache::lc_xml_utils::problem_message('The document has errors and cannot be published.').'<script>$(".lcproblem").show()</script>';
@@ -221,8 +221,11 @@ $output.=&Apache::lc_xml_forms::radiobuttons('test','test',['optionA','optionB',
 #
 sub stage_five {
    my ($metadata,%content)=@_;
-   my $output;
-   return $output;
+   if (&Apache::lc_entity_urls::publish('/asset/-/-/'.$content{'url'})) {
+      return 'ok';
+   } else {
+      return 'error';
+   }
 }
 
 #
@@ -302,7 +305,7 @@ sub storedata {
    if ($storemeta) {
       unless (&Apache::lc_entity_urls::store_metadata($content{'entity'},$content{'domain'},$storemeta,$refreshkeys)) {
          &logerror('Attempt to store metadata for ['.$content{'entity'}.'] ['.$content{'domain'}.'] failed');
-         return &Apache::lc_xml_utils::error_message('A problem occured, please try again later.').'<script>$(".lcerror").show()</script>';
+         return '<script>$(".lcerror").show()</script>';
       }
    }
    return '';
@@ -313,15 +316,17 @@ sub incl_publisher_screens {
    my %content=&Apache::lc_entity_sessions::posted_content();
    my $metadata=&Apache::lc_entity_urls::dump_metadata($content{'entity'},$content{'domain'});
    my $output='';
-# Remember what we are talking about
-   $output.=&Apache::lc_xml_forms::hidden_field('entity',$content{'entity'}).
-            &Apache::lc_xml_forms::hidden_field('domain',$content{'domain'}).
-            &Apache::lc_xml_forms::hidden_field('url',$content{'url'});
 # Figure out the stage (which screen in the sequence)
 # Override can be used to direct back to a previous screen if needed
    my $stage=$content{'stage'};
    if ($content{'returnstage'}) {
       $stage=$content{'returnstage'}-1;
+   }
+# Remember what we are talking about
+   unless ($stage==4) {
+      $output.=&Apache::lc_xml_forms::hidden_field('entity',$content{'entity'}).
+               &Apache::lc_xml_forms::hidden_field('domain',$content{'domain'}).
+               &Apache::lc_xml_forms::hidden_field('url',$content{'url'});
    }
 # Anything to store?
    $output.=&storedata($metadata,%content);
@@ -333,7 +338,7 @@ sub incl_publisher_screens {
        $output.=&stage_three($metadata,%content);
    } elsif ($stage==3) {
        $output.=&stage_four($metadata,%content);
-   } elsif ($stage==4) {
+   } elsif (($stage==4) && ($content{'finalize'})) {
        $output.=&stage_five($metadata,%content);
    } else {
        $output.=&stage_one($metadata,%content);

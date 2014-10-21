@@ -125,10 +125,15 @@ $(document).ready(function() {
         url : '/publisher_screens',
         type: "POST",
         data : $('#publisherform').serialize()+"&finalize=1",
-        success: function(data){
-           parent.document.getElementById('contentframe').contentWindow.reload_listing();
-           parent.hide_modal();
-        },
+        success: function(response) {
+                if (response=='ok') {
+                   $('.lcerror').hide();
+                   parent.document.getElementById('contentframe').contentWindow.reload_listing();
+                   parent.hide_modal();
+                } else {
+                   $('.lcerror').show();
+                }
+        }
       });
     });
 
