@@ -203,16 +203,12 @@ sub stage_four {
    my ($metadata,%content)=@_;
    my $std_rights=&Apache::lc_entity_urls::standard_rights($content{'entity'},$content{'domain'},$content{'url'});
    my $output;
-# Viewing
-# Derivative
-#
-   $output.=
-            &Apache::lc_xml_forms::hidden_field('stage',4);
-
-
-$output.=&Apache::lc_xml_forms::radiobuttons('test','test',['optionA','optionB','optionC'],
-                                             ['Option A','Great Option B','My Option C'],
-                                             'optionB');
+   foreach my $type ('view','use','clone') {
+      $output.=&Apache::lc_xml_forms::radiobuttons($type,$type,['system','domain','none'],
+                                                   [&mt('Systemwide'),&mt('Domainwide'),&mt('None or customize later')],
+                                                   $std_rights->{$type});
+   }
+   $output.=&Apache::lc_xml_forms::hidden_field('stage',4);
    return $output;
 }
 
