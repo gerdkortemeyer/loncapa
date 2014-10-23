@@ -24,11 +24,13 @@ use Apache::lc_file_utils();
 use Apache::lc_xml_utils();
 use Apache::lc_authorize;
 use Apache::lc_ui_localize;
+use Apache::lc_ui_portfolio();
 use Apache::lc_xml_forms();
 use Apache::lc_xml_gadgets();
 use Apache::lc_entity_users();
 use Apache::lc_entity_roles();
 use Apache::lc_entity_profile();
+use Apache::lc_entity_urls();
 use Apache::lc_metadata();
 use Apache::lc_logs;
 use Apache::lc_parameters;
@@ -215,7 +217,7 @@ sub stage_four {
       if ($std_rights->{$type} eq 'custom') {
          $output.=': '.&mt('custom');
       } else {
-         $output.=&Apache::lc_xml_forms::radiobuttons($type,$type,['system','domain','none'],
+         $output.=&Apache::lc_xml_forms::radiobuttons($type,$type,['systemwide','domainwide','none'],
                                                       [&mt('systemwide'),&mt('domainwide'),&mt('none or customize later')],
                                                       $std_rights->{$type});
       }
@@ -230,7 +232,47 @@ sub stage_four {
 #
 sub stage_five {
    my ($metadata,%content)=@_;
-   if (&Apache::lc_entity_urls::publish('/asset/-/-/'.$content{'url'})) {
+# First verify that we are allowed to do this
+# and that we know what we are talking about
+   my $url=$content{'url'};
+   my $entity=$content{'entity'};
+   my $domain=$content{'domain'};
+   unless ((&Apache::lc_ui_portfolio::edit_permission($url)) && (&Apache::lc_ui_portfolio::verify_url($entity,$url))) {
+      &logwarning("Attempting to add rights for [$entity] [$domain] [$url] - not authorized");
+      return 'error';
+   }
+# See (again) what rights we currently have
+   my $std_rights=&Apache::lc_entity_urls::standard_rights($entity,$domain,$url);
+   my ($rversion_type,$rversion_arg,$rdomain,$rauthor,$rpath)=&Apache::lc_entity_urls::split_url('/asset/-/-/'.$url);
+   foreach my $type ('view','use','clone') {
+# Can't change custom
+      if ($std_rights->{'type'} eq 'custom') { next; }
+# Anything changed?
+         if ($content{$type} ne $std_rights->{$type}) {
+# Okay, stuff changed. Delete the old one and set the new one
+# First, delete old one
+            my $old_domain=undef;
+            if ($std_rights->{$type} eq 'domainwide') {
+               $old_domain=$rdomain;
+            }
+            unless ($std_rights->{$type} eq 'none') {
+               unless (&Apache::lc_entity_urls::modify_right($entity,$domain,$type,$old_domain,undef,undef,0)) {
+                  return 'error';
+               }
+           }
+# Now set the new one
+            my $new_domain=undef;
+            if ($content{$type} eq 'domainwide') {
+               $new_domain=$rdomain;
+            }
+            unless ($content{$type} eq 'none') {
+               unless (&Apache::lc_entity_urls::modify_right($entity,$domain,$type,$new_domain,undef,undef,1)) {
+                  return 'error';
+               }
+           }
+       }
+   }
+   if (&Apache::lc_entity_urls::publish('/asset/-/-/'.$url)) {
       return 'ok';
    } else {
       return 'error';
