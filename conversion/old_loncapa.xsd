@@ -5002,7 +5002,9 @@
   <xs:element name="parse" type="xs:string">
     <xs:annotation>
       <xs:documentation>
-        to display the parsed view of a variable’s contents
+        Evaluates the Perl content, then parses it as if it was part of the XML document and displays the result.
+        
+        Warning: using this element (or the xmlparse function) will reduce the document future interoperability, because dynamically generated XML cannot be automatically converted.
       </xs:documentation>
     </xs:annotation>
   </xs:element>
@@ -5784,13 +5786,9 @@
   <xs:complexType name="tr-with-responses">
     <xs:complexContent>
       <xs:extension base="tr-base">
-        <xs:choice>
-          <xs:sequence maxOccurs="unbounded">
-            <xs:element ref="th"/>
-          </xs:sequence>
-          <xs:sequence maxOccurs="unbounded">
-            <xs:element name="td" type="td-with-responses"/>
-          </xs:sequence>
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:element ref="th"/>
+          <xs:element name="td" type="td-with-responses"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -5798,13 +5796,9 @@
   <xs:complexType name="tr-without-responses">
     <xs:complexContent>
       <xs:extension base="tr-base">
-        <xs:choice>
-          <xs:sequence maxOccurs="unbounded">
-            <xs:element ref="th"/>
-          </xs:sequence>
-          <xs:sequence maxOccurs="unbounded">
-            <xs:element name="td" type="td-without-responses"/>
-          </xs:sequence>
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:element ref="th"/>
+          <xs:element name="td" type="td-without-responses"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -6141,6 +6135,19 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
+  <xs:simpleType name="htmlLength">
+    <xs:annotation>
+      <xs:documentation>
+        nn for pixels or nn% for percentage length
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[\-+]?(\d+|\d+(\.\d+)?%)"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="htmlLength-or-perl">
+    <xs:union memberTypes="htmlLength perl"/>
+  </xs:simpleType>
   <xs:element name="img">
     <xs:annotation>
       <xs:documentation>Image</xs:documentation>
@@ -6160,14 +6167,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="width" type="int-or-perl">
+      <xs:attribute name="width" type="htmlLength-or-perl">
         <xs:annotation>
           <xs:documentation>
             The width of the image in pixels or percent.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="height" type="int-or-perl">
+      <xs:attribute name="height" type="htmlLength-or-perl">
         <xs:annotation>
           <xs:documentation>
             The height of the image in pixels or percent.
@@ -6247,16 +6254,6 @@
       <xs:attribute default="no" name="encrypturl" type="yesno-or-perl"/>
     </xs:complexType>
   </xs:element>
-  <xs:simpleType name="htmlLength">
-    <xs:annotation>
-      <xs:documentation>
-        nn for pixels or nn% for percentage length
-      </xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[\-+]?(\d+|\d+(\.\d+)?%)"/>
-    </xs:restriction>
-  </xs:simpleType>
   <xs:element name="object">
     <xs:annotation>
       <xs:documentation>

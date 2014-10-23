@@ -10917,7 +10917,9 @@ Typesets chemical equation
 
 
 <div class="documentation">
-to display the parsed view of a variable&rsquo;s contents
+Evaluates the Perl content, then parses it as if it was part of the XML document and displays the result.
+
+Warning: using this element (or the xmlparse function) will reduce the document future interoperability, because dynamically generated XML cannot be automatically converted.
 </div>
 <br>
 
@@ -12720,22 +12722,16 @@ Attribute <span class="nomattribut">align</span>:
 
 
 Choice between:<ul>
-<li>Sequence with:<ul>
 <li>
 <a href="#th_0">th</a>
 <br>
 </li>
-</ul>
-</li>
-<li>Sequence with:<ul>
 <li>
 <a name="td_0"></a>
 <h3>Element <span class="nomtitre">td</span>
 </h3>type: <a href="#td-with-responses_0">td-with-responses</a>
 <br>
 <br>
-</li>
-</ul>
 </li>
 </ul>
 
@@ -12751,22 +12747,16 @@ Choice between:<ul>
 
 
 Choice between:<ul>
-<li>Sequence with:<ul>
 <li>
 <a href="#th_0">th</a>
 <br>
 </li>
-</ul>
-</li>
-<li>Sequence with:<ul>
 <li>
 <a name="td_1"></a>
 <h3>Element <span class="nomtitre">td</span>
 </h3>type: <a href="#td-without-responses_0">td-without-responses</a>
 <br>
 <br>
-</li>
-</ul>
 </li>
 </ul>
 
@@ -13517,6 +13507,35 @@ Value restriction based on xs:string<ul>
 <br>
 <hr>
 
+<a name="htmlLength_0"></a>
+<h3>Simple type <span class="nomtitre">htmlLength</span>
+</h3>
+
+
+<div class="documentation">
+nn for pixels or nn% for percentage length
+</div>
+<br>
+
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>[\-+]?(\d+|\d+(\.\d+)?%)</tt>
+</li>
+
+</ul>
+
+<hr>
+
+<a name="htmlLength-or-perl_0"></a>
+<h3>Simple type <span class="nomtitre">htmlLength-or-perl</span>
+</h3>
+Possible values:<ul>
+<li>htmlLength perl</li>
+</ul>
+
+<hr>
+
 <a name="img_0"></a>
 <h3>Element <span class="nomtitre">img</span>
 </h3>
@@ -13552,7 +13571,7 @@ Textual description of the image. If the image cannot be rendered by the target 
 
 </div>
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+    <div class="indentation">optional<br>type: <a href="#htmlLength-or-perl_0">htmlLength-or-perl</a>
 <br>
 
 
@@ -13564,7 +13583,7 @@ The width of the image in pixels or percent.
 
 </div>
 Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
+    <div class="indentation">optional<br>type: <a href="#htmlLength-or-perl_0">htmlLength-or-perl</a>
 <br>
 
 
@@ -13710,26 +13729,6 @@ Attribute <span class="nomattribut">encrypturl</span>:
 
 <br>Parents:<a href="#inlines_0">inlines</a>
 <br>
-<hr>
-
-<a name="htmlLength_0"></a>
-<h3>Simple type <span class="nomtitre">htmlLength</span>
-</h3>
-
-
-<div class="documentation">
-nn for pixels or nn% for percentage length
-</div>
-<br>
-
-Value restriction based on xs:string<ul>
-
-<li>
-<tt>[\-+]?(\d+|\d+(\.\d+)?%)</tt>
-</li>
-
-</ul>
-
 <hr>
 
 <a name="object_0"></a>
@@ -15253,6 +15252,8 @@ Value restriction based on xs:string<ul>
 <a href="#html-align_0">html-align</a>
 <br>
 <a href="#htmlLength_0">htmlLength</a>
+<br>
+<a href="#htmlLength-or-perl_0">htmlLength-or-perl</a>
 <br>
 <a href="#htmlMeta_0">htmlMeta</a>
 <br>
