@@ -202,13 +202,26 @@ sub stage_three {
 sub stage_four {
    my ($metadata,%content)=@_;
    my $std_rights=&Apache::lc_entity_urls::standard_rights($content{'entity'},$content{'domain'},$content{'url'});
-   my $output;
+   my $output='<p>'.&Apache::lc_xml_utils::standard_message('Allowed Activity').'<ul>'; 
    foreach my $type ('view','use','clone') {
-      $output.=&Apache::lc_xml_forms::radiobuttons($type,$type,['system','domain','none'],
-                                                   [&mt('Systemwide'),&mt('Domainwide'),&mt('None or customize later')],
-                                                   $std_rights->{$type});
+      $output.='<li>';
+      if ($type eq 'view') {
+         $output.=&Apache::lc_xml_utils::standard_message('View');
+      } elsif ($type eq 'use') {
+         $output.=&Apache::lc_xml_utils::standard_message('Use/assign in courses/communities');
+      } else {
+         $output.=&Apache::lc_xml_utils::standard_message('Clone (make derivatives');
+      }
+      if ($std_rights->{$type} eq 'custom') {
+         $output.=': '.&mt('custom');
+      } else {
+         $output.=&Apache::lc_xml_forms::radiobuttons($type,$type,['system','domain','none'],
+                                                      [&mt('systemwide'),&mt('domainwide'),&mt('none or customize later')],
+                                                      $std_rights->{$type});
+      }
+      $output.='</li>';
    }
-   $output.=&Apache::lc_xml_forms::hidden_field('stage',4);
+   $output.='</ul></p>'.&Apache::lc_xml_forms::hidden_field('stage',4);
    return $output;
 }
 

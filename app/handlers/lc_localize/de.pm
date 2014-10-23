@@ -556,6 +556,8 @@ use utf8;
 
 'custom' => 'maßgeschneidert',
 
+'none or customize later' => 'keine oder später maßschneidern',
+
 'Allowed Activity' => 'Erlaubte Aktivität',
 
 'Course/Community or User' => 'Kurs/Gemeinschaft oder Nutzer',

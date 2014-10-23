@@ -753,7 +753,7 @@ sub publish {
       $new_version=&remote_publish(&Apache::lc_entity_utils::homeserver($author,$domain),$full_url);
    }
    if ($new_version) {
-      &logerror("Successfully published version ($new_version) of ($full_url)");
+      &lognotice("Successfully published version ($new_version) of ($full_url)");
 #FIXME: remember that we are done with this
       return 1;
    } else {
