@@ -19,7 +19,7 @@
   </xs:annotation>
   <xs:simpleType name="perl">
     <xs:restriction base="xs:string">
-      <xs:pattern value="((\$|\&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{][^\]\}]+[\]\}])*(\([^$&amp;\)]+\))*"/>
+      <xs:pattern value="(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{][^\]\}]+[\]\}])*(\([^$&amp;\)]+\))*"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="int-or-perl">
@@ -5622,8 +5622,8 @@
         
         Usage Notes:
         
-            A creative work may include a book, a paper, an essay, a poem, a score, a song, a script, a film, a TV show, a game, a sculpture, a painting, a theater production, a play, an opera, a musical, an exhibition, a legal case report, a computer program, , a web site, a web page, a blog post or comment, a forum post or comment, a tweet, a written or oral statement, etc.
-            Use the cite attribute on a &lt;blockquote&gt; or &lt;q&gt; element to reference an online resource for a source.
+        A creative work may include a book, a paper, an essay, a poem, a score, a song, a script, a film, a TV show, a game, a sculpture, a painting, a theater production, a play, an opera, a musical, an exhibition, a legal case report, a computer program, , a web site, a web page, a blog post or comment, a forum post or comment, a tweet, a written or oral statement, etc.
+        Use the cite attribute on a &lt;blockquote&gt; or &lt;q&gt; element to reference an online resource for a source.
         
         
         Style note:
