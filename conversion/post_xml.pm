@@ -972,6 +972,8 @@ sub change_hints {
         $subhint->parentNode->insertAfter($hintgroup, $subhint);
         $subhint->parentNode->removeChild($subhint);
         $hintgroup->appendChild($subhint);
+      } elsif ($subhint->parentNode->nodeName ne 'hintgroup') {
+        die "Error: hint parent is not hintgroup";
       }
     }
   }
