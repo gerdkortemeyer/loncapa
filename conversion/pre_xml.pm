@@ -25,6 +25,8 @@ sub pre_xml {
 
   remove_control_characters($lines);
   
+  warning_xmlparse($lines);
+  
   fix_cdata_elements($lines);
 
   fix_html_entities($lines);
@@ -95,6 +97,32 @@ sub remove_control_characters {
   my ($lines) = @_;
   foreach my $line (@{$lines}) {
     $line =~ s/[\x07\x0B\x0C\x13\x1F]//g;
+  }
+}
+
+##
+# Prints a warning if a line contains '<parse[ >]' or 'xmlparse'
+# @param {Array<string>} lines
+##
+sub warning_xmlparse {
+  my ($lines) = @_;
+  my $parse_warning = 0;
+  my $xmlparse_warning = 0;
+  foreach my $line (@{$lines}) {
+    if (!$parse_warning && $line =~ /<parse[ >]/) {
+      print STDERR "Warning: <parse> is used, dynamic content will not be converted\n";
+      $parse_warning = 1;
+      if ($xmlparse_warning) {
+        last;
+      }
+    }
+    if (!$xmlparse_warning && index($line, 'xmlparse') != -1) {
+      print STDERR "Warning: &xmlparse() is used, dynamic content will not be converted\n";
+      $xmlparse_warning = 1;
+      if ($parse_warning) {
+        last;
+      }
+    }
   }
 }
 
