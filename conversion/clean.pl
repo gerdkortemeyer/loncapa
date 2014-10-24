@@ -27,32 +27,47 @@ use Encode qw(decode);
 
 my $pathname = "$ARGV[0]";
 if (-d "$pathname") {
-  convert_dir($pathname);
+  my $failures = convert_dir($pathname);
+  if (scalar(@$failures) > 0) {
+    print STDERR "\nThe following files could not be converted, and need a manual fix:\n";
+    foreach my $failure (@$failures) {
+      print STDERR "  $failure\n";
+    }
+  }
 } elsif (-f $pathname) {
   convert_file($pathname);
 }
 
-# Converts a directory recursively, selecting only non-version .problem files
+# Converts a directory recursively, selecting only non-version .problem files.
+# Returns a list of files that could not be converted.
 sub convert_dir {
   my ($dirpath) = @_;
   
+  my @failures = ();
   opendir (my $dh, $dirpath) or die $!;
   while (my $entry = readdir($dh)) {
     next if ($entry =~ m/^\./); # ignore entries starting with a period
     my $pathname = $dirpath.'/'.$entry;
     if (-d $pathname) {
-      convert_dir($pathname);
+      my $new_failures = convert_dir($pathname);
+      push(@failures, @$new_failures);
     } elsif (-f $pathname) {
       # check that the file ends in .problem but not .number.problem or _clean.problem
       if ($pathname =~ /\.problem$/ && $pathname !~ /\.[0-9]+\.problem$/ && $pathname !~ /_clean\.problem$/) {
-        convert_file($pathname);
+        try {
+          convert_file($pathname);
+        } catch {
+          print STDERR "$_\n"; # continue processing even if a file cannot be converted
+          push(@failures, $pathname);
+        };
       }
     }
   }
   closedir($dh);
+  return(\@failures);
 }
 
-# Converts a file, creating a _clean.problem file in the same directory
+# Converts a file, creating a _clean.problem file in the same directory.
 sub convert_file {
   my ($pathname) = @_;
 
@@ -68,18 +83,18 @@ sub convert_file {
   try {
     $text = pre_xml::pre_xml($pathname);
   } catch {
-    die "pre_xml error for $pathname: $_\n";
+    die "pre_xml error for $pathname: $_";
   };
 
   try {
     $text = html_to_xml::html_to_xml($text);
   } catch {
-    die "html_to_xml error for $pathname: $_\n";
+    die "html_to_xml error for $pathname: $_";
   };
 
   try {
     $text = post_xml::post_xml($text, $newpath);
   } catch {
-    die "post_xml error for $pathname: $_\n";
+    die "post_xml error for $pathname: $_";
   };
 }
