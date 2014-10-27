@@ -60,7 +60,7 @@ sub guess_encoding_and_read {
     if (ref($decoder)) {
       $decoded = $decoder->decode($data);
     } else {
-      print STDERR "Warning: encoding is not UTF-8 for $fn";
+      print "Warning: encoding is not UTF-8 for $fn";
       # NOTE: cp1252 is identical to iso-8859-1 but with additionnal characters in range 128-159
       # instead of control codes. We can assume that these control codes are not used, so there
       # is no need to test for iso-8859-1.
@@ -75,9 +75,9 @@ sub guess_encoding_and_read {
       my $score_mac = $decoded_mac =~ tr/ßáàäâãçéèêëñóöôõúüÄÉÑÖÜ¿¡‘’“” °½–—…//;
       if ($score_windows >= $score_mac) {
         $decoded = $decoded_windows;
-        print STDERR "; guess=cp1252 ($score_windows cp1252 >= $score_mac MacRoman)\n";
+        print "; guess=cp1252 ($score_windows cp1252 >= $score_mac MacRoman)\n";
       } else {
-        print STDERR "; guess=MacRoman ($score_mac MacRoman > $score_windows cp1252)\n";
+        print "; guess=MacRoman ($score_mac MacRoman > $score_windows cp1252)\n";
         $decoded = $decoded_mac;
       }
     }
@@ -110,14 +110,14 @@ sub warning_xmlparse {
   my $xmlparse_warning = 0;
   foreach my $line (@{$lines}) {
     if (!$parse_warning && $line =~ /<parse[ >]/) {
-      print STDERR "Warning: <parse> is used, dynamic content will not be converted\n";
+      print "Warning: <parse> is used, dynamic content will not be converted\n";
       $parse_warning = 1;
       if ($xmlparse_warning) {
         last;
       }
     }
     if (!$xmlparse_warning && index($line, 'xmlparse') != -1) {
-      print STDERR "Warning: &xmlparse() is used, dynamic content will not be converted\n";
+      print "Warning: &xmlparse() is used, dynamic content will not be converted\n";
       $xmlparse_warning = 1;
       if ($parse_warning) {
         last;

@@ -59,6 +59,8 @@ sub post_xml {
 
   replace_center($root); # must come after fix_tables
 
+  fix_hr($root);
+  
   fix_align_attribute($root);
   
   fix_parts($root);
@@ -853,6 +855,69 @@ sub replace_center {
   }
 }
 
+# removes deprecated attributes and replace by CSS
+sub fix_hr {
+  my ($root) = @_;
+  my @hrs = $dom_doc->getElementsByTagName('hr');
+  foreach my $hr (@hrs) {
+    my $align = $hr->getAttribute('align');
+    my $color = $hr->getAttribute('color');
+    my $noshade = $hr->getAttribute('noshade');
+    my $size = $hr->getAttribute('size');
+    my $width = $hr->getAttribute('width');
+    my $style = $hr->getAttribute('style');
+    if (defined $style) {
+      $style =~ s/\s*$//;
+      $style =~ s/\s*;$//;
+      $style .= '; ';
+    } else {
+      $style = '';
+    }
+    if (defined $align) {
+      $align =~ s/^\s*|\s*$//;
+      $align = lc($align);
+      if ($align eq 'left') {
+        $style .= 'text-align:left; margin-left:0; ';
+      } elsif ($align eq 'right') {
+        $style .= 'text-align:right; margin-right:0; ';
+      }
+      $hr->removeAttribute('align');
+    }
+    if (defined $color) {
+      $color =~ s/^x//;
+      $style .= "color:$color; background-color:$color; ";
+      $hr->removeAttribute('color');
+    }
+    if (defined $noshade) {
+      if (defined $color) {
+        $style .= 'border-width:0; ';
+      } else {
+        $style .= 'border-width:0; color:gray; background-color:gray; ';
+      }
+      if (!defined $size) {
+        $size = '2';
+      }
+      $hr->removeAttribute('noshade');
+    }
+    if (defined $size) {
+      $style .= "height:${size}px; ";
+      if (defined $hr->getAttribute('size')) {
+        $hr->removeAttribute('size');
+      }
+    }
+    if (defined $width) {
+      if ($width !~ /\%\s*$/) {
+        $width .= 'px';
+      }
+      $style .= "width:$width; ";
+      $hr->removeAttribute('width');
+    }
+    if ($style ne '') {
+      $hr->setAttribute('style', $style);
+    }
+  }
+}
+
 # replaces <div align="center"> by <div style="text-align:center;">
 # also for p and h1..h6
 sub fix_align_attribute {
@@ -966,7 +1031,7 @@ sub change_hints {
         $ancestor = $ancestor->parentNode;
       }
       if (!$found_hintgroup) {
-        print STDERR "Warning: hint found outside of a hintgroup\n";
+        print "Warning: hint found outside of a hintgroup\n";
         # create a new hintgroup for the next step
         my $hintgroup = $dom_doc->createElement('hintgroup');
         $subhint->parentNode->insertAfter($hintgroup, $subhint);
@@ -1072,7 +1137,7 @@ sub change_hints {
           $hint = undef;
         }
         if (!defined $response) {
-          print STDERR "Warning: hint condition outside of a response\n";
+          print "Warning: hint condition outside of a response\n";
         }
         $move_conditions_after->parentNode->insertAfter($child, $move_conditions_after);
         $move_conditions_after = $child;

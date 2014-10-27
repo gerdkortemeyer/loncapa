@@ -29,9 +29,9 @@ my $pathname = "$ARGV[0]";
 if (-d "$pathname") {
   my $failures = convert_dir($pathname);
   if (scalar(@$failures) > 0) {
-    print STDERR "\nThe following files could not be converted, and need a manual fix:\n";
+    print "\nThe following files could not be converted, and need a manual fix:\n";
     foreach my $failure (@$failures) {
-      print STDERR "  $failure\n";
+      print "  $failure\n";
     }
   }
 } elsif (-f $pathname) {
@@ -57,7 +57,7 @@ sub convert_dir {
         try {
           convert_file($pathname);
         } catch {
-          print STDERR "$_\n"; # continue processing even if a file cannot be converted
+          print "$_\n"; # continue processing even if a file cannot be converted
           push(@failures, $pathname);
         };
       }
@@ -76,7 +76,6 @@ sub convert_file {
   my $newpath = "$dirs/${filename_no_ext}_clean$ext";
 
   binmode(STDOUT, ':encoding(UTF-8)');
-  binmode(STDERR, ':encoding(UTF-8)');
   print "converting $pathname...\n";
 
   my $text;

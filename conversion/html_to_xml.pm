@@ -98,7 +98,7 @@ sub start {
     $att_name_modified =~ s/^[\-.0-9]*//;
     if ($att_name_modified ne '' && index($att_name_modified, ':') == -1) {
       if ($seen{$att_name_modified}) {
-        print STDERR "Warning: Ignoring duplicate attribute: $att_name\n";
+        print "Warning: Ignoring duplicate attribute: $att_name\n";
         next;
       }
       $seen{$att_name_modified}++;
@@ -201,7 +201,7 @@ sub fix_tag {
   my ($tag) = @_;
   #$tag = lc($tag); this is done by default by the parser
   if ($tag =~ /[<\+"'\/=\s,;:]/) {
-    print STDERR "Warning: bad start tag:'".$tag."'";
+    print "Warning: bad start tag:'".$tag."'";
     if ($tag =~ /<[a-zA-Z]/) {
       $tag =~ s/^[^<]*<//; # a<b -> b
     }
@@ -217,7 +217,7 @@ sub fix_tag {
       }
     }
     $tag =~ s/[<\+"'\/=\s,;:]//g;
-    print STDERR " (converted to $tag)\n";
+    print " (converted to $tag)\n";
   }
   return($tag);
 }
