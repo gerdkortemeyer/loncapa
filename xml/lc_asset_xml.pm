@@ -37,6 +37,7 @@ use Apache::lc_xml_tables;
 use Apache::lc_xml_conditionals;
 use Apache::lc_xml_include;
 use Apache::lc_xml_gadgets;
+use Apache::lc_logs;
 
 sub error {
    my ($stack,$type,$notes)=@_;
@@ -145,6 +146,10 @@ sub target_render {
    my ($fn,$target)=@_;
 # Clear out and initialize everything
    my $p=HTML::TokeParser->new($fn);
+   unless ($p) {
+      &logerror("Could not inititialize parser for file [$fn]");
+      return (undef,undef);
+   }
    $p->empty_element_tags(1);
    my $safe=&Apache::lc_asset_safeeval::init_safe();
    my $stack={};
