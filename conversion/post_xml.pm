@@ -14,36 +14,35 @@ use XML::LibXML;
 use HTML::TokeParser; # used to parse sty files
 use Env qw(RES_DIR); # path of res directory parent (without the / at the end)
 
-no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
+#no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
 
+# these are constants
 my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','textfield','hiddensubmission','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','tex','web','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
 my @inline_responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse');
 my @responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse','essayresponse','radiobuttonresponse','matchresponse','rankresponse','imageresponse','functionplotresponse');
 my @block_html = ('html','head','body','section','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
-my @all_block = (@block_elements, @block_html);
 my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
 my @preserve_elements = ('script','answer','perl');
 
-
-my $dom_doc;
 
 # Parses the XML document and fixes many things to turn it into a LON-CAPA 3 document
 # Returns the text of the document.
 sub post_xml {
   my ($text, $new_path) = @_;
   
-  $dom_doc = XML::LibXML->load_xml(string => $text);
+  my $dom_doc = XML::LibXML->load_xml(string => $text);
 
   my $root = create_new_structure($dom_doc);
 
   remove_elements($root, ['startouttext','startoutext','endouttext','endoutext','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow']);
 
-  add_sty_blocks($new_path, $root); # must come before the subs using @all_block
+  my @all_block = (@block_elements, @block_html);
+  add_sty_blocks($new_path, $root, \@all_block); # must come before the subs using @all_block
 
-  fix_block_styles($root);
+  fix_block_styles($root, \@all_block);
   $root->normalize();
 
-  fix_fonts($root);
+  fix_fonts($root, \@all_block);
   
   replace_u($root);
 
@@ -57,7 +56,7 @@ sub post_xml {
 
   fix_lists($root);
 
-  replace_center($root); # must come after fix_tables
+  replace_center($root, \@all_block); # must come after fix_tables
 
   fix_hr($root);
   
@@ -67,13 +66,13 @@ sub post_xml {
   
   change_hints($root);
   
-  fix_paragraphs_inside($root);
+  fix_paragraphs_inside($root, \@all_block);
 
   remove_empty_style($root);
 
   fix_empty_lc_elements($root);
 
-  pretty($root);
+  pretty($root, \@all_block);
 
   open my $out, '>', $new_path;
   print $out $dom_doc->toString(); # byte string !
@@ -83,16 +82,16 @@ sub post_xml {
 sub create_new_structure {
   my ($doc) = @_;
   # the 'loncapa' root element has already been added in pre_xml
-  my $root = $dom_doc->documentElement;
+  my $root = $doc->documentElement;
   # replace html elements by the content
-  my @htmls = $dom_doc->getElementsByTagName('html');
+  my @htmls = $doc->getElementsByTagName('html');
   foreach my $html (@htmls) {
     replace_by_children($html);
   }
   # replace head by htmlhead, insert all style elements inside
   my $current_node = undef;
-  my @heads = $dom_doc->getElementsByTagName('head');
-  my @styles = $dom_doc->getElementsByTagName('style');
+  my @heads = $doc->getElementsByTagName('head');
+  my @styles = $doc->getElementsByTagName('style');
   if (scalar(@heads) > 0 || scalar(@styles) > 0) {
     my $htmlhead = $doc->createElement('htmlhead');
     foreach my $head (@heads) {
@@ -113,7 +112,7 @@ sub create_new_structure {
   }
   # replace a body with attributes by an empty htmlbody with the same attributes
   my $htmlbody = undef;
-  my @bodies = $dom_doc->getElementsByTagName('body');
+  my @bodies = $doc->getElementsByTagName('body');
   if (scalar(@bodies) > 0) {
     my @attributes = ();
     foreach my $body (@bodies) {
@@ -133,13 +132,13 @@ sub create_new_structure {
   }
   # add all the meta elements afterwards when they are LON-CAPA meta. Remove all HTML meta.
   my @meta_names = ('abstract','author','authorspace','avetries','avetries_list','clear','comefrom','comefrom_list','copyright','correct','count','course','course_list','courserestricted','creationdate','dependencies','depth','difficulty','difficulty_list','disc','disc_list','domain','end','field','firstname','generation','goto','goto_list','groupname','helpful','highestgradelevel','hostname','id','keynum','keywords','language','lastname','lastrevisiondate','lowestgradelevel','middlename','mime','modifyinguser','notes','owner','permanentemail','scope','sequsage','sequsage_list','standards','start','stdno','stdno_list','subject','technical','title','url','username','value','version');
-  my @metas = $dom_doc->getElementsByTagName('meta');
+  my @metas = $doc->getElementsByTagName('meta');
   foreach my $meta (@metas) {
     $meta->parentNode->removeChild($meta);
     my $name = $meta->getAttribute('name');
     my $content = $meta->getAttribute('content');
     if (defined $name && defined $content && string_in_array(\@meta_names, lc($name))) {
-      my $lcmeta = $dom_doc->createElement('lcmeta');
+      my $lcmeta = $doc->createElement('lcmeta');
       $lcmeta->setAttribute('name', lc($name));
       $lcmeta->setAttribute('content', $content);
       insert_after_or_first($root, $lcmeta, $current_node);
@@ -181,8 +180,9 @@ sub remove_elements {
 # use the linked sty files to guess which newly defined elements should be considered blocks
 # @param {string} fn - the clean .problem file path (we only extract the directory path from it)
 sub add_sty_blocks {
-  my ($fn, $root) = @_;
-  my @parserlibs = $dom_doc->getElementsByTagName('parserlib');
+  my ($fn, $root, $all_block) = @_;
+  my $doc = $root->ownerDocument;
+  my @parserlibs = $doc->getElementsByTagName('parserlib');
   my @libs = ();
   foreach my $parserlib (@parserlibs) {
     if (defined $parserlib->firstChild && $parserlib->firstChild->nodeType == XML_TEXT_NODE) {
@@ -200,11 +200,11 @@ sub add_sty_blocks {
     } else {
       $sty = $path.$sty;
     }
-    my $new_elements = parse_sty($sty);
-    better_guess($root, $new_elements);
+    my $new_elements = parse_sty($sty, $all_block);
+    better_guess($root, $new_elements, $all_block);
     my $new_blocks = $new_elements->{'block'};
     my $new_inlines = $new_elements->{'inline'};
-    push(@all_block, @{$new_blocks});
+    push(@$all_block, @{$new_blocks});
     #push(@inlines, @{$new_inlines}); # we are not using a list of inline elements at this point
   }
 }
@@ -214,7 +214,7 @@ sub add_sty_blocks {
 # @param {string} fn - the file path
 ##
 sub parse_sty {
-  my ($fn) = @_;
+  my ($fn, $all_block) = @_;
   my @blocks = ();
   my @inlines = ();
   my $p = HTML::TokeParser->new($fn);
@@ -242,7 +242,7 @@ sub parse_sty {
         $in_render = 1;
         $is_block = 0;
       } elsif ($in_render) {
-        if (string_in_array(\@all_block, $tag)) {
+        if (string_in_array($all_block, $tag)) {
           $is_block = 1;
         }
       }
@@ -276,17 +276,17 @@ sub parse_sty {
 # @param {Hash<string,Array>} new_elements - contains arrays in 'block' and 'inline'
 ##
 sub better_guess {
-  my ($root, $new_elements) = @_;
+  my ($root, $new_elements, $all_block) = @_;
   my $new_blocks = $new_elements->{'block'};
   my $new_inlines = $new_elements->{'inline'};
   
   my @change = (); # change these elements from inline to block
   foreach my $tag (@{$new_inlines}) {
-    my @nodes = $dom_doc->getElementsByTagName($tag);
+    my @nodes = $root->getElementsByTagName($tag);
     NODE_LOOP: foreach my $node (@nodes) {
       for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
         if ($child->nodeType == XML_ELEMENT_NODE) {
-          if (string_in_array(\@all_block, $child->nodeName) || string_in_array($new_blocks, $child->nodeName)) {
+          if (string_in_array($all_block, $child->nodeName) || string_in_array($new_blocks, $child->nodeName)) {
             push(@change, $tag);
             last NODE_LOOP;
           }
@@ -311,7 +311,8 @@ sub better_guess {
 # (a solution to this problem would be to merge the styles in a span)
 # NOTE: .sty defined elements are not considered like elements containing styles
 sub fix_block_styles {
-  my ($element) = @_;
+  my ($element, $all_block) = @_;
+  my $doc = $element->ownerDocument;
   # list of elements that can contain style elements:
   my @containing_styles = ('loncapa','problem','foil','item','text','hintgroup','hintpart','label','part','preduedate','postanswerdate','solved','notsolved','block','while','web','standalone','problemtype','languageblock','translated','lang','window','windowlink','togglebox','instructorcomment','section','div','p','li','dd','td','th','blockquote','object','applet','video','audio','canvas','fieldset','button',
   'span','strong','em','b','i','sup','sub','code','kbd','samp','tt','ins','del','var','small','big','u','font');
@@ -321,21 +322,21 @@ sub fix_block_styles {
     if (defined $element->firstChild && $element->firstChild->nodeType == XML_TEXT_NODE) {
       my $child = $element->firstChild;
       if ($child->nodeValue =~ /^(\s+)(\S.*)$/s) {
-        $element->parentNode->insertBefore($dom_doc->createTextNode($1), $element);
+        $element->parentNode->insertBefore($doc->createTextNode($1), $element);
         $child->setData($2);
       }
     }
     if (defined $element->lastChild && $element->lastChild->nodeType == XML_TEXT_NODE) {
       my $child = $element->lastChild;
       if ($child->nodeValue =~ /^(.*\S)(\s+)$/s) {
-        $element->parentNode->insertAfter($dom_doc->createTextNode($2), $element);
+        $element->parentNode->insertAfter($doc->createTextNode($2), $element);
         $child->setData($1);
       }
     }
     
     my $found_block = 0;
     for (my $child=$element->firstChild; defined $child; $child=$child->nextSibling) {
-      if ($child->nodeType == XML_ELEMENT_NODE && string_in_array(\@all_block, $child->nodeName)) {
+      if ($child->nodeType == XML_ELEMENT_NODE && string_in_array($all_block, $child->nodeName)) {
         $found_block = 1;
         last;
       }
@@ -348,7 +349,7 @@ sub fix_block_styles {
       my $next;
       for (my $child=$element->firstChild; defined $child; $child=$next) {
         $next = $child->nextSibling;
-        if ($child->nodeType == XML_ELEMENT_NODE && (string_in_array(\@all_block, $child->nodeName) ||
+        if ($child->nodeType == XML_ELEMENT_NODE && (string_in_array($all_block, $child->nodeName) ||
             $child->nodeName eq 'br' || $no_style_here)) {
           # avoid inverting a style with a style with $no_style_here (that would cause endless recursion)
           if (!$no_style_here || !string_in_array(\@styles, $child->nodeName)) {
@@ -387,7 +388,7 @@ sub fix_block_styles {
         $element->removeChild($child);
         $parent->insertBefore($child, $element);
         if ($child->nodeType == XML_ELEMENT_NODE) {
-          fix_block_styles($child);
+          fix_block_styles($child, $all_block);
         }
       }
       $parent->removeChild($element);
@@ -399,7 +400,7 @@ sub fix_block_styles {
   for (my $child=$element->firstChild; defined $child; $child=$next) {
     $next = $child->nextSibling;
     if ($child->nodeType == XML_ELEMENT_NODE) {
-      fix_block_styles($child);
+      fix_block_styles($child, $all_block);
     }
   }
 }
@@ -407,12 +408,13 @@ sub fix_block_styles {
 # removes empty font elements and font elements that contain at least one block element
 # replaces other font elements by equivalent span
 sub fix_fonts {
-  my ($root) = @_;
-  my @fonts = $dom_doc->getElementsByTagName('font');
+  my ($root, $all_block) = @_;
+  my $doc = $root->ownerDocument;
+  my @fonts = $root->getElementsByTagName('font');
   foreach my $font (@fonts) {
     my $block = 0;
     for (my $child=$font->firstChild; defined $child; $child=$child->nextSibling) {
-      if (string_in_array(\@all_block, $child->nodeName) || string_in_array(\@inline_responses, $child->nodeName)) {
+      if (string_in_array($all_block, $child->nodeName) || string_in_array(\@inline_responses, $child->nodeName)) {
         $block = 1;
         last;
       }
@@ -436,9 +438,9 @@ sub fix_fonts {
       }
       my $replacement;
       if (!defined $color && !defined $size && defined $face && lc($face) eq 'symbol') {
-        $replacement = $dom_doc->createDocumentFragment();
+        $replacement = $doc->createDocumentFragment();
       } else {
-        $replacement = $dom_doc->createElement('span');
+        $replacement = $doc->createElement('span');
         my $css = '';
         if (defined $color) {
           $color =~ s/^x//;
@@ -502,9 +504,10 @@ sub fix_fonts {
 # replaces u by <span style="text-decoration: underline">
 sub replace_u {
   my ($root) = @_;
-  my @us = $dom_doc->getElementsByTagName('u');
+  my $doc = $root->ownerDocument;
+  my @us = $root->getElementsByTagName('u');
   foreach my $u (@us) {
-    my $span = $dom_doc->createElement('span');
+    my $span = $doc->createElement('span');
     $span->setAttribute('style', 'text-decoration: underline');
     my $next;
     for (my $child=$u->firstChild; defined $child; $child=$next) {
@@ -519,11 +522,12 @@ sub replace_u {
 # replaces all script[@type='loncapa/perl'] by a perl element
 sub replace_script_by_perl {
   my ($root) = @_;
-  my @scripts = $dom_doc->getElementsByTagName('script');
+  my $doc = $root->ownerDocument;
+  my @scripts = $root->getElementsByTagName('script');
   foreach my $script (@scripts) {
     my $type = $script->getAttribute('type');
     if (defined $type && $type eq 'loncapa/perl') {
-      my $perl = $dom_doc->createElement('perl');
+      my $perl = $doc->createElement('perl');
       my $next;
       for (my $child=$script->firstChild; defined $child; $child=$next) {
         $next = $child->nextSibling;
@@ -540,7 +544,7 @@ sub replace_script_by_perl {
 sub remove_bad_cdata_sections {
   my ($root) = @_;
   foreach my $name (@preserve_elements) {
-    my @nodes = $dom_doc->getElementsByTagName($name);
+    my @nodes = $root->getElementsByTagName($name);
     foreach my $node (@nodes) {
       if (defined $node->firstChild && $node->firstChild->nodeType == XML_TEXT_NODE) {
         my $value = $node->firstChild->nodeValue;
@@ -565,7 +569,7 @@ sub remove_bad_cdata_sections {
 # removes "<!--" and "-->" at the beginning and end of style elements
 sub fix_style_element {
   my ($root) = @_;
-  my @styles = $dom_doc->getElementsByTagName('style');
+  my @styles = $root->getElementsByTagName('style');
   foreach my $style (@styles) {
     if (defined $style->firstChild && $style->firstChild->nodeType == XML_TEXT_NODE &&
         !defined $style->firstChild->nextSibling) {
@@ -580,7 +584,7 @@ sub fix_style_element {
 # try to fix table attributes, and create missing cells at the end of table rows
 sub fix_tables {
   my ($root) = @_;
-  my @tables = $dom_doc->getElementsByTagName('table');
+  my @tables = $root->getElementsByTagName('table');
   foreach my $table (@tables) {
     my $style = get_non_empty_attribute($table, 'style');
     my $align = get_non_empty_attribute($table, 'align');
@@ -640,6 +644,7 @@ sub fix_tables {
 # create missing cells at the end of table rows
 sub fix_cells {
   my ($table) = @_; # could actually be table, tbody, thead or tfoot
+  my $doc = $table->ownerDocument;
   my @nb_cells = ();
   my $max_nb_cells = 0;
   my @rowspans = ();
@@ -680,7 +685,7 @@ sub fix_cells {
     my $nb_cells = shift(@nb_cells);
     if ($nb_cells < $max_nb_cells) {
       for (1..($max_nb_cells - $nb_cells)) {
-        $tr->appendChild($dom_doc->createElement('td'));
+        $tr->appendChild($doc->createElement('td'));
       }
     }
   }
@@ -691,8 +696,9 @@ sub fix_cells {
 # also replaces the deprecated type attribute by CSS
 sub fix_lists {
   my ($root) = @_;
-  my @uls = $dom_doc->getElementsByTagName('ul');
-  my @ols = $dom_doc->getElementsByTagName('ol');
+  my $doc = $root->ownerDocument;
+  my @uls = $root->getElementsByTagName('ul');
+  my @ols = $root->getElementsByTagName('ol');
   my @lists = (@uls, @ols);
   foreach my $list (@lists) {
     my $next;
@@ -724,7 +730,7 @@ sub fix_lists {
         if (defined $previous && $previous->nodeType == XML_ELEMENT_NODE && $previous->nodeName eq 'li') {
           $previous->appendChild($child);
         } else {
-          my $li = $dom_doc->createElement('li');
+          my $li = $doc->createElement('li');
           $li->appendChild($child);
           if (!defined $next) {
             $list->appendChild($li);
@@ -735,7 +741,7 @@ sub fix_lists {
       }
     }
   }
-  my @lis = $dom_doc->getElementsByTagName('li');
+  my @lis = $root->getElementsByTagName('li');
   foreach my $li (@lis) {
     if (defined $li->getAttribute('type')) {
       my $type = $li->getAttribute('type');
@@ -768,7 +774,7 @@ sub fix_lists {
     }
     if (!$found_list_ancestor) {
       # replace li by ul and add li under ul
-      my $ul = $dom_doc->createElement('ul');
+      my $ul = $doc->createElement('ul');
       $li->parentNode->insertBefore($ul, $li);
       $li->parentNode->removeChild($li);
       $ul->appendChild($li);
@@ -822,8 +828,9 @@ sub list_style_type {
 
 # replace center by a div or remove it if there is a table inside
 sub replace_center {
-  my ($root) = @_;
-  my @centers = $dom_doc->getElementsByTagName('center');
+  my ($root, $all_block) = @_;
+  my $doc = $root->ownerDocument;
+  my @centers = $root->getElementsByTagName('center');
   foreach my $center (@centers) {
     if ($center->getChildrenByTagName('table')->size() > 0) { # note: getChildrenByTagName is not DOM (LibXML specific)
       replace_by_children($center);
@@ -831,17 +838,17 @@ sub replace_center {
       # use p or div ? check if there is a block inside
       my $found_block = 0;
       for (my $child=$center->firstChild; defined $child; $child=$child->nextSibling) {
-        if ($child->nodeType == XML_ELEMENT_NODE && string_in_array(\@all_block, $child->nodeName)) {
+        if ($child->nodeType == XML_ELEMENT_NODE && string_in_array($all_block, $child->nodeName)) {
           $found_block = 1;
           last;
         }
       }
       my $new_node;
       if ($found_block) {
-        $new_node = $dom_doc->createElement('div');
+        $new_node = $doc->createElement('div');
         $new_node->setAttribute('style', 'text-align: center; margin: 0 auto');
       } else {
-        $new_node = $dom_doc->createElement('p');
+        $new_node = $doc->createElement('p');
         $new_node->setAttribute('style', 'text-align: center');
       }
       my $next;
@@ -858,7 +865,7 @@ sub replace_center {
 # removes deprecated attributes and replace by CSS
 sub fix_hr {
   my ($root) = @_;
-  my @hrs = $dom_doc->getElementsByTagName('hr');
+  my @hrs = $root->getElementsByTagName('hr');
   foreach my $hr (@hrs) {
     my $align = $hr->getAttribute('align');
     my $color = $hr->getAttribute('color');
@@ -922,10 +929,10 @@ sub fix_hr {
 # also for p and h1..h6
 sub fix_align_attribute {
   my ($root) = @_;
-  my @nodes = $dom_doc->getElementsByTagName('div');
-  push(@nodes, $dom_doc->getElementsByTagName('p'));
+  my @nodes = $root->getElementsByTagName('div');
+  push(@nodes, $root->getElementsByTagName('p'));
   for (my $i=1; $i<=6; $i++) {
-    push(@nodes, $dom_doc->getElementsByTagName('h'.$i));
+    push(@nodes, $root->getElementsByTagName('h'.$i));
   }
   foreach my $node (@nodes) {
     my $align = get_non_empty_attribute($node, 'align');
@@ -949,12 +956,13 @@ sub fix_align_attribute {
 # checks for errors and adds a part if a problem with responses has no part
 sub fix_parts {
   my ($root) = @_;
-  my @parts = $dom_doc->getElementsByTagName('part');
+  my $doc = $root->ownerDocument;
+  my @parts = $root->getElementsByTagName('part');
   my $with_parts = (scalar(@parts) > 0);
   my $one_not_in_part = 0;
   my $all_in_parts = 1;
   foreach my $response_tag (@responses) {
-    my @response_nodes = $dom_doc->getElementsByTagName($response_tag);
+    my @response_nodes = $root->getElementsByTagName($response_tag);
     foreach my $response (@response_nodes) {
       my $in_part = 0;
       my $ancestor = $response->parentNode;
@@ -983,12 +991,12 @@ sub fix_parts {
     return;
   }
   # there is at least one response, we will move everything inside problem in a part
-  my @problems = $dom_doc->getElementsByTagName('problem');
+  my @problems = $root->getElementsByTagName('problem');
   if (scalar(@problems) != 1) {
     die "there is a response but no problem or more than one";
   }
   foreach my $problem (@problems) {
-    my $part = $dom_doc->createElement('part');
+    my $part = $doc->createElement('part');
     my $next;
     for (my $child=$problem->firstChild; defined $child; $child=$next) {
       $next = $child->nextSibling;
@@ -1009,9 +1017,10 @@ sub fix_parts {
 # Also replaces "hint" elements (that should not exists) by their content.
 sub change_hints {
   my ($root) = @_;
+  my $doc = $root->ownerDocument;
   
   # replace all "hint" elements by their children
-  foreach my $bad_hint ($dom_doc->getElementsByTagName('hint')) {
+  foreach my $bad_hint ($root->getElementsByTagName('hint')) {
     replace_by_children($bad_hint);
   }
   
@@ -1019,7 +1028,7 @@ sub change_hints {
   # If so, put it inside a new hintgroup.
   my @subhint_tags = ('hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint');
   foreach my $subhint_tag (@subhint_tags) {
-    my @subhints = $dom_doc->getElementsByTagName($subhint_tag);
+    my @subhints = $root->getElementsByTagName($subhint_tag);
     foreach my $subhint (@subhints) {
       my $found_hintgroup = 0;
       my $ancestor = $subhint->parentNode;
@@ -1033,7 +1042,7 @@ sub change_hints {
       if (!$found_hintgroup) {
         print "Warning: hint found outside of a hintgroup\n";
         # create a new hintgroup for the next step
-        my $hintgroup = $dom_doc->createElement('hintgroup');
+        my $hintgroup = $doc->createElement('hintgroup');
         $subhint->parentNode->insertAfter($hintgroup, $subhint);
         $subhint->parentNode->removeChild($subhint);
         $hintgroup->appendChild($subhint);
@@ -1043,7 +1052,7 @@ sub change_hints {
     }
   }
   
-  my @hintgroups = $dom_doc->getElementsByTagName('hintgroup');
+  my @hintgroups = $root->getElementsByTagName('hintgroup');
   
   # create a list of hintgroups that are in a part containing more than 1 hintgroup containing a hinpart with on="default"
   my @hintgroups_to_preserve = ();
@@ -1060,7 +1069,7 @@ sub change_hints {
       $ancestor = $ancestor->parentNode;
     }
     if (!defined $part_or_problem) {
-      $part_or_problem = $dom_doc->documentElement;
+      $part_or_problem = $root;
     }
     # check to see if there is more than 1 hintgroup containing a hinpart with on="default" in the part
     my $nb_hintgroups_with_hintpart_default = 0;
@@ -1120,7 +1129,7 @@ sub change_hints {
     
     # recreate a hintgroup if necessary
     if (object_in_array(\@hintgroups_to_preserve, $hintgroup)) {
-      my $new_hintgroup = $dom_doc->createElement('hintgroup');
+      my $new_hintgroup = $doc->createElement('hintgroup');
       $move_after->parentNode->insertAfter($new_hintgroup, $move_after);
       $move_after = undef;
       $move_inside = $new_hintgroup;
@@ -1161,17 +1170,17 @@ sub change_hints {
       } else {
         if (!defined $hint) {
           # create a new hint element for a hint without a condition
-          $hint = $dom_doc->createElement('hint');
+          $hint = $doc->createElement('hint');
           if (defined $hintgroup->getAttribute('showoncorrect') && $hintgroup->getAttribute('showoncorrect') ne 'no') {
             $hint->setAttribute('showoncorrect', $hintgroup->getAttribute('showoncorrect'));
           }
           if (defined $move_inside) {
             $move_inside->appendChild($hint);
-            $move_inside->appendChild($dom_doc->createTextNode("\n"));
+            $move_inside->appendChild($doc->createTextNode("\n"));
           } else {
             my $newline_node;
             if ($move_after->nodeType != XML_TEXT_NODE || $move_after->nodeValue ne "\n") {
-              $newline_node = $dom_doc->createTextNode("\n");
+              $newline_node = $doc->createTextNode("\n");
               $move_after->parentNode->insertAfter($newline_node, $move_after);
               $move_after = $newline_node;
             }
@@ -1179,7 +1188,7 @@ sub change_hints {
             $move_after = $hint;
             if (!defined $move_after->nextSibling || $move_after->nextSibling->nodeType != XML_TEXT_NODE ||
                 $move_after->nextSibling->nodeValue !~ "\n") {
-              $newline_node = $dom_doc->createTextNode("\n");
+              $newline_node = $doc->createTextNode("\n");
               $move_after->parentNode->insertAfter($newline_node, $move_after);
               $move_after = $newline_node;
             }
@@ -1203,7 +1212,7 @@ sub change_hints {
   # Currently they are inline, with some exceptions in the conversion, like inline responses.
   
   # hints were blocks but are becoming inline; this removes blank text nodes at the beginning and the end of all hint elements
-  my @hints = $dom_doc->getElementsByTagName('hint');
+  my @hints = $root->getElementsByTagName('hint');
   foreach my $hint (@hints) {
     if (defined $hint->firstChild && $hint->firstChild->nodeType == XML_TEXT_NODE) {
       my $text = $hint->firstChild->nodeValue;
@@ -1220,7 +1229,7 @@ sub change_hints {
 
 # calls fix_paragraphs for all children
 sub fix_paragraphs_inside {
-  my ($node) = @_;
+  my ($node, $all_block) = @_;
   # blocks in which paragrahs will be added:
   my @blocks_with_p = ('problem','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','togglebox','standalone');
   my @fix_p_if_br_or_p = ('foil','item','text','label','hintgroup','hintpart','hint','web','windowlink','div','li','dd','td','th','blockquote');
@@ -1245,9 +1254,9 @@ sub fix_paragraphs_inside {
     $next = $child->nextSibling;
     if ($child->nodeType == XML_ELEMENT_NODE && defined $child->firstChild) {
       if ($child->nodeName eq 'p') {
-        fix_paragraph($child);
+        fix_paragraph($child, $all_block);
       } else {
-        fix_paragraphs_inside($child);
+        fix_paragraphs_inside($child, $all_block);
       }
     }
   }
@@ -1270,8 +1279,8 @@ sub paragraph_needed {
 
 # fixes paragraphs inside paragraphs (without a block in-between)
 sub fix_paragraph {
-  my ($p) = @_;
-  my $block = find_first_block($p);
+  my ($p, $all_block) = @_;
+  my $block = find_first_block($p, $all_block);
   if (defined $block) {
     my $trees = clone_ancestor_around_node($p, $block);
     my $doc = $p->ownerDocument;
@@ -1294,17 +1303,17 @@ sub fix_paragraph {
         my $next;
         for (my $child=$left->firstChild; defined $child; $child=$next) {
           $next = $child->nextSibling;
-          fix_paragraphs_inside($child);
+          fix_paragraphs_inside($child, $all_block);
         }
       }
     }
     my $n = $middle->firstChild;
     while (defined $n) {
-      if ($n->nodeType == XML_ELEMENT_NODE && (string_in_array(\@all_block, $n->nodeName) || $n->nodeName eq 'br')) {
+      if ($n->nodeType == XML_ELEMENT_NODE && (string_in_array($all_block, $n->nodeName) || $n->nodeName eq 'br')) {
         if ($n->nodeName eq 'p') {
           my $parent = $n->parentNode;
           # first apply recursion
-          fix_paragraph($n);
+          fix_paragraph($n, $all_block);
           # now the p might have been replaced by several nodes, which should replace the initial p
           my $next_block;
           for (my $block=$parent->firstChild; defined $block; $block=$next_block) {
@@ -1337,7 +1346,7 @@ sub fix_paragraph {
               $replacement->appendChild($middle);
             }
           } else {
-            fix_paragraphs_inside($n);
+            fix_paragraphs_inside($n, $all_block);
             $replacement->appendChild($n);
           }
         }
@@ -1365,7 +1374,7 @@ sub fix_paragraph {
       if (defined $right->firstChild) {
         if (paragraph_needed($right)) {
           $replacement->appendChild($right);
-          fix_paragraph($right);
+          fix_paragraph($right, $all_block);
         } else {
           # this was just blank text, comments or inline responses, it should not create a new paragraph
           my $next;
@@ -1383,22 +1392,22 @@ sub fix_paragraph {
     my $next;
     for (my $child=$p->firstChild; defined $child; $child=$next) {
       $next = $child->nextSibling;
-      fix_paragraphs_inside($child);
+      fix_paragraphs_inside($child, $all_block);
     }
   }
 }
 
 sub find_first_block {
-  my ($node) = @_;
+  my ($node, $all_block) = @_;
   # inline elements that can be split in half if there is a paragraph inside (currently all HTML):
   my @splitable_inline = ('span', 'a', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'code', 'kbd', 'samp', 'tt', 'ins', 'del', 'var', 'small', 'big', 'font', 'u');
   for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
     if ($child->nodeType == XML_ELEMENT_NODE) {
-      if (string_in_array(\@all_block, $child->nodeName) || $child->nodeName eq 'br') {
+      if (string_in_array($all_block, $child->nodeName) || $child->nodeName eq 'br') {
         return($child);
       }
       if (string_in_array(\@splitable_inline, $child->nodeName)) {
-        my $block = find_first_block($child);
+        my $block = find_first_block($child, $all_block);
         if (defined $block) {
           return($block);
         }
@@ -1482,7 +1491,7 @@ sub remove_empty_style {
   my @remove_if_empty = ('span', 'a', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'code', 'kbd', 'samp', 'tt', 'ins', 'del', 'var', 'small', 'big', 'font', 'u');
   my @remove_if_blank = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'font', 'u');
   foreach my $name (@remove_if_empty) {
-    my @nodes = $dom_doc->getElementsByTagName($name);
+    my @nodes = $root->getElementsByTagName($name);
     while (scalar(@nodes) > 0) {
       my $node = pop(@nodes);
       if (!defined $node->firstChild) {
@@ -1505,7 +1514,7 @@ sub remove_empty_style {
     }
   }
   foreach my $name (@remove_if_blank) {
-    my @nodes = $dom_doc->getElementsByTagName($name);
+    my @nodes = $root->getElementsByTagName($name);
     while (scalar(@nodes) > 0) {
       my $node = pop(@nodes);
       if (defined $node->firstChild && !defined $node->firstChild->nextSibling && $node->firstChild->nodeType == XML_TEXT_NODE) {
@@ -1548,12 +1557,13 @@ sub fix_empty_lc_elements {
 
 # pretty-print using im-memory DOM tree
 sub pretty {
-  my ($node, $indent_level) = @_;
+  my ($node, $all_block, $indent_level) = @_;
+  my $doc = $node->ownerDocument;
   $indent_level ||= 0;
   my $type = $node->nodeType;
   if ($type == XML_ELEMENT_NODE) {
     my $name = $node->nodeName;
-    if ((string_in_array(\@all_block, $name) || string_in_array(\@inline_responses, $name) || $name eq 'hint') &&
+    if ((string_in_array($all_block, $name) || string_in_array(\@inline_responses, $name) || $name eq 'hint') &&
         !string_in_array(\@preserve_elements, $name)) {
       # make sure there is a newline at the beginning and at the end if there is anything inside
       if (defined $node->firstChild && !string_in_array(\@no_newline_inside, $name)) {
@@ -1564,7 +1574,7 @@ sub pretty {
             $first->setData("\n" . $text);
           }
         } else {
-          $node->insertBefore($dom_doc->createTextNode("\n"), $first);
+          $node->insertBefore($doc->createTextNode("\n"), $first);
         }
         my $last = $node->lastChild;
         if ($last->nodeType == XML_TEXT_NODE) {
@@ -1573,7 +1583,7 @@ sub pretty {
             $last->setData($text . "\n");
           }
         } else {
-          $node->appendChild($dom_doc->createTextNode("\n"));
+          $node->appendChild($doc->createTextNode("\n"));
         }
       }
       
@@ -1584,7 +1594,7 @@ sub pretty {
       for (my $child=$node->firstChild; defined $child; $child=$next) {
         $next = $child->nextSibling;
         if ($child->nodeType == XML_ELEMENT_NODE) {
-          if (string_in_array(\@all_block, $child->nodeName)) {
+          if (string_in_array($all_block, $child->nodeName)) {
             # make sure there is a newline before and after a block element
             if (defined $child->previousSibling && $child->previousSibling->nodeType == XML_TEXT_NODE) {
               my $prev = $child->previousSibling;
@@ -1593,7 +1603,7 @@ sub pretty {
                 $prev->setData($text . $newline_indent);
               }
             } else {
-              $node->insertBefore($dom_doc->createTextNode($newline_indent), $child);
+              $node->insertBefore($doc->createTextNode($newline_indent), $child);
             }
             if (defined $next && $next->nodeType == XML_TEXT_NODE) {
               my $text = $next->nodeValue;
@@ -1601,10 +1611,10 @@ sub pretty {
                 $next->setData($newline_indent . $text);
               }
             } else {
-              $node->insertAfter($dom_doc->createTextNode($newline_indent), $child);
+              $node->insertAfter($doc->createTextNode($newline_indent), $child);
             }
           }
-          pretty($child, $indent_level+1);
+          pretty($child, $all_block, $indent_level+1);
         } elsif ($child->nodeType == XML_TEXT_NODE) {
           my $text = $child->nodeValue;
           # collapse newlines
