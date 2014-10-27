@@ -116,6 +116,7 @@ $(document).ready(function() {
         },
         complete: function(){
            buttons();
+           list_title();
         }
       });
     });
