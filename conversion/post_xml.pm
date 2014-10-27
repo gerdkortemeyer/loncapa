@@ -38,7 +38,7 @@ sub post_xml {
 
   remove_elements($root, ['startouttext','startoutext','endouttext','endoutext','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow']);
 
-  add_sty_blocks($ARGV[0], $root); # must come before the subs using @all_block
+  add_sty_blocks($new_path, $root); # must come before the subs using @all_block
 
   fix_block_styles($root);
   $root->normalize();
@@ -179,7 +179,7 @@ sub remove_elements {
 }
 
 # use the linked sty files to guess which newly defined elements should be considered blocks
-# @param {string} fn - the initial .problem file path
+# @param {string} fn - the clean .problem file path (we only extract the directory path from it)
 sub add_sty_blocks {
   my ($fn, $root) = @_;
   my @parserlibs = $dom_doc->getElementsByTagName('parserlib');
@@ -480,7 +480,7 @@ sub fix_fonts {
           $next = $child->nextSibling;
           if ($child->nodeType == XML_TEXT_NODE) {
             my $value = $child->nodeValue;
-            $value =~ tr/ABGDEZHQIKLMNXOPRSTUFCYWabgdezhqiklmnxoprVstufcywJjv¡/ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρςστυφχψωϑϕϖϒ/;
+            $value =~ tr/ABGDEZHQIKLMNXOPRSTUFCYWabgdezhqiklmnxoprVstufcywJjv¡«¬®/ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρςστυφχψωϑϕϖϒ↔←→/;
             $child->setData($value);
           }
         }
