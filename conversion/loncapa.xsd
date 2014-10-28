@@ -19,7 +19,7 @@
   </xs:annotation>
   <xs:simpleType name="perl">
     <xs:restriction base="xs:string">
-      <xs:pattern value="(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{][^\]\}]+[\]\}])*(\([^$&amp;\)]+\))*"/>
+      <xs:pattern value="(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{].+[\]\}])*(\([^$&amp;\)]+\))*"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="int-or-perl">
@@ -345,7 +345,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:element ref="hiddenline"/>
         <xs:element ref="stringhint"/>
         <xs:group ref="text-without-responses"/>
@@ -408,7 +408,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string" use="required">
@@ -456,7 +456,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
@@ -484,7 +484,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="foilgroup" type="radiobuttonresponse--foilgroup"/>
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:element ref="radiobuttonhint"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
@@ -593,7 +593,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string" use="required">
@@ -633,7 +633,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="foilgroup" type="optionresponse--foilgroup"/>
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:element ref="optionhint"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
@@ -795,7 +795,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string" use="required">
@@ -824,7 +824,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="foilgroup" type="matchresponse--foilgroup"/>
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -987,7 +987,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="foilgroup" type="rankresponse--foilgroup"/>
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -1066,7 +1066,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="foilgroup" type="imageresponse--foilgroup"/>
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -1136,7 +1136,7 @@
     <xs:union memberTypes="perl">
       <xs:simpleType>
         <xs:restriction base="xs:string">
-          <xs:pattern value="\(.+\)-\(.+\)"/>
+          <xs:pattern value="\s*\(.+\)-\(.+\)\s*"/>
         </xs:restriction>
       </xs:simpleType>
     </xs:union>
@@ -1148,7 +1148,7 @@
     <xs:union memberTypes="perl">
       <xs:simpleType>
         <xs:restriction base="xs:string">
-          <xs:pattern value="\(.+\)(-\(.+\))+"/>
+          <xs:pattern value="\s*\(.+\)(-\(.+\))+\s*"/>
         </xs:restriction>
       </xs:simpleType>
     </xs:union>
@@ -1187,7 +1187,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
         <xs:element ref="hiddenline"/>
         <xs:element ref="numericalhint"/>
@@ -1295,7 +1295,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string" use="required">
@@ -1336,7 +1336,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
         <xs:element ref="hiddenline"/>
         <xs:element ref="formulahint"/>
@@ -1380,7 +1380,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string" use="required">
@@ -1437,7 +1437,7 @@
             </xs:documentation>
           </xs:annotation>
         </xs:element>
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
@@ -1499,7 +1499,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:element name="answer" type="mathhint--answer"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
@@ -2222,7 +2222,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:element ref="hiddenline"/>
         <xs:element ref="organichint"/>
         <xs:element ref="stringhint"/>
@@ -2287,7 +2287,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string" use="required">
@@ -2314,7 +2314,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:element ref="hiddenline"/>
         <xs:element ref="reactionhint"/>
         <xs:element ref="stringhint"/>
@@ -2344,7 +2344,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string" use="required">
@@ -2373,7 +2373,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="answer" type="customresponse--answer"/>
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
@@ -2423,7 +2423,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="responseparam"/>
+        <xs:element ref="parameter"/>
         <xs:element name="answer" type="customhint--answer"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
@@ -3889,9 +3889,10 @@
   <xs:element name="parameter">
     <xs:annotation>
       <xs:documentation>
-        Parameter for a part
+        Parameter
         
-        parameter is exactly the same as responseparam, but should appear outside of a response tag.
+        Defines an externally adjustable parameter for a problem, part, response or hint, which can then be used by other users to customize the problem for their courses without changing the source code.
+        The parameter is relative to the immediate parent, so a part parameter should be placed directly under a part element.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -3900,6 +3901,13 @@
       <xs:attribute name="type" type="xs:string" use="required"/>
       <xs:attribute name="description" type="xs:string"/>
       <xs:attribute name="default" type="xs:string"/>
+      <xs:attribute name="display" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Title displayed on the parameter setting screen.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="preduedate">

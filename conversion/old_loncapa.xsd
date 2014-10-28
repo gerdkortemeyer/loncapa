@@ -4153,6 +4153,13 @@
       <xs:attribute name="type" type="xs:string" use="required"/>
       <xs:attribute name="description" type="xs:string"/>
       <xs:attribute name="default" type="xs:string"/>
+      <xs:attribute name="display" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Title displayed on the parameter setting screen.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="displaytitle">
@@ -5526,11 +5533,11 @@
         <xs:documentation>
           This character attributes indicates the numbering type:
           
-              a: lowercase letters
-              A: uppercase letters
-              i: lowercase Roman numerals
-              I: uppercase Roman numerals
-              1: numbers
+          a: lowercase letters
+          A: uppercase letters
+          i: lowercase Roman numerals
+          I: uppercase Roman numerals
+          1: numbers
           
           This type overrides the one used by its parent &lt;ol&gt; element, if any.
           
@@ -5690,7 +5697,7 @@
           - right, meaning that the table is to be displayed to the right of the document.
           
           Note: 
-              Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the align attribute, the CSS properties "text-align" and "vertical-align" should be used.
+          Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the align attribute, the CSS properties "text-align" and "vertical-align" should be used.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -5708,8 +5715,8 @@
           - all, which wil make the rules to be displayed between rows and columns.
           
           Note:
-              The styling of the rules is browser-dependant and cannot be modified.
-              Do not use this attribute, as it has been deprecated: the rules should be defined and styled using CSS. use the CSS property border on the adequate &lt;thead&gt;, &lt;tbody&gt;, &lt;tfoot&gt;, &lt;col&gt; or &lt;colgroup&gt; elements.
+          The styling of the rules is browser-dependant and cannot be modified.
+          Do not use this attribute, as it has been deprecated: the rules should be defined and styled using CSS. use the CSS property border on the adequate &lt;thead&gt;, &lt;tbody&gt;, &lt;tfoot&gt;, &lt;col&gt; or &lt;colgroup&gt; elements.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -5994,8 +6001,8 @@
         
         Usage Notes:
         
-            A creative work may include a book, a paper, an essay, a poem, a score, a song, a script, a film, a TV show, a game, a sculpture, a painting, a theater production, a play, an opera, a musical, an exhibition, a legal case report, a computer program, , a web site, a web page, a blog post or comment, a forum post or comment, a tweet, a written or oral statement, etc.
-            Use the cite attribute on a &lt;blockquote&gt; or &lt;q&gt; element to reference an online resource for a source.
+        A creative work may include a book, a paper, an essay, a poem, a score, a song, a script, a film, a TV show, a game, a sculpture, a painting, a theater production, a play, an opera, a musical, an exhibition, a legal case report, a computer program, , a web site, a web page, a blog post or comment, a forum post or comment, a tweet, a written or oral statement, etc.
+        Use the cite attribute on a &lt;blockquote&gt; or &lt;q&gt; element to reference an online resource for a source.
         
         
         Style note:
