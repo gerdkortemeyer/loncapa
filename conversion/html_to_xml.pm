@@ -48,21 +48,29 @@ sub start {
   if ($tagname eq 'li') {
     my $ind_li = last_index_of(\@stack, 'li');
     my $ind_ul = last_index_of(\@stack, 'ul');
-    if ($ind_li != -1 && ($ind_ul == -1 || $ind_ul < $ind_li)) {
-      # close the li
+    my $ind_ol = last_index_of(\@stack, 'ol');
+    if ($ind_li != -1 && ($ind_ul == -1 || $ind_ul < $ind_li) && ($ind_ol == -1 || $ind_ol < $ind_li)) {
       end('li');
+    }
+  } elsif ($tagname eq 'tr') {
+    my $ind_table = last_index_of(\@stack, 'table');
+    my $ind_tr = last_index_of(\@stack, 'tr');
+    if ($ind_tr != -1 && ($ind_table == -1 || $ind_table < $ind_tr)) {
+      end('tr');
     }
   } elsif ($tagname eq 'td') {
     my $ind_td = last_index_of(\@stack, 'td');
     my $ind_tr = last_index_of(\@stack, 'tr');
-    if ($ind_td != -1 && ($ind_tr == -1 || $ind_tr < $ind_td)) {
-      # close the td
+    if ($ind_tr == -1) {
+      start('tr');
+      $ind_tr = last_index_of(\@stack, 'tr');
+    }
+    if ($ind_td != -1 && $ind_tr < $ind_td) {
       end('td');
     }
   } elsif ($tagname eq 'num') {
     my $ind_num = last_index_of(\@stack, 'num');
     if ($ind_num != -1) {
-      # close the num
       end('num');
     }
   }
