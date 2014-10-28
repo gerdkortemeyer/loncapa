@@ -21,8 +21,6 @@ sub pre_xml {
   
   my $lines = guess_encoding_and_read($filepath);
 
-  binmode(STDOUT, ":utf8");
-
   remove_control_characters($lines);
   
   warning_xmlparse($lines);
@@ -37,7 +35,7 @@ sub pre_xml {
   
   add_root($lines);
   
-  return(join('', @$lines));
+  return(\join('', @$lines));
 }
 
 
@@ -52,6 +50,7 @@ sub guess_encoding_and_read {
   open(my $fh, "<", $fn) or die "cannot read $fn: $!";
   binmode $fh;
   my $data = <$fh>; # we need to read the whole file to test if font is a block or inline element
+  close $fh;
   my $decoded;
   if (length($data) > 0) {
     # NOTE: this list is too ambigous, Encode::Guess refuses to even try a guess
