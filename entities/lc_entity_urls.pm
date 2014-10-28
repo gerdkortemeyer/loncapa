@@ -526,6 +526,11 @@ sub make_delete {
    return &store_url_metadata($full_url,{ 'deleted' => 1 });
 }
 
+sub un_delete {
+   my ($full_url)=@_;
+   return &store_url_metadata($full_url,{ 'deleted' => 0 });
+}
+
 
 # =============================================================
 # Change title
