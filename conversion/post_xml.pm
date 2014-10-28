@@ -46,6 +46,8 @@ sub post_xml {
   
   replace_u($root);
 
+  replace_responseparam($root);
+  
   replace_script_by_perl($root);
 
   remove_bad_cdata_sections($root);
@@ -64,10 +66,10 @@ sub post_xml {
   
   fix_parts($root);
   
-  change_hints($root);
-  
   fix_paragraphs_inside($root, \@all_block);
 
+  change_hints($root); # after fix_paragraphs_inside to avoid problems with hintgroup/p/hintpart
+  
   remove_empty_style($root);
 
   fix_empty_lc_elements($root);
@@ -519,6 +521,15 @@ sub replace_u {
   }
 }
 
+# replace responseparam by parameter
+sub replace_responseparam {
+  my ($root) = @_;
+  my @responseparams = $root->getElementsByTagName('responseparam');
+  foreach my $responseparam (@responseparams) {
+    $responseparam->setNodeName('parameter');
+  }
+}
+
 # replaces all script[@type='loncapa/perl'] by a perl element
 sub replace_script_by_perl {
   my ($root) = @_;
@@ -674,11 +685,103 @@ sub fix_cells {
             }
           }
         }
+        my $width = $cell->getAttribute('width');
+        my $height = $cell->getAttribute('height');
+        my $bgcolor = $cell->getAttribute('bgcolor');
+        my $align = $cell->getAttribute('align');
+        my $valign = $cell->getAttribute('valign');
+        if (defined $width || defined $height || defined $bgcolor || defined $align || defined $valign) {
+          my $style = $cell->getAttribute('style');
+          if (defined $style) {
+            $style =~ s/;\s*$//;
+            $style .= '; ';
+          } else {
+            $style = '';
+          }
+          if (defined $width) {
+            $cell->removeAttribute('width');
+            if ($style !~ /(?<!-)width/i) {
+              $width =~ s/^\s*|\s*$//;
+              if ($width =~ /^[0-9]+$/) {
+                $width .= 'px';
+              }
+              $style .= "width: $width; ";
+            }
+          }
+          if (defined $height) {
+            $cell->removeAttribute('height');
+            if ($style !~ /(?<!-)height/i) {
+              $height =~ s/^\s*|\s*$//;
+              if ($height =~ /^[0-9]+$/) {
+                $height .= 'px';
+              }
+              $style .= "height: $height; ";
+            }
+          }
+          if (defined $bgcolor) {
+            $cell->removeAttribute('bgcolor');
+            if ($style !~ /background-color/i) {
+              $bgcolor =~ s/^\s*|\s*$//;
+              $bgcolor =~ s/^x//;
+              $style .= "background-color: $bgcolor; ";
+            }
+          }
+          if (defined $align && $align !~ /\s*char\s*/i) {
+            $cell->removeAttribute('align');
+            if ($style !~ /text-align/i) {
+              $align =~ s/^\s*|\s*$//;
+              $style .= "text-align: $align; ";
+            }
+          }
+          if (defined $valign) {
+            $cell->removeAttribute('valign');
+            if ($style !~ /vertical-align/i) {
+              $valign =~ s/^\s*|\s*$//;
+              $style .= "vertical-align: $valign; ";
+            }
+          }
+          $cell->setAttribute('style', $style);
+        }
       }
     }
     push(@nb_cells, $nb_cells);
     if ($nb_cells > $max_nb_cells) {
       $max_nb_cells = $nb_cells;
+    }
+    my $bgcolor = $tr->getAttribute('bgcolor');
+    my $align = $tr->getAttribute('align');
+    my $valign = $tr->getAttribute('valign');
+    if (defined $bgcolor || defined $align || defined $valign) {
+      my $style = $tr->getAttribute('style');
+      if (defined $style) {
+        $style =~ s/;\s*$//;
+        $style .= '; ';
+      } else {
+        $style = '';
+      }
+      if (defined $bgcolor) {
+        $tr->removeAttribute('bgcolor');
+        if ($style !~ /background-color/i) {
+          $bgcolor =~ s/^\s*|\s*$//;
+          $bgcolor =~ s/^x//;
+          $style .= "background-color: $bgcolor; ";
+        }
+      }
+      if (defined $align && $align !~ /\s*char\s*/i) {
+        $tr->removeAttribute('align');
+        if ($style !~ /text-align/i) {
+          $align =~ s/^\s*|\s*$//;
+          $style .= "text-align: $align; ";
+        }
+      }
+      if (defined $valign) {
+        $tr->removeAttribute('valign');
+        if ($style !~ /vertical-align/i) {
+          $valign =~ s/^\s*|\s*$//;
+          $style .= "vertical-align: $valign; ";
+        }
+      }
+      $tr->setAttribute('style', $style);
     }
   }
   foreach my $tr (@trs) {
@@ -1046,8 +1149,10 @@ sub change_hints {
         $subhint->parentNode->insertAfter($hintgroup, $subhint);
         $subhint->parentNode->removeChild($subhint);
         $hintgroup->appendChild($subhint);
-      } elsif ($subhint->parentNode->nodeName ne 'hintgroup') {
-        die "Error: hint parent is not hintgroup";
+      } elsif ($subhint->parentNode->nodeName ne 'hintgroup' &&
+          !($subhint->parentNode->nodeName eq 'block' && $subhint->parentNode->parentNode == $ancestor)) {
+        # exceptionally, the case hintgroup/block/hintpart is handled (otherwise hintpart parent must be hintgroup)
+        die "Error: hint parent is ".$subhint->parentNode->nodeName." instead of hintgroup";
       }
     }
   }
@@ -1167,6 +1272,35 @@ sub change_hints {
         }
       } elsif ($child->nodeType == XML_TEXT_NODE && $child->nodeValue =~ /^\s*$/) {
         # ignore blanks
+      } elsif ($child->nodeType == XML_COMMENT_NODE && !defined $hint) {
+        # an XML comment does not need to be in a hint
+        if (defined $move_inside) {
+          $move_inside->appendChild($child);
+        } else {
+          $move_after->parentNode->insertAfter($child, $move_after);
+          $move_after = $child;
+        }
+      } elsif ($child->nodeName eq 'block' && scalar(@{$child->getChildrenByTagName('hintpart')}) > 0) {
+        # block with hintpart inside: convert hintgroup/block/hintpart into block/hint
+        if (defined $hint) {
+          $hint = undef;
+        }
+        my $next2;
+        for (my $child2=$child->firstChild; defined $child2; $child2=$next2) {
+          $next2 = $child2->nextSibling;
+          if ($child2->nodeName eq 'hintpart') {
+            $child2->setNodeName('hint');
+            if (defined $hintgroup->getAttribute('showoncorrect') && $hintgroup->getAttribute('showoncorrect') ne 'no') {
+              $child2->setAttribute('showoncorrect', $hintgroup->getAttribute('showoncorrect'));
+            }
+          }
+        }
+        if (defined $move_inside) {
+          $move_inside->appendChild($child);
+        } else {
+          $move_after->parentNode->insertAfter($child, $move_after);
+          $move_after = $child;
+        }
       } else {
         if (!defined $hint) {
           # create a new hint element for a hint without a condition
