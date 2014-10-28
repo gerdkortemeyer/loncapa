@@ -20,7 +20,7 @@ my @stack;
 
 # This takes non-well-formed UTF-8 LC+HTML and returns well-formed but non-valid XML LC+XHTML.
 sub html_to_xml {
-  my($text) = @_;
+  my($textref) = @_;
   $result = '';
   @stack = ();
   my $p = HTML::Parser->new( api_version => 3,
@@ -34,11 +34,11 @@ sub html_to_xml {
   # NOTE: by default, the HTML parser turns all attribute and elements names to lowercase
   $p->empty_element_tags(1);
   $result .= "<?xml version='1.0' encoding='UTF-8'?>\n";
-  $p->parse($text);
+  $p->parse($$textref);
   for (my $i=scalar(@stack)-1; $i>=0; $i--) {
     $result .= '</'.$stack[$i].'>';
   }
-  return $result;
+  return \$result;
 }
 
 sub start {

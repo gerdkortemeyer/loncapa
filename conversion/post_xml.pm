@@ -14,7 +14,7 @@ use XML::LibXML;
 use HTML::TokeParser; # used to parse sty files
 use Env qw(RES_DIR); # path of res directory parent (without the / at the end)
 
-#no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
+no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
 
 # these are constants
 my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','textfield','hiddensubmission','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','tex','web','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
@@ -28,9 +28,9 @@ my @preserve_elements = ('script','answer','perl');
 # Parses the XML document and fixes many things to turn it into a LON-CAPA 3 document
 # Returns the text of the document.
 sub post_xml {
-  my ($text, $new_path) = @_;
+  my ($textref, $new_path) = @_;
   
-  my $dom_doc = XML::LibXML->load_xml(string => $text);
+  my $dom_doc = XML::LibXML->load_xml(string => $textref);
 
   my $root = create_new_structure($dom_doc);
 

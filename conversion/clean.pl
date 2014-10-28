@@ -14,6 +14,8 @@ use html_to_xml;
 use post_xml;
 
 
+binmode(STDOUT, ':encoding(UTF-8)');
+
 if (scalar(@ARGV) != 1) {
   print STDERR "Usage: perl clean.pl file|directory\n";
   exit(1);
@@ -75,24 +77,23 @@ sub convert_file {
   my ($filename_no_ext, $dirs, $ext) = fileparse($pathname, qr/\.[^.]*/);
   my $newpath = "$dirs/${filename_no_ext}_clean$ext";
 
-  binmode(STDOUT, ':encoding(UTF-8)');
   print "converting $pathname...\n";
 
-  my $text;
+  my $textref;
   try {
-    $text = pre_xml::pre_xml($pathname);
+    $textref = pre_xml::pre_xml($pathname);
   } catch {
     die "pre_xml error for $pathname: $_";
   };
 
   try {
-    $text = html_to_xml::html_to_xml($text);
+    $textref = html_to_xml::html_to_xml($textref);
   } catch {
     die "html_to_xml error for $pathname: $_";
   };
 
   try {
-    $text = post_xml::post_xml($text, $newpath);
+    post_xml::post_xml($textref, $newpath);
   } catch {
     die "post_xml error for $pathname: $_";
   };
