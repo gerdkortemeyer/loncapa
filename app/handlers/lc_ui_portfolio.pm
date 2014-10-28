@@ -241,9 +241,13 @@ sub listdirectory {
    foreach my $file (@{$dir_list}) {
 # Is the file/directory obsolete?
        my $obsolete=0;
+       my $deleted=0;
        if (ref($file->{'metadata'}->{'urldata'}) eq 'HASH') {
           $obsolete=$file->{'metadata'}->{'urldata'}->{&Apache::lc_entity_urls::url_encode($file->{'url'})}->{'obsolete'};
+          $deleted=$file->{'metadata'}->{'urldata'}->{&Apache::lc_entity_urls::url_encode($file->{'url'})}->{'deleted'};
        }
+# Deleted? Move on!
+       if ($deleted) { next; }
 # Published?
        my $published=0;
 # Modified?
@@ -291,10 +295,14 @@ sub listdirectory {
           $status=&publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,$modified,$published);
           $rights=&rights_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,$modified,$published);
 # Action links
-          unless ($obsolete) {
-             $actionicons.=&Apache::lc_ui_utils::remove_link(&action_jump("removefile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+          unless ($published) {
+             $actionicons.=&Apache::lc_ui_utils::delete_link(&action_jump("deletefile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
           } else {
-             $actionicons.=&Apache::lc_ui_utils::recover_link(&action_jump("recover",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+             unless ($obsolete) {
+                $actionicons.=&Apache::lc_ui_utils::remove_link(&action_jump("removefile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+             } else {
+                $actionicons.=&Apache::lc_ui_utils::recover_link(&action_jump("recover",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+             }
           }
           unless ($obsolete) {
              if (($modified) || (!$published)) { 

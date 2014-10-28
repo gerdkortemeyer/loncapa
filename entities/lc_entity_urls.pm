@@ -520,6 +520,13 @@ sub un_obsolete {
    return &store_url_metadata($full_url,{ 'obsolete' => 0 });
 }
 
+sub make_delete {
+   my ($full_url)=@_;
+#FIXME: make sure it is not published
+   return &store_url_metadata($full_url,{ 'deleted' => 1 });
+}
+
+
 # =============================================================
 # Change title
 # =============================================================

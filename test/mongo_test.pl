@@ -13,7 +13,7 @@ my $database;
 my $metadata;
 
 
-&dump_metadata('tyxxZY5e7R8lMXvDZhn','msu');
+&dump_metadata('1Mg3JwJqGyegx0Z36kp','msu');
 #
 # Metadata
 # Assets have metadata, which includes searchable information
