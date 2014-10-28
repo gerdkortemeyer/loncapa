@@ -394,6 +394,24 @@ sub remove {
    }
 }
 
+sub deletefile {
+   my ($entity,$domain,$url)=@_;
+   unless (&edit_permission($url)) {
+      &logwarning("No edit portfolio permission ($url)");
+      return 'error';
+   }
+   unless (&verify_url($entity,$url)) {
+      &logwarning("Mismatch ($entity) ($domain) ($url)");
+      return 'error';
+   }
+   if (&Apache::lc_entity_urls::make_delete('/asset/-/-/'.$url)) {
+      return 'ok';
+   } else {
+       &logerror("Deleting failed for ($entity) ($domain)");
+       return 'error';
+   }
+}
+
 sub recover {
    my ($entity,$domain,$url)=@_;
    unless (&edit_permission($url)) {
@@ -431,6 +449,8 @@ sub handler {
       $r->print(&change_title($content{'entity'},$content{'domain'},$content{'url'},$content{'title'}));
    } elsif ($content{'command'} eq 'remove') {
       $r->print(&remove($content{'entity'},$content{'domain'},$content{'url'}));
+   } elsif ($content{'command'} eq 'delete') {
+      $r->print(&deletefile($content{'entity'},$content{'domain'},$content{'url'}));
    } elsif ($content{'command'} eq 'recover') {
       $r->print(&recover($content{'entity'},$content{'domain'},$content{'url'}));
    }

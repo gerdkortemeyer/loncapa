@@ -82,6 +82,30 @@ function removefile(entity,domain,url) {
          });
 }
 
+function deletefile(entity,domain,url) {
+         $.ajax({
+             url: '/portfolio',
+             type:'POST',
+             data: { 'command' : 'delete',
+                     'entity'  : entity,
+                     'domain'  : domain,
+                     'url'     : unescape(url) },
+             success: function(response) {
+                if (response=='error') {
+                   $('.lcstandard').hide();
+                   $('.lcerror').show();
+                } else {
+                   reload_listing();
+                }
+             },
+             error: function(xhr, ajaxOptions, errorThrown) {
+                $('.lcstandard').hide();
+                $('.lcerror').show();
+             }
+         });
+}
+
+
 function init_datatable(destroy) {
    if (destroy) {
       parent.busy_block();
