@@ -52,7 +52,7 @@ Shared simple types.
 Value restriction based on xs:string<ul>
 
 <li>
-<tt>((\$|\&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{][^\]\}]+[\]\}])*(\([^$&amp;\)]+\))*</tt>
+<tt>(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{].+[\]\}])*(\([^$&amp;\)]+\))*</tt>
 </li>
 
 </ul>
@@ -816,7 +816,7 @@ Note: some responses and the hint element are also inline, but are not in this g
 
 Choice between:<ul>
 <li>
-<a href="#display_1">display</a>
+<a href="#display_2">display</a>
 <br>
 </li>
 <li>
@@ -1103,7 +1103,7 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -1234,7 +1234,7 @@ This can be used as a condition to display a hint, with the name of the conditio
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 </ul>
@@ -1330,7 +1330,7 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -1403,7 +1403,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -1645,7 +1645,7 @@ In order to trigger display of this hint you also need to create a hint element 
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 </ul>
@@ -1719,7 +1719,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -2057,7 +2057,7 @@ There are two types of option response hint conditions: one for standalone foils
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 </ul>
@@ -2121,7 +2121,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -2500,7 +2500,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -2693,7 +2693,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -2877,7 +2877,7 @@ Possible values:<ul>
 Value restriction based on xs:string<ul>
 
 <li>
-<tt>\(.+\)-\(.+\)</tt>
+<tt>\s*\(.+\)-\(.+\)\s*</tt>
 </li>
 
 </ul>
@@ -2901,7 +2901,7 @@ Possible values:<ul>
 Value restriction based on xs:string<ul>
 
 <li>
-<tt>\(.+\)(-\(.+\))+</tt>
+<tt>\s*\(.+\)(-\(.+\))+\s*</tt>
 </li>
 
 </ul>
@@ -2973,7 +2973,7 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -3213,7 +3213,7 @@ This can be used as a condition to display a hint, with the name of the conditio
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 </ul>
@@ -3293,7 +3293,7 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -3390,7 +3390,7 @@ The formula submitted by the student is evaluated at the sample points for the h
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 </ul>
@@ -3493,7 +3493,7 @@ Maxima or R script using the arrays RESPONSE and LONCAPALIST.
 <br>
 </li>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -3634,7 +3634,7 @@ This can be used as a condition to display a hint, with the name of the conditio
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -4978,7 +4978,7 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -5120,7 +5120,7 @@ This can be used as a condition to display a hint, with the name of the conditio
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 </ul>
@@ -5173,7 +5173,7 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -5248,7 +5248,7 @@ This can be used as a condition to display a hint, with the name of the conditio
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 </ul>
@@ -5309,7 +5309,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -5417,7 +5417,7 @@ Define the hint condition within an answer block inside of the customhint block.
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#responseparam_0">responseparam</a>
+<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -5632,7 +5632,7 @@ Attribute <span class="nomattribut">description</span>:
 
 </div>
 
-<br>Parents:<a href="#stringresponse_0">stringresponse</a>, <a href="#stringhint_0">stringhint</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#radiobuttonresponse_0">radiobuttonresponse</a>, <a href="#radiobuttonhint_0">radiobuttonhint</a>, <a href="#optionresponse_0">optionresponse</a>, <a href="#optionhint_0">optionhint</a>, <a href="#matchresponse_0">matchresponse</a>, <a href="#rankresponse_0">rankresponse</a>, <a href="#imageresponse_0">imageresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#numericalhint_0">numericalhint</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#formulahint_0">formulahint</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#mathhint_0">mathhint</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#organichint_0">organichint</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#reactionhint_0">reactionhint</a>, <a href="#customresponse_0">customresponse</a>, <a href="#customhint_0">customhint</a>
+<br>
 <br>
 <hr>
 
@@ -8301,9 +8301,10 @@ Attribute <span class="nomattribut">content</span>:
 
 
 <div class="documentation">
-Parameter for a part
+Parameter
 
-parameter is exactly the same as responseparam, but should appear outside of a response tag.
+Defines an externally adjustable parameter for a problem, part, response or hint, which can then be used by other users to customize the problem for their courses without changing the source code.
+The parameter is relative to the immediate parent, so a part parameter should be placed directly under a part element.
 </div>
 <br>
 
@@ -8329,10 +8330,22 @@ Attribute <span class="nomattribut">default</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
 </div>
+Attribute <span class="nomattribut">display</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Title displayed on the parameter setting screen.
+</div>
+<br>
+
 
 </div>
 
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#part_0">part</a>
+</div>
+
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#stringresponse_0">stringresponse</a>, <a href="#stringhint_0">stringhint</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#radiobuttonresponse_0">radiobuttonresponse</a>, <a href="#radiobuttonhint_0">radiobuttonhint</a>, <a href="#optionresponse_0">optionresponse</a>, <a href="#optionhint_0">optionhint</a>, <a href="#matchresponse_0">matchresponse</a>, <a href="#rankresponse_0">rankresponse</a>, <a href="#imageresponse_0">imageresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#numericalhint_0">numericalhint</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#formulahint_0">formulahint</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#mathhint_0">mathhint</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#organichint_0">organichint</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#reactionhint_0">reactionhint</a>, <a href="#customresponse_0">customresponse</a>, <a href="#customhint_0">customhint</a>, <a href="#part_0">part</a>
 <br>
 <hr>
 
@@ -9042,7 +9055,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#display_1">display</a>
+<a href="#display_2">display</a>
 <br>
 </li>
 <li>
@@ -9177,7 +9190,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#display_1">display</a>
+<a href="#display_2">display</a>
 <br>
 </li>
 <li>
@@ -10037,7 +10050,7 @@ Non-HTML inline elements mixed with text
 <br>
 
 
-<a name="display_1"></a>
+<a name="display_2"></a>
 <h3>Element <span class="nomtitre">display</span>
 </h3>type: <tt>xs:string</tt>
 <br>
@@ -12335,8 +12348,8 @@ The HTML &lt;cite&gt; Element (or HTML Citation Element) represents a reference 
 
 Usage Notes:
 
-    A creative work may include a book, a paper, an essay, a poem, a score, a song, a script, a film, a TV show, a game, a sculpture, a painting, a theater production, a play, an opera, a musical, an exhibition, a legal case report, a computer program, , a web site, a web page, a blog post or comment, a forum post or comment, a tweet, a written or oral statement, etc.
-    Use the cite attribute on a &lt;blockquote&gt; or &lt;q&gt; element to reference an online resource for a source.
+A creative work may include a book, a paper, an essay, a poem, a score, a song, a script, a film, a TV show, a game, a sculpture, a painting, a theater production, a play, an opera, a musical, an exhibition, a legal case report, a computer program, , a web site, a web page, a blog post or comment, a forum post or comment, a tweet, a written or oral statement, etc.
+Use the cite attribute on a &lt;blockquote&gt; or &lt;q&gt; element to reference an online resource for a source.
 
 
 Style note:
@@ -14323,7 +14336,7 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#del_0">del</a>
 <br>
-<a href="#display_1">display</a>
+<a href="#display_2">display</a>
 <br>
 <a href="#div_0">div</a>
             (under blocks-with-responses)
