@@ -94,7 +94,6 @@
         <MENU_INSERTION nom="customhint"/>
       </MENU>
       <MENU nom="Common">
-        <MENU_INSERTION nom="responseparam"/>
         <MENU_INSERTION nom="foilgroup"/>
         <MENU_INSERTION nom="conceptgroup"/>
         <MENU_INSERTION nom="foil"/>
@@ -246,15 +245,6 @@
     <AFFICHAGE_ELEMENT element="customhint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="externalresponse" type="lcdblock"/>
     
-    <AFFICHAGE_ELEMENT element="responseparam" type="lcdblock">
-      <AFFICHAGE_ATTRIBUT attribut="type">
-        <VALEUR_SUGGEREE>tolerance</VALEUR_SUGGEREE>
-        <VALEUR_SUGGEREE>int</VALEUR_SUGGEREE>
-        <VALEUR_SUGGEREE>float</VALEUR_SUGGEREE>
-        <VALEUR_SUGGEREE>string</VALEUR_SUGGEREE>
-        <VALEUR_SUGGEREE>date</VALEUR_SUGGEREE>
-      </AFFICHAGE_ATTRIBUT>
-    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="textfield" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="textline" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="hiddensubmission" type="lcdblock"/>
@@ -1608,24 +1598,6 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     
-    <STRINGS_ELEMENT element="responseparam">
-      <TITRE>Parameters for a response</TITRE>
-      <DOCUMENTATION>
-        Defines an externally adjustable parameter for the question, which the question can then use to allow other users to customize the problem for their courses without changing the source code of the problem.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="type">
-        <TITRE>type</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="default">
-        <TITRE>default value</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="description">
-        <TITRE>description</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="textfield">
       <TITRE>Large Text Entry Area</TITRE>
       <DOCUMENTATION>
@@ -2278,9 +2250,10 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="parameter">
-      <TITRE>Parameter for a part</TITRE>
+      <TITRE>Parameter</TITRE>
       <DOCUMENTATION>
-        parameter is exactly the same as responseparam, but should appear outside of a response tag.
+        Defines an externally adjustable parameter for a problem, part, response or hint, which can then be used by other users to customize the problem for their courses without changing the source code.
+        The parameter is relative to the immediate parent, so a part parameter should be placed directly under a part element.
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
@@ -2293,6 +2266,12 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="default">
         <TITRE>default</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="display">
+        <TITRE>display</TITRE>
+        <DOCUMENTATION>
+          Title displayed on the parameter setting screen.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="preduedate">
@@ -3092,8 +3071,8 @@
         
         Usage Notes:
         
-            A creative work may include a book, a paper, an essay, a poem, a score, a song, a script, a film, a TV show, a game, a sculpture, a painting, a theater production, a play, an opera, a musical, an exhibition, a legal case report, a computer program, , a web site, a web page, a blog post or comment, a forum post or comment, a tweet, a written or oral statement, etc.
-            Use the cite attribute on a &lt;blockquote&gt; or &lt;q&gt; element to reference an online resource for a source.
+        A creative work may include a book, a paper, an essay, a poem, a score, a song, a script, a film, a TV show, a game, a sculpture, a painting, a theater production, a play, an opera, a musical, an exhibition, a legal case report, a computer program, , a web site, a web page, a blog post or comment, a forum post or comment, a tweet, a written or oral statement, etc.
+        Use the cite attribute on a &lt;blockquote&gt; or &lt;q&gt; element to reference an online resource for a source.
         
         
         Style note:
