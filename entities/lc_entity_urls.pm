@@ -689,7 +689,7 @@ sub local_publish {
 # Sanity check - we should not have the version yet that we are about to make
       my $dest_filename=&asset_resource_filename($entity,$domain,'n',$new_version);
       if (-e $dest_filename) {
-         &logerror("About to publish version ($new_version) or ($full_url), but file already exists");
+         &logerror("About to publish version ($new_version) or ($full_url) at ($dest_filename), but file already exists");
          return undef;
       }
       if (&move(&asset_resource_filename($entity,$domain,'wrk','-'),$dest_filename)) {

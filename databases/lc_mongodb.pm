@@ -47,6 +47,11 @@ use vars qw($merge $client $database $roles $profiles $profiles_cache $namespace
 sub insert_profile {
    my ($entity,$domain,$data)=@_;
    unless ($profiles) { &init_mongo(); }
+   my $olddata=$profiles->find_one({ entity => $entity, domain => $domain });
+   if ($olddata->{'_id'}) {
+      &logerror("Trying to make new profile for ($entity) ($domain), but already exists");
+      return undef;
+   }
    my $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
    $newdata->{'profile'}=$data;
@@ -168,6 +173,11 @@ sub namespace_document {
 sub insert_namespace {
    my ($entity,$domain,$name,$data)=@_;
    unless ($namespaces) { &init_mongo(); }
+   my $olddata=$namespaces->find_one({ 'namespace' => &namespace_document($entity,$domain,$name) });
+   if ($olddata->{'_id'}) {
+      &logerror("Trying to make new namespace for ($entity) ($domain) ($name), but already exists");
+      return undef;
+   }
    my $newdata->{'namespace'}=&namespace_document($entity,$domain,$name);
    $newdata->{'data'}=$data;
    return $namespaces->insert($newdata)->{'value'};
@@ -204,6 +214,11 @@ sub dump_namespace {
 sub insert_metadata {
    my ($entity,$domain,$data)=@_;
    unless ($metadata) { &init_mongo(); }
+   my $olddata=$metadata->find_one({ entity => $entity, domain => $domain });
+   if ($olddata->{'_id'}) {
+      &logerror("Trying to make new metadata for ($entity) ($domain), but already exists");
+      return undef;
+   }
    my $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
    $newdata->{'metadata'}=$data;
@@ -251,6 +266,11 @@ sub dump_metadata {
 sub insert_roles {
    my ($entity,$domain,$data)=@_;
    unless ($roles) { &init_mongo(); }
+   my $olddata=$roles->find_one({ entity => $entity, domain => $domain });
+   if ($olddata->{'_id'}) {
+      &logerror("Trying to make new roles data for ($entity) ($domain), but already exists");
+      return undef;
+   }
    my $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
    $newdata->{'roles'}=$data;
@@ -286,6 +306,11 @@ sub dump_roles {
 sub insert_auth {
    my ($entity,$domain,$data)=@_;
    unless ($auth) { &init_mongo(); }
+   my $olddata=$auth->find_one({ entity => $entity, domain => $domain });
+   if ($olddata->{'_id'}) {
+      &logerror("Trying to make new authentication data for ($entity) ($domain), but already exists");
+      return undef;
+   }
    my $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
    $newdata->{'auth'}=$data;

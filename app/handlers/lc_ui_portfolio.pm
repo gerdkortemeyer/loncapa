@@ -268,16 +268,26 @@ sub listdirectory {
        my $actionicons='';
        if ($file->{'type'} eq 'file') {
 # It's a file, so we have dates, etc
+          my $last_published=0;
           if ($file->{'metadata'}->{'current_version'}) {
+# If there is a current version, it's published
+# Get date of first publication and date of most recent publication
              $published=1;
              $version=$file->{'metadata'}->{'current_version'};
              ($display_first_date,$sort_first_date)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{1}));
-             ($display_last_date,$sort_last_date)=&Apache::lc_ui_localize::locallocaltime(
-                                           &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{$version}));
+             $last_published=&Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{$version});
+             ($display_last_date,$sort_last_date)=&Apache::lc_ui_localize::locallocaltime($last_published);
           }
-          ($display_last_modified,$sort_last_modified)=&Apache::lc_ui_localize::locallocaltime(
-                                           &Apache::lc_date_utils::str2num($file->{'metadata'}->{'filedata'}->{'wrk'}->{'modified'}));
+# Figure out when wrk-file was last modified
+          my $last_modified=&Apache::lc_date_utils::str2num($file->{'metadata'}->{'filedata'}->{'wrk'}->{'modified'});
+          ($display_last_modified,$sort_last_modified)=&Apache::lc_ui_localize::locallocaltime($last_modified);
+# If the last modification is after the most recent publication, it's modified
+          if ($last_published) {
+             if ($last_modified>$last_published) {
+                $modified=1;
+             }
+          }
           $status=&publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,$modified,$published);
           $rights=&rights_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,$modified,$published);
 # Action links
@@ -286,8 +296,10 @@ sub listdirectory {
           } else {
              $actionicons.=&Apache::lc_ui_utils::recover_link(&action_jump("recover",$file->{'entity'},$file->{'domain'},$file->{'url'}));
           }
-          unless (($published) || ($obsolete)) {
-             $actionicons.=&Apache::lc_ui_utils::publish_link(&action_jump("publisher",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+          unless ($obsolete) {
+             if (($modified) || (!$published)) { 
+                $actionicons.=&Apache::lc_ui_utils::publish_link(&action_jump("publisher",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+             }
           }
           $sort_size=$file->{'metadata'}->{'filedata'}->{'wrk'}->{'size'};
           $size=&Apache::lc_ui_localize::human_readable_size($sort_size);
