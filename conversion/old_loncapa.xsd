@@ -4566,6 +4566,7 @@
           <xs:element ref="organicstructure"/>
           <xs:element ref="instructorcomment"/>
           <xs:element ref="drawimage"/>
+          <xs:element ref="import"/>
           
           <xs:element name="ul" type="ul-with-responses"/>
           <xs:element name="ol" type="ol-with-responses"/>
@@ -4596,6 +4597,7 @@
           <xs:element ref="organicstructure"/>
           <xs:element ref="instructorcomment"/>
           <xs:element ref="drawimage"/>
+          <xs:element ref="import"/>
           
           <xs:element name="ul" type="ul-without-responses"/>
           <xs:element name="ol" type="ol-without-responses"/>
@@ -5318,6 +5320,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="blocks-without-responses"/>
       </xs:choice>
+      <xs:attributeGroup ref="coreattrs"/>
       <xs:attributeGroup ref="i18n"/>
       <xs:attribute name="onload" type="xs:string"/>
       <xs:attribute name="onunload" type="xs:string"/>
@@ -6199,6 +6202,7 @@
       <xs:documentation>Image</xs:documentation>
     </xs:annotation>
     <xs:complexType>
+      <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute name="src" type="xs:string" use="required">
         <xs:annotation>
           <xs:documentation>
