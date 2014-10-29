@@ -39,6 +39,8 @@ use Apache::lc_xml_include;
 use Apache::lc_xml_gadgets;
 use Apache::lc_logs;
 
+use Data::Dumper;
+
 sub error {
    my ($stack,$type,$notes)=@_;
    $notes->{'type'}=$type;
@@ -171,6 +173,13 @@ sub handler {
    $r->content_type('text/html; charset=utf-8');
    $r->print((&target_render($fn,'html'))[0]);
    return OK;
+}
+
+#FIXME: debug!!!!
+#
+sub start_testtag_html {
+   my ($p,$safe,$stack,$token)=@_;
+   return '<pre>'.Dumper($stack).'</pre>';
 }
 
 1;
