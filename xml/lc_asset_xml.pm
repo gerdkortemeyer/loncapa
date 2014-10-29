@@ -47,6 +47,37 @@ sub error {
    push(@{$stack->{'errors'}},$notes);
 }
 
+#
+# Go up the stack until argument with name is found
+#
+sub cascade_attribute {
+   my ($name,$stack)=@_;
+   if ($stack->{'tags'}) {
+      for (my $i=$#{$stack->{'tags'}}; $i>=0; $i--) {
+         if (defined($stack->{'tags'}->[$i]->{'args'}->{$name})) {
+            return $stack->{'tags'}->[$i]->{'args'}->{$name};
+         }
+      }
+   }
+   return undef;
+}
+
+#
+# Return the attribute $name from enclosing $tag
+#
+sub tag_attribute {
+   my ($tag,$name,$stack)=@_;
+   if ($stack->{'tags'}) {
+      for (my $i=$#{$stack->{'tags'}}; $i>=0; $i--) {
+         if ($stack->{'tags'}->[$i]->{'name'} eq $tag) {
+            return $stack->{'tags'}->[$i]->{'args'}->{$name};
+         }
+      }
+   }
+   return undef;
+}
+
+
 # Output a piece of text
 #
 sub process_text {
@@ -179,7 +210,9 @@ sub handler {
 #
 sub start_testtag_html {
    my ($p,$safe,$stack,$token)=@_;
-   return '<pre>'.Dumper($stack).'</pre>';
+   return '<pre>'.Dumper($stack).'</pre>'.
+          '<br />value:'.&cascade_attribute('value',$stack).
+          '<br />id of part:'.&tag_attribute('part','id',$stack);
 }
 
 1;
