@@ -8,10 +8,10 @@ use warnings;
 
 use File::Basename;
 use Cwd 'abs_path';
-
 use XML::LibXML;
-
 use HTML::TokeParser; # used to parse sty files
+use Tie::IxHash; # for ordered hashes
+
 use Env qw(RES_DIR); # path of res directory parent (without the / at the end)
 
 no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
@@ -20,7 +20,7 @@ no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
 my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','textfield','hiddensubmission','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','tex','web','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
 my @inline_responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse');
 my @responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse','essayresponse','radiobuttonresponse','matchresponse','rankresponse','imageresponse','functionplotresponse');
-my @block_html = ('html','head','body','section','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
+my @block_html = ('html','head','body','section','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','dt','dd','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
 my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
 my @preserve_elements = ('script','answer','perl');
 
@@ -58,11 +58,9 @@ sub post_xml {
 
   fix_lists($root);
 
-  replace_center($root, \@all_block); # must come after fix_tables
-
-  fix_hr($root);
+  replace_deprecated_attributes_by_css($root);
   
-  fix_align_attribute($root);
+  replace_center($root, \@all_block); # must come after replace_deprecated_attributes_by_css
   
   fix_parts($root);
   
@@ -443,10 +441,11 @@ sub fix_fonts {
         $replacement = $doc->createDocumentFragment();
       } else {
         $replacement = $doc->createElement('span');
+        tie (my %properties, 'Tie::IxHash', ());
         my $css = '';
         if (defined $color) {
           $color =~ s/^x//;
-          $css .= 'color:'.$color.';';
+          $properties{'color'} = $color;
         }
         if (defined $size) {
           my %hash = (
@@ -468,14 +467,14 @@ sub fix_fonts {
           if (!defined $value) {
             $value = 'medium';
           }
-          $css .= 'font-size:'.$value.';';
+          $properties{'font-size'} = $value;
         }
         if (defined $face) {
           if (lc($face) ne 'symbol' && lc($face) ne 'bold') {
-            $css .= 'font-family:'.$face.';';
+            $properties{'font-family'} = $face;
           }
         }
-        $replacement->setAttribute('style', $css);
+        set_css_properties($replacement, \%properties);
       }
       if (defined $face && lc($face) eq 'symbol') {
         # convert all content to unicode
@@ -592,53 +591,11 @@ sub fix_style_element {
   }
 }
 
-# try to fix table attributes, and create missing cells at the end of table rows
+# create missing cells at the end of table rows
 sub fix_tables {
   my ($root) = @_;
   my @tables = $root->getElementsByTagName('table');
   foreach my $table (@tables) {
-    my $style = get_non_empty_attribute($table, 'style');
-    my $align = get_non_empty_attribute($table, 'align');
-    my $width = get_non_empty_attribute($table, 'width');
-    my $height = get_non_empty_attribute($table, 'height');
-    my $bgcolor = get_non_empty_attribute($table, 'bgcolor');
-    $table->removeAttribute('align');
-    $table->removeAttribute('width');
-    $table->removeAttribute('height'); # no replacement for height
-    $table->removeAttribute('bgcolor');
-    my $css;
-    if (defined $style) {
-      $style =~ s/;$//;
-      $css = $style.'; ';
-    } else {
-      $css = '';
-    }
-    if ($table->parentNode->nodeName eq 'center' || (defined $align && lc($align) eq 'center') ||
-        (defined $table->parentNode->getAttribute('align') && $table->parentNode->getAttribute('align') eq 'center')) {
-      $css .= 'margin-left:auto; margin-right:auto; ';
-    }
-    if (defined $align && (lc($align) eq 'left' || lc($align) eq 'right')) {
-      $css .= 'float:'.lc($align).';';
-    }
-    if (defined $width) {
-      $css .= 'width:';
-      if ($width =~ /%/) {
-        $css .= $width.'; ';
-      } else {
-        $css .= $width.'px; ';
-      }
-    }
-    if (defined $bgcolor) {
-      $css .= 'background-color:';
-      if ($bgcolor =~ /^x/) {
-        $css .= substr($bgcolor, 1).'; ';
-      } else {
-        $css .= $bgcolor.'; ';
-      }
-    }
-    if ($css ne '') {
-      $table->setAttribute('style', $css);
-    }
     fix_cells($table);
     foreach my $tbody ($table->getChildrenByTagName('tbody')) {
       fix_cells($tbody);
@@ -685,103 +642,11 @@ sub fix_cells {
             }
           }
         }
-        my $width = $cell->getAttribute('width');
-        my $height = $cell->getAttribute('height');
-        my $bgcolor = $cell->getAttribute('bgcolor');
-        my $align = $cell->getAttribute('align');
-        my $valign = $cell->getAttribute('valign');
-        if (defined $width || defined $height || defined $bgcolor || defined $align || defined $valign) {
-          my $style = $cell->getAttribute('style');
-          if (defined $style) {
-            $style =~ s/;\s*$//;
-            $style .= '; ';
-          } else {
-            $style = '';
-          }
-          if (defined $width) {
-            $cell->removeAttribute('width');
-            if ($style !~ /(?<!-)width/i) {
-              $width =~ s/^\s*|\s*$//;
-              if ($width =~ /^[0-9]+$/) {
-                $width .= 'px';
-              }
-              $style .= "width: $width; ";
-            }
-          }
-          if (defined $height) {
-            $cell->removeAttribute('height');
-            if ($style !~ /(?<!-)height/i) {
-              $height =~ s/^\s*|\s*$//;
-              if ($height =~ /^[0-9]+$/) {
-                $height .= 'px';
-              }
-              $style .= "height: $height; ";
-            }
-          }
-          if (defined $bgcolor) {
-            $cell->removeAttribute('bgcolor');
-            if ($style !~ /background-color/i) {
-              $bgcolor =~ s/^\s*|\s*$//;
-              $bgcolor =~ s/^x//;
-              $style .= "background-color: $bgcolor; ";
-            }
-          }
-          if (defined $align && $align !~ /\s*char\s*/i) {
-            $cell->removeAttribute('align');
-            if ($style !~ /text-align/i) {
-              $align =~ s/^\s*|\s*$//;
-              $style .= "text-align: $align; ";
-            }
-          }
-          if (defined $valign) {
-            $cell->removeAttribute('valign');
-            if ($style !~ /vertical-align/i) {
-              $valign =~ s/^\s*|\s*$//;
-              $style .= "vertical-align: $valign; ";
-            }
-          }
-          $cell->setAttribute('style', $style);
-        }
       }
     }
     push(@nb_cells, $nb_cells);
     if ($nb_cells > $max_nb_cells) {
       $max_nb_cells = $nb_cells;
-    }
-    my $bgcolor = $tr->getAttribute('bgcolor');
-    my $align = $tr->getAttribute('align');
-    my $valign = $tr->getAttribute('valign');
-    if (defined $bgcolor || defined $align || defined $valign) {
-      my $style = $tr->getAttribute('style');
-      if (defined $style) {
-        $style =~ s/;\s*$//;
-        $style .= '; ';
-      } else {
-        $style = '';
-      }
-      if (defined $bgcolor) {
-        $tr->removeAttribute('bgcolor');
-        if ($style !~ /background-color/i) {
-          $bgcolor =~ s/^\s*|\s*$//;
-          $bgcolor =~ s/^x//;
-          $style .= "background-color: $bgcolor; ";
-        }
-      }
-      if (defined $align && $align !~ /\s*char\s*/i) {
-        $tr->removeAttribute('align');
-        if ($style !~ /text-align/i) {
-          $align =~ s/^\s*|\s*$//;
-          $style .= "text-align: $align; ";
-        }
-      }
-      if (defined $valign) {
-        $tr->removeAttribute('valign');
-        if ($style !~ /vertical-align/i) {
-          $valign =~ s/^\s*|\s*$//;
-          $style .= "vertical-align: $valign; ";
-        }
-      }
-      $tr->setAttribute('style', $style);
     }
   }
   foreach my $tr (@trs) {
@@ -796,7 +661,6 @@ sub fix_cells {
 
 # replaces ul/ul by ul/li/ul and the same for ol (using the previous li if possible)
 # also adds a ul element when a li has no ul/ol ancestor
-# also replaces the deprecated type attribute by CSS
 sub fix_lists {
   my ($root) = @_;
   my $doc = $root->ownerDocument;
@@ -805,26 +669,6 @@ sub fix_lists {
   my @lists = (@uls, @ols);
   foreach my $list (@lists) {
     my $next;
-    if (defined $list->getAttribute('type')) {
-      my $type = $list->getAttribute('type');
-      my $lst = list_style_type($type);
-      if (defined $lst) {
-        my $style = $list->getAttribute('style');
-        if (defined $style && index($style, 'list-style-type') != -1) {
-          $list->removeAttribute('type');
-        } else {
-          if (defined $style) {
-            $style =~ s/;\s*$//;
-            $style .= '; ';
-          } else {
-            $style = '';
-          }
-          $style .= 'list-style-type: '.$lst;
-          $list->removeAttribute('type');
-          $list->setAttribute('style', $style);
-        }
-      }
-    }
     for (my $child=$list->firstChild; defined $child; $child=$next) {
       $next = $child->nextSibling;
       if ($child->nodeType == XML_ELEMENT_NODE && string_in_array(['ul','ol'], $child->nodeName)) {
@@ -846,26 +690,6 @@ sub fix_lists {
   }
   my @lis = $root->getElementsByTagName('li');
   foreach my $li (@lis) {
-    if (defined $li->getAttribute('type')) {
-      my $type = $li->getAttribute('type');
-      my $lst = list_style_type($type);
-      if (defined $lst) {
-        my $style = $li->getAttribute('style');
-        if (defined $style && index($style, 'list-style-type') != -1) {
-          $li->removeAttribute('type');
-        } else {
-          if (defined $style) {
-            $style =~ s/;\s*$//;
-            $style .= '; ';
-          } else {
-            $style = '';
-          }
-          $style .= 'list-style-type: '.$lst;
-          $li->removeAttribute('type');
-          $li->setAttribute('style', $style);
-        }
-      }
-    }
     my $found_list_ancestor = 0;
     my $ancestor = $li->parentNode;
     while (defined $ancestor) {
@@ -904,11 +728,235 @@ sub fix_lists {
   }
 }
 
+# Replaces many deprecated attributes and replaces them by equivalent CSS when possible
+sub replace_deprecated_attributes_by_css {
+  my ($root) = @_;
+  
+  fix_deprecated_in_tables($root);
+  
+  fix_deprecated_in_table_rows($root);
+  
+  fix_deprecated_in_table_cells($root);
+  
+  fix_deprecated_in_lists($root);
+  
+  fix_deprecated_in_list_items($root);
+  
+  fix_deprecated_in_hr($root);
+  
+  fix_align_attribute($root);
+}
+
+# Replaces deprecated attributes in tables
+sub fix_deprecated_in_tables {
+  my ($root) = @_;
+  my @tables = $root->getElementsByTagName('table');
+  foreach my $table (@tables) {
+    tie (my %new_properties, 'Tie::IxHash', ());
+    my $align = $table->getAttribute('align');
+    if (defined $align) {
+      $table->removeAttribute('align');
+      $align = lc(trim($align));
+    }
+    if ($table->parentNode->nodeName eq 'center' || (defined $align && $align eq 'center') ||
+        (defined $table->parentNode->getAttribute('align') && $table->parentNode->getAttribute('align') eq 'center')) {
+      $new_properties{'margin-left'} = 'auto';
+      $new_properties{'margin-right'} = 'auto';
+    }
+    if (defined $align && ($align eq 'left' || $align eq 'right')) {
+      $new_properties{'float'} = $align;
+    }
+    my $width = $table->getAttribute('width');
+    if (defined $width) {
+      $table->removeAttribute('width');
+      $width = trim($width);
+      if ($width =~ /^[0-9]+$/) {
+        $width .= 'px';
+      }
+      if ($width ne '') {
+        $new_properties{'width'} = $width;
+      }
+    }
+    my $height = $table->getAttribute('height');
+    if (defined $height) {
+      $table->removeAttribute('height');
+      # no replacement for table height
+    }
+    my $bgcolor = $table->getAttribute('bgcolor');
+    if (defined $bgcolor) {
+      $table->removeAttribute('bgcolor');
+      $bgcolor = trim($bgcolor);
+      $bgcolor =~ s/^x\s*//;
+      if ($bgcolor ne '') {
+        $new_properties{'background-color'} = $bgcolor;
+      }
+    }
+    if (scalar(keys %new_properties) > 0) {
+      set_css_properties($table, \%new_properties);
+    }
+  }
+  
+}
+
+# Replaces deprecated attributes in tr elements
+sub fix_deprecated_in_table_rows {
+  my ($root) = @_;
+  my @trs = $root->getElementsByTagName('tr');
+  foreach my $tr (@trs) {
+    my $old_properties = get_css_properties($tr);
+    tie (my %new_properties, 'Tie::IxHash', ());
+    my $bgcolor = $tr->getAttribute('bgcolor');
+    if (defined $bgcolor) {
+      $tr->removeAttribute('bgcolor');
+      if (!defined $old_properties->{'background-color'}) {
+        $bgcolor = trim($bgcolor);
+        $bgcolor =~ s/^x\s*//;
+        if ($bgcolor ne '') {
+          $new_properties{'background-color'} = $bgcolor;
+        }
+      }
+    }
+    my $align = $tr->getAttribute('align');
+    if (defined $align && $align !~ /\s*char\s*/i) {
+      $tr->removeAttribute('align');
+      if (!defined $old_properties->{'text-align'}) {
+        $align = trim($align);
+        if ($align ne '') {
+          $new_properties{'text-align'} = $align;
+        }
+      }
+    }
+    my $valign = $tr->getAttribute('valign');
+    if (defined $valign) {
+      $tr->removeAttribute('valign');
+      if (!defined $old_properties->{'vertical-align'}) {
+        $valign = trim($valign);
+        if ($valign ne '') {
+          $new_properties{'vertical-align'} = $valign;
+        }
+      }
+    }
+    if (scalar(keys %new_properties) > 0) {
+      set_css_properties($tr, \%new_properties);
+    }
+  }
+}
+
+# Replaces deprecated attributes in table cells (td and th)
+sub fix_deprecated_in_table_cells {
+  my ($root) = @_;
+  my @tds = $root->getElementsByTagName('td');
+  my @ths = $root->getElementsByTagName('th');
+  my @cells = (@tds, @ths);
+  foreach my $cell (@cells) {
+    my $old_properties = get_css_properties($cell);
+    tie (my %new_properties, 'Tie::IxHash', ());
+    my $width = $cell->getAttribute('width');
+    if (defined $width) {
+      $cell->removeAttribute('width');
+      if (!defined $old_properties->{'width'}) {
+        $width = trim($width);
+        if ($width =~ /^[0-9]+$/) {
+          $width .= 'px';
+        }
+        if ($width ne '') {
+          $new_properties{'width'} = $width;
+        }
+      }
+    }
+    my $height = $cell->getAttribute('height');
+    if (defined $height) {
+      $cell->removeAttribute('height');
+      if (!defined $old_properties->{'height'}) {
+        $height = trim($height);
+        if ($height =~ /^[0-9]+$/) {
+          $height .= 'px';
+        }
+        if ($height ne '') {
+          $new_properties{'height'} = $height;
+        }
+      }
+    }
+    my $bgcolor = $cell->getAttribute('bgcolor');
+    if (defined $bgcolor) {
+      $cell->removeAttribute('bgcolor');
+      if (!defined $old_properties->{'background-color'}) {
+        $bgcolor = trim($bgcolor);
+        $bgcolor =~ s/^x\s*//;
+        if ($bgcolor ne '') {
+          $new_properties{'background-color'} = $bgcolor;
+        }
+      }
+    }
+    my $align = $cell->getAttribute('align');
+    if (defined $align && $align !~ /\s*char\s*/i) {
+      $cell->removeAttribute('align');
+      if (!defined $old_properties->{'text-align'}) {
+        $align = trim($align);
+        if ($align ne '') {
+          $new_properties{'text-align'} = $align;
+        }
+      }
+    }
+    my $valign = $cell->getAttribute('valign');
+    if (defined $valign) {
+      $cell->removeAttribute('valign');
+      if (!defined $old_properties->{'vertical-align'}) {
+        $valign = trim($valign);
+        if ($valign ne '') {
+          $new_properties{'vertical-align'} = $valign;
+        }
+      }
+    }
+    if (scalar(keys %new_properties) > 0) {
+      set_css_properties($cell, \%new_properties);
+    }
+  }
+}
+
+# Replaces deprecated attributes in lists (ul and ol)
+sub fix_deprecated_in_lists {
+  my ($root) = @_;
+  my @uls = $root->getElementsByTagName('ul');
+  my @ols = $root->getElementsByTagName('ol');
+  my @lists = (@uls, @ols);
+  foreach my $list (@lists) {
+    my $type = $list->getAttribute('type');
+    if (defined $type) {
+      my $lst = list_style_type($type);
+      if (defined $lst) {
+        $list->removeAttribute('type');
+        if (!defined get_css_property($list, 'list-style-type')) {
+          set_css_property($list, 'list-style-type', $lst);
+        }
+      }
+    }
+  }
+}
+
+# Replaces deprecated attributes in list items (li)
+sub fix_deprecated_in_list_items {
+  my ($root) = @_;
+  my @lis = $root->getElementsByTagName('li');
+  foreach my $li (@lis) {
+    my $type = $li->getAttribute('type');
+    if (defined $type) {
+      my $lst = list_style_type($type);
+      if (defined $lst) {
+        $li->removeAttribute('type');
+        if (!defined get_css_property($li, 'list-style-type')) {
+          set_css_property($li, 'list-style-type', $lst);
+        }
+      }
+    }
+  }
+}
+
 # returns the CSS list-style-type value equivalent to the given type attribute for a list or list item
 sub list_style_type {
   my ($type) = @_;
   my $value;
-  $type =~ s/^\s*|\s*$//;
+  $type = trim($type);
   if (lc($type) eq 'circle') {
     $value = 'circle';
   } elsif (lc($type) eq 'disc') {
@@ -927,6 +975,94 @@ sub list_style_type {
     $value = 'decimal';
   }
   return $value;
+}
+
+# Replaces deprecated attributes in hr
+sub fix_deprecated_in_hr {
+  my ($root) = @_;
+  my @hrs = $root->getElementsByTagName('hr');
+  foreach my $hr (@hrs) {
+    tie (my %new_properties, 'Tie::IxHash', ());
+    my $align = $hr->getAttribute('align');
+    if (defined $align) {
+      $align = lc(trim($align));
+      if ($align eq 'left') {
+        $new_properties{'text-align'} = 'left';
+        $new_properties{'margin-left'} = '0';
+      } elsif ($align eq 'right') {
+        $new_properties{'text-align'} = 'right';
+        $new_properties{'margin-right'} = '0';
+      }
+      $hr->removeAttribute('align');
+    }
+    my $color = $hr->getAttribute('color');
+    if (defined $color) {
+      $color = trim($color);
+      $color =~ s/^x\s*//;
+      if ($color ne '') {
+        $new_properties{'color'} = $color;
+        $new_properties{'background-color'} = $color;
+      }
+      $hr->removeAttribute('color');
+    }
+    my $noshade = $hr->getAttribute('noshade');
+    my $size = $hr->getAttribute('size');
+    if (defined $noshade) {
+      $new_properties{'border-width'} = '0';
+      if (!defined $color) {
+        $new_properties{'color'} = 'gray';
+        $new_properties{'background-color'} = 'gray';
+      }
+      if (!defined $size) {
+        $size = '2';
+      }
+      $hr->removeAttribute('noshade');
+    }
+    if (defined $size) {
+      $size = trim($size);
+      if ($size ne '') {
+        $new_properties{'height'} = $size.'px';
+      }
+      if (defined $hr->getAttribute('size')) {
+        $hr->removeAttribute('size');
+      }
+    }
+    my $width = $hr->getAttribute('width');
+    if (defined $width) {
+      $width = trim($width);
+      if ($width ne '') {
+        if ($width !~ /\%$/) {
+          $width .= 'px';
+        }
+        $new_properties{'width'} = $width;
+      }
+      $hr->removeAttribute('width');
+    }
+    if (scalar(keys %new_properties) > 0) {
+      set_css_properties($hr, \%new_properties);
+    }
+  }
+}
+
+# replaces <div align="center"> by <div style="text-align:center;">
+# also for p and h1..h6
+sub fix_align_attribute {
+  my ($root) = @_;
+  my @nodes = $root->getElementsByTagName('div');
+  push(@nodes, $root->getElementsByTagName('p'));
+  for (my $i=1; $i<=6; $i++) {
+    push(@nodes, $root->getElementsByTagName('h'.$i));
+  }
+  foreach my $node (@nodes) {
+    my $align = $node->getAttribute('align');
+    if (defined $align) {
+      $node->removeAttribute('align');
+      $align = trim($align);
+      if ($align ne '' && !defined get_css_property($node, 'text-align')) {
+        set_css_property($node, 'text-align', lc($align));
+      }
+    }
+  }
 }
 
 # replace center by a div or remove it if there is a table inside
@@ -961,97 +1097,6 @@ sub replace_center {
         $new_node->appendChild($child);
       }
       $center->parentNode->replaceChild($new_node, $center);
-    }
-  }
-}
-
-# removes deprecated attributes and replace by CSS
-sub fix_hr {
-  my ($root) = @_;
-  my @hrs = $root->getElementsByTagName('hr');
-  foreach my $hr (@hrs) {
-    my $align = $hr->getAttribute('align');
-    my $color = $hr->getAttribute('color');
-    my $noshade = $hr->getAttribute('noshade');
-    my $size = $hr->getAttribute('size');
-    my $width = $hr->getAttribute('width');
-    my $style = $hr->getAttribute('style');
-    if (defined $style) {
-      $style =~ s/\s*$//;
-      $style =~ s/\s*;$//;
-      $style .= '; ';
-    } else {
-      $style = '';
-    }
-    if (defined $align) {
-      $align =~ s/^\s*|\s*$//;
-      $align = lc($align);
-      if ($align eq 'left') {
-        $style .= 'text-align:left; margin-left:0; ';
-      } elsif ($align eq 'right') {
-        $style .= 'text-align:right; margin-right:0; ';
-      }
-      $hr->removeAttribute('align');
-    }
-    if (defined $color) {
-      $color =~ s/^x//;
-      $style .= "color:$color; background-color:$color; ";
-      $hr->removeAttribute('color');
-    }
-    if (defined $noshade) {
-      if (defined $color) {
-        $style .= 'border-width:0; ';
-      } else {
-        $style .= 'border-width:0; color:gray; background-color:gray; ';
-      }
-      if (!defined $size) {
-        $size = '2';
-      }
-      $hr->removeAttribute('noshade');
-    }
-    if (defined $size) {
-      $style .= "height:${size}px; ";
-      if (defined $hr->getAttribute('size')) {
-        $hr->removeAttribute('size');
-      }
-    }
-    if (defined $width) {
-      if ($width !~ /\%\s*$/) {
-        $width .= 'px';
-      }
-      $style .= "width:$width; ";
-      $hr->removeAttribute('width');
-    }
-    if ($style ne '') {
-      $hr->setAttribute('style', $style);
-    }
-  }
-}
-
-# replaces <div align="center"> by <div style="text-align:center;">
-# also for p and h1..h6
-sub fix_align_attribute {
-  my ($root) = @_;
-  my @nodes = $root->getElementsByTagName('div');
-  push(@nodes, $root->getElementsByTagName('p'));
-  for (my $i=1; $i<=6; $i++) {
-    push(@nodes, $root->getElementsByTagName('h'.$i));
-  }
-  foreach my $node (@nodes) {
-    my $align = get_non_empty_attribute($node, 'align');
-    if (defined $align) {
-      my $style = get_non_empty_attribute($node, 'style');
-      if (defined $style) {
-        $style =~ s/text-align\s*:\s*$align\s*;?//i;
-        $style =~ s/\s*$//;
-        $style =~ s/\s*;$//;
-        $style .= '; ';
-      } else {
-        $style = '';
-      }
-      $style .= 'text-align:'.lc($align).';';
-      $node->setAttribute('style', $style);
-      $node->removeAttribute('align');
     }
   }
 }
@@ -1185,8 +1230,7 @@ sub change_hints {
       foreach my $hintpart (@hintparts) {
         my $on = $hintpart->getAttribute('on');
         if (defined $on) {
-          $on =~ s/^\s*|\s*$//;
-          $on = lc($on);
+          $on = lc(trim($on));
           if ($on eq 'default') {
             $default_hinpart = 1;
             last;
@@ -1233,7 +1277,7 @@ sub change_hints {
     my $move_conditions_after = $hintgroup;
     
     # recreate a hintgroup if necessary
-    if (object_in_array(\@hintgroups_to_preserve, $hintgroup)) {
+    if (reference_in_array(\@hintgroups_to_preserve, $hintgroup)) {
       my $new_hintgroup = $doc->createElement('hintgroup');
       $move_after->parentNode->insertAfter($new_hintgroup, $move_after);
       $move_after = undef;
@@ -1808,8 +1852,26 @@ sub pretty {
   }
 }
 
+
+######## utilities ########
+
+##
+# Trims a string (really, this should be built-in in Perl, this is ridiculous, ugly and slow)
+# @param {string} s - the string to trim
+# @returns the trimmed string
+##
+sub trim {
+  my ($s) = @_;
+  $s =~ s/^\s+//;
+  $s =~ s/\s+$//;
+  return($s);
+}
+
 ##
 # Tests if a string is in an array (using eq) (to avoid Smartmatch warnings with $value ~~ @array)
+# @param {Array<string>} array - reference to the array of strings
+# @param {string} value - the string to look for
+# @returns 1 if found, 0 otherwise
 ##
 sub string_in_array {
   my ($array, $value) = @_;
@@ -1823,18 +1885,42 @@ sub string_in_array {
 
 ##
 # Tests if an object is in an array (using ==)
+# @param {Array<Object>} array - reference to the array of references
+# @param {Object} ref - the reference to look for
+# @returns 1 if found, 0 otherwise
 ##
-sub object_in_array {
-  my ($array, $value) = @_;
+sub reference_in_array {
+  my ($array, $ref) = @_;
   foreach my $v (@{$array}) {
-    if ($v == $value) {
+    if ($v == $ref) {
       return 1;
     }
   }
   return 0;
 }
 
+##
+# returns the index of a string in an array
+# @param {Array<Object>} array - reference to the array of strings
+# @param {string} s - the string to look for (using eq)
+# @returns the index if found, -1 otherwise
+##
+sub index_of_string {
+  my ($array, $s) = @_;
+  for (my $i=0; $i<scalar(@{$array}); $i++) {
+    if ($array->[$i] eq $s) {
+      return $i;
+    }
+  }
+  return -1;
+}
+
+##
 # returns the index of a reference in an array
+# @param {Array<Object>} array - reference to the array of references
+# @param {Object} ref - the reference to look for
+# @returns the index if found, -1 otherwise
+##
 sub index_of_reference {
   my ($array, $ref) = @_;
   for (my $i=0; $i<scalar(@{$array}); $i++) {
@@ -1845,7 +1931,24 @@ sub index_of_reference {
   return -1;
 }
 
+##
+# if found, removes a string from an array, otherwise do nothing
+# @param {Array<string>} array - reference to the array of string
+# @param {string} s - the string to look for (using eq)
+##
+sub remove_string_from_array {
+  my ($array, $s) = @_;
+  my $index = index_of_string($array, $s);
+  if ($index != -1) {
+    splice(@$array, $index, 1);
+  }
+}
+
+##
 # if found, removes a reference from an array, otherwise do nothing
+# @param {Array<Object>} array - reference to the array of references
+# @param {Object} ref - the reference to look for
+##
 sub remove_reference_from_array {
   my ($array, $ref) = @_;
   my $index = index_of_reference($array, $ref);
@@ -1854,7 +1957,10 @@ sub remove_reference_from_array {
   }
 }
 
+##
 # replaces a node by its children
+# @param {Node} node - the DOM node
+##
 sub replace_by_children {
   my ($node) = @_;
   my $parent = $node->parentNode;
@@ -1867,15 +1973,116 @@ sub replace_by_children {
   $parent->removeChild($node);
 }
 
+##
 # returns the trimmed attribute value if the attribute exists and is not blank, undef otherwise
+# @param {Node} node - the DOM node
+# @param {string} attribute_name - the attribute name
+##
 sub get_non_empty_attribute {
   my ($node, $attribute_name) = @_;
   my $value = $node->getAttribute($attribute_name);
   if (defined $value && $value !~ /^\s*$/) {
-    $value =~ s/^\s+|\s+$//g;
+    $value = trim($value);
     return($value);
   }
   return(undef);
+}
+
+##
+# Returns a CSS property value from the style attribute of the element, or undef if not defined
+# @param {Element} el - the DOM element
+# @param {string} property_name - the CSS property name
+##
+sub get_css_property {
+  my ($el, $property_name) = @_;
+  my $style = $el->getAttribute('style');
+  if (defined $style) {
+    $style =~ s/^\s*;\s*//;
+    $style =~ s/\s*;\s*$//;
+  } else {
+    $style = '';
+  }
+  my @pairs = split(';', $style);
+  foreach my $pair (@pairs) {
+    my @name_value = split(':', $pair);
+    if (scalar(@name_value) != 2) {
+      next;
+    }
+    my $name = trim($name_value[0]);
+    my $value = trim($name_value[1]);
+    if (lc($name) eq $property_name) {
+      return($value); # return the first one found
+    }
+  }
+  return(undef);
+}
+
+##
+# Returns the reference to a hash CSS property name => value from the style attribute of the element.
+# Returns an empty list if the style attribute is not defined,
+# @param {Element} el - the DOM element
+# @return {Hash<string, string>} reference to the hash  property name => property value
+##
+sub get_css_properties {
+  my ($el) = @_;
+  my $style = $el->getAttribute('style');
+  if (defined $style) {
+    $style =~ s/^\s*;\s*//;
+    $style =~ s/\s*;\s*$//;
+  } else {
+    $style = '';
+  }
+  my @pairs = split(';', $style);
+  tie (my %hash, 'Tie::IxHash', ());
+  foreach my $pair (@pairs) {
+    my @name_value = split(':', $pair);
+    if (scalar(@name_value) != 2) {
+      next;
+    }
+    my $name = trim($name_value[0]);
+    my $value = trim($name_value[1]);
+    if (defined $hash{$name}) {
+      # duplicate property in the style attribute: keep only the last one
+      delete $hash{$name};
+    }
+    $hash{$name} = $value;
+  }
+  return(\%hash);
+}
+
+##
+# Sets a CSS property in the style attribute of an element
+# @param {Element} el - the DOM element
+# @param {string} property_name - the CSS property name
+# @param {string} property_value - the CSS property value
+##
+sub set_css_property {
+  my ($el, $property_name, $property_value) = @_;
+  my $hash_ref = { $property_name => $property_value };
+  set_css_properties($el, $hash_ref);
+}
+
+##
+# Sets several CSS properties in the style attribute of an element
+# @param {Element} el - the DOM element
+# @param {Hash<string, string>} properties - reference to the hash property name => property value
+##
+sub set_css_properties {
+  my ($el, $properties) = @_;
+  my $hash = get_css_properties($el);
+  foreach my $property_name (keys %$properties) {
+    my $property_value = $properties->{$property_name};
+    if (defined $hash->{$property_name}) {
+      delete $hash->{$property_name}; # to add the new one at the end
+    }
+    $hash->{$property_name} = $property_value;
+  }
+  my $style = '';
+  foreach my $key (keys %$hash) {
+    $style .= $key.':'.$hash->{$key}.'; ';
+  }
+  $style =~ s/; $//;
+  $el->setAttribute('style', $style);
 }
 
 1;
