@@ -744,6 +744,10 @@ sub replace_deprecated_attributes_by_css {
   
   fix_deprecated_in_hr($root);
   
+  fix_deprecated_in_img($root);
+  
+  fix_deprecated_in_body($root);
+  
   fix_align_attribute($root);
 }
 
@@ -791,8 +795,42 @@ sub fix_deprecated_in_tables {
         $new_properties{'background-color'} = $bgcolor;
       }
     }
+    my $frame = $table->getAttribute('frame');
+    if (defined $frame) {
+      $table->removeAttribute('frame');
+      $frame = lc(trim($frame));
+      if ($frame eq 'void') {
+        $new_properties{'border'} = 'none';
+      } elsif ($frame eq 'above') {
+        $new_properties{'border-top'} = '1px solid black';
+      } elsif ($frame eq 'below') {
+        $new_properties{'border-bottom'} = '1px solid black';
+      } elsif ($frame eq 'hsides') {
+        $new_properties{'border-top'} = '1px solid black';
+        $new_properties{'border-bottom'} = '1px solid black';
+      } elsif ($frame eq 'vsides') {
+        $new_properties{'border-left'} = '1px solid black';
+        $new_properties{'border-right'} = '1px solid black';
+      } elsif ($frame eq 'lhs') {
+        $new_properties{'border-left'} = '1px solid black';
+      } elsif ($frame eq 'rhs') {
+        $new_properties{'border-right'} = '1px solid black';
+      } elsif ($frame eq 'box') {
+        $new_properties{'border'} = '1px solid black';
+      } elsif ($frame eq 'border') {
+        $new_properties{'border'} = '1px solid black';
+      }
+    }
     if (scalar(keys %new_properties) > 0) {
       set_css_properties($table, \%new_properties);
+    }
+    # we can't replace the border attribute without creating a style block, but we can improve things like border="BORDER"
+    my $border = $table->getAttribute('border');
+    if (defined $border) {
+      $border = trim($border);
+      if ($border !~ /^\s*[0-9]+\s*(px)?\s*$/) {
+        $table->setAttribute('border', '1');
+      }
     }
   }
   
@@ -1040,6 +1078,87 @@ sub fix_deprecated_in_hr {
     }
     if (scalar(keys %new_properties) > 0) {
       set_css_properties($hr, \%new_properties);
+    }
+  }
+}
+
+# Replaces deprecated attributes in img
+sub fix_deprecated_in_img {
+  my ($root) = @_;
+  my @imgs = $root->getElementsByTagName('img');
+  foreach my $img (@imgs) {
+    my $old_properties = get_css_properties($img);
+    tie (my %new_properties, 'Tie::IxHash', ());
+    my $align = $img->getAttribute('align');
+    if (defined $align) {
+      $align = lc(trim($align));
+      if ($align eq 'middle' || $align eq 'top' || $align eq 'bottom') {
+        $img->removeAttribute('align');
+        if (!defined $old_properties->{'vertical-align'}) {
+          $new_properties{'vertical-align'} = $align;
+        }
+      } elsif ($align eq 'left' || $align eq 'right') {
+        $img->removeAttribute('align');
+        if (!defined $old_properties->{'float'}) {
+          $new_properties{'float'} = $align;
+        }
+      } elsif ($align eq '') {
+        $img->removeAttribute('align');
+      }
+    }
+    my $border = $img->getAttribute('border');
+    if (defined $border) {
+      $border = lc(trim($border));
+      if ($border =~ /^[0-9]+\s*(px)?$/) {
+        $img->removeAttribute('border');
+        if (!defined $old_properties->{'border'}) {
+          if ($border !~ /px$/) {
+            $border .= 'px';
+          }
+          $new_properties{'border'} = $border.' solid black';
+        }
+      }
+    }
+    my $hspace = $img->getAttribute('hspace');
+    if (defined $hspace) {
+      $hspace = lc(trim($hspace));
+      if ($hspace =~ /^[0-9]+\s*(px)?$/) {
+        $img->removeAttribute('hspace');
+        if (!defined $old_properties->{'margin-left'} || !defined $old_properties->{'margin-right'}) {
+          if ($hspace !~ /px$/) {
+            $hspace .= 'px';
+          }
+          $new_properties{'margin-left'} = $hspace;
+          $new_properties{'margin-right'} = $hspace;
+        }
+      }
+    }
+    if (scalar(keys %new_properties) > 0) {
+      set_css_properties($img, \%new_properties);
+    }
+  }
+}
+
+# Replaces deprecated attributes in htmlbody (the style attribute could be used in a div for output)
+sub fix_deprecated_in_body {
+  my ($root) = @_;
+  my @bodies = $root->getElementsByTagName('htmlbody');
+  foreach my $body (@bodies) {
+    my $old_properties = get_css_properties($body);
+    tie (my %new_properties, 'Tie::IxHash', ());
+    my $bgcolor = $body->getAttribute('bgcolor');
+    if (defined $bgcolor) {
+      $body->removeAttribute('bgcolor');
+      if (!defined $old_properties->{'background-color'}) {
+        $bgcolor = trim($bgcolor);
+        $bgcolor =~ s/^x\s*//;
+        if ($bgcolor ne '') {
+          $new_properties{'background-color'} = $bgcolor;
+        }
+      }
+    }
+    if (scalar(keys %new_properties) > 0) {
+      set_css_properties($body, \%new_properties);
     }
   }
 }
