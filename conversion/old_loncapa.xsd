@@ -19,7 +19,7 @@
   </xs:annotation>
   <xs:simpleType name="perl">
     <xs:restriction base="xs:string">
-      <xs:pattern value="((\$|\&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{][^\]\}]+[\]\}])*(\([^$&amp;\)]+\))*"/>
+      <xs:pattern value="\s*(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{].+[\]\}])*(\([^$&amp;\)]+\))*\s*"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="int-or-perl">
@@ -5825,8 +5825,20 @@
       </xs:documentation>
     </xs:annotation>
     <xs:attributeGroup ref="coreattrs"/>
-    <xs:attribute name="colspan" type="xs:int"/>
-    <xs:attribute name="rowspan" type="xs:int"/>
+    <xs:attribute name="colspan" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute contains a non-negative integer value that indicates on how many columns does the cell extend. Its default value is 1.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="rowspan" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute contains a non-negative integer value that indicates on how many rows does the cell extend. Its default value is 1.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="align" type="html-align"/>
     <xs:attribute name="TeXwidth">
       <xs:annotation>
@@ -5875,9 +5887,36 @@
         <xs:group ref="text-without-responses"/>
       </xs:choice>
       <xs:attributeGroup ref="coreattrs"/>
-      <xs:attribute name="colspan" type="xs:int"/>
-      <xs:attribute name="rowspan" type="xs:int"/>
+      <xs:attribute name="colspan" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            This attribute contains a non-negative integer value that indicates on how many columns does the cell extend. Its default value is 1.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="rowspan" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            This attribute contains a non-negative integer value that indicates on how many rows does the cell extend. Its default value is 1.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="align" type="html-align"/>
+      <xs:attribute name="scope">
+        <xs:annotation>
+          <xs:documentation>
+            defines the cells that the header defined in this &lt;th&gt; element relates to
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="row"/>
+            <xs:enumeration value="col"/>
+            <xs:enumeration value="rowgroup"/>
+            <xs:enumeration value="colgroup"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
       <xs:attribute name="TeXwidth">
         <xs:annotation>
           <xs:documentation>
