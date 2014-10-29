@@ -168,6 +168,7 @@ sub handler {
    unless (-e $fn) {
       return HTTP_NOT_FOUND;
    }
+   $r->content_type('text/html; charset=utf-8');
    $r->print((&target_render($fn,'html'))[0]);
    return OK;
 }
