@@ -62,6 +62,8 @@ sub post_xml {
   
   replace_center($root, \@all_block); # must come after replace_deprecated_attributes_by_css
   
+  remove_useless_notsolved($root); # must happen before change_hints
+  
   fix_parts($root);
   
   fix_paragraphs_inside($root, \@all_block);
@@ -1220,6 +1222,26 @@ sub replace_center {
   }
 }
 
+# removes notsolved tags in the case <hintgroup showoncorrect="no"><notsolved>...</notsolved></hintgroup>
+# and in the case <notsolved><hintgroup showoncorrect="no">...</hintgroup></notsolved>
+sub remove_useless_notsolved {
+  my ($root) = @_;
+  my @hintgroups = $root->getElementsByTagName('hintgroup');
+  foreach my $hintgroup (@hintgroups) {
+    my $showoncorrect = get_non_empty_attribute($hintgroup, 'showoncorrect');
+    if (!defined $showoncorrect || $showoncorrect eq 'no') {
+      my @notsolveds = $hintgroup->getElementsByTagName('notsolved');
+      foreach my $notsolved (@notsolveds) {
+        replace_by_children($notsolved);
+      }
+    }
+    my $parent = $hintgroup->parentNode;
+    if ($parent->nodeName eq 'notsolved' && scalar(@{$parent->nonBlankChildNodes()}) == 1) {
+      replace_by_children($parent);
+    }
+  }
+}
+
 # checks for errors and adds a part if a problem with responses has no part
 sub fix_parts {
   my ($root) = @_;
@@ -2085,6 +2107,23 @@ sub replace_by_children {
   my $next;
   for (my $child=$node->firstChild; defined $child; $child=$next) {
     $next = $child->nextSibling;
+    if ((!defined $child->previousSibling() || !defined $next) &&
+        $child->nodeType == XML_TEXT_NODE && $child->nodeValue =~ /^\s*$/) {
+      next; # do not keep first and last whitespace nodes
+    } else {
+      if (!defined $child->previousSibling() && $child->nodeType == XML_TEXT_NODE) {
+        # remove whitespace at the beginning
+        my $value = $child->nodeValue;
+        $value =~ s/^\s+//;
+        $child->setData($value);
+      }
+      if (!defined $next && $child->nodeType == XML_TEXT_NODE) {
+        # and at the end
+        my $value = $child->nodeValue;
+        $value =~ s/\s+$//;
+        $child->setData($value);
+      }
+    }
     $node->removeChild($child);
     $parent->insertBefore($child, $node);
   }
