@@ -1405,6 +1405,15 @@ sub change_hints {
       $ancestor = $ancestor->parentNode;
     }
     
+    # how to deal with <*response><while><hintgroup> ?
+    if (defined $response && $hintgroup->parentNode != $response) {
+      if (string_in_array(['foilgroup', 'foil'], $hintgroup->parentNode->nodeName)) {
+        print "Warning: there is an intermediary element between a response and a hintgroup: ".$hintgroup->parentNode->nodeName."\n";
+      } else {
+        die "There is an intermediary element between a response and a hintgroup: ".$hintgroup->parentNode->nodeName;
+      }
+    }
+    
     # look for a position to move the hints to
     my $move_after; # if defined, hints will be added after this node
     my $move_inside; # if defined, hints will be added inside this node
@@ -1819,6 +1828,13 @@ sub remove_empty_style {
       my $node = pop(@nodes);
       if (!defined $node->firstChild) {
         my $parent = $node->parentNode;
+        if (defined $node->previousSibling && $node->previousSibling->nodeType == XML_TEXT_NODE &&
+            $node->previousSibling->nodeValue =~ /\$\S*$/) {
+          # case $a<sup></sup>x
+          my $value = $node->previousSibling->nodeValue;
+          $value =~ s/\$(\S*)$/\$\{$1\}/;
+          $node->previousSibling->setData($value);
+        }
         $parent->removeChild($node);
         $parent->normalize();
         # now that we removed the node, check if the parent has become an empty style, and so on
@@ -1828,11 +1844,6 @@ sub remove_empty_style {
           remove_reference_from_array(\@nodes, $parent);
           $parent = $grandparent;
         }
-      }
-    }
-    foreach my $node (@nodes) {
-      if (!defined $node->firstChild) {
-        $node->parentNode->removeChild($node);
       }
     }
   }
@@ -1847,8 +1858,9 @@ sub remove_empty_style {
           $parent->normalize();
           # now that we removed the node, check if the parent has become a style with only whitespace, and so on
           while (defined $parent && string_in_array(\@remove_if_blank, $parent->nodeName) &&
-              !defined $parent->firstChild->nextSibling && $parent->firstChild->nodeType == XML_TEXT_NODE &&
-              $parent->firstChild->nodeValue =~ /^\s*$/) {
+              (!defined $parent->firstChild ||
+              (!defined $parent->firstChild->nextSibling && $parent->firstChild->nodeType == XML_TEXT_NODE &&
+              $parent->firstChild->nodeValue =~ /^\s*$/))) {
             my $grandparent = $parent->parentNode;
             replace_by_children($parent);
             remove_reference_from_array(\@nodes, $parent);
