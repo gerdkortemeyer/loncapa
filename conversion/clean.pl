@@ -29,9 +29,16 @@ use Encode qw(decode);
 
 my $pathname = "$ARGV[0]";
 if (-d "$pathname") {
-  my $failures = convert_dir($pathname);
+  $pathname =~ s/\/$//;
+  my $start = time();
+  my ($converted, $failures) = convert_dir($pathname);
+  my $end = time();
+  my $elapsed = $end - $start;
+  my $minutes = int($elapsed / 60);
+  my $seconds = $elapsed - ($minutes*60);
+  print "\n".scalar(@$converted)." files were converted in $minutes minutes $seconds seconds\n";
   if (scalar(@$failures) > 0) {
-    print "\nThe following files could not be converted, and need a manual fix:\n";
+    print "\n".scalar(@$failures)." files could not be converted, and need a manual fix:\n";
     foreach my $failure (@$failures) {
       print "  $failure\n";
     }
@@ -41,23 +48,26 @@ if (-d "$pathname") {
 }
 
 # Converts a directory recursively, selecting only non-version .problem files.
-# Returns a list of files that could not be converted.
+# Returns a list of files that were converted, and a list of files that could not be converted.
 sub convert_dir {
   my ($dirpath) = @_;
   
+  my @converted = ();
   my @failures = ();
   opendir (my $dh, $dirpath) or die $!;
   while (my $entry = readdir($dh)) {
     next if ($entry =~ m/^\./); # ignore entries starting with a period
     my $pathname = $dirpath.'/'.$entry;
     if (-d $pathname) {
-      my $new_failures = convert_dir($pathname);
+      my ($new_converted, $new_failures) = convert_dir($pathname);
+      push(@converted, @$new_converted);
       push(@failures, @$new_failures);
     } elsif (-f $pathname) {
       # check that the file ends in .problem but not .number.problem or _clean.problem
       if ($pathname =~ /\.problem$/ && $pathname !~ /\.[0-9]+\.problem$/ && $pathname !~ /_clean\.problem$/) {
         try {
           convert_file($pathname);
+          push(@converted, $pathname);
         } catch {
           print "$_\n"; # continue processing even if a file cannot be converted
           push(@failures, $pathname);
@@ -66,7 +76,7 @@ sub convert_dir {
     }
   }
   closedir($dh);
-  return(\@failures);
+  return((\@converted, \@failures));
 }
 
 # Converts a file, creating a _clean.problem file in the same directory.

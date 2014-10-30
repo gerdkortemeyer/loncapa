@@ -206,7 +206,28 @@ sub fix_cdata_elements {
 sub fix_html_entities {
   my ($lines) = @_;
   foreach my $line (@{$lines}) {
-    $line =~ s/\&nbsp;/&#xA0;/g;
+    # html_to_xml is converting named entities before 255 (see HTML parser dtext)
+    # Assuming Windows encoding (Unicode entities are not before 160 and are the same between 160 and 255):
+    $line =~ s/&#128;|&#x80;/€/g;
+    $line =~ s/&#130;|&#x82;/‚/g;
+    $line =~ s/&#132;|&#x84;/„/g;
+    $line =~ s/&#133;|&#x85;/…/g;
+    $line =~ s/&#134;|&#x86;/†/g;
+    $line =~ s/&#135;|&#x87;/‡/g;
+    $line =~ s/&#136;|&#x88;/ˆ/g;
+    $line =~ s/&#137;|&#x89;/‰/g;
+    $line =~ s/&#139;|&#x8B;/‹/g;
+    $line =~ s/&#145;|&#x91;/‘/g;
+    $line =~ s/&#146;|&#x92;/’/g;
+    $line =~ s/&#147;|&#x93;/“/g;
+    $line =~ s/&#148;|&#x94;/”/g;
+    $line =~ s/&#149;|&#x95;/•/g;
+    $line =~ s/&#150;|&#x96;/–/g;
+    $line =~ s/&#151;|&#x97;/—/g;
+    $line =~ s/&#152;|&#x98;/˜/g;
+    $line =~ s/&#153;|&#x99;/™/g;
+    $line =~ s/&#155;|&#x9B;/›/g;
+    $line =~ s/&#156;|&#x9C;/œ/g;
   }
 }
 
