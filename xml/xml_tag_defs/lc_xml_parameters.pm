@@ -22,7 +22,7 @@ use strict;
 use Apache::lc_asset_safeeval;
 use Apache::lc_authorize;
 use Apache::lc_entity_sessions();
-
+use Apache::lc_asset_xml();
 use Apache::lc_logs;
 
 our @ISA = qw(Exporter);
@@ -32,8 +32,9 @@ our @EXPORT = qw(start_parameter_analysis);
 
 sub start_parameter_analysis {
    my ($p,$safe,$stack,$token)=@_;
-   &logdebug("I am running!");
-   $stack->{'i_was'}='here';
+   if ($token->[2]->{'name'}) {
+      $stack->{'parameters'}->{&Apache::lc_asset_xml::depth_indicator($stack)}->{$token->[2]->{'name'}}->{'default'}=$token->[2]->{'default'};
+   }
 }
 
 1;

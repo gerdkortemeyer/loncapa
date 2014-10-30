@@ -82,6 +82,21 @@ sub tag_attribute {
    return undef;
 }
 
+#
+# Get the depth indicator
+#
+sub depth_ids {
+   my ($stack)=@_;
+   my @levels=();
+   foreach my $tag (@{$stack->{'tags'}}) {
+      push(@levels,$tag->{'args'}->{'id'});
+   }
+   return @levels;
+}
+
+sub depth_indicator {
+   return join(':',&depth_ids(@_));
+}
 
 # Output a piece of text
 #
@@ -140,6 +155,7 @@ sub default_html {
 sub parser {
    my ($p,$safe,$stack,$status,$target)=@_;
    my $output='';
+   my $tmpid=1;
    while (my $token = $p->get_token) {
       if ($token->[0] eq 'T') {
          $output.=&process_text($p,$safe,$stack,$status,$target,$token);
@@ -147,6 +163,11 @@ sub parser {
 # A start tag - evaluate the attributes in here
          foreach my $key (keys(%{$token->[2]})) {
             $token->[2]->{$key}=&Apache::lc_asset_safeeval::texteval($safe,$token->[2]->{$key}); 
+         }
+# Don't have an ID yet? Make one up.
+         unless ($token->[2]->{'id'}) {
+            $token->[2]->{'id'}='#'.$tmpid;
+            $tmpid++;
          }
 # - remember for embedded tags and for the end tag
          push(@{$stack->{'tags'}},{ 'name' => $token->[1], 'args' => $token->[2] });
