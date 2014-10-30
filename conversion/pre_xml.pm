@@ -11,7 +11,7 @@ use Encode::Guess;
 
 # list of elements inside which < and > might not be turned into entities
 # unfortunately, answer can sometimes contain the elements vector and value...
-my @cdata_elements = ('answer', 'm'); # not script because the HTML parser will handle it
+my @cdata_elements = ('answer', 'm', 'display', 'parse'); # not script because the HTML parser will handle it
 
 
 # Reads a LON-CAPA 2 file, guesses the encoding, fixes characters in cdata_elements, fixes HTML entities,
@@ -173,9 +173,10 @@ sub fix_cdata_elements {
           $test =~ s/^\s+|\s+$//g ;
           if ($test eq '/'.$cde) {
             $stop = 1;
-            $j = $indsup + 1;
-          } elsif ($test =~ /^[a-zA-Z\/]$/) {
-            $j = $indsup + 1;
+            $j = $indsup;
+          # this is commented because of markup like <display>&web(' ','','<p>')</display>
+          #} elsif ($test =~ /^[a-zA-Z\/]$/) {
+          #  $j = $indsup + 1;
           } else {
             $line = substr($line, 0, $indinf).'&lt;'.substr($line, $indinf+1);
             $lines->[$i] = $line;
