@@ -104,16 +104,13 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-with-parts"/>
         <xs:group ref="inserts"/>
-        <xs:element ref="part"/>
         <xs:element ref="lcmeta"/>
         <xs:element ref="parameter"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
-        <xs:element ref="solved"/>
-        <xs:element ref="notsolved"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -123,6 +120,17 @@
       Groups of block and inline elements.
     </xs:documentation>
   </xs:annotation>
+  <xs:group name="text-with-parts">
+    <xs:annotation>
+      <xs:documentation>
+        List of block and inline elements mixed with text. These elements can contain parts but not responses.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:group ref="blocks-with-parts"/>
+      <xs:group ref="inlines"/>
+    </xs:choice>
+  </xs:group>
   <xs:group name="text-with-responses">
     <xs:annotation>
       <xs:documentation>
@@ -148,16 +156,18 @@
       <xs:group ref="inlines"/>
     </xs:choice>
   </xs:group>
-  <xs:group name="blocks-with-responses">
+  <xs:group name="universal-blocks">
+    <xs:annotation>
+      <xs:documentation>
+        Blocks with a content that does not depend on the scope, and that can appear anywhere with text and blocks.
+      </xs:documentation>
+    </xs:annotation>
     <xs:choice>
       <xs:element ref="import"/>
-      <xs:element name="block" type="block-with-responses"/>
       <xs:element ref="while"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="standalone"/>
-      <xs:element name="problemtype" type="problemtype-with-responses"/>
-      <xs:element name="randomlist" type="randomlist-with-responses"/>
       <xs:element ref="perl"/>
       <xs:element ref="languageblock"/>
       <xs:element ref="translated"/>
@@ -171,81 +181,84 @@
       <xs:element ref="drawimage"/>
       
       <xs:element ref="script"/>
-      <xs:element name="section" type="section-with-responses"/>
       <xs:group ref="heading"/>
+      <xs:element ref="pre"/>
+      <xs:element ref="noscript"/>
+      <xs:element ref="hr"/>
+      <xs:element ref="blockquote"/>
+      <xs:element ref="object"/>
+      <xs:element ref="applet"/>
+      <xs:element ref="embed"/>
+      <xs:element ref="video"/>
+      <xs:element ref="audio"/>
+      <xs:element ref="map"/>
+      <xs:element ref="canvas"/>
+      <xs:element ref="form"/>
+      <xs:element ref="fieldset"/>
+      <xs:element ref="iframe"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="blocks-with-parts">
+    <xs:choice>
+      <xs:element ref="part"/>
+      
+      <xs:group ref="universal-blocks"/>
+      
+      <xs:element name="block" type="block-with-parts"/>
+      <xs:element name="problemtype" type="problemtype-with-parts"/>
+      <xs:element name="randomlist" type="randomlist-with-parts"/>
+      <xs:element ref="solved"/>
+      <xs:element ref="notsolved"/>
+      
+      <xs:element name="section" type="section-with-parts"/>
+      <xs:element name="div" type="div-with-parts"/>
+      <xs:element name="p" type="p-without-responses"/>
+      <xs:element name="ul" type="ul-with-parts"/>
+      <xs:element name="ol" type="ol-with-parts"/>
+      <xs:element name="table" type="table-with-parts"/>
+      <xs:element name="dl" type="dl-with-parts"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="blocks-with-responses">
+    <xs:choice>
+      <xs:group ref="universal-blocks"/>
+      
+      <xs:element name="block" type="block-with-responses"/>
+      <xs:element name="problemtype" type="problemtype-with-responses"/>
+      <xs:element name="randomlist" type="randomlist-with-responses"/>
+      <xs:element ref="solved"/>
+      <xs:element ref="notsolved"/>
+      
+      <xs:element name="section" type="section-with-responses"/>
       <xs:element name="div" type="div-with-responses"/>
       <xs:element name="p" type="p-with-responses"/>
       <xs:element name="ul" type="ul-with-responses"/>
       <xs:element name="ol" type="ol-with-responses"/>
       <xs:element name="table" type="table-with-responses"/>
       <xs:element name="dl" type="dl-with-responses"/>
-      <xs:element ref="pre"/>
-      <xs:element ref="noscript"/>
-      <xs:element ref="hr"/>
-      <xs:element ref="blockquote"/>
-      <xs:element ref="object"/>
-      <xs:element ref="applet"/>
-      <xs:element ref="embed"/>
-      <xs:element ref="video"/>
-      <xs:element ref="audio"/>
-      <xs:element ref="map"/>
-      <xs:element ref="canvas"/>
-      <xs:element ref="form"/>
-      <xs:element ref="fieldset"/>
-      <xs:element ref="iframe"/>
     </xs:choice>
   </xs:group>
   <xs:group name="blocks-without-responses">
     <xs:choice>
-      <xs:element ref="import"/>
+      <xs:group ref="universal-blocks"/>
+      
       <xs:element name="block" type="block-without-responses"/>
-      <xs:element ref="while"/>
-      <xs:element ref="tex"/>
-      <xs:element ref="web"/>
-      <xs:element ref="standalone"/>
       <xs:element name="problemtype" type="problemtype-without-responses"/>
       <xs:element name="randomlist" type="randomlist-without-responses"/>
-      <xs:element ref="perl"/>
-      <xs:element ref="languageblock"/>
-      <xs:element ref="translated"/>
-      <xs:element ref="window"/>
-      <xs:element ref="windowlink"/>
-      <xs:element ref="togglebox"/>
-      <xs:element ref="instructorcomment"/>
-      <xs:element ref="comment"/>
-      <xs:element ref="gnuplot"/>
-      <xs:element ref="organicstructure"/>
-      <xs:element ref="drawimage"/>
       
-      <xs:element ref="script"/>
       <xs:element name="section" type="section-without-responses"/>
-      <xs:group ref="heading"/>
       <xs:element name="div" type="div-without-responses"/>
       <xs:element name="p" type="p-without-responses"/>
       <xs:element name="ul" type="ul-without-responses"/>
       <xs:element name="ol" type="ol-without-responses"/>
       <xs:element name="table" type="table-without-responses"/>
       <xs:element name="dl" type="dl-without-responses"/>
-      <xs:element ref="pre"/>
-      <xs:element ref="noscript"/>
-      <xs:element ref="hr"/>
-      <xs:element ref="blockquote"/>
-      <xs:element ref="object"/>
-      <xs:element ref="applet"/>
-      <xs:element ref="embed"/>
-      <xs:element ref="video"/>
-      <xs:element ref="audio"/>
-      <xs:element ref="map"/>
-      <xs:element ref="canvas"/>
-      <xs:element ref="form"/>
-      <xs:element ref="fieldset"/>
-      <xs:element ref="iframe"/>
     </xs:choice>
   </xs:group>
   <xs:group name="inlines">
     <xs:annotation>
       <xs:documentation>
-        Note: some responses and the hint element are also inline, but are not in this group.
+        Note: some responses, hintgroup and hint are also inline, but are not in this group.
       </xs:documentation>
     </xs:annotation>
     <xs:choice>
@@ -3835,8 +3848,6 @@
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
-        <xs:element ref="solved"/>
-        <xs:element ref="notsolved"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:string">
         <xs:annotation>
@@ -3924,8 +3935,6 @@
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
-        <xs:element ref="solved"/>
-        <xs:element ref="notsolved"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -3953,7 +3962,7 @@
       <xs:documentation>
         Block For After Solved
         
-        Everything inside is skipped if the problem is “not solved”.
+        Everything inside is skipped if the problem part is “not solved”.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -3970,7 +3979,7 @@
       <xs:documentation>
         Block For When Not Solved
         
-        Everything inside is skipped if the problem is “solved”.
+        Everything inside is skipped if the problem part is “solved”.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -4034,18 +4043,28 @@
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
+  <xs:complexType mixed="true" name="block-with-parts">
+    <xs:complexContent mixed="true">
+      <xs:extension base="block-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-parts"/>
+          <xs:group ref="inserts"/>
+          <xs:element ref="randomlabel"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType mixed="true" name="block-with-responses">
     <xs:complexContent mixed="true">
       <xs:extension base="block-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-responses"/>
           <xs:group ref="inserts"/>
-          <xs:element ref="part"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
-          <xs:element ref="solved"/>
-          <xs:element ref="notsolved"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -4059,8 +4078,6 @@
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
-          <xs:element ref="solved"/>
-          <xs:element ref="notsolved"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -4159,6 +4176,19 @@
       </xs:simpleType>
     </xs:attribute>
   </xs:complexType>
+  <xs:complexType mixed="true" name="problemtype-with-parts">
+    <xs:complexContent mixed="true">
+      <xs:extension base="problemtype-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-parts"/>
+          <xs:group ref="inserts"/>
+          <xs:element ref="randomlabel"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType mixed="true" name="problemtype-with-responses">
     <xs:complexContent mixed="true">
       <xs:extension base="problemtype-base">
@@ -4168,8 +4198,6 @@
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
-          <xs:element ref="solved"/>
-          <xs:element ref="notsolved"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -4183,8 +4211,6 @@
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
-          <xs:element ref="solved"/>
-          <xs:element ref="notsolved"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -4204,6 +4230,42 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="randomlist-with-parts">
+    <xs:complexContent>
+      <xs:extension base="randomlist-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:element ref="part"/>
+          <xs:element ref="img"/>
+          <xs:element ref="postanswerdate"/>
+          <xs:element ref="preduedate"/>
+          <xs:element name="block" type="block-with-parts"/>
+          <xs:element ref="while"/>
+          <xs:element name="problemtype" type="problemtype-with-parts"/>
+          <xs:element ref="window"/>
+          <xs:element ref="display"/>
+          <xs:element ref="gnuplot"/>
+          <xs:element ref="organicstructure"/>
+          <xs:element ref="instructorcomment"/>
+          <xs:element ref="drawimage"/>
+          <xs:element ref="import"/>
+          
+          <xs:element name="section" type="section-with-parts"/>
+          <xs:element name="ul" type="ul-with-parts"/>
+          <xs:element name="ol" type="ol-with-parts"/>
+          <xs:element name="table" type="table-with-parts"/>
+          <xs:element name="dl" type="dl-with-parts"/>
+          <xs:element ref="object"/>
+          <xs:element ref="applet"/>
+          <xs:element ref="embed"/>
+          <xs:element ref="video"/>
+          <xs:element ref="audio"/>
+          <xs:element ref="canvas"/>
+          <xs:element ref="form"/>
+          <xs:element ref="iframe"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="randomlist-with-responses">
     <xs:complexContent>
@@ -5022,6 +5084,15 @@
     </xs:annotation>
     <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
+  <xs:complexType name="section-with-parts">
+    <xs:complexContent>
+      <xs:extension base="section-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="blocks-with-parts"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="section-with-responses">
     <xs:complexContent>
       <xs:extension base="section-base">
@@ -5105,18 +5176,28 @@
     </xs:annotation>
     <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
+  <xs:complexType mixed="true" name="div-with-parts">
+    <xs:complexContent mixed="true">
+      <xs:extension base="div-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-parts"/>
+          <xs:group ref="inserts"/>
+          <xs:element ref="randomlabel"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType mixed="true" name="div-with-responses">
     <xs:complexContent mixed="true">
       <xs:extension base="div-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-responses"/>
           <xs:group ref="inserts"/>
-          <xs:element ref="part"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
-          <xs:element ref="solved"/>
-          <xs:element ref="notsolved"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -5130,8 +5211,6 @@
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
-          <xs:element ref="solved"/>
-          <xs:element ref="notsolved"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -5173,6 +5252,15 @@
     </xs:annotation>
     <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
+  <xs:complexType name="ul-with-parts">
+    <xs:complexContent>
+      <xs:extension base="ul-base">
+        <xs:sequence maxOccurs="unbounded">
+          <xs:element name="li" type="li-with-parts"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="ul-with-responses">
     <xs:complexContent>
       <xs:extension base="ul-base">
@@ -5198,6 +5286,15 @@
       </xs:documentation>
     </xs:annotation>
     <xs:attributeGroup ref="coreattrs"/>
+  </xs:complexType>
+  <xs:complexType name="ol-with-parts">
+    <xs:complexContent>
+      <xs:extension base="ol-base">
+        <xs:sequence maxOccurs="unbounded">
+          <xs:element name="li" type="li-with-parts"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="ol-with-responses">
     <xs:complexContent>
@@ -5234,6 +5331,15 @@
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
+  <xs:complexType mixed="true" name="li-with-parts">
+    <xs:complexContent mixed="true">
+      <xs:extension base="li-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-parts"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType mixed="true" name="li-with-responses">
     <xs:complexContent mixed="true">
       <xs:extension base="li-base">
@@ -5261,6 +5367,16 @@
       </xs:documentation>
     </xs:annotation>
     <xs:attributeGroup ref="coreattrs"/>
+  </xs:complexType>
+  <xs:complexType name="dl-with-parts">
+    <xs:complexContent>
+      <xs:extension base="dl-base">
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="dt"/>
+          <xs:element name="dd" type="dd-with-parts"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="dl-with-responses">
     <xs:complexContent>
@@ -5295,6 +5411,15 @@
         The HTML &lt;dd&gt; Element (or HTML Description Element) indicates the description of a term in a description list (&lt;dl&gt;) element. This element can occur only as a child element of a definition list and it must follow a &lt;dt&gt; element.
       </xs:documentation>
     </xs:annotation>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="dd-with-parts">
+    <xs:complexContent mixed="true">
+      <xs:extension base="dd-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-parts"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType mixed="true" name="dd-with-responses">
     <xs:complexContent mixed="true">
@@ -5362,6 +5487,20 @@
       </xs:simpleType>
     </xs:attribute>
   </xs:complexType>
+  <xs:complexType name="table-with-parts">
+    <xs:complexContent>
+      <xs:extension base="table-base">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="thead"/>
+          <xs:element minOccurs="0" ref="tfoot"/>
+          <xs:choice>
+            <xs:element maxOccurs="unbounded" name="tbody" type="tbody-with-parts"/>
+            <xs:element maxOccurs="unbounded" name="tr" type="tr-with-parts"/>
+          </xs:choice>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="table-with-responses">
     <xs:complexContent>
       <xs:extension base="table-base">
@@ -5404,6 +5543,13 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:complexType name="tbody-with-parts">
+    <xs:sequence>
+      <xs:choice>
+        <xs:element maxOccurs="unbounded" name="tr" type="tr-with-parts"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
   <xs:complexType name="tbody-with-responses">
     <xs:sequence>
       <xs:choice>
@@ -5425,6 +5571,16 @@
       </xs:documentation>
     </xs:annotation>
     <xs:attributeGroup ref="coreattrs"/>
+  </xs:complexType>
+  <xs:complexType name="tr-with-parts">
+    <xs:complexContent>
+      <xs:extension base="tr-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:element ref="th"/>
+          <xs:element name="td" type="td-with-parts"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="tr-with-responses">
     <xs:complexContent>
@@ -5492,6 +5648,15 @@
         </xs:union>
       </xs:simpleType>
     </xs:attribute>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="td-with-parts">
+    <xs:complexContent mixed="true">
+      <xs:extension base="td-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-parts"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType mixed="true" name="td-with-responses">
     <xs:complexContent mixed="true">

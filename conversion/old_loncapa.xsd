@@ -4294,7 +4294,7 @@
       <xs:documentation>
         Block For After Solved
         
-        Everything inside is skipped if the problem is “not solved”.
+        Everything inside is skipped if the problem part is “not solved”.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
@@ -4311,7 +4311,7 @@
       <xs:documentation>
         Block For When Not Solved
         
-        Everything inside is skipped if the problem is “solved”.
+        Everything inside is skipped if the problem part is “solved”.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
