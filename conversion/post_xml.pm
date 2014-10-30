@@ -418,6 +418,7 @@ sub fix_fonts {
   my ($root, $all_block) = @_;
   my $doc = $root->ownerDocument;
   my @fonts = $root->getElementsByTagName('font');
+  @fonts = reverse(@fonts); # to deal with the ancestor last in the case of font/font
   foreach my $font (@fonts) {
     my $block = 0;
     for (my $child=$font->firstChild; defined $child; $child=$child->nextSibling) {
