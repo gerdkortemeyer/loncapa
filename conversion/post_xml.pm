@@ -17,8 +17,8 @@ use Env qw(RES_DIR); # path of res directory parent (without the / at the end)
 no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
 
 # these are constants
-my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','hintgroup','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','textfield','hiddensubmission','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','tex','web','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
-my @inline_responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse');
+my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','textfield','hiddensubmission','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','tex','web','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
+my @inline_like_block = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse', 'hint', 'hintgroup'); # inline elements treated like blocks for pretty print and some other things
 my @responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse','essayresponse','radiobuttonresponse','matchresponse','rankresponse','imageresponse','functionplotresponse');
 my @block_html = ('html','head','body','section','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','dt','dd','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
 my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
@@ -414,7 +414,7 @@ sub fix_fonts {
   foreach my $font (@fonts) {
     my $block = 0;
     for (my $child=$font->firstChild; defined $child; $child=$child->nextSibling) {
-      if (string_in_array($all_block, $child->nodeName) || string_in_array(\@inline_responses, $child->nodeName)) {
+      if (string_in_array($all_block, $child->nodeName) || string_in_array(\@inline_like_block, $child->nodeName)) {
         $block = 1;
         last;
       }
@@ -1360,7 +1360,7 @@ sub change_hints {
         $nb_hintgroups_with_hintpart_default++;
       }
     }
-    if ($nb_hintgroups_with_hintpart_default > 1) {
+    if ($nb_hintgroups_with_hintpart_default > 1 && scalar(@{$hintgroup->nonBlankChildNodes()}) > 0) {
       push(@hintgroups_to_preserve, $hintgroup);
     }
   }
@@ -1564,8 +1564,7 @@ sub paragraph_needed {
   my ($node) = @_;
   for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
     if (($child->nodeType == XML_TEXT_NODE && $child->nodeValue !~ /^\s*$/) ||
-        ($child->nodeType == XML_ELEMENT_NODE && !string_in_array(\@inline_responses, $child->nodeName) &&
-        $child->nodeName ne 'hint') ||
+        ($child->nodeType == XML_ELEMENT_NODE && !string_in_array(\@inline_like_block, $child->nodeName)) ||
         $child->nodeType == XML_CDATA_SECTION_NODE ||
         $child->nodeType == XML_ENTITY_NODE || $child->nodeType == XML_ENTITY_REF_NODE) {
       return(1);
@@ -1860,7 +1859,7 @@ sub pretty {
   my $type = $node->nodeType;
   if ($type == XML_ELEMENT_NODE) {
     my $name = $node->nodeName;
-    if ((string_in_array($all_block, $name) || string_in_array(\@inline_responses, $name) || $name eq 'hint') &&
+    if ((string_in_array($all_block, $name) || string_in_array(\@inline_like_block, $name)) &&
         !string_in_array(\@preserve_elements, $name)) {
       # make sure there is a newline at the beginning and at the end if there is anything inside
       if (defined $node->firstChild && !string_in_array(\@no_newline_inside, $name)) {

@@ -131,6 +131,7 @@
     </xs:annotation>
     <xs:choice>
       <xs:group ref="responses"/>
+      <xs:element ref="hintgroup"/>
       <xs:element ref="hint"/>
       <xs:group ref="blocks-with-responses"/>
       <xs:group ref="inlines"/>
@@ -168,7 +169,6 @@
       <xs:element ref="gnuplot"/>
       <xs:element ref="organicstructure"/>
       <xs:element ref="drawimage"/>
-      <xs:element ref="hintgroup"/>
       
       <xs:element ref="script"/>
       <xs:element name="section" type="section-with-responses"/>
@@ -5150,6 +5150,7 @@
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="inlines"/>
           <xs:group ref="inlineResponses"/>
+          <xs:element ref="hintgroup"/>
           <xs:element ref="hint"/>
         </xs:choice>
       </xs:extension>
