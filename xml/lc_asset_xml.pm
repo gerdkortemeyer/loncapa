@@ -37,7 +37,7 @@ use Apache::lc_xml_tables;
 use Apache::lc_xml_conditionals;
 use Apache::lc_xml_include;
 use Apache::lc_xml_gadgets;
-
+use Apache::lc_xml_parameters;
 
 # Problem tags
 #
@@ -193,6 +193,13 @@ sub target_render {
    my $stack={};
    my $status;
 #FIXME: actually find status
+#...
+# Some targets need an initial analysis parsing to prime the stack with
+# parameters and IDs, so call self and save the stack
+   if (($target eq 'html') || ($target eq 'tex')) {
+      (undef,$stack)=&target_render($fn,'analysis');
+   }
+# Actually produce the output
    my $output=&parser($p,$safe,$stack,$status,$target);
    return ($output,$stack);
 }
