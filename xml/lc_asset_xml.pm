@@ -94,9 +94,24 @@ sub depth_ids {
    return @levels;
 }
 
-sub depth_indicator {
-   return join(':',&depth_ids(@_));
+#
+# Get a parameter
+#
+sub cascade_parameter {
+   my ($name,$stack)=@_;
+   my @levels=&depth_ids($stack);
+   while ($#levels>=0) {
+       my $indicator=join(':',@levels);
+       if ($stack->{'parameters'}->{$indicator}->{$name}->{'value'}) {
+          return $stack->{'parameters'}->{$indicator}->{$name}->{'value'};
+       }
+       if ($stack->{'parameters'}->{$indicator}->{$name}->{'default'}) {
+          return $stack->{'parameters'}->{$indicator}->{$name}->{'default'};
+       }
+       pop(@levels);
+   }
 }
+
 
 # Output a piece of text
 #

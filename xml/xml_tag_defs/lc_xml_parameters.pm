@@ -33,7 +33,13 @@ our @EXPORT = qw(start_parameter_analysis);
 sub start_parameter_analysis {
    my ($p,$safe,$stack,$token)=@_;
    if ($token->[2]->{'name'}) {
-      $stack->{'parameters'}->{&Apache::lc_asset_xml::depth_indicator($stack)}->{$token->[2]->{'name'}}->{'default'}=$token->[2]->{'default'};
+# How deep are we?
+      my @levels=&Apache::lc_asset_xml::depth_ids($stack);
+# Discard our own
+      pop(@levels);
+# Set the default parameter
+      $stack->{'parameters'}->{join(':',@levels)}->{$token->[2]->{'name'}}->{'default'}=$token->[2]->{'default'};
+#FIXME: need to retrieve values of external parameters
    }
 }
 

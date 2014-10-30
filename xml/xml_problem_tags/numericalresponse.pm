@@ -34,7 +34,7 @@ sub start_numericalresponse_html {
 
 sub end_numericalresponse_html {
    my ($p,$safe,$stack,$token)=@_;
-   return '<pre>'.Dumper($stack).'</pre>';
+   return "Get: ".&Apache::lc_asset_xml::cascade_parameter('tol',$stack).'<br /><pre>'.Dumper($stack).'</pre>';
 }
 
 1;
