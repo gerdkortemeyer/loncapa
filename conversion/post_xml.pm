@@ -90,11 +90,12 @@ sub create_new_structure {
   foreach my $html (@htmls) {
     replace_by_children($html);
   }
-  # replace head by htmlhead, insert all style elements inside
+  # replace head by htmlhead, insert all link and style elements inside
   my $current_node = undef;
   my @heads = $doc->getElementsByTagName('head');
+  my @links = $doc->getElementsByTagName('link');
   my @styles = $doc->getElementsByTagName('style');
-  if (scalar(@heads) > 0 || scalar(@styles) > 0) {
+  if (scalar(@heads) > 0 || scalar(@links) > 0 || scalar(@styles) > 0) {
     my $htmlhead = $doc->createElement('htmlhead');
     foreach my $head (@heads) {
       my $next;
@@ -104,6 +105,10 @@ sub create_new_structure {
         $htmlhead->appendChild($child);
       }
       $head->parentNode->removeChild($head);
+    }
+    foreach my $link (@links) {
+      $link->parentNode->removeChild($link);
+      $htmlhead->appendChild($link);
     }
     foreach my $style (@styles) {
       $style->parentNode->removeChild($style);
