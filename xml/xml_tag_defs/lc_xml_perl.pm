@@ -24,7 +24,14 @@ use Apache::lc_asset_safeeval;
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_perl_html start_perl_tex start_perl_meta);
+our @EXPORT = qw(start_perl_html start_perl_tex start_perl_meta start_perl_analysis);
+
+#
+# The script should be evaluated for online, print, and analysis
+#
+sub start_perl_analysis {
+   return &perl_eval(@_);
+}
 
 sub start_perl_html {
    return &perl_eval(@_);
@@ -43,6 +50,10 @@ sub perl_eval {
    return '';
 }
 
+#
+# Need to skip for meta, no interest in
+# cataloging Perl "keywords"
+#
 sub start_perl_meta {
    my ($p,$safe,$stack,$token)=@_;
    $p->get_text('/perl');
