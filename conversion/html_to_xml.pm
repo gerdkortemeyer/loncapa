@@ -16,6 +16,7 @@ my @empty = ('base','br','col','hr','img','input','keygen','link','meta','param'
 
 my $result;
 my @stack;
+my $close_warning;
 
 
 # This takes non-well-formed UTF-8 LC+HTML and returns well-formed but non-valid XML LC+XHTML.
@@ -23,6 +24,7 @@ sub html_to_xml {
   my($textref) = @_;
   $result = '';
   @stack = ();
+  $close_warning = '';
   my $p = HTML::Parser->new( api_version => 3,
                           start_h => [\&start, "tagname, attr, attrseq"],
                           end_h   => [\&end,   "tagname"],
@@ -36,7 +38,14 @@ sub html_to_xml {
   $result .= "<?xml version='1.0' encoding='UTF-8'?>\n";
   $p->parse($$textref);
   for (my $i=scalar(@stack)-1; $i>=0; $i--) {
+    if ($close_warning ne '') {
+      $close_warning .= ', ';
+    }
+    $close_warning .= $stack[$i];
     $result .= '</'.$stack[$i].'>';
+  }
+  if ($close_warning ne '') {
+    print "Warning: the parser had to add closing tags to understand the document ($close_warning)\n";
   }
   return \$result;
 }
@@ -141,6 +150,10 @@ sub end {
   for (my $i=scalar(@stack)-1; $i>=0; $i--) {
     if ($stack[$i] eq $tagname) {
       for (my $j=scalar(@stack)-1; $j>$i; $j--) {
+        if ($close_warning ne '') {
+          $close_warning .= ', ';
+        }
+        $close_warning .= $stack[$j];
         $result .= '</'.$stack[$j].'>';
       }
       splice(@stack, $i, scalar(@stack)-$i);
