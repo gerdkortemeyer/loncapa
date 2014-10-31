@@ -29,7 +29,7 @@ our @EXPORT = qw(start_numericalresponse_html end_numericalresponse_html);
 
 sub start_numericalresponse_html {
    my ($p,$safe,$stack,$token)=@_;
-   return '<p>Starting numerical response';
+   return '';
 }
 
 sub end_numericalresponse_html {

@@ -83,6 +83,20 @@ sub tag_attribute {
 }
 
 #
+# Check what if we are inside of tag
+#
+sub enclosed_in {
+   my ($tag,$stack)=@_;
+   if ($stack->{'tags'}) {
+      for (my $i=$#{$stack->{'tags'}}; $i>=0; $i--) {
+         if ($stack->{'tags'}->[$i]->{'name'} eq $tag) { return 1; }
+      }
+   }
+   return undef;
+}
+
+
+#
 # Get the depth indicator
 #
 sub depth_ids {

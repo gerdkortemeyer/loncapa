@@ -27,11 +27,20 @@ use Apache::lc_xml_utils();
 use Apache::lc_entity_sessions();
 use Apache::lc_entity_users();
 use Apache::lc_xml_forms();
+use Apache::lc_asset_xml();
 
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw();
+our @EXPORT = qw(start_textline_html);
+
+sub start_textline_html {
+   my ($p,$safe,$stack,$token)=@_;
+   if (&Apache::lc_asset_xml::enclosed_in('numericalresponse',$stack)) {
+      return 'inside numericalresponse';
+   }
+   return '';
+}
 
 1;
 __END__
