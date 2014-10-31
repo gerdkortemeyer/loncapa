@@ -9,7 +9,7 @@ use warnings;
 use HTML::Parser ();
 
 # always closing, end tags are ignored:
-my @empty = ('base','br','col','hr','img','input','keygen','link','meta','param','source','track','wbr');
+my @empty = ('base','br','col','hr','img','input','keygen','link','meta','param','source','track','wbr', 'startouttext','endouttext');
 
 #my @block_html = ('html','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','table','tbody','tr','td','th','dl','pre','noscript','blockquote','object','applet','embed','map','form','fieldset','iframe');
 
@@ -159,6 +159,8 @@ sub end {
       splice(@stack, $i, scalar(@stack)-$i);
       $found = 1;
       last;
+    } elsif (index_of(\@stack, 'web') != -1) {
+      die "There is a web element with missing end tags inside - it probably has to be fixed by hand";
     }
   }
   if ($found) {
