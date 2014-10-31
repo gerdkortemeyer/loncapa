@@ -280,7 +280,7 @@ sub target_render {
 #...
 # Some targets need an initial analysis parsing to prime the stack with
 # parameters and IDs, so call self and save the stack
-   if (($target eq 'html') || ($target eq 'tex')) {
+   if ($target eq 'html') {
       (undef,$stack)=&target_render($fn,'analysis');
    }
 # Actually produce the output
