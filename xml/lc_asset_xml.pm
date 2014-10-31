@@ -126,6 +126,40 @@ sub cascade_parameter {
    }
 }
 
+#
+# Get things ready for a response
+#
+sub init_response {
+   my ($stack)=@_;
+   $stack->{'response_inputs'}=[];
+   $stack->{'response_hints'}=[];
+}
+
+#
+# Add an input ID to a response
+#
+sub add_response_input {
+   my ($stack)=@_;
+   push(@{$stack->{'response_inputs'}},${$stack->{'tags'}}[-1]);
+}
+
+#
+# Get all the inputs
+#
+sub get_response_inputs {
+   my ($stack)=@_;
+   return $stack->{'response_inputs'};
+}
+
+sub add_response_hint {
+   my ($stack)=@_;
+   push(@{$stack->{'response_hints'}},${$stack->{'tags'}}[-1]);
+}
+
+sub get_response_hints {
+   my ($stack)=@_;
+   return $stack->{'response_hints'};
+}
 
 # Output a piece of text
 #
@@ -195,7 +229,7 @@ sub parser {
          }
 # Don't have an ID yet? Make one up.
          unless ($token->[2]->{'id'}) {
-            $token->[2]->{'id'}='#'.$tmpid;
+            $token->[2]->{'id'}='TEMP_'.$tmpid;
             $tmpid++;
          }
 # - remember for embedded tags and for the end tag

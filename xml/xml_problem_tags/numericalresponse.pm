@@ -29,6 +29,7 @@ our @EXPORT = qw(start_numericalresponse_html end_numericalresponse_html);
 
 sub start_numericalresponse_html {
    my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_asset_xml::init_response($stack);
    return '';
 }
 
