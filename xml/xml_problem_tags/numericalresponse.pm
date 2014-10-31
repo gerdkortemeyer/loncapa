@@ -25,7 +25,10 @@ use Data::Dumper;
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_numericalresponse_html end_numericalresponse_html);
+our @EXPORT = qw(start_numericalresponse_html start_numericalresponse_tex 
+                   end_numericalresponse_html   end_numericalresponse_tex
+                 start_numericalhintcondition_html start_numericalhintcondition_tex
+                   end_numericalhintcondition_html   end_numericalhintcondition_tex);
 
 sub start_numericalresponse_html {
    my ($p,$safe,$stack,$token)=@_;
@@ -33,10 +36,44 @@ sub start_numericalresponse_html {
    return '';
 }
 
+sub start_numericalresponse_tex {
+   return &start_numericalresponse_html(@_);
+}
+
 sub end_numericalresponse_html {
    my ($p,$safe,$stack,$token)=@_;
+#FIXME: do stuff
    return "Get: ".&Apache::lc_asset_xml::cascade_parameter('tol',$stack).'<br /><pre>'.Dumper($stack).'</pre>';
 }
+
+sub end_numericalresponse_tex {
+   my ($p,$safe,$stack,$token)=@_;
+#FIXME
+   return '';
+}
+
+sub start_numericalhintcondition_html {
+   my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_asset_xml::add_response_hint($stack);
+   return '';
+}
+
+sub start_numericalhintcondition_tex {
+   return &start_numericalhintcondition_html(@_);
+}
+
+sub end_numericalhintcondition_html {
+   my ($p,$safe,$stack,$token)=@_;
+#FIXME actually evaluate
+   return '';
+}
+
+
+sub end_numericalhintcondition_tex {
+   return &end_numericalhintcondition_html(@_);
+}
+
+
 
 1;
 __END__
