@@ -138,6 +138,7 @@ sub fix_cdata_elements {
   my $type;
   my $in_numericalresponse = 0;
   my $in_formularesponse = 0;
+  my $in_script = 0;
   ($tag, $type, $i, $j) = next_tag($lines, $i, $j);
   while ($tag ne '') {
     if ($tag eq 'numericalresponse') {
@@ -152,8 +153,14 @@ sub fix_cdata_elements {
       } else {
         $in_formularesponse = 0;
       }
+    } elsif ($tag eq 'script') {
+      if ($type eq 'start') {
+        $in_script = 1;
+      } else {
+        $in_script = 0;
+      }
     }
-    if ($type eq 'start' && in_array_ignore_case(\@cdata_elements, $tag) &&
+    if ($type eq 'start' && in_array_ignore_case(\@cdata_elements, $tag) && !$in_script &&
         ($tag ne 'answer' || (!$in_numericalresponse && !$in_formularesponse))) {
       my $cde = $tag;
       my $line = $lines->[$i];
