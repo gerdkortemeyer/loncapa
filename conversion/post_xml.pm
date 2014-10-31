@@ -1546,17 +1546,29 @@ sub change_hints {
   # Currently they are inline, with some exceptions in the conversion, like inline responses.
   
   # hints were blocks but are becoming inline; this removes blank text nodes at the beginning and the end of all hint elements
+  # and removes empty hints
   my @hints = $root->getElementsByTagName('hint');
   foreach my $hint (@hints) {
     if (defined $hint->firstChild && $hint->firstChild->nodeType == XML_TEXT_NODE) {
       my $text = $hint->firstChild->nodeValue;
       $text =~ s/^\s*//;
-      $hint->firstChild->setData($text);
+      if ($text eq '') {
+        $hint->removeChild($hint->firstChild);
+      } else {
+        $hint->firstChild->setData($text);
+      }
     }
     if (defined $hint->lastChild && $hint->lastChild->nodeType == XML_TEXT_NODE) {
       my $text = $hint->lastChild->nodeValue;
       $text =~ s/\s*$//;
-      $hint->lastChild->setData($text);
+      if ($text eq '') {
+        $hint->removeChild($hint->lastChild);
+      } else {
+        $hint->lastChild->setData($text);
+      }
+    }
+    if (!defined $hint->firstChild) {
+      $hint->parentNode->removeChild($hint);
     }
   }
 }
@@ -1818,11 +1830,12 @@ sub is_ancestor_of {
 }
 
 # removes empty style elements and replaces the ones with only whitespaces inside by their content
+# also remove hints that have become empty after empty style removal.
 sub remove_empty_style {
   my ($root) = @_;
   # actually, preserve some elements like ins when they have whitespace, only remove if they are empty
-  my @remove_if_empty = ('span', 'a', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'code', 'kbd', 'samp', 'tt', 'ins', 'del', 'var', 'small', 'big', 'font', 'u');
-  my @remove_if_blank = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'font', 'u');
+  my @remove_if_empty = ('span', 'a', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'code', 'kbd', 'samp', 'tt', 'ins', 'del', 'var', 'small', 'big', 'font', 'u', 'hint');
+  my @remove_if_blank = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'font', 'u', 'hint');
   foreach my $name (@remove_if_empty) {
     my @nodes = $root->getElementsByTagName($name);
     while (scalar(@nodes) > 0) {
