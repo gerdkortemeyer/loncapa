@@ -179,6 +179,8 @@ sub text {
 
 sub comment {
   my($tokens) = @_;
+  # NOTE: the HTML parser thinks this is a comment: </ br>
+  # and LON-CAPA has sometimes turned that into <![CDATA[</ br>]]>
   foreach my $comment (@$tokens) {
     $comment =~ s/--/- /g;
     $comment =~ s/^-|-$/ /g;
