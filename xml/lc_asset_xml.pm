@@ -218,11 +218,21 @@ sub default_html {
 #
 sub parser {
    my ($p,$safe,$stack,$status,$target)=@_;
+# Output collected here
    my $output='';
-   my $tmpid=1;
+# Counter to assign IDs
+   my $idcnt=1;
+   if ($stack->{'maxid'}) {
+      $idcnt=$stack->{'maxid'}+1;
+   }
+# If we are only rendering a subpart of the document
+   my $outputid=$stack->{'outputid'};
+   my $outputactive=0;
    while (my $token = $p->get_token) {
+      my $tmpout='';
+      my $outputdone=0;
       if ($token->[0] eq 'T') {
-         $output.=&process_text($p,$safe,$stack,$status,$target,$token);
+         $tmpout=&process_text($p,$safe,$stack,$status,$target,$token);
       } elsif ($token->[0] eq 'S') {
 # A start tag - evaluate the attributes in here
          foreach my $key (keys(%{$token->[2]})) {
@@ -230,15 +240,19 @@ sub parser {
          }
 # Don't have an ID yet? Make one up.
          unless ($token->[2]->{'id'}) {
-            $token->[2]->{'id'}='TEMP_'.$tmpid;
-            $tmpid++;
+            $token->[2]->{'id'}='id'.$idcnt;
+            $idcnt++;
+         }
+# If we are only rendering part of the document, is this it?
+         if ($token->[2]->{'id'} eq $outputid) {
+            $outputactive=1;
          }
 # - remember for embedded tags and for the end tag
          push(@{$stack->{'tags'}},{ 'name' => $token->[1], 'args' => $token->[2] });
-         $output.=&process_tag('start',$token->[1],$p,$safe,$stack,$status,$target,$token);
+         $tmpout=&process_tag('start',$token->[1],$p,$safe,$stack,$status,$target,$token);
       } elsif ($token->[0] eq 'E') {
 # An ending tag
-         $output.=&process_tag('end',$token->[1],$p,$safe,$stack,$status,$target,$token);
+         $tmpout=&process_tag('end',$token->[1],$p,$safe,$stack,$status,$target,$token);
 # Unexpected ending tags
          if ($#{$stack->{'tags'}}>=0) {
             if ($stack->{'tags'}->[-1]->{'name'} ne $token->[1]) {
@@ -249,10 +263,24 @@ sub parser {
             &error($stack,'unexpected_ending',{'expected' => '-',
                                                'found'    => $token->[-1] });
          }
+# If we are only rendering part of the document, see if we are done after this
+         if ($stack->{'tags'}->[-1]->{'name'} eq $outputid) {
+            $outputdone=1;
+         }
 # Pop the stack again
          pop(@{$stack->{'tags'}});
       } else {
-         $output.=$token->[-1];
+# Other stuff, remember and keep going
+         $tmpout=$token->[-1];
+      }
+# Only output if within 
+      if ($outputid) {
+         if ($outputactive) {
+            $output.=$tmpout;
+         }
+         if ($outputdone) { $outputactive=0; }
+      } else {
+         $output.=$tmpout;
       }
    }
 # The tag stack should be empty again
@@ -264,19 +292,34 @@ sub parser {
 
 
 # ==== Render for target
+# fn: filename
+# targets: pointer to an array of targets that need to be parsed in sequence
+# stack: where we store stuff, recycled between targets
+# content: anything posted to the page
+# context: the user and course
+# outputid: only render inside this ID
 #
 sub target_render {
-   my ($fn,$targets,$stack,$content)=@_;
+   my ($fn,$targets,$stack,$content,$context,$outputid)=@_;
 # Clear out and initialize everything
+# Get parser going (fresh)
    my $p=HTML::TokeParser->new($fn);
    unless ($p) {
       &logerror("Could not inititialize parser for file [$fn]");
       return (undef,undef);
    }
    $p->empty_element_tags(1);
+# Get safe space going (fresh)
    my $safe=&Apache::lc_asset_safeeval::init_safe();
+# Coming here for the first time? Remember stuff
    if ($content) {
       $stack->{'content'}=$content;
+   }
+   if ($context) {
+      $stack->{'context'}=$context;
+   }
+   if ($outputid) {
+      $stack->{'outputid'}=$outputid;
    }
    my $status;
 #FIXME: actually find status
