@@ -38,6 +38,7 @@ use Apache::lc_xml_conditionals;
 use Apache::lc_xml_include;
 use Apache::lc_xml_gadgets;
 use Apache::lc_xml_parameters;
+use Apache::lc_entity_sessions();
 
 # Problem tags
 #
@@ -265,7 +266,7 @@ sub parser {
 # ==== Render for target
 #
 sub target_render {
-   my ($fn,$target)=@_;
+   my ($fn,$targets,$stack,$content)=@_;
 # Clear out and initialize everything
    my $p=HTML::TokeParser->new($fn);
    unless ($p) {
@@ -274,17 +275,18 @@ sub target_render {
    }
    $p->empty_element_tags(1);
    my $safe=&Apache::lc_asset_safeeval::init_safe();
-   my $stack={};
+   if ($content) {
+      $stack->{'content'}=$content;
+   }
    my $status;
 #FIXME: actually find status
 #...
-# Some targets need an initial analysis parsing to prime the stack with
-# parameters and IDs, so call self and save the stack
-   if ($target eq 'html') {
-      (undef,$stack)=&target_render($fn,'analysis');
+# Render for all requested targets except the last one
+   for (my $i=0; $i<$#{$targets}; $i++) {
+      &target_render($fn,[$targets->[$i]],$stack);
    }
-# Actually produce the output
-   my $output=&parser($p,$safe,$stack,$status,$target);
+# The final one actually produces the output
+   my $output=&parser($p,$safe,$stack,$status,$targets->[-1]);
    return ($output,$stack);
 }
 
@@ -298,7 +300,12 @@ sub handler {
       return HTTP_NOT_FOUND;
    }
    $r->content_type('text/html; charset=utf-8');
-   $r->print((&target_render($fn,'html'))[0]);
+   if ($r->uri=~/^\/asset\//) {
+      my %content=&Apache::lc_entity_sessions::posted_content();
+      $r->print((&target_render($fn,['analysis','grade','html'],{},\%content))[0]);
+   } else {
+      $r->print((&target_render($fn,['html'],{}))[0]);
+   }
    return OK;
 }
 
