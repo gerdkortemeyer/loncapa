@@ -93,7 +93,7 @@ sub detect_keywords {
 
 sub gather_metadata {
    my ($fn)=@_;
-   my ($output,$stack)=&Apache::lc_asset_xml::target_render($fn,'meta');
+   my ($output,$stack)=&Apache::lc_asset_xml::target_render($fn,['meta']);
    my $metadata=$stack->{'metadata'};
    if ($stack->{'errors'}) {
       $metadata->{'errors'}=$stack->{'errors'};

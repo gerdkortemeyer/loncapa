@@ -51,7 +51,7 @@ sub handler {
 
    $r->print("Test Handler Tästing");
 
-   my ($output,$stack)=&Apache::lc_asset_xml::target_render('/home/www/Desktop/test.html','meta');
+   my ($output,$stack)=&Apache::lc_asset_xml::target_render('/home/www/Desktop/test.html',['meta']);
 
    $r->print("Output:\n$output\n---\nStack: ".Dumper($stack));
 

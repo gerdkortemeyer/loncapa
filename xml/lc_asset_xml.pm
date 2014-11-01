@@ -42,6 +42,7 @@ use Apache::lc_entity_sessions();
 
 # Problem tags
 #
+use Apache::xml_problem_tags::problemparts;
 use Apache::xml_problem_tags::inputtags;
 use Apache::xml_problem_tags::numericalresponse;
 
@@ -222,9 +223,6 @@ sub parser {
    my $output='';
 # Counter to assign IDs
    my $idcnt=1;
-   if ($stack->{'maxid'}) {
-      $idcnt=$stack->{'maxid'}+1;
-   }
 # If we are only rendering a subpart of the document
    my $outputid=$stack->{'outputid'};
    my $outputactive=0;
@@ -238,9 +236,9 @@ sub parser {
          foreach my $key (keys(%{$token->[2]})) {
             $token->[2]->{$key}=&Apache::lc_asset_safeeval::texteval($safe,$token->[2]->{$key}); 
          }
-# Don't have an ID yet? Make one up.
+# Don't have an ID yet? Make up a temporary one.
          unless ($token->[2]->{'id'}) {
-            $token->[2]->{'id'}='id'.$idcnt;
+            $token->[2]->{'id'}='TMP_'.$idcnt;
             $idcnt++;
          }
 # If we are only rendering part of the document, is this it?
@@ -302,6 +300,9 @@ sub parser {
 sub target_render {
    my ($fn,$targets,$stack,$content,$context,$outputid)=@_;
 # Clear out and initialize everything
+   unless ($stack) {
+      $stack={};
+   }
 # Get parser going (fresh)
    my $p=HTML::TokeParser->new($fn);
    unless ($p) {
