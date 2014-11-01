@@ -37,7 +37,9 @@ sub start_numericalresponse_html {
 sub end_numericalresponse_html {
    my ($p,$safe,$stack,$token)=@_;
 #FIXME: do stuff
-   return "Get: ".&Apache::lc_asset_xml::cascade_parameter('tol',$stack).'<br /><pre>'.Dumper($stack).'</pre>';
+   my $answers=&Apache::lc_asset_xml::collect_responses($stack);
+   return "Get: ".&Apache::lc_asset_xml::cascade_parameter('tol',$stack).'<br /><pre>'.Dumper($stack).'</pre>'.
+          '<pre>'.Dumper($answers).'</pre>';
 }
 
 sub start_numericalhintcondition_html {

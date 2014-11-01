@@ -38,7 +38,7 @@ sub start_textline_html {
    my ($p,$safe,$stack,$token)=@_;
    &Apache::lc_asset_xml::add_response_input($stack);
    if (&Apache::lc_asset_xml::enclosed_in('numericalresponse',$stack)) {
-      return 'inside numericalresponse';
+      return '<input type="text" name="'.$token->[2]->{'id'}.'" />';
    }
    return '';
 }

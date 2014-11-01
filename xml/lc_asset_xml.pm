@@ -146,6 +146,18 @@ sub add_response_input {
 }
 
 #
+# Collect all responses
+#
+sub collect_responses {
+   my ($stack)=@_;
+   my $answers=[];
+   foreach my $response (@{$stack->{'response_inputs'}}) {
+       push(@{$answers},$stack->{'content'}->{$response->{'args'}->{'id'}});
+   }
+   return $answers;
+}
+
+#
 # Get all the inputs
 #
 sub get_response_inputs {
