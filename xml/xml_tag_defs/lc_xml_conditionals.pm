@@ -26,14 +26,10 @@ use Apache::lc_entity_sessions();
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_allowed_html start_allowed_analysis end_allowed_html end_allowed_analysis
-                 start_notallowed_html start_notallowed_analysis end_notallowed_html end_notallowed_analysis);
+our @EXPORT = qw(start_allowed_html    end_allowed_html
+                 start_notallowed_html end_notallowed_html);
 
 sub start_allowed_html {
-   return &allowed_eval(@_);
-}
-
-sub start_allowed_analysis {
    return &allowed_eval(@_);
 }
 
@@ -41,23 +37,11 @@ sub end_allowed_html {
    return '';
 }
 
-sub end_allowed_analysis {
-   return '';
-}
-
 sub start_notallowed_html {
    return &notallowed_eval(@_);
 }
 
-sub start_notallowed_analysis {
-   return &notallowed_eval(@_);
-}
-
 sub end_notallowed_html {
-   return '';
-}
-
-sub end_notallowed_analysis {
    return '';
 }
 

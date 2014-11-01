@@ -28,7 +28,7 @@ use Apache::lc_logs;
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_parameter_analysis);
+our @EXPORT = qw(start_parameter_analysis start_parameter_html end_parameter_html);
 
 sub start_parameter_analysis {
    my ($p,$safe,$stack,$token)=@_;
@@ -41,6 +41,14 @@ sub start_parameter_analysis {
       $stack->{'parameters'}->{join(':',@levels)}->{$token->[2]->{'name'}}->{'default'}=$token->[2]->{'default'};
 #FIXME: need to retrieve values of external parameters
    }
+}
+
+sub start_parameter_html {
+   return '';
+}
+
+sub end_parameter_html {
+   return '';
 }
 
 1;
