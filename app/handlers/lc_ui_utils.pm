@@ -24,7 +24,7 @@ use Apache::lc_ui_localize;
 use Apache::lc_entity_sessions();
 use Apache::lc_entity_courses();
 use Apache::lc_authorize;
-
+use Locale::Language;
 
 use Apache::lc_logs;
 use URI::Escape;
@@ -34,7 +34,7 @@ use Data::Dumper;
 require Exporter;
 
 our @ISA = qw (Exporter);
-our @EXPORT = qw(clean_username clean_domain domain_choices domain_name language_choices timezone_choices modifiable_role_choices);
+our @EXPORT = qw(clean_username clean_domain domain_choices domain_name language_choices content_language_choices timezone_choices modifiable_role_choices);
 
 # ==== Clean up usernames and domains
 #
@@ -57,6 +57,11 @@ sub clean_domain {
 sub query_encode {
    return &uri_escape(@_[0]);
 }
+
+sub query_unencode {
+   return &uri_unescape(@_[0]);
+}
+
 
 # ==== Another domain name
 #
@@ -155,6 +160,35 @@ sub language_choices {
    return ($default,$language_short,$language_name);
 }
 
+sub content_language_choices {
+   my ($default)=@_;
+# Retrieve names
+   my @names=&all_language_names();
+   my %codes=();
+   for (my $i=0; $i<=$#names; $i++) {
+      my $code=&language2code($names[$i]);
+# Remove the parenthetical clarifications
+      $names[$i]=~s/\s*\(.+$//;
+# Translate
+      $names[$i]=&mt($names[$i]);
+# Assign code
+      $codes{$names[$i]}=$code;
+   }
+# Output arrays
+   my $language_short=['-'];
+   my $language_name=['-'];
+# Sort in order of translated language
+   foreach my $key (sort(@names)) {
+       push(@{$language_short},$codes{$key});
+       push(@{$language_name},$key);
+   }
+   unless ($default) {
+      $default=&Apache::lc_ui_localize::context_language();
+   }
+   unless ($default) { $default='en'; }
+   return ($default,$language_short,$language_name);
+}
+
 # ==== Timezone choices
 #
 sub timezone_choices {
@@ -166,6 +200,60 @@ sub timezone_choices {
    }
    unless ($default) { $default='UTC'; }
    return ($default,\@timezones);
+}
+
+# ==== Action icons
+#
+sub action_icon {
+   my ($which,$title)=@_;
+   $title=&mt($title);
+   return '<img src="/images/actionicons/'.$which.'.png" alt="'.$title.'" title="'.$title.'" />';
+}
+
+sub action_link {
+   my ($which,$title,$onclick)=@_;
+   if ($onclick) {
+      $onclick=~s/\'/\"/gs;
+      return "<a href='#' class='lcdirlink' onclick='$onclick'>".
+             &action_icon($which,$title)."</a>";
+   } else {
+      return &action_icon($which,$title);
+   }
+}
+
+sub copy_link {
+   my ($onclick)=@_;
+   return &action_link('edit-copy','Copy',$onclick);
+}
+
+sub cut_link {
+   my ($onclick)=@_;
+   return &action_link('edit-cut','Cut',$onclick);
+}
+
+sub delete_link {
+   my ($onclick)=@_; 
+   return &action_link('user-delete','Delete',$onclick);
+}
+
+sub remove_link {
+   my ($onclick)=@_;
+   return &action_link('user-trash','Remove',$onclick);
+}
+
+sub recover_link {
+   my ($onclick)=@_;
+   return &action_link('user-trash-recover','Recover',$onclick);
+}
+
+sub publish_link {
+   my ($onclick)=@_;
+   return &action_link('publish','Publish',$onclick);
+}
+
+sub add_link {
+   my ($onclick)=@_;
+   return &action_link('list-add','Add',$onclick);
 }
 
 1;

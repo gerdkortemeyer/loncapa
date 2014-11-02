@@ -47,6 +47,11 @@ use vars qw($merge $client $database $roles $profiles $profiles_cache $namespace
 sub insert_profile {
    my ($entity,$domain,$data)=@_;
    unless ($profiles) { &init_mongo(); }
+   my $olddata=$profiles->find_one({ entity => $entity, domain => $domain });
+   if ($olddata->{'_id'}) {
+      &logerror("Trying to make new profile for ($entity) ($domain), but already exists");
+      return undef;
+   }
    my $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
    $newdata->{'profile'}=$data;
@@ -92,18 +97,23 @@ sub query_user_profiles {
    } else {
       return $profiles->find({ 'domain' => $domain,
                                '$or' => [{'profile.firstname' => qr/\Q$term1\E/i},
-                                         {'profile.lastname'  => qr/\Q$term1\E/i}] })->all;
+                                         {'profile.lastname'  => qr/\Q$term1\E/i},
+                                         {'profile.username'  => qr/\Q$term1\E/i}] })->all;
    }
 }
 
 sub query_course_profiles {
-   my ($term)=@_;
+   my ($domain,$term)=@_;
    unless ($profiles) { &init_mongo(); }
-   return $profiles->find({'profile.title' => qr/\Q$term\E/i})->all;
+   return $profiles->find({ 'domain' => $domain,
+                            '$or' => [{'profile.title'    => qr/\Q$term\E/i},
+                                      {'profile.courseid' => qr/\Q$term\E/i}] })->all;
 }
 
 #
 # Profile cache for searches
+# - for both users and courses, using
+# same cache as no overlap in search terms
 #
 sub update_profiles_cache {
    my ($entity,$domain,$data)=@_;
@@ -119,6 +129,8 @@ sub update_profiles_cache {
    }
 }
 
+# Query against the cache
+#
 sub query_user_profiles_cache {
    my ($domain,$term1,$term2)=@_;
    unless ($term1) { $term1=''; }
@@ -137,6 +149,17 @@ sub query_user_profiles_cache {
    }
 }
 
+sub query_course_profiles_cache {
+   my ($domain,$term)=@_;
+   unless ($profiles_cache) { &init_mongo(); }
+   return $profiles_cache->find({ 'domain' => $domain,
+                                  '$or' => [{'profile.title'    => qr/\Q$term\E/i},
+                                            {'profile.courseid' => qr/\Q$term\E/i}] })->all;
+}
+
+
+
+
 #
 # Namespaces
 # This is a dumping ground for random information that only needs
@@ -150,6 +173,11 @@ sub namespace_document {
 sub insert_namespace {
    my ($entity,$domain,$name,$data)=@_;
    unless ($namespaces) { &init_mongo(); }
+   my $olddata=$namespaces->find_one({ 'namespace' => &namespace_document($entity,$domain,$name) });
+   if ($olddata->{'_id'}) {
+      &logerror("Trying to make new namespace for ($entity) ($domain) ($name), but already exists");
+      return undef;
+   }
    my $newdata->{'namespace'}=&namespace_document($entity,$domain,$name);
    $newdata->{'data'}=$data;
    return $namespaces->insert($newdata)->{'value'};
@@ -186,6 +214,11 @@ sub dump_namespace {
 sub insert_metadata {
    my ($entity,$domain,$data)=@_;
    unless ($metadata) { &init_mongo(); }
+   my $olddata=$metadata->find_one({ entity => $entity, domain => $domain });
+   if ($olddata->{'_id'}) {
+      &logerror("Trying to make new metadata for ($entity) ($domain), but already exists");
+      return undef;
+   }
    my $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
    $newdata->{'metadata'}=$data;
@@ -201,6 +234,19 @@ sub update_metadata {
    $newdata->{'domain'}=$domain;
    delete($newdata->{'_id'});
    return $metadata->update({ entity => $entity, domain => $domain },$newdata);
+}
+
+sub delete_metadata_keys {
+   my ($entity,$domain,$keys)=@_;
+   unless ($metadata) { &init_mongo(); }
+   my $data=$metadata->find_one({ entity => $entity, domain => $domain });
+   foreach my $key (@{$keys}) {
+      delete($data->{'metadata'}->{$key});
+   }
+   $data->{'entity'}=$entity;
+   $data->{'domain'}=$domain;
+   delete($data->{'_id'});
+   return $metadata->update({ entity => $entity, domain => $domain },$data);
 }
 
 sub dump_metadata {
@@ -220,6 +266,11 @@ sub dump_metadata {
 sub insert_roles {
    my ($entity,$domain,$data)=@_;
    unless ($roles) { &init_mongo(); }
+   my $olddata=$roles->find_one({ entity => $entity, domain => $domain });
+   if ($olddata->{'_id'}) {
+      &logerror("Trying to make new roles data for ($entity) ($domain), but already exists");
+      return undef;
+   }
    my $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
    $newdata->{'roles'}=$data;
@@ -255,6 +306,11 @@ sub dump_roles {
 sub insert_auth {
    my ($entity,$domain,$data)=@_;
    unless ($auth) { &init_mongo(); }
+   my $olddata=$auth->find_one({ entity => $entity, domain => $domain });
+   if ($olddata->{'_id'}) {
+      &logerror("Trying to make new authentication data for ($entity) ($domain), but already exists");
+      return undef;
+   }
    my $newdata->{'entity'}=$entity;
    $newdata->{'domain'}=$domain;
    $newdata->{'auth'}=$data;

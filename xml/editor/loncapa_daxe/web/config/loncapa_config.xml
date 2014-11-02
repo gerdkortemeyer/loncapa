@@ -13,6 +13,7 @@
       <MENU_INSERTION nom="parserlib"/>
       <MENU_INSERTION nom="import"/>
       <MENU_INSERTION nom="block"/>
+      <MENU_INSERTION nom="while"/>
       <MENU_INSERTION nom="problemtype"/>
       <MENU_INSERTION nom="preduedate"/>
       <MENU_INSERTION nom="postanswerdate"/>
@@ -21,8 +22,8 @@
       <MENU_INSERTION nom="notsolved"/>
       <MENU_INSERTION nom="tex"/>
       <MENU_INSERTION nom="web"/>
-      <MENU_INSERTION nom="while"/>
-      <MENU_INSERTION nom="meta"/>
+      <MENU_INSERTION nom="standalone"/>
+      <MENU_INSERTION nom="lcmeta"/>
     </MENU>
     <MENU nom="Responses">
       <MENU nom="Text">
@@ -80,20 +81,19 @@
         <MENU_INSERTION nom="externalresponse"/>
       </MENU>
       <MENU nom="Hints">
+        <MENU_INSERTION nom="hint"/>
         <MENU_INSERTION nom="hintgroup"/>
-        <MENU_INSERTION nom="hintpart"/>
-        <MENU_INSERTION nom="formulahint"/>
-        <MENU_INSERTION nom="numericalhint"/>
-        <MENU_INSERTION nom="reactionhint"/>
-        <MENU_INSERTION nom="organichint"/>
-        <MENU_INSERTION nom="optionhint"/>
-        <MENU_INSERTION nom="radiobuttonhint"/>
         <MENU_INSERTION nom="stringhint"/>
-        <MENU_INSERTION nom="customhint"/>
+        <MENU_INSERTION nom="radiobuttonhint"/>
+        <MENU_INSERTION nom="optionhint"/>
+        <MENU_INSERTION nom="numericalhint"/>
+        <MENU_INSERTION nom="formulahint"/>
         <MENU_INSERTION nom="mathhint"/>
+        <MENU_INSERTION nom="organichint"/>
+        <MENU_INSERTION nom="reactionhint"/>
+        <MENU_INSERTION nom="customhint"/>
       </MENU>
       <MENU nom="Common">
-        <MENU_INSERTION nom="responseparam"/>
         <MENU_INSERTION nom="foilgroup"/>
         <MENU_INSERTION nom="conceptgroup"/>
         <MENU_INSERTION nom="foil"/>
@@ -106,8 +106,7 @@
     </MENU>
     <MENU nom="Block">
       <MENU nom="Scripts">
-        <MENU_INSERTION nom="script"/>
-        <MENU_INSERTION nom="display"/>
+        <MENU_INSERTION nom="perl"/>
       </MENU>
       <MENU nom="Gnuplot">
         <MENU_INSERTION nom="gnuplot"/>
@@ -139,20 +138,19 @@
         <MENU_INSERTION nom="polygon"/>
         <MENU_INSERTION nom="image"/>
       </MENU>
-      <MENU_INSERTION nom="organicstructure"/>
-      <MENU_INSERTION nom="window"/>
-      <MENU_INSERTION nom="parameter"/>
-    </MENU>
-    <MENU nom="Text">
-      <MENU_INSERTION nom="img"/>
       <MENU_INSERTION nom="languageblock"/>
       <MENU_INSERTION nom="translated"/>
       <MENU_INSERTION nom="lang"/>
-      <MENU_INSERTION nom="instructorcomment"/>
+      <MENU_INSERTION nom="window"/>
       <MENU_INSERTION nom="windowlink"/>
       <MENU_INSERTION nom="togglebox"/>
-      <MENU_INSERTION nom="standalone"/>
+      <MENU_INSERTION nom="instructorcomment"/>
       <MENU_INSERTION nom="comment"/>
+      <MENU_INSERTION nom="organicstructure"/>
+      <MENU_INSERTION nom="parameter"/>
+    </MENU>
+    <MENU nom="Text">
+      <MENU_INSERTION nom="display"/>
       <MENU_INSERTION nom="m"/>
       <MENU_INSERTION nom="num"/>
       <MENU_INSERTION nom="parse"/>
@@ -160,6 +158,7 @@
     </MENU>
     <MENU nom="HTML">
       <MENU_INSERTION nom="htmlhead"/>
+      <MENU_INSERTION nom="h1"/>
       <MENU_INSERTION nom="section"/>
       <MENU_INSERTION nom="div"/>
       <MENU_INSERTION nom="a"/>
@@ -171,12 +170,14 @@
       <MENU_INSERTION nom="dd"/>
       <MENU_INSERTION nom="pre"/>
       <MENU_INSERTION nom="code"/>
+      <MENU_INSERTION nom="img"/>
       <MENU_INSERTION nom="object"/>
       <MENU_INSERTION nom="video"/>
       <MENU_INSERTION nom="source"/>
       <MENU_INSERTION nom="audio"/>
       <MENU_INSERTION nom="map"/>
       <MENU_INSERTION nom="area"/>
+      <MENU_INSERTION nom="script"/>
     </MENU>
   </MENUS>
   
@@ -185,13 +186,16 @@
     <AFFICHAGE_ELEMENT element="problem" type="lcdblock"/>
     
     <AFFICHAGE_ELEMENT element="stringresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="stringhint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="essayresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="radiobuttonresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="foilgroup" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="conceptgroup" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="foil" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="radiobuttonhint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="optionresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="drawoptionlist" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="optionhint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="matchresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="itemgroup" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="item" type="lcdblock"/>
@@ -202,14 +206,17 @@
     <AFFICHAGE_ELEMENT element="rectangle" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="text" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="numericalresponse" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="formularesponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="answergroup" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="answer" type="lcdblock">
       <PARAMETRE nom="police" valeur="Monospaced"/>
     </AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="vector" type="typesimple"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="value" type="typesimple"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="vector" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="value" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="numericalhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="formularesponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="formulahint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="mathresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="mathhint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotelements" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="spline" type="lcdblock"/>
@@ -231,35 +238,20 @@
     <AFFICHAGE_ELEMENT element="functionplotvectorsumrule" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotcustomrule" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="organicresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="organichint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="reactionresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="reactionhint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="customresponse" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="customhint" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="externalresponse" type="lcdblock"/>
     
-    <AFFICHAGE_ELEMENT element="responseparam" type="lcdblock">
-      <AFFICHAGE_ATTRIBUT attribut="type">
-        <VALEUR_SUGGEREE>tolerance</VALEUR_SUGGEREE>
-        <VALEUR_SUGGEREE>int</VALEUR_SUGGEREE>
-        <VALEUR_SUGGEREE>float</VALEUR_SUGGEREE>
-        <VALEUR_SUGGEREE>string</VALEUR_SUGGEREE>
-        <VALEUR_SUGGEREE>date</VALEUR_SUGGEREE>
-      </AFFICHAGE_ATTRIBUT>
-    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="textfield" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="textline" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="hiddensubmission" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="hiddenline" type="lcdblock"/>
     
     <AFFICHAGE_ELEMENT element="hintgroup" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="hintpart" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="stringhint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="radiobuttonhint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="optionhint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="numericalhint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="formulahint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="mathhint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="organichint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="reactionhint" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="customhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="hint" type="lcdblock"/>
     
     <AFFICHAGE_ELEMENT element="gnuplot" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="title" type="lcdblock"/>
@@ -278,22 +270,13 @@
     <AFFICHAGE_ELEMENT element="randomlabel" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="bgimg" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="labelgroup" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="location" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="location" type="lcdblock"/>
     
     <AFFICHAGE_ELEMENT element="part" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="import" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="parserlib" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="script" type="lcdblock">
-      <PARAMETRE nom="police" valeur="Monospaced"/>
-      <AFFICHAGE_ATTRIBUT attribut="type">
-        <VALEUR_SUGGEREE>loncapa/perl</VALEUR_SUGGEREE>
-      </AFFICHAGE_ATTRIBUT>
-    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="scriptlib" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="meta" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="problemtype" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="parameter" type="vide">
-      <PARAMETRE nom="attributsVisibles" valeur="true"/>
+    <AFFICHAGE_ELEMENT element="lcmeta" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="parameter" type="lcdblock">
       <AFFICHAGE_ATTRIBUT attribut="type">
         <VALEUR_SUGGEREE>tolerance</VALEUR_SUGGEREE>
         <VALEUR_SUGGEREE>int</VALEUR_SUGGEREE>
@@ -302,36 +285,43 @@
         <VALEUR_SUGGEREE>date</VALEUR_SUGGEREE>
       </AFFICHAGE_ATTRIBUT>
     </AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="window" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="block" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="while" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="postanswerdate" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="preduedate" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="randomlist" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="postanswerdate" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="solved" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="notsolved" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="web" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="tex" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="display" type="string">
-      <PARAMETRE nom="police" valeur="Monospaced"/>
-    </AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="organicstructure" type="lcdblock"/>
     
+    <AFFICHAGE_ELEMENT element="import" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="block" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="while" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="tex" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="web" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="standalone" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="problemtype" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="randomlist" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="perl" type="lcdblock">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+      <AFFICHAGE_ATTRIBUT attribut="type">
+        <VALEUR_SUGGEREE>loncapa/perl</VALEUR_SUGGEREE>
+      </AFFICHAGE_ATTRIBUT>
+    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="languageblock" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="translated" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="lang" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="instructorcomment" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="window" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="windowlink" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="togglebox" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="standalone" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="instructorcomment" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="comment" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="organicstructure" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="drawimage" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="line" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="arc" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="fill" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="point" type="vide"/>
     
-    <AFFICHAGE_ELEMENT element="img" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="display" type="string">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="m" type="texmathjax"/>
     <AFFICHAGE_ELEMENT element="num" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="algebra" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
@@ -340,8 +330,15 @@
     
     <AFFICHAGE_ELEMENT element="htmlhead" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="base" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="meta" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="link" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="style" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="script" type="lcdblock">
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+      <AFFICHAGE_ATTRIBUT attribut="type">
+        <VALEUR_SUGGEREE>loncapa/perl</VALEUR_SUGGEREE>
+      </AFFICHAGE_ATTRIBUT>
+    </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="noscript" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="htmlbody" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="section" type="lcdblock"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
@@ -408,6 +405,7 @@
     <AFFICHAGE_ELEMENT element="samp" type="string">
       <PARAMETRE nom="police" valeur="Monospaced"/>
     </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="cite" type="string"/>
     <AFFICHAGE_ELEMENT element="tt" type="style">
       <PARAMETRE nom="police" valeur="Monospaced"/>
     </AFFICHAGE_ELEMENT>
@@ -425,6 +423,7 @@
     <AFFICHAGE_ELEMENT element="br" type="br"/>
     <AFFICHAGE_ELEMENT element="hr" type="hr"/>
     <AFFICHAGE_ELEMENT element="blockquote" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="img" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="object" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="param" type="vide"/>
     <AFFICHAGE_ELEMENT element="embed" type="lcdblock"/>
@@ -502,6 +501,34 @@
         <TITRE>pre-processor subroutine</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="stringhint">
+      <TITRE>String Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+        <TITRE_VALEUR valeur="cs">case sensitive, order important</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="ci">case insensitive, order important</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="mc">case insensitive, order unimportant</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="re">regular expression</TITRE_VALEUR>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="preprocess">
+        <TITRE>pre-processor subroutine</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="essayresponse">
       <TITRE>Response: Essay</TITRE>
       <DOCUMENTATION>
@@ -540,6 +567,9 @@
       <TITRE>Collection of Foils</TITRE>
       <STRINGS_ATTRIBUT attribut="options">
         <TITRE>options</TITRE>
+        <DOCUMENTATION>
+          Perl list of possible foil values.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="texoptions">
         <TITRE>print options</TITRE>
@@ -581,6 +611,31 @@
         <TITRE_VALEUR valeur="bottom">bottom</TITRE_VALEUR>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="radiobuttonhint">
+      <TITRE>Radiobutton Hint Condition</TITRE>
+      <DOCUMENTATION>
+        The radiobutton hint tag takes two parameters: answer and name. The name is the name of the hint condition, and the answer is an array. The first element of the array will be 'foil'; the remaining elements are the names of the foils that you require to have been checked by the student for the hint to be displayed. For example, if you create a radiobutton response problem with six foils named: granite, gabbro, gneiss, shale, sandstone and schist, and you want your hint named: igneous to be displayed when either granite or basalt had been checked your radiobutton hint would be as follows:
+        
+        &lt;radiobuttonhint answer="('foil','granite','gabbro')" name="igneous"&gt;&lt;/radiobuttonhint&gt;
+        
+        In order to trigger display of this hint you also need to create a hint element that will include a textblock that contains the text of the actual hint.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          should be at least a two element list: first the type (foil or concept) and then either the foil name(s) or the concept string(s), e.g., &#8220;(&#8217;foil&#8217;,&#8217;greaterthan&#8217;,&#8217;equal&#8217;)&#8221; if the condition should be triggered by the foils named &#8220;greaterthan&#8221; or &#8220;equal&#8221;
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="optionresponse">
       <TITRE>Response: Select from Options</TITRE>
       <DOCUMENTATION>
@@ -604,12 +659,35 @@
       <STRINGS_ATTRIBUT attribut="randomize">
         <TITRE>randomize foil order</TITRE>
       </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="TeXlayout">
+      <STRINGS_ATTRIBUT attribut="texlayout">
         <TITRE>display of options when printed</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="drawoptionlist">
       <TITRE>Draw Option List</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="optionhint">
+      <TITRE>Option Response Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+        
+        There are two types of option response hint conditions: one for standalone foils and one for concept groups. In both cases the option hint tag includes two parameters: answer and name for standalone foils, and concept and name for foils grouped together in a concept group. For the answer parameter, the names and submitted values for each of the foils that are being included in the hint condition are provided in a hash, i.e., in the format: ('Foil1'= &gt; 'True','Foil2'= &gt; 'False'). In the case of a conditional hint for a concept group, the format of the concept parameter is also a hash that links the name of each concept group included in the hint condition to either 'correct' or 'incorrect' - e.g., &lt; optionhint concept="('buoyancy'= &gt; 'correct','density'= &gt; 'correct')" name="fluids" / &gt; If 'correct' is specified for a named concept then when the conditional hint is evaluated answers for each of the foils selected by a student must be correct for the hint action to be triggered. If anything other than 'correct' is provided in the concept hash in the optionhint tag then then students answers will be compared with the set answers for the foils in the concept group and as long as at least one answer is incorrect (i.e., the concept group was not correctly answered) then the corresponding hint action will be triggered.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="concept">
+        <TITRE>concept</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="matchresponse">
       <TITRE>Response: Match Two Lists</TITRE>
@@ -767,6 +845,60 @@
         <TITRE>pre-processor subroutine</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="answergroup">
+      <TITRE>Collection of Answers</TITRE>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+        <TITRE_VALEUR valeur="ordered">ordered</TITRE_VALEUR>
+        <TITRE_VALEUR valeur="unordered">unordered</TITRE_VALEUR>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="answer">
+      <TITRE>Answer</TITRE>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="vector">
+      <TITRE>Vector</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="value">
+      <TITRE>Value</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="numericalhint">
+      <TITRE>Numerical Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          Numerical answer for which the conditional is provided.
+          Student submission of that answer in combination with the "unit" attribute in the hint condition will trigger the hint action specified in the &lt;hint&gt; element.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="unit">
+        <TITRE>unit</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="format">
+        <TITRE>format</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="preprocess">
+        <TITRE>pre-processor subroutine</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="formularesponse">
       <TITRE>Response: Formula</TITRE>
       <DOCUMENTATION>Query for a formula.</DOCUMENTATION>
@@ -794,28 +926,36 @@
         <TITRE>pre-processor subroutine</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="answergroup">
-      <TITRE>Collection of Answers</TITRE>
-      <STRINGS_ATTRIBUT attribut="type">
-        <TITRE>type</TITRE>
-        <TITRE_VALEUR valeur="ordered">ordered</TITRE_VALEUR>
-        <TITRE_VALEUR valeur="unordered">unordered</TITRE_VALEUR>
+    <STRINGS_ELEMENT element="formulahint">
+      <TITRE>Formula Hint Condition</TITRE>
+      <DOCUMENTATION>
+        The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt;hint&gt; element.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
       </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="answer">
-      <TITRE>Answer</TITRE>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="type">
-        <TITRE>type</TITRE>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+        <DOCUMENTATION>
+          Formula answer for which the conditional is provided.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="vector">
-      <TITRE>Vector</TITRE>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="value">
-      <TITRE>Value</TITRE>
+      <STRINGS_ATTRIBUT attribut="samples">
+        <TITRE>sample points</TITRE>
+        <DOCUMENTATION>
+          Sample points (or range of points) over which sampling of the student&#8217;s submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples
+          parameter of the formula reponse element itself.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="preprocess">
+        <TITRE>pre-processor subroutine</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="mathresponse">
       <TITRE>Response: Math</TITRE>
@@ -844,6 +984,27 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="libraries">
         <TITRE>libraries</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="mathhint">
+      <TITRE>Math Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="cas">
+        <TITRE>algebra system</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="args">
+        <TITRE>argument array</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="functionplotresponse">
@@ -1305,6 +1466,24 @@
         <TITRE>width of correct answer image</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="organichint">
+      <TITRE>Organic Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="reactionresponse">
       <TITRE>Response: Chemical Reaction</TITRE>
       <DOCUMENTATION>
@@ -1323,6 +1502,24 @@
         <TITRE>initial reaction</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="reactionhint">
+      <TITRE>Reaction Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="answer">
+        <TITRE>answer</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="customresponse">
       <TITRE>Response: Custom</TITRE>
       <DOCUMENTATION>
@@ -1337,6 +1534,23 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answerdisplay">
         <TITRE>string to display for answer</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="customhint">
+      <TITRE>Custom Hint Condition</TITRE>
+      <DOCUMENTATION>
+        This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
+        
+        Define the hint condition within an answer block inside of the customhint block. The condition is defined like how an answer is defined in customresponse where you need to return EXACT ANS to indicate when customhint criteria are met.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          the name of the hint condition, to use in the "on" attribute of the hint element
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="externalresponse">
@@ -1384,24 +1598,6 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     
-    <STRINGS_ELEMENT element="responseparam">
-      <TITRE>Parameters for a response</TITRE>
-      <DOCUMENTATION>
-        Defines an externally adjustable parameter for the question, which the question can then use to allow other users to customize the problem for their courses without changing the source code of the problem.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="type">
-        <TITRE>type</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="default">
-        <TITRE>default value</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="description">
-        <TITRE>description</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="textfield">
       <TITRE>Large Text Entry Area</TITRE>
       <DOCUMENTATION>
@@ -1425,6 +1621,10 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="textline">
       <TITRE>Single Line Text Entry Area</TITRE>
+      <DOCUMENTATION>
+        Single Line Text Entry Area. Displays a field to enter text for a response.
+        Should only be used inside stringresponse, numericalresponse, formularesponse, mathresponse, organicresponse, reactionresponse and customresponse.
+      </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="size">
         <TITRE>size</TITRE>
         <DOCUMENTATION>
@@ -1447,7 +1647,7 @@
     <STRINGS_ELEMENT element="hiddensubmission">
       <TITRE>Hidden Submission</TITRE>
       <DOCUMENTATION>
-        ???
+        This creates a hidden form field with the given value.
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="value">
         <TITRE>value</TITRE>
@@ -1456,231 +1656,34 @@
     <STRINGS_ELEMENT element="hiddenline">
       <TITRE>Hidden Line</TITRE>
       <DOCUMENTATION>
-        ???
+        This creates a hidden form field with the old response value.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     
     <STRINGS_ELEMENT element="hintgroup">
+      <TITRE>Group of Hints</TITRE>
+      <DOCUMENTATION>
+        This is only useful when one wants to create several groups of conditional hints in a part, each one having its own default hint (a hint with on="default").
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="hint">
       <TITRE>Hint</TITRE>
       <DOCUMENTATION>
-        The first part of the hint is the condition, which includes a specification of the foil(s) and foil answer(s) required to trigger the hint. The answers specified in the hint condition are compared with the user's submission, and if the condition is met, the hint action included in the conditional hint block will be executed (for example this could be the display of a block of text). You can set multiple hint conditions for a particular problem. Hint conditions are identified by a name. The corresponding hint action includes this hint condition name in the "on" parameter. When a hint condition evaluates to true, the corresponding hint action is triggered. Besides providing hint actions within &lt; hintpart on="NAME" &gt; &lt; /hintpart &gt; tags for each named (NAME) hint condition, a hint can be designated for display if none of the conditional hints evaluate to true. The default hint is not displayed if the conditions were met for any of the conditional hints. The default hint action is included between &lt; hintpart on="default" &gt; &lt; /hintpart &gt; tags.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="showoncorrect">
-        <TITRE>show on correct</TITRE>
-        <DOCUMENTATION>
-          Show hint even if problem Correct
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="hintpart">
-      <TITRE>Conditional Hint</TITRE>
-      <DOCUMENTATION>
-        When a hint tag named the same as the on attribute evaluates to be correct, the hintpart will show.
-        If no other hintpart is to show then all hintparts with an on value set to &#8220;default&#8221; will show.
+        The hint can use a condition defined in a response by using the condition name in the "on" attribute. In this case, the hint will only display when the condition is verified.
+        If no other hint is to show in the part or (when there is one) in the group of hints, then all hints with an on value set to &#8220;default&#8221; will show.
+        
+        This element must be inside a problem part.
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="on">
         <TITRE>on</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="stringhint">
-      <TITRE>String Hint Condition</TITRE>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
         <DOCUMENTATION>
-          Name of the hint condition.
-          Should be set to the value of which hintpart (Conditional Hint) will be shown.
+          Name of a hint condition defined in a response, or "default".
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
+      <STRINGS_ATTRIBUT attribut="showoncorrect">
+        <TITRE>showoncorrect</TITRE>
         <DOCUMENTATION>
-          Text string.
-          Should be set to the value of which hintpart will be shown.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="type">
-        <TITRE>type</TITRE>
-        <TITRE_VALEUR valeur="cs">case sensitive, order important</TITRE_VALEUR>
-        <TITRE_VALEUR valeur="ci">case insensitive, order important</TITRE_VALEUR>
-        <TITRE_VALEUR valeur="mc">case insensitive, order unimportant</TITRE_VALEUR>
-        <TITRE_VALEUR valeur="re">regular expression</TITRE_VALEUR>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="preprocess">
-        <TITRE>pre-processor subroutine</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="radiobuttonhint">
-      <TITRE>Radiobutton Hint Condition</TITRE>
-      <DOCUMENTATION>
-        Radiobutton Hint Condition
-        
-        The radiobutton hint tag takes two parameters: answer and name. The name is the name of the hint condition, and the answer is an array. The first element of the array will be 'foil'; the remaining elements are the names of the foils that you require to have been checked by the student for the hint to be displayed. For example, if you create a radiobutton response problem with six foils named: granite, gabbro, gneiss, shale, sandstone and schist, and you want your hint named: igneous to be displayed when either granite or basalt had been checked your radiobutton hint would be as follows:
-        
-        &lt;radiobuttonhint answer="('foil','granite','gabbro')" name="igneous"&gt;&lt;/radiobuttonhint&gt;
-        
-        In order to trigger display of this hint you also need to create a &lt; hintpart &gt; &lt; /hintpart &gt; block that will include a textblock that contains the text of the actual hint.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-        <DOCUMENTATION>
-          should be set to the value of which hintpart (Conditional Hint) will be shown
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
-        <DOCUMENTATION>
-          should be at least a two element list: first the type (foil or concept) and then either the foil name(s) or the concept string(s), e.g., &#8220;(&#8217;foil&#8217;,&#8217;greaterthan&#8217;,&#8217;equal&#8217;)&#8221; if the condition should be triggered by the foils named &#8220;greaterthan&#8221; or &#8220;equal&#8221;
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="optionhint">
-      <TITRE>Option Response Hint Condition</TITRE>
-      <DOCUMENTATION>
-        Option Response Hint Condition
-        
-        There are two types of option response hint conditions: one for standalone foils and one for concept groups. In both cases the option hint tag includes two parameters: answer and name for standalone foils, and concept and name for foils grouped together in a concept group. For the answer parameter, the names and submitted values for each of the foils that are being included in the hint condition are provided in a hash, i.e., in the format: ('Foil1'= &gt; 'True','Foil2'= &gt; 'False'). In the case of a conditional hint for a concept group, the format of the concept parameter is also a hash that links the name of each concept group included in the hint condition to either 'correct' or 'incorrect' - e.g., &lt; optionhint concept="('buoyancy'= &gt; 'correct','density'= &gt; 'correct')" name="fluids" / &gt; If 'correct' is specified for a named concept then when the conditional hint is evaluated answers for each of the foils selected by a student must be correct for the hint action to be triggered. If anything other than 'correct' is provided in the concept hash in the optionhint tag then then students answers will be compared with the set answers for the foils in the concept group and as long as at least one answer is incorrect (i.e., the concept group was not correctly answered) then the corresponding hint action will be triggered. 
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-        <DOCUMENTATION>
-          should be set to the value of which hintpart (Conditional Hint) will be shown
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="concept">
-        <TITRE>concept</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="numericalhint">
-      <TITRE>Numerical Hint Condition</TITRE>
-      <DOCUMENTATION>
-        Numerical Hint Condition
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-        <DOCUMENTATION>
-          Unique name given to the hint condition.
-          Should be set to the value of which hintpart will be shown.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
-        <DOCUMENTATION>
-          Numerical answer for which the conditional is provided.
-          Student submission of that answer in combination with the "unit" attribute in the hint condition will trigger the hint action specified in the &lt;hintpart&gt; element.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="unit">
-        <TITRE>unit</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="format">
-        <TITRE>format</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="preprocess">
-        <TITRE>pre-processor subroutine</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="formulahint">
-      <TITRE>Formula Hint Condition</TITRE>
-      <DOCUMENTATION>
-        The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt;hintpart&gt; element. 
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-        <DOCUMENTATION>
-          Unique name given to the hint condition.
-          Should be set to the value of which hintpart will be shown.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
-        <DOCUMENTATION>
-          Formula answer for which the conditional is provided.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="samples">
-        <TITRE>sample points</TITRE>
-        <DOCUMENTATION>
-          Sample points (or range of points) over which sampling of the student&#8217;s submitted answer and the formula included in the formula hint answer parameter are to be compared. The syntax is the same as used to specify sampling points in the samples
-          parameter of the formula reponse element itself.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="preprocess">
-        <TITRE>pre-processor subroutine</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="mathhint">
-      <TITRE>Math Hint Condition</TITRE>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="cas">
-        <TITRE>algebra system</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="args">
-        <TITRE>argument array</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="organichint">
-      <TITRE>Organic Hint Condition</TITRE>
-      <DOCUMENTATION>Organic Hint Condition</DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="reactionhint">
-      <TITRE>Reaction Hint Condition</TITRE>
-      <DOCUMENTATION>Reaction Hint Condition</DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="answer">
-        <TITRE>answer</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="customhint">
-      <TITRE>Custom Hint Condition</TITRE>
-      <DOCUMENTATION>
-        Custom Hint Condition
-        
-        Define the hint condition within an answer block inside of the customhint block. The condition is defined like how an answer is defined in customresponse where you need to return EXACT ANS to indicate when customhint criteria are met.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="name">
-        <TITRE>name</TITRE>
-        <DOCUMENTATION>
-          should be set to the value of which hintpart (Conditional Hint) will be shown
+          Show hint even if problem Correct
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
@@ -2136,7 +2139,6 @@
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    
     <STRINGS_ELEMENT element="xlabel">
       <TITRE>Plot x-label</TITRE>
     </STRINGS_ELEMENT>
@@ -2208,7 +2210,12 @@
     <STRINGS_ELEMENT element="part">
       <TITRE>Problem Part</TITRE>
       <DOCUMENTATION>
-        This must be below problem if it is going to be used. It does many of the same tasks as problem, but allows multiple separate problems to exist in a single file.
+        Problem Part
+        
+        Provides a logical division in a problem, with an indivisible group of questions and responses.
+        Two parts can be graded as right or wrong independantly.
+        A part also provides a granularity level for parameters (weight, tolerance, ...).
+        It is possible to display parts one at a time.
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>part ID</TITRE>
@@ -2217,32 +2224,11 @@
         <TITRE>displayed part description</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="import">
-      <TITRE>Import a File</TITRE>
-      <DOCUMENTATION>
-        This causes the parse to read in the file named in the body of the tag and parse it as if the entire text of the file had existed at the location of the tag.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="id">
-        <TITRE>id</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="importmode">
-        <TITRE>import as</TITRE>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="parserlib">
       <TITRE>Import Tag Definitions</TITRE>
       <DOCUMENTATION>
         The enclosed filename contains definitions for new tags.
       </DOCUMENTATION>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="script">
-      <TITRE>Perl Script or Javascript Block</TITRE>
-      <DOCUMENTATION>
-        If the attribute type is set to &#8220;loncapa/perl&#8221; the enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="type">
-        <TITRE>type</TITRE>
-      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="scriptlib">
       <TITRE>Import Script Library</TITRE>
@@ -2250,8 +2236,12 @@
         The enclosed filename contains Perl code to run in the safe space.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="meta">
-      <TITRE>Custom Metadata</TITRE>
+    <STRINGS_ELEMENT element="lcmeta">
+      <TITRE>LON-CAPA Metadata</TITRE>
+      <DOCUMENTATION>
+        Recognized names:
+        abstract, author, authorspace, avetries, avetries_list, clear, comefrom, comefrom_list, copyright, correct, count, course, course_list, courserestricted, creationdate, dependencies, depth, difficulty, difficulty_list, disc, disc_list, domain, end, field, firstname, generation, goto, goto_list, groupname, helpful, highestgradelevel, hostname, id, keynum, keywords, language, lastname, lastrevisiondate, lowestgradelevel, middlename, mime, modifyinguser, notes, owner, permanentemail, scope, sequsage, sequsage_list, standards, start, stdno, stdno_list, subject, technical, title, url, username, value, version.
+      </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
       </STRINGS_ATTRIBUT>
@@ -2259,29 +2249,11 @@
         <TITRE>content</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="problemtype">
-      <TITRE>Problem Type Block</TITRE>
-      <DOCUMENTATION>
-        Allows you to show or hide output based on what the problem-type parameter is set to in the course.
-        Will only show the output text when the problem is set to the type of exam or survey in the course.
-      </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="mode">
-        <TITRE>mode</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="for">
-        <TITRE>for</TITRE>
-        <DOCUMENTATION>
-          When used as type(s)
-          
-          Comma-separated list of values among:
-          exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="parameter">
-      <TITRE>Parameters for a part</TITRE>
+      <TITRE>Parameter</TITRE>
       <DOCUMENTATION>
-        parameter is exactly the same as responseparam, but should appear outside of a response tag.
+        Defines an externally adjustable parameter for a problem, part, response or hint, which can then be used by other users to customize the problem for their courses without changing the source code.
+        The parameter is relative to the immediate parent, so a part parameter should be placed directly under a part element.
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
@@ -2295,24 +2267,48 @@
       <STRINGS_ATTRIBUT attribut="default">
         <TITRE>default</TITRE>
       </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="display">
+        <TITRE>display</TITRE>
+        <DOCUMENTATION>
+          Title displayed on the parameter setting screen.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="window">
-      <TITRE>Text In Separate Window</TITRE>
+    <STRINGS_ELEMENT element="preduedate">
+      <TITRE>Before Due Date Block</TITRE>
       <DOCUMENTATION>
-        This creates a link that when clicked shows the intervening information in a pop-up window. By default the window will be 500 pixels wide and 200 pixels tall, and the link text will be a superscript * (so as to look like a footnote). These can be changed using the attributes.
-        When printing, the included text will get turned into a real footnote.
+        Everything inside is skipped if the problem is after the due date.
       </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="linktext">
-        <TITRE>text of link</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="postanswerdate">
+      <TITRE>After Answer Date Block</TITRE>
+      <DOCUMENTATION>
+        Everything inside is skipped if the problem is before the answer date.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="solved">
+      <TITRE>Block For After Solved</TITRE>
+      <DOCUMENTATION>
+        Everything inside is skipped if the problem is &#8220;not solved&#8221;.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="notsolved">
+      <TITRE>Block For When Not Solved</TITRE>
+      <DOCUMENTATION>
+        Everything inside is skipped if the problem is &#8220;solved&#8221;.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    
+    <STRINGS_ELEMENT element="import">
+      <TITRE>Import a File</TITRE>
+      <DOCUMENTATION>
+        This causes the parse to read in the file named in the body of the tag and parse it as if the entire text of the file had existed at the location of the tag.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
       </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="height">
-        <TITRE>height</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="width">
-        <TITRE>width</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="printtext">
-        <TITRE>printed text</TITRE>
+      <STRINGS_ATTRIBUT attribut="importmode">
+        <TITRE>import as</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="block">
@@ -2333,17 +2329,36 @@
         <TITRE>test condition</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="postanswerdate">
-      <TITRE>After Answer Date Block</TITRE>
+    <STRINGS_ELEMENT element="tex">
+      <TITRE>Print Only Block</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="web">
+      <TITRE>Web Only Block</TITRE>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="standalone">
+      <TITRE>Standalone Block</TITRE>
       <DOCUMENTATION>
-        Everything inside is skipped if the problem is before the answer date.
+        Everything in between the start and end tag is shown only on the web and only if the resource is not part of a course.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="preduedate">
-      <TITRE>Before Due Date Block</TITRE>
+    <STRINGS_ELEMENT element="problemtype">
+      <TITRE>Problem Type Block</TITRE>
       <DOCUMENTATION>
-        Everything inside is skipped if the problem is after the due date.
+        Allows you to show or hide output based on what the problem-type parameter is set to in the course.
+        Will only show the output text when the problem is set to the type of exam or survey in the course.
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="mode">
+        <TITRE>mode</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="for">
+        <TITRE>for</TITRE>
+        <DOCUMENTATION>
+          When used as type(s)
+          
+          Comma-separated list of values among:
+          exam, survey, surveycred, anonsurvey, anonsurveycred, problem, practice, randomizetry
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="randomlist">
       <TITRE>Randomly Parsed Block</TITRE>
@@ -2354,47 +2369,11 @@
         <TITRE>maximum tags to show</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="solved">
-      <TITRE>Block For After Solved</TITRE>
+    <STRINGS_ELEMENT element="perl">
+      <TITRE>Perl Script</TITRE>
       <DOCUMENTATION>
-        Everything inside is skipped if the problem is &#8220;not solved&#8221;.
+        The enclosed data is a Perl script which is evaluated inside the Perl safe space. The return value of the script is ignored.
       </DOCUMENTATION>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="notsolved">
-      <TITRE>Block For When Not Solved</TITRE>
-      <DOCUMENTATION>
-        Everything inside is skipped if the problem is &#8220;solved&#8221;.
-      </DOCUMENTATION>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="web">
-      <TITRE>Web Only Block</TITRE>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="tex">
-      <TITRE>Print Only Block</TITRE>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="display">
-      <TITRE>Display Script Result Block</TITRE>
-      <DOCUMENTATION>
-        The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
-      </DOCUMENTATION>
-    </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="organicstructure">
-      <TITRE>Organic Structure</TITRE>
-      <STRINGS_ATTRIBUT attribut="width">
-        <TITRE>width (pixels)</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="texwidth">
-        <TITRE>TeXwidth (mm)</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="molecule">
-        <TITRE>molecule</TITRE>
-        <DOCUMENTATION>
-          JME string
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="options">
-        <TITRE>options</TITRE>
-      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="languageblock">
       <TITRE>Language Block</TITRE>
@@ -2431,8 +2410,24 @@
         <TITRE>other</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="instructorcomment">
-      <TITRE>Instructor Comment</TITRE>
+    <STRINGS_ELEMENT element="window">
+      <TITRE>Text In Separate Window</TITRE>
+      <DOCUMENTATION>
+        This creates a link that when clicked shows the intervening information in a pop-up window. By default the window will be 500 pixels wide and 200 pixels tall, and the link text will be a superscript * (so as to look like a footnote). These can be changed using the attributes.
+        When printing, the included text will get turned into a real footnote.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="linktext">
+        <TITRE>text of link</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="printtext">
+        <TITRE>printed text</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="windowlink">
       <TITRE>Window Link</TITRE>
@@ -2488,17 +2483,36 @@
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="standalone">
-      <TITRE>Standalone Block</TITRE>
+    <STRINGS_ELEMENT element="instructorcomment">
+      <TITRE>Instructor Comment</TITRE>
       <DOCUMENTATION>
-        Everything in between the start and end tag is shown only on the web and only if the resource is not part of a course.
+        Comment that is hidden if form.instructor_comments='hide'.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="comment">
       <TITRE>Comment</TITRE>
       <DOCUMENTATION>
         Allows one to comment out sections of code in a balanced manner, or to provide a comment description of how a problem works.
+        The content is ignored.
       </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="organicstructure">
+      <TITRE>Organic Structure</TITRE>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width (pixels)</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="texwidth">
+        <TITRE>TeXwidth (mm)</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="molecule">
+        <TITRE>molecule</TITRE>
+        <DOCUMENTATION>
+          JME string
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="options">
+        <TITRE>options</TITRE>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="drawimage">
       <TITRE>Draw Image</TITRE>
@@ -2588,52 +2602,11 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     
-    <STRINGS_ELEMENT element="img">
-      <TITRE>Image</TITRE>
-      <STRINGS_ATTRIBUT attribut="src">
-        <TITRE>image URL</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="alt">
-        <TITRE>alt</TITRE>
-        <DOCUMENTATION>
-          Textual description of the image. If the image cannot be rendered by the target browser, this description is displayed instead.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="width">
-        <TITRE>width (pixel)</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="height">
-        <TITRE>height (pixel)</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="TeXwidth">
-        <TITRE>TeX width (mm)</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="TeXheight">
-        <TITRE>TeX height (mm)</TITRE>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="align">
-        <TITRE>align</TITRE>
-        <DOCUMENTATION>
-          Specifies the alignment of the image relative to the enclosing text paragraph:
-          - bottom: The image will be aligned so that its bottom will be at the baseline of the surrounding text.
-          - middle: The image will be aligned so that its center-line will be at the baseline of the surrounding text.
-          - top: The image will be aligned so that its top will be at the baseline of the surrounding text.
-          - left: The image will be placed so that it is at the left of the surrounding text. The surrounding text will fill in the region to the right of the image.
-          - right: The image will be placed so that it is at the right of the surrounding text. The surrounding text will fill in the region to the left of the image.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="TeXwrap">
-        <TITRE>TeX wrap</TITRE>
-        <DOCUMENTATION>
-          Allows you to select how the LaTeX document will attempt to wrap text around a horizontally aligned image.
-          parbox: \newline and \parbox will be used to place the image. This method ensures that text will not be wrapped on top of the image, however very little text will appear next to the image itself.
-          parpic: The picins package \parpic command will be used to place the image. This will wrap the remainder of the paragraph containing the picture around the image.
-          If, however, there is insufficient text to fill the space to the left or right of the image, the next paragraph may be wrapped on top of the image. In addition, \parpic does not always honor the end of the page, causing the image to extend below the page footer.
-        </DOCUMENTATION>
-      </STRINGS_ATTRIBUT>
-      <STRINGS_ATTRIBUT attribut="encrypturl">
-        <TITRE>encrypt url</TITRE>
-      </STRINGS_ATTRIBUT>
+    <STRINGS_ELEMENT element="display">
+      <TITRE>Display Script Result Block</TITRE>
+      <DOCUMENTATION>
+        The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
+      </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="m">
       <TITRE>TeX</TITRE>
@@ -2706,6 +2679,28 @@
         <TITRE>id</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="meta">
+      <TITRE>HTML meta</TITRE>
+      <DOCUMENTATION>
+        Note: LON-CAPA metadata should be defined with the lcmeta element ("LON-CAPA Metadata") instead of meta. This is only for HTML.
+        
+        The HTML &lt;meta&gt; Element represents any metadata information that cannot be represented by one of the other meta-related elements (&lt;base&gt;, &lt;link&gt;, &lt;script&gt;, &lt;style&gt; or &lt;title&gt;).
+        According to the attributes set, the kind of metadata can be one of the following:
+        - if the name is set, a document-level metadata, applying to the whole page;
+        - if the http-equiv is set, a pragma directive, i.e. information normally given from the webserver on how the webpage should be served;
+        - if the charset is set, a charset declaration, i.e. the charset used for the serialized-form of the webpage; HTML5
+        - if the itemprop is set, a user-defined metadata, transparent for the user-agent as the semantics of the metadata is user-specific.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="name">
+        <TITRE>name</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="content">
+        <TITRE>content</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="http-equiv">
+        <TITRE>http-equiv</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="link">
       <TITRE>Link</TITRE>
       <DOCUMENTATION>
@@ -2754,6 +2749,47 @@
         <TITRE>xml:space</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="script">
+      <TITRE>Javascript</TITRE>
+      <DOCUMENTATION>
+        This is only for browser-interpreted Javascript (LON-CAPA Perl scripts should use the perl element).
+        
+        The HTML &lt;script&gt; element is used to embed or reference an executable script within an HTML or XHTML document.
+        
+        Scripts without async or defer attributes, as well as inline scripts, are fetched and executed immediately, before the browser continues to parse the page.
+      </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="src">
+        <TITRE>src</TITRE>
+        <DOCUMENTATION>
+          This attribute specifies the URI of an external script; this can be used as an alternative to embedding a script directly within a document. script elements with an src attribute specified should not have a script embedded within its tags.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="type">
+        <TITRE>type</TITRE>
+        <DOCUMENTATION>
+          This attribute identifies the scripting language of code embedded within a script element or referenced via the element&#8217;s src attribute. This is specified as a MIME type; examples of supported MIME types include text/javascript, text/ecmascript, application/javascript, and application/ecmascript.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="language">
+        <TITRE>language</TITRE>
+        <DOCUMENTATION>
+          Like the type attribute, this attribute identifies the scripting language in use. Unlike the type attribute, however, this attribute&#8217;s possible values were never standardized. The type attribute should be used instead.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="defer">
+        <TITRE>defer</TITRE>
+        <DOCUMENTATION>
+          This Boolean attribute is set to indicate to a browser that the script is meant to be executed after the document has been parsed. Since this feature hasn't yet been implemented by all other major browsers, authors should not assume that the script&#8217;s execution will actually be deferred. The defer attribute shouldn't be used on scripts that don't have the src attribute. Since Gecko 1.9.2, the defer attribute is ignored on scripts that don't have the src attribute. However, in Gecko 1.9.1 even inline scripts are deferred if the defer attribute is set.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="async">
+        <TITRE>async</TITRE>
+        <DOCUMENTATION>
+          HTML5 only.
+          Set this Boolean attribute to indicate that the browser should, if possible, execute the script asynchronously. It has no effect on inline scripts (i.e., scripts that don't have the src attribute).
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="noscript">
       <TITRE>Block when no script</TITRE>
       <DOCUMENTATION>
@@ -2782,39 +2818,41 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="h1">
-      <TITRE>Lvl 1 Header</TITRE>
+      <TITRE>Lvl 1 Title</TITRE>
       <DOCUMENTATION>
-        Level 1 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
+        
+        Inside HTML5 sections, all the heading elements can be h1 (they don't need to be h1, h2, ...). Web browsers determine the level of the heading based on the depth in the section tree.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="h2">
-      <TITRE>Lvl 2 Header</TITRE>
+      <TITRE>Lvl 2 Title</TITRE>
       <DOCUMENTATION>
-        Level 2 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="h3">
-      <TITRE>Lvl 3 Header</TITRE>
+      <TITRE>Lvl 3 Title</TITRE>
       <DOCUMENTATION>
-        Level 3 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="h4">
-      <TITRE>Lvl 4 Header</TITRE>
+      <TITRE>Lvl 4 Title</TITRE>
       <DOCUMENTATION>
-        Level 4 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="h5">
-      <TITRE>Lvl 5 Header</TITRE>
+      <TITRE>Lvl 5 Title</TITRE>
       <DOCUMENTATION>
-        Level 5 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="h6">
-      <TITRE>Lvl 6 Header</TITRE>
+      <TITRE>Lvl 6 Title</TITRE>
       <DOCUMENTATION>
-        Level 6 header
+        A heading element briefly describes the topic of the section it introduces. Heading information may be used by user agents, for example, to construct a table of contents for a document automatically.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="div">
@@ -2830,9 +2868,9 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="p">
-      <TITRE>P</TITRE>
+      <TITRE>Paragraph</TITRE>
       <DOCUMENTATION>
-        Paragraph
+        The HTML &lt;p&gt; element (or HTML Paragraph Element) represents a paragraph of text. Paragraphs are block-level elements.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="ul">
@@ -2876,8 +2914,32 @@
     <STRINGS_ELEMENT element="table">
       <TITRE>Table</TITRE>
       <DOCUMENTATION>
-        Table
+        The HTML Table Element (&lt;table&gt;) represents data in two dimensions or more.
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="style">
+        <TITRE>style</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="border">
+        <TITRE>border</TITRE>
+        <DOCUMENTATION>
+          This integer attribute defines, in pixels, the size of the frame surrounding the table. If set to 0, it implies that the frame attribute is set to void.
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, the CSS properties border, border-color, border-width and border-style should be used.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="cellpadding">
+        <TITRE>cellpadding</TITRE>
+        <DOCUMENTATION>
+          This attribute defines the space between the content of a cell and the border, displayed or not, of it. If it is a pixel length, this pixel-sized space will be applied on all four sides; if it is a percentage length, the content will be centered and the total vertical space (top and bottom) will represent this percentage. The same is true for the total horizontal space (left and right).
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, use the CSS property border-collapse with the value collapse on the &lt;table&gt; element itself, and the property padding on the &lt;td&gt;.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="cellspacing">
+        <TITRE>cellspacing</TITRE>
+        <DOCUMENTATION>
+          This attribute defines the size, in percentage or in pixels, of the space between two cells (both horizontally and vertically), between the top of the table and the cells of the first row, the left of the table and the first column, the right of the table and the last column and the bottom of the table and the last row.
+          Usage note: Do not use this attribute, as it has been deprecated: the &lt;table&gt; element should be styled using CSS. To give a similar effect than the border attribute, use the CSS property border-collapse with the value collapse on the &lt;table&gt; element itself, and the property margin on the &lt;td&gt; element.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="tr">
       <TITRE>Table Row</TITRE>
@@ -3002,6 +3064,22 @@
         The HTML &lt;samp&gt; element is an element intended to identify sample output from a computer program. It is usually displayed in the browser's default monotype font.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="cite">
+      <TITRE>Citation</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;cite&gt; Element (or HTML Citation Element) represents a reference to a creative work. It must include the title of a work, the name of the author, or a URL reference, which may be in an abbreviated form according to the conventions used for the addition of citation metadata.
+        
+        Usage Notes:
+        
+        A creative work may include a book, a paper, an essay, a poem, a score, a song, a script, a film, a TV show, a game, a sculpture, a painting, a theater production, a play, an opera, a musical, an exhibition, a legal case report, a computer program, , a web site, a web page, a blog post or comment, a forum post or comment, a tweet, a written or oral statement, etc.
+        Use the cite attribute on a &lt;blockquote&gt; or &lt;q&gt; element to reference an online resource for a source.
+        
+        
+        Style note:
+        
+        To avoid the default italic style from being used for the &lt;cite&gt; element use the CSS font-style property.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="tt">
       <TITRE>Teletype</TITRE>
       <DOCUMENTATION>
@@ -3058,6 +3136,65 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="cite">
         <TITRE>cite</TITRE>
+      </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="img">
+      <TITRE>Image</TITRE>
+      <STRINGS_ATTRIBUT attribut="src">
+        <TITRE>image URL</TITRE>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="alt">
+        <TITRE>alt</TITRE>
+        <DOCUMENTATION>
+          Textual description of the image. If the image cannot be rendered by the target browser, this description is displayed instead.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="width">
+        <TITRE>width (pixel)</TITRE>
+        <DOCUMENTATION>
+          The width of the image in pixels or percent.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="height">
+        <TITRE>height (pixel)</TITRE>
+        <DOCUMENTATION>
+          The height of the image in pixels or percent.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="texwidth">
+        <TITRE>TeX width (mm)</TITRE>
+        <DOCUMENTATION>
+          Allows you to set the width of the image, in mm, as it will be rendered into the LaTeX document used to print the problem.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="texheight">
+        <TITRE>TeX height (mm)</TITRE>
+        <DOCUMENTATION>
+          Allows you to set the height of the image, in mm, as it will be rendered into the LaTeX document used to print the problem.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="align">
+        <TITRE>align</TITRE>
+        <DOCUMENTATION>
+          Specifies the alignment of the image relative to the enclosing text paragraph:
+          - bottom: The image will be aligned so that its bottom will be at the baseline of the surrounding text.
+          - middle: The image will be aligned so that its center-line will be at the baseline of the surrounding text.
+          - top: The image will be aligned so that its top will be at the baseline of the surrounding text.
+          - left: The image will be placed so that it is at the left of the surrounding text. The surrounding text will fill in the region to the right of the image.
+          - right: The image will be placed so that it is at the right of the surrounding text. The surrounding text will fill in the region to the left of the image.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="texwrap">
+        <TITRE>TeX wrap</TITRE>
+        <DOCUMENTATION>
+          Allows you to select how the LaTeX document will attempt to wrap text around a horizontally aligned image.
+          parbox: \newline and \parbox will be used to place the image. This method ensures that text will not be wrapped on top of the image, however very little text will appear next to the image itself.
+          parpic: The picins package \parpic command will be used to place the image. This will wrap the remainder of the paragraph containing the picture around the image.
+          If, however, there is insufficient text to fill the space to the left or right of the image, the next paragraph may be wrapped on top of the image. In addition, \parpic does not always honor the end of the page, causing the image to extend below the page footer.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="encrypturl">
+        <TITRE>encrypt url</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="object">
@@ -3243,7 +3380,7 @@
     <STRINGS_ELEMENT element="map">
       <TITRE>Map</TITRE>
       <DOCUMENTATION>
-        The HTML &lt;area&gt; element defines a hot-spot region on an image, and optionally associates it with a hypertext link. This element is used only within a &lt;map&gt; element.
+        The HTML &lt;map&gt; element is used with &lt;area&gt; elements to define an image map (a clickable link area).
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
@@ -3263,6 +3400,9 @@
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="area">
       <TITRE>Area</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;area&gt; element defines a hot-spot region on an image, and optionally associates it with a hypertext link. This element is used only within a &lt;map&gt; element.
+      </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="shape">
         <TITRE>shape</TITRE>
       </STRINGS_ATTRIBUT>

@@ -108,6 +108,9 @@ sub handler {
       &logerror("Failed to move into place [$dest_url]");
       return HTTP_SERVICE_UNAVAILABLE;
    }
+# Make sure it's visible
+   &Apache::lc_entity_urls::un_obsolete($dest_url);
+   &Apache::lc_entity_urls::un_delete($dest_url);   
    return OK;
 }
 

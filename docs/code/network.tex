@@ -3,7 +3,7 @@
 \section{Overview}
 LON-CAPA has logical layers, see Fig.~\ref{fig:overview}:
 \begin{itemize}
-\item Clients to to particular servers in the network
+\item Clients talk to particular servers in the network
 \item Requests from clients are handled by handlers (at the ``ui'' level)
 \item Handlers talk to the web service layer (the ``entity'' level) --- the webservices layer abstracts away the fact that the network is distributed
 \item Databases and file systems
@@ -124,7 +124,7 @@ SSLVerifyDepth 2
 The certificates need to be located in /home/loncapa/certs/.
 
 \subsection{Connection handling}
-Connections are handled by the module lc\_connection\_handle. Any routines that should be externally accessible need to be registered with the module, like so:
+Connections are handled by the module lc\_connection\_handle. The following examples are associated with namespaces (see Section~\ref{namespace} on page~\pageref{namespace}), but the mechanism applies to almost all network communication and storage needs. Any routines that should be externally accessible need to be registered with the module, like so:
 \begin{verbatim}
 BEGIN {
     &Apache::lc_connection_handle::register('modify_namespace',undef,undef,undef,

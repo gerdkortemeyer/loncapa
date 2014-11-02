@@ -59,6 +59,8 @@ sub main_actions {
 # Pick up the job ticket and see if we can do it
    if ($job->{'command'} eq 'usersearch') {
       &Apache::lc_entity_users::query_user_profiles($job->{'domain'},$job->{'term'});
+   } elsif ($job->{'command'} eq 'coursesearch') {
+      &Apache::lc_entity_courses::query_course_profiles($job->{'domain'},$job->{'term'});
    } else {
       &logwarning("Unknown asynchronous job command: [".$job->{'command'}."]");
    }

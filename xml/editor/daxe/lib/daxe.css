@@ -1,7 +1,7 @@
 body {
   line-height: 1.5;
   color: black;
-  background-color: #FFFFFF;
+  background-color: white;
 }
 
 button {
@@ -267,8 +267,6 @@ div#doc1 {
   right: 0em;
   top: 4em;
   overflow: auto;
-  background-color: #FFFFFF;
-  color: #000;
 }
 
 div#doc2 {
@@ -463,6 +461,11 @@ input.invalid {
   color: #F00000;
 }
 
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+  -webkit-text-fill-color: #006000;
+}
+
 .required {
   color: #B00000;
 }
@@ -481,6 +484,10 @@ button.help {
 
 div.dlg3 table {
   border-spacing: 5px;
+}
+
+span.help_element_name {
+  font-family: monospace;
 }
 
 div.help_regexp {
@@ -630,6 +637,20 @@ span.source_doctype {
   cursor: default;
 }
 
+/* DNHiddenP */
+.hiddenp {
+  position: relative;
+  min-height: 1.5em;
+}
+.hiddenp::after {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  content: " ¶";
+  color: #CCC;
+  z-index: -1;
+}
+
 /* DNList */
 ul.list {
   list-style: none;
@@ -653,7 +674,7 @@ ul.wlist>li.selected span {
 }
 
 /* DNTable */
-div.table table {
+div.table>table {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid #000000;
@@ -662,7 +683,7 @@ div.table table {
   margin-bottom: 2px;
 }
 
-div.table table>tr>td {
+div.table>table>tr>td {
   min-width: 2em;
   border: 1px solid #000000;
   word-break: break-all;

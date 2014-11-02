@@ -25,9 +25,9 @@ The system should thus assume:
 
 Each username or PID points to one and only one user entity. However, a user entity can have more than one supported username or PID.
 \section{Courses}\index{courses}
-Courses are treated very similarily to users. They have course IDs such as ``phy231fs14'', which might have. These are treated the same way as usernames or PIDs.
+Courses are treated very similarly to users. They have course IDs such as ``phy231fs14'', which might have. These are treated the same way as usernames or PIDs.
 
-Communities are special kinds of courses which do not have grade book, and which have different associated roles. Internally, they are distinguish by the ``type'' in the course profile being ``community'' instead of ``regular.''\index{communities}
+Communities are special kinds of courses which do not have grade book, and which have different associated roles. Internally, they are distinguished by the ``type'' in the course profile being ``community'' instead of ``regular.''\index{communities}
 
 Courses can have sections and groups.\index{sections}\index{groups}
 \begin{itemize}
@@ -44,7 +44,7 @@ Instead of usernames, PIDs, or couse IDs, assets have URLs. One asset can have m
 \end{center}
 where the first two components after ``asset'' designate the version, followed by the domain and the publishing author.
 
-The above example explictly asks for version number 3 of the asset. Other ways are
+The above example explicitly asks for version number 3 of the asset. Other ways are
 \begin{center}
 {\tt /asset/as\_of/2014-01-08\_04:05:06/msu/smith/...}
 \end{center}
@@ -56,11 +56,11 @@ asks for the most recent version.\index{versions}
 
 If at all possible, relative URLs should be used, so version arguments like ``as\_of'' get preserved to also get the right versions of dependent files.
 \subsection{Profiles and metadata}\index{profiles}\index{metadata}
-Both users and courses have profiles, which store basic information like their full name or title, or any configuration preferences. Assets have metadata, whcih is used for various cataloging purposes and populated with both static and dynamic metadata. These are stored in MongoDB.\index{MongoDB}.
+Both users and courses have profiles, which store basic information like their full name or title, or any configuration preferences. Assets have metadata, which is used for various cataloging purposes and populated with both static and dynamic metadata. These are stored in MongoDB.\index{MongoDB}.
 \subsection{Storage}
 Assets are physically stored on the file system under their entity, not their URL,  see Section~\ref{resfilesystem} on page~\pageref{resfilesystem}. An asset entity can have more than one URL. The URLs are a property of the entities and translated using the translation handler, see Section~\ref{accassets} on page~\pageref{accassets}.
 
-The authoritative copy of assets sit on the author's homeserver.\index{homeserver} During replication (Section~\ref{replication} on page~\pageref{replication}), copies are made between servers.
+The authoritative copy of assets sits on the author's homeserver.\index{homeserver} During replication (Section~\ref{replication} on page~\pageref{replication}), copies are made between servers.
 \subsection{Publication and Versioning}\index{publication}\index{versions}
 Assets move from the ``\_wrk'' version to the real next version during the process of publication.\index{publication}
  As a new version of a resource is generated, this triggers the updating across servers through replication (see Section~\ref{replication} on page~\pageref{replication}).

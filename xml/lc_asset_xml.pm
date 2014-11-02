@@ -37,11 +37,142 @@ use Apache::lc_xml_tables;
 use Apache::lc_xml_conditionals;
 use Apache::lc_xml_include;
 use Apache::lc_xml_gadgets;
+use Apache::lc_xml_parameters;
+use Apache::lc_entity_sessions();
+
+# Problem tags
+#
+use Apache::xml_problem_tags::problemparts;
+use Apache::xml_problem_tags::inputtags;
+use Apache::xml_problem_tags::numericalresponse;
+
+use Apache::lc_logs;
 
 sub error {
    my ($stack,$type,$notes)=@_;
    $notes->{'type'}=$type;
    push(@{$stack->{'errors'}},$notes);
+}
+
+#
+# Go up the stack until argument with name is found
+#
+sub cascade_attribute {
+   my ($name,$stack)=@_;
+   if ($stack->{'tags'}) {
+      for (my $i=$#{$stack->{'tags'}}; $i>=0; $i--) {
+         if (defined($stack->{'tags'}->[$i]->{'args'}->{$name})) {
+            return $stack->{'tags'}->[$i]->{'args'}->{$name};
+         }
+      }
+   }
+   return undef;
+}
+
+#
+# Return the attribute $name from enclosing $tag
+#
+sub tag_attribute {
+   my ($tag,$name,$stack)=@_;
+   if ($stack->{'tags'}) {
+      for (my $i=$#{$stack->{'tags'}}; $i>=0; $i--) {
+         if ($stack->{'tags'}->[$i]->{'name'} eq $tag) {
+            return $stack->{'tags'}->[$i]->{'args'}->{$name};
+         }
+      }
+   }
+   return undef;
+}
+
+#
+# Check what if we are inside of tag
+#
+sub enclosed_in {
+   my ($tag,$stack)=@_;
+   if ($stack->{'tags'}) {
+      for (my $i=$#{$stack->{'tags'}}; $i>=0; $i--) {
+         if ($stack->{'tags'}->[$i]->{'name'} eq $tag) { return 1; }
+      }
+   }
+   return undef;
+}
+
+
+#
+# Get the depth indicator
+#
+sub depth_ids {
+   my ($stack)=@_;
+   my @levels=();
+   foreach my $tag (@{$stack->{'tags'}}) {
+      push(@levels,$tag->{'args'}->{'id'});
+   }
+   return @levels;
+}
+
+#
+# Get a parameter
+#
+sub cascade_parameter {
+   my ($name,$stack)=@_;
+   my @levels=&depth_ids($stack);
+   while ($#levels>=0) {
+       my $indicator=join(':',@levels);
+       if ($stack->{'parameters'}->{$indicator}->{$name}->{'value'}) {
+          return $stack->{'parameters'}->{$indicator}->{$name}->{'value'};
+       }
+       if ($stack->{'parameters'}->{$indicator}->{$name}->{'default'}) {
+          return $stack->{'parameters'}->{$indicator}->{$name}->{'default'};
+       }
+       pop(@levels);
+   }
+}
+
+#
+# Get things ready for a response
+#
+sub init_response {
+   my ($stack)=@_;
+   $stack->{'response_inputs'}=[];
+   $stack->{'response_hints'}=[];
+}
+
+#
+# Add an input ID to a response
+#
+sub add_response_input {
+   my ($stack)=@_;
+   push(@{$stack->{'response_inputs'}},${$stack->{'tags'}}[-1]);
+}
+
+#
+# Collect all responses
+#
+sub collect_responses {
+   my ($stack)=@_;
+   my $answers=[];
+   foreach my $response (@{$stack->{'response_inputs'}}) {
+       push(@{$answers},$stack->{'content'}->{$response->{'args'}->{'id'}});
+   }
+   return $answers;
+}
+
+#
+# Get all the inputs
+#
+sub get_response_inputs {
+   my ($stack)=@_;
+   return $stack->{'response_inputs'};
+}
+
+sub add_response_hint {
+   my ($stack)=@_;
+   push(@{$stack->{'response_hints'}},${$stack->{'tags'}}[-1]);
+}
+
+sub get_response_hints {
+   my ($stack)=@_;
+   return $stack->{'response_hints'};
 }
 
 # Output a piece of text
@@ -100,53 +231,119 @@ sub default_html {
 #
 sub parser {
    my ($p,$safe,$stack,$status,$target)=@_;
+# Output collected here
    my $output='';
+# Counter to assign IDs
+   my $idcnt=1;
+# If we are only rendering a subpart of the document
+   my $outputid=$stack->{'outputid'};
+   my $outputactive=0;
    while (my $token = $p->get_token) {
+      my $tmpout='';
+      my $outputdone=0;
       if ($token->[0] eq 'T') {
-         $output.=&process_text($p,$safe,$stack,$status,$target,$token);
+         $tmpout=&process_text($p,$safe,$stack,$status,$target,$token);
       } elsif ($token->[0] eq 'S') {
 # A start tag - evaluate the attributes in here
          foreach my $key (keys(%{$token->[2]})) {
             $token->[2]->{$key}=&Apache::lc_asset_safeeval::texteval($safe,$token->[2]->{$key}); 
          }
+# Don't have an ID yet? Make up a temporary one.
+         unless ($token->[2]->{'id'}) {
+            $token->[2]->{'id'}='TMP_'.$idcnt;
+            $idcnt++;
+         }
+# If we are only rendering part of the document, is this it?
+         if ($token->[2]->{'id'} eq $outputid) {
+            $outputactive=1;
+         }
 # - remember for embedded tags and for the end tag
          push(@{$stack->{'tags'}},{ 'name' => $token->[1], 'args' => $token->[2] });
-         $output.=&process_tag('start',$token->[1],$p,$safe,$stack,$status,$target,$token);
+         $tmpout=&process_tag('start',$token->[1],$p,$safe,$stack,$status,$target,$token);
       } elsif ($token->[0] eq 'E') {
 # An ending tag
-         $output.=&process_tag('end',$token->[1],$p,$safe,$stack,$status,$target,$token);
+         $tmpout=&process_tag('end',$token->[1],$p,$safe,$stack,$status,$target,$token);
 # Unexpected ending tags
-         if ($stack->{'tags'}->[-1]->{'name'} ne $token->[1]) {
-            &error($stack,'unexpected_ending',{'expected' => $stack->{'tags'}->[-1]->{'name'},
-                                               'found'    => $token->[1] });
+         if ($#{$stack->{'tags'}}>=0) {
+            if ($stack->{'tags'}->[-1]->{'name'} ne $token->[1]) {
+               &error($stack,'unexpected_ending',{'expected' => $stack->{'tags'}->[-1]->{'name'},
+                                                  'found'    => $token->[1] });
+            }
+         } else {
+            &error($stack,'unexpected_ending',{'expected' => '-',
+                                               'found'    => $token->[-1] });
+         }
+# If we are only rendering part of the document, see if we are done after this
+         if ($stack->{'tags'}->[-1]->{'name'} eq $outputid) {
+            $outputdone=1;
          }
 # Pop the stack again
          pop(@{$stack->{'tags'}});
       } else {
-         $output.=$token->[-1];
+# Other stuff, remember and keep going
+         $tmpout=$token->[-1];
+      }
+# Only output if within 
+      if ($outputid) {
+         if ($outputactive) {
+            $output.=$tmpout;
+         }
+         if ($outputdone) { $outputactive=0; }
+      } else {
+         $output.=$tmpout;
       }
    }
 # The tag stack should be empty again
    for (my $i=0;$i<=$#{$stack->{'tags'}};$i++) {
       &error($stack,'missing_ending',{'expected' => $stack->{'tags'}->[$i]->{'name'} });
    }
-   return ($output,$stack);
+   return $output;
 }
 
 
 # ==== Render for target
+# fn: filename
+# targets: pointer to an array of targets that need to be parsed in sequence
+# stack: where we store stuff, recycled between targets
+# content: anything posted to the page
+# context: the user and course
+# outputid: only render inside this ID
 #
 sub target_render {
-   my ($fn,$target)=@_;
+   my ($fn,$targets,$stack,$content,$context,$outputid)=@_;
 # Clear out and initialize everything
+   unless ($stack) {
+      $stack={};
+   }
+# Get parser going (fresh)
    my $p=HTML::TokeParser->new($fn);
+   unless ($p) {
+      &logerror("Could not inititialize parser for file [$fn]");
+      return (undef,undef);
+   }
    $p->empty_element_tags(1);
+# Get safe space going (fresh)
    my $safe=&Apache::lc_asset_safeeval::init_safe();
-   my $stack;
+# Coming here for the first time? Remember stuff
+   if ($content) {
+      $stack->{'content'}=$content;
+   }
+   if ($context) {
+      $stack->{'context'}=$context;
+   }
+   if ($outputid) {
+      $stack->{'outputid'}=$outputid;
+   }
    my $status;
 #FIXME: actually find status
-   my ($output,$stack)=&parser($p,$safe,$stack,$status,$target);
-   return $output;
+#...
+# Render for all requested targets except the last one
+   for (my $i=0; $i<$#{$targets}; $i++) {
+      &target_render($fn,[$targets->[$i]],$stack);
+   }
+# The final one actually produces the output
+   my $output=&parser($p,$safe,$stack,$status,$targets->[-1]);
+   return ($output,$stack);
 }
 
 
@@ -158,7 +355,13 @@ sub handler {
    unless (-e $fn) {
       return HTTP_NOT_FOUND;
    }
-   $r->print(&target_render($fn,'html'));
+   $r->content_type('text/html; charset=utf-8');
+   if ($r->uri=~/^\/asset\//) {
+      my %content=&Apache::lc_entity_sessions::posted_content();
+      $r->print((&target_render($fn,['analysis','grade','html'],{},\%content))[0]);
+   } else {
+      $r->print((&target_render($fn,['html'],{}))[0]);
+   }
    return OK;
 }
 

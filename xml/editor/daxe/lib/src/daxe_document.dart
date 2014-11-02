@@ -29,7 +29,7 @@ class DaxeDocument {
   int undoPosition = -1;
   String filePath;
   String saveURL;
-  x.Element hiddenp;
+  List<x.Element> hiddenParaRefs; /* references for hidden paragraphs */
   x.Element hiddendiv;
   
   /**
@@ -39,7 +39,9 @@ class DaxeDocument {
     Completer completer = new Completer();
     cfg = new Config();
     cfg.load(configPath).then((_) {
-      hiddenp = cfg.firstElementWithType('hiddenp');
+      hiddenParaRefs = cfg.elementsWithType('hiddenp');
+      if (hiddenParaRefs.length == 0)
+        hiddenParaRefs = null;
       hiddendiv = cfg.firstElementWithType('hiddendiv');
       filePath = null;
       dndoc = new DNDocument();
@@ -66,7 +68,9 @@ class DaxeDocument {
     Completer completer = new Completer();
     cfg = new Config();
     cfg.load(configPath).then((_) {
-      hiddenp = cfg.firstElementWithType('hiddenp');
+      hiddenParaRefs = cfg.elementsWithType('hiddenp');
+      if (hiddenParaRefs.length == 0)
+        hiddenParaRefs = null;
       hiddendiv = cfg.firstElementWithType('hiddendiv');
       this.filePath = filePath;
       x.DOMParser dp = new x.DOMParser();
@@ -74,6 +78,8 @@ class DaxeDocument {
         if (removeIndents)
           removeWhitespace(xmldoc.documentElement);
         dndoc = NodeFactory.createFromNode(xmldoc, null);
+        if (cfg != null && hiddenParaRefs != null)
+          removeWhitespaceForHiddenParagraphs(dndoc);
         completer.complete();
       }, onError: (x.DOMException ex) {
         if (ex.errorCode == 404) {
@@ -643,70 +649,60 @@ class DaxeDocument {
   void insertNewString(String s, bool shift) {
     Position selectionStart = page.getSelectionStart();
     Position selectionEnd = page.getSelectionEnd();
-    if (((selectionStart.dn is DNItem) ||
-        (selectionStart.dn.nextSibling == null && selectionStart.dn.parent is DNItem)) &&
-        selectionStart.dnOffset == selectionStart.dn.offsetLength &&
-        s == '\n' && !shift) {
-      // \n in an item: adding a new list item
-      // TODO: try to move this node-specific code elsewhere
-      DNItem item;
-      if (selectionStart.dn is DNItem)
-        item = selectionStart.dn;
-      else
-        item = selectionStart.dn.parent;
-      DNItem newitem = NodeFactory.create(item.ref);
-      doc.insertNode(newitem,
-          new Position(item.parent, item.parent.offsetOf(item) + 1));
-      page.moveCursorTo(new Position(newitem, 0));
-      page.updateAfterPathChange();
-      return;
-    } else if (((selectionStart.dn is DNWItem) ||
-        (selectionStart.dn.nextSibling == null && selectionStart.dn.parent is DNWItem)) &&
-        selectionStart.dnOffset == selectionStart.dn.offsetLength &&
-        s == '\n' && !shift) {
-      // \n in an item: adding a new list item
-      // TODO: try to move this node-specific code elsewhere
-      DNWItem item;
-      if (selectionStart.dn is DNWItem)
-        item = selectionStart.dn;
-      else
-        item = selectionStart.dn.parent;
-      DNWItem newitem = NodeFactory.create(item.ref);
-      doc.insertNode(newitem,
-          new Position(item.parent, item.parent.offsetOf(item) + 1));
-      page.moveCursorTo(new Position(newitem, 0));
-      page.updateAfterPathChange();
-      return;
+    if (s == '\n' && !shift) {
+      // check for newlines in lists
+      if (((selectionStart.dn is DNItem) ||
+          (selectionStart.dn.nextSibling == null && selectionStart.dn.parent is DNItem)) &&
+          selectionStart.dnOffset == selectionStart.dn.offsetLength) {
+        // \n at the end of a DNList item: adding a new list item
+        DNList.newlineInItem(selectionStart);
+        return;
+      } else {
+        DaxeNode ancestor = selectionStart.dn;
+        while (ancestor is DNText || ancestor is DNHiddenP || ancestor is DNStyle || ancestor is DNStyleSpan)
+          ancestor = ancestor.parent;
+        if (ancestor is DNWItem) {
+          // \n in a DNWList item: adding a new list item
+          DNWList.newlineInItem(selectionStart);
+          return;
+        }
+      }
     }
     // Handles automatic insertion of hidden paragraphs
-    if (s == '\n' && hiddenp != null) {
+    if (s == '\n' && hiddenParaRefs != null) {
       if (DNHiddenP.handleNewlineOnSelection())
         return;
     }
     // check if text is allowed here
     bool problem = false;
-    if (s.trim() != '') {
-      DaxeNode parent = selectionStart.dn;
-      if (parent.nodeType == DaxeNode.TEXT_NODE)
-        parent = parent.parent;
+    DaxeNode parent = selectionStart.dn;
+    if (parent.nodeType == DaxeNode.TEXT_NODE)
+      parent = parent.parent;
+    if (parent.userCannotEdit)
+      problem = true;
+    else if (s.trim() != '') {
       if (parent.nodeType == DaxeNode.DOCUMENT_NODE)
         problem = true;
       else if (parent.ref != null && !doc.cfg.canContainText(parent.ref)) {
-        if (hiddenp != null && doc.cfg.isSubElement(parent.ref, hiddenp) &&
-            selectionStart == selectionEnd) {
-          // we just need to insert a hidden paragraph
-          DNHiddenP p = new DNHiddenP.fromRef(hiddenp);
-          p.appendChild(new DNText(s));
-          insertNode(p, selectionStart);
-          page.moveCursorTo(new Position(p, p.offsetLength));
-          page.updateAfterPathChange();
-          return;
+        if (hiddenParaRefs != null) {
+          x.Element hiddenp = cfg.findSubElement(parent.ref, hiddenParaRefs);
+          if (hiddenp != null && selectionStart == selectionEnd) {
+            // we just need to insert a hidden paragraph
+            DNHiddenP p = new DNHiddenP.fromRef(hiddenp);
+            p.appendChild(new DNText(s));
+            insertNode(p, selectionStart);
+            page.moveCursorTo(new Position(p, p.offsetLength));
+            page.updateAfterPathChange();
+            return;
+          } else
+            problem = true;
         } else
           problem = true;
       }
     }
     if (problem) {
       h.window.alert(Strings.get('insert.text_not_allowed'));
+      page.cursor.clearField();
       return;
     }
     bool remove = false;
@@ -799,8 +795,9 @@ class DaxeDocument {
         doNewEdit(edit);
         inserted = true;
       }
-    } else if (hiddenp != null && parent.ref != null && !cfg.isSubElement(parent.ref, dn.ref)) {
-      if (cfg.isSubElement(parent.ref, hiddenp) && cfg.isSubElement(hiddenp, dn.ref)) {
+    } else if (hiddenParaRefs != null && parent.ref != null && !cfg.isSubElement(parent.ref, dn.ref)) {
+      x.Element hiddenp = cfg.findSubElement(parent.ref, hiddenParaRefs);
+      if (hiddenp != null && cfg.isSubElement(hiddenp, dn.ref)) {
         // a new paragraph must be created
         DNHiddenP p = new DNHiddenP.fromRef(hiddenp);
         p.appendChild(dn);
@@ -819,40 +816,9 @@ class DaxeDocument {
       try {
         if (cursorPos == null)
           throw new DaxeException(content.toString() + Strings.get('insert.not_authorized_here'));
-        if (hiddenp != null) {
-          // do not put a hidden paragraph where it is not allowed (remove one level)
-          DaxeNode next;
-          for (DaxeNode dn2=content.firstChild; dn2 != null; dn2=next) {
-            next = dn2.nextSibling;
-            if (dn2.ref == hiddenp && !doc.cfg.isSubElement(dn.ref, hiddenp)) {
-              DaxeNode next2;
-              for (DaxeNode dn3=dn2.firstChild; dn3 != null; dn3=next2) {
-                next2 = dn3.nextSibling;
-                dn2.removeChild(dn3);
-                content.insertBefore(dn3, dn2);
-              }
-              content.removeChild(dn2);
-            }
-          }
-          // add hidden paragraphs if necessary
-          if (doc.cfg.isSubElement(dn.ref, hiddenp)) {
-            for (DaxeNode dn2=content.firstChild; dn2 != null; dn2=next) {
-              next = dn2.nextSibling;
-              if (dn2.ref != hiddenp &&
-                  ((dn2 is DNText && !cfg.canContainText(dn.ref)) ||
-                  (!doc.cfg.isSubElement(dn.ref, dn2.ref) &&
-                      doc.cfg.isSubElement(hiddenp, dn2.ref)))) {
-                content.removeChild(dn2);
-                if (dn2.previousSibling != null && dn2.previousSibling.ref == hiddenp) {
-                  dn2.previousSibling.appendChild(dn2);
-                } else {
-                  DNHiddenP p = new DNHiddenP.fromRef(hiddenp);
-                  p.appendChild(dn2);
-                  content.insertBefore(p, next);
-                }
-              }
-            }
-          }
+        if (doc.hiddenParaRefs != null) {
+          // add or remove hidden paragraphs where necessary
+          DNHiddenP.fixFragment(dn, content);
         }
         doNewEdit(insertChildrenEdit(content, cursorPos, checkValidity:true));
         // replace the 3 previous edits by a compound
@@ -902,10 +868,13 @@ class DaxeDocument {
         LinkedHashSet set = new LinkedHashSet.from(refs);
         set.addAll(cfg.subElements(parent.parent.ref));
         refs = new List.from(set);
-      } else if (doc.cfg.isSubElement(parent.ref, hiddenp)) {
-        LinkedHashSet set = new LinkedHashSet.from(refs);
-        set.addAll(cfg.subElements(hiddenp));
-        refs = new List.from(set);
+      } else if (hiddenParaRefs != null) {
+        x.Element hiddenp = cfg.findSubElement(parent.ref, hiddenParaRefs);
+        if (hiddenp != null) {
+          LinkedHashSet set = new LinkedHashSet.from(refs);
+          set.addAll(cfg.subElements(hiddenp));
+          refs = new List.from(set);
+        }
       }
     }
     return(refs);
@@ -947,15 +916,23 @@ class DaxeDocument {
         }
       }
       list = new List.from(set);
-    } else if (hiddenp != null && list.contains(hiddenp)) {
-      LinkedHashSet set = new LinkedHashSet.from(list);
-      for (x.Element ref in allowed) {
-        if (!set.contains(ref)) {
-          if (doc.cfg.isSubElement(hiddenp, ref))
-            set.add(ref);
+    } else if (hiddenParaRefs != null) {
+      x.Element hiddenp = null;
+      for (x.Element ref in hiddenParaRefs)
+        if (list.contains(ref)) {
+          hiddenp = ref;
+          break;
         }
+      if (hiddenp != null) {
+        LinkedHashSet set = new LinkedHashSet.from(list);
+        for (x.Element ref in allowed) {
+          if (!set.contains(ref)) {
+            if (doc.cfg.isSubElement(hiddenp, ref))
+              set.add(ref);
+          }
+        }
+        list = new List.from(set);
       }
-      list = new List.from(set);
     }
     return(list);
   }
@@ -976,38 +953,13 @@ class DaxeDocument {
   
   void _removeWhitespace(final x.Element el, final x.Element refParent, final bool spacePreserveParent,
                       final bool fteParent) {
-    bool spacePreserve;
-    final String xmlspace = el.getAttribute("xml:space");
-    if (xmlspace == "preserve")
-      spacePreserve = true;
-    else if (xmlspace == "default")
-      spacePreserve = false;
-    else
-      spacePreserve = spacePreserveParent;
     x.Element refElement;
-    if (cfg != null) {
+    if (cfg != null)
       refElement = cfg.getElementRef(el, refParent);
-      if (refElement != null && xmlspace == "") {
-        final List<x.Element> attributs = cfg.elementAttributes(refElement);
-        for (x.Element attref in attributs) {
-          if (cfg.attributeName(attref) == "space" &&
-              cfg.attributeNamespace(attref) == "http://www.w3.org/XML/1998/namespace") {
-            final String defaut = cfg.defaultAttributeValue(attref);
-            if (defaut == "preserve")
-              spacePreserve = true;
-            else if (defaut == "default")
-              spacePreserve = false;
-            break;
-          }
-        }
-      }
-    } else
+    else
       refElement = null;
+    bool spacePreserve = _spacePreserve(el, refElement, refParent, spacePreserveParent);
     final bool fte = _isFirstTextElement(el, refElement, refParent, fteParent);
-    // remove all newlines inside if the parent accepts hidden paragraphs inside
-    bool removeAllNewlines = false;
-    removeAllNewlines = cfg != null && hiddenp != null && refElement != null &&
-        cfg.isSubElement(refElement, hiddenp);
     x.Node next;
     for (x.Node n = el.firstChild; n != null; n = next) {
       next = n.nextSibling;
@@ -1017,8 +969,8 @@ class DaxeDocument {
         String s = n.nodeValue;
         
         // whitespace is not removed if there is only whitespace in the element
-        if (n.nextSibling == null && n.previousSibling == null && s.trim() == "")
-          break;
+        //if (n.nextSibling == null && n.previousSibling == null && s.trim() == "")
+        //  break;
         
         if (fte && n.parentNode.firstChild == n && refParent != null) {
           // remove whitespace at the beginning if the text node is the first child of the element
@@ -1045,15 +997,6 @@ class DaxeDocument {
             idebut = idebuttab;
         }
         
-        // remove newlines everywhere if the parent accepts hidden paragraphs inside
-        if (removeAllNewlines) {
-          for (int i=0; i<s.length; i++)
-            if (s[i] == '\n') {
-              s = s.substring(0, i) + s.substring(i+1);
-              i--;
-            }
-        }
-        
         // condense spaces everywhere
         idebut = s.indexOf("  ");
         while (idebut != -1) {
@@ -1071,6 +1014,36 @@ class DaxeDocument {
           n.nodeValue = s;
       }
     }
+  }
+  
+  /**
+   * Returns true if the text should be preserved in an element.
+   */
+  bool _spacePreserve(final x.Element el, final x.Element refElement, final x.Element refParent,
+                      final bool spacePreserveParent) {
+    bool spacePreserve;
+    final String xmlspace = el.getAttribute("xml:space");
+    if (xmlspace == "preserve")
+      spacePreserve = true;
+    else if (xmlspace == "default")
+      spacePreserve = false;
+    else
+      spacePreserve = spacePreserveParent;
+    if (refElement != null && xmlspace == "") {
+      final List<x.Element> attributs = cfg.elementAttributes(refElement);
+      for (x.Element attref in attributs) {
+        if (cfg.attributeName(attref) == "space" &&
+            cfg.attributeNamespace(attref) == "http://www.w3.org/XML/1998/namespace") {
+          final String defaut = cfg.defaultAttributeValue(attref);
+          if (defaut == "preserve")
+            spacePreserve = true;
+          else if (defaut == "default")
+            spacePreserve = false;
+          break;
+        }
+      }
+    }
+    return(spacePreserve);
   }
   
   /**
@@ -1104,5 +1077,89 @@ class DaxeDocument {
       return fteParent;
     return true;
   }
-
+  
+  /**
+   * Replace newlines by spaces where hidden paragraphs can be found and inside them,
+   * and remove whitespace before and after blocks where hidden paragraphs can be found.
+   */
+  void removeWhitespaceForHiddenParagraphs(DaxeNode parent) {
+    x.Element paraRef;
+    if (parent.ref != null)
+      paraRef = cfg.findSubElement(parent.ref, hiddenParaRefs);
+    else
+      paraRef = null;
+    bool paraInside = (paraRef != null);
+    bool para = parent is DNHiddenP;
+    bool style = parent is DNStyle;
+    DaxeNode next;
+    for (DaxeNode dn=parent.firstChild; dn != null; dn=next) {
+      next = dn.nextSibling;
+      if (dn is DNText) {
+        if (paraInside || para || style) {
+          String s = dn.nodeValue;
+          // replace newlines by spaces except between XML comments
+          if (dn.previousSibling == null || dn.previousSibling is! DNComment ||
+              dn.nextSibling == null || dn.nextSibling is! DNComment) {
+            s = s.replaceAll('\n', ' ');
+          }
+          s = s.replaceAll('  ', ' ');
+          if (paraInside) {
+            // also trim left if there is a block before, and right if there is a block after
+            // ("blocks" here are elements that are not allowed inside a paragraph)
+            if (dn.previousSibling != null && dn.previousSibling.ref != null && !cfg.isSubElement(paraRef, dn.previousSibling.ref)) {
+              s = s.trimLeft();
+            }
+            if (dn.nextSibling != null && dn.nextSibling.ref != null && !cfg.isSubElement(paraRef, dn.nextSibling.ref)) {
+              s = s.trimRight();
+            }
+          } else if (para) {
+            // trim hidden paragraphs
+            if (dn.previousSibling == null)
+              s = s.trimLeft();
+            if (dn.nextSibling == null)
+              s = s.trimRight();
+          }
+          if (s.length == 0)
+            parent.removeChild(dn);
+          else
+            dn.nodeValue = s;
+        }
+      } else if (dn.firstChild != null)
+        removeWhitespaceForHiddenParagraphs(dn);
+    }
+  }
+  
+  /**
+   * Indents a DOM document recursively.
+   */
+  void indentDOMDocument(x.Document domdoc) {
+    if (domdoc.documentElement != null)
+      _indentDOMNode(domdoc.documentElement, null, false, 1);
+  }
+  
+  /**
+   * Indents a DOM node recursively.
+   */
+  void _indentDOMNode(final x.Element el, final x.Element refParent, final bool spacePreserveParent, final int level) {
+    x.Element refElement;
+    if (cfg != null)
+      refElement = cfg.getElementRef(el, refParent);
+    else
+      refElement = null;
+    bool spacePreserve = _spacePreserve(el, refElement, refParent, spacePreserveParent);
+    for (x.Node n = el.firstChild; n != null; n = n.nextSibling) {
+      if (n.nodeType == x.Node.ELEMENT_NODE)
+        _indentDOMNode(n as x.Element, refElement, spacePreserve, level+1);
+      else if (!spacePreserve && n.nodeType == x.Node.TEXT_NODE && n.nodeValue.contains("\n")) {
+        StringBuffer sb = new StringBuffer("\n");
+        int indents = level;
+        if (n.nextSibling == null)
+          indents--;
+        for (int i=0; i<indents; i++)
+          sb.write('  ');
+        String newline_spaces = sb.toString();
+        n.nodeValue = n.nodeValue.replaceAll("\n", newline_spaces);
+      }
+    }
+  }
 }

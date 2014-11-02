@@ -191,3 +191,10 @@ When performance data is stored, it is stored under this assetid along with the 
 
 \section{Programmatic access}
 Databases should not be touched by any higher order handlers. While drivers are located in the /databases GIT directory, e.g., lc\_memcached.pm  lc\_mongodb.pm  lc\_postgresql.pm, these should not be called. Instead, handlers should access the abstractions in the /entities GIT directory, and there only the routines that are not starting with ``remote'' or ``local''.
+
+\section{Tokens}\label{token}
+Tokens are a way to exchange records between servers. They are only stored in Memcache for a few minutes. Each token has an ID under which another server can retrieve the information.
+
+\section{Namespaces}\label{namespace}
+Namespaces are a mechanism to store away datastructures under arbitrary names, similar to how namespaces are handled in the first-generation LON-CAPA. This is a very flexible mechanism, but not performance-optimized and not efficiently searchable. It should be used for convenient storages of occassionally-used datastructures.  
+

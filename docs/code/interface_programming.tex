@@ -1,0 +1,36 @@
+\chapter{Interface Programming}
+\label{interfaceprogramming}
+\section{Interface Pages}
+
+
+\subsection{General Mechanism}
+Interface pages (as opposed to asset pages) in LON-CAPA are typically controlled by an HTML, a JavaScript, and a Perl script file located in the {\tt loncapa/app} directory.
+\begin{itemize}
+\item  {\tt loncapa/app/html/pages} and {\tt loncapa/app/html/modals} contain the HTML/XML framework which is displayed to the user. The page contains the general layout, and it combines HTML-tags with LON-CAPA XML-tags. As this
+page is processed by the parser (see Chapter~\ref{xmlparser} on page~\pageref{xmlparser}), the LON-CAPA tags are replaced by dynamically generated HTML on the way to the browser.
+\item The HTML file will usually load JavaScript files located in {\tt loncapa/app/scripts} to control client-side functionality.
+\item As the scripts make AJAX requests\index{AJAX} to update parts of the page, server-side functionality is provided by Perl modules located in {\tt loncapa/app/handlers}. These modules often return simple text or JSON,\index{JSON} which is processed client-side and injected into the page.
+\end{itemize}
+In rare cases, XML-tags establish areas which are not updated by client-side JavaScript, but which require server-side functionality. Usually, this is the case when server-provided data is not
+structured enough to map well into JSON, e.g., when targeted follow-up questions in various formats need to be generated on the fly. The handlers for this server-side generated HTML, which is then
+directly injected into the page, are located in {\tt loncapa/xml/xml\_includes}.
+
+
+\subsection{Examples}
+Let's walk through a couple examples to see how these different files are used.  We begin at the homepage of the site which loads {\tt loncapa/app/html/index.html}.  This sets the general structure of the page and defines space for things like the page header and the menu.  It also loads the JavaScript file, {\tt loncapa/app/scripts/lc\_default.js}, which includes common JavaScript functions.  One such function that is called upon loading is {\tt menubar()}.  This function dynamically generates the menu based on the context.  It communicates with the server through a JSON call, {\tt \$.getJSON("menu",...)}.  {\tt  lc.conf} directs all "menu" requests to the Perl handler, {\tt loncapa/app/scripts/lc\_ui\_menu.pm}.  The handler returns a JSON object containing the appropriate menu data.
+
+Another function in {\tt lc\_defaults.js} is {\tt display\_asset(newuri)} which replaces the main iframe with the contents of the passed uri.  {\tt lc\_default.js} also calls the JavaScript function, {\tt dashboard()}, which loads the Dashboard.  It uses {\tt display\_asset()} to load {\tt lc\_dashboard.html} into the iframe.
+
+Now let's see what happens when we go to the Portfolio space.  Clicking on the menu option, Portfolio, calls the JavaScript function, portfolio(), which uses {\tt display\_asset()} to load {\tt lc\_portfolio.html} into the iframe.  {\tt lc\_portfolio.html} loads {\tt lc\_portfolio.js} containing additional JavaScript functions needed in the portfolio space.  Upon loading, {\tt lc\_portfolio.js} calls {\tt load\_path()} which accesses another Perl handler with the request {\tt \$.getJSON( "/portfolio", ...)}.  {\tt lc.conf} directs "portfolio" requests to {\tt loncapa/app/handlers/lc\_ui\_portfolio.pm} which returns the contents of the user's portfolio.
+
+Many of the menu options follow this pattern.  Menu options execute JavaScript functions which replace the contents of the iframe through a call to {\tt display\_asset()}.  The important contents of the page can be quickly changed without having to rebuild the entire page.  The replacement HTML can load a JavaScript file containing any additional functions needed in that setting.  Those JavaScript files can communicate with the server through JSON requests. {\tt lc.conf} directs the JSON request to  a specific Perl handler depending on the given path.
+
+As one more example, let's see what happens when we go to Preferences.  Clicking Preferences from the menu calls the JavaScript function {\tt preferences()} in {\tt lc\_defaults.js}.  This in turn calls {\tt display\_asset("/pages/lc\_course\_preferences.html")} to replace the iframe.  {\tt lc\_course\_preferences.html} loads {\tt loncapa/app/scripts/lc\_preferences.js}  The only server communication occurs when the user clicks the "Store" button.  Since data is being passed {\it to} the server opposed to just being retrieved, an AJAX POST request is used instead of the GET request ({\tt \$.getJSON}).  The options set in the preferences form are passed with 
+
+{\tt \$.ajax(\{url: "/preferences", type: "POST", ...\})} \newline {\tt lc.conf} directs "preferences" calls to {\tt loncapa/app/handlers/lc\_ui\_preferences.pm}.
+
+
+\subsection{Where should I be working?}
+If you are looking to change the structure or appearance of a page, then you will probably want to edit its associated HTML file located in {\tt loncapa/app/html/pages}.  Adding or changing client-side functionality will require editing the page's JavaScript file located in {\tt loncapa/app/scripts}.
+
+Server-side functionality is again controlled by Perl handlers located in {\tt loncapa/app/handlers}.  Data is passed to and retrieved from the server through AJAX/JSON requests that are placed in the page's JavaScript file.  Perl handlers operate at a low level and should not need to be modified very often.  There is probably already a Perl handler that will meet your needs.

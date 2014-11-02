@@ -24,6 +24,7 @@ use Apache2::Const qw(:common);
 use Apache::lc_entity_sessions();
 use Apache::lc_entity_courses();
 use Apache::lc_entity_users();
+use Apache::lc_entity_urls();
 use Apache::lc_ui_utils;
 use Apache::lc_json_utils();
 use Apache::lc_logs;
@@ -79,6 +80,7 @@ sub verify_url {
 sub publication_status_link {
    my ($entity,$domain,$url,$obsolete,$modified,$published)=@_;
    my $led='red';
+   my $publishedflag=0;
    my $status=&mt('Unpublished');
    if ($obsolete) {
       $led='black';
@@ -90,13 +92,17 @@ sub publication_status_link {
       } else {
          $led='green';
          $status=&mt('Published');
+         $publishedflag=1;
       }
    }
    my $inner=&Apache::lc_xml_utils::file_icon('special','led_'.$led).'&nbsp'.$status;
    if (&edit_permission($url)) {
-      return '<a href="#" onClick="change_status(\''.$entity.'\',\''.$domain.
-          '\',\''.&Apache::lc_ui_utils::query_encode($url).'\')" class="lcdirlink">'.
-                  $inner.'</a>',
+      if ($publishedflag) {
+         return $inner;
+      } else {
+         return '<a href="#" onClick="'.&action_jump('publisher',$entity,$domain,$url).'" class="lcdirlink">'.
+                  $inner.'</a>';
+      }
    } else {
       return $inner;
    }
@@ -111,7 +117,7 @@ sub publication_status_link {
 #
 sub change_title_link {
    my ($entity,$domain,$url,$title)=@_;
-   my $inner=($title?$title:'-');
+   my $inner=($title=~/\S/?$title:'-');
    if (&edit_permission($url)) {
       return '<a href="#" onClick="change_title(\''.$entity.'\',\''.$domain.
           '\',\''.&Apache::lc_ui_utils::query_encode($url).
@@ -142,6 +148,53 @@ sub change_title {
    }
 }
 
+#
+# Rightslink
+#
+sub rights_link {
+   my ($entity,$domain,$url,$obsolete,$modified,$published)=@_;
+   my $inner='';
+   if ($published) {
+      my ($overall,$std)=&Apache::lc_entity_urls::standard_rights($entity,$domain,$url);
+      $inner.='<ul class="lcsmallwordlist">';
+      foreach my $type ('grade','use','view','edit','clone') {
+         if ($std->{$type} eq 'none') { next; }
+         my $description;
+         if ($type eq 'grade') {
+            $description=&mt('Grade: [_1]',&mt($std->{$type}));
+         } elsif ($type eq 'use') { 
+            $description=&mt('Use: [_1]',&mt($std->{$type}));
+         } elsif ($type eq 'view') {  
+            $description=&mt('View: [_1]',&mt($std->{$type}));
+         } elsif ($type eq 'edit') {  
+            $description=&mt('Edit: [_1]',&mt($std->{$type}));
+         } elsif ($type eq 'clone') {  
+            $description=&mt('Clone: [_1]',&mt($std->{$type}));
+         }
+         $inner.='<li class="lcsmallwordbubble">'.$description.'</li> ';         
+      } 
+      $inner.='</ul>';
+   }
+   if (&edit_permission($url)) {
+      if ($published) {
+         return '<a href="#" onClick="'.&action_jump('change_status',$entity,$domain,$url).'" class="lcdirlink">'.
+                  $inner.'</a>';
+      } else {
+         return $inner;
+      }
+   } else {
+      return $inner;
+   }
+}
+
+#
+# Generate a function call
+#
+sub action_jump {
+   my ($which,$entity,$domain,$url)=@_;
+   return $which."('".$entity."','".$domain."','".&Apache::lc_ui_utils::query_encode($url)."')";
+}
+
 # ======================================================================
 # List directory
 # ======================================================================
@@ -164,10 +217,12 @@ sub listdirectory {
    $uppath=~s/[^\/]+\/$//;
    if ($uppath=~/^[^\/]+\//) {
       push(@{$output->{'aaData'}},
-            ['&nbsp;',
+            ['',
+             '&nbsp;',
              &Apache::lc_xml_utils::file_icon('special','dir_up'),
              '0',
              '<i><a href="#" onClick="set_path(\''.$uppath.'\')" class="lcdirlink">'.&mt('Parent directory').'</a></i>',
+             '',
              '',
              '',
              '',
@@ -186,9 +241,17 @@ sub listdirectory {
    foreach my $file (@{$dir_list}) {
 # Is the file/directory obsolete?
        my $obsolete=0;
+       my $deleted=0;
        if (ref($file->{'metadata'}->{'urldata'}) eq 'HASH') {
           $obsolete=$file->{'metadata'}->{'urldata'}->{&Apache::lc_entity_urls::url_encode($file->{'url'})}->{'obsolete'};
+          $deleted=$file->{'metadata'}->{'urldata'}->{&Apache::lc_entity_urls::url_encode($file->{'url'})}->{'deleted'};
        }
+# Deleted? Move on!
+       if ($deleted) { next; }
+# Published?
+       my $published=0;
+# Modified?
+       my $modified=0;
 # Don't show it unless asked for
        unless ($showhidden) {
           if ($obsolete) { next; }
@@ -202,21 +265,50 @@ sub listdirectory {
        my $size='';
        my $sort_size=-1;
        my $status='';
+       my $rights='';
        my $display_last_modified=&mt('Never');
        my $sort_last_modified=0;
        my $sort_type='1';
+       my $actionicons='';
        if ($file->{'type'} eq 'file') {
 # It's a file, so we have dates, etc
+          my $last_published=0;
           if ($file->{'metadata'}->{'current_version'}) {
+# If there is a current version, it's published
+# Get date of first publication and date of most recent publication
+             $published=1;
              $version=$file->{'metadata'}->{'current_version'};
              ($display_first_date,$sort_first_date)=&Apache::lc_ui_localize::locallocaltime(
                                            &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{1}));
-             ($display_last_date,$sort_last_date)=&Apache::lc_ui_localize::locallocaltime(
-                                           &Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{$version}));
+             $last_published=&Apache::lc_date_utils::str2num($file->{'metadata'}->{'versions'}->{$version});
+             ($display_last_date,$sort_last_date)=&Apache::lc_ui_localize::locallocaltime($last_published);
           }
-          ($display_last_modified,$sort_last_modified)=&Apache::lc_ui_localize::locallocaltime(
-                                           &Apache::lc_date_utils::str2num($file->{'metadata'}->{'filedata'}->{'wrk'}->{'modified'}));
-          $status=&publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,0,0);
+# Figure out when wrk-file was last modified
+          my $last_modified=&Apache::lc_date_utils::str2num($file->{'metadata'}->{'filedata'}->{'wrk'}->{'modified'});
+          ($display_last_modified,$sort_last_modified)=&Apache::lc_ui_localize::locallocaltime($last_modified);
+# If the last modification is after the most recent publication, it's modified
+          if ($last_published) {
+             if ($last_modified>$last_published) {
+                $modified=1;
+             }
+          }
+          $status=&publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,$modified,$published);
+          $rights=&rights_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,$modified,$published);
+# Action links
+          unless ($published) {
+             $actionicons.=&Apache::lc_ui_utils::delete_link(&action_jump("deletefile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+          } else {
+             unless ($obsolete) {
+                $actionicons.=&Apache::lc_ui_utils::remove_link(&action_jump("removefile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+             } else {
+                $actionicons.=&Apache::lc_ui_utils::recover_link(&action_jump("recover",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+             }
+          }
+          unless ($obsolete) {
+             if (($modified) || (!$published)) { 
+                $actionicons.=&Apache::lc_ui_utils::publish_link(&action_jump("publisher",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+             }
+          }
           $sort_size=$file->{'metadata'}->{'filedata'}->{'wrk'}->{'size'};
           $size=&Apache::lc_ui_localize::human_readable_size($sort_size);
           $filename=$file->{'filename'};
@@ -237,11 +329,13 @@ sub listdirectory {
             [&encode_entities(
                &Apache::lc_json_utils::perl_to_json({'entity' => $file->{'entity'}, 'domain' => $file->{'domain'}, 'url' => $file->{'url'}}),
                          '\W'),
+             $actionicons,
              &Apache::lc_xml_utils::file_icon($file->{'type'},$file->{'filename'}),
              $sort_type,
              $filename,
              &change_title_link($file->{'entity'},$file->{'domain'},$file->{'url'},$file->{'metadata'}->{'title'}),
              $status,
+             $rights,
              $size,
              $sort_size,
              $version,
@@ -278,6 +372,67 @@ sub listpath {
    return &Apache::lc_json_utils::perl_to_json(\@splitpath); 
 }
 
+# ========================================================
+# Obsoleting
+# ========================================================
+#
+sub remove {
+   my ($entity,$domain,$url)=@_;
+   unless (&edit_permission($url)) {
+      &logwarning("No edit portfolio permission ($url)");
+      return 'error';
+   }
+   unless (&verify_url($entity,$url)) {
+      &logwarning("Mismatch ($entity) ($domain) ($url)");
+      return 'error';
+   }
+   if (&Apache::lc_entity_urls::make_obsolete('/asset/-/-/'.$url)) {
+      return 'ok';
+   } else {
+       &logerror("Making obsolete failed for ($entity) ($domain)");
+       return 'error';
+   }
+}
+
+sub deletefile {
+   my ($entity,$domain,$url)=@_;
+   unless (&edit_permission($url)) {
+      &logwarning("No edit portfolio permission ($url)");
+      return 'error';
+   }
+   unless (&verify_url($entity,$url)) {
+      &logwarning("Mismatch ($entity) ($domain) ($url)");
+      return 'error';
+   }
+   if (&Apache::lc_entity_urls::make_delete('/asset/-/-/'.$url)) {
+      return 'ok';
+   } else {
+       &logerror("Deleting failed for ($entity) ($domain)");
+       return 'error';
+   }
+}
+
+sub recover {
+   my ($entity,$domain,$url)=@_;
+   unless (&edit_permission($url)) {
+      &logwarning("No edit portfolio permission ($url)");
+      return 'error';
+   }
+   unless (&verify_url($entity,$url)) {
+      &logwarning("Mismatch ($entity) ($domain) ($url)");
+      return 'error';
+   }
+   if (&Apache::lc_entity_urls::un_obsolete('/asset/-/-/'.$url)) {
+      return 'ok';
+   } else {
+       &logerror("Unobsoleting failed for ($entity) ($domain)");
+       return 'error';
+   }
+   return 'ok';
+}
+
+
+
 sub handler {
    my $r = shift;
    my %content=&Apache::lc_entity_sessions::posted_content();
@@ -292,6 +447,12 @@ sub handler {
       $r->print(&listpath($path));
    } elsif ($content{'command'} eq 'changetitle') {
       $r->print(&change_title($content{'entity'},$content{'domain'},$content{'url'},$content{'title'}));
+   } elsif ($content{'command'} eq 'remove') {
+      $r->print(&remove($content{'entity'},$content{'domain'},$content{'url'}));
+   } elsif ($content{'command'} eq 'delete') {
+      $r->print(&deletefile($content{'entity'},$content{'domain'},$content{'url'}));
+   } elsif ($content{'command'} eq 'recover') {
+      $r->print(&recover($content{'entity'},$content{'domain'},$content{'url'}));
    }
    return OK;
 }

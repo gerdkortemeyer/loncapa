@@ -8,20 +8,54 @@ $(document).ready(function() {
    breadcrumbbar();
    notificationbox();
    checknotificationbox();
-   dashboard();
    headerright();
    headermiddle();
+   directjump(getParameterByName(location.search,'direct'));
 });
 
 $( window ).resize(function() {
    checknotificationbox();
 });
 
+function directjump(destination) {
+   if (destination) {
+      var components=destination.split('/');
+      if (components[0]=='asset') {
+         display_asset(destination);
+      } else if (components[0]=='course_asset') {
+         display_course_asset(components[1]);
+      } else {
+         dashboard();
+      }
+   } else {
+      dashboard();
+   }
+}
+
 function getParameterByName(query,name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(query);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function getCookieByName(cookie,name) {
+   var output=null;
+   $.each(cookie.split(';'),function(index,value) {
+       pair=value.split('=');
+       key=unescape(pair[0].replace(' ',''));
+       if (pair[1]) {
+          value=unescape(pair[1].replace(' ',''));
+       } else {
+          value='';
+       }
+       if (key==name) { output=value }
+   });
+   return output;
+}
+
+function deleteCookie(name) {
+   document.cookie = name+'=; expires=Thu, 01 Jan 1970 00:00:00 GMT;';
 }
 
 function display_modal(newuri) {
@@ -38,6 +72,24 @@ function display_modal(newuri) {
                  });
     $("#lcmodal").focus();
 }
+
+function display_large_modal(newuri) {
+    $.blockUI({
+                 message: '<iframe id="lcmodal" width="100%" height="100%" src="'+newuri+'" />',
+                 css: {
+                      border: 'none',
+                      padding: '15px',
+                      top: '2%',
+                      left: '2%',
+                      width: '94%',
+                      height: '94%',
+                      backgroundColor: '#ffffff',
+                      'border-radius': '10px'
+                      }
+                 });
+    $("#lcmodal").focus();
+}
+
 
 function hide_modal() {
    $.unblockUI();

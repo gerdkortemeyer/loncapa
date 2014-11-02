@@ -51,6 +51,7 @@ abstract class DaxeNode {
   DaxeNode nextSibling;
   List<DaxeAttr> attributes;
   bool userCannotRemove = false; // with suppr/del, could be extended to selections...
+  bool userCannotEdit = false;
   bool valid;
   
   
@@ -262,7 +263,8 @@ abstract class DaxeNode {
     // this is only a guess, it should be subclassed to be safe
     if (newlineAfter())
       return(true);
-    return(getHTMLNode() is h.DivElement);
+    h.Element hnode = getHTMLNode(); 
+    return(hnode is h.DivElement || hnode is h.TableElement || hnode is h.UListElement);
   }
   
   /**
@@ -871,9 +873,16 @@ abstract class DaxeNode {
             span_test.remove();
             if (hn is h.LIElement) {
               h.Node lastDescendant = hn;
-              while (lastDescendant.firstChild != null && lastDescendant.lastChild is! h.Text &&
-                  lastDescendant.lastChild is! h.ImageElement)
-                lastDescendant = lastDescendant.lastChild;
+              while (lastDescendant.firstChild != null &&
+                  (lastDescendant.lastChild is! h.Text ||
+                      (lastDescendant.lastChild.nodeValue == '\n' && lastDescendant.lastChild.previousNode != null)) &&
+                  lastDescendant.lastChild is! h.ImageElement) {
+                if (lastDescendant.lastChild is h.Text && lastDescendant.lastChild.nodeValue == '\n' &&
+                    lastDescendant.lastChild.previousNode != null)
+                  lastDescendant = lastDescendant.lastChild.previousNode; // case of a hidden paragraph or block inside li
+                else
+                  lastDescendant = lastDescendant.lastChild;
+              }
               lastDescendant.append(span_test);
             } else
               hn.append(span_test);

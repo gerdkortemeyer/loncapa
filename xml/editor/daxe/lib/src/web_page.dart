@@ -357,7 +357,7 @@ class WebPage {
     for (x.Element ref in validRefs) {
       if (toolbarRefs != null && toolbarRefs.contains(ref))
         continue;
-      if (doc.hiddenp != null && ref == doc.hiddenp)
+      if (doc.hiddenParaRefs != null && doc.hiddenParaRefs.contains(ref))
         continue;
       if (first && addSeparator)
         contextualMenu.addSeparator();
@@ -370,9 +370,15 @@ class WebPage {
     h.DivElement div = contextualMenu.htmlMenu();
     div.style.position = 'fixed';
     div.style.display = 'block';
-    div.style.left = "${event.client.x}px";
-    div.style.top = "${event.client.y}px";
+    int xpos = event.client.x;
+    int ypos = event.client.y;
+    div.style.left = "${xpos}px";
+    div.style.top = "${ypos}px";
     h.document.body.append(div);
+    if (xpos + div.clientWidth > h.window.innerWidth) {
+      xpos = h.window.innerWidth - div.clientWidth;
+      div.style.left = "${xpos}px";
+    }
   }
   
   void closeContextualMenu() {
@@ -501,7 +507,7 @@ class WebPage {
     if (_cursor.selectionStart == null)
       div_path.text = "";
     else
-      div_path.text = _cursor.selectionStart.xPath();
+      div_path.text = _cursor.selectionStart.xPath(titles:true);
   }
   
   void updateUndoMenus() {

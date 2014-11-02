@@ -24,24 +24,47 @@ part of nodes;
  * * parameter: `trTag`: the name of row elements
  * * parameter: `tdTag`: the name of cell elements
  * * parameter: `thTag`: the name of header elements
+ * * parameter: `tbodyTag`: 'tbody' in HTML (only import is supported)
+ * * parameter: `theadTag`: 'thead' in HTML (only import is supported)
+ * * parameter: `tfootTag`: 'tfoot' in HTML (only import is supported)
  * * parameter: `colspanAttr`: the name of the colspan attribute
  * * parameter: `rowspanAttr`: the name of the rowspan attribute
  */
 class DNTable extends DaxeNode {
   String _trtag, _tdtag, _thtag;
   x.Element _trref, _tdref, _thref;
+  String _theadtag, _tbodytag, _tfoottag;
   String _colspanAttr, _rowspanAttr, _alignAttr;
   bool header;
   
   DNTable.fromRef(x.Element elementRef) : super.fromRef(elementRef) {
     init();
-    newElementDialog();
+    createNewStructure();
   }
   
   DNTable.fromNode(x.Node node, DaxeNode parent) : super.fromNode(node, parent, createChildren: false) {
     init();
+    for (x.Node xn=node.firstChild; xn != null; xn=xn.nextSibling) {
+      if (xn.nodeType == x.Node.ELEMENT_NODE && xn.nodeName == _theadtag)
+        _appendRowsFromDOM(xn);
+    }
+    for (x.Node xn=node.firstChild; xn != null; xn=xn.nextSibling) {
+      if (xn.nodeType == x.Node.ELEMENT_NODE && xn.nodeName == _tbodytag)
+        _appendRowsFromDOM(xn);
+    }
+    _appendRowsFromDOM(node);
+    for (x.Node xn=node.firstChild; xn != null; xn=xn.nextSibling) {
+      if (xn.nodeType == x.Node.ELEMENT_NODE && xn.nodeName == _tfoottag)
+        _appendRowsFromDOM(xn);
+    }
+    if (firstChild != null && firstChild.firstChild is DNTH)
+      header = true;
+  }
+  
+  // appends only the tr/td and tr/th from the node to the table
+  void _appendRowsFromDOM(x.Node node) {
     for (x.Node xtr=node.firstChild; xtr != null; xtr=xtr.nextSibling) {
-      if (xtr.nodeType == x.Node.ELEMENT_NODE) {
+      if (xtr.nodeType == x.Node.ELEMENT_NODE && xtr.nodeName == _trtag) {
         DaxeNode tr = new DNTR.fromNode(xtr, this);
         for (x.Node xtd=xtr.firstChild; xtd != null; xtd=xtd.nextSibling) {
           if (xtd.nodeType == x.Node.ELEMENT_NODE) {
@@ -57,17 +80,22 @@ class DNTable extends DaxeNode {
         appendChild(tr);
       }
     }
-    if (firstChild != null && firstChild.firstChild is DNTH)
-      header = true;
   }
   
   void init() {
+    userCannotEdit = true;
     _trtag = doc.cfg.elementParameterValue(ref, 'trTag', 'tr');
-    _trref = doc.cfg.elementReference(_trtag);
+    List<x.Element> trRefs = doc.cfg.elementReferences(_trtag);
+    _trref = doc.cfg.findSubElement(ref, trRefs);
     _tdtag = doc.cfg.elementParameterValue(ref, 'tdTag', 'td');
-    _tdref = doc.cfg.elementReference(_tdtag);
+    List<x.Element> tdRefs = doc.cfg.elementReferences(_tdtag);
+    _tdref = doc.cfg.findSubElement(_trref, tdRefs);
     _thtag = doc.cfg.elementParameterValue(ref, 'thTag', 'th');
-    _thref = doc.cfg.elementReference(_thtag);
+    List<x.Element> thRefs = doc.cfg.elementReferences(_thtag);
+    _thref = doc.cfg.findSubElement(_trref, thRefs);
+    _tbodytag = doc.cfg.elementParameterValue(ref, 'tbodyTag', 'tbody');
+    _theadtag = doc.cfg.elementParameterValue(ref, 'theadTag', 'thead');
+    _tfoottag = doc.cfg.elementParameterValue(ref, 'tfootTag', 'tfoot');
     _colspanAttr = doc.cfg.elementParameterValue(ref, 'colspanAttr', null);
     _rowspanAttr = doc.cfg.elementParameterValue(ref, 'rowspanAttr', null);
     _alignAttr = doc.cfg.elementParameterValue(ref, 'alignAttr', null);
@@ -214,10 +242,7 @@ class DNTable extends DaxeNode {
     return(new Position(lastChild.lastChild, lastChild.lastChild.offsetLength));
   }
   
-  void newElementDialog() {
-    //TODO: ask for nb of rows and columns
-    
-    
+  void createNewStructure() {
     int rows = 2;
     int columns = 2;
     for (int i=0; i<rows; i++) {
@@ -570,10 +595,12 @@ class DNTR extends DaxeNode {
   
   DNTR.fromRef(x.Element elementRef) : super.fromRef(elementRef) {
     userCannotRemove = true;
+    userCannotEdit = true;
   }
   
   DNTR.fromNode(x.Node node, DaxeNode parent) : super.fromNode(node, parent, createChildren: false) {
     userCannotRemove = true;
+    userCannotEdit = true;
     fixLineBreaks();
   }
   
@@ -632,7 +659,8 @@ class DNTD extends DaxeNode {
       td.classes.add('header');
     td.attributes['rowspan'] = rowspan.toString();
     td.attributes['colspan'] = colspan.toString();
-    td.attributes['align'] = align;
+    if (align != '')
+      td.attributes['align'] = align;
     DaxeNode dn = firstChild;
     while (dn != null) {
       td.append(dn.html());
@@ -640,8 +668,25 @@ class DNTD extends DaxeNode {
     }
     // without a space at the end, a newline at the end of a cell does not create additional
     // space for the cell
-    td.appendText(' ');
+    // but this should not be added after a block, otherwise it adds an empty line.
+    // This kind of conditional HTML makes it hard to optimize display updates:
+    // we have to override updateHTMLAfterChildrenChange
+    if (lastChild == null || !lastChild.block)
+      td.appendText(' ');
     return(td);
+  }
+  
+  @override
+  void updateHTMLAfterChildrenChange(List<DaxeNode> changed) {
+    super.updateHTMLAfterChildrenChange(changed);
+    h.TableCellElement td = getHTMLNode();
+    if (lastChild == null || !lastChild.block) {
+      if (td.lastChild is! h.Text)
+        td.appendText(' ');
+    } else {
+      if (td.lastChild is h.Text)
+        td.lastChild.remove();
+    }
   }
   
   int get rowspan {

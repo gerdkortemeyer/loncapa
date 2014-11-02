@@ -51,34 +51,49 @@ sub start_lcdatatable_html {
       $output.=&courselist();
    } elsif ($class eq 'portfoliomanager') {
       $output.=&portfoliomanager();
+   } elsif ($class eq 'rightsmanager') {
+      $output.=&rightsmanager();
    }
    $output.='</table><br clear="all" />';
    return $output;
 }
 
+#
+# Produce the header for the portfolio manager table
+# The remainder is loaded dynamically
+#
 sub portfoliomanager {
    my ($p,$safe,$stack,$token)=@_;
-# Header
    return '<thead>'.
-          '<tr><td colspan="15">'.
+          '<tr><td colspan="17">'.
             '<a href="#" class="lcselecttoggle" onClick="select_all()">'.&mt('Select All').'</a>'.
             '&nbsp;<a href="#" class="lcselecttoggle" onClick="select_filtered()">'.&mt('Select Filtered').'</a>'.
             '&nbsp;<a href="#" class="lcselecttoggle" onClick="deselect_all()">'.&mt('Deselect All').'</a>'.
             '&nbsp;<a href="#" class="lcselecttoggle" onClick="hiddenvisible()">'.&mt('Show/Hide Obsolete').'</a></td></tr>'.
-          '<tr><td colspan="13">'.&mt('Column Visibility:').
-            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(6)">'.&mt('File Size').'</a>'.
-            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(9)">'.&mt('First Published').'</a>'.
-            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(11)">'.&mt('Last Published').'</a>'.
-            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(13)">'.&mt('Last Modified').'</a>'.
+          '<tr><td colspan="17">'.&mt('Column Visibility:').
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(8)">'.&mt('File Size').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(11)">'.&mt('First Published').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(13)">'.&mt('Last Published').'</a>'.
+            '&nbsp;<a href="#" class="lcvisibilitytoggle" onClick="fnShowHide(15)">'.&mt('Last Modified').'</a>'.
             '</td></tr>'.
-          '<tr><th>&nbsp;</th><th>'.&mt('Type').'</th><th>&nbsp;</th><th>'.&mt('Name').'</th><th>'.
-               &mt('Title').'</th><th>'.&mt('Publication State').'</th><th>'.
+          '<tr><th>&nbsp;</th><th>&nbsp;</th><th>'.&mt('Type').'</th><th>&nbsp;</th><th>'.&mt('Name').'</th><th>'.
+               &mt('Title').'</th><th>'.&mt('Publication State').'</th><th>'.&mt('Allowed Activity').'</th><th>'.
                &mt('File Size').'</th><th>&nbsp;</th><th>'.&mt('Version').'</th><th>'.
                &mt('First Published').'</th><th>&nbsp;</th><th>'.
                &mt('Last Published').'</th><th>&nbsp;</th><th>'.
                &mt('Last Modified').'</th><th>&nbsp;</th></tr></thead>';
 }
 
+#
+# Produce the header for the rights manager (change status) table
+# The remainder is loaded dynamically
+#
+sub rightsmanager {
+   my ($p,$safe,$stack,$token)=@_;
+   return '<thead>'.
+          '<tr><th>&nbsp;</th><th>&nbsp;</th><th>'.&mt('Allowed Activity').'</th><th>'.&mt('Domain').'</th><th>'.
+               &mt('Course/Community or User').'</th><th>'.&mt('Section/Group').'</th></tr></thead>';
+}
 
 
 #

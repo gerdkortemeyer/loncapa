@@ -99,8 +99,20 @@ sub inputdate_to_timestamp {
 
 sub print_number {
    my ($num)=@_;
-#FIXME
-   return $num;
+   my $number=1.*$num;
+   my $strnum="$number";
+   unless ($strnum=~/e/i) {
+      my ($int,$frac)=split(/\./,$strnum);
+      $int=~s/(\d)(?=(\d{3})+(\D|$))/$1 /g;
+      $strnum=$int.'.'.$frac;
+   }
+   my $decimal=&mt('decimal_divider');
+   if ($decimal eq 'decimal_divider') { $decimal='.'; }
+   my $power=&mt('power_of_ten_divider');
+   if ($power eq 'power_of_ten_divider') { $power=','; }
+   $strnum=~s/\./$decimal/;
+   $strnum=~s/\s/$power/g;
+   return $strnum;
 }
 
 sub human_readable_size {

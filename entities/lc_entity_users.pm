@@ -78,7 +78,8 @@ sub local_make_new_user {
 # Take ownership
    &Apache::lc_postgresql::insert_homeserver($entity,$domain,&Apache::lc_connection_utils::host_name());
 # Make a profile record
-   &Apache::lc_mongodb::insert_profile($entity,$domain,{ created => &Apache::lc_date_utils::now2str() });
+   &Apache::lc_mongodb::insert_profile($entity,$domain,{ created => &Apache::lc_date_utils::now2str(),
+                                                         username => $username });
 # Make a roleset
    &Apache::lc_mongodb::insert_roles($entity,$domain,{});
 # Make an authentication record

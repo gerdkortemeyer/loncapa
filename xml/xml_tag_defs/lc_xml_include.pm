@@ -22,6 +22,7 @@ use strict;
 
 use Apache::lc_incl_userroles;
 use Apache::lc_incl_modify_courseusers;
+use Apache::lc_incl_publisher;
 use Apache::lc_logs;
 
 our @ISA = qw(Exporter);

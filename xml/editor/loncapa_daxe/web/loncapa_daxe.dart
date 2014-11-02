@@ -56,7 +56,7 @@ void main() {
         ToolbarButton texButton = new ToolbarButton(
             LCDStrings.get('tex_equation'), 'images/tex.png',
             () => doc.insertNewNode(texRef, 'element'), Toolbar.insertButtonUpdate, 
-            data:new ToolbarStyleInfo(texRef, null, null));
+            data:new ToolbarStyleInfo([texRef], null, null));
         insertBox.add(texButton);
         page.toolbar.add(insertBox);
       }
@@ -108,8 +108,8 @@ Future _init_daxe() {
 
 ToolbarMenu _makeSectionMenu() {
   Menu menu = new Menu(LCDStrings.get('Section'));
-  x.Element sectionRef = doc.cfg.elementReference('section');
-  if (sectionRef == null)
+  List<x.Element> sectionRefs = doc.cfg.elementReferences('section');
+  if (sectionRefs == null || sectionRefs.length == 0)
     return(null);
   x.Element h1Ref = doc.cfg.elementReference('h1');
   for (String role in ['introduction', 'conclusion', 'prerequisites', 'objectives',
@@ -117,8 +117,10 @@ ToolbarMenu _makeSectionMenu() {
                        'remark', 'warning', 'more_information', 'method',
                        'activity', 'bibliography', 'citation']) {
     MenuItem menuItem = new MenuItem(LCDStrings.get(role), null,
-        data:new ToolbarStyleInfo(sectionRef, null, null));
+        data:new ToolbarStyleInfo(sectionRefs, null, null));
     menuItem.action = () {
+      ToolbarStyleInfo info = menuItem.data;
+      x.Element sectionRef = info.validRef;
       DaxeNode section = NodeFactory.create(sectionRef);
       section.setAttribute('class', 'role-' + role);
       DaxeNode h1 = NodeFactory.create(h1Ref);

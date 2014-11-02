@@ -24,7 +24,7 @@ use Apache::lc_ui_localize;
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_localize_html start_localize_tex);
+our @EXPORT = qw(start_localize_html);
 
 sub start_localize_html {
    my ($p,$safe,$stack,$token)=@_;
@@ -32,12 +32,6 @@ sub start_localize_html {
    $p->get_token;
    pop(@{$stack->{'tags'}});
    return &mt($text,
-              split(/\s*\,\s*/,&Apache::lc_asset_safeeval::texteval($safe,$token->[2]->{'parameters'})));
-}
-
-sub start_localize_tex {
-   my ($p,$safe,$stack,$token)=@_;
-   return &mt($p->get_text('/localize'),
               split(/\s*\,\s*/,&Apache::lc_asset_safeeval::texteval($safe,$token->[2]->{'parameters'})));
 }
 

@@ -2,7 +2,7 @@ var showhidden=0;
 
 $(document).ready(function() {
 
-    init_datatable();
+    init_datatable(false);
 
     load_path();
 
@@ -29,15 +29,92 @@ function change_title(entity,domain,url,title) {
 }
 
 function change_status(entity,domain,url) {
-   parent.display_modal('/modals/lc_change_status.html?domain='+domain+'&entity='+entity+'&url='+url);
+   parent.display_large_modal('/modals/lc_change_status.html?domain='+domain+'&entity='+entity+'&url='+url);
 }
 
-function init_datatable() {
+function publisher(entity,domain,url) {
+   parent.display_large_modal('/modals/lc_publisher.html?domain='+domain+'&entity='+entity+'&url='+url);
+}
 
+function recover(entity,domain,url) {
+         $.ajax({
+             url: '/portfolio',
+             type:'POST',
+             data: { 'command' : 'recover',
+                     'entity'  : entity,
+                     'domain'  : domain,
+                     'url'     : unescape(url) },
+             success: function(response) {
+                if (response=='error') {
+                   $('.lcstandard').hide();
+                   $('.lcerror').show();
+                } else {
+                   reload_listing();
+                }
+             },
+             error: function(xhr, ajaxOptions, errorThrown) {
+                $('.lcstandard').hide();
+                $('.lcerror').show();
+             }
+         });         
+}
+
+function removefile(entity,domain,url) {
+         $.ajax({
+             url: '/portfolio',
+             type:'POST',
+             data: { 'command' : 'remove',
+                     'entity'  : entity,
+                     'domain'  : domain,
+                     'url'     : unescape(url) },
+             success: function(response) {
+                if (response=='error') {
+                   $('.lcstandard').hide();
+                   $('.lcerror').show();
+                } else {
+                   reload_listing();
+                }
+             },
+             error: function(xhr, ajaxOptions, errorThrown) {
+                $('.lcstandard').hide();
+                $('.lcerror').show();
+             }
+         });
+}
+
+function deletefile(entity,domain,url) {
+         $.ajax({
+             url: '/portfolio',
+             type:'POST',
+             data: { 'command' : 'delete',
+                     'entity'  : entity,
+                     'domain'  : domain,
+                     'url'     : unescape(url) },
+             success: function(response) {
+                if (response=='error') {
+                   $('.lcstandard').hide();
+                   $('.lcerror').show();
+                } else {
+                   reload_listing();
+                }
+             },
+             error: function(xhr, ajaxOptions, errorThrown) {
+                $('.lcstandard').hide();
+                $('.lcerror').show();
+             }
+         });
+}
+
+
+function init_datatable(destroy) {
+   if (destroy) {
+      parent.busy_block();
+   }
    var noCache = parent.no_cache_value();
    $('#portfoliolist').dataTable( {
       "sAjaxSource" : '/portfolio?'+$('#portfolio').serialize()+'&command=listdirectory&showhidden='+showhidden+'&noCache='+noCache,
       "bAutoWidth": false, 
+      "bDestroy"  : destroy,
       "bStateSave": true,
       "oLanguage" : {
          "sUrl" : "/datatable_i14n"
@@ -50,32 +127,35 @@ function init_datatable() {
                         $(this).addClass('row_selected');
                 }
          } );
-
+         if (destroy) {
+            parent.busy_unblock();
+         }
          adjust_framesize();
       },
       "aoColumns" : [
          { "bVisible": false },
-         {"iDataSort": 2},
+         { "bSortable": false },
+         {"iDataSort": 3},
          { "bVisible": false },
          null,
          null,
          null,
-         {"iDataSort": 7, "bVisible": false },
+         {"bSortable":false },
+         {"iDataSort": 9, "bVisible": false },
          {"bVisible": false },
          null,
-         {"iDataSort": 10, "bVisible": false },
-         { "bVisible": false },
          {"iDataSort": 12, "bVisible": false },
          { "bVisible": false },
          {"iDataSort": 14, "bVisible": false },
+         { "bVisible": false },
+         {"iDataSort": 16, "bVisible": false },
          { "bVisible": false }
       ]
     } );
 }
 
 function reload_listing() {
-   $('#portfoliolist').dataTable().fnDestroy();
-   init_datatable();
+   init_datatable(true);
 }
 
 function load_path() {

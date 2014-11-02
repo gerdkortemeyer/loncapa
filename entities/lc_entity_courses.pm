@@ -40,6 +40,8 @@ use Apache2::Const qw(:common :http);
 #
 # Make a new course on this machine
 # This is also the routine that would be called by remote servers
+# CourseID is the equivalent of the username, usually an institutional ID like "phy232fs15"
+# Returns entity
 #
 sub local_make_new_course {
    my ($courseid,$domain)=@_;
@@ -76,7 +78,8 @@ sub local_make_new_course {
 # Take ownership
    &Apache::lc_postgresql::insert_homeserver($entity,$domain,&Apache::lc_connection_utils::host_name());
 # Start course profile
-   &Apache::lc_mongodb::insert_profile($entity,$domain,{ created => &Apache::lc_date_utils::now2str() });
+   &Apache::lc_mongodb::insert_profile($entity,$domain,{ created  => &Apache::lc_date_utils::now2str(),
+                                                         courseid => $courseid });
 # Start empty table of contents
    &initialize_contents($entity,$domain);
 # Return the entity
@@ -99,6 +102,8 @@ sub remote_make_new_course {
 
 #
 # Make a new course somewhere
+# Call this
+# CourseID is like a username, usually an institutional ID code, like phy232fs05
 #
 sub make_new_course {
    my ($courseid,$domain)=@_;
@@ -118,11 +123,70 @@ sub make_new_course {
 # Looking for courses
 # ================================================================
 #
+
 sub local_query_course_profiles {
-   my ($term)=@_;
+   my ($domain,$term)=@_;
    $term=~s/^\s+//s;
    $term=~s/\s+$//s;
-   return &Apache::lc_mongodb::query_course_profiles($term);
+   if (length($term)<2) { return undef; }
+   my @rawdata=&Apache::lc_mongodb::query_course_profiles($domain,$term);
+   my $data=undef;
+   my $count=0;
+   foreach my $course (@rawdata) {
+      foreach my $namepart ('type','title') {
+         $data->{$course->{'domain'}}->{$course->{'entity'}}->{$namepart}=$course->{'profile'}->{$namepart};
+      }
+      $count++;
+      if ($count>100) { last; }
+   }
+   return $data;
+}
+
+sub local_json_query_course_profiles {
+   return &Apache::lc_json_utils::perl_to_json(&local_query_course_profiles(@_));
+}
+
+sub query_course_profiles {
+   my ($domain,$term)=@_;
+   my $connection_table=&Apache::lc_init_cluster_table::get_connection_table();
+   foreach my $host (split(/\,/,$connection_table->{'libraries'}->{$domain})) {
+      unless ($host) { next; }
+      my $data=undef;
+      if ($host eq $connection_table->{'self'}) {
+         $data=&local_query_course_profiles($domain,$term);
+      } else {
+         my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'query_course_profiles',
+                                &Apache::lc_json_utils::perl_to_json({ domain => $domain, term => $term }));
+         if ($code eq HTTP_OK) {
+            $data=&Apache::lc_json_utils::json_to_perl($response);
+         }
+      }
+      if ($data) {
+         foreach my $entity (keys(%{$data->{$domain}})) {
+            &Apache::lc_mongodb::update_profiles_cache($entity,$domain,$data->{$domain}->{$entity});
+         }
+      }
+   }
+   return 1;
+}
+
+sub query_course_profiles_result {
+   my ($domain,$term)=@_;
+   $term=~s/^\s+//s;
+   $term=~s/\s+$//s;
+   my @rawdata=&Apache::lc_mongodb::query_course_profiles_cache($domain,$term);
+   my $data=undef;
+   my $count=0;
+   foreach my $course (@rawdata) {
+      foreach my $namepart ('type','title') {
+         $data->{'records'}->{$course->{'domain'}}->{$course->{'entity'}}->{$namepart}=$course->{'profile'}->{$namepart};
+      }
+      $data->{'records'}->{$course->{'domain'}}->{$course->{'entity'}}->{'courseid'}=&entity_to_course($course->{'entity'},$course->{'domain'});
+      $count++;
+      if ($count>100) { last; }
+   }
+   $data->{'count'}=$count;
+   return $data;
 }
 
 # ================================================================
@@ -132,6 +196,7 @@ sub local_query_course_profiles {
 #
 # Try only the local machine
 # - this is the one that needs to be called remotely
+# Given something like phy232fs05 and domain, will return entity
 #
 sub local_course_to_entity {
    my ($courseid,$domain)=@_;
@@ -225,11 +290,11 @@ sub entity_to_course {
 #
 
 # ==== Return the URL for the table of contents of this course
-#
+# Needs course entity and domain
 
 sub toc_path {
-   my ($courseid,$domain)=@_;
-   return $domain.'/'.$courseid.'/toc.json';
+   my ($entity,$domain)=@_;
+   return $domain.'/'.$entity.'/toc.json';
 }
 
 sub toc_url {
@@ -243,19 +308,19 @@ sub toc_wrk_url {
 # ==== Load and return the table of contents
 #
 sub load_contents {
-   my ($courseid,$domain)=@_;
+   my ($entity,$domain)=@_;
 # See if we already have it cached
-   my $toc=&Apache::lc_memcached::lookup_toc($courseid,$domain);
+   my $toc=&Apache::lc_memcached::lookup_toc($entity,$domain);
    if ($toc) { return $toc; }
 # Load it
-   $toc=&Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readurl(&toc_url($courseid,$domain)));
+   $toc=&Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readurl(&toc_url($entity,$domain)));
    if ($toc) {
 # Cache and return it
-      &Apache::lc_memcached::insert_toc($courseid,$domain,$toc);
+      &Apache::lc_memcached::insert_toc($entity,$domain,$toc);
       return $toc;
    } else {
 # Oops!
-      &logwarning("Could not find table of contents for ($courseid) ($domain)");
+      &logwarning("Could not find table of contents for ($entity) ($domain)");
       return undef;
    }
 }
@@ -264,15 +329,9 @@ sub load_contents {
 # ==== Initialize new table of contents
 #
 sub initialize_contents {
-   my ($courseid,$domain)=@_;
-# Get an entity assigned
-   my $entity=&Apache::lc_entity_urls::make_new_url(&toc_url($courseid,$domain));
-   unless ($entity) {
-      &logerror("Unable to obtain URL for table of contents of course ($courseid) domain ($domain)");
-      return undef;
-   }
-   unless (&publish_contents($courseid,$domain,[])) {
-      &logerror("Unable to publish table of contents of course ($courseid) domain ($domain)");
+   my ($entity,$domain)=@_;
+   unless (&publish_contents($entity,$domain,[])) {
+      &logerror("Unable to publish table of contents of course ($entity) domain ($domain)");
       return undef;
    }
    return 1;
@@ -282,11 +341,11 @@ sub initialize_contents {
 # Store a wrk-copy, also back to homeserver
 #
 sub save_contents {
-   my ($courseid,$domain,$toc)=@_;
-   if (&Apache::lc_file_utils::writeurl(&toc_wrk_url($courseid,$domain),&Apache::lc_json_utils::perl_to_json($toc))) {
-      return &Apache::lc_entity_urls::save(&toc_wrk_url($courseid,$domain));
+   my ($entity,$domain,$toc)=@_;
+   if (&Apache::lc_file_utils::writeurl(&toc_wrk_url($entity,$domain),&Apache::lc_json_utils::perl_to_json($toc))) {
+      return &Apache::lc_entity_urls::save(&toc_wrk_url($entity,$domain));
    } else {
-      &logerror("Unable to save table of contents for course ($courseid) domain ($domain)");
+      &logerror("Unable to save table of contents for course ($entity) domain ($domain)");
       return undef;
    }
 }
@@ -295,15 +354,15 @@ sub save_contents {
 # This is for real, actually publish and change
 
 sub publish_contents {
-   my ($courseid,$domain,$toc)=@_;
-   unless (&save_contents($courseid,$domain,$toc)) {
+   my ($entity,$domain,$toc)=@_;
+   unless (&save_contents($entity,$domain,$toc)) {
       return undef;
    }
-   if (&Apache::lc_entity_urls::publish(&toc_wrk_url($courseid,$domain))) {
+   if (&Apache::lc_entity_urls::publish(&toc_wrk_url($entity,$domain))) {
 # Cache it, too, so it takes effect immediately in order to avoid confusion
-      &Apache::lc_memcached::insert_toc($courseid,$domain,$toc);
+      &Apache::lc_memcached::insert_toc($entity,$domain,$toc);
 # No valid digest in this session
-      &Apache::lc_memcached::insert_tocdigest(&Apache::lc_entity_sessions::user_entity_domain(),$courseid,$domain,undef);
+      &Apache::lc_memcached::insert_tocdigest(&Apache::lc_entity_sessions::user_entity_domain(),$entity,$domain,undef);
       return 1;
    } else {
       return undef;
@@ -313,25 +372,29 @@ sub publish_contents {
 #
 # Accessor functions for title, type, etc
 #
+# Title: e.g., "Introductory Physics II FS15"
+# 
 sub set_course_title {
-   my ($courseid,$domain,$title)=@_;
-   return &Apache::lc_entity_profile::modify_profile($courseid,$domain,{ title => $title });
+   my ($entity,$domain,$title)=@_;
+   return &Apache::lc_entity_profile::modify_profile($entity,$domain,{ title => $title });
 }
 
 sub course_title {
-   my ($courseid,$domain)=@_;
-   my $profile=&Apache::lc_entity_profile::dump_profile($courseid,$domain);
+   my ($entity,$domain)=@_;
+   my $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
    return $profile->{'title'};
 }
 
+# Type: regular or community
+
 sub set_course_type {
-   my ($courseid,$domain,$type)=@_;
-   return &Apache::lc_entity_profile::modify_profile($courseid,$domain,{ type => $type });
+   my ($entity,$domain,$type)=@_;
+   return &Apache::lc_entity_profile::modify_profile($entity,$domain,{ type => $type });
 }
 
 sub course_type {
-   my ($courseid,$domain)=@_;
-   my $profile=&Apache::lc_entity_profile::dump_profile($courseid,$domain);
+   my ($entity,$domain)=@_;
+   my $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
    return $profile->{'type'};
 }
 
@@ -360,13 +423,13 @@ sub active_session_courses {
 # Update the "last accessed" record for the course
 #
 sub set_last_accessed {
-   my ($courseid,$domain)=@_;
-   return &Apache::lc_entity_profile::modify_profile($courseid,$domain,{ last_accessed => &Apache::lc_date_utils::now2str() });
+   my ($entity,$domain)=@_;
+   return &Apache::lc_entity_profile::modify_profile($entity,$domain,{ last_accessed => &Apache::lc_date_utils::now2str() });
 }
 
 sub last_accessed {
-   my ($courseid,$domain)=@_;
-   my $profile=&Apache::lc_entity_profile::dump_profile($courseid,$domain);
+   my ($entity,$domain)=@_;
+   my $profile=&Apache::lc_entity_profile::dump_profile($entity,$domain);
    return $profile->{'last_accessed'};
 }
 
@@ -374,8 +437,8 @@ sub last_accessed {
 # Assemble a complete list of all users in a course/community
 #
 sub courselist {
-   my ($courseid,$domain)=@_;
-   my $raw_classlist=&Apache::lc_entity_roles::lookup_entity_rolelist($courseid,$domain);
+   my ($entity,$domain)=@_;
+   my $raw_classlist=&Apache::lc_entity_roles::lookup_entity_rolelist($entity,$domain);
    my @classlist=();
    foreach my $row (@{$raw_classlist}) {
       my ($roleentity,$roledomain,$rolesection,
@@ -402,10 +465,30 @@ sub courselist {
    return @classlist;
 }
 
+#
+# Return a list of the sections in a course
+#
+sub coursesectionlist {
+   my ($entity,$domain)=@_;
+   my %sections=();
+   my $raw_classlist=&Apache::lc_entity_roles::lookup_entity_rolelist($entity,$domain);
+   my @classlist=();
+   foreach my $row (@{$raw_classlist}) {
+      my ($roleentity,$roledomain,$rolesection,
+          $userentity,$userdomain,
+          $role,
+          $startdate,$enddate,
+          $manualenrollentity,$manualenrolldomain)=@{$row};
+      $sections{&Apache::lc_entity_roles::norm_section($rolesection)}=1;
+   }
+   return sort { substr('00000000'.$a,-8) cmp substr('00000000'.$b,-8) } (keys(%sections));
+}
+
 BEGIN {
    &Apache::lc_connection_handle::register('course_to_entity',undef,undef,undef,\&local_course_to_entity,'courseid','domain');
    &Apache::lc_connection_handle::register('entity_to_course',undef,undef,undef,\&local_entity_to_course,'entity','domain');
    &Apache::lc_connection_handle::register('make_new_course',undef,undef,undef,\&local_make_new_course,'courseid','domain');
+  &Apache::lc_connection_handle::register('query_course_profiles',undef,undef,undef,\&local_json_query_course_profiles,'domain','term');
 }
 
 1;

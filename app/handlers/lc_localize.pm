@@ -29,6 +29,10 @@ use base qw(Apache::lc_localize);
 'decimal_divider' => '.',
 'power_of_ten_divider' => ',',
 
+'unexpected_ending: [_1] [_2]' => '&lt;[_1]&gt; was found instead of the ending of &lt;/[_2]&gt;.',
+
+'missing_ending: [_1] [_2]' => 'The end of &lt;[_1]&gt; was not found.',
+
 'superuser' => 'Superuser',
 'domain_coordinator' => 'Domain Coordinator',
 'course_coordinator' => 'Course Coordinator',

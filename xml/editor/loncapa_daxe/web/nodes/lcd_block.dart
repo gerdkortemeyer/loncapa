@@ -69,7 +69,7 @@ class LCDBlock extends DaxeNode {
   
   void init() {
     attRefs = doc.cfg.elementAttributes(ref);
-    if (attRefs.length > 0)
+    if (attRefs != null && attRefs.length > 0)
       attributeControls = new HashMap<String, SimpleTypeControl>();
     unknownAttributeFields = null;
     hasContent = doc.cfg.canContainText(ref) || doc.cfg.subElements(ref).length > 0;
@@ -102,13 +102,16 @@ class LCDBlock extends DaxeNode {
     bEditable = new LCDButton(LCDStrings.get('lcdblock_editable'), 'block_editable.png',
         () {
       editableView();
-    }, enabled: attRefs.length > 0, selected: (state == 0));
+    }, enabled: attRefs != null && attRefs.length > 0, selected: (state == 0));
     buttonBox.append(bEditable.html());
     titleDiv.append(buttonBox);
     
     h.SpanElement titleSpan = new h.SpanElement();
     titleSpan.classes.add('lcdblock-title');
-    titleSpan.append(new h.Text(doc.cfg.elementTitle(ref)));
+    String title = doc.cfg.elementTitle(ref);
+    if (title == null)
+      title = nodeName;
+    titleSpan.append(new h.Text(title));
     titleSpan.onDoubleClick.listen((h.MouseEvent event) {
       page.selectNode(this);
     });
@@ -235,7 +238,7 @@ class LCDBlock extends DaxeNode {
   
   @override
   bool newlineInside() {
-    return(true);
+    return(hasContent);
   }
   
   @override

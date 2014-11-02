@@ -174,7 +174,7 @@ sub start_lcformtrigger_html {
 
 sub triggerbutton {
    my ($id,$text)=@_;
-   return '<span class="lcformtrigger"><a href="#" id="'.$id.'">'.&mt($text).'</a></span>';
+   return '<span class="lcformtrigger" id="'.$id.'_span"><a href="#" id="'.$id.'">'.&mt($text).'</a></span>';
 }
 
 sub start_lcformcancel_html {
@@ -186,16 +186,16 @@ sub start_lcformcancel_html {
 
 sub cancelbutton {
    my ($id,$text)=@_;
-   return '<span class="lcformcancel"><a href="#" id="'.$id.'">'.&mt($text).'</a></span>';
+   return '<span class="lcformcancel" id="'.$id.'_span"><a href="#" id="'.$id.'">'.&mt($text).'</a></span>';
 }
 
 # === Generate a single input field
 
 sub inputfield {
-   my ($type,$id,$name,$size,$default,$locked)=@_;
+   my ($type,$id,$name,$size,$default,$locked,$onchange)=@_;
    if ($type eq 'text') {
       unless ($size) { $size=40; }
-      return '<input class="lcformtextinput" type="text" id="'.$id.'" name="'.$name.'" size="'.$size.'" value="'.$default.'" autocomplete="off"'.
+      return '<input class="lcformtextinput" type="text" id="'.$id.'" name="'.$name.'" size="'.$size.'" value="'.&Apache::lc_xml_utils::form_escape($default).'" autocomplete="off"'.
              ($locked?' disabled="disabled"':'').' />';
    } elsif ($type eq 'textarea') {
       return '<textarea class="ckeditor" id="'.$id.'" name="'.$name.'">'.$default.'</textarea>';
@@ -216,6 +216,11 @@ sub inputfield {
    } elsif ($type eq 'language') {
       my ($default,$language_short,$language_name)=&language_choices($default);
       return &selectfield($id,$name,$language_short,$language_name,$default);
+   } elsif ($type eq 'contentlanguage') {
+      my ($default,$language_short,$language_name)=&content_language_choices($default);
+      return &selectfield($id,$name,$language_short,$language_name,$default);
+   } elsif ($type eq 'taxonomy') {
+      return &taxonomyfield($id,$name,$default);
    } elsif ($type eq 'timezone') {
       my ($default,$timezones)=&timezone_choices($default);
       return &selectfield($id,$name,$timezones,$timezones,$default);
@@ -240,7 +245,13 @@ sub inputfield {
    } elsif ($type eq 'rolemodifiabledomains') {
       my ($defaultdomain,$domain_short,$domain_name)=&domain_choices('rolemodifiable');
       unless ($default) { $default=$defaultdomain; }
-      return &selectfield($id,$name,$domain_short,$domain_name,$default);
+      return &selectfield($id,$name,$domain_short,$domain_name,$default,$locked,$onchange);
+   } elsif ($type eq 'rolemodifiabledomains_empty') {
+      my ($defaultdomain,$domain_short,$domain_name)=&domain_choices('rolemodifiable');
+      unshift(@{$domain_short},'');
+      unshift(@{$domain_name},'');
+      unless ($default) { $default=''; }
+      return &selectfield($id,$name,$domain_short,$domain_name,$default,$locked,$onchange);
    } elsif ($type eq 'usersearch') {
       return &usersearch($id,$name,$default);
    } elsif ($type eq 'symbolic') {
@@ -248,6 +259,51 @@ sub inputfield {
    } elsif ($type eq 'numeric') {
       return &math_editor($id,$name,'numeric',$default);
    }
+}
+
+# ==== Taxonomy field
+#
+sub taxonomyfield {
+   my ($id,$name,$default)=@_;
+   unless ($name) {
+      $name=$id;
+   }
+   my ($first_default,$second_default,$third_default)=split(/\s*\:\s*/,$default);
+   my $output="<fieldset id='$id' name='$name' class='lctaxonomyselect'>";
+   $output.="<select id='".$id."_first' name='".$id."_first' onchange='taxoselect(\"".$id."\",\"first\")'><option value='".$first_default."'>-</option></select>";
+   $output.="<select id='".$id."_second' name='".$id."_second' onchange='taxoselect(\"".$id."\",\"second\")'><option value='".$second_default."'>-</option></select>";
+   $output.="<select id='".$id."_third' name='".$id."_third'><option value='".$third_default."'>-</option></select>";
+   $output.='</fieldset>';
+   $output.="\n<script>taxoselect('".$id."','all');</script>\n";
+   return $output;
+}
+
+# ==== Word bubble
+#
+sub wordbubble {
+   my ($id,$name,$term,$checked)=@_;
+   unless ($name) {
+      $name=$id;
+   }
+   return '<span class="lcwordbubble"><input type="checkbox" id="'.$id.'" name="'.$name.'"'.
+          ($checked?' checked="checked"':'').' value="'.&Apache::lc_xml_utils::form_escape($term).'" /><label for="'.$id.'">'.$term.'</label></span>';
+}
+
+# ==== Radio button
+#
+sub radiobuttons {
+   my ($id,$name,$options,$texts,$default)=@_;
+   unless ($name) {
+      $name=$id;
+   }
+   my $output='<ul id="'.$id.'" class="lcsimpleradio">';
+   for (my $n=0; $n<=$#{$options}; $n++) {
+      $output.='<li><input id="'.$id.$n.'" name="'.$name.'" value="'.${$options}[$n].'" type="radio"'.
+               ((${$options}[$n] eq $default)?' checked="checked"':'').
+               '><label for="'.$id.$n.'">'.${$texts}[$n].'</label></li>';
+   }
+   $output.='</ul>';
+   return $output;
 }
 
 
@@ -266,6 +322,7 @@ sub usersearch {
    $output.=&hidden_field($id.'_username','');
    $output.='<br /><div id="'.$id.'_results" class="lcautocompleteresults"></div>';
    $output.='</fieldset>';
+   return $output;
 }
 
 # ==== Bring up a math editor field
@@ -314,7 +371,7 @@ sub selectfield {
    }
    my $selectfield='<select class="lcformselectinput" id="'.$id.'" name="'.$name.'"'.$changecall.$disabled.'>';
    for (my $i=0;$i<=$#{$values};$i++) {
-          $selectfield.='<option value="'.$values->[$i].'"'.($values->[$i]=~/^($default)$/?' selected="selected"':'').'>'.
+          $selectfield.='<option id="'.$id.'_'.$values->[$i].'" value="'.$values->[$i].'"'.($values->[$i]=~/^($default)$/?' selected="selected"':'').'>'.
                          $choices->[$i].'</option>';
    }
    $selectfield.='</select>';

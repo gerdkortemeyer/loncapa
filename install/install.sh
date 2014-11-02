@@ -27,6 +27,10 @@ cp conf/roles.json /home/loncapa/conf
 cp conf/units.json /home/loncapa/conf
 cp conf/constants.json /home/loncapa/conf
 cp conf/extensions.json /home/loncapa/conf
+cp metadata/conf/*.json /home/loncapa/conf
+mkdir /home/loncapa/conf/non_keyword
+cp metadata/conf/non_keyword* /home/loncapa/conf/non_keyword
+cp metadata/handlers/*pm /home/httpd/lib/perl/Apache
 cp app/handlers/*pm /home/httpd/lib/perl/Apache
 mkdir /home/httpd/lib/perl/Apache/lc_localize
 rm /home/httpd/lib/perl/Apache/lc_localize/*
@@ -47,6 +51,8 @@ mkdir /home/httpd/html/images
 cp app/images/* /home/httpd/html/images
 mkdir /home/httpd/html/images/fileicons
 cp app/images/fileicons/* /home/httpd/html/images/fileicons
+mkdir /home/httpd/html/images/actionicons
+cp app/images/actionicons/* /home/httpd/html/images/actionicons
 mkdir /home/httpd/html/scripts
 if [ ! -d /home/httpd/html/scripts/mathjax ]; then
    unzip app/scripts/v2.3-latest -d /home/httpd/html/scripts
@@ -64,7 +70,7 @@ cp -r app/scripts/ckeditor/plugins/lcmath /home/httpd/html/scripts/ckeditor/plug
 cp app/scripts/jquery* /home/httpd/html/scripts
 cp app/scripts/lc* /home/httpd/html/scripts
 cp -R app/scripts/jstree /home/httpd/html/scripts/
-cp app/scripts/math_editor/dist/math_editor.min.js /home/httpd/html/scripts/
+cp app/scripts/LC_math_editor/dist/LC_math_editor.min.js /home/httpd/html/scripts/
 chown -R www:www /home/httpd/html/scripts/*
 chmod -R a+rx /home/httpd/html/scripts/*
 mkdir /home/httpd/html/css

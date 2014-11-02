@@ -208,11 +208,20 @@ class Cursor {
    */
   void lineStart() {
     Point pt = selectionStart.positionOnScreen();
-    pt.x = 0;
+    //pt.x = 0;
+    // this does not work when blocks are used (it moves the cursor outside)
+    DaxeNode dn = selectionStart.dn;
+    if (dn == null)
+      return;
+    while (!dn.block && dn.parent != null)
+      dn = dn.parent;
+    h.Element hnode = dn.getHTMLNode();
+    h.Rectangle rect = hnode.getBoundingClientRect();
+    pt.x = rect.left + 1;
     pt.y += 5;
     Position pos = doc.findPosition(pt.x, pt.y);
     if (pos == null)
-      return(null);
+      return;
     if (pos != null) {
       moveTo(pos);
       page.updateAfterPathChange();
@@ -224,11 +233,20 @@ class Cursor {
    */
   void lineEnd() {
     Point pt = selectionStart.positionOnScreen();
-    pt.x += 10000;
+    //pt.x += 10000;
+    // this does not work when blocks are used (it moves the cursor outside)
+    DaxeNode dn = selectionStart.dn;
+    if (dn == null)
+      return;
+    while (!dn.block && dn.parent != null)
+      dn = dn.parent;
+    h.Element hnode = dn.getHTMLNode();
+    h.Rectangle rect = hnode.getBoundingClientRect();
+    pt.x = rect.right - 1;
     pt.y += 5;
     Position pos = doc.findPosition(pt.x, pt.y);
     if (pos == null)
-      return(null);
+      return;
     if (pos != null) {
       moveTo(pos);
       page.updateAfterPathChange();
@@ -699,13 +717,20 @@ class Cursor {
         DaxeNode prev = selectionStart.dn.childAtOffset(selectionStart.dnOffset - 1);
         h.Element hprev = prev.getHTMLNode();
         prevBlock = _isBlock(hprev);
-      } else
-        prevBlock = true;
+      } else {
+        if (selectionStart.dn is DNWItem)
+          prevBlock = false; // special case for the beginning of a WYSIWYG list item
+        else
+          prevBlock = true;
+      }
       bool nextBlock;
       if (selectionStart.dnOffset < selectionStart.dn.offsetLength) {
         DaxeNode next = selectionStart.dn.childAtOffset(selectionStart.dnOffset);
         h.Element hnext = next.getHTMLNode();
-        nextBlock = _isBlock(hnext);
+        if (next is DNWItem && selectionStart.dnOffset == 0)
+          nextBlock = false; // special case for the beginning of a WYSIWYG list
+        else
+          nextBlock = _isBlock(hnext);
       } else
         nextBlock = true;
       horizontal = prevBlock && nextBlock;
@@ -757,6 +782,13 @@ class Cursor {
     if (visible)
       show();
     ta.focus();
+  }
+  
+  /**
+   * Clears the hidden field
+   */
+  void clearField() {
+    ta.value = '';
   }
   
   setSelection(Position start, Position end) {
@@ -1046,7 +1078,7 @@ class Cursor {
       // remove pos.dn
       toremove = pos.dn;
       if (toremove.noDelimiter && toremove.block) {
-        if (toremove.nextSibling.ref == toremove.ref) {
+        if (toremove.nextSibling != null && toremove.nextSibling.ref == toremove.ref) {
           // merge the blocks with no delimiter
           mergeBlocks(toremove, toremove.nextSibling);
           return;
@@ -1056,7 +1088,7 @@ class Cursor {
         pos.dn.nodeType == DaxeNode.DOCUMENT_NODE) {
       toremove = pos.dn.childAtOffset(pos.dnOffset);
       if (toremove.noDelimiter && toremove.block) {
-        if (toremove.previousSibling.ref == toremove.ref) {
+        if (toremove.previousSibling != null && toremove.previousSibling.ref == toremove.ref) {
           // merge the blocks with no delimiter
           mergeBlocks(toremove.previousSibling, toremove);
           return;
@@ -1075,10 +1107,10 @@ class Cursor {
       }
     } else if (pos.dn.nodeType == DaxeNode.TEXT_NODE &&
         pos.dnOffset == 0 && pos.dn.offsetLength == 1 &&
-        pos.dn.parent.noDelimiter && pos.dn.parent.offsetLength == 1) {
+        pos.dn.parent is DNStyle && pos.dn.parent.offsetLength == 1) {
       // remove the style node
       toremove = pos.dn.parent;
-      while (toremove.parent.noDelimiter && toremove.parent.offsetLength == 1)
+      while (toremove.parent is DNStyle && toremove.parent.offsetLength == 1)
         toremove = toremove.parent;
     } else {
       doc.removeString(pos, 1);
@@ -1224,17 +1256,15 @@ class Cursor {
     if (root.childNodes != null) {
       for (x.Node n in root.childNodes) {
         DaxeNode dn = NodeFactory.createFromNode(n, dnRoot);
-        if (dn.ref == doc.hiddenp && !doc.cfg.isSubElement(parent.ref, doc.hiddenp)) {
-          // do not put a hidden paragraph where it is not allowed (remove one level)
-          for (x.Node n2 in n.childNodes) {
-            DaxeNode dn2 = NodeFactory.createFromNode(n2, dnRoot);
-            dnRoot.appendChild(dn2);
-          }
-        } else
-          dnRoot.appendChild(dn);
+        dnRoot.appendChild(dn);
       }
     }
     dnRoot.fixLineBreaks();
+    if (doc.hiddenParaRefs != null) {
+      // add or remove hidden paragraphs where necessary
+      DNHiddenP.fixFragment(parent, dnRoot);
+      doc.removeWhitespaceForHiddenParagraphs(dnRoot);
+    }
     UndoableEdit edit = new UndoableEdit.compound(Strings.get('undo.paste'));
     try {
       edit.addSubEdit(doc.insertChildrenEdit(dnRoot, selectionStart, checkValidity:true));

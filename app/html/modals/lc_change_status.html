@@ -5,13 +5,18 @@
 </head>
 <body>
 <h1><localize>Publication</localize></h1>
+<h2 id="fileinfo"></h2>
 <p>
 <span class="lcstandard"><localize>Choose how this file is shared.</localize></span>
 <span class="lcerror"><localize>A problem occured, please try again later.</localize></span>
 &nbsp;</p>
+<lcform id="rulelistform">
 <p>
+<lcdatatable id="rightslist" class="rightsmanager" />
 </p>
-<lcformcancel id="cancelbutton" />
-<lcformtrigger id="storebutton" description="Store" />
+<lcformtrigger id="addbutton" description="Add New Entry" />
+&nbsp;
+<lcformtrigger id="donebutton" description="Done" />
+</lcform>
 </body>
 </html>

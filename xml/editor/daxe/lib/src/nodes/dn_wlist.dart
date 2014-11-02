@@ -37,6 +37,12 @@ class DNWList extends DaxeNode {
   DNWList.fromNode(x.Node node, DaxeNode parent) : super.fromNode(node, parent) {
     init();
     fixLineBreaks();
+    // remove spaces between li
+    for (DaxeNode dn in childNodes) {
+      if (dn is DNText && dn.nodeValue.trim() == '') {
+        removeChild(dn);
+      }
+    }
   }
   
   void init() {
@@ -200,7 +206,7 @@ class DNWList extends DaxeNode {
       assert(endParent == textParent); // the selection should not cut an element
       while (endOffset < textParent.offsetLength) {
         DaxeNode child = textParent.childAtOffset(endOffset);
-        if ((child is! DNText && !doc.cfg.isSubElement(doc.hiddenp, child.ref)) ||
+        if ((child is! DNText && !doc.cfg.isSubElement(itemRef, child.ref)) ||
             child.newlineAfter())
           break;
         endOffset++;
@@ -310,7 +316,8 @@ class DNWList extends DaxeNode {
       Position after = new Position(list.parent, list.parent.offsetOf(list) + 1);
       if (afterList != null)
         edit.addSubEdit(new UndoableEdit.insertNode(after, afterList));
-      if (doc.hiddenp != null && doc.cfg.isSubElement(list.parent.ref, doc.hiddenp)) {
+      if (doc.hiddenParaRefs != null && doc.cfg.findSubElement(list.parent.ref, doc.hiddenParaRefs) != null) {
+        x.Element hiddenp = doc.cfg.findSubElement(list.parent.ref, doc.hiddenParaRefs);
         if (clone.firstChild != null) {
           // add paragraphs wherever possible
           DaxeNode current = clone.firstChild;
@@ -318,9 +325,9 @@ class DNWList extends DaxeNode {
           DNHiddenP p = null;
           while (current != null) {
             next = current.nextSibling;
-            if (current is DNText || doc.cfg.isSubElement(doc.hiddenp, current.ref)) {
+            if (current is DNText || doc.cfg.isSubElement(hiddenp, current.ref)) {
               if (p == null)
-                p = new DNHiddenP.fromRef(doc.hiddenp);
+                p = new DNHiddenP.fromRef(hiddenp);
               clone.removeChild(current);
               p.appendChild(current);
               clone.insertBefore(p, next);
@@ -333,7 +340,7 @@ class DNWList extends DaxeNode {
           edit.addSubEdit(doc.insertChildrenEdit(clone, after));
         } else {
           // add one empty paragraph to replace the list item
-          DNHiddenP p = new DNHiddenP.fromRef(doc.hiddenp);
+          DNHiddenP p = new DNHiddenP.fromRef(hiddenp);
           edit.addSubEdit(new UndoableEdit.insertNode(after, p));
           newPos = new Position(p, 0);
         }
@@ -389,20 +396,50 @@ class DNWList extends DaxeNode {
     page.updateAfterPathChange();
   }
   
-  static x.Element ulRef() {
-    List<x.Element> list = doc.cfg.elementstWithType('wlist');
-    for (x.Element ref in list)
-      if (doc.cfg.elementParameterValue(ref, 'type', 'ul') == 'ul')
-        return(ref);
-    return(null);
+  /**
+   * Called when a newline character is inserted within an item and a new item should be created.
+   */
+  static void newlineInItem(Position selectionStart) {
+    // the newline can be inserted within a style within a hidden paragraph,
+    // so the item has to be split with DaxeDocument.cloneCutBetween.
+    DNWItem item;
+    DaxeNode dn = selectionStart.dn;
+    while (dn != null && dn is! DNWItem)
+      dn = dn.parent;
+    assert(dn != null);
+    if (dn == null)
+      return;
+    item = dn;
+    Position beforeItem = new Position(item.parent, item.parent.offsetOf(item));
+    Position afterItem = new Position(item.parent, item.parent.offsetOf(item) + 1);
+    DaxeNode firstNewItem = doc.cloneCutBetween(item, beforeItem, selectionStart);
+    DaxeNode secondNewItem = doc.cloneCutBetween(item, selectionStart, afterItem);
+    UndoableEdit edit = new UndoableEdit.compound(Strings.get('undo.insert_text'));
+    edit.addSubEdit(new UndoableEdit.insertNode(beforeItem, firstNewItem));
+    beforeItem = new Position(item.parent, item.parent.offsetOf(item)+1);
+    edit.addSubEdit(new UndoableEdit.insertNode(beforeItem, secondNewItem));
+    edit.addSubEdit(new UndoableEdit.removeNode(item));
+    doc.doNewEdit(edit);
+    page.moveCursorTo(new Position(secondNewItem, 0));
+    page.updateAfterPathChange();
   }
   
-  static x.Element olRef() {
-    List<x.Element> list = doc.cfg.elementstWithType('wlist');
-    for (x.Element ref in list)
+  static List<x.Element> ulRefs() {
+    List<x.Element> list = new List<x.Element>();
+    List<x.Element> wlist = doc.cfg.elementsWithType('wlist');
+    for (x.Element ref in wlist)
+      if (doc.cfg.elementParameterValue(ref, 'type', 'ul') == 'ul')
+        list.add(ref);
+    return(list);
+  }
+  
+  static List<x.Element> olRefs() {
+    List<x.Element> list = new List<x.Element>();
+    List<x.Element> wlist = doc.cfg.elementsWithType('wlist');
+    for (x.Element ref in wlist)
       if (doc.cfg.elementParameterValue(ref, 'type', 'ul') == 'ol')
-        return(ref);
-    return(null);
+        list.add(ref);
+    return(list);
   }
   
 }

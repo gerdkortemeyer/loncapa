@@ -268,6 +268,99 @@ sub transfer_uploaded {
 }
 
 # =============================================================
+# Get/Set the rights for a file
+# =============================================================
+#
+sub modify_right {
+   my ($entity,$domain,$type,$target_domain,$target_entity,$target_section,$value)=@_;
+   unless (($type eq 'grade') ||
+           ($type eq 'use') || 
+           ($type eq 'view') || 
+           ($type eq 'edit') ||
+           ($type eq 'clone')) {
+      return undef;
+   }
+   my $rights;
+   if ($target_domain) {
+      if ($target_entity) {
+         if ($target_section) {
+            $rights->{$type}->{'domain'}->{$target_domain}->{'entity'}->{$target_entity}->{'section'}->{$target_section}=$value;
+         } else {
+            $rights->{$type}->{'domain'}->{$target_domain}->{'entity'}->{$target_entity}->{'any'}=$value;
+         }
+      } else {
+         $rights->{$type}->{'domain'}->{$target_domain}->{'any'}=$value;
+      }
+   } else {
+      $rights->{$type}->{'any'}=$value;
+   }
+   return &set_rights($entity,$domain,$rights);
+}
+
+sub get_rights {
+   my ($entity,$domain)=@_;
+   my $metadata=&dump_metadata($entity,$domain);
+   return $metadata->{'rights'};
+}
+
+sub set_rights {
+   my ($entity,$domain,$rights)=@_;
+   return &store_metadata($entity,$domain,{ 'rights' => $rights });
+}
+
+#
+# Find out if we have standard rules, or if it is customized
+#
+
+sub standard_rights {
+   my ($entity,$domain,$url)=@_;
+   my $rights=&get_rights($entity,$domain);
+   my ($rversion_type,$rversion_arg,$rdomain,$rauthor,$rpath)=&split_url('/asset/-/-/'.$url);
+   my $std={};
+   my $overall='none';
+   foreach my $type ('grade','use','view','edit','clone') {
+      $std->{$type}='none';
+      if ($rights->{$type}->{'any'}) {
+         $std->{$type}='systemwide';
+         $overall='standard';
+      } else {
+         foreach my $tdomain (keys(%{$rights->{$type}->{'domain'}})) {
+            if ($rights->{$type}->{'domain'}->{$tdomain}->{'any'}) {
+               if ($tdomain eq $rdomain) {
+                  if ($std->{$type} eq 'none') {
+                     $std->{$type}='domainwide';
+                     $overall='standard';
+                  } else {
+                     $std->{$type}='custom';
+                  }
+               } else {
+                  $std->{$type}='custom';
+               }
+            }
+            foreach my $tentity (keys(%{$rights->{$type}->{'domain'}->{$tdomain}->{'entity'}})) {
+               if ($rights->{$type}->{'domain'}->{$tdomain}->{'entity'}->{$tentity}) {
+                  if ($std->{$type} eq 'none') {
+                     if ($type eq 'grade') {
+                        $std->{$type}='course';
+                        $overall='standard';
+                     } else {
+                        $std->{$type}='custom';
+                     }
+                  } else {
+                     $std->{$type}='custom';
+                  }
+               }
+            }
+         }
+      }
+      if ($std->{$type} eq 'custom') {
+         $overall='custom';
+      }
+   }
+   return ($overall,$std);
+}
+
+# =============================================================
 # Get some raw metadata, only on homeserver where file is
 # =============================================================
 #
@@ -294,10 +387,12 @@ sub local_store_file_vitals {
 # =============================================================
 #
 # Called with the entity, the domain, and the new metadata as hash pointer
+# Takes optional array references of keys that should be completely flushed
+# - if those keys are not in the new metadata, they will be gone
 # Returns full updated metadata as hash pointer
 #
 sub local_store_metadata {
-   my ($entity,$domain,$newmetadata)=@_;
+   my ($entity,$domain,$newmetadata,$refreshkeys)=@_;
 # Do we already have metadata? If not, do it now
    my $oldmetadata=&local_dump_metadata($entity,$domain);
    unless ($oldmetadata) {
@@ -306,10 +401,19 @@ sub local_store_metadata {
          &logwarning("Could not generate metadata record for [$entity] [$domain]");
       }
    }
+# Any keys that should be completely flushed/deleted?
+   if ($refreshkeys) {
+      unless (&Apache::lc_mongodb::delete_metadata_keys($entity,$domain,$refreshkeys)) {
+         &logerror("Could not flush keys from metadata [$entity] [$domain]");
+         return undef;
+      }
+   }
 # Attempt to update the metadata
-   unless (&Apache::lc_mongodb::update_metadata($entity,$domain,$newmetadata)) {
-      &logerror("Could not store metadata [$entity] [$domain]");
-      return undef;
+   if ($newmetadata) {
+      unless (&Apache::lc_mongodb::update_metadata($entity,$domain,$newmetadata)) {
+         &logerror("Could not store metadata [$entity] [$domain]");
+         return undef;
+      }
    }
 # Now see if it updated correctly, and to what
    my $updatedmetadata=&local_dump_metadata($entity,$domain);
@@ -327,9 +431,10 @@ sub local_store_metadata {
 # Returns full updated metadata in JSON
 #
 sub local_json_store_metadata {
-   my ($entity,$domain,$newmetajson)=@_;
+   my ($entity,$domain,$newmetajson,$refreshkeys)=@_;
    return &Apache::lc_json_utils::perl_to_json(
-       &local_store_metadata($entity,$domain,&Apache::lc_json_utils::json_to_perl($newmetajson))
+       &local_store_metadata($entity,$domain,&Apache::lc_json_utils::json_to_perl($newmetajson),
+                                             &Apache::lc_json_utils::json_to_perl($refreshkeys))
                                               );
 }
 
@@ -337,12 +442,16 @@ sub local_json_store_metadata {
 # The remote call for storing metadata
 #
 sub remote_store_metadata {
-   my ($host,$entity,$domain,$newmetadata)=@_;
+   my ($host,$entity,$domain,$newmetadata,$refreshkeys)=@_;
    unless ($host) {
       &logwarning("Cannot store metadata, no homewserver for [$entity] [$domain]");
       return undef;
    }
+# Put refreshkeys into JSON
+   unless ($refreshkeys) { $refreshkeys=[]; }
+   my $refresh_json=&Apache::lc_json_utils::perl_to_json($newmetadata);
 # Put the new metadata into JSON
+   unless ($newmetadata) { $newmetadata={}; }
    my $fields_json=&Apache::lc_json_utils::perl_to_json($newmetadata);
    unless ($fields_json) {
       &logerror("Could not store metadata for [$entity] [$domain], no valid hash given");
@@ -352,7 +461,8 @@ sub remote_store_metadata {
    my ($code,$response)=&Apache::lc_dispatcher::command_dispatch($host,'store_metadata',
                               &Apache::lc_json_utils::perl_to_json({ entity => $entity,
                                                                      domain => $domain,
-                                                                     fields_json => $fields_json
+                                                                     fields_json => $fields_json,
+                                                                     refresh_json => $refresh_json
                                                                       }));
 # If okay, cache and return
    if ($code eq HTTP_OK) {
@@ -369,11 +479,11 @@ sub remote_store_metadata {
 }
 
 sub store_metadata {
-   my ($entity,$domain,$newmetadata)=@_;
+   my ($entity,$domain,$newmetadata,$refreshkeys)=@_;
    if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
-      return &local_store_metadata($entity,$domain,$newmetadata);
+      return &local_store_metadata($entity,$domain,$newmetadata,$refreshkeys);
    } else {
-      return &remote_dump_metadata(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain);
+      return &remote_store_metadata(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain,$newmetadata,$refreshkeys);
    }
 }
 
@@ -409,6 +519,18 @@ sub un_obsolete {
    my ($full_url)=@_;
    return &store_url_metadata($full_url,{ 'obsolete' => 0 });
 }
+
+sub make_delete {
+   my ($full_url)=@_;
+#FIXME: make sure it is not published
+   return &store_url_metadata($full_url,{ 'deleted' => 1 });
+}
+
+sub un_delete {
+   my ($full_url)=@_;
+   return &store_url_metadata($full_url,{ 'deleted' => 0 });
+}
+
 
 # =============================================================
 # Change title
@@ -579,7 +701,7 @@ sub local_publish {
 # Sanity check - we should not have the version yet that we are about to make
       my $dest_filename=&asset_resource_filename($entity,$domain,'n',$new_version);
       if (-e $dest_filename) {
-         &logerror("About to publish version ($new_version) or ($full_url), but file already exists");
+         &logerror("About to publish version ($new_version) or ($full_url) at ($dest_filename), but file already exists");
          return undef;
       }
       if (&move(&asset_resource_filename($entity,$domain,'wrk','-'),$dest_filename)) {
@@ -643,7 +765,7 @@ sub publish {
       $new_version=&remote_publish(&Apache::lc_entity_utils::homeserver($author,$domain),$full_url);
    }
    if ($new_version) {
-      &logerror("Successfully published version ($new_version) of ($full_url)");
+      &lognotice("Successfully published version ($new_version) of ($full_url)");
 #FIXME: remember that we are done with this
       return 1;
    } else {

@@ -46,6 +46,212 @@ use utf8;
 'author' => 'Autor',
 'co_author' => 'Co-Autor',
 
+"Abkhazian" => "Abkhazian",
+"Afar" => "Afar",
+"Afrikaans" => "Afrikaans",
+"Akan" => "Akan",
+"Albanian" => "Albanian",
+"Amharic" => "Amharic",
+"Arabic" => "Arabisch",
+"Aragonese" => "Aragonese",
+"Armenian" => "Armenian",
+"Assamese" => "Assamese",
+"Avaric" => "Avaric",
+"Avestan" => "Avestan",
+"Aymara" => "Aymara",
+"Azerbaijani" => "Azerbaijani",
+"Bambara" => "Bambara",
+"Bashkir" => "Bashkir",
+"Basque" => "Baskisch",
+"Belarusian" => "Weißrussisch",
+"Bengali" => "Bengali",
+"Bihari languages" => "Bihari Sprachen",
+"Bislama" => "Bislama",
+"Bosnian" => "Bosnisch",
+"Breton" => "Bretonisch",
+"Bulgarian" => "Bulgarisch",
+"Burmese" => "Burmesisch",
+"Catalan" => "Katalanisch",
+"Central Khmer" => "Zentral Khmer",
+"Chamorro" => "Chamorro",
+"Chechen" => "Tschetschechenisch",
+"Chinese" => "Chinesisch",
+"Church Slavic" => "Kirchenslawisch",
+"Chuvash" => "Chuvash",
+"Cornish" => "Kornisch",
+"Corsican" => "Korsisch",
+"Cree" => "Cree",
+"Croatian" => "Kroatisch",
+"Czech" => "Tschechisch",
+"Danish" => "Dänisch",
+"Dhivehi" => "Dhivehi",
+"Dutch" => "Holländisch",
+"Dzongkha" => "Dzongkha",
+"English" => "Englisch",
+"Esperanto" => "Esperanto",
+"Estonian" => "Estonisch",
+"Ewe" => "Ewe",
+"Faroese" => "Färöisch",
+"Fijian" => "Fijian",
+"Finnish" => "Finnisch",
+"French" => "Französisch",
+"Fulah" => "Fulah",
+"Galician" => "Galician",
+"Ganda" => "Ganda",
+"Georgian" => "Georgisch",
+"German" => "Deutsch",
+"Guarani" => "Guarani",
+"Gujarati" => "Gujarati",
+"Haitian" => "Haitian",
+"Hausa" => "Hausa",
+"Hebrew" => "Hebräisch",
+"Herero" => "Herero",
+"Hindi" => "Hindi",
+"Hiri Motu" => "Hiri Motu",
+"Hungarian" => "Hungarian",
+"Icelandic" => "Isländisch",
+"Ido" => "Ido",
+"Igbo" => "Igbo",
+"Indonesian" => "Indonesisch",
+"Interlingua" => "Interlingua",
+"Interlingue" => "Interlingue",
+"Inuktitut" => "Inuktitut",
+"Inupiaq" => "Inupiaq",
+"Irish" => "Irisch",
+"Italian" => "Italienisch",
+"Japanese" => "Japanisch",
+"Javanese" => "Javanesisch",
+"Kalaallisut" => "Kalaallisut",
+"Kannada" => "Kannada",
+"Kanuri" => "Kanuri",
+"Kashmiri" => "Kashmiri",
+"Kazakh" => "Kazakh",
+"Kikuyu" => "Kikuyu",
+"Kinyarwanda" => "Kinyarwanda",
+"Kirghiz" => "Kirghiz",
+"Komi" => "Komi",
+"Kongo" => "Kongo",
+"Korean" => "Koreanisch",
+"Kuanyama" => "Kuanyama",
+"Kurdish" => "Kurdisch",
+"Lao" => "Lao",
+"Latin" => "Lateinisch",
+"Latvian" => "Lettisch",
+"Limburgan" => "Limburgan",
+"Lingala" => "Lingala",
+"Lithuanian" => "Litauisch",
+"Luba-Katanga" => "Luba-Katanga",
+"Luxembourgish" => "Luxembourgisch",
+"Macedonian" => "Mazedonisch",
+"Malagasy" => "Malagasy",
+"Malay" => "Malaiisch",
+"Malayalam" => "Malayalam",
+"Maltese" => "Maltesisch",
+"Manx" => "Manx",
+"Maori" => "Maori",
+"Marathi" => "Marathi",
+"Marshallese" => "Marshallese",
+"Modern Greek" => "Modernes Griechisch",
+"Mongolian" => "Mongolian",
+"Nauru" => "Nauru",
+"Navajo" => "Navajo",
+"Ndonga" => "Ndonga",
+"Nepali" => "Nepali",
+"North Ndebele" => "Nord Ndebele",
+"Northern Sami" => "Nord Sami",
+"Norwegian" => "Norwegisch",
+"Norwegian Bokmal" => "Norwegisch Bokmal",
+"Norwegian Nynorsk" => "Norwegisch Nynorsk",
+"Nyanja" => "Nyanja",
+"Occitan" => "Occitan",
+"Ojibwa" => "Ojibwa",
+"Oriya" => "Oriya",
+"Oromo" => "Oromo",
+"Ossetian" => "Ossetian",
+"Pali" => "Pali",
+"Panjabi" => "Panjabi",
+"Persian" => "Persisch",
+"Polish" => "Polisch",
+"Portuguese" => "Portugisisch",
+"Pushto" => "Paschtunisch",
+"Quechua" => "Quechua",
+"Romanian" => "Rumänisch",
+"Romansh" => "Rätoromanisch",
+"Rundi" => "Rundi",
+"Russian" => "Russisch",
+"Samoan" => "Samoan",
+"Sango" => "Sango",
+"Sanskrit" => "Sanskrit",
+"Sardinian" => "Sardinian",
+"Scottish Gaelic" => "Schottisch-Gälisch",
+"Serbian" => "Serbisch",
+"Serbo-Croatian" => "Serbokroatisch",
+"Shona" => "Shona",
+"Sichuan Yi" => "Sichuan Yi",
+"Sindhi" => "Sindhi",
+"Sinhala" => "Singhalesisch",
+"Slovak" => "Slowakisch",
+"Slovenian" => "Slowenisch",
+"Somali" => "Somalisch",
+"South Ndebele" => "Süd Ndebele",
+"Southern Sotho" => "Süd Sotho",
+"Spanish" => "Spanisch",
+"Sundanese" => "Sundanesisch",
+"Swahili" => "Swahili",
+"Swati" => "Swati",
+"Swedish" => "Schwedisch",
+"Tagalog" => "Tagalog",
+"Tahitian" => "Tahitian",
+"Tajik" => "Tadschikisch",
+"Tamil" => "Tamilisch",
+"Tatar" => "Tatar",
+"Telugu" => "Telugu",
+"Thai" => "Thailändisch",
+"Tibetan" => "Tibetisch",
+"Tigrinya" => "Tigrinya",
+"Tonga" => "Tonga",
+"Tsonga" => "Tsonga",
+"Tswana" => "Tswana",
+"Turkish" => "Türkisch",
+"Turkmen" => "Turkmenisch",
+"Twi" => "Twi",
+"Uighur" => "Uighurisch",
+"Ukrainian" => "Ukrainisch",
+"Urdu" => "Urdu",
+"Uzbek" => "Uzbek",
+"Venda" => "Venda",
+"Vietnamese" => "Vietnamesisch",
+"Volapuk" => "Volapuk",
+"Walloon" => "Walloon",
+"Welsh" => "Walisisch",
+"Western Frisian" => "West Friesisch",
+"Wolof" => "Wolof",
+"Xhosa" => "Xhosa",
+"Yiddish" => "Jiddisch",
+"Yoruba" => "Yoruba",
+"Zhuang" => "Zhuang",
+"Zulu" => "Zulu",
+
+'Select the keywords' => 'Wählen Sie die Schlüsselwörter',
+
+'Additional keywords' => 'Zusätzliche Schlüsselwörter',
+
+'Add Keywords' => 'Schlüsselwörter hinzufügen',
+
+'Select the taxonomy categories' => 'Wählen Sie die Taxonomie-Kategorien',
+
+'Select the languages' => 'Wählen Sie die Sprachen aus',
+
+'Add Language' => 'Sprache hinzufügen',
+
+'Add Taxonomy' => 'Taxonomy hinzufügen',
+
+'The document has errors and cannot be published.' => 'Das Dokument hat Fehler und kann nicht veröffentlicht werden.',
+
+'unexpected_ending: [_1] [_2]' => 'Statt des Endes von &lt;[_1]&gt; wurde &lt;/[_2]&gt; gefunden.',
+
+'missing_ending: [_1] [_2]' => 'Das Ende von &lt;[_1]&gt; wurde nicht gefunden.',
+
 'Path' => 'Pfad',
 
 'Parent directory' => 'Übergeordnetes Verzeichnis',
@@ -154,6 +360,8 @@ use utf8;
 
 'Continue' => 'Weiter',
 
+'Back' => 'Zurück',
+
 'Upload complete.' => 'Hochladen beendet.',
 
 'Changes complete.' => 'Änderungen beendet.', 
@@ -162,15 +370,13 @@ use utf8;
 
 'Drag and CTRL: copy' => 'Ziehen und Strg: kopieren',
 
+'Done' => 'Fertig',
+
 'Success.' => 'Erfolg.',
 
 'Failure.' => 'Fehlschlag.',
 
 'Language' => 'Sprache',
-
-'German' => 'Deutsch',
-
-'English' => 'Englisch',
 
 'Swedish Chef' => 'Dänischer Koch',
 
@@ -305,6 +511,58 @@ use utf8;
 'EMail' => 'EMail',
 
 '-' => '-',
+
+'Cut' => 'Ausschneiden',
+
+'Copy' => 'Kopieren',
+
+'Remove' => 'Entfernen',
+
+'Recover' => 'Wiederherstellen',
+
+'Delete' => 'Löschen',
+
+'Publish' => 'Veröffentlichen',
+
+'Add' => 'Hinzufügen',
+
+'any' => 'alle',
+
+'View' => 'Betrachten',
+
+'View: [_1]' => 'Betrachten: [_1]',
+
+'Edit' => 'Editieren',
+
+'Edit: [_1]' => 'Editieren: [_1]',
+
+'Grade by instructor' => 'Benoten durch Lehrpersonal',
+
+'Grade: [_1]' => 'Benoten: [_1]',
+
+'Clone (make derivatives)' => 'Clonen (Derivate erzeugen)',
+
+'Clone: [_1]' => 'Clonen: [_1]',
+
+'Use/assign in courses/communities' => 'Verwenden/Aufgeben in Kursen/Gemeinschaften',
+
+'Use: [_1]' => 'Verwenden: [_1]',
+
+'systemwide' => 'systemweit',
+
+'domainwide' => 'domänenweit',
+
+'course' => 'kursweit',
+
+'custom' => 'maßgeschneidert',
+
+'none or customize later' => 'keine oder später maßschneidern',
+
+'Allowed Activity' => 'Erlaubte Aktivität',
+
+'Course/Community or User' => 'Kurs/Gemeinschaft oder Nutzer',
+
+'Course/Community' => 'Kurs/Gemeinschaft',
 
 'Course entered.' => 'Kurs ausgewählt.',
 
