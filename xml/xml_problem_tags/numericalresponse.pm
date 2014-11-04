@@ -26,6 +26,8 @@ use aliased 'Apache::math::math_parser::Parser';
 use aliased 'Apache::math::math_parser::ENode';
 use aliased 'Apache::math::math_parser::CalcEnv';
 
+use Try::Tiny;
+
 use Data::Dumper;
 
 our @ISA = qw(Exporter);
