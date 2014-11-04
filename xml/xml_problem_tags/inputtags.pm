@@ -32,7 +32,7 @@ use Apache::lc_asset_xml();
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_textline_html);
+our @EXPORT = qw(start_textline_html start_textline_grade);
 
 sub start_textline_html {
    my ($p,$safe,$stack,$token)=@_;
@@ -43,5 +43,9 @@ sub start_textline_html {
    return '';
 }
 
+sub start_textline_grade {
+   my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_asset_xml::add_response_input($stack);
+}
 1;
 __END__
