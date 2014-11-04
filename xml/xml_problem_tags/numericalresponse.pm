@@ -57,6 +57,11 @@ sub end_numericalresponse_grade {
    my $answers=&Apache::lc_asset_xml::collect_responses($stack);
 # Get tolerance parameter
    my $tolerance=&Apache::lc_asset_xml::cascade_parameter('tol',$stack);
+# Get the correct answer and unit
+#FIXME: could be array
+   my $answer=&Apache::lc_asset_xml::open_tag_attribute('answer',$stack);
+   my $unit=&Apache::lc_asset_xml::open_tag_attribute('unit',$stack);
+   my $expected=$answer.' '.$unit;
 # Initialize parser
    my $implicit_operators = 1;
    my $unit_mode = 1;
@@ -65,7 +70,7 @@ sub end_numericalresponse_grade {
 #FIXME: could be multiple answers
 use Apache::lc_logs;
    &logdebug("Grading: ".$answers->[0]);
-   &logdebug('Grading target '.&answertest($parser,$env,$answers->[0],'42 N',$tolerance));
+   &logdebug('Grading target '.&answertest($parser,$env,$answers->[0],$expected,$tolerance));
 }
 
 sub start_numericalhintcondition_html {

@@ -85,7 +85,22 @@ sub tag_attribute {
 }
 
 #
-# Check what if we are inside of tag
+# Return an attribute from the opening tag
+# of one that we are closing
+#
+sub open_tag_attribute {
+   my ($name,$stack)=@_;
+   if ($stack->{'tags'}) {
+      if ($#{$stack->{'tags'}}>=0) {
+         return $stack->{'tags'}->[-1]->{'args'}->{$name};
+      }
+   }
+   return undef;
+}
+
+
+#
+# Check if we are inside of tag
 #
 sub enclosed_in {
    my ($tag,$stack)=@_;
