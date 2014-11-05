@@ -185,7 +185,7 @@ sub remove_elements {
 }
 
 # use the linked sty files to guess which newly defined elements should be considered blocks
-# @param {string} fn - the clean .problem file path (we only extract the directory path from it)
+# @param {string} fn - the .lc file path (we only extract the directory path from it)
 sub add_sty_blocks {
   my ($fn, $root, $all_block) = @_;
   my $doc = $root->ownerDocument;
