@@ -194,7 +194,7 @@ sub get_response_hints {
 #
 sub process_text {
    my ($p,$safe,$stack,$status,$target,$token)=@_;
-   return $token->[1];
+   return &Apache::lc_asset_safeeval::texteval($safe,$token->[1]);
 }
 
 # Process an HTML tag, call routines if defined
@@ -261,7 +261,7 @@ sub parser {
       } elsif ($token->[0] eq 'S') {
 # A start tag - evaluate the attributes in here
          foreach my $key (keys(%{$token->[2]})) {
-            $token->[2]->{$key}=&Apache::lc_asset_safeeval::texteval($safe,$token->[2]->{$key}); 
+            $token->[2]->{$key}=&Apache::lc_asset_safeeval::argeval($safe,$token->[2]->{$key}); 
          }
 # Don't have an ID yet? Make up a temporary one.
          unless ($token->[2]->{'id'}) {

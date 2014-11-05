@@ -40,15 +40,6 @@ sub init_safe {
   $safeeval->permit(qw(entereval :base_math :base_loop sort time caller));
   $safeeval->deny(qw(rand srand :base_io :filesys_read :sys_db :filesys_write :dangerous));
 
-# The evaluate function
-
-  $safeeval->reval(<<'ENDEVALUATE');
-sub evaluate {
-  my ($expression)=@_;
-  return $expression;
-}
-ENDEVALUATE
-
 # Math::Cephes
 
   $safehole->wrap(\&Math::Cephes::asin,$safeeval,'&asin');
@@ -144,13 +135,25 @@ ENDEVALUATE
 #
 sub texteval {
    my ($safeeval,$text)=@_;
-#FIXME: Debug
-my   $result=$safeeval->reval(qq(&evaluate(q($text))));
-use Apache::lc_logs;
-use Data::Dumper;
-&logdebug("Text: $text: ".Dumper($result));
-return $result;
+   return $safeeval->reval('qq('.$text.')');
 }
+
+#
+# Returns an argument value
+#
+sub argeval {
+   my ($safeeval,$text)=@_;
+   my $result;
+   if ($safeeval->reval('ref('.$text.')')) {
+      return $safeeval->reval($text);
+   }
+   my $type=$safeeval->reval('ref(\\'.$text.')');
+   if (($type) && ($type ne 'SCALAR')) {
+      return $safeeval->reval('\\'.$text);
+   }
+   return $safeeval->reval('qq('.$text.')');
+}
+
 
 #
 # Executes code inside of safeeval
