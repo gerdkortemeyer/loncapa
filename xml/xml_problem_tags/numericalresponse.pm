@@ -67,6 +67,13 @@ sub end_numericalresponse_grade {
    my $unit_mode = 1;
    my $parser = Parser->new($implicit_operators, $unit_mode);
    my $env = CalcEnv->new($unit_mode);
+# See if we have custom units
+   my $customunits=&Apache::lc_asset_xml::cascade_parameter('customunits',$stack);
+   $customunits=~s/\s//gs;
+   foreach my $cu (split(/\,/,$customunits)) {
+      my ($new_unit,$new_definition)=split(/\=/,$cu);
+      $env->setUnit($new_unit,$new_definition);
+   }
 #FIXME: could be multiple answers
 use Apache::lc_logs;
    &logdebug("Grading: ".$answers->[0]);
