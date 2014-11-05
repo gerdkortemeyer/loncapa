@@ -70,8 +70,8 @@ sub guess_encoding_and_read {
       # try to use frequent non-ASCII characters to distinguish the encodings (languages: mostly German, Spanish, Portuguese)
       # í has been removed because it conflicts with ’ and ’ is more frequent
       # ± has been removed because it is, suprisingly, the same code in both encodings !
-      my $score_windows = $decoded_windows =~ tr/ßáàäâãçéèêëñóöôõúüÄÉÑÖÜ¿¡‘’“” °½–—…//;
-      my $score_mac = $decoded_mac =~ tr/ßáàäâãçéèêëñóöôõúüÄÉÑÖÜ¿¡‘’“” °½–—…//;
+      my $score_windows = $decoded_windows =~ tr/ßáàäâãçéèêëñóöôõúüÄÉÑÖÜ¿¡‘’“” °½–—…§//;
+      my $score_mac = $decoded_mac =~ tr/ßáàäâãçéèêëñóöôõúüÄÉÑÖÜ¿¡‘’“” °½–—…§//;
       if ($score_windows >= $score_mac) {
         $decoded = $decoded_windows;
         print "; guess=cp1252 ($score_windows cp1252 >= $score_mac MacRoman)\n";
@@ -95,7 +95,7 @@ sub guess_encoding_and_read {
 sub remove_control_characters {
   my ($lines) = @_;
   foreach my $line (@{$lines}) {
-    $line =~ s/[\x07\x0B\x0C\x13\x1F]//g;
+    $line =~ s/[\x07\x0B\x0C\x13\x1B\x1F]//g;
   }
 }
 
