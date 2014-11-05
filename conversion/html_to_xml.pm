@@ -133,6 +133,9 @@ sub start {
   } else {
     $result .= '>';
     push(@stack, $tagname);
+    if (scalar(@stack) > 500) {
+      die "This document has a crazy depth - I'm out !";
+    }
   }
   # reopen the styles, if any
   #for (my $j=0; $j<scalar(@styles); $j++) {
@@ -192,9 +195,10 @@ sub comment {
 
 sub declaration {
   my($tokens) = @_;
-  $result .= '<!';
-  $result .= join(' ', @$tokens);
-  $result .= '>';
+  # ignore them
+  #$result .= '<!';
+  #$result .= join(' ', @$tokens);
+  #$result .= '>';
 }
 
 sub process {
