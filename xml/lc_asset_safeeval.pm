@@ -40,6 +40,15 @@ sub init_safe {
   $safeeval->permit(qw(entereval :base_math :base_loop sort time caller));
   $safeeval->deny(qw(rand srand :base_io :filesys_read :sys_db :filesys_write :dangerous));
 
+# The evaluate function
+
+  $safeeval->reval(<<'ENDEVALUATE');
+sub evaluate {
+  my ($expression)=@_;
+  return $expression;
+}
+ENDEVALUATE
+
 # Math::Cephes
 
   $safehole->wrap(\&Math::Cephes::asin,$safeeval,'&asin');
@@ -135,8 +144,12 @@ sub init_safe {
 #
 sub texteval {
    my ($safeeval,$text)=@_;
-   $text=~s/\"/\\\"/gs;
-   return $safeeval->reval('"'.$text.'"');
+#FIXME: Debug
+my   $result=$safeeval->reval(qq(&evaluate(q($text))));
+use Apache::lc_logs;
+use Data::Dumper;
+&logdebug("Text: $text: ".Dumper($result));
+return $result;
 }
 
 #

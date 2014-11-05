@@ -60,6 +60,9 @@ sub end_numericalresponse_grade {
 # Get the correct answer and unit
 #FIXME: could be array
    my $answer=&Apache::lc_asset_xml::open_tag_attribute('answer',$stack);
+use Apache::lc_logs;
+use Data::Dumper;
+&logdebug("Answer: ".Dumper($answer));
    my $unit=&Apache::lc_asset_xml::open_tag_attribute('unit',$stack);
    my $expected=$answer.' '.$unit;
 # Initialize parser
