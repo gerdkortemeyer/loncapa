@@ -63,8 +63,10 @@ sub convert_dir {
       push(@converted, @$new_converted);
       push(@failures, @$new_failures);
     } elsif (-f $pathname) {
-      # check that the file ends in .problem but not .number.problem or _clean.problem
-      if ($pathname =~ /\.problem$/ && $pathname !~ /\.[0-9]+\.problem$/ && $pathname !~ /_clean\.problem$/) {
+      # check that the file ends in .problem, .exam, .survey, .html or .htm but not .number.* or .lc
+      if (($pathname =~ /\.problem$/ || $pathname =~ /\.exam$/ || $pathname =~ /\.survey$/ ||
+          $pathname =~ /\.html$/ || $pathname =~ /\.htm$/) &&
+          $pathname !~ /\.[0-9]+\.[a-z]+$/ && $pathname !~ /\.lc$/) {
         try {
           convert_file($pathname);
           push(@converted, $pathname);
@@ -79,13 +81,13 @@ sub convert_dir {
   return((\@converted, \@failures));
 }
 
-# Converts a file, creating a _clean.problem file in the same directory.
+# Converts a file, creating a .lc file in the same directory.
 sub convert_file {
   my ($pathname) = @_;
 
-  # create a name for the clean file
-  my ($filename_no_ext, $dirs, $ext) = fileparse($pathname, qr/\.[^.]*/);
-  my $newpath = "$dirs/${filename_no_ext}_clean$ext";
+  # create a name for the new file
+  #my ($filename_no_ext, $dirs, $ext) = fileparse($pathname, qr/\.[^.]*/);
+  my $newpath = $pathname.'.lc';
 
   print "converting $pathname...\n";
 
