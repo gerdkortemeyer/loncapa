@@ -24,11 +24,20 @@ use Apache::lc_ui_localize;
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_html_html start_head_html start_script_html start_script_meta start_title_meta start_meta_meta);
+our @EXPORT = qw(start_html_html start_head_html start_script_html start_script_meta start_title_meta start_meta_meta
+                 start_loncapa_html end_loncapa_html);
 
 sub start_html_html {
    my ($p,$safe,$stack,$token)=@_;
    return '<html lang="'.&mt('language_code').'" dir="'.&mt('language_direction').'">';
+}
+
+sub start_loncapa_html {
+   return &start_html_html(@_);
+}
+
+sub end_loncapa_html {
+   return '</html>';
 }
 
 sub start_head_html {
