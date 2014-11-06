@@ -34,7 +34,7 @@ sub post_xml {
 
   my $root = create_new_structure($dom_doc);
 
-  remove_elements($root, ['startouttext','startoutext','endouttext','endoutext','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow']);
+  remove_elements($root, ['startouttext','startoutext','endouttext','endoutext','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','x-claris-tagview','x-claris-window','x-sas-window']);
 
   my @all_block = (@block_elements, @block_html);
   add_sty_blocks($new_path, $root, \@all_block); # must come before the subs using @all_block
@@ -102,7 +102,13 @@ sub create_new_structure {
       for (my $child=$head->firstChild; defined $child; $child=$next) {
         $next = $child->nextSibling;
         $head->removeChild($child);
-        $htmlhead->appendChild($child);
+        if ($child->nodeType != XML_ELEMENT_NODE ||
+            string_in_array(['title','script','style','meta','link','import','base'], $child->nodeName)) {
+          $htmlhead->appendChild($child);
+        } else {
+          # this should not be in head
+          insert_after_or_first($root, $child, $current_node);
+        }
       }
       $head->parentNode->removeChild($head);
     }
@@ -167,7 +173,7 @@ sub insert_after_or_first {
   }
 }
 
-# removes all elements with given names inside the node
+# removes all elements with given names inside the node, but keep the content
 sub remove_elements {
   my ($node, $to_remove) = @_;
   my $nextChild;
@@ -176,7 +182,17 @@ sub remove_elements {
     my $type = $node->nodeType;
     if ($type == XML_ELEMENT_NODE) {
       if (string_in_array($to_remove, $child->nodeName)) {
-        $node->removeChild($child);
+        my $first_non_white = $child->firstChild;
+        if (defined $first_non_white && $first_non_white->nodeType == XML_TEXT_NODE &&
+            $first_non_white->nodeValue =~ /^\s*$/) {
+          $first_non_white = $first_non_white->nextSibling;
+        }
+        if (defined $first_non_white) {
+          $nextChild = $first_non_white;
+          replace_by_children($child);
+        } else {
+          $node->removeChild($child);
+        }
       } else {
         remove_elements($child, $to_remove);
       }
@@ -311,7 +327,7 @@ sub better_guess {
 
 # When a style element contains a block, move the style inside the block where it is allowed.
 # style/block/other -> block/style/other
-# When a style is used where it is not allowed, move it inside its children or remove it.
+# When a style is used where it is not allowed, move it inside its children or remove it (unless it contains only text)
 # element_not_containing_styles/style/other -> element_not_containing_styles/other/style (except if other is a style)
 # The fix is not perfect in the case of element_not_containing_styles/style1/style2/block/text (style1 will be lost):
 # element_not_containing_styles/style1/style2/block/text -> element_not_containing_styles/block/style2/text
@@ -349,6 +365,13 @@ sub fix_block_styles {
       }
     }
     my $no_style_here = !string_in_array(\@containing_styles, $element->parentNode->nodeName);
+    if ($no_style_here && !$found_block) {
+      if (defined $element->firstChild && $element->firstChild->nodeType == XML_TEXT_NODE &&
+          !defined $element->firstChild->nextSibling && $element->firstChild->nodeValue !~ /^\s*$/) {
+        # keep the style if there is only text inside, even if it is not allowed here
+        $no_style_here = 0;
+      }
+    }
     if ($found_block || $no_style_here) {
       # there is a block or the style is not allowed here,
       # the style element has to be replaced by its modified children
@@ -569,8 +592,10 @@ sub remove_bad_cdata_sections {
         # at the beginning:
         $value =~ s/^(\s*)<!\[CDATA\[/$1/; # <![CDATA[
         $value =~ s/^(\s*)\/\*\s*<!\[CDATA\[\s*\*\//$1/; # /* <![CDATA[ */
+        $value =~ s/^(\s*)\/\/\s*<!\[CDATA\[/$1/; # // <![CDATA[
         $value =~ s/^(\s*)(\/\/)?\s*<!--/$1/; # // <!--
         # at the end:
+        $value =~ s/\/\/\s*\]\]>(\s*)$/$1/; # // ]]>
         $value =~ s/\]\]>(\s*)$/$1/; # ]]>
         $value =~ s/(\/\/)?\s*-->(\s*)$/$2/; # // -->
         $value =~ s/\/\*\s*\]\]>\s*\*\/(\s*)$/$1/; # /* ]]> */
@@ -1834,7 +1859,7 @@ sub is_ancestor_of {
 sub remove_empty_style {
   my ($root) = @_;
   # actually, preserve some elements like ins when they have whitespace, only remove if they are empty
-  my @remove_if_empty = ('span', 'a', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'code', 'kbd', 'samp', 'tt', 'ins', 'del', 'var', 'small', 'big', 'font', 'u', 'hint');
+  my @remove_if_empty = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'code', 'kbd', 'samp', 'tt', 'ins', 'del', 'var', 'small', 'big', 'font', 'u', 'hint');
   my @remove_if_blank = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'font', 'u', 'hint');
   foreach my $name (@remove_if_empty) {
     my @nodes = $root->getElementsByTagName($name);
@@ -1866,7 +1891,8 @@ sub remove_empty_style {
     while (scalar(@nodes) > 0) {
       my $node = pop(@nodes);
       if (defined $node->firstChild && !defined $node->firstChild->nextSibling && $node->firstChild->nodeType == XML_TEXT_NODE) {
-        if ($node->firstChild->nodeValue =~ /^\s*$/) {
+        # NOTE: careful, with UTF-8, \s matches non-breaking spaces and we want to preserve these
+        if ($node->firstChild->nodeValue =~ /^[\t\n\f\r ]*$/) {
           my $parent = $node->parentNode;
           replace_by_children($node);
           $parent->normalize();
@@ -1874,7 +1900,7 @@ sub remove_empty_style {
           while (defined $parent && string_in_array(\@remove_if_blank, $parent->nodeName) &&
               (!defined $parent->firstChild ||
               (!defined $parent->firstChild->nextSibling && $parent->firstChild->nodeType == XML_TEXT_NODE &&
-              $parent->firstChild->nodeValue =~ /^\s*$/))) {
+              $parent->firstChild->nodeValue =~ /^^[\t\n\f\r ]*$/))) {
             my $grandparent = $parent->parentNode;
             replace_by_children($parent);
             remove_reference_from_array(\@nodes, $parent);
@@ -1982,8 +2008,8 @@ sub pretty {
         }
       }
       
-      # removes whitespace at the beginning and end of p td and th
-      my @to_trim = ('p','td','th');
+      # removes whitespace at the beginning and end of p td, th and li
+      my @to_trim = ('p','td','th','li');
       if (string_in_array(\@to_trim, $name) && defined $node->firstChild && $node->firstChild->nodeType == XML_TEXT_NODE) {
         my $text = $node->firstChild->nodeValue;
         $text =~ s/^\s*//;

@@ -51,33 +51,72 @@ sub guess_encoding_and_read {
   binmode $fh;
   my $data = <$fh>; # we need to read the whole file to test if font is a block or inline element
   close $fh;
+  
+  # try to get a charset from a meta at the beginning of the file
+  my $beginning = substr($data, 0, 300);
+  if ($beginning =~ /<meta[^>]*charset\s?=\s?([^\s>"']*)/i) {
+    my $meta_charset = $1;
+    if ($meta_charset =~ /iso-?8859-?1/i) {
+      # usually a lie
+      $meta_charset = 'cp1252';
+    }
+    # now try to decode using that encoding
+    my $decoder = guess_encoding($data, ($meta_charset));
+    if (ref($decoder)) {
+      my $decoded = $decoder->decode($data);
+      my @lines = split(/^/m, $decoded);
+      return \@lines;
+    } else {
+      print "Warning: decoding did not work with the charset defined by the meta ($meta_charset)\n";
+    }
+  }
+  
   my $decoded;
   if (length($data) > 0) {
     # NOTE: this list is too ambigous, Encode::Guess refuses to even try a guess
     #Encode::Guess->set_suspects(qw/ascii UTF-8 iso-8859-1 MacRoman cp1252/);
-    my $decoder = Encode::Guess->guess($data); # ascii, utf8 and UTF-16/32 with BOM
+    # by default Encode::Guess uses ascii, utf8 and UTF-16/32 with BOM
+    my $decoder = Encode::Guess->guess($data);
     if (ref($decoder)) {
       $decoded = $decoder->decode($data);
+      # NOTE: this seems to accept binary files sometimes (conversion will fail later because it is not really UTF-8)
     } else {
       print "Warning: encoding is not UTF-8 for $fn";
-      # NOTE: cp1252 is identical to iso-8859-1 but with additionnal characters in range 128-159
-      # instead of control codes. We can assume that these control codes are not used, so there
-      # is no need to test for iso-8859-1.
-      # The main problem here is to distinguish between cp1252 and MacRoman.
-      # see http://www.alanwood.net/demos/charsetdiffs.html#f
-      my $decoded_windows = decode('cp1252', $data);
-      my $decoded_mac = decode('MacRoman', $data);
-      # try to use frequent non-ASCII characters to distinguish the encodings (languages: mostly German, Spanish, Portuguese)
-      # í has been removed because it conflicts with ’ and ’ is more frequent
-      # ± has been removed because it is, suprisingly, the same code in both encodings !
-      my $score_windows = $decoded_windows =~ tr/ßáàäâãçéèêëñóöôõúüÄÉÑÖÜ¿¡‘’“” °½–—…§//;
-      my $score_mac = $decoded_mac =~ tr/ßáàäâãçéèêëñóöôõúüÄÉÑÖÜ¿¡‘’“” °½–—…§//;
-      if ($score_windows >= $score_mac) {
-        $decoded = $decoded_windows;
-        print "; guess=cp1252 ($score_windows cp1252 >= $score_mac MacRoman)\n";
+      
+      # let's try iso-2022-jp first
+      $decoder = Encode::Guess->guess($data, 'iso-2022-jp');
+      if (ref($decoder)) {
+        $decoded = $decoder->decode($data);
+        print "; using iso-2022-jp\n";
       } else {
-        print "; guess=MacRoman ($score_mac MacRoman > $score_windows cp1252)\n";
-        $decoded = $decoded_mac;
+        # NOTE: cp1252 is identical to iso-8859-1 but with additionnal characters in range 128-159
+        # instead of control codes. We can assume that these control codes are not used, so there
+        # is no need to test for iso-8859-1.
+        # The main problem here is to distinguish between cp1252 and MacRoman.
+        # see http://www.alanwood.net/demos/charsetdiffs.html#f
+        my $decoded_windows = decode('cp1252', $data);
+        my $decoded_mac = decode('MacRoman', $data);
+        # try to use frequent non-ASCII characters to distinguish the encodings (languages: mostly German, Spanish, Portuguese)
+        # í has been removed because it conflicts with ’ and ’ is more frequent
+        # ± has been removed because it is, suprisingly, the same code in both encodings !
+        my $score_windows = $decoded_windows =~ tr/ßáàäâãçéèêëñóöôõúüÄÉÑÖÜ¿¡‘’“” °½–—…§//;
+        my $score_mac = $decoded_mac =~ tr/ßáàäâãçéèêëñóöôõúüÄÉÑÖÜ¿¡‘’“” °½–—…§//;
+        # check newlines too (\r on MacOS < X, \r\n on Windows)
+        my $ind_cr = index($data, "\r");
+        if ($ind_cr != -1) {
+          if (substr($data, $ind_cr + 1, 1) eq "\n") {
+            $score_windows++;
+          } else {
+            $score_mac++;
+          }
+        }
+        if ($score_windows >= $score_mac) {
+          $decoded = $decoded_windows;
+          print "; guess=cp1252 ($score_windows cp1252 >= $score_mac MacRoman)\n";
+        } else {
+          print "; guess=MacRoman ($score_mac MacRoman > $score_windows cp1252)\n";
+          $decoded = $decoded_mac;
+        }
       }
     }
   } else {
@@ -95,7 +134,7 @@ sub guess_encoding_and_read {
 sub remove_control_characters {
   my ($lines) = @_;
   foreach my $line (@{$lines}) {
-    $line =~ s/[\x07\x0B\x0C\x13\x1B\x1F]//g;
+    $line =~ s/[\x00-\x07\x0B\x0C\x0E-\x1F]//g;
   }
 }
 

@@ -9,7 +9,7 @@ use warnings;
 use HTML::Parser ();
 
 # always closing, end tags are ignored:
-my @empty = ('base','br','col','hr','img','input','keygen','link','meta','param','source','track','wbr', 'startouttext','endouttext');
+my @empty = ('base','br','col','hr','img','input','keygen','link','meta','param','source','track','wbr', 'frame', 'embed','startouttext','endouttext');
 
 #my @block_html = ('html','body','h1','h2','h3','h4','h5','h6','div','p','ul','ol','table','tbody','tr','td','th','dl','pre','noscript','blockquote','object','applet','embed','map','form','fieldset','iframe');
 
@@ -54,7 +54,12 @@ sub start {
   my($tagname, $attr, $attrseq) = @_;
   #$tagname = lc($tagname); this is done by default by the parser
   $tagname = fix_tag($tagname);
-  if ($tagname eq 'li') {
+  if (scalar(@stack) > 0 && $stack[scalar(@stack)-1] eq 'tr' && $tagname ne 'td' && $tagname ne 'th') {
+    start('td');
+  }
+  if ($tagname eq 'p' && scalar(@stack) > 0 && $stack[scalar(@stack)-1] eq 'p') {
+    end('p');
+  } elsif ($tagname eq 'li') {
     my $ind_li = last_index_of(\@stack, 'li');
     my $ind_ul = last_index_of(\@stack, 'ul');
     my $ind_ol = last_index_of(\@stack, 'ol');
@@ -67,8 +72,9 @@ sub start {
     if ($ind_tr != -1 && ($ind_table == -1 || $ind_table < $ind_tr)) {
       end('tr');
     }
-  } elsif ($tagname eq 'td') {
+  } elsif ($tagname eq 'td' || $tagname eq 'th') {
     my $ind_td = last_index_of(\@stack, 'td');
+    my $ind_th = last_index_of(\@stack, 'th');
     my $ind_tr = last_index_of(\@stack, 'tr');
     if ($ind_tr == -1) {
       start('tr');
@@ -76,6 +82,36 @@ sub start {
     }
     if ($ind_td != -1 && $ind_tr < $ind_td) {
       end('td');
+    } elsif ($ind_th != -1 && $ind_tr < $ind_th) {
+      end('th');
+    }
+  } elsif ($tagname eq 'dd' || $tagname eq 'dt') {
+    my $ind_dd = last_index_of(\@stack, 'dd');
+    my $ind_dt = last_index_of(\@stack, 'dt');
+    my $ind_dl = last_index_of(\@stack, 'dl');
+    if ($ind_dl == -1) {
+      start('dl');
+      $ind_dl = last_index_of(\@stack, 'dl');
+    }
+    if ($ind_dd != -1 && ($ind_dl == -1 || $ind_dl < $ind_dd)) {
+      end('dd');
+    } elsif ($ind_dt != -1 && ($ind_dl == -1 || $ind_dl < $ind_dt)) {
+      end('dt');
+    }
+  } elsif ($tagname eq 'option') {
+    my $ind_option = last_index_of(\@stack, 'option');
+    if ($ind_option != -1) {
+      end('option');
+    }
+  } elsif ($tagname eq 'area') {
+    my $ind_area = last_index_of(\@stack, 'area');
+    if ($ind_area != -1) {
+      end('area');
+    }
+  } elsif ($tagname eq 'a') {
+    my $ind_a = last_index_of(\@stack, 'a');
+    if ($ind_a != -1) {
+      end('a');
     }
   } elsif ($tagname eq 'num') {
     my $ind_num = last_index_of(\@stack, 'num');
@@ -125,6 +161,14 @@ sub start {
       $att_value =~ s/</&lt;/g;
       $att_value =~ s/>/&gt;/g;
       $att_value =~ s/"/&quot;/g;
+      if ($tagname eq 'embed' && $att_name_modified eq 'script') {
+        # newlines are encoded to preserve Protein Explorer scripts in embed script attributes:
+        $att_value =~ s/\x0A/&#xA;/g;
+        $att_value =~ s/\x0D/&#xD;/g;
+      }
+      if ($att_name_modified eq 'xmlns' && $att_value eq 'http://www.w3.org/1999/xhtml') {
+        next;
+      }
       $result .= ' '.$att_name_modified.'="'.$att_value.'"';
     }
   }
@@ -229,7 +273,7 @@ sub last_index_of {
 sub fix_tag {
   my ($tag) = @_;
   #$tag = lc($tag); this is done by default by the parser
-  if ($tag =~ /[<\+"'\/=\s,;:]/) {
+  if ($tag =~ /[<\+"'\/=\s,;:\(\)\?]/) {
     print "Warning: bad start tag:'".$tag."'";
     if ($tag =~ /<[a-zA-Z]/) {
       $tag =~ s/^[^<]*<//; # a<b -> b
@@ -245,7 +289,7 @@ sub fix_tag {
         $tag =~ s/^.*://;
       }
     }
-    $tag =~ s/[<\+"'\/=\s,;:]//g;
+    $tag =~ s/[<\+"'\/=\s,;:\(\)\?]//g;
     print " (converted to $tag)\n";
   }
   return($tag);
