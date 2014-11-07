@@ -26,9 +26,12 @@ use aliased 'Apache::math::math_parser::Parser';
 use aliased 'Apache::math::math_parser::ENode';
 use aliased 'Apache::math::math_parser::CalcEnv';
 
+use Apache::lc_problem_const;
+
 use Try::Tiny;
 
 use Data::Dumper;
+use Apache::lc_logs;
 
 our @ISA = qw(Exporter);
 
@@ -118,10 +121,9 @@ sub end_numericalresponse_grade {
       my ($new_unit,$new_definition)=split(/\=/,$cu);
       $env->setUnit($new_unit,$new_definition);
    }
-#FIXME: could be multiple answers
-use Apache::lc_logs;
-   &logdebug("Grading: ".$responses);
-   &logdebug('Grading target '.&answertest($parser,$env,$responses,$expected,$tolerance));
+# Do the actual grading
+   my ($outcome,$message)=&answertest($parser,$env,$responses,$expected,$tolerance);
+   &logdebug($outcome.' - '.$message.' - '.$responses.' - '.$expected.' - '.$tolerance);
 }
 
 sub start_numericalhintcondition_html {
@@ -137,6 +139,19 @@ sub end_numericalhintcondition_html {
 
 sub answertest {
     my ($parser,$env,$expression, $expected, $tolerance)=@_;
+    unless ($expression=~/\S/) {
+      return(&no_response(),undef);
+    }
+    unless ($expected=~/\S/) {
+      return(&no_answer(),undef);
+    }
+    my $num1;
+    my $num2;
+    $num1++ while ($expression =~ m/;/g);
+    $num2++ while ($expected =~ m/;/g);
+    if ($num1!=$num2) {
+       return(&wrong_dimension(),undef);
+    }
     if (!defined $tolerance) {
         $tolerance = 1e-5;
     } 
@@ -144,14 +159,14 @@ sub answertest {
         my $quantity = $parser->parse($expression)->calc($env);
         my $expected_quantity = $parser->parse($expected)->calc($env);
         if (!$quantity->equals($expected_quantity, $tolerance)) {
-            return "Wrong result: ".$quantity." instead of ".$expected_quantity." within ".$tolerance;
+            return(&incorrect(),undef);
         }
-        return "CORRECT: ".$quantity." is ".$expected_quantity." within ".$tolerance;
+        return(&correct(),undef);
     } catch {
         if (UNIVERSAL::isa($_,CalcException) || UNIVERSAL::isa($_,ParseException)) {
-            return "Error for $expression: ".$_->getLocalizedMessage();
+            return(&could_not_evaluate(),$_->getLocalizedMessage());
         } else {
-            return "Internal error for $expression: $_";
+            return(&internal_error(),$_);
         }
     }
 }
