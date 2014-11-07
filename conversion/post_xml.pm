@@ -22,7 +22,7 @@ my @inline_like_block = ('stringresponse','optionresponse','numericalresponse','
 my @responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse','essayresponse','radiobuttonresponse','matchresponse','rankresponse','imageresponse','functionplotresponse');
 my @block_html = ('html','head','body','section','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','dt','dd','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
 my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
-my @preserve_elements = ('script','answer','perl');
+my @preserve_elements = ('script','answer','perl', 'pre');
 
 
 # Parses the XML document and fixes many things to turn it into a LON-CAPA 3 document
@@ -34,7 +34,7 @@ sub post_xml {
 
   my $root = create_new_structure($dom_doc);
 
-  remove_elements($root, ['startouttext','startoutext','endouttext','endoutext','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','x-claris-tagview','x-claris-window','x-sas-window']);
+  remove_elements($root, ['startouttext','startoutext','startottext','endouttext','endoutext','endoutttext','endouttxt','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','x-claris-tagview','x-claris-window','x-sas-window']);
 
   my @all_block = (@block_elements, @block_html);
   add_sty_blocks($new_path, $root, \@all_block); # must come before the subs using @all_block
@@ -51,7 +51,9 @@ sub post_xml {
   replace_script_by_perl($root);
 
   remove_bad_cdata_sections($root);
-
+  
+  add_cdata_sections($root);
+  
   fix_style_element($root);
   
   fix_tables($root);
@@ -95,7 +97,27 @@ sub create_new_structure {
   my @heads = $doc->getElementsByTagName('head');
   my @links = $doc->getElementsByTagName('link');
   my @styles = $doc->getElementsByTagName('style');
-  if (scalar(@heads) > 0 || scalar(@links) > 0 || scalar(@styles) > 0) {
+  my @titles = $doc->getElementsByTagName('title');
+  if (scalar(@titles) > 0) {
+    # NOTE: there is a title element in gnuplot, not to be confused with the one inside HTML head
+    for (my $i=0; $i<scalar(@titles); $i++) {
+      my $title = $titles[$i];
+      my $found_gnuplot = 0;
+      my $ancestor = $title->parentNode;
+      while (defined $ancestor) {
+        if ($ancestor->nodeName eq 'gnuplot') {
+          $found_gnuplot = 1;
+          last;
+        }
+        $ancestor = $ancestor->parentNode;
+      }
+      if ($found_gnuplot) {
+        splice(@titles, $i, 1);
+        $i--;
+      }
+    }
+  }
+  if (scalar(@heads) > 0 || scalar(@titles) > 0 || scalar(@links) > 0 || scalar(@styles) > 0) {
     my $htmlhead = $doc->createElement('htmlhead');
     foreach my $head (@heads) {
       my $next;
@@ -112,13 +134,9 @@ sub create_new_structure {
       }
       $head->parentNode->removeChild($head);
     }
-    foreach my $link (@links) {
-      $link->parentNode->removeChild($link);
-      $htmlhead->appendChild($link);
-    }
-    foreach my $style (@styles) {
-      $style->parentNode->removeChild($style);
-      $htmlhead->appendChild($style);
+    foreach my $child (@titles, @links, @styles) {
+      $child->parentNode->removeChild($child);
+      $htmlhead->appendChild($child);
     }
     insert_after_or_first($root, $htmlhead, $current_node);
     $current_node = $htmlhead;
@@ -609,6 +627,37 @@ sub remove_bad_cdata_sections {
   }
 }
 
+# adds CDATA sections to scripts
+sub add_cdata_sections {
+  my ($root) = @_;
+  my $doc = $root->ownerDocument;
+  my @scripts = $root->getElementsByTagName('script');
+  push(@scripts, $root->getElementsByTagName('perl'));
+  my @answers = $root->getElementsByTagName('answer');
+  foreach my $answer (@answers) {
+    my $ancestor = $answer->parentNode;
+    my $found_capa_response = 0;
+    while (defined $ancestor) {
+      if ($ancestor->nodeName eq 'numericalresponse' || $ancestor->nodeName eq 'formularesponse') {
+        $found_capa_response = 1;
+        last;
+      }
+      $ancestor = $ancestor->parentNode;
+    }
+    if (!$found_capa_response) {
+      push(@scripts, $answer);
+    }
+  }
+  foreach my $script (@scripts) {
+    # use a CDATA section in the normal situation, for any script
+    my $first = $script->firstChild;
+    if (defined $first && $first->nodeType == XML_TEXT_NODE && !defined $first->nextSibling) {
+      my $cdata = $doc->createCDATASection($first->nodeValue);
+      $script->replaceChild($cdata, $first);
+    }
+  }
+}
+
 # removes "<!--" and "-->" at the beginning and end of style elements
 sub fix_style_element {
   my ($root) = @_;
@@ -891,7 +940,7 @@ sub fix_deprecated_in_table_rows {
     if (defined $align && $align !~ /\s*char\s*/i) {
       $tr->removeAttribute('align');
       if (!defined $old_properties->{'text-align'}) {
-        $align = trim($align);
+        $align = lc(trim($align));
         if ($align ne '') {
           $new_properties{'text-align'} = $align;
         }
@@ -901,7 +950,7 @@ sub fix_deprecated_in_table_rows {
     if (defined $valign) {
       $tr->removeAttribute('valign');
       if (!defined $old_properties->{'vertical-align'}) {
-        $valign = trim($valign);
+        $valign = lc(trim($valign));
         if ($valign ne '') {
           $new_properties{'vertical-align'} = $valign;
         }
@@ -963,7 +1012,7 @@ sub fix_deprecated_in_table_cells {
     if (defined $align && $align !~ /\s*char\s*/i) {
       $cell->removeAttribute('align');
       if (!defined $old_properties->{'text-align'}) {
-        $align = trim($align);
+        $align = lc(trim($align));
         if ($align ne '') {
           $new_properties{'text-align'} = $align;
         }
@@ -973,7 +1022,7 @@ sub fix_deprecated_in_table_cells {
     if (defined $valign) {
       $cell->removeAttribute('valign');
       if (!defined $old_properties->{'vertical-align'}) {
-        $valign = trim($valign);
+        $valign = lc(trim($valign));
         if ($valign ne '') {
           $new_properties{'vertical-align'} = $valign;
         }
@@ -1135,7 +1184,7 @@ sub fix_deprecated_in_img {
         if (!defined $old_properties->{'float'}) {
           $new_properties{'float'} = $align;
         }
-      } elsif ($align eq '') {
+      } elsif ($align eq 'center' || $align eq '') {
         $img->removeAttribute('align');
       }
     }
@@ -1190,6 +1239,17 @@ sub fix_deprecated_in_body {
         }
       }
     }
+    my $background = $body->getAttribute('background');
+    if (defined $background && ($background =~ /\.jpe?g$|\.gif|\.png/i)) {
+      $body->removeAttribute('background');
+      if (!defined $old_properties->{'background-image'}) {
+        $background = trim($background);
+        if ($background ne '') {
+          $new_properties{'background-image'} = 'url('.$background.')';
+        }
+      }
+    }
+    # NOTE: some other attributes like link and vlink should be converted but this requires a <style> block
     if (scalar(keys %new_properties) > 0) {
       set_css_properties($body, \%new_properties);
     }
@@ -1312,8 +1372,10 @@ sub fix_parts {
   }
   # there is at least one response, we will move everything inside problem in a part
   my @problems = $root->getElementsByTagName('problem');
-  if (scalar(@problems) != 1) {
-    die "there is a response but no problem or more than one";
+  if (scalar(@problems) < 1) {
+    die "there is a response but no problem";
+  } elsif (scalar(@problems) > 1) {
+    die "there is more than one problem";
   }
   foreach my $problem (@problems) {
     my $part = $doc->createElement('part');
