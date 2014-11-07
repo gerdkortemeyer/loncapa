@@ -58,15 +58,10 @@ sub end_numericalresponse_html {
 
 sub evaluate_answer {
    my ($stack)=@_;
-use Apache::lc_logs;
-use Data::Dumper;
-&logdebug(Dumper($stack));
-
    my $answer=&Apache::lc_asset_xml::open_tag_attribute('answer',$stack);
    my $expected='';
    my $expected='';
    if (ref($answer) eq 'ARRAY') {
-      &logdebug("It's an array!");
 # We have an array or a matrix
       $expected='[';
       if (ref($answer->[0]) eq 'ARRAY') {
@@ -85,17 +80,28 @@ use Data::Dumper;
       $expected=$answer;
    }
    my $unit=&Apache::lc_asset_xml::open_tag_attribute('unit',$stack);
-   $expected=$expected.' '.$unit;
-&logdebug("Answer: ".Dumper($answer).' eval to '.$expected);
-   return $expected;
+   if ($unit) {
+      return $expected.' '.$unit;
+   } else {
+      return $expected;
+   }
 }
 
+sub evaluate_responses {
+   my ($stack)=@_;
+   my $responses=&Apache::lc_asset_xml::collect_responses($stack);
+   if ($#{$responses}>0) {
+      return '['.join(';',@{$responses}).']';
+   } else {
+      return $responses->[0];
+   }
+}
 
 
 sub end_numericalresponse_grade {
    my ($p,$safe,$stack,$token)=@_;
 # Get student-entered answer
-   my $responses=&Apache::lc_asset_xml::collect_responses($stack);
+   my $responses=&evaluate_responses($stack);
 # Get tolerance parameter
    my $tolerance=&Apache::lc_asset_xml::cascade_parameter('tol',$stack);
 # Get the correct answer and unit
@@ -114,8 +120,8 @@ sub end_numericalresponse_grade {
    }
 #FIXME: could be multiple answers
 use Apache::lc_logs;
-   &logdebug("Grading: ".$responses->[0]);
-   &logdebug('Grading target '.&answertest($parser,$env,$responses->[0],$expected,$tolerance));
+   &logdebug("Grading: ".$responses);
+   &logdebug('Grading target '.&answertest($parser,$env,$responses,$expected,$tolerance));
 }
 
 sub start_numericalhintcondition_html {
