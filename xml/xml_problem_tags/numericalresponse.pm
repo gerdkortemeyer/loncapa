@@ -33,8 +33,8 @@ use Data::Dumper;
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_numericalresponse_html end_numericalresponse_html
-                 end_numericalresponse_grade 
+our @EXPORT = qw(start_numericalresponse_html  end_numericalresponse_html
+                 start_numericalresponse_grade end_numericalresponse_grade 
                  start_numericalhintcondition_html end_numericalhintcondition_html);
 
 sub start_numericalresponse_html {
@@ -43,28 +43,63 @@ sub start_numericalresponse_html {
    return '';
 }
 
+sub start_numericalresponse_grade {
+   return &start_numericalresponse_html(@_);
+}
+
 sub end_numericalresponse_html {
    my ($p,$safe,$stack,$token)=@_;
 #FIXME: do stuff
+#Debug only here
    my $answers=&Apache::lc_asset_xml::collect_responses($stack);
    return "Get: ".&Apache::lc_asset_xml::cascade_parameter('tol',$stack).'<br /><pre>'.Dumper($stack).'</pre>'.
           '<pre>'.Dumper($answers).'</pre>';
 }
 
+sub evaluate_answer {
+   my ($stack)=@_;
+use Apache::lc_logs;
+use Data::Dumper;
+&logdebug(Dumper($stack));
+
+   my $answer=&Apache::lc_asset_xml::open_tag_attribute('answer',$stack);
+   my $expected='';
+   my $expected='';
+   if (ref($answer) eq 'ARRAY') {
+      &logdebug("It's an array!");
+# We have an array or a matrix
+      $expected='[';
+      if (ref($answer->[0]) eq 'ARRAY') {
+         $expected.='[';
+         my @rows=();
+         foreach my $row (@{$answer}) {
+            push(@rows,join(';',@{$row}));
+         }
+         $expected.=join('];[',@rows);
+         $expected.=']';
+      } else {
+         $expected.=join(';',@{$answer});
+      }
+      $expected.=']';
+   } else {
+      $expected=$answer;
+   }
+   my $unit=&Apache::lc_asset_xml::open_tag_attribute('unit',$stack);
+   $expected=$expected.' '.$unit;
+&logdebug("Answer: ".Dumper($answer).' eval to '.$expected);
+   return $expected;
+}
+
+
+
 sub end_numericalresponse_grade {
    my ($p,$safe,$stack,$token)=@_;
 # Get student-entered answer
-   my $answers=&Apache::lc_asset_xml::collect_responses($stack);
+   my $responses=&Apache::lc_asset_xml::collect_responses($stack);
 # Get tolerance parameter
    my $tolerance=&Apache::lc_asset_xml::cascade_parameter('tol',$stack);
 # Get the correct answer and unit
-#FIXME: could be array
-   my $answer=&Apache::lc_asset_xml::open_tag_attribute('answer',$stack);
-use Apache::lc_logs;
-use Data::Dumper;
-&logdebug("Answer: ".Dumper($answer));
-   my $unit=&Apache::lc_asset_xml::open_tag_attribute('unit',$stack);
-   my $expected=$answer.' '.$unit;
+   my $expected=&evaluate_answer($stack);
 # Initialize parser
    my $implicit_operators = 1;
    my $unit_mode = 1;
@@ -79,8 +114,8 @@ use Data::Dumper;
    }
 #FIXME: could be multiple answers
 use Apache::lc_logs;
-   &logdebug("Grading: ".$answers->[0]);
-   &logdebug('Grading target '.&answertest($parser,$env,$answers->[0],$expected,$tolerance));
+   &logdebug("Grading: ".$responses->[0]);
+   &logdebug('Grading target '.&answertest($parser,$env,$responses->[0],$expected,$tolerance));
 }
 
 sub start_numericalhintcondition_html {

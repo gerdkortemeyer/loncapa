@@ -24,7 +24,7 @@ use Apache::lc_asset_safeeval;
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_perl_html start_perl_meta start_perl_analysis);
+our @EXPORT = qw(start_perl_html start_perl_meta start_perl_grade start_perl_analysis);
 
 #
 # The script should be evaluated for online, print, and analysis
@@ -34,6 +34,10 @@ sub start_perl_analysis {
 }
 
 sub start_perl_html {
+   return &perl_eval(@_);
+}
+
+sub start_perl_grade {
    return &perl_eval(@_);
 }
 
