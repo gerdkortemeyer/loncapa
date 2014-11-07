@@ -5131,12 +5131,7 @@
   </xs:group>
   <xs:complexType mixed="true" name="headerContent">
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:element ref="span"/>
-      <xs:element ref="em"/>
-      <xs:element ref="a"/>
-      <xs:element ref="sup"/>
-      <xs:element ref="sub"/>
-      <xs:element ref="i"/>
+      <xs:group ref="inlines"/>
     </xs:choice>
     <xs:attributeGroup ref="coreattrs"/>
     <xs:attribute ref="TeXsize"/>
@@ -5304,7 +5299,7 @@
         Alternate content container for non script-based rendering.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType>
+    <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="blocks-without-responses"/>
       </xs:choice>
@@ -6315,6 +6310,7 @@
         <xs:element ref="param"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
+      <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute name="classid" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -6428,6 +6424,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
+      <xs:attribute name="id" type="xs:ID"/>
       <xs:attribute name="src" type="xs:anyURI">
         <xs:annotation>
           <xs:documentation>
@@ -6469,6 +6466,7 @@
         <xs:element ref="param"/>
         <xs:group ref="text-without-responses"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:ID"/>
       <xs:attribute name="codebase" type="xs:anyURI"/>
       <xs:attribute name="archive"/>
       <xs:attribute name="code"/>
@@ -6548,6 +6546,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="blocks-without-responses"/>
       </xs:choice>
+      <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute name="action" type="xs:anyURI" use="required"/>
       <xs:attribute default="get" name="method">
         <xs:simpleType>

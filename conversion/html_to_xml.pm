@@ -52,9 +52,25 @@ sub html_to_xml {
 
 sub start {
   my($tagname, $attr, $attrseq) = @_;
+  
+  # NOTE: we could do things more like web browsers, but I'm nore sure the result would be better with LON-CAPA files
+  # (in problem files there are not so many missing tags)
+  # See http://www.w3.org/TR/html5/syntax.html#an-introduction-to-error-handling-and-strange-cases-in-the-parser
+  
+  if ($tagname eq 'o:p') {
+    return;
+  }
+  
+  if ($tagname =~ /@.*\.[a-z]{2,3}$/) { # email <name@hostname>
+    $result .= "&lt;$tagname&gt;";
+    return;
+  }
+  
   #$tagname = lc($tagname); this is done by default by the parser
   $tagname = fix_tag($tagname);
-  if (scalar(@stack) > 0 && $stack[scalar(@stack)-1] eq 'tr' && $tagname ne 'td' && $tagname ne 'th') {
+  if (scalar(@stack) > 0 && $stack[scalar(@stack)-1] eq 'tr' && $tagname ne 'td' && $tagname ne 'th' &&
+      !string_in_array(['block','comment','endouttext','problemtype','standalone','startouttext','tex','translated','web','while'], $tagname)) {
+    # NOTE: a 'block' element between tr and td will not be valid, but changing tag order would make things worse
     start('td');
   }
   if ($tagname eq 'p' && scalar(@stack) > 0 && $stack[scalar(@stack)-1] eq 'p') {
@@ -189,6 +205,11 @@ sub start {
 
 sub end {
   my($tagname) = @_;
+  
+  if ($tagname eq 'o:p') {
+    return;
+  }
+  
   $tagname = fix_tag($tagname);
   if (index_of(\@empty, $tagname) != -1) {
     return;
@@ -247,7 +268,9 @@ sub declaration {
 
 sub process {
   my($token0) = @_;
-  $result .= '<?'.$token0.'>';
+  if ($token0 ne '') {
+    $result .= '<?'.$token0.'>';
+  }
 }
 
 sub index_of {
@@ -273,10 +296,13 @@ sub last_index_of {
 sub fix_tag {
   my ($tag) = @_;
   #$tag = lc($tag); this is done by default by the parser
-  if ($tag =~ /[<\+"'\/=\s,;:\(\)\?]/) {
+  if ($tag !~ /^[a-zA-Z_][a-zA-Z0-9_\-\.]*$/) {
     print "Warning: bad start tag:'".$tag."'";
     if ($tag =~ /<[a-zA-Z]/) {
       $tag =~ s/^[^<]*<//; # a<b -> b
+    }
+    if ($tag =~ /[a-zA-Z]=/) {
+      $tag =~ s/=.*$//; # a=b -> a
     }
     if ($tag =~ /[a-zA-Z]\//) {
       $tag =~ s/\/.*$//; # a/b -> a
@@ -289,11 +315,30 @@ sub fix_tag {
         $tag =~ s/^.*://;
       }
     }
-    $tag =~ s/[<\+"'\/=\s,;:\(\)\?]//g;
+    $tag =~ s/^[0-9\-\.]+//;
+    $tag =~ s/[^a-zA-Z0-9_\-\.]//g;
     print " (converted to $tag)\n";
   }
   return($tag);
 }
+
+
+##
+# Tests if a string is in an array (using eq) (to avoid Smartmatch warnings with $value ~~ @array)
+# @param {Array<string>} array - reference to the array of strings
+# @param {string} value - the string to look for
+# @returns 1 if found, 0 otherwise
+##
+sub string_in_array {
+  my ($array, $value) = @_;
+  foreach my $v (@{$array}) {
+    if ($v eq $value) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
 
 1;
 __END__

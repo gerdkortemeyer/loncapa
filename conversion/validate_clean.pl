@@ -37,7 +37,7 @@ if (-d "$pathname") {
 }
 
 
-# Validates a directory recursively, selecting only _clean.problem files.
+# Validates a directory recursively, selecting only .lc files.
 sub validate_dir {
   my ($dirpath) = @_;
   
@@ -48,7 +48,7 @@ sub validate_dir {
     if (-d $pathname) {
       validate_dir($pathname);
     } elsif (-f $pathname) {
-      if ($pathname =~ /_clean\.problem$/) {
+      if ($pathname =~ /\.lc$/) {
         validate_file($pathname);
       }
     }

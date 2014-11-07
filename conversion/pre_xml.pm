@@ -52,22 +52,28 @@ sub guess_encoding_and_read {
   my $data = <$fh>; # we need to read the whole file to test if font is a block or inline element
   close $fh;
   
+  if (index($data, '<') == -1) {
+    die "This file has no markup !";
+  }
+  
   # try to get a charset from a meta at the beginning of the file
-  my $beginning = substr($data, 0, 300);
-  if ($beginning =~ /<meta[^>]*charset\s?=\s?([^\s>"']*)/i) {
+  my $beginning = substr($data, 0, 500); # to avoid a full match; hopefully we won't cut the charset in half
+  if ($beginning =~ /<meta[^>]*charset\s?=\s?([^\n>"';]*)/i) {
     my $meta_charset = $1;
-    if ($meta_charset =~ /iso-?8859-?1/i) {
-      # usually a lie
-      $meta_charset = 'cp1252';
-    }
-    # now try to decode using that encoding
-    my $decoder = guess_encoding($data, ($meta_charset));
-    if (ref($decoder)) {
-      my $decoded = $decoder->decode($data);
-      my @lines = split(/^/m, $decoded);
-      return \@lines;
-    } else {
-      print "Warning: decoding did not work with the charset defined by the meta ($meta_charset)\n";
+    if ($meta_charset ne '') {
+      if ($meta_charset =~ /iso-?8859-?1/i) {
+        # usually a lie
+        $meta_charset = 'cp1252';
+      }
+      # now try to decode using that encoding
+      my $decoder = guess_encoding($data, ($meta_charset));
+      if (ref($decoder)) {
+        my $decoded = $decoder->decode($data);
+        my @lines = split(/^/m, $decoded);
+        return \@lines;
+      } else {
+        print "Warning: decoding did not work with the charset defined by the meta ($meta_charset)\n";
+      }
     }
   }
   
@@ -135,6 +141,9 @@ sub remove_control_characters {
   my ($lines) = @_;
   foreach my $line (@{$lines}) {
     $line =~ s/[\x00-\x07\x0B\x0C\x0E-\x1F]//g;
+    $line =~ s/&#[0-7];//g;
+    $line =~ s/&#1[4-9];//g;
+    $line =~ s/&#2[0-9];//g;
   }
 }
 
