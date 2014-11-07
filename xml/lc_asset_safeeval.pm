@@ -135,6 +135,7 @@ sub init_safe {
 #
 sub texteval {
    my ($safeeval,$text)=@_;
+   unless ($text=~/[\$\@\%]/) { return $text; }
    return $safeeval->reval('qq('.$text.')');
 }
 
@@ -143,6 +144,7 @@ sub texteval {
 #
 sub argeval {
    my ($safeeval,$text)=@_;
+   unless ($text=~/[\$\@\%]/) { return $text; }
    my $result;
    if ($safeeval->reval('ref('.$text.')')) {
       return $safeeval->reval($text);
