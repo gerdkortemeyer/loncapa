@@ -137,37 +137,47 @@ sub end_numericalhintcondition_html {
    return '';
 }
 
+
+# A numeric comparison of $expression and $expected
+#
 sub answertest {
-    my ($parser,$env,$expression, $expected, $tolerance)=@_;
-    unless ($expression=~/\S/) {
-      return(&no_response(),undef);
-    }
-    unless ($expected=~/\S/) {
-      return(&no_answer(),undef);
-    }
-    my $num1;
-    my $num2;
-    $num1++ while ($expression =~ m/;/g);
-    $num2++ while ($expected =~ m/;/g);
-    if ($num1!=$num2) {
-       return(&wrong_dimension(),undef);
-    }
+    my ($parser,$env,$expression, $expected, $tolerance, $sets)=@_;
     if (!defined $tolerance) {
         $tolerance = 1e-5;
-    } 
-    try {
-        my $quantity = $parser->parse($expression)->calc($env);
-        my $expected_quantity = $parser->parse($expected)->calc($env);
-        if (!$quantity->equals($expected_quantity, $tolerance)) {
-            return(&incorrect(),undef);
-        }
-        return(&correct(),undef);
-    } catch {
-        if (UNIVERSAL::isa($_,CalcException) || UNIVERSAL::isa($_,ParseException)) {
-            return(&could_not_evaluate(),$_->getLocalizedMessage());
-        } else {
-            return(&internal_error(),$_);
-        }
+    }
+    unless ($expression=~/\S/) {
+       return(&no_response(),undef);
+    }
+    unless ($expected=~/\S/) {
+       return(&no_answer(),undef);
+    }
+    if ($sets) {
+# We are dealing with sets and intervals
+
+    } else {
+# We are dealing with scalars or vectors
+# Do the dimensions fit?
+       my $num1;
+       my $num2;
+       $num1++ while ($expression =~ m/;/g);
+       $num2++ while ($expected =~ m/;/g);
+       if ($num1!=$num2) {
+          return(&wrong_dimension(),undef);
+       }
+       try {
+           my $quantity = $parser->parse($expression)->calc($env);
+           my $expected_quantity = $parser->parse($expected)->calc($env);
+           if (!$quantity->equals($expected_quantity, $tolerance)) {
+               return(&incorrect(),undef);
+           }
+           return(&correct(),undef);
+       } catch {
+           if (UNIVERSAL::isa($_,CalcException) || UNIVERSAL::isa($_,ParseException)) {
+               return(&could_not_evaluate(),$_->getLocalizedMessage());
+           } else {
+               return(&internal_error(),$_);
+           }
+       }
     }
 }
 
