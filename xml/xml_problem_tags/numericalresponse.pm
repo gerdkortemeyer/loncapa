@@ -141,7 +141,7 @@ sub end_numericalhintcondition_html {
 # A numeric comparison of $expression and $expected
 #
 sub answertest {
-    my ($parser,$env,$expression, $expected, $tolerance, $sets)=@_;
+    my ($parser,$env,$expression, $expected, $tolerance, $special)=@_;
     if (!defined $tolerance) {
         $tolerance = 1e-5;
     }
@@ -151,9 +151,13 @@ sub answertest {
     unless ($expected=~/\S/) {
        return(&no_answer(),undef);
     }
-    if ($sets) {
-# We are dealing with sets and intervals
-
+    if ($special eq 'sets') {
+# We are dealing with sets and intervals as answers
+    } elsif ($special=~/(gt|ge|lt|le)/) {
+# Number greater than, less than, etc
+    } elsif ($special=~/(inside|outside)/) {
+# Inside or outside an interval
+    
     } else {
 # We are dealing with scalars or vectors
 # Do the dimensions fit?
