@@ -33,8 +33,10 @@ try {
     print "Maxima syntax: ".$root->toMaxima()."\n";
     print "Value: ".$root->calc($env)->toString()."\n";
 } catch {
-    if (UNIVERSAL::isa($_,CalcException) || UNIVERSAL::isa($_,ParseException)) {
-        die $_->getLocalizedMessage()."\n";
+    if (UNIVERSAL::isa($_,CalcException)) {
+        die "Calculation error: ".$_->getLocalizedMessage()."\n";
+    } elsif (UNIVERSAL::isa($_,ParseException)) {
+        die "Parsing error: ".$_->getLocalizedMessage()."\n";
     } else {
         die "Internal error: $_\n";
     }

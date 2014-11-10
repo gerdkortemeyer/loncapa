@@ -34,6 +34,7 @@ use aliased 'Apache::math::math_parser::ParseException';
 use aliased 'Apache::math::math_parser::Parser';
 use aliased 'Apache::math::math_parser::ENode';
 use aliased 'Apache::math::math_parser::CalcEnv';
+use aliased 'Apache::math::math_parser::Quantity';
 
 # please add your own !!!
 my %unit_mode_cases = (
@@ -86,6 +87,30 @@ my %symbolic_mode_cases = (
     "1/(1/2-1/3-1/7)" => "x",
 );
 
+my @compare_test_cases = (
+    ['1', '1', Quantity->IDENTICAL],
+    ['1m', '1m', Quantity->IDENTICAL],
+    ['[1;2]', '[1;2]', Quantity->IDENTICAL],
+    ['[1m;2m]', '[1m;2m]', Quantity->IDENTICAL],
+    ['[[1;2;3];[4;5;6]]', '[[1;2;3];[4;5;6]]', Quantity->IDENTICAL],
+    ['1', '[1;2]', Quantity->WRONG_TYPE],
+    ['[1;2]', '[[1];[2]]', Quantity->WRONG_TYPE],
+    ['[1;2]', '[1;2;3]', Quantity->WRONG_DIMENSIONS],
+    ['[[1;2;3];[4;5;6]]', '[[1;2;3];[4;5;6];[7;8;9]]', Quantity->WRONG_DIMENSIONS],
+    ['[[1;2;3];[4;5;6]]', '[[1;2];[4;5]]', Quantity->WRONG_DIMENSIONS],
+    ['1m', '1', Quantity->MISSING_UNITS],
+    ['1m', '2', Quantity->MISSING_UNITS],
+    ['[1m;2m]', '[1;2]', Quantity->MISSING_UNITS],
+    ['1', '1m', Quantity->ADDED_UNITS],
+    ['1', '2m', Quantity->ADDED_UNITS],
+    ['[1;2]', '[1m;2m]', Quantity->ADDED_UNITS],
+    ['1m', '1s', Quantity->WRONG_UNITS],
+    ['1m', '2s', Quantity->WRONG_UNITS],
+    ['[1m;2m]', '[1s;3s]', Quantity->WRONG_UNITS],
+    ['1m', '2m', Quantity->WRONG_VALUE],
+    ['[1;2]', '[1;3]', Quantity->WRONG_VALUE],
+);
+
 sub test {
     my( $parser, $env, $expression, $expected, $tolerance ) = @_;
     if (!defined $tolerance) {
@@ -98,10 +123,36 @@ sub test {
             die "Wrong result: ".$quantity." instead of ".$expected_quantity;
         }
     } catch {
-        if (UNIVERSAL::isa($_,CalcException) || UNIVERSAL::isa($_,ParseException)) {
-            die "Error for $expression: ".$_->getLocalizedMessage()."\n";
+        if (UNIVERSAL::isa($_,CalcException)) {
+            die "Error calculating $expression: ".$_->getLocalizedMessage()."\n";
+        } elsif (UNIVERSAL::isa($_,ParseException)) {
+            die "Error parsing $expression: ".$_->getLocalizedMessage()."\n";
         } else {
             die "Internal error for $expression: $_\n";
+        }
+    }
+}
+
+sub compare_test {
+    my( $parser, $env, $test_case, $tolerance ) = @_;
+    my ($expected, $input, $expected_code) = @$test_case;
+    if (!defined $tolerance) {
+        $tolerance = 1e-5;
+    }
+    try {
+        my $expected_quantity = $parser->parse($expected)->calc($env);
+        my $input_quantity = $parser->parse($input)->calc($env);
+        my $code = $expected_quantity->compare($input_quantity, $tolerance);
+        if ($code != $expected_code) {
+            die "Wrong result in compare test: ".$code." instead of ".$expected_code;
+        }
+    } catch {
+        if (UNIVERSAL::isa($_,CalcException)) {
+            die "Error calculating $input: ".$_->getLocalizedMessage()."\n";
+        } elsif (UNIVERSAL::isa($_,ParseException)) {
+            die "Error parsing $input: ".$_->getLocalizedMessage()."\n";
+        } else {
+            die "Internal error for $input: $_\n";
         }
     }
 }
@@ -121,6 +172,11 @@ $env->setUnit("peck", "2 gallon");
 $env->setUnit("bushel", "8 gallon");
 $env->setUnit("gallon", "4.4 L");
 test($p, $env, "4 peck + 2 bushel", "106`L", "1%");
+
+# compare test
+foreach my $test_case (@compare_test_cases) {
+    compare_test($p, $env, $test_case);
+}
 
 # symbolic mode
 $unit_mode = 0;

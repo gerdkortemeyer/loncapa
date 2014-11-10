@@ -43,6 +43,9 @@ use overload
     '/' => \&qdiv,
     '^' => \&qpow;
 
+# compare() return codes:
+use enum qw(IDENTICAL WRONG_TYPE WRONG_DIMENSIONS MISSING_UNITS ADDED_UNITS WRONG_UNITS WRONG_VALUE);
+
 
 ##
 # Constructor
@@ -149,6 +152,57 @@ sub equals {
     return 1;
 }
 
+##
+# Compare this quantity with another one, and returns a code.
+# @param {Quantity|QVector|QMatrix}
+# @optional {string|float} tolerance
+# @returns {int}
+##
+sub compare {
+    my ( $self, $q, $tolerance ) = @_;
+    if (!$q->isa(Quantity)) {
+        return WRONG_TYPE;
+    }
+    if (!defined $tolerance) {
+        $tolerance = 0;
+    }
+    my %units = %{$self->units};
+    my $this_has_units = 0;
+    my $other_has_units = 0;
+    my $wrong_units = 0;
+    foreach my $unit (keys %units) {
+        if ($units{$unit} != 0) {
+            $this_has_units = 1;
+        }
+        if ($q->units->{$unit} != 0) {
+            $other_has_units = 1;
+        }
+        if ($units{$unit} != $q->units->{$unit}) {
+            $wrong_units = 1;
+        }
+    }
+    if ($this_has_units && !$other_has_units) {
+        return MISSING_UNITS;
+    } elsif (!$this_has_units && $other_has_units) {
+        return ADDED_UNITS;
+    }
+    if ($wrong_units) {
+        return WRONG_UNITS;
+    }
+    if ($tolerance =~ /%/) {
+        my $perc = $tolerance;
+        $perc =~ s/%//;
+        $perc /= 100;
+        if (abs($self->value - $q->value) > abs($self->value * $perc)) {
+            return WRONG_VALUE;
+        }
+    } else {
+        if (abs($self->value - $q->value) > $tolerance) {
+            return WRONG_VALUE;
+        }
+    }
+    return IDENTICAL;
+}
 
 ##
 # Addition

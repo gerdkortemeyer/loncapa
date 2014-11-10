@@ -99,6 +99,36 @@ sub equals {
 }
 
 ##
+# Compare this vector with another one, and returns a code.
+# @param {Quantity|QVector|QMatrix}
+# @optional {string|float} tolerance
+# @returns {int}
+##
+sub compare {
+    my ( $self, $v, $tolerance ) = @_;
+    if (!$v->isa(QVector)) {
+        return Quantity->WRONG_TYPE;
+    }
+    if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
+        return Quantity->WRONG_DIMENSIONS;
+    }
+    my @codes = ();
+    for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
+        push(@codes, $self->quantities->[$i]->compare($v->quantities->[$i], $tolerance));
+    }
+    my @test_order = (Quantity->WRONG_TYPE, Quantity->WRONG_DIMENSIONS, Quantity->MISSING_UNITS, Quantity->ADDED_UNITS,
+        Quantity->WRONG_UNITS, Quantity->WRONG_VALUE);
+    foreach my $test (@test_order) {
+        foreach my $code (@codes) {
+            if ($code == $test) {
+                return $test;
+            }
+        }
+    }
+    return Quantity->IDENTICAL;
+}
+
+##
 # Addition
 # @param {QVector}
 # @returns {QVector}
