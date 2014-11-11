@@ -25,7 +25,7 @@ use Apache2::Const qw(:common);
 
 require Exporter;
 our @ISA = qw (Exporter);
-our @EXPORT = qw(correct incorrect could_not_evaluate wrong_dimension no_valid_answer no_valid_response internal_error);
+our @EXPORT = qw(correct incorrect numerical_error bad_formula wrong_dimension no_unit_required unit_missing wrong_unit_dimension no_valid_answer no_valid_response internal_error);
 
 sub correct {
    return 'correct';
@@ -35,8 +35,24 @@ sub incorrect {
    return 'incorrect';
 }
 
-sub could_not_evaluate {
-   return 'could_not_evaluate';
+sub numerical_error {
+   return 'numerical_error';
+}
+
+sub bad_formula {
+   return 'bad_formula';
+}
+
+sub unit_missing {
+   return 'unit_missing';
+}
+
+sub no_unit_required {
+   return 'no_unit_required';
+}
+
+sub wrong_unit_dimension {
+   return 'wrong_unit_dimension';
 }
 
 sub no_valid_answer {

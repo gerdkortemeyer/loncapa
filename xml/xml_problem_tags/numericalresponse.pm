@@ -25,6 +25,7 @@ use aliased 'Apache::math::math_parser::ParseException';
 use aliased 'Apache::math::math_parser::Parser';
 use aliased 'Apache::math::math_parser::ENode';
 use aliased 'Apache::math::math_parser::CalcEnv';
+use aliased 'Apache::math::math_parser::Quantity';
 
 use Apache::lc_problem_const;
 
@@ -160,27 +161,33 @@ sub answertest {
     
     } else {
 # We are dealing with scalars or vectors
-# Do the dimensions fit?
-       my $num1;
-       my $num2;
-       $num1++ while ($expression =~ m/;/g);
-       $num2++ while ($expected =~ m/;/g);
-       if ($num1!=$num2) {
-          return(&wrong_dimension(),undef);
-       }
        try {
-           my $quantity = $parser->parse($expression)->calc($env);
-           my $expected_quantity = $parser->parse($expected)->calc($env);
-           if (!$quantity->equals($expected_quantity, $tolerance)) {
-               return(&incorrect(),undef);
-           }
-           return(&correct(),undef);
+          my $expected_quantity = $parser->parse($expected)->calc($env);
+          my $input_quantity = $parser->parse($expression)->calc($env);
+          my $code = $expected_quantity->compare($input_quantity, $tolerance);
+          if ($code == Quantity->IDENTICAL) {
+             return(&correct(),undef);
+          } elsif ($code == Quantity->WRONG_TYPE) {
+             return(&wrong_dimension(),undef);
+          } elsif ($code == Quantity->WRONG_DIMENSIONS) {
+             return(&wrong_dimension(),undef);
+          } elsif ($code == Quantity->MISSING_UNITS) {
+             return(&unit_missing(),undef);
+          } elsif ($code == Quantity->ADDED_UNITS) {
+              return(&no_unit_required(),undef);
+          } elsif ($code == Quantity->WRONG_UNITS) {
+              return(&wrong_unit_dimension,undef);
+          } elsif ($code == Quantity->WRONG_VALUE) {
+              return(&incorrect(),undef);
+          }
        } catch {
-           if (UNIVERSAL::isa($_,CalcException) || UNIVERSAL::isa($_,ParseException)) {
-               return(&could_not_evaluate(),$_->getLocalizedMessage());
-           } else {
-               return(&internal_error(),$_);
-           }
+          if (UNIVERSAL::isa($_,CalcException)) {
+              return(&numerical_error(),undef);
+          } elsif (UNIVERSAL::isa($_,ParseException)) {
+              return(&bad_formula(),undef);
+          } else {
+              return(&internal_error(),$_);
+          }
        }
     }
 }
