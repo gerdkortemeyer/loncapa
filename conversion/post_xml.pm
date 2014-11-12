@@ -35,6 +35,8 @@ sub post_xml {
   my $root = create_new_structure($dom_doc);
 
   remove_elements($root, ['startouttext','startoutext','startottext','endouttext','endoutext','endoutttext','endouttxt','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','x-claris-tagview','x-claris-window','x-sas-window']);
+  
+  remove_empty_attributes($root);
 
   my @all_block = (@block_elements, @block_html);
   add_sty_blocks($new_path, $root, \@all_block); # must come before the subs using @all_block
@@ -213,6 +215,40 @@ sub remove_elements {
         }
       } else {
         remove_elements($child, $to_remove);
+      }
+    }
+  }
+}
+
+# removes some attributes that have an invalid empty value
+sub remove_empty_attributes {
+  my ($root) = @_;
+  my $doc = $root->ownerDocument;
+  # this list is based on validation errors in the MSU subset (it could be more complete if it was based on the schema)
+  my @attributes = (
+    ['curve', ['pointsize']],
+    ['foil', ['location']],
+    ['foilgroup', ['checkboxoptions', 'options', 'texoptions']],
+    ['gnuplot', ['pattern', 'texwidth']],
+    ['img', ['height', 'texheight', 'texwidth', 'texwrap', 'width']],
+    ['import', ['importmode']],
+    ['optionresponse', ['max']],
+    ['organicstructure', ['options']],
+    ['radiobuttonresponse', ['max']],
+    ['randomlabel', ['height', 'texwidth', 'width']],
+    ['stringresponse', ['type']],
+    ['textline', ['size']],
+  );
+  foreach my $element_attributes (@attributes) {
+    my $element_name = $element_attributes->[0];
+    my $attribute_names = $element_attributes->[1];
+    my @elements = $doc->getElementsByTagName($element_name);
+    foreach my $element (@elements) {
+      foreach my $attribute_name (@$attribute_names) {
+        my $value = $element->getAttribute($attribute_name);
+        if (defined $value && $value =~ /^\s*$/) {
+          $element->removeAttribute($attribute_name);
+        }
       }
     }
   }
