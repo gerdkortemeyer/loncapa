@@ -37,6 +37,8 @@ sub post_xml {
   remove_elements($root, ['startouttext','startoutext','startottext','endouttext','endoutext','endoutttext','endouttxt','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','x-claris-tagview','x-claris-window','x-sas-window']);
   
   remove_empty_attributes($root);
+  
+  replace_tex_and_web($root);
 
   my @all_block = (@block_elements, @block_html);
   add_sty_blocks($new_path, $root, \@all_block); # must come before the subs using @all_block
@@ -251,6 +253,57 @@ sub remove_empty_attributes {
         }
       }
     }
+  }
+}
+
+# This is only replacing <tex>\noindent</tex>, <web><br /><br /></web>, <web><br /></web>, <web><p /></web> .
+# Other uses of tex and web will have to be fixed by hand (replaced by equivalent CSS).
+sub replace_tex_and_web {
+  my ($root) = @_;
+  my $warning_tex = 0;
+  my $warning_web = 0;
+  my @texs = $root->getElementsByTagName('tex');
+  foreach my $tex (@texs) {
+    my $first = $tex->firstChild;
+    if (defined $first && $first->nodeType == XML_TEXT_NODE && !defined $first->nextSibling) {
+      my $content = $first->nodeValue;
+      if ($content =~ /\s*\\noindent\s*/) {
+        # remove the node
+        $tex->parentNode->removeChild($tex);
+      } else {
+        $warning_tex = 1;
+      }
+    }
+  }
+  my @webs = $root->getElementsByTagName('web');
+  foreach my $web (@webs) {
+    my $first = $web->firstChild;
+    my $second;
+    if (defined $first) {
+      $second = $first->nextSibling;
+    }
+    if (defined $first && $first->nodeType == XML_ELEMENT_NODE && $first->nodeName eq 'br' &&
+        defined $second && $second->nodeType == XML_ELEMENT_NODE && $second->nodeName eq 'br' &&
+        !defined $second->nextSibling) {
+      # replace <web><br /><br /></web> by content
+      replace_by_children($web);
+    } elsif (defined $first && $first->nodeType == XML_ELEMENT_NODE && $first->nodeName eq 'br' &&
+        !defined $first->nextSibling) {
+      # replace <web><br /></web> by content
+      replace_by_children($web);
+    } elsif (defined $first && $first->nodeType == XML_ELEMENT_NODE && $first->nodeName eq 'p' &&
+        !defined $first->nextSibling) {
+      # replace <web><p /></web> by content
+      replace_by_children($web);
+    } else {
+      $warning_web = 1;
+    }
+  }
+  if ($warning_tex) {
+    print "WARNING: remaining tex elements have to be fixed by hand !\n";
+  }
+  if ($warning_web) {
+    print "WARNING: remaining web elements have to be fixed by hand !\n";
   }
 }
 
