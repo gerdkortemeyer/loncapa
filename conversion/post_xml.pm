@@ -638,11 +638,21 @@ sub replace_script_by_perl {
 # also removes bad comments in script elements
 sub remove_bad_cdata_sections {
   my ($root) = @_;
+  my $doc = $root->ownerDocument;
   foreach my $name (@preserve_elements) {
     my @nodes = $root->getElementsByTagName($name);
     foreach my $node (@nodes) {
       if (defined $node->firstChild && $node->firstChild->nodeType == XML_TEXT_NODE) {
         my $value = $node->firstChild->nodeValue;
+        if ($name eq 'script' && (!defined $node->getAttribute('type') || $node->getAttribute('type') ne 'loncapa/perl') &&
+            !defined $node->firstChild->nextSibling && $value =~ /^(\s*)<!--(.*)-->(\s*)$/) {
+          # web browsers interpret that as a real comment when it is on 1 line, but the Perl HTML parser thinks it is the script
+          # -> turning it back into a comment
+          # (this is only true for Javascript script elements, since LON-CAPA does not parse loncapa/perl scripts in the same way)
+          $node->removeChild($node->firstChild);
+          $node->appendChild($doc->createComment($2));
+          next;
+        }
         # at the beginning:
         $value =~ s/^(\s*)<!\[CDATA\[/$1/; # <![CDATA[
         $value =~ s/^(\s*)\/\*\s*<!\[CDATA\[\s*\*\//$1/; # /* <![CDATA[ */
@@ -1322,29 +1332,36 @@ sub replace_center {
     if ($center->getChildrenByTagName('table')->size() > 0) { # note: getChildrenByTagName is not DOM (LibXML specific)
       replace_by_children($center);
     } else {
-      # use p or div ? check if there is a block inside
-      my $found_block = 0;
-      for (my $child=$center->firstChild; defined $child; $child=$child->nextSibling) {
-        if ($child->nodeType == XML_ELEMENT_NODE && string_in_array($all_block, $child->nodeName)) {
-          $found_block = 1;
-          last;
-        }
-      }
-      my $new_node;
-      if ($found_block) {
-        $new_node = $doc->createElement('div');
-        $new_node->setAttribute('style', 'text-align: center; margin: 0 auto');
+      my @accepting_center_style = ('section','h1','h2','h3','h4','h5','h6','div','p','li','td','th','dt','dd','pre','blockquote');
+      if (!defined $center->previousSibling && !defined $center->nextSibling && string_in_array(\@accepting_center_style, $center->parentNode->nodeName)) {
+        # use CSS on the parent block and replace center by its children
+        set_css_property($center->parentNode, 'text-align', 'center');
+        replace_by_children($center);
       } else {
-        $new_node = $doc->createElement('p');
-        $new_node->setAttribute('style', 'text-align: center');
+        # use p or div ? check if there is a block inside
+        my $found_block = 0;
+        for (my $child=$center->firstChild; defined $child; $child=$child->nextSibling) {
+          if ($child->nodeType == XML_ELEMENT_NODE && string_in_array($all_block, $child->nodeName)) {
+            $found_block = 1;
+            last;
+          }
+        }
+        my $new_node;
+        if ($found_block) {
+          $new_node = $doc->createElement('div');
+          $new_node->setAttribute('style', 'text-align: center; margin: 0 auto');
+        } else {
+          $new_node = $doc->createElement('p');
+          $new_node->setAttribute('style', 'text-align: center');
+        }
+        my $next;
+        for (my $child=$center->firstChild; defined $child; $child=$next) {
+          $next = $child->nextSibling;
+          $center->removeChild($child);
+          $new_node->appendChild($child);
+        }
+        $center->parentNode->replaceChild($new_node, $center);
       }
-      my $next;
-      for (my $child=$center->firstChild; defined $child; $child=$next) {
-        $next = $child->nextSibling;
-        $center->removeChild($child);
-        $new_node->appendChild($child);
-      }
-      $center->parentNode->replaceChild($new_node, $center);
     }
   }
 }
@@ -1700,7 +1717,7 @@ sub change_hints {
 sub fix_paragraphs_inside {
   my ($node, $all_block) = @_;
   # blocks in which paragrahs will be added:
-  my @blocks_with_p = ('problem','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','togglebox','standalone');
+  my @blocks_with_p = ('loncapa','problem','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','togglebox','standalone','form');
   my @fix_p_if_br_or_p = ('foil','item','text','label','hintgroup','hintpart','hint','web','windowlink','div','li','dd','td','th','blockquote');
   if ((string_in_array(\@blocks_with_p, $node->nodeName) && paragraph_needed($node)) ||
       (string_in_array(\@fix_p_if_br_or_p, $node->nodeName) &&
