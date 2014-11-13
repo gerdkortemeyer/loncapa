@@ -68,7 +68,7 @@ sub start {
   
   #$tagname = lc($tagname); this is done by default by the parser
   $tagname = fix_tag($tagname);
-  if (scalar(@stack) > 0 && $stack[scalar(@stack)-1] eq 'tr' && $tagname ne 'td' && $tagname ne 'th' &&
+  if (scalar(@stack) > 0 && $stack[scalar(@stack)-1] eq 'tr' && $tagname ne 'tr' && $tagname ne 'td' && $tagname ne 'th' &&
       !string_in_array(['block','comment','endouttext','problemtype','standalone','startouttext','tex','translated','web','while'], $tagname)) {
     # NOTE: a 'block' element between tr and td will not be valid, but changing tag order would make things worse
     start('td');
@@ -213,6 +213,13 @@ sub end {
   $tagname = fix_tag($tagname);
   if (index_of(\@empty, $tagname) != -1) {
     return;
+  }
+  if ($tagname eq 'td' && scalar(@stack) > 0 && $stack[scalar(@stack)-1] eq 'th') {
+    # handle <th>text</td> as if it was <th>text</th>
+    $tagname = 'th';
+  } elsif ($tagname eq 'th' && scalar(@stack) > 0 && $stack[scalar(@stack)-1] eq 'td') {
+    # handle <td>text</th> as if it was <td>text</td>
+    $tagname = 'td';
   }
   my $found = 0;
   for (my $i=scalar(@stack)-1; $i>=0; $i--) {
