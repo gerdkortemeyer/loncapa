@@ -2366,13 +2366,14 @@ sub replace_by_children {
   my ($node) = @_;
   my $parent = $node->parentNode;
   my $next;
+  my $previous;
   for (my $child=$node->firstChild; defined $child; $child=$next) {
     $next = $child->nextSibling;
-    if ((!defined $child->previousSibling() || !defined $next) &&
+    if ((!defined $previous || !defined $next) &&
         $child->nodeType == XML_TEXT_NODE && $child->nodeValue =~ /^\s*$/) {
       next; # do not keep first and last whitespace nodes
     } else {
-      if (!defined $child->previousSibling() && $child->nodeType == XML_TEXT_NODE) {
+      if (!defined $previous && $child->nodeType == XML_TEXT_NODE) {
         # remove whitespace at the beginning
         my $value = $child->nodeValue;
         $value =~ s/^\s+//;
@@ -2387,6 +2388,7 @@ sub replace_by_children {
     }
     $node->removeChild($child);
     $parent->insertBefore($child, $node);
+    $previous = $child;
   }
   $parent->removeChild($node);
 }
