@@ -235,7 +235,7 @@ sub end {
       $found = 1;
       last;
     } elsif (index_of(\@stack, 'web') != -1) {
-      die "There is a web element with missing end tags inside - it probably has to be fixed by hand";
+      die "There is a web element with missing end tags inside - it has to be fixed by hand";
     }
   }
   if ($found) {

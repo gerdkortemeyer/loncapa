@@ -20,7 +20,7 @@ no warnings 'recursion'; # yes, fix_paragraph is using heavy recursion, I know
 my @block_elements = ('loncapa','parameter','location','answer','foil','image','polygon','rectangle','text','conceptgroup','itemgroup','item','label','data','function','array','unit','answergroup','functionplotresponse','functionplotruleset','functionplotelements','functionplotcustomrule','essayresponse','hintpart','formulahint','numericalhint','reactionhint','organichint','optionhint','radiobuttonhint','stringhint','customhint','mathhint','imageresponse','foilgroup','datasubmission','textfield','hiddensubmission','radiobuttonresponse','rankresponse','matchresponse','import','script','window','block','library','notsolved','part','postanswerdate','preduedate','problem','problemtype','randomlabel','bgimg','labelgroup','randomlist','solved','while','tex','web','gnuplot','curve','Task','IntroParagraph','ClosingParagraph','Question','QuestionText','Setup','Instance','InstanceText','Criteria','CriteriaText','GraderNote','languageblock','translated','lang','instructorcomment','dataresponse','togglebox','standalone','comment','drawimage','allow','displayduedate','displaytitle','responseparam','organicstructure','scriptlib','parserlib','drawoptionlist','spline','backgroundplot','plotobject','plotvector','drawvectorsum','functionplotrule','functionplotvectorrule','functionplotvectorsumrule','axis','key','xtics','ytics','title','xlabel','ylabel','hiddenline','htmlhead','htmlbody','lcmeta','perl');
 my @inline_like_block = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse', 'hint', 'hintgroup'); # inline elements treated like blocks for pretty print and some other things
 my @responses = ('stringresponse','optionresponse','numericalresponse','formularesponse','mathresponse','organicresponse','reactionresponse','customresponse','externalresponse','essayresponse','radiobuttonresponse','matchresponse','rankresponse','imageresponse','functionplotresponse');
-my @block_html = ('html','head','body','section','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','dt','dd','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
+my @block_html = ('html','head','body','section','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','dt','dd','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center','frameset');
 my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
 my @preserve_elements = ('script','answer','perl', 'pre');
 my @accepting_style = ('section','h1','h2','h3','h4','h5','h6','div','p','li','td','th','dt','dd','pre','blockquote');
@@ -258,7 +258,6 @@ sub remove_empty_attributes {
 }
 
 # This is only replacing <tex>\noindent</tex>, <web><br /><br /></web>, <web><br /></web>, <web><p /></web>
-# and web elements containing only text.
 # Other uses of tex and web will have to be fixed by hand (replaced by equivalent CSS).
 sub replace_tex_and_web {
   my ($root) = @_;
@@ -298,7 +297,6 @@ sub replace_tex_and_web {
         !defined $first->nextSibling) {
       # replace <web><p /></web> by content
       replace_by_children($web);
-    # TODO: text only, replace by a span
     } else {
       $warning_web = 1;
     }
@@ -309,7 +307,7 @@ sub replace_tex_and_web {
     my $first = $script->firstChild;
     if (defined $first && $first->nodeType == XML_TEXT_NODE) {
       my $text = $first->nodeValue;
-      if ($text =~ /&web/) {
+      if ($text =~ /&web/ || $text =~ /&tex/) {
         $warning_script = 1;
         last;
       }
@@ -322,7 +320,7 @@ sub replace_tex_and_web {
     print "WARNING: remaining web elements have to be fixed by hand !\n";
   }
   if ($warning_script) {
-    print "WARNING: &web in script element have to be fixed by hand !\n";
+    print "WARNING: &web and &tex in script element have to be fixed by hand !\n";
   }
 }
 
@@ -2175,7 +2173,7 @@ sub pretty {
       for (my $child=$node->firstChild; defined $child; $child=$next) {
         $next = $child->nextSibling;
         if ($child->nodeType == XML_ELEMENT_NODE) {
-          if (string_in_array($all_block, $child->nodeName)) {
+          if (string_in_array($all_block, $child->nodeName) || string_in_array(\@inline_like_block, $child->nodeName)) {
             # make sure there is a newline before and after a block element
             if (defined $child->previousSibling && $child->previousSibling->nodeType == XML_TEXT_NODE) {
               my $prev = $child->previousSibling;
