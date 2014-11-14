@@ -23,6 +23,7 @@ my @responses = ('stringresponse','optionresponse','numericalresponse','formular
 my @block_html = ('html','head','body','section','h1','h2','h3','h4','h5','h6','div','p','ul','ol','li','table','tbody','tr','td','th','dl','dt','dd','pre','noscript','hr','blockquote','object','applet','embed','map','form','fieldset','iframe','center');
 my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
 my @preserve_elements = ('script','answer','perl', 'pre');
+my @accepting_style = ('section','h1','h2','h3','h4','h5','h6','div','p','li','td','th','dt','dd','pre','blockquote');
 
 
 # Parses the XML document and fixes many things to turn it into a LON-CAPA 3 document
@@ -256,12 +257,14 @@ sub remove_empty_attributes {
   }
 }
 
-# This is only replacing <tex>\noindent</tex>, <web><br /><br /></web>, <web><br /></web>, <web><p /></web> .
+# This is only replacing <tex>\noindent</tex>, <web><br /><br /></web>, <web><br /></web>, <web><p /></web>
+# and web elements containing only text.
 # Other uses of tex and web will have to be fixed by hand (replaced by equivalent CSS).
 sub replace_tex_and_web {
   my ($root) = @_;
   my $warning_tex = 0;
   my $warning_web = 0;
+  my $warning_script = 0;
   my @texs = $root->getElementsByTagName('tex');
   foreach my $tex (@texs) {
     my $first = $tex->firstChild;
@@ -295,8 +298,21 @@ sub replace_tex_and_web {
         !defined $first->nextSibling) {
       # replace <web><p /></web> by content
       replace_by_children($web);
+    # TODO: text only, replace by a span
     } else {
       $warning_web = 1;
+    }
+  }
+  # look for &web in script to display a warning
+  my @scripts = $root->getElementsByTagName('script');
+  foreach my $script (@scripts) {
+    my $first = $script->firstChild;
+    if (defined $first && $first->nodeType == XML_TEXT_NODE) {
+      my $text = $first->nodeValue;
+      if ($text =~ /&web/) {
+        $warning_script = 1;
+        last;
+      }
     }
   }
   if ($warning_tex) {
@@ -304,6 +320,9 @@ sub replace_tex_and_web {
   }
   if ($warning_web) {
     print "WARNING: remaining web elements have to be fixed by hand !\n";
+  }
+  if ($warning_script) {
+    print "WARNING: &web in script element have to be fixed by hand !\n";
   }
 }
 
@@ -575,11 +594,11 @@ sub fix_fonts {
         next;
       }
       my $replacement;
+      tie (my %properties, 'Tie::IxHash', ());
       if (!defined $color && !defined $size && defined $face && lc($face) eq 'symbol') {
         $replacement = $doc->createDocumentFragment();
       } else {
         $replacement = $doc->createElement('span');
-        tie (my %properties, 'Tie::IxHash', ());
         my $css = '';
         if (defined $color) {
           $color =~ s/^x//;
@@ -626,15 +645,23 @@ sub fix_fonts {
           }
         }
       }
-      # move all font children inside the replacement (span or fragment)
-      my $next;
-      for (my $child=$font->firstChild; defined $child; $child=$next) {
-        $next = $child->nextSibling;
-        $font->removeChild($child);
-        $replacement->appendChild($child);
-      }
       # replace the font node
-      $font->parentNode->replaceChild($replacement, $font);
+      if ($replacement->nodeType == XML_ELEMENT_NODE && !defined $font->previousSibling &&
+          !defined $font->nextSibling && string_in_array(\@accepting_style, $font->parentNode->nodeName)) {
+        # use CSS on the parent block and replace font by its children instead of using a new element
+        set_css_properties($font->parentNode, \%properties);
+        replace_by_children($font);
+      } else {
+        # move all font children inside the replacement (span or fragment)
+        my $next;
+        for (my $child=$font->firstChild; defined $child; $child=$next) {
+          $next = $child->nextSibling;
+          $font->removeChild($child);
+          $replacement->appendChild($child);
+        }
+        # replace font
+        $font->parentNode->replaceChild($replacement, $font);
+      }
     }
   }
   $root->normalize();
@@ -1385,8 +1412,7 @@ sub replace_center {
     if ($center->getChildrenByTagName('table')->size() > 0) { # note: getChildrenByTagName is not DOM (LibXML specific)
       replace_by_children($center);
     } else {
-      my @accepting_center_style = ('section','h1','h2','h3','h4','h5','h6','div','p','li','td','th','dt','dd','pre','blockquote');
-      if (!defined $center->previousSibling && !defined $center->nextSibling && string_in_array(\@accepting_center_style, $center->parentNode->nodeName)) {
+      if (!defined $center->previousSibling && !defined $center->nextSibling && string_in_array(\@accepting_style, $center->parentNode->nodeName)) {
         # use CSS on the parent block and replace center by its children
         set_css_property($center->parentNode, 'text-align', 'center');
         replace_by_children($center);
@@ -1818,119 +1844,128 @@ sub paragraph_needed {
 # fixes paragraphs inside paragraphs (without a block in-between)
 sub fix_paragraph {
   my ($p, $all_block) = @_;
-  my $block = find_first_block($p, $all_block);
-  if (defined $block) {
-    my $trees = clone_ancestor_around_node($p, $block);
-    my $doc = $p->ownerDocument;
-    my $replacement = $doc->createDocumentFragment();
-    my $left = $trees->{'left'};
-    my $middle = $trees->{'middle'};
-    my $right = $trees->{'right'};
-    if (defined $left) {
-      if (!paragraph_needed($left)) {
-        # this was just blank text, comments or inline responses, it should not create a new paragraph
-        my $next;
-        for (my $child=$left->firstChild; defined $child; $child=$next) {
-          $next = $child->nextSibling;
-          $left->removeChild($child);
-          $replacement->appendChild($child);
-        }
-      } else {
-        $replacement->appendChild($left);
-        # fix paragraphs inside, in case one of the descendants can have paragraphs inside (like numericalresponse/hintgroup):
-        my $next;
-        for (my $child=$left->firstChild; defined $child; $child=$next) {
-          $next = $child->nextSibling;
-          fix_paragraphs_inside($child, $all_block);
-        }
-      }
-    }
-    my $n = $middle->firstChild;
-    while (defined $n) {
-      if ($n->nodeType == XML_ELEMENT_NODE && (string_in_array($all_block, $n->nodeName) || $n->nodeName eq 'br')) {
-        if ($n->nodeName eq 'p') {
-          my $parent = $n->parentNode;
-          # first apply recursion
-          fix_paragraph($n, $all_block);
-          # now the p might have been replaced by several nodes, which should replace the initial p
-          my $next_block;
-          for (my $block=$parent->firstChild; defined $block; $block=$next_block) {
-            $next_block = $block->nextSibling;
-            if ($block->nodeName eq 'p') {
-              $parent->removeChild($block);
-              # for each parent before $middle, clone in-between the p and its children (to preserve the styles)
-              if (defined $block->firstChild) {
-                for (my $p=$parent; $p!=$middle; $p=$p->parentNode) {
-                  my $newp = $p->cloneNode(0);
-                  my $next;
-                  for (my $child=$block->firstChild; defined $child; $child=$next) {
-                    $next = $child->nextSibling;
-                    $block->removeChild($child);
-                    $newp->appendChild($child);
-                  }
-                  $block->appendChild($newp);
-                }
-              }
-            }
-            $replacement->appendChild($block);
-          }
-        } else {
-          # replace the whole p by this block, forgetting about intermediate inline elements
-          $n->parentNode->removeChild($n);
-          if ($n->nodeName eq 'br') {
-            # replace a br by a paragraph if there was nothing before in the paragraph,
-            # otherwise remove it because it already broke the paragraph in half
-            if (!defined $left) {
-              $replacement->appendChild($middle);
-            }
-          } else {
-            fix_paragraphs_inside($n, $all_block);
-            $replacement->appendChild($n);
-          }
-        }
-        last;
-      }
-      $n = $n->firstChild;
-      if (defined $n && defined $n->nextSibling) {
-        die "Error in post_xml.fix_paragraph: block not found";
-      }
-    }
-    if (defined $right) {
-      if ($block->nodeName eq 'p') {
-        # remove attributes on the right paragraph
-        my @attributelist = $right->attributes();
-        foreach my $att (@attributelist) {
-          $right->removeAttribute($att->nodeName);
-        }
-      }
-      if ($right->firstChild->nodeType == XML_TEXT_NODE && $right->firstChild->nodeValue =~ /^\s*$/) {
-        # remove the first text node with whitespace only from the p, it should not trigger the creation of a p
-        my $first = $right->firstChild;
-        $right->removeChild($first);
-        $replacement->appendChild($first);
-      }
-      if (defined $right->firstChild) {
-        if (paragraph_needed($right)) {
-          $replacement->appendChild($right);
-          fix_paragraph($right, $all_block);
-        } else {
+  my $loop_right = 1; # this loops is to avoid out of memory errors with recurse, see below
+  while ($loop_right) {
+    $loop_right = 0;
+    my $block = find_first_block($p, $all_block);
+    if (defined $block) {
+      my $trees = clone_ancestor_around_node($p, $block);
+      my $doc = $p->ownerDocument;
+      my $replacement = $doc->createDocumentFragment();
+      my $left = $trees->{'left'};
+      my $middle = $trees->{'middle'};
+      my $right = $trees->{'right'};
+      if (defined $left) {
+        if (!paragraph_needed($left)) {
           # this was just blank text, comments or inline responses, it should not create a new paragraph
           my $next;
-          for (my $child=$right->firstChild; defined $child; $child=$next) {
+          for (my $child=$left->firstChild; defined $child; $child=$next) {
             $next = $child->nextSibling;
-            $right->removeChild($child);
+            $left->removeChild($child);
             $replacement->appendChild($child);
+          }
+        } else {
+          $replacement->appendChild($left);
+          # fix paragraphs inside, in case one of the descendants can have paragraphs inside (like numericalresponse/hintgroup):
+          my $next;
+          for (my $child=$left->firstChild; defined $child; $child=$next) {
+            $next = $child->nextSibling;
+            fix_paragraphs_inside($child, $all_block);
           }
         }
       }
-    }
-    $p->parentNode->replaceChild($replacement, $p);
-  } else {
-    # fix paragraphs inside, in case one of the descendants can have paragraphs inside (like numericalresponse/hintgroup):
-    my $next;
-    for (my $child=$p->firstChild; defined $child; $child=$next) {
-      $next = $child->nextSibling;
-      fix_paragraphs_inside($child, $all_block);
+      my $n = $middle->firstChild;
+      while (defined $n) {
+        if ($n->nodeType == XML_ELEMENT_NODE && (string_in_array($all_block, $n->nodeName) || $n->nodeName eq 'br')) {
+          if ($n->nodeName eq 'p') {
+            my $parent = $n->parentNode;
+            # first apply recursion
+            fix_paragraph($n, $all_block);
+            # now the p might have been replaced by several nodes, which should replace the initial p
+            my $next_block;
+            for (my $block=$parent->firstChild; defined $block; $block=$next_block) {
+              $next_block = $block->nextSibling;
+              if ($block->nodeName eq 'p') {
+                $parent->removeChild($block);
+                # for each parent before $middle, clone in-between the p and its children (to preserve the styles)
+                if (defined $block->firstChild) {
+                  for (my $p=$parent; $p!=$middle; $p=$p->parentNode) {
+                    my $newp = $p->cloneNode(0);
+                    my $next;
+                    for (my $child=$block->firstChild; defined $child; $child=$next) {
+                      $next = $child->nextSibling;
+                      $block->removeChild($child);
+                      $newp->appendChild($child);
+                    }
+                    $block->appendChild($newp);
+                  }
+                }
+              }
+              $replacement->appendChild($block);
+            }
+          } else {
+            # replace the whole p by this block, forgetting about intermediate inline elements
+            $n->parentNode->removeChild($n);
+            if ($n->nodeName eq 'br') {
+              # replace a br by a paragraph if there was nothing before in the paragraph,
+              # otherwise remove it because it already broke the paragraph in half
+              if (!defined $left) {
+                $replacement->appendChild($middle);
+              }
+            } else {
+              fix_paragraphs_inside($n, $all_block);
+              $replacement->appendChild($n);
+            }
+          }
+          last;
+        }
+        $n = $n->firstChild;
+        if (defined $n && defined $n->nextSibling) {
+          die "Error in post_xml.fix_paragraph: block not found";
+        }
+      }
+      if (defined $right) {
+        if ($block->nodeName eq 'p') {
+          # remove attributes on the right paragraph
+          my @attributelist = $right->attributes();
+          foreach my $att (@attributelist) {
+            $right->removeAttribute($att->nodeName);
+          }
+        }
+        if ($right->firstChild->nodeType == XML_TEXT_NODE && $right->firstChild->nodeValue =~ /^\s*$/) {
+          # remove the first text node with whitespace only from the p, it should not trigger the creation of a p
+          my $first = $right->firstChild;
+          $right->removeChild($first);
+          $replacement->appendChild($first);
+        }
+        if (defined $right->firstChild) {
+          if (paragraph_needed($right)) {
+            $replacement->appendChild($right);
+            #fix_paragraph($right, $all_block); This is taking way too much memory for blocks with many children
+            # -> loop instead of recurse
+            $loop_right = 1;
+          } else {
+            # this was just blank text, comments or inline responses, it should not create a new paragraph
+            my $next;
+            for (my $child=$right->firstChild; defined $child; $child=$next) {
+              $next = $child->nextSibling;
+              $right->removeChild($child);
+              $replacement->appendChild($child);
+            }
+          }
+        }
+      }
+      $p->parentNode->replaceChild($replacement, $p);
+      if ($loop_right) {
+        $p = $right;
+      }
+    } else {
+      # fix paragraphs inside, in case one of the descendants can have paragraphs inside (like numericalresponse/hintgroup):
+      my $next;
+      for (my $child=$p->firstChild; defined $child; $child=$next) {
+        $next = $child->nextSibling;
+        fix_paragraphs_inside($child, $all_block);
+      }
     }
   }
 }
