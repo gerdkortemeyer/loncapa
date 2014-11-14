@@ -291,6 +291,8 @@ sub fix_html_entities {
 # Tries to fix things like <font color="#990000" face="Verdana,>
 # without breaking <a b="c>d">
 # This is only fixing tags when there is a single tag in a line (it is impossible to fix in the general case).
+# Also transforms <a b="c> <d e=" into <a b="c"><d e=" ,
+# and (no markup before)<a b="c> (no quote after) into <a b="c"> .
 sub fix_missing_quotes {
   my ($lines) = @_;
   foreach my $line (@{$lines}) {
@@ -307,6 +309,8 @@ sub fix_missing_quotes {
         }
       }
     }
+    $line =~ s/(<[a-zA-Z]+ [a-zA-Z]+="[^"<>\s]+)(>\s*<[a-zA-Z]+ [a-zA-Z]+=")/$1"$2/;
+    $line =~ s/^([^"<>]*<[a-zA-Z]+ [a-zA-Z]+="[^"<>\s]+)(>[^"]*)$/$1"$2/;
   }
 }
 
