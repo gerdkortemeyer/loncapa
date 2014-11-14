@@ -83,15 +83,15 @@
       <MENU nom="Hints">
         <MENU_INSERTION nom="hint"/>
         <MENU_INSERTION nom="hintgroup"/>
-        <MENU_INSERTION nom="stringhint"/>
-        <MENU_INSERTION nom="radiobuttonhint"/>
-        <MENU_INSERTION nom="optionhint"/>
-        <MENU_INSERTION nom="numericalhint"/>
-        <MENU_INSERTION nom="formulahint"/>
-        <MENU_INSERTION nom="mathhint"/>
-        <MENU_INSERTION nom="organichint"/>
-        <MENU_INSERTION nom="reactionhint"/>
-        <MENU_INSERTION nom="customhint"/>
+        <MENU_INSERTION nom="stringhintcondition"/>
+        <MENU_INSERTION nom="radiobuttonhintcondition"/>
+        <MENU_INSERTION nom="optionhintcondition"/>
+        <MENU_INSERTION nom="numericalhintcondition"/>
+        <MENU_INSERTION nom="formulahintcondition"/>
+        <MENU_INSERTION nom="mathhintcondition"/>
+        <MENU_INSERTION nom="organichintcondition"/>
+        <MENU_INSERTION nom="reactionhintcondition"/>
+        <MENU_INSERTION nom="customhintcondition"/>
       </MENU>
       <MENU nom="Common">
         <MENU_INSERTION nom="foilgroup"/>
@@ -186,16 +186,16 @@
     <AFFICHAGE_ELEMENT element="problem" type="lcdblock"/>
     
     <AFFICHAGE_ELEMENT element="stringresponse" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="stringhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="stringhintcondition" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="essayresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="radiobuttonresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="foilgroup" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="conceptgroup" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="foil" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="radiobuttonhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="radiobuttonhintcondition" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="optionresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="drawoptionlist" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="optionhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="optionhintcondition" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="matchresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="itemgroup" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="item" type="lcdblock"/>
@@ -212,11 +212,11 @@
     </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="vector" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="value" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="numericalhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="numericalhintcondition" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="formularesponse" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="formulahint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="formulahintcondition" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="mathresponse" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="mathhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="mathhintcondition" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotresponse" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotelements" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="spline" type="lcdblock"/>
@@ -238,11 +238,11 @@
     <AFFICHAGE_ELEMENT element="functionplotvectorsumrule" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="functionplotcustomrule" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="organicresponse" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="organichint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="organichintcondition" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="reactionresponse" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="reactionhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="reactionhintcondition" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="customresponse" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="customhint" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="customhintcondition" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="externalresponse" type="lcdblock"/>
     
     <AFFICHAGE_ELEMENT element="textfield" type="lcdblock"/>
@@ -501,7 +501,7 @@
         <TITRE>pre-processor subroutine</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="stringhint">
+    <STRINGS_ELEMENT element="stringhintcondition">
       <TITRE>String Hint Condition</TITRE>
       <DOCUMENTATION>
         This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
@@ -611,7 +611,7 @@
         <TITRE_VALEUR valeur="bottom">bottom</TITRE_VALEUR>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="radiobuttonhint">
+    <STRINGS_ELEMENT element="radiobuttonhintcondition">
       <TITRE>Radiobutton Hint Condition</TITRE>
       <DOCUMENTATION>
         The radiobutton hint tag takes two parameters: answer and name. The name is the name of the hint condition, and the answer is an array. The first element of the array will be 'foil'; the remaining elements are the names of the foils that you require to have been checked by the student for the hint to be displayed. For example, if you create a radiobutton response problem with six foils named: granite, gabbro, gneiss, shale, sandstone and schist, and you want your hint named: igneous to be displayed when either granite or basalt had been checked your radiobutton hint would be as follows:
@@ -666,7 +666,7 @@
     <STRINGS_ELEMENT element="drawoptionlist">
       <TITRE>Draw Option List</TITRE>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="optionhint">
+    <STRINGS_ELEMENT element="optionhintcondition">
       <TITRE>Option Response Hint Condition</TITRE>
       <DOCUMENTATION>
         This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
@@ -868,7 +868,7 @@
     <STRINGS_ELEMENT element="value">
       <TITRE>Value</TITRE>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="numericalhint">
+    <STRINGS_ELEMENT element="numericalhintcondition">
       <TITRE>Numerical Hint Condition</TITRE>
       <DOCUMENTATION>
         This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
@@ -926,7 +926,7 @@
         <TITRE>pre-processor subroutine</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="formulahint">
+    <STRINGS_ELEMENT element="formulahintcondition">
       <TITRE>Formula Hint Condition</TITRE>
       <DOCUMENTATION>
         The formula submitted by the student is evaluated at the sample points for the hint and the calculated values are compared with the corresponding values determined by evaluating the "hint" answer at the same sampling points. A close correspondence between the two sets of values will trigger the hint action specified in the &lt;hint&gt; element.
@@ -986,7 +986,7 @@
         <TITRE>libraries</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="mathhint">
+    <STRINGS_ELEMENT element="mathhintcondition">
       <TITRE>Math Hint Condition</TITRE>
       <DOCUMENTATION>
         This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
@@ -1466,7 +1466,7 @@
         <TITRE>width of correct answer image</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="organichint">
+    <STRINGS_ELEMENT element="organichintcondition">
       <TITRE>Organic Hint Condition</TITRE>
       <DOCUMENTATION>
         This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
@@ -1502,7 +1502,7 @@
         <TITRE>initial reaction</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="reactionhint">
+    <STRINGS_ELEMENT element="reactionhintcondition">
       <TITRE>Reaction Hint Condition</TITRE>
       <DOCUMENTATION>
         This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
@@ -1536,7 +1536,7 @@
         <TITRE>string to display for answer</TITRE>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="customhint">
+    <STRINGS_ELEMENT element="customhintcondition">
       <TITRE>Custom Hint Condition</TITRE>
       <DOCUMENTATION>
         This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).

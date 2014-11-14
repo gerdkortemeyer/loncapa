@@ -358,7 +358,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="parameter"/>
         <xs:element ref="hiddenline"/>
-        <xs:element ref="stringhint"/>
+        <xs:element ref="stringhintcondition"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -410,7 +410,7 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-  <xs:element name="stringhint">
+  <xs:element name="stringhintcondition">
     <xs:annotation>
       <xs:documentation>
         String Hint Condition
@@ -496,7 +496,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="foilgroup" type="radiobuttonresponse--foilgroup"/>
         <xs:element ref="parameter"/>
-        <xs:element ref="radiobuttonhint"/>
+        <xs:element ref="radiobuttonhintcondition"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -590,7 +590,7 @@
     </xs:attribute>
     <xs:attribute default="random" name="location" type="location-or-perl"/>
   </xs:complexType>
-  <xs:element name="radiobuttonhint">
+  <xs:element name="radiobuttonhintcondition">
     <xs:annotation>
       <xs:documentation>
         Radiobutton Hint Condition
@@ -645,7 +645,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element name="foilgroup" type="optionresponse--foilgroup"/>
         <xs:element ref="parameter"/>
-        <xs:element ref="optionhint"/>
+        <xs:element ref="optionhintcondition"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -794,7 +794,7 @@
       <xs:documentation>Draw Option List</xs:documentation>
     </xs:annotation>
   </xs:complexType>
-  <xs:element name="optionhint">
+  <xs:element name="optionhintcondition">
     <xs:annotation>
       <xs:documentation>
         Option Response Hint Condition
@@ -1201,7 +1201,7 @@
         <xs:element ref="parameter"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
         <xs:element ref="hiddenline"/>
-        <xs:element ref="numericalhint"/>
+        <xs:element ref="numericalhintcondition"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -1296,7 +1296,7 @@
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
-  <xs:element name="numericalhint">
+  <xs:element name="numericalhintcondition">
     <xs:annotation>
       <xs:documentation>
         Numerical Hint Condition
@@ -1350,7 +1350,7 @@
         <xs:element ref="parameter"/>
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
         <xs:element ref="hiddenline"/>
-        <xs:element ref="formulahint"/>
+        <xs:element ref="formulahintcondition"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -1381,7 +1381,7 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-  <xs:element name="formulahint">
+  <xs:element name="formulahintcondition">
     <xs:annotation>
       <xs:documentation>
         Formula Hint Condition
@@ -1452,7 +1452,7 @@
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
-        <xs:element ref="mathhint"/>
+        <xs:element ref="mathhintcondition"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -1500,7 +1500,7 @@
     <xs:attribute name="type" type="xs:string"/>
     <xs:attribute fixed="preserve" ref="xml:space"/>
   </xs:complexType>
-  <xs:element name="mathhint">
+  <xs:element name="mathhintcondition">
     <xs:annotation>
       <xs:documentation>
         Math Hint Condition
@@ -2235,8 +2235,8 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="parameter"/>
         <xs:element ref="hiddenline"/>
-        <xs:element ref="organichint"/>
-        <xs:element ref="stringhint"/>
+        <xs:element ref="organichintcondition"/>
+        <xs:element ref="stringhintcondition"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -2288,7 +2288,7 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-  <xs:element name="organichint">
+  <xs:element name="organichintcondition">
     <xs:annotation>
       <xs:documentation>
         Organic Hint Condition
@@ -2327,8 +2327,8 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="parameter"/>
         <xs:element ref="hiddenline"/>
-        <xs:element ref="reactionhint"/>
-        <xs:element ref="stringhint"/>
+        <xs:element ref="reactionhintcondition"/>
+        <xs:element ref="stringhintcondition"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -2345,7 +2345,7 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-  <xs:element name="reactionhint">
+  <xs:element name="reactionhintcondition">
     <xs:annotation>
       <xs:documentation>
         Reaction Hint Condition
@@ -2388,7 +2388,7 @@
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
-        <xs:element ref="customhint"/>
+        <xs:element ref="customhintcondition"/>
         <xs:group ref="text-without-responses"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -2422,7 +2422,7 @@
     <xs:attribute name="type" type="xs:string"/>
     <xs:attribute fixed="preserve" ref="xml:space"/>
   </xs:complexType>
-  <xs:element name="customhint">
+  <xs:element name="customhintcondition">
     <xs:annotation>
       <xs:documentation>
         Custom Hint Condition
