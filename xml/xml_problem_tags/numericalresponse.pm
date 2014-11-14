@@ -154,11 +154,12 @@ sub answertest {
     }
     if ($special eq 'sets') {
 # We are dealing with sets and intervals as answers
-    } elsif ($special=~/(gt|ge|lt|le)/) {
+    } elsif ($special=~/^(gt|ge|lt|le)$/) {
 # Number greater than, less than, etc
-    } elsif ($special=~/(inside|outside)/) {
-# Inside or outside an interval
-    
+    } elsif ($special=~/^(insideopen|outsideopen|insideclosed|outsideclosed)$/) {
+# Inside or outside an open or closed interval
+    } elsif ($special eq 'or') {
+# One of the values in an array
     } else {
 # We are dealing with scalars or vectors
        try {
