@@ -200,9 +200,25 @@ sub answertest {
        $expected=~s/[\[\]]//gs;
        my ($answererror,$answer)=&evaluate_in_parser($parser,$env,$expected);
        my ($answervalue,$answerunit)=&value_unit($answer);
-      
-&logdebug("[$responsevalue] [$responseunit] [$answervalue] [$answerunit]");
-
+# If the units do not come out the same, there is a problem
+       unless ($responseunit eq $answerunit) {
+          return(&wrong_unit_dimension,undef);
+       }
+# Now it's up to comparing the numerical values
+       if ($special eq 'gt') {
+          if ($responsevalue>$answervalue) { return(&correct(),undef); }
+       }
+       if ($special eq 'ge') {
+          if ($responsevalue>$answervalue) { return(&correct(),undef); }
+       }
+       if ($special eq 'lt') {
+          if ($responsevalue<$answervalue) { return(&correct(),undef); }
+       }
+       if ($special eq 'le') {
+          if ($responsevalue<=$answervalue) { return(&correct(),undef); }
+       }
+# Nope
+       return(&incorrect(),undef);
     } elsif ($special=~/^(insideopen|outsideopen|insideclosed|outsideclosed)$/) {
 # Inside or outside an open or closed interval
     } elsif ($special eq 'or') {
