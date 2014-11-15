@@ -156,6 +156,14 @@ sub evaluate_in_parser {
    }
 }
 
+sub value_unit {
+   my ($term)=@_;
+   my ($termvalue,$termunit)=($term=~/^\s*(\S*)\s*(.*)$/);
+   $termunit=~s/^\s+//gs;
+   $termunit=~s/\s+$//gs;
+   return($termvalue,$termunit);
+}
+
 # A numeric comparison of $expression and $expected
 #
 sub answertest {
@@ -180,6 +188,21 @@ sub answertest {
        if ($expected=~/\;/) {
           return(&answer_scalar_required(),undef);
        }
+# Evalute both scalars
+# Student response
+       $expression=~s/[\[\]]//gs;
+       my ($responseerror,$response)=&evaluate_in_parser($parser,$env,$expression);
+       if ($responseerror) {
+          return($responseerror,$response);
+       }
+       my ($responsevalue,$responseunit)=&value_unit($response);
+# Problem answer
+       $expected=~s/[\[\]]//gs;
+       my ($answererror,$answer)=&evaluate_in_parser($parser,$env,$expected);
+       my ($answervalue,$answerunit)=&value_unit($answer);
+      
+&logdebug("[$responsevalue] [$responseunit] [$answervalue] [$answerunit]");
+
     } elsif ($special=~/^(insideopen|outsideopen|insideclosed|outsideclosed)$/) {
 # Inside or outside an open or closed interval
     } elsif ($special eq 'or') {
