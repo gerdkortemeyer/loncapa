@@ -168,6 +168,9 @@ sub value_unit {
 #
 sub answertest {
     my ($parser,$env,$expression, $expected, $tolerance, $special)=@_;
+
+&logdebug("Answertest [$expression] [$expected] [$special]");
+
     if (!defined $tolerance) {
         $tolerance = 1e-5;
     }
@@ -178,7 +181,30 @@ sub answertest {
        return(&no_valid_answer(),undef);
     }
     if ($special eq 'sets') {
-# We are dealing with sets and intervals as answers
+# We are dealing with sets as answers
+    } elsif ($special eq 'unordered') {
+# [2;42;17]=[42;2;17]
+# Evaluate response
+       my ($responseerror,$response)=&evaluate_in_parser($parser,$env,$expression);
+       if ($responseerror) {
+          return($responseerror,$response);
+       }
+       $response=~s/[\[\]]//gs;
+       my $sortedresponse='['.join(';',sort { (&value_unit($a))[0] <=> (&value_unit($b))[0] } (split(/\;/,$response))).']';
+# Evaluate answer
+       my ($answererror,$answer)=&evaluate_in_parser($parser,$env,$expected);
+       if ($answererror) {
+          return($answererror,$answer);
+       }
+       $answer=~s/[\[\]]//gs;
+       my $sortedanswer='['.join(';',sort { (&value_unit($a))[0] <=> (&value_unit($b))[0] } (split(/\;/,$answer))).']';
+       return &answertest($parser,$env,$sortedresponse,$sortedanswer,$tolerance);
+    } elsif ($special eq 'intervals') {
+# Intervals
+# (2;42]u(17;56]=(2;56]
+&logdebug("Expression: ".$expression);
+&logdebug("Expected: ".$expected);
+
     } elsif ($special=~/^(gt|ge|lt|le)$/) {
 # Number greater than, less than, etc
 # We can only do this for scalars
@@ -199,6 +225,9 @@ sub answertest {
 # Problem answer
        $expected=~s/[\[\]]//gs;
        my ($answererror,$answer)=&evaluate_in_parser($parser,$env,$expected);
+       if ($answererror) {
+          return($answererror,$answer);
+       }
        my ($answervalue,$answerunit)=&value_unit($answer);
 # If the units do not come out the same, there is a problem
        unless ($responseunit eq $answerunit) {
