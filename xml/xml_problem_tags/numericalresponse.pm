@@ -221,6 +221,61 @@ sub answertest {
        return(&incorrect(),undef);
     } elsif ($special=~/^(insideopen|outsideopen|insideclosed|outsideclosed)$/) {
 # Inside or outside an open or closed interval
+# Evaluate the answer
+       my ($error,$answer)=&evaluate_in_parser($parser,$env,$expected);
+       if ($error) {
+          return($error,$answer);
+       }
+# This only works if the problem provides upper and lower limits
+       unless ($answer=~/\;/) {
+          return(&answer_array_required(),undef);
+       }
+# Answer seems to be clean, split it
+       $answer=~s/[\[\]]//gs;
+       my ($lower,$upper)=split(/\;/,$answer);
+# Figure out the boundary relationship
+       my ($lowerbound,$upperbound);
+       if ($special eq 'insideopen') {
+          $lowerbound='gt';
+          $upperbound='lt';
+       }
+       if ($special eq 'outsideopen') {
+          $lowerbound='le';
+          $upperbound='ge';
+       }
+       if ($special eq 'insideclosed') {
+          $lowerbound='ge';
+          $upperbound='le';
+       }
+       if ($special eq 'outsideclosed') {
+          $lowerbound='lt';
+          $upperbound='gt';
+       }
+# Do the evaluation
+       my ($lowercode,$lowermessage)=&answertest($parser,$env,$expression,$lower,undef,$lowerbound);
+       my ($uppercode,$uppermessage)=&answertest($parser,$env,$expression,$upper,undef,$upperbound);
+# Both correct: great!
+       if (($lowercode eq &correct()) && ($uppercode eq &correct())) {
+          return (&correct(),undef);
+       }
+# Both incorrect: not good
+       if (($lowercode eq &incorrect()) && ($uppercode eq &incorrect())) {
+          return (&incorrect(),undef);
+       }
+# One right, one wrong, or both wrong: depends!
+       if ((($lowercode eq &incorrect()) && ($uppercode eq &correct())) ||
+           (($lowercode eq &correct()) && ($uppercode eq &incorrect()))) {
+          if ($special=~/inside/) {
+             return (&incorrect(),undef);
+          } else {
+             return (&correct(),undef);
+          }
+       }
+# By now it's neither right nor wrong
+# Both have the same problem
+       if ($lowercode eq $uppercode) { return($lowercode,undef); }
+# No idea what's wrong
+       return(&no_valid_response(),undef);
     } elsif ($special eq 'or') {
 # One of the values in an array
        if ($expression=~/\;/) {
