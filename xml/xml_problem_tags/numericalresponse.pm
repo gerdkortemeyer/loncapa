@@ -156,6 +156,8 @@ sub answertest {
 # We are dealing with sets and intervals as answers
     } elsif ($special=~/^(gt|ge|lt|le)$/) {
 # Number greater than, less than, etc
+# We can only do this for scalars
+       
     } elsif ($special=~/^(insideopen|outsideopen|insideclosed|outsideclosed)$/) {
 # Inside or outside an open or closed interval
     } elsif ($special eq 'or') {
