@@ -110,6 +110,8 @@ sub end_numericalresponse_grade {
    my $tolerance=&Apache::lc_asset_xml::cascade_parameter('tol',$stack);
 # Get the correct answer and unit
    my $expected=&evaluate_answer($stack);
+# Special mode?
+   my $mode=&Apache::lc_asset_xml::open_tag_attribute('mode',$stack);
 # Initialize parser
    my $implicit_operators = 1;
    my $unit_mode = 1;
@@ -123,8 +125,8 @@ sub end_numericalresponse_grade {
       $env->setUnit($new_unit,$new_definition);
    }
 # Do the actual grading
-   my ($outcome,$message)=&answertest($parser,$env,$responses,$expected,$tolerance);
-   &logdebug($outcome.' - '.$message.' - '.$responses.' - '.$expected.' - '.$tolerance);
+   my ($outcome,$message)=&answertest($parser,$env,$responses,$expected,$tolerance,$mode);
+   &logdebug($outcome.' - '.$message.' - '.$responses.' - '.$expected.' - '.$tolerance.' - '.$mode);
 }
 
 sub start_numericalhintcondition_html {
@@ -138,6 +140,21 @@ sub end_numericalhintcondition_html {
    return '';
 }
 
+sub evaluate_in_parser {
+   my ($parser,$env,$term)=@_;
+   try {
+      my $result=$parser->parse($term)->calc($env);
+      return(undef,$result);
+   } catch {
+      if (UNIVERSAL::isa($_,CalcException)) {
+         return(&numerical_error(),undef);
+      } elsif (UNIVERSAL::isa($_,ParseException)) {
+         return(&bad_formula(),undef);
+      } else {
+         return(&internal_error(),$_);
+      }
+   }
+}
 
 # A numeric comparison of $expression and $expected
 #
@@ -147,21 +164,45 @@ sub answertest {
         $tolerance = 1e-5;
     }
     unless ($expression=~/\S/) {
-       return(&no_response(),undef);
+       return(&no_valid_response(),undef);
     }
     unless ($expected=~/\S/) {
-       return(&no_answer(),undef);
+       return(&no_valid_answer(),undef);
     }
     if ($special eq 'sets') {
 # We are dealing with sets and intervals as answers
     } elsif ($special=~/^(gt|ge|lt|le)$/) {
 # Number greater than, less than, etc
 # We can only do this for scalars
-       
+       if ($expression=~/\;/) {
+          return(&response_scalar_required(),undef);
+       }
+       if ($expected=~/\;/) {
+          return(&answer_scalar_required(),undef);
+       }
     } elsif ($special=~/^(insideopen|outsideopen|insideclosed|outsideclosed)$/) {
 # Inside or outside an open or closed interval
     } elsif ($special eq 'or') {
 # One of the values in an array
+       if ($expression=~/\;/) {
+          return(&response_scalar_required(),undef);
+       }
+# Evaluate the instructor answers, will result in vector
+       my ($error,$answers)=&evaluate_in_parser($parser,$env,$expected);
+       if ($error) {
+          return($error,$answers);
+       }
+# Split the vector, test each component
+       $answers=~s/[\[\]]//gs;
+       foreach my $attempt (split(/\;/,$answers)) {
+          my ($code,$message)=&answertest($parser,$env,$expression,$attempt,$tolerance);
+# If it's not incorrect, return it
+          if ($code ne &incorrect()) {
+             return($code,$message);
+          }
+       }
+# Nothing found
+       return(&incorrect,undef);
     } else {
 # We are dealing with scalars or vectors
        try {

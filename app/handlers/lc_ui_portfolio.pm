@@ -311,7 +311,8 @@ sub listdirectory {
           }
           $sort_size=$file->{'metadata'}->{'filedata'}->{'wrk'}->{'size'};
           $size=&Apache::lc_ui_localize::human_readable_size($sort_size);
-          $filename=$file->{'filename'};
+          $filename='<a href="#" onClick="parent.display_asset(\'/asset/wrk/-/'.$file->{'url'}.'\')" class="lcdirlink">'.
+                    $file->{'filename'}.'</a>';
           $sort_type=&Apache::lc_file_utils::file_icon($file->{'type'},$file->{'filename'});
        } else {
 # It's a directory
