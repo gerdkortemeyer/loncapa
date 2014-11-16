@@ -166,6 +166,8 @@ sub value_unit {
 
 sub evaluate_intervals {
    my ($parser,$env,$term)=@_;
+# Turn the sequence of intervals into a vector of vectors ("matrix"),
+# so we can evaluate units, etc.
    my $vector=$term;
    $vector=~s/\(/\[/gs;
    $vector=~s/\)/\]/gs;
@@ -175,8 +177,21 @@ sub evaluate_intervals {
       $vector=~s/([\)\]])([^\)\]]+)$/$1\]$2/s;
    }
 &logdebug("Vector: $vector");
-   $vector=&evaluate_in_parser($parser,$env,$vector);
+# See if this works
+   my ($vectorerror,$vector)=&evaluate_in_parser($parser,$env,$vector);
+   if ($vectorerror) {
+      return($vectorerror,undef,undef);
+   }
 &logdebug("Evaluated  Vector: $vector");
+# Now we have an evaluated vector of vectors and the original
+   $vector=~s/^\[//;
+   $vector=~s/\]^//;
+   $term=~s/^\[//;
+   $term=~s/\]^//;
+# Split into chunks - should get the same number of chunks
+   my @vectorchunks=split(/\s*\;\s*/,$vector);
+   my @termchunks=split(/\s*[u\;]\s*/,$term);
+&logdebug("Compare: ".$#vectorchunks.' '.$#termchunks);
    return(undef,undef,undef);
 }
 
@@ -227,11 +242,10 @@ sub answertest {
     } elsif ($special eq 'intervals') {
 # Intervals
 # (2;42]u(17;56]=(2;56]
-&logdebug("Expression: ".$expression);
-&logdebug("Expected: ".$expected);
         my ($responsecode,$responsesequence,$responsevector)=&evaluate_intervals($parser,$env,$expression);
+        if ($responsecode) { return($responsecode,undef); }
         my ($answercode,$answersequence,$answervector)=&evaluate_intervals($parser,$env,$expected);
-
+        if ($answercode) { return($answercode,undef); }
     } elsif ($special=~/^(gt|ge|lt|le)$/) {
 # Number greater than, less than, etc
 # We can only do this for scalars
