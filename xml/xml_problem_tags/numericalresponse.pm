@@ -164,22 +164,47 @@ sub value_unit {
    return($termvalue,$termunit);
 }
 
+sub evaluate_intervals {
+   my ($parser,$env,$term)=@_;
+   my $vector=$term;
+   $vector=~s/\(/\[/gs;
+   $vector=~s/\)/\]/gs;
+   $vector=~s/\s*u\s*/\;/gs;
+   unless ($vector=~/^\[\[/) {
+      $vector='['.$vector;
+      $vector=~s/([\)\]])([^\)\]]+)$/$1\]$2/s;
+   }
+&logdebug("Vector: $vector");
+   $vector=&evaluate_in_parser($parser,$env,$vector);
+&logdebug("Evaluated  Vector: $vector");
+   return(undef,undef,undef);
+}
+
 # A numeric comparison of $expression and $expected
 #
 sub answertest {
     my ($parser,$env,$expression, $expected, $tolerance, $special)=@_;
 
 &logdebug("Answertest [$expression] [$expected] [$special]");
-
+# Norm the input of multiple responses and answers, make array default
+    if (($expression=~/\;/) && ($expression!~/^\s*[\[\{\(]/)) {
+       $expression='['.$expression.']';
+    }
+    if (($expected=~/\;/) && ($expected!~/^\s*[\[\{\(]/)) {
+       $expected='['.$expected.']';
+    }
+# No tolerance? Be absolutely tolerant!
     if (!defined $tolerance) {
         $tolerance = 1e-5;
     }
+# Nothing specified? Nothing we can do.
     unless ($expression=~/\S/) {
        return(&no_valid_response(),undef);
     }
     unless ($expected=~/\S/) {
        return(&no_valid_answer(),undef);
     }
+# This is where the evaluation starts
     if ($special eq 'sets') {
 # We are dealing with sets as answers
     } elsif ($special eq 'unordered') {
@@ -204,6 +229,8 @@ sub answertest {
 # (2;42]u(17;56]=(2;56]
 &logdebug("Expression: ".$expression);
 &logdebug("Expected: ".$expected);
+        my ($responsecode,$responsesequence,$responsevector)=&evaluate_intervals($parser,$env,$expression);
+        my ($answercode,$answersequence,$answervector)=&evaluate_intervals($parser,$env,$expected);
 
     } elsif ($special=~/^(gt|ge|lt|le)$/) {
 # Number greater than, less than, etc
