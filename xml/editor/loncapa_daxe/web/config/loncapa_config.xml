@@ -341,7 +341,10 @@
     </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="noscript" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="htmlbody" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="section" type="lcdblock"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="section" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="header" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="footer" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="aside" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="h1" type="lcdblock"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="h2" type="lcdblock"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="h3" type="lcdblock"><PARAMETRE nom="style" valeur="GRAS"/></AFFICHAGE_ELEMENT>
@@ -424,6 +427,8 @@
     <AFFICHAGE_ELEMENT element="hr" type="hr"/>
     <AFFICHAGE_ELEMENT element="blockquote" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="img" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="figure" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="figcaption" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="object" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="param" type="vide"/>
     <AFFICHAGE_ELEMENT element="embed" type="lcdblock"/>
@@ -2656,7 +2661,7 @@
     </STRINGS_ELEMENT>
     
     <STRINGS_ELEMENT element="htmlhead">
-      <TITRE>HTML Header</TITRE>
+      <TITRE>HTML Head</TITRE>
       <DOCUMENTATION>
         The HTML Head Element (&lt;head&gt;) provides general information (metadata) about the document, including its title and links to or definitions of scripts and style sheets.
       </DOCUMENTATION>
@@ -2816,6 +2821,24 @@
       <STRINGS_ATTRIBUT attribut="class">
         <TITRE>class</TITRE>
       </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="header">
+      <TITRE>Header</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;header&gt; Element represents a group of introductory or navigational aids. It may contain some heading elements but also other elements like a logo, wrapped section's header, a search form, and so on.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="footer">
+      <TITRE>Footer</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;footer&gt; Element represents a footer for its nearest sectioning content or sectioning root element (i.e, its nearest parent &lt;article&gt;, &lt;aside&gt;, &lt;nav&gt;, &lt;section&gt;, &lt;blockquote&gt;, &lt;body&gt;, &lt;details&gt;, &lt;fieldset&gt;, &lt;figure&gt;, &lt;td&gt;). A footer typically contains information about the author of the section, copyright data or links to related documents.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="aside">
+      <TITRE>Aside</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;aside&gt; element represents a section of the page with content connected tangentially to the rest, which could be considered separate from that content. These sections are often represented as sidebars or inserts. They often contain the definitions on the sidebars, such as definitions from the glossary; there may also be other types of information, such as related advertisements; the biography of the author; web applications; profile information or related links on the blog.
+      </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="h1">
       <TITRE>Lvl 1 Title</TITRE>
@@ -3196,6 +3219,20 @@
       <STRINGS_ATTRIBUT attribut="encrypturl">
         <TITRE>encrypt url</TITRE>
       </STRINGS_ATTRIBUT>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="figure">
+      <TITRE>Figure</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;figure&gt; Element represents self-contained content, frequently with a caption (&lt;figcaption&gt;), and is typically referenced as a single unit. While it is related to the main flow, its position is independent of the main flow. Usually this is an image, an illustration, a diagram, a code snippet, or a schema that is referenced in the main text, but that can be moved to another page or to an appendix without affecting the main flow.
+        
+        Usage note: A caption can be associated with the &lt;figure&gt; element by inserting a &lt;figcaption&gt; inside it (as the first or the last child).
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="figcaption">
+      <TITRE>Figure Caption</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;figcaption&gt; Element represents a caption or a legend associated with a figure or an illustration described by the rest of the data of the &lt;figure&gt; element which is its immediate ancestor which means &lt;figcaption&gt; can be the first or last element inside a &lt;figure&gt; block. Also, the HTML Figcaption Element is optional; if not provided, then the parent figure element will have no caption.
+      </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="object">
       <TITRE>Object</TITRE>

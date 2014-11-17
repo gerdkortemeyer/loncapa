@@ -182,10 +182,14 @@
       
       <xs:element ref="script"/>
       <xs:group ref="heading"/>
-      <xs:element ref="pre"/>
       <xs:element ref="noscript"/>
+      <xs:element ref="header"/>
+      <xs:element ref="footer"/>
+      <xs:element ref="aside"/>
+      <xs:element ref="pre"/>
       <xs:element ref="hr"/>
       <xs:element ref="blockquote"/>
+      <xs:element ref="figure"/>
       <xs:element ref="object"/>
       <xs:element ref="applet"/>
       <xs:element ref="embed"/>
@@ -5105,6 +5109,46 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  <xs:element name="header">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;header&gt; Element represents a group of introductory or navigational aids. It may contain some heading elements but also other elements like a logo, wrapped section's header, a search form, and so on.
+        
+        This element should have no &lt;footer&gt; or &lt;header&gt; descendants.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="footer">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;footer&gt; Element represents a footer for its nearest sectioning content or sectioning root element (i.e, its nearest parent &lt;article&gt;, &lt;aside&gt;, &lt;nav&gt;, &lt;section&gt;, &lt;blockquote&gt;, &lt;body&gt;, &lt;details&gt;, &lt;fieldset&gt;, &lt;figure&gt;, &lt;td&gt;). A footer typically contains information about the author of the section, copyright data or links to related documents.
+        
+        This element should have no &lt;footer&gt; or &lt;header&gt; descendants.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="aside">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;aside&gt; element represents a section of the page with content connected tangentially to the rest, which could be considered separate from that content. These sections are often represented as sidebars or inserts. They often contain the definitions on the sidebars, such as definitions from the glossary; there may also be other types of information, such as related advertisements; the biography of the author; web applications; profile information or related links on the blog.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="h1" type="headerContent">
     <xs:annotation>
       <xs:documentation>
@@ -6065,6 +6109,43 @@
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute default="no" name="encrypturl" type="yesno-or-perl"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="figure">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;figure&gt; Element represents self-contained content, frequently with a caption (&lt;figcaption&gt;), and is typically referenced as a single unit. While it is related to the main flow, its position is independent of the main flow. Usually this is an image, an illustration, a diagram, a code snippet, or a schema that is referenced in the main text, but that can be moved to another page or to an appendix without affecting the main flow.
+        
+        Usage note: A caption can be associated with the &lt;figure&gt; element by inserting a &lt;figcaption&gt; inside it (as the first or the last child).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0">
+        <xs:sequence>
+          <xs:element ref="figcaption"/>
+          <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="text-without-responses"/>
+          </xs:choice>
+        </xs:sequence>
+        <xs:sequence>
+          <xs:choice maxOccurs="unbounded">
+            <xs:group ref="text-without-responses"/>
+          </xs:choice>
+          <xs:element minOccurs="0" ref="figcaption"/>
+        </xs:sequence>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="figcaption">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;figcaption&gt; Element represents a caption or a legend associated with a figure or an illustration described by the rest of the data of the &lt;figure&gt; element which is its immediate ancestor which means &lt;figcaption&gt; can be the first or last element inside a &lt;figure&gt; block. Also, the HTML Figcaption Element is optional; if not provided, then the parent figure element will have no caption.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="object">
