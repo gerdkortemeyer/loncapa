@@ -5796,6 +5796,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlines"/>
       </xs:choice>
+      <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute name="name" type="xs:string"/>
       <xs:attribute name="href" type="xs:string"/>
       <xs:attribute name="target" type="xs:string"/>
