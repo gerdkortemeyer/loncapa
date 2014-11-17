@@ -108,7 +108,7 @@ sub convertToSI {
         my $root = $self->parser->parse($convert);
         return $root->calc($env);
     }
-    # then check base units
+    # then check base units, without or with a prefix
     for (my $i=0; $i < scalar(@{$self->base}); $i++) {
         my $base = $self->base->[$i];
         if ($name eq $base) {
@@ -131,6 +131,19 @@ sub convertToSI {
                     }
                     return $self->baseQuantity($base) * Quantity->new($v);
                 }
+            }
+        }
+    }
+    # now check derived units with a prefix
+    foreach my $derived_name (keys(%{$self->derived})) {
+        if ($name =~ /$derived_name$/) {
+            my $prefix_v = $self->prefix->{substr($name, 0, length($name) - length($derived_name))};
+            if (defined $prefix_v) {
+                $prefix_v =~ s/10\^/1E/;
+                my $convert = $self->derived->{$derived_name};
+                my $root = $self->parser->parse($convert);
+                my $derived_v = $root->calc($env);
+                return $derived_v * Quantity->new($prefix_v);
             }
         }
     }
