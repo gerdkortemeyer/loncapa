@@ -89,10 +89,11 @@ sub start {
       end('tr');
     }
   } elsif ($tagname eq 'td' || $tagname eq 'th') {
+    my $ind_table = last_index_of(\@stack, 'table');
     my $ind_td = last_index_of(\@stack, 'td');
     my $ind_th = last_index_of(\@stack, 'th');
     my $ind_tr = last_index_of(\@stack, 'tr');
-    if ($ind_tr == -1) {
+    if ($ind_tr == -1 || ($ind_table != -1 && $ind_table > $ind_tr)) {
       start('tr');
       $ind_tr = last_index_of(\@stack, 'tr');
     }
