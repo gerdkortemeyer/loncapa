@@ -19,7 +19,7 @@
   </xs:annotation>
   <xs:simpleType name="perl">
     <xs:restriction base="xs:string">
-      <xs:pattern value="\s*(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{].+[\]\}])*(\([^$&amp;\)]+\))*\s*"/>
+      <xs:pattern value="\s*-?(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{].+[\]\}])*(\([^$&amp;\)]+\))*\s*"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="int-or-perl">
@@ -6214,14 +6214,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="width" type="htmlLength">
+      <xs:attribute name="width" type="htmlLength-or-perl">
         <xs:annotation>
           <xs:documentation>
             The width of the display resource, in CSS pixels.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="height" type="htmlLength">
+      <xs:attribute name="height" type="htmlLength-or-perl">
         <xs:annotation>
           <xs:documentation>
             The height of the displayed resource, in CSS pixels.
@@ -6479,14 +6479,14 @@
         <xs:group ref="inlines"/>
       </xs:choice>
       <xs:attributeGroup ref="coreattrs"/>
-      <xs:attribute default="300" name="width" type="htmlLength">
+      <xs:attribute default="300" name="width" type="htmlLength-or-perl">
         <xs:annotation>
           <xs:documentation>
             The width of the coordinate space in CSS pixels.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="150" name="height" type="htmlLength">
+      <xs:attribute default="150" name="height" type="htmlLength-or-perl">
         <xs:annotation>
           <xs:documentation>
             The height of the coordinate space in CSS pixels.

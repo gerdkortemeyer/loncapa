@@ -19,7 +19,7 @@
   </xs:annotation>
   <xs:simpleType name="perl">
     <xs:restriction base="xs:string">
-      <xs:pattern value="\s*(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{].+[\]\}])*(\([^$&amp;\)]+\))*\s*"/>
+      <xs:pattern value="\s*-?(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{].+[\]\}])*(\([^$&amp;\)]+\))*\s*"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="int-or-perl">
@@ -93,6 +93,7 @@
         <xs:element ref="htmlbody"/>
         <xs:element ref="problem"/>
         <xs:group ref="text-without-responses"/>
+        <xs:element ref="lcmeta"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4982,7 +4983,7 @@
     <xs:complexType mixed="true">
       <xs:attributeGroup ref="i18n"/>
       <xs:attribute name="id" type="xs:ID"/>
-      <xs:attribute name="type" type="xs:string" use="required"/>
+      <xs:attribute default="text/css" name="type" type="xs:string"/>
       <xs:attribute name="media" type="MediaDesc"/>
       <xs:attribute name="title" type="xs:string"/>
       <xs:attribute fixed="preserve" ref="xml:space"/>
@@ -6214,14 +6215,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="width" type="htmlLength">
+      <xs:attribute name="width" type="htmlLength-or-perl">
         <xs:annotation>
           <xs:documentation>
             The width of the display resource, in CSS pixels.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="height" type="htmlLength">
+      <xs:attribute name="height" type="htmlLength-or-perl">
         <xs:annotation>
           <xs:documentation>
             The height of the displayed resource, in CSS pixels.
@@ -6324,6 +6325,17 @@
       <xs:attribute name="name" type="xs:NMTOKEN"/>
       <xs:attribute name="width" type="non-negative-int-or-perl" use="required"/>
       <xs:attribute name="height" type="non-negative-int-or-perl" use="required"/>
+      <xs:attribute name="align">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="top"/>
+            <xs:enumeration value="middle"/>
+            <xs:enumeration value="bottom"/>
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="right"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
       <xs:attribute name="hspace" type="xs:nonNegativeInteger"/>
       <xs:attribute name="vspace" type="xs:nonNegativeInteger"/>
     </xs:complexType>
@@ -6479,14 +6491,14 @@
         <xs:group ref="inlines"/>
       </xs:choice>
       <xs:attributeGroup ref="coreattrs"/>
-      <xs:attribute default="300" name="width" type="htmlLength">
+      <xs:attribute default="300" name="width" type="htmlLength-or-perl">
         <xs:annotation>
           <xs:documentation>
             The width of the coordinate space in CSS pixels.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="150" name="height" type="htmlLength">
+      <xs:attribute default="150" name="height" type="htmlLength-or-perl">
         <xs:annotation>
           <xs:documentation>
             The height of the coordinate space in CSS pixels.

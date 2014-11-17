@@ -19,7 +19,7 @@
   </xs:annotation>
   <xs:simpleType name="perl">
     <xs:restriction base="xs:string">
-      <xs:pattern value="\s*(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{].+[\]\}])*(\([^$&amp;\)]+\))*\s*"/>
+      <xs:pattern value="\s*-?(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{].+[\]\}])*(\([^$&amp;\)]+\))*\s*"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="int-or-perl">
@@ -6489,6 +6489,17 @@
       <xs:attribute name="name" type="xs:NMTOKEN"/>
       <xs:attribute name="width" type="non-negative-int-or-perl" use="required"/>
       <xs:attribute name="height" type="non-negative-int-or-perl" use="required"/>
+      <xs:attribute name="align">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="top"/>
+            <xs:enumeration value="middle"/>
+            <xs:enumeration value="bottom"/>
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="right"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
       <xs:attribute name="hspace" type="xs:nonNegativeInteger"/>
       <xs:attribute name="vspace" type="xs:nonNegativeInteger"/>
     </xs:complexType>
