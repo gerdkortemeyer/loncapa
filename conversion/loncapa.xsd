@@ -106,7 +106,6 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text-with-parts"/>
-        <xs:group ref="inserts"/>
         <xs:element ref="lcmeta"/>
         <xs:element ref="parameter"/>
         <xs:element ref="randomlabel"/>
@@ -208,6 +207,7 @@
       <xs:element ref="part"/>
       
       <xs:group ref="universal-blocks"/>
+      <xs:group ref="inserts"/>
       
       <xs:element name="block" type="block-with-parts"/>
       <xs:element name="problemtype" type="problemtype-with-parts"/>
@@ -225,6 +225,7 @@
   <xs:group name="blocks-with-responses">
     <xs:choice>
       <xs:group ref="universal-blocks"/>
+      <xs:group ref="inserts"/>
       
       <xs:element name="block" type="block-with-responses"/>
       <xs:element name="problemtype" type="problemtype-with-responses"/>
@@ -2849,8 +2850,7 @@
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
       <xs:group ref="text-without-responses"/>
-      <xs:element ref="preduedate"/>
-      <xs:element ref="postanswerdate"/>
+      <xs:group ref="inserts"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
       <xs:element ref="solved"/>
@@ -3846,7 +3846,6 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text-with-responses"/>
-        <xs:group ref="inserts"/>
         <xs:element ref="parameter"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
@@ -3988,7 +3987,6 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text-with-responses"/>
-        <xs:group ref="inserts"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -4051,7 +4049,6 @@
       <xs:extension base="block-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-parts"/>
-          <xs:group ref="inserts"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
@@ -4064,7 +4061,6 @@
       <xs:extension base="block-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-responses"/>
-          <xs:group ref="inserts"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
@@ -4077,7 +4073,6 @@
       <xs:extension base="block-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-without-responses"/>
-          <xs:group ref="inserts"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
@@ -4096,7 +4091,6 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text-without-responses"/>
-        <xs:group ref="inserts"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
         <xs:element ref="solved"/>
@@ -4184,7 +4178,6 @@
       <xs:extension base="problemtype-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-parts"/>
-          <xs:group ref="inserts"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
@@ -4197,7 +4190,6 @@
       <xs:extension base="problemtype-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-responses"/>
-          <xs:group ref="inserts"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
@@ -4210,7 +4202,6 @@
       <xs:extension base="problemtype-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-without-responses"/>
-          <xs:group ref="inserts"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
@@ -4240,8 +4231,7 @@
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:element ref="part"/>
           <xs:element ref="img"/>
-          <xs:element ref="postanswerdate"/>
-          <xs:element ref="preduedate"/>
+          <xs:group ref="inserts"/>
           <xs:element name="block" type="block-with-parts"/>
           <xs:element ref="while"/>
           <xs:element name="problemtype" type="problemtype-with-parts"/>
@@ -4276,8 +4266,7 @@
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="responses"/>
           <xs:element ref="img"/>
-          <xs:element ref="postanswerdate"/>
-          <xs:element ref="preduedate"/>
+          <xs:group ref="inserts"/>
           <xs:element name="block" type="block-with-responses"/>
           <xs:element ref="while"/>
           <xs:element name="problemtype" type="problemtype-with-responses"/>
@@ -4311,8 +4300,7 @@
       <xs:extension base="randomlist-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:element ref="img"/>
-          <xs:element ref="postanswerdate"/>
-          <xs:element ref="preduedate"/>
+          <xs:group ref="inserts"/>
           <xs:element name="block" type="block-without-responses"/>
           <xs:element ref="while"/>
           <xs:element name="problemtype" type="problemtype-without-responses"/>
@@ -4411,7 +4399,6 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text-without-responses"/>
-        <xs:group ref="inserts"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -5219,7 +5206,6 @@
       <xs:extension base="div-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-parts"/>
-          <xs:group ref="inserts"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
@@ -5232,7 +5218,6 @@
       <xs:extension base="div-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-with-responses"/>
-          <xs:group ref="inserts"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
@@ -5245,7 +5230,6 @@
       <xs:extension base="div-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:group ref="text-without-responses"/>
-          <xs:group ref="inserts"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
           <xs:element ref="scriptlib"/>
@@ -5801,6 +5785,14 @@
       <xs:attribute name="href" type="xs:string"/>
       <xs:attribute name="target" type="xs:string"/>
       <xs:attribute name="title" type="xs:string"/>
+      <xs:attribute name="rel" type="xs:NMTOKENS"/>
+      <xs:attribute name="accesskey">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:length fixed="true" value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
       <xs:attribute name="onclick" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -6801,6 +6793,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
+      <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute name="name" type="xs:NMTOKEN"/>
       <xs:attribute name="src" type="xs:anyURI"/>
       <xs:attribute name="height" type="htmlLength"/>
