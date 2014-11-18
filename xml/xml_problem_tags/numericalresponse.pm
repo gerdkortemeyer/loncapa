@@ -195,6 +195,34 @@ sub evaluate_intervals {
    return(undef,undef,undef);
 }
 
+# Turn a set into a uniquified vector
+# {3;4;5;6;4}={3;4;5;6}
+#
+sub evaluate_as_set {
+   my ($parser,$env,$term)=@_;
+# This comes in as a set, but we don't care
+   $term=~s/\{/\[/gs;
+   $term=~s/\}/\]/gs;
+# Unified: just toss them all together
+   $term=~s/\]\s*u\s*\[/\;/gsi;
+   my ($termerror,$termeval)=&evaluate_in_parser($parser,$env,$term);
+   if ($termerror) {
+      return($termerror,$termeval);
+   }
+# Now uniquify
+   $termeval=~s/\[//gs;
+   $termeval=~s/\]//gs;
+   my %set=();
+   foreach my $member (split(/\;/,$termeval)) {
+       $member=~s/^\s*//gs;
+       $member=~s/\s*$//gs;
+       $set{$member}=1;
+   }
+# Put back together
+   return(undef,'['.join(';',keys(%set)).']');
+}
+
+
 # A numeric comparison of $expression and $expected
 #
 sub answertest {
@@ -221,7 +249,17 @@ sub answertest {
     }
 # This is where the evaluation starts
     if ($special eq 'sets') {
-# We are dealing with sets as answers
+# Sets as answers
+       my ($responseerror,$response)=&evaluate_as_set($parser,$env,$expression);
+       if ($responseerror) {
+          return($responseerror,$response);
+       }
+       my ($answererror,$answer)=&evaluate_as_set($parser,$env,$expected);
+       if ($answererror) {
+          return($answererror,$answer);
+       }
+# Should be uniquified vectors now, but not ordered
+       return &answertest($parser,$env,$response,$answer,$tolerance,'unordered');
     } elsif ($special eq 'unordered') {
 # [2;42;17]=[42;2;17]
 # Evaluate response
