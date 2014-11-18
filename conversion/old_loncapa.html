@@ -52,7 +52,7 @@ Shared simple types.
 Value restriction based on xs:string<ul>
 
 <li>
-<tt>((\$|\&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{][^\]\}]+[\]\}])*(\([^$&amp;\)]+\))*</tt>
+<tt>\s*-?(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{].+[\]\}])*(\([^$&amp;\)]+\))*\s*</tt>
 </li>
 
 </ul>
@@ -500,7 +500,7 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#dataresponse_0">dataresponse</a>, <a href="#hintgroup_0">hintgroup</a>, <a href="#hintpart_0">hintpart</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#web_0">web</a>, <a href="#standalone_0">standalone</a>, <a href="#languageblock_0">languageblock</a>, <a href="#translated_0">translated</a>, <a href="#lang_0">lang</a>, <a href="#window_0">window</a>, <a href="#windowlink_0">windowlink</a>, <a href="#togglebox_0">togglebox</a>, <a href="#instructorcomment_0">instructorcomment</a>, <a href="#comment_0">comment</a>, <a href="#th_0">th</a>, <a href="#blockquote_0">blockquote</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
+<br>Parents:<a href="#dataresponse_0">dataresponse</a>, <a href="#hintgroup_0">hintgroup</a>, <a href="#hintpart_0">hintpart</a>, <a href="#IntroParagraph_0">IntroParagraph</a>, <a href="#ClosingParagraph_0">ClosingParagraph</a>, <a href="#QuestionText_0">QuestionText</a>, <a href="#InstanceText_0">InstanceText</a>, <a href="#CriteriaText_0">CriteriaText</a>, <a href="#GraderNote_0">GraderNote</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#web_0">web</a>, <a href="#standalone_0">standalone</a>, <a href="#languageblock_0">languageblock</a>, <a href="#translated_0">translated</a>, <a href="#lang_0">lang</a>, <a href="#window_0">window</a>, <a href="#windowlink_0">windowlink</a>, <a href="#togglebox_0">togglebox</a>, <a href="#instructorcomment_0">instructorcomment</a>, <a href="#comment_0">comment</a>, <a href="#th_0">th</a>, <a href="#address_0">address</a>, <a href="#blockquote_0">blockquote</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
 <br>
 <hr>
 
@@ -853,6 +853,10 @@ Choice between:<ul>
 <br>
 </li>
 <li>
+<a href="#address_0">address</a>
+<br>
+</li>
+<li>
 <a href="#blockquote_0">blockquote</a>
 <br>
 </li>
@@ -1036,7 +1040,7 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#text-with-responses_0">text-with-responses</a>, <a href="#text-without-responses_0">text-without-responses</a>, <a href="#span_0">span</a>
+<br>Parents:<a href="#text-with-responses_0">text-with-responses</a>, <a href="#text-without-responses_0">text-without-responses</a>, <a href="#span_0">span</a>, <a href="#a_0">a</a>
 <br>
 <hr>
 
@@ -9198,7 +9202,7 @@ Choice between:<ul>
 <div class="documentation">
 Block For After Solved
 
-Everything inside is skipped if the problem is &ldquo;not solved&rdquo;.
+Everything inside is skipped if the problem part is &ldquo;not solved&rdquo;.
 </div>
 <br>
 
@@ -9237,7 +9241,7 @@ Choice between:<ul>
 <div class="documentation">
 Block For When Not Solved
 
-Everything inside is skipped if the problem is &ldquo;solved&rdquo;.
+Everything inside is skipped if the problem part is &ldquo;solved&rdquo;.
 </div>
 <br>
 
@@ -9834,6 +9838,10 @@ Choice between:<ul>
 <br>
 </li>
 <li>
+<a href="#import_0">import</a>
+<br>
+</li>
+<li>
 <a name="ul_2"></a>
 <h3>Element <span class="nomtitre">ul</span>
 </h3>type: <a href="#ul-with-responses_0">ul-with-responses</a>
@@ -9947,6 +9955,10 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#drawimage_0">drawimage</a>
+<br>
+</li>
+<li>
+<a href="#import_0">import</a>
 <br>
 </li>
 <li>
@@ -11082,7 +11094,7 @@ Usage note: This attribute must not be used to convey semantic information. Even
 
 </div>
 
-<br>Parents:<a href="#headerContent_0">headerContent</a>, <a href="#div-base_0">div-base</a>, <a href="#p-base_0">p-base</a>, <a href="#ul-base_0">ul-base</a>, <a href="#ol-base_0">ol-base</a>, <a href="#li-base_0">li-base</a>, <a href="#dl-base_0">dl-base</a>, <a href="#table-base_0">table-base</a>, <a href="#tr-base_0">tr-base</a>, <a href="#td-base_0">td-base</a>, <a href="#th_0">th</a>, <a href="#span_0">span</a>, <a href="#hr_0">hr</a>, <a href="#blockquote_0">blockquote</a>
+<br>Parents:<a href="#headerContent_0">headerContent</a>, <a href="#body_0">body</a>, <a href="#div-base_0">div-base</a>, <a href="#p-base_0">p-base</a>, <a href="#ul-base_0">ul-base</a>, <a href="#ol-base_0">ol-base</a>, <a href="#li-base_0">li-base</a>, <a href="#dl-base_0">dl-base</a>, <a href="#table-base_0">table-base</a>, <a href="#tr-base_0">tr-base</a>, <a href="#td-base_0">td-base</a>, <a href="#th_0">th</a>, <a href="#span_0">span</a>, <a href="#a_0">a</a>, <a href="#hr_0">hr</a>, <a href="#address_0">address</a>, <a href="#blockquote_0">blockquote</a>, <a href="#img_0">img</a>, <a href="#object_0">object</a>, <a href="#form_1">form</a>, <a href="#iframe_0">iframe</a>
 <br>
 <hr>
 
@@ -11182,27 +11194,7 @@ Choice between:<ul>
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#span_0">span</a>
-<br>
-</li>
-<li>
-<a href="#em_0">em</a>
-<br>
-</li>
-<li>
-<a href="#a_0">a</a>
-<br>
-</li>
-<li>
-<a href="#sup_0">sup</a>
-<br>
-</li>
-<li>
-<a href="#sub_0">sub</a>
-<br>
-</li>
-<li>
-<a href="#i_0">i</a>
+<a href="#inlines_0">inlines</a>
 <br>
 </li>
 </ul>
@@ -11634,7 +11626,7 @@ Alternate content container for non script-based rendering.
 </div>
 <br>
 
-
+Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
@@ -11667,6 +11659,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 
 <a href="#i18n_0">i18n</a>
 <br>
@@ -12820,10 +12816,26 @@ Table cell
 Attribute <span class="nomattribut">colspan</span>:
     <div class="indentation">optional<br>type: <tt>xs:int</tt>
 <br>
+
+
+<div class="documentation">
+This attribute contains a non-negative integer value that indicates on how many columns does the cell extend. Its default value is 1.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">rowspan</span>:
     <div class="indentation">optional<br>type: <tt>xs:int</tt>
 <br>
+
+
+<div class="documentation">
+This attribute contains a non-negative integer value that indicates on how many rows does the cell extend. Its default value is 1.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">align</span>:
     <div class="indentation">optional<br>type: <a href="#html-align_0">html-align</a>
@@ -12924,14 +12936,62 @@ Choice between:<ul>
 Attribute <span class="nomattribut">colspan</span>:
     <div class="indentation">optional<br>type: <tt>xs:int</tt>
 <br>
+
+
+<div class="documentation">
+This attribute contains a non-negative integer value that indicates on how many columns does the cell extend. Its default value is 1.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">rowspan</span>:
     <div class="indentation">optional<br>type: <tt>xs:int</tt>
 <br>
+
+
+<div class="documentation">
+This attribute contains a non-negative integer value that indicates on how many rows does the cell extend. Its default value is 1.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">align</span>:
     <div class="indentation">optional<br>type: <a href="#html-align_0">html-align</a>
 <br>
+</div>
+Attribute <span class="nomattribut">scope</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+defines the cells that the header defined in this &lt;th&gt; element relates to
+</div>
+<br>
+
+
+Value restriction based on xs:token<ul>
+
+<li>
+<tt>row</tt>
+</li>
+
+<li>
+<tt>col</tt>
+</li>
+
+<li>
+<tt>rowgroup</tt>
+</li>
+
+<li>
+<tt>colgroup</tt>
+</li>
+
+</ul>
+
+
 </div>
 Attribute <span class="nomattribut">TeXwidth</span>:
     <div class="indentation">optional<br>
@@ -13007,6 +13067,16 @@ The HTML &lt;a&gt; Element (or the HTML Anchor Element) defines a hyperlink, the
 
 Can contain text<br>
 <div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#inlines_0">inlines</a>
+<br>
+</li>
+</ul>
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">name</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
@@ -13030,6 +13100,36 @@ Attribute <span class="nomattribut">uriprint</span>:
 Attribute <span class="nomattribut">anchorprint</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+</div>
+Attribute <span class="nomattribut">rel</span>:
+    <div class="indentation">optional<br>type: <tt>xs:NMTOKENS</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">accesskey</span>:
+    <div class="indentation">optional<br>
+
+Value restriction based on xs:string<ul>
+
+
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">onclick</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Javascript event handler content attribute for the "click" event.
+
+Warning: event handler content attributes should be avoided. They make the markup bigger and less readable. Concerns of content/structure and behavior are not well-separated, making a bug harder to find. Furthermore, usage of event attributes almost always causes scripts to expose global functions on the Window object, polluting the global namespace.
+
+The EventTarget.addEventListener() function should be used instead to add a listener for the event.
+</div>
+<br>
+
+
 </div>
 
 </div>
@@ -13465,6 +13565,35 @@ The HTML &lt;hr&gt; element represents a thematic break between paragraph-level 
 <br>
 <hr>
 
+<a name="address_0"></a>
+<h3>Element <span class="nomtitre">address</span>
+</h3>
+
+
+<div class="documentation">
+The HTML &lt;address&gt; Element may be used by authors to supply contact information for its nearest &lt;article&gt; or &lt;body&gt; ancestor; in the latter case, it applies to the whole document.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text-without-responses_0">text-without-responses</a>
+<br>
+</li>
+</ul>
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
+
+</div>
+
+<br>Parents:<a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>
+<hr>
+
 <a name="blockquote_0"></a>
 <h3>Element <span class="nomtitre">blockquote</span>
 </h3>
@@ -13558,6 +13687,10 @@ Possible values:<ul>
 
 
 <div class="indentation">
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">src</span>:
     <div class="indentation">required<br>type: <tt>xs:string</tt>
 <br>
@@ -13765,6 +13898,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">classid</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
@@ -13975,6 +14112,10 @@ The HTML &lt;embed&gt; Element represents an integration point for an external a
 
 
 <div class="indentation">
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:ID</tt>
+<br>
+</div>
 Attribute <span class="nomattribut">src</span>:
     <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
@@ -14052,6 +14193,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:ID</tt>
+<br>
+</div>
 Attribute <span class="nomattribut">codebase</span>:
     <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
@@ -14080,6 +14225,35 @@ Attribute <span class="nomattribut">width</span>:
 Attribute <span class="nomattribut">height</span>:
     <div class="indentation">required<br>type: <a href="#non-negative-int-or-perl_0">non-negative-int-or-perl</a>
 <br>
+</div>
+Attribute <span class="nomattribut">align</span>:
+    <div class="indentation">optional<br>
+
+Value restriction based on xs:token<ul>
+
+<li>
+<tt>top</tt>
+</li>
+
+<li>
+<tt>middle</tt>
+</li>
+
+<li>
+<tt>bottom</tt>
+</li>
+
+<li>
+<tt>left</tt>
+</li>
+
+<li>
+<tt>right</tt>
+</li>
+
+</ul>
+
+
 </div>
 Attribute <span class="nomattribut">hspace</span>:
     <div class="indentation">optional<br>type: <tt>xs:nonNegativeInteger</tt>
@@ -14246,6 +14420,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">action</span>:
     <div class="indentation">required<br>type: <tt>xs:anyURI</tt>
 <br>
@@ -14875,6 +15053,10 @@ The HTML &lt;iframe&gt; Element (or HTML inline frame element) represents a nest
 
 Can contain text<br>
 <div class="indentation">
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">name</span>:
     <div class="indentation">optional<br>type: <tt>xs:NMTOKEN</tt>
 <br>
@@ -14933,6 +15115,8 @@ Value restriction based on xs:string<ul>
 <a name="index"></a>
 <h3>Index</h3>
 <a href="#a_0">a</a>
+<br>
+<a href="#address_0">address</a>
 <br>
 <a href="#algebra_0">algebra</a>
 <br>

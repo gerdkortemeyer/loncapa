@@ -52,7 +52,7 @@ Shared simple types.
 Value restriction based on xs:string<ul>
 
 <li>
-<tt>(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{].+[\]\}])*(\([^$&amp;\)]+\))*</tt>
+<tt>\s*-?(($|&amp;)([#|$]*[A-Za-z][\w_]*|\{[A-Za-z][\w_]*\}))([\[\{].+[\]\}])*(\([^$&amp;\)]+\))*\s*</tt>
 </li>
 
 </ul>
@@ -249,6 +249,10 @@ Choice between:<ul>
 <a href="#text-without-responses_0">text-without-responses</a>
 <br>
 </li>
+<li>
+<a href="#lcmeta_0">lcmeta</a>
+<br>
+</li>
 </ul>
 
 </div>
@@ -271,15 +275,7 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#text-without-responses_0">text-without-responses</a>
-<br>
-</li>
-<li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
-<a href="#part_0">part</a>
+<a href="#text-with-parts_0">text-with-parts</a>
 <br>
 </li>
 <li>
@@ -302,14 +298,6 @@ Choice between:<ul>
 <a href="#scriptlib_0">scriptlib</a>
 <br>
 </li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
-<br>
-</li>
 </ul>
 
 </div>
@@ -326,6 +314,31 @@ Groups of block and inline elements.
 <br>
 
 
+<a name="text-with-parts_0"></a>
+<h3>Group <span class="nomtitre">text-with-parts</span>
+</h3>
+
+
+<div class="documentation">
+List of block and inline elements mixed with text. These elements can contain parts but not responses.
+</div>
+<br>
+
+Choice between:<ul>
+<li>
+<a href="#blocks-with-parts_0">blocks-with-parts</a>
+<br>
+</li>
+<li>
+<a href="#inlines_0">inlines</a>
+<br>
+</li>
+</ul>
+
+<br>Parents:<a href="#problem_0">problem</a>
+<br>
+<hr>
+
 <a name="text-with-responses_0"></a>
 <h3>Group <span class="nomtitre">text-with-responses</span>
 </h3>
@@ -339,6 +352,10 @@ List of block and inline elements mixed with text. These elements can contain re
 Choice between:<ul>
 <li>
 <a href="#responses_0">responses</a>
+<br>
+</li>
+<li>
+<a href="#hintgroup_0">hintgroup</a>
 <br>
 </li>
 <li>
@@ -380,23 +397,23 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#loncapa_0">loncapa</a>, <a href="#problem_0">problem</a>, <a href="#stringresponse_0">stringresponse</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#radiobuttonresponse_0">radiobuttonresponse</a>, <a href="#optionresponse_0">optionresponse</a>, <a href="#matchresponse_0">matchresponse</a>, <a href="#rankresponse_0">rankresponse</a>, <a href="#imageresponse_0">imageresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#functionplotresponse_0">functionplotresponse</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#customresponse_0">customresponse</a>, <a href="#externalresponse_0">externalresponse</a>, <a href="#hint_0">hint</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#web_0">web</a>, <a href="#standalone_0">standalone</a>, <a href="#languageblock_0">languageblock</a>, <a href="#translated_0">translated</a>, <a href="#lang_0">lang</a>, <a href="#window_0">window</a>, <a href="#windowlink_0">windowlink</a>, <a href="#togglebox_0">togglebox</a>, <a href="#instructorcomment_0">instructorcomment</a>, <a href="#comment_0">comment</a>, <a href="#th_0">th</a>, <a href="#blockquote_0">blockquote</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
+<br>Parents:<a href="#loncapa_0">loncapa</a>, <a href="#stringresponse_0">stringresponse</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#radiobuttonresponse_0">radiobuttonresponse</a>, <a href="#optionresponse_0">optionresponse</a>, <a href="#matchresponse_0">matchresponse</a>, <a href="#rankresponse_0">rankresponse</a>, <a href="#imageresponse_0">imageresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#functionplotresponse_0">functionplotresponse</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#customresponse_0">customresponse</a>, <a href="#externalresponse_0">externalresponse</a>, <a href="#hint_0">hint</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#solved_0">solved</a>, <a href="#while_0">while</a>, <a href="#web_0">web</a>, <a href="#standalone_0">standalone</a>, <a href="#languageblock_0">languageblock</a>, <a href="#translated_0">translated</a>, <a href="#lang_0">lang</a>, <a href="#window_0">window</a>, <a href="#windowlink_0">windowlink</a>, <a href="#togglebox_0">togglebox</a>, <a href="#instructorcomment_0">instructorcomment</a>, <a href="#comment_0">comment</a>, <a href="#header_0">header</a>, <a href="#footer_0">footer</a>, <a href="#aside_0">aside</a>, <a href="#th_0">th</a>, <a href="#address_0">address</a>, <a href="#blockquote_0">blockquote</a>, <a href="#figure_0">figure</a>, <a href="#figcaption_0">figcaption</a>, <a href="#object_0">object</a>, <a href="#applet_0">applet</a>, <a href="#fieldset_0">fieldset</a>, <a href="#button_0">button</a>
 <br>
 <hr>
 
-<a name="blocks-with-responses_0"></a>
-<h3>Group <span class="nomtitre">blocks-with-responses</span>
+<a name="universal-blocks_0"></a>
+<h3>Group <span class="nomtitre">universal-blocks</span>
 </h3>
+
+
+<div class="documentation">
+Blocks with a content that does not depend on the scope, and that can appear anywhere with text and blocks.
+</div>
+<br>
+
 Choice between:<ul>
 <li>
 <a href="#import_0">import</a>
-<br>
-</li>
-<li>
-<a name="block_0"></a>
-<h3>Element <span class="nomtitre">block</span>
-</h3>type: <a href="#block-with-responses_0">block-with-responses</a>
-<br>
 <br>
 </li>
 <li>
@@ -413,20 +430,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#standalone_0">standalone</a>
-<br>
-</li>
-<li>
-<a name="problemtype_0"></a>
-<h3>Element <span class="nomtitre">problemtype</span>
-</h3>type: <a href="#problemtype-with-responses_0">problemtype-with-responses</a>
-<br>
-<br>
-</li>
-<li>
-<a name="randomlist_0"></a>
-<h3>Element <span class="nomtitre">randomlist</span>
-</h3>type: <a href="#randomlist-with-responses_0">randomlist-with-responses</a>
-<br>
 <br>
 </li>
 <li>
@@ -474,18 +477,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#hintgroup_0">hintgroup</a>
-<br>
-</li>
-<li>
 <a href="#script_0">script</a>
-<br>
-</li>
-<li>
-<a name="section_0"></a>
-<h3>Element <span class="nomtitre">section</span>
-</h3>type: <a href="#section-with-responses_0">section-with-responses</a>
-<br>
 <br>
 </li>
 <li>
@@ -493,45 +485,19 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="div_0"></a>
-<h3>Element <span class="nomtitre">div</span>
-</h3>type: <a href="#div-with-responses_0">div-with-responses</a>
-<br>
+<a href="#noscript_0">noscript</a>
 <br>
 </li>
 <li>
-<a name="p_0"></a>
-<h3>Element <span class="nomtitre">p</span>
-</h3>type: <a href="#p-with-responses_0">p-with-responses</a>
-<br>
+<a href="#header_0">header</a>
 <br>
 </li>
 <li>
-<a name="ul_0"></a>
-<h3>Element <span class="nomtitre">ul</span>
-</h3>type: <a href="#ul-with-responses_0">ul-with-responses</a>
-<br>
+<a href="#footer_0">footer</a>
 <br>
 </li>
 <li>
-<a name="ol_0"></a>
-<h3>Element <span class="nomtitre">ol</span>
-</h3>type: <a href="#ol-with-responses_0">ol-with-responses</a>
-<br>
-<br>
-</li>
-<li>
-<a name="table_0"></a>
-<h3>Element <span class="nomtitre">table</span>
-</h3>type: <a href="#table-with-responses_0">table-with-responses</a>
-<br>
-<br>
-</li>
-<li>
-<a name="dl_0"></a>
-<h3>Element <span class="nomtitre">dl</span>
-</h3>type: <a href="#dl-with-responses_0">dl-with-responses</a>
-<br>
+<a href="#aside_0">aside</a>
 <br>
 </li>
 <li>
@@ -539,15 +505,19 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#noscript_0">noscript</a>
-<br>
-</li>
-<li>
 <a href="#hr_0">hr</a>
 <br>
 </li>
 <li>
+<a href="#address_0">address</a>
+<br>
+</li>
+<li>
 <a href="#blockquote_0">blockquote</a>
+<br>
+</li>
+<li>
+<a href="#figure_0">figure</a>
 <br>
 </li>
 <li>
@@ -592,6 +562,194 @@ Choice between:<ul>
 </li>
 </ul>
 
+<br>Parents:<a href="#blocks-with-parts_0">blocks-with-parts</a>, <a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>
+<hr>
+
+<a name="blocks-with-parts_0"></a>
+<h3>Group <span class="nomtitre">blocks-with-parts</span>
+</h3>
+Choice between:<ul>
+<li>
+<a href="#part_0">part</a>
+<br>
+</li>
+<li>
+<a href="#universal-blocks_0">universal-blocks</a>
+<br>
+</li>
+<li>
+<a href="#inserts_0">inserts</a>
+<br>
+</li>
+<li>
+<a name="block_0"></a>
+<h3>Element <span class="nomtitre">block</span>
+</h3>type: <a href="#block-with-parts_0">block-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a name="problemtype_0"></a>
+<h3>Element <span class="nomtitre">problemtype</span>
+</h3>type: <a href="#problemtype-with-parts_0">problemtype-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a name="randomlist_0"></a>
+<h3>Element <span class="nomtitre">randomlist</span>
+</h3>type: <a href="#randomlist-with-parts_0">randomlist-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a name="section_0"></a>
+<h3>Element <span class="nomtitre">section</span>
+</h3>type: <a href="#section-with-parts_0">section-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a name="div_0"></a>
+<h3>Element <span class="nomtitre">div</span>
+</h3>type: <a href="#div-with-parts_0">div-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a name="p_0"></a>
+<h3>Element <span class="nomtitre">p</span>
+</h3>type: <a href="#p-without-responses_0">p-without-responses</a>
+<br>
+<br>
+</li>
+<li>
+<a name="ul_0"></a>
+<h3>Element <span class="nomtitre">ul</span>
+</h3>type: <a href="#ul-with-parts_0">ul-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a name="ol_0"></a>
+<h3>Element <span class="nomtitre">ol</span>
+</h3>type: <a href="#ol-with-parts_0">ol-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a name="table_0"></a>
+<h3>Element <span class="nomtitre">table</span>
+</h3>type: <a href="#table-with-parts_0">table-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a name="dl_0"></a>
+<h3>Element <span class="nomtitre">dl</span>
+</h3>type: <a href="#dl-with-parts_0">dl-with-parts</a>
+<br>
+<br>
+</li>
+</ul>
+
+<br>Parents:<a href="#text-with-parts_0">text-with-parts</a>
+<br>
+<hr>
+
+<a name="blocks-with-responses_0"></a>
+<h3>Group <span class="nomtitre">blocks-with-responses</span>
+</h3>
+Choice between:<ul>
+<li>
+<a href="#universal-blocks_0">universal-blocks</a>
+<br>
+</li>
+<li>
+<a href="#inserts_0">inserts</a>
+<br>
+</li>
+<li>
+<a name="block_1"></a>
+<h3>Element <span class="nomtitre">block</span>
+</h3>type: <a href="#block-with-responses_0">block-with-responses</a>
+<br>
+<br>
+</li>
+<li>
+<a name="problemtype_1"></a>
+<h3>Element <span class="nomtitre">problemtype</span>
+</h3>type: <a href="#problemtype-with-responses_0">problemtype-with-responses</a>
+<br>
+<br>
+</li>
+<li>
+<a name="randomlist_1"></a>
+<h3>Element <span class="nomtitre">randomlist</span>
+</h3>type: <a href="#randomlist-with-responses_0">randomlist-with-responses</a>
+<br>
+<br>
+</li>
+<li>
+<a href="#solved_0">solved</a>
+<br>
+</li>
+<li>
+<a href="#notsolved_0">notsolved</a>
+<br>
+</li>
+<li>
+<a name="section_1"></a>
+<h3>Element <span class="nomtitre">section</span>
+</h3>type: <a href="#section-with-responses_0">section-with-responses</a>
+<br>
+<br>
+</li>
+<li>
+<a name="div_1"></a>
+<h3>Element <span class="nomtitre">div</span>
+</h3>type: <a href="#div-with-responses_0">div-with-responses</a>
+<br>
+<br>
+</li>
+<li>
+<a name="p_1"></a>
+<h3>Element <span class="nomtitre">p</span>
+</h3>type: <a href="#p-with-responses_0">p-with-responses</a>
+<br>
+<br>
+</li>
+<li>
+<a name="ul_1"></a>
+<h3>Element <span class="nomtitre">ul</span>
+</h3>type: <a href="#ul-with-responses_0">ul-with-responses</a>
+<br>
+<br>
+</li>
+<li>
+<a name="ol_1"></a>
+<h3>Element <span class="nomtitre">ol</span>
+</h3>type: <a href="#ol-with-responses_0">ol-with-responses</a>
+<br>
+<br>
+</li>
+<li>
+<a name="table_1"></a>
+<h3>Element <span class="nomtitre">table</span>
+</h3>type: <a href="#table-with-responses_0">table-with-responses</a>
+<br>
+<br>
+</li>
+<li>
+<a name="dl_1"></a>
+<h3>Element <span class="nomtitre">dl</span>
+</h3>type: <a href="#dl-with-responses_0">dl-with-responses</a>
+<br>
+<br>
+</li>
+</ul>
+
 <br>Parents:<a href="#text-with-responses_0">text-with-responses</a>
 <br>
 <hr>
@@ -601,201 +759,77 @@ Choice between:<ul>
 </h3>
 Choice between:<ul>
 <li>
-<a href="#import_0">import</a>
+<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 </li>
 <li>
-<a name="block_1"></a>
+<a name="block_2"></a>
 <h3>Element <span class="nomtitre">block</span>
 </h3>type: <a href="#block-without-responses_0">block-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a href="#while_0">while</a>
-<br>
-</li>
-<li>
-<a href="#tex_0">tex</a>
-<br>
-</li>
-<li>
-<a href="#web_0">web</a>
-<br>
-</li>
-<li>
-<a href="#standalone_0">standalone</a>
-<br>
-</li>
-<li>
-<a name="problemtype_1"></a>
+<a name="problemtype_2"></a>
 <h3>Element <span class="nomtitre">problemtype</span>
 </h3>type: <a href="#problemtype-without-responses_0">problemtype-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="randomlist_1"></a>
+<a name="randomlist_2"></a>
 <h3>Element <span class="nomtitre">randomlist</span>
 </h3>type: <a href="#randomlist-without-responses_0">randomlist-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a href="#perl_1">perl</a>
-<br>
-</li>
-<li>
-<a href="#languageblock_0">languageblock</a>
-<br>
-</li>
-<li>
-<a href="#translated_0">translated</a>
-<br>
-</li>
-<li>
-<a href="#window_0">window</a>
-<br>
-</li>
-<li>
-<a href="#windowlink_0">windowlink</a>
-<br>
-</li>
-<li>
-<a href="#togglebox_0">togglebox</a>
-<br>
-</li>
-<li>
-<a href="#instructorcomment_0">instructorcomment</a>
-<br>
-</li>
-<li>
-<a href="#comment_0">comment</a>
-<br>
-</li>
-<li>
-<a href="#gnuplot_0">gnuplot</a>
-<br>
-</li>
-<li>
-<a href="#organicstructure_0">organicstructure</a>
-<br>
-</li>
-<li>
-<a href="#drawimage_0">drawimage</a>
-<br>
-</li>
-<li>
-<a href="#script_0">script</a>
-<br>
-</li>
-<li>
-<a name="section_1"></a>
+<a name="section_2"></a>
 <h3>Element <span class="nomtitre">section</span>
 </h3>type: <a href="#section-without-responses_0">section-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a href="#heading_1">heading</a>
-<br>
-</li>
-<li>
-<a name="div_1"></a>
+<a name="div_2"></a>
 <h3>Element <span class="nomtitre">div</span>
 </h3>type: <a href="#div-without-responses_0">div-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="p_1"></a>
+<a name="p_2"></a>
 <h3>Element <span class="nomtitre">p</span>
 </h3>type: <a href="#p-without-responses_0">p-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="ul_1"></a>
+<a name="ul_2"></a>
 <h3>Element <span class="nomtitre">ul</span>
 </h3>type: <a href="#ul-without-responses_0">ul-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="ol_1"></a>
+<a name="ol_2"></a>
 <h3>Element <span class="nomtitre">ol</span>
 </h3>type: <a href="#ol-without-responses_0">ol-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="table_1"></a>
+<a name="table_2"></a>
 <h3>Element <span class="nomtitre">table</span>
 </h3>type: <a href="#table-without-responses_0">table-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="dl_1"></a>
+<a name="dl_2"></a>
 <h3>Element <span class="nomtitre">dl</span>
 </h3>type: <a href="#dl-without-responses_0">dl-without-responses</a>
 <br>
-<br>
-</li>
-<li>
-<a href="#pre_0">pre</a>
-<br>
-</li>
-<li>
-<a href="#noscript_0">noscript</a>
-<br>
-</li>
-<li>
-<a href="#hr_0">hr</a>
-<br>
-</li>
-<li>
-<a href="#blockquote_0">blockquote</a>
-<br>
-</li>
-<li>
-<a href="#object_0">object</a>
-<br>
-</li>
-<li>
-<a href="#applet_0">applet</a>
-<br>
-</li>
-<li>
-<a href="#embed_0">embed</a>
-<br>
-</li>
-<li>
-<a href="#video_0">video</a>
-<br>
-</li>
-<li>
-<a href="#audio_0">audio</a>
-<br>
-</li>
-<li>
-<a href="#map_0">map</a>
-<br>
-</li>
-<li>
-<a href="#canvas_0">canvas</a>
-<br>
-</li>
-<li>
-<a href="#form_1">form</a>
-<br>
-</li>
-<li>
-<a href="#fieldset_0">fieldset</a>
-<br>
-</li>
-<li>
-<a href="#iframe_0">iframe</a>
 <br>
 </li>
 </ul>
@@ -810,7 +844,7 @@ Choice between:<ul>
 
 
 <div class="documentation">
-Note: some responses and the hint element are also inline, but are not in this group.
+Note: some responses, hintgroup and hint are also inline, but are not in this group.
 </div>
 <br>
 
@@ -945,7 +979,7 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#text-with-responses_0">text-with-responses</a>, <a href="#text-without-responses_0">text-without-responses</a>, <a href="#span_0">span</a>, <a href="#canvas_0">canvas</a>
+<br>Parents:<a href="#text-with-parts_0">text-with-parts</a>, <a href="#text-with-responses_0">text-with-responses</a>, <a href="#text-without-responses_0">text-without-responses</a>, <a href="#span_0">span</a>, <a href="#a_0">a</a>, <a href="#canvas_0">canvas</a>
 <br>
 <hr>
 
@@ -970,7 +1004,7 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#part_0">part</a>, <a href="#solved_0">solved</a>, <a href="#notsolved_0">notsolved</a>, <a href="#while_0">while</a>, <a href="#window_0">window</a>
+<br>Parents:<a href="#blocks-with-parts_0">blocks-with-parts</a>, <a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#solved_0">solved</a>
 <br>
 <hr>
 
@@ -1111,7 +1145,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#stringhint_0">stringhint</a>
+<a href="#stringhintcondition_0">stringhintcondition</a>
 <br>
 </li>
 <li>
@@ -1219,8 +1253,8 @@ Pre-Processor Subroutine
 <br>
 <hr>
 
-<a name="stringhint_0"></a>
-<h3>Element <span class="nomtitre">stringhint</span>
+<a name="stringhintcondition_0"></a>
+<h3>Element <span class="nomtitre">stringhintcondition</span>
 </h3>
 
 
@@ -1407,7 +1441,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#radiobuttonhint_0">radiobuttonhint</a>
+<a href="#radiobuttonhintcondition_0">radiobuttonhintcondition</a>
 <br>
 </li>
 <li>
@@ -1625,8 +1659,8 @@ Attribute <span class="nomattribut">location</span>:
 </div>
 <hr>
 
-<a name="radiobuttonhint_0"></a>
-<h3>Element <span class="nomtitre">radiobuttonhint</span>
+<a name="radiobuttonhintcondition_0"></a>
+<h3>Element <span class="nomtitre">radiobuttonhintcondition</span>
 </h3>
 
 
@@ -1723,7 +1757,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#optionhint_0">optionhint</a>
+<a href="#optionhintcondition_0">optionhintcondition</a>
 <br>
 </li>
 <li>
@@ -2039,8 +2073,8 @@ Attribute <span class="nomattribut">location</span>:
 </div>
 <hr>
 
-<a name="optionhint_0"></a>
-<h3>Element <span class="nomtitre">optionhint</span>
+<a name="optionhintcondition_0"></a>
+<h3>Element <span class="nomtitre">optionhintcondition</span>
 </h3>
 
 
@@ -2988,7 +3022,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#numericalhint_0">numericalhint</a>
+<a href="#numericalhintcondition_0">numericalhintcondition</a>
 <br>
 </li>
 <li>
@@ -3197,8 +3231,8 @@ Value restriction based on xs:string
 Value restriction based on xs:string
 <hr>
 
-<a name="numericalhint_0"></a>
-<h3>Element <span class="nomtitre">numericalhint</span>
+<a name="numericalhintcondition_0"></a>
+<h3>Element <span class="nomtitre">numericalhintcondition</span>
 </h3>
 
 
@@ -3308,7 +3342,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#formulahint_0">formulahint</a>
+<a href="#formulahintcondition_0">formulahintcondition</a>
 <br>
 </li>
 <li>
@@ -3374,8 +3408,8 @@ Pre-Processor Subroutine
 <br>
 <hr>
 
-<a name="formulahint_0"></a>
-<h3>Element <span class="nomtitre">formulahint</span>
+<a name="formulahintcondition_0"></a>
+<h3>Element <span class="nomtitre">formulahintcondition</span>
 </h3>
 
 
@@ -3509,7 +3543,7 @@ Maxima or R script using the arrays RESPONSE and LONCAPALIST.
 <br>
 </li>
 <li>
-<a href="#mathhint_0">mathhint</a>
+<a href="#mathhintcondition_0">mathhintcondition</a>
 <br>
 </li>
 <li>
@@ -3618,8 +3652,8 @@ Attribute <span class="nomattribut"></span>:
 </div>
 <hr>
 
-<a name="mathhint_0"></a>
-<h3>Element <span class="nomtitre">mathhint</span>
+<a name="mathhintcondition_0"></a>
+<h3>Element <span class="nomtitre">mathhintcondition</span>
 </h3>
 
 
@@ -4986,11 +5020,11 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#organichint_0">organichint</a>
+<a href="#organichintcondition_0">organichintcondition</a>
 <br>
 </li>
 <li>
-<a href="#stringhint_0">stringhint</a>
+<a href="#stringhintcondition_0">stringhintcondition</a>
 <br>
 </li>
 <li>
@@ -5104,8 +5138,8 @@ Width of correct answer image
 <br>
 <hr>
 
-<a name="organichint_0"></a>
-<h3>Element <span class="nomtitre">organichint</span>
+<a name="organichintcondition_0"></a>
+<h3>Element <span class="nomtitre">organichintcondition</span>
 </h3>
 
 
@@ -5181,11 +5215,11 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#reactionhint_0">reactionhint</a>
+<a href="#reactionhintcondition_0">reactionhintcondition</a>
 <br>
 </li>
 <li>
-<a href="#stringhint_0">stringhint</a>
+<a href="#stringhintcondition_0">stringhintcondition</a>
 <br>
 </li>
 <li>
@@ -5232,8 +5266,8 @@ Initial Reaction
 <br>
 <hr>
 
-<a name="reactionhint_0"></a>
-<h3>Element <span class="nomtitre">reactionhint</span>
+<a name="reactionhintcondition_0"></a>
+<h3>Element <span class="nomtitre">reactionhintcondition</span>
 </h3>
 
 
@@ -5325,7 +5359,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#customhint_0">customhint</a>
+<a href="#customhintcondition_0">customhintcondition</a>
 <br>
 </li>
 <li>
@@ -5399,8 +5433,8 @@ Attribute <span class="nomattribut"></span>:
 </div>
 <hr>
 
-<a name="customhint_0"></a>
-<h3>Element <span class="nomtitre">customhint</span>
+<a name="customhintcondition_0"></a>
+<h3>Element <span class="nomtitre">customhintcondition</span>
 </h3>
 
 
@@ -5917,7 +5951,7 @@ Choice between:<ul>
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>
+<br>Parents:<a href="#text-with-responses_0">text-with-responses</a>
 <br>
 <hr>
 
@@ -6261,11 +6295,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#preduedate_0">preduedate</a>
-<br>
-</li>
-<li>
-<a href="#postanswerdate_0">postanswerdate</a>
+<a href="#inserts_0">inserts</a>
 <br>
 </li>
 <li>
@@ -7093,7 +7123,7 @@ Size of minor tic mark (plot coordinates)
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>, <a href="#randomlabel_0">randomlabel</a>, <a href="#bgimg_0">bgimg</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>, <a href="#randomlabel_0">randomlabel</a>, <a href="#bgimg_0">bgimg</a>
 <br>
 <hr>
 
@@ -8170,10 +8200,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
 <a href="#parameter_0">parameter</a>
 <br>
 </li>
@@ -8187,14 +8213,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
 <br>
 </li>
 </ul>
@@ -8225,7 +8243,7 @@ Displayed Part Description
 
 </div>
 
-<br>Parents:<a href="#problem_0">problem</a>
+<br>Parents:<a href="#blocks-with-parts_0">blocks-with-parts</a>
 <br>
 <hr>
 
@@ -8291,7 +8309,7 @@ Attribute <span class="nomattribut">content</span>:
 
 </div>
 
-<br>Parents:<a href="#problem_0">problem</a>
+<br>Parents:<a href="#loncapa_0">loncapa</a>, <a href="#problem_0">problem</a>
 <br>
 <hr>
 
@@ -8345,7 +8363,7 @@ Title displayed on the parameter setting screen.
 
 </div>
 
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#stringresponse_0">stringresponse</a>, <a href="#stringhint_0">stringhint</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#radiobuttonresponse_0">radiobuttonresponse</a>, <a href="#radiobuttonhint_0">radiobuttonhint</a>, <a href="#optionresponse_0">optionresponse</a>, <a href="#optionhint_0">optionhint</a>, <a href="#matchresponse_0">matchresponse</a>, <a href="#rankresponse_0">rankresponse</a>, <a href="#imageresponse_0">imageresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#numericalhint_0">numericalhint</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#formulahint_0">formulahint</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#mathhint_0">mathhint</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#organichint_0">organichint</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#reactionhint_0">reactionhint</a>, <a href="#customresponse_0">customresponse</a>, <a href="#customhint_0">customhint</a>, <a href="#part_0">part</a>
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#stringresponse_0">stringresponse</a>, <a href="#stringhintcondition_0">stringhintcondition</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#radiobuttonresponse_0">radiobuttonresponse</a>, <a href="#radiobuttonhintcondition_0">radiobuttonhintcondition</a>, <a href="#optionresponse_0">optionresponse</a>, <a href="#optionhintcondition_0">optionhintcondition</a>, <a href="#matchresponse_0">matchresponse</a>, <a href="#rankresponse_0">rankresponse</a>, <a href="#imageresponse_0">imageresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#numericalhintcondition_0">numericalhintcondition</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#formulahintcondition_0">formulahintcondition</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#mathhintcondition_0">mathhintcondition</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#organichintcondition_0">organichintcondition</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#reactionhintcondition_0">reactionhintcondition</a>, <a href="#customresponse_0">customresponse</a>, <a href="#customhintcondition_0">customhintcondition</a>, <a href="#part_0">part</a>
 <br>
 <hr>
 
@@ -8378,14 +8396,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
 <br>
 </li>
 </ul>
@@ -8451,7 +8461,7 @@ Choice between:<ul>
 <div class="documentation">
 Block For After Solved
 
-Everything inside is skipped if the problem is &ldquo;not solved&rdquo;.
+Everything inside is skipped if the problem part is &ldquo;not solved&rdquo;.
 </div>
 <br>
 
@@ -8478,7 +8488,7 @@ Choice between:<ul>
 
 </div>
 
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#stringresponse_0">stringresponse</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#radiobuttonresponse_0">radiobuttonresponse</a>, <a href="#optionresponse_0">optionresponse</a>, <a href="#matchresponse_0">matchresponse</a>, <a href="#rankresponse_0">rankresponse</a>, <a href="#imageresponse_0">imageresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#functionplotresponse_0">functionplotresponse</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#customresponse_0">customresponse</a>, <a href="#externalresponse_0">externalresponse</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#while_0">while</a>, <a href="#window_0">window</a>
+<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#stringresponse_0">stringresponse</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#radiobuttonresponse_0">radiobuttonresponse</a>, <a href="#optionresponse_0">optionresponse</a>, <a href="#matchresponse_0">matchresponse</a>, <a href="#rankresponse_0">rankresponse</a>, <a href="#imageresponse_0">imageresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#functionplotresponse_0">functionplotresponse</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#customresponse_0">customresponse</a>, <a href="#externalresponse_0">externalresponse</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#while_0">while</a>, <a href="#window_0">window</a>
 <br>
 <hr>
 
@@ -8490,7 +8500,7 @@ Choice between:<ul>
 <div class="documentation">
 Block For When Not Solved
 
-Everything inside is skipped if the problem is &ldquo;solved&rdquo;.
+Everything inside is skipped if the problem part is &ldquo;solved&rdquo;.
 </div>
 <br>
 
@@ -8499,10 +8509,6 @@ Can contain text<br>
 Choice between:<ul>
 <li>
 <a href="#text-with-responses_0">text-with-responses</a>
-<br>
-</li>
-<li>
-<a href="#inserts_0">inserts</a>
 <br>
 </li>
 <li>
@@ -8521,7 +8527,7 @@ Choice between:<ul>
 
 </div>
 
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#stringresponse_0">stringresponse</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#radiobuttonresponse_0">radiobuttonresponse</a>, <a href="#optionresponse_0">optionresponse</a>, <a href="#matchresponse_0">matchresponse</a>, <a href="#rankresponse_0">rankresponse</a>, <a href="#imageresponse_0">imageresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#functionplotresponse_0">functionplotresponse</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#customresponse_0">customresponse</a>, <a href="#externalresponse_0">externalresponse</a>, <a href="#part_0">part</a>, <a href="#preduedate_0">preduedate</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#while_0">while</a>, <a href="#window_0">window</a>
+<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#stringresponse_0">stringresponse</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#radiobuttonresponse_0">radiobuttonresponse</a>, <a href="#optionresponse_0">optionresponse</a>, <a href="#matchresponse_0">matchresponse</a>, <a href="#rankresponse_0">rankresponse</a>, <a href="#imageresponse_0">imageresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#functionplotresponse_0">functionplotresponse</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#customresponse_0">customresponse</a>, <a href="#externalresponse_0">externalresponse</a>, <a href="#postanswerdate_0">postanswerdate</a>, <a href="#while_0">while</a>, <a href="#window_0">window</a>
 <br>
 <hr>
 
@@ -8584,7 +8590,7 @@ Value restriction based on xs:string<ul>
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>, <a href="#head.misc_0">head.misc</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>, <a href="#head.misc_0">head.misc</a>
 <br>
 <hr>
 
@@ -8617,23 +8623,15 @@ Test Condition
 </div>
 <hr>
 
-<a name="block-with-responses_0"></a>
-<h3>Complex type <span class="nomtitre">block-with-responses</span>
+<a name="block-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">block-with-parts</span>
 </h3>Can contain text<br>
 <div class="indentation">
 
 
 Choice between:<ul>
 <li>
-<a href="#text-with-responses_0">text-with-responses</a>
-<br>
-</li>
-<li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
-<a href="#part_0">part</a>
+<a href="#text-with-parts_0">text-with-parts</a>
 <br>
 </li>
 <li>
@@ -8648,12 +8646,34 @@ Choice between:<ul>
 <a href="#scriptlib_0">scriptlib</a>
 <br>
 </li>
+</ul>
+
+
+
+</div>
+<hr>
+
+<a name="block-with-responses_0"></a>
+<h3>Complex type <span class="nomtitre">block-with-responses</span>
+</h3>Can contain text<br>
+<div class="indentation">
+
+
+Choice between:<ul>
 <li>
-<a href="#solved_0">solved</a>
+<a href="#text-with-responses_0">text-with-responses</a>
 <br>
 </li>
 <li>
-<a href="#notsolved_0">notsolved</a>
+<a href="#randomlabel_0">randomlabel</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
 <br>
 </li>
 </ul>
@@ -8675,10 +8695,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
 <a href="#randomlabel_0">randomlabel</a>
 <br>
 </li>
@@ -8688,14 +8704,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
 <br>
 </li>
 </ul>
@@ -8722,10 +8730,6 @@ Can contain text<br>
 Choice between:<ul>
 <li>
 <a href="#text-without-responses_0">text-without-responses</a>
-<br>
-</li>
-<li>
-<a href="#inserts_0">inserts</a>
 <br>
 </li>
 <li>
@@ -8760,7 +8764,7 @@ Test Condition
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -8774,7 +8778,7 @@ Test Condition
 <br>
 
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>, <a href="#textfield_0">textfield</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>, <a href="#textfield_0">textfield</a>
 <br>
 <hr>
 
@@ -8797,7 +8801,7 @@ Choice between:<ul>
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>, <a href="#textfield_0">textfield</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>, <a href="#textfield_0">textfield</a>
 <br>
 <hr>
 
@@ -8822,7 +8826,7 @@ Choice between:<ul>
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -8896,19 +8900,15 @@ Value restriction based on xs:string<ul>
 </div>
 <hr>
 
-<a name="problemtype-with-responses_0"></a>
-<h3>Complex type <span class="nomtitre">problemtype-with-responses</span>
+<a name="problemtype-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">problemtype-with-parts</span>
 </h3>Can contain text<br>
 <div class="indentation">
 
 
 Choice between:<ul>
 <li>
-<a href="#text-with-responses_0">text-with-responses</a>
-<br>
-</li>
-<li>
-<a href="#inserts_0">inserts</a>
+<a href="#text-with-parts_0">text-with-parts</a>
 <br>
 </li>
 <li>
@@ -8923,12 +8923,34 @@ Choice between:<ul>
 <a href="#scriptlib_0">scriptlib</a>
 <br>
 </li>
+</ul>
+
+
+
+</div>
+<hr>
+
+<a name="problemtype-with-responses_0"></a>
+<h3>Complex type <span class="nomtitre">problemtype-with-responses</span>
+</h3>Can contain text<br>
+<div class="indentation">
+
+
+Choice between:<ul>
 <li>
-<a href="#solved_0">solved</a>
+<a href="#text-with-responses_0">text-with-responses</a>
 <br>
 </li>
 <li>
-<a href="#notsolved_0">notsolved</a>
+<a href="#randomlabel_0">randomlabel</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
 <br>
 </li>
 </ul>
@@ -8950,10 +8972,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
 <a href="#randomlabel_0">randomlabel</a>
 <br>
 </li>
@@ -8963,14 +8981,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
 <br>
 </li>
 </ul>
@@ -9009,6 +9019,145 @@ Maximum Tags to Show
 </div>
 <hr>
 
+<a name="randomlist-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">randomlist-with-parts</span>
+</h3>
+<div class="indentation">
+
+
+Choice between:<ul>
+<li>
+<a href="#part_0">part</a>
+<br>
+</li>
+<li>
+<a href="#img_0">img</a>
+<br>
+</li>
+<li>
+<a href="#inserts_0">inserts</a>
+<br>
+</li>
+<li>
+<a name="block_3"></a>
+<h3>Element <span class="nomtitre">block</span>
+</h3>type: <a href="#block-with-parts_0">block-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a href="#while_0">while</a>
+<br>
+</li>
+<li>
+<a name="problemtype_3"></a>
+<h3>Element <span class="nomtitre">problemtype</span>
+</h3>type: <a href="#problemtype-with-parts_0">problemtype-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a href="#window_0">window</a>
+<br>
+</li>
+<li>
+<a href="#display_2">display</a>
+<br>
+</li>
+<li>
+<a href="#gnuplot_0">gnuplot</a>
+<br>
+</li>
+<li>
+<a href="#organicstructure_0">organicstructure</a>
+<br>
+</li>
+<li>
+<a href="#instructorcomment_0">instructorcomment</a>
+<br>
+</li>
+<li>
+<a href="#drawimage_0">drawimage</a>
+<br>
+</li>
+<li>
+<a href="#import_0">import</a>
+<br>
+</li>
+<li>
+<a name="section_3"></a>
+<h3>Element <span class="nomtitre">section</span>
+</h3>type: <a href="#section-with-parts_0">section-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a name="ul_3"></a>
+<h3>Element <span class="nomtitre">ul</span>
+</h3>type: <a href="#ul-with-parts_0">ul-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a name="ol_3"></a>
+<h3>Element <span class="nomtitre">ol</span>
+</h3>type: <a href="#ol-with-parts_0">ol-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a name="table_3"></a>
+<h3>Element <span class="nomtitre">table</span>
+</h3>type: <a href="#table-with-parts_0">table-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a name="dl_3"></a>
+<h3>Element <span class="nomtitre">dl</span>
+</h3>type: <a href="#dl-with-parts_0">dl-with-parts</a>
+<br>
+<br>
+</li>
+<li>
+<a href="#object_0">object</a>
+<br>
+</li>
+<li>
+<a href="#applet_0">applet</a>
+<br>
+</li>
+<li>
+<a href="#embed_0">embed</a>
+<br>
+</li>
+<li>
+<a href="#video_0">video</a>
+<br>
+</li>
+<li>
+<a href="#audio_0">audio</a>
+<br>
+</li>
+<li>
+<a href="#canvas_0">canvas</a>
+<br>
+</li>
+<li>
+<a href="#form_1">form</a>
+<br>
+</li>
+<li>
+<a href="#iframe_0">iframe</a>
+<br>
+</li>
+</ul>
+
+
+
+</div>
+<hr>
+
 <a name="randomlist-with-responses_0"></a>
 <h3>Complex type <span class="nomtitre">randomlist-with-responses</span>
 </h3>
@@ -9025,15 +9174,11 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#postanswerdate_0">postanswerdate</a>
+<a href="#inserts_0">inserts</a>
 <br>
 </li>
 <li>
-<a href="#preduedate_0">preduedate</a>
-<br>
-</li>
-<li>
-<a name="block_2"></a>
+<a name="block_4"></a>
 <h3>Element <span class="nomtitre">block</span>
 </h3>type: <a href="#block-with-responses_0">block-with-responses</a>
 <br>
@@ -9044,7 +9189,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="problemtype_2"></a>
+<a name="problemtype_4"></a>
 <h3>Element <span class="nomtitre">problemtype</span>
 </h3>type: <a href="#problemtype-with-responses_0">problemtype-with-responses</a>
 <br>
@@ -9075,35 +9220,39 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="section_2"></a>
+<a href="#import_0">import</a>
+<br>
+</li>
+<li>
+<a name="section_4"></a>
 <h3>Element <span class="nomtitre">section</span>
 </h3>type: <a href="#section-with-responses_0">section-with-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="ul_2"></a>
+<a name="ul_4"></a>
 <h3>Element <span class="nomtitre">ul</span>
 </h3>type: <a href="#ul-with-responses_0">ul-with-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="ol_2"></a>
+<a name="ol_4"></a>
 <h3>Element <span class="nomtitre">ol</span>
 </h3>type: <a href="#ol-with-responses_0">ol-with-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="table_2"></a>
+<a name="table_4"></a>
 <h3>Element <span class="nomtitre">table</span>
 </h3>type: <a href="#table-with-responses_0">table-with-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="dl_2"></a>
+<a name="dl_4"></a>
 <h3>Element <span class="nomtitre">dl</span>
 </h3>type: <a href="#dl-with-responses_0">dl-with-responses</a>
 <br>
@@ -9160,15 +9309,11 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#postanswerdate_0">postanswerdate</a>
+<a href="#inserts_0">inserts</a>
 <br>
 </li>
 <li>
-<a href="#preduedate_0">preduedate</a>
-<br>
-</li>
-<li>
-<a name="block_3"></a>
+<a name="block_5"></a>
 <h3>Element <span class="nomtitre">block</span>
 </h3>type: <a href="#block-without-responses_0">block-without-responses</a>
 <br>
@@ -9179,7 +9324,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="problemtype_3"></a>
+<a name="problemtype_5"></a>
 <h3>Element <span class="nomtitre">problemtype</span>
 </h3>type: <a href="#problemtype-without-responses_0">problemtype-without-responses</a>
 <br>
@@ -9210,35 +9355,39 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="section_3"></a>
+<a href="#import_0">import</a>
+<br>
+</li>
+<li>
+<a name="section_5"></a>
 <h3>Element <span class="nomtitre">section</span>
 </h3>type: <a href="#section-without-responses_0">section-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="ul_3"></a>
+<a name="ul_5"></a>
 <h3>Element <span class="nomtitre">ul</span>
 </h3>type: <a href="#ul-without-responses_0">ul-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="ol_3"></a>
+<a name="ol_5"></a>
 <h3>Element <span class="nomtitre">ol</span>
 </h3>type: <a href="#ol-without-responses_0">ol-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="table_3"></a>
+<a name="table_5"></a>
 <h3>Element <span class="nomtitre">table</span>
 </h3>type: <a href="#table-without-responses_0">table-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="dl_3"></a>
+<a name="dl_5"></a>
 <h3>Element <span class="nomtitre">dl</span>
 </h3>type: <a href="#dl-without-responses_0">dl-without-responses</a>
 <br>
@@ -9303,7 +9452,7 @@ Attribute <span class="nomattribut"></span>:
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -9336,7 +9485,7 @@ Attribute <span class="nomattribut">exclude</span>:
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -9368,7 +9517,7 @@ Choice between:<ul>
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -9428,10 +9577,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
 <a href="#randomlabel_0">randomlabel</a>
 <br>
 </li>
@@ -9479,7 +9624,7 @@ Printed text (optional)
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -9534,7 +9679,7 @@ starting width of the popup window
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -9608,7 +9753,7 @@ the text that appears to hide the box again, by default the translation of &rsqu
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -9633,7 +9778,7 @@ Choice between:<ul>
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -9659,7 +9804,7 @@ Choice between:<ul>
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -9735,7 +9880,7 @@ Value restriction based on xs:string<ul>
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -10038,7 +10183,7 @@ Attribute <span class="nomattribut">bgcolor</span>:
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -10254,7 +10399,7 @@ Usage note: This attribute must not be used to convey semantic information. Even
 
 </div>
 
-<br>Parents:<a href="#headerContent_0">headerContent</a>, <a href="#section-base_0">section-base</a>, <a href="#div-base_0">div-base</a>, <a href="#p-base_0">p-base</a>, <a href="#ul-base_0">ul-base</a>, <a href="#ol-base_0">ol-base</a>, <a href="#li-base_0">li-base</a>, <a href="#dl-base_0">dl-base</a>, <a href="#table-base_0">table-base</a>, <a href="#tr-base_0">tr-base</a>, <a href="#td-base_0">td-base</a>, <a href="#th_0">th</a>, <a href="#span_0">span</a>, <a href="#hr_0">hr</a>, <a href="#blockquote_0">blockquote</a>, <a href="#canvas_0">canvas</a>
+<br>Parents:<a href="#headerContent_0">headerContent</a>, <a href="#htmlbody_0">htmlbody</a>, <a href="#section-base_0">section-base</a>, <a href="#div-base_0">div-base</a>, <a href="#p-base_0">p-base</a>, <a href="#ul-base_0">ul-base</a>, <a href="#ol-base_0">ol-base</a>, <a href="#li-base_0">li-base</a>, <a href="#dl-base_0">dl-base</a>, <a href="#table-base_0">table-base</a>, <a href="#tr-base_0">tr-base</a>, <a href="#td-base_0">td-base</a>, <a href="#th_0">th</a>, <a href="#span_0">span</a>, <a href="#a_0">a</a>, <a href="#hr_0">hr</a>, <a href="#address_0">address</a>, <a href="#blockquote_0">blockquote</a>, <a href="#img_0">img</a>, <a href="#object_0">object</a>, <a href="#video_0">video</a>, <a href="#audio_0">audio</a>, <a href="#canvas_0">canvas</a>, <a href="#form_1">form</a>, <a href="#iframe_0">iframe</a>
 <br>
 <hr>
 
@@ -10344,7 +10489,7 @@ Choice between:<ul>
 </li>
 </ul>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -10354,27 +10499,7 @@ Choice between:<ul>
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a href="#span_0">span</a>
-<br>
-</li>
-<li>
-<a href="#em_0">em</a>
-<br>
-</li>
-<li>
-<a href="#a_0">a</a>
-<br>
-</li>
-<li>
-<a href="#sup_0">sup</a>
-<br>
-</li>
-<li>
-<a href="#sub_0">sub</a>
-<br>
-</li>
-<li>
-<a href="#i_0">i</a>
+<a href="#inlines_0">inlines</a>
 <br>
 </li>
 </ul>
@@ -10767,7 +10892,7 @@ Attribute <span class="nomattribut">id</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">type</span>:
-    <div class="indentation">required<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">media</span>:
@@ -10887,7 +11012,7 @@ Attribute <span class="nomattribut"></span>:
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>, <a href="#head.misc_0">head.misc</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>, <a href="#head.misc_0">head.misc</a>
 <br>
 <hr>
 
@@ -10901,7 +11026,7 @@ Alternate content container for non script-based rendering.
 </div>
 <br>
 
-
+Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
@@ -10912,7 +11037,7 @@ Choice between:<ul>
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -10928,6 +11053,10 @@ Contains only the attributes that will be used in the future HTML document body.
 
 
 <div class="indentation">
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 
 <a href="#i18n_0">i18n</a>
 <br>
@@ -10962,6 +11091,24 @@ The HTML Section Element (&lt;section&gt;) represents a generic section of a doc
 <a href="#coreattrs_0">coreattrs</a>
 <br>
 <br>
+
+</div>
+<hr>
+
+<a name="section-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">section-with-parts</span>
+</h3>
+<div class="indentation">
+
+
+Choice between:<ul>
+<li>
+<a href="#blocks-with-parts_0">blocks-with-parts</a>
+<br>
+</li>
+</ul>
+
+
 
 </div>
 <hr>
@@ -11004,6 +11151,85 @@ Choice between:<ul>
 
 
 </div>
+<hr>
+
+<a name="header_0"></a>
+<h3>Element <span class="nomtitre">header</span>
+</h3>
+
+
+<div class="documentation">
+The HTML &lt;header&gt; Element represents a group of introductory or navigational aids. It may contain some heading elements but also other elements like a logo, wrapped section's header, a search form, and so on.
+
+This element should have no &lt;footer&gt; or &lt;header&gt; descendants.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text-without-responses_0">text-without-responses</a>
+<br>
+</li>
+</ul>
+
+</div>
+
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
+<br>
+<hr>
+
+<a name="footer_0"></a>
+<h3>Element <span class="nomtitre">footer</span>
+</h3>
+
+
+<div class="documentation">
+The HTML &lt;footer&gt; Element represents a footer for its nearest sectioning content or sectioning root element (i.e, its nearest parent &lt;article&gt;, &lt;aside&gt;, &lt;nav&gt;, &lt;section&gt;, &lt;blockquote&gt;, &lt;body&gt;, &lt;details&gt;, &lt;fieldset&gt;, &lt;figure&gt;, &lt;td&gt;). A footer typically contains information about the author of the section, copyright data or links to related documents.
+
+This element should have no &lt;footer&gt; or &lt;header&gt; descendants.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text-without-responses_0">text-without-responses</a>
+<br>
+</li>
+</ul>
+
+</div>
+
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
+<br>
+<hr>
+
+<a name="aside_0"></a>
+<h3>Element <span class="nomtitre">aside</span>
+</h3>
+
+
+<div class="documentation">
+The HTML &lt;aside&gt; element represents a section of the page with content connected tangentially to the rest, which could be considered separate from that content. These sections are often represented as sidebars or inserts. They often contain the definitions on the sidebars, such as definitions from the glossary; there may also be other types of information, such as related advertisements; the biography of the author; web applications; profile information or related links on the blog.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text-without-responses_0">text-without-responses</a>
+<br>
+</li>
+</ul>
+
+</div>
+
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
+<br>
 <hr>
 
 <a name="h1_0"></a>
@@ -11135,23 +11361,15 @@ The HTML &lt;div&gt; element (or HTML Document Division Element) is the generic 
 </div>
 <hr>
 
-<a name="div-with-responses_0"></a>
-<h3>Complex type <span class="nomtitre">div-with-responses</span>
+<a name="div-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">div-with-parts</span>
 </h3>Can contain text<br>
 <div class="indentation">
 
 
 Choice between:<ul>
 <li>
-<a href="#text-with-responses_0">text-with-responses</a>
-<br>
-</li>
-<li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
-<a href="#part_0">part</a>
+<a href="#text-with-parts_0">text-with-parts</a>
 <br>
 </li>
 <li>
@@ -11166,12 +11384,34 @@ Choice between:<ul>
 <a href="#scriptlib_0">scriptlib</a>
 <br>
 </li>
+</ul>
+
+
+
+</div>
+<hr>
+
+<a name="div-with-responses_0"></a>
+<h3>Complex type <span class="nomtitre">div-with-responses</span>
+</h3>Can contain text<br>
+<div class="indentation">
+
+
+Choice between:<ul>
 <li>
-<a href="#solved_0">solved</a>
+<a href="#text-with-responses_0">text-with-responses</a>
 <br>
 </li>
 <li>
-<a href="#notsolved_0">notsolved</a>
+<a href="#randomlabel_0">randomlabel</a>
+<br>
+</li>
+<li>
+<a href="#parserlib_0">parserlib</a>
+<br>
+</li>
+<li>
+<a href="#scriptlib_0">scriptlib</a>
 <br>
 </li>
 </ul>
@@ -11193,10 +11433,6 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a href="#inserts_0">inserts</a>
-<br>
-</li>
-<li>
 <a href="#randomlabel_0">randomlabel</a>
 <br>
 </li>
@@ -11206,14 +11442,6 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#scriptlib_0">scriptlib</a>
-<br>
-</li>
-<li>
-<a href="#solved_0">solved</a>
-<br>
-</li>
-<li>
-<a href="#notsolved_0">notsolved</a>
 <br>
 </li>
 </ul>
@@ -11255,6 +11483,10 @@ Choice between:<ul>
 </li>
 <li>
 <a href="#inlineResponses_0">inlineResponses</a>
+<br>
+</li>
+<li>
+<a href="#hintgroup_0">hintgroup</a>
 <br>
 </li>
 <li>
@@ -11305,6 +11537,27 @@ Unordered list
 </div>
 <hr>
 
+<a name="ul-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">ul-with-parts</span>
+</h3>
+<div class="indentation">
+
+
+Sequence with:<ul>
+<li>
+<a name="li_0"></a>
+<h3>Element <span class="nomtitre">li</span>
+</h3>type: <a href="#li-with-parts_0">li-with-parts</a>
+<br>
+<br>
+</li>
+</ul>
+
+
+
+</div>
+<hr>
+
 <a name="ul-with-responses_0"></a>
 <h3>Complex type <span class="nomtitre">ul-with-responses</span>
 </h3>
@@ -11313,7 +11566,7 @@ Unordered list
 
 Sequence with:<ul>
 <li>
-<a name="li_0"></a>
+<a name="li_1"></a>
 <h3>Element <span class="nomtitre">li</span>
 </h3>type: <a href="#li-with-responses_0">li-with-responses</a>
 <br>
@@ -11334,7 +11587,7 @@ Sequence with:<ul>
 
 Sequence with:<ul>
 <li>
-<a name="li_1"></a>
+<a name="li_2"></a>
 <h3>Element <span class="nomtitre">li</span>
 </h3>type: <a href="#li-without-responses_0">li-without-responses</a>
 <br>
@@ -11366,6 +11619,27 @@ Ordered list
 </div>
 <hr>
 
+<a name="ol-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">ol-with-parts</span>
+</h3>
+<div class="indentation">
+
+
+Sequence with:<ul>
+<li>
+<a name="li_3"></a>
+<h3>Element <span class="nomtitre">li</span>
+</h3>type: <a href="#li-with-parts_0">li-with-parts</a>
+<br>
+<br>
+</li>
+</ul>
+
+
+
+</div>
+<hr>
+
 <a name="ol-with-responses_0"></a>
 <h3>Complex type <span class="nomtitre">ol-with-responses</span>
 </h3>
@@ -11374,7 +11648,7 @@ Ordered list
 
 Sequence with:<ul>
 <li>
-<a name="li_2"></a>
+<a name="li_4"></a>
 <h3>Element <span class="nomtitre">li</span>
 </h3>type: <a href="#li-with-responses_0">li-with-responses</a>
 <br>
@@ -11395,7 +11669,7 @@ Sequence with:<ul>
 
 Sequence with:<ul>
 <li>
-<a name="li_3"></a>
+<a name="li_5"></a>
 <h3>Element <span class="nomtitre">li</span>
 </h3>type: <a href="#li-without-responses_0">li-without-responses</a>
 <br>
@@ -11437,6 +11711,24 @@ Note: This attribute was deprecated in HTML4, but reintroduced in HTML5.
 
 
 </div>
+
+</div>
+<hr>
+
+<a name="li-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">li-with-parts</span>
+</h3>Can contain text<br>
+<div class="indentation">
+
+
+Choice between:<ul>
+<li>
+<a href="#text-with-parts_0">text-with-parts</a>
+<br>
+</li>
+</ul>
+
+
 
 </div>
 <hr>
@@ -11498,6 +11790,31 @@ Prior to HTML5, &lt;dl&gt; was known as a Definition List.
 </div>
 <hr>
 
+<a name="dl-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">dl-with-parts</span>
+</h3>
+<div class="indentation">
+
+
+Choice between:<ul>
+<li>
+<a href="#dt_0">dt</a>
+<br>
+</li>
+<li>
+<a name="dd_0"></a>
+<h3>Element <span class="nomtitre">dd</span>
+</h3>type: <a href="#dd-with-parts_0">dd-with-parts</a>
+<br>
+<br>
+</li>
+</ul>
+
+
+
+</div>
+<hr>
+
 <a name="dl-with-responses_0"></a>
 <h3>Complex type <span class="nomtitre">dl-with-responses</span>
 </h3>
@@ -11510,7 +11827,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="dd_0"></a>
+<a name="dd_1"></a>
 <h3>Element <span class="nomtitre">dd</span>
 </h3>type: <a href="#dd-with-responses_0">dd-with-responses</a>
 <br>
@@ -11535,7 +11852,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="dd_1"></a>
+<a name="dd_2"></a>
 <h3>Element <span class="nomtitre">dd</span>
 </h3>type: <a href="#dd-without-responses_0">dd-without-responses</a>
 <br>
@@ -11574,6 +11891,24 @@ The HTML &lt;dt&gt; element (or HTML Definition Term Element) identifies a term 
 The HTML &lt;dd&gt; Element (or HTML Description Element) indicates the description of a term in a description list (&lt;dl&gt;) element. This element can occur only as a child element of a definition list and it must follow a &lt;dt&gt; element.
 </div>
 <br>
+
+
+</div>
+<hr>
+
+<a name="dd-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">dd-with-parts</span>
+</h3>Can contain text<br>
+<div class="indentation">
+
+
+Choice between:<ul>
+<li>
+<a href="#text-with-parts_0">text-with-parts</a>
+<br>
+</li>
+</ul>
+
 
 
 </div>
@@ -11699,8 +12034,8 @@ Value restriction based on xs:string<ul>
 </div>
 <hr>
 
-<a name="table-with-responses_0"></a>
-<h3>Complex type <span class="nomtitre">table-with-responses</span>
+<a name="table-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">table-with-parts</span>
 </h3>
 <div class="indentation">
 
@@ -11718,12 +12053,51 @@ Sequence with:<ul>
 <li>
 <a name="tbody_0"></a>
 <h3>Element <span class="nomtitre">tbody</span>
-</h3>type: <a href="#tbody-with-responses_0">tbody-with-responses</a>
+</h3>type: <a href="#tbody-with-parts_0">tbody-with-parts</a>
 <br>
 <br>
 </li>
 <li>
 <a name="tr_0"></a>
+<h3>Element <span class="nomtitre">tr</span>
+</h3>type: <a href="#tr-with-parts_0">tr-with-parts</a>
+<br>
+<br>
+</li>
+</ul>
+</li>
+</ul>
+
+
+
+</div>
+<hr>
+
+<a name="table-with-responses_0"></a>
+<h3>Complex type <span class="nomtitre">table-with-responses</span>
+</h3>
+<div class="indentation">
+
+
+Sequence with:<ul>
+<li>
+<a href="#thead_0">thead</a>
+<br>
+</li>
+<li>
+<a href="#tfoot_0">tfoot</a>
+<br>
+</li>
+<li>Choice between:<ul>
+<li>
+<a name="tbody_1"></a>
+<h3>Element <span class="nomtitre">tbody</span>
+</h3>type: <a href="#tbody-with-responses_0">tbody-with-responses</a>
+<br>
+<br>
+</li>
+<li>
+<a name="tr_1"></a>
 <h3>Element <span class="nomtitre">tr</span>
 </h3>type: <a href="#tr-with-responses_0">tr-with-responses</a>
 <br>
@@ -11755,14 +12129,14 @@ Sequence with:<ul>
 </li>
 <li>Choice between:<ul>
 <li>
-<a name="tbody_1"></a>
+<a name="tbody_2"></a>
 <h3>Element <span class="nomtitre">tbody</span>
 </h3>type: <a href="#tbody-without-responses_0">tbody-without-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="tr_1"></a>
+<a name="tr_2"></a>
 <h3>Element <span class="nomtitre">tr</span>
 </h3>type: <a href="#tr-without-responses_0">tr-without-responses</a>
 <br>
@@ -11784,7 +12158,7 @@ Sequence with:<ul>
 <div class="indentation">
 Sequence with:<ul>
 <li>
-<a name="tr_2"></a>
+<a name="tr_3"></a>
 <h3>Element <span class="nomtitre">tr</span>
 </h3>type: <a href="#tr-without-responses_0">tr-without-responses</a>
 <br>
@@ -11805,7 +12179,7 @@ Sequence with:<ul>
 <div class="indentation">
 Sequence with:<ul>
 <li>
-<a name="tr_3"></a>
+<a name="tr_4"></a>
 <h3>Element <span class="nomtitre">tr</span>
 </h3>type: <a href="#tr-without-responses_0">tr-without-responses</a>
 <br>
@@ -11819,6 +12193,26 @@ Sequence with:<ul>
 <br>
 <hr>
 
+<a name="tbody-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">tbody-with-parts</span>
+</h3>
+<div class="indentation">
+Sequence with:<ul>
+<li>Choice between:<ul>
+<li>
+<a name="tr_5"></a>
+<h3>Element <span class="nomtitre">tr</span>
+</h3>type: <a href="#tr-with-parts_0">tr-with-parts</a>
+<br>
+<br>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+<hr>
+
 <a name="tbody-with-responses_0"></a>
 <h3>Complex type <span class="nomtitre">tbody-with-responses</span>
 </h3>
@@ -11826,7 +12220,7 @@ Sequence with:<ul>
 Sequence with:<ul>
 <li>Choice between:<ul>
 <li>
-<a name="tr_4"></a>
+<a name="tr_6"></a>
 <h3>Element <span class="nomtitre">tr</span>
 </h3>type: <a href="#tr-with-responses_0">tr-with-responses</a>
 <br>
@@ -11846,7 +12240,7 @@ Sequence with:<ul>
 Sequence with:<ul>
 <li>Choice between:<ul>
 <li>
-<a name="tr_5"></a>
+<a name="tr_7"></a>
 <h3>Element <span class="nomtitre">tr</span>
 </h3>type: <a href="#tr-without-responses_0">tr-without-responses</a>
 <br>
@@ -11878,6 +12272,31 @@ Table row
 </div>
 <hr>
 
+<a name="tr-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">tr-with-parts</span>
+</h3>
+<div class="indentation">
+
+
+Choice between:<ul>
+<li>
+<a href="#th_0">th</a>
+<br>
+</li>
+<li>
+<a name="td_0"></a>
+<h3>Element <span class="nomtitre">td</span>
+</h3>type: <a href="#td-with-parts_0">td-with-parts</a>
+<br>
+<br>
+</li>
+</ul>
+
+
+
+</div>
+<hr>
+
 <a name="tr-with-responses_0"></a>
 <h3>Complex type <span class="nomtitre">tr-with-responses</span>
 </h3>
@@ -11890,7 +12309,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="td_0"></a>
+<a name="td_1"></a>
 <h3>Element <span class="nomtitre">td</span>
 </h3>type: <a href="#td-with-responses_0">td-with-responses</a>
 <br>
@@ -11915,7 +12334,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="td_1"></a>
+<a name="td_2"></a>
 <h3>Element <span class="nomtitre">td</span>
 </h3>type: <a href="#td-without-responses_0">td-without-responses</a>
 <br>
@@ -11971,10 +12390,26 @@ Table cell
 Attribute <span class="nomattribut">colspan</span>:
     <div class="indentation">optional<br>type: <tt>xs:int</tt>
 <br>
+
+
+<div class="documentation">
+This attribute contains a non-negative integer value that indicates on how many columns does the cell extend. Its default value is 1.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">rowspan</span>:
     <div class="indentation">optional<br>type: <tt>xs:int</tt>
 <br>
+
+
+<div class="documentation">
+This attribute contains a non-negative integer value that indicates on how many rows does the cell extend. Its default value is 1.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">align</span>:
     <div class="indentation">optional<br>type: <a href="#html-align_0">html-align</a>
@@ -12006,6 +12441,24 @@ Value restriction based on xs:string<ul>
 
 
 </div>
+
+</div>
+<hr>
+
+<a name="td-with-parts_0"></a>
+<h3>Complex type <span class="nomtitre">td-with-parts</span>
+</h3>Can contain text<br>
+<div class="indentation">
+
+
+Choice between:<ul>
+<li>
+<a href="#text-with-parts_0">text-with-parts</a>
+<br>
+</li>
+</ul>
+
+
 
 </div>
 <hr>
@@ -12071,14 +12524,62 @@ Choice between:<ul>
 Attribute <span class="nomattribut">colspan</span>:
     <div class="indentation">optional<br>type: <tt>xs:int</tt>
 <br>
+
+
+<div class="documentation">
+This attribute contains a non-negative integer value that indicates on how many columns does the cell extend. Its default value is 1.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">rowspan</span>:
     <div class="indentation">optional<br>type: <tt>xs:int</tt>
 <br>
+
+
+<div class="documentation">
+This attribute contains a non-negative integer value that indicates on how many rows does the cell extend. Its default value is 1.
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">align</span>:
     <div class="indentation">optional<br>type: <a href="#html-align_0">html-align</a>
 <br>
+</div>
+Attribute <span class="nomattribut">scope</span>:
+    <div class="indentation">optional<br>
+
+
+<div class="documentation">
+defines the cells that the header defined in this &lt;th&gt; element relates to
+</div>
+<br>
+
+
+Value restriction based on xs:token<ul>
+
+<li>
+<tt>row</tt>
+</li>
+
+<li>
+<tt>col</tt>
+</li>
+
+<li>
+<tt>rowgroup</tt>
+</li>
+
+<li>
+<tt>colgroup</tt>
+</li>
+
+</ul>
+
+
 </div>
 Attribute <span class="nomattribut">texwidth</span>:
     <div class="indentation">optional<br>
@@ -12154,6 +12655,16 @@ The HTML &lt;a&gt; Element (or the HTML Anchor Element) defines a hyperlink, the
 
 Can contain text<br>
 <div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#inlines_0">inlines</a>
+<br>
+</li>
+</ul>
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">name</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
@@ -12169,6 +12680,36 @@ Attribute <span class="nomattribut">target</span>:
 Attribute <span class="nomattribut">title</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+</div>
+Attribute <span class="nomattribut">rel</span>:
+    <div class="indentation">optional<br>type: <tt>xs:NMTOKENS</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">accesskey</span>:
+    <div class="indentation">optional<br>
+
+Value restriction based on xs:string<ul>
+
+
+</ul>
+
+
+</div>
+Attribute <span class="nomattribut">onclick</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Javascript event handler content attribute for the "click" event.
+
+Warning: event handler content attributes should be avoided. They make the markup bigger and less readable. Concerns of content/structure and behavior are not well-separated, making a bug harder to find. Furthermore, usage of event attributes almost always causes scripts to expose global functions on the Window object, polluting the global namespace.
+
+The EventTarget.addEventListener() function should be used instead to add a listener for the event.
+</div>
+<br>
+
+
 </div>
 
 </div>
@@ -12285,7 +12826,7 @@ The HTML &lt;pre&gt; Element (or HTML Preformatted Text) represents preformatted
 <br>
 
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -12528,7 +13069,36 @@ The HTML &lt;hr&gt; element represents a thematic break between paragraph-level 
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
+<br>
+<hr>
+
+<a name="address_0"></a>
+<h3>Element <span class="nomtitre">address</span>
+</h3>
+
+
+<div class="documentation">
+The HTML &lt;address&gt; Element may be used by authors to supply contact information for its nearest &lt;article&gt; or &lt;body&gt; ancestor; in the latter case, it applies to the whole document.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text-without-responses_0">text-without-responses</a>
+<br>
+</li>
+</ul>
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
+
+</div>
+
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -12561,7 +13131,7 @@ Attribute <span class="nomattribut">cite</span>:
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -12604,6 +13174,10 @@ Possible values:<ul>
 
 
 <div class="indentation">
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">src</span>:
     <div class="indentation">required<br>type: <tt>xs:string</tt>
 <br>
@@ -12789,6 +13363,82 @@ Attribute <span class="nomattribut">encrypturl</span>:
 <br>
 <hr>
 
+<a name="figure_0"></a>
+<h3>Element <span class="nomtitre">figure</span>
+</h3>
+
+
+<div class="documentation">
+The HTML &lt;figure&gt; Element represents self-contained content, frequently with a caption (&lt;figcaption&gt;), and is typically referenced as a single unit. While it is related to the main flow, its position is independent of the main flow. Usually this is an image, an illustration, a diagram, a code snippet, or a schema that is referenced in the main text, but that can be moved to another page or to an appendix without affecting the main flow.
+
+Usage note: A caption can be associated with the &lt;figure&gt; element by inserting a &lt;figcaption&gt; inside it (as the first or the last child).
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>Sequence with:<ul>
+<li>
+<a href="#figcaption_0">figcaption</a>
+<br>
+</li>
+<li>Choice between:<ul>
+<li>
+<a href="#text-without-responses_0">text-without-responses</a>
+<br>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Sequence with:<ul>
+<li>Choice between:<ul>
+<li>
+<a href="#text-without-responses_0">text-without-responses</a>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<a href="#figcaption_0">figcaption</a>
+<br>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
+<br>
+<hr>
+
+<a name="figcaption_0"></a>
+<h3>Element <span class="nomtitre">figcaption</span>
+</h3>
+
+
+<div class="documentation">
+The HTML &lt;figcaption&gt; Element represents a caption or a legend associated with a figure or an illustration described by the rest of the data of the &lt;figure&gt; element which is its immediate ancestor which means &lt;figcaption&gt; can be the first or last element inside a &lt;figure&gt; block. Also, the HTML Figcaption Element is optional; if not provided, then the parent figure element will have no caption.
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#text-without-responses_0">text-without-responses</a>
+<br>
+</li>
+</ul>
+
+</div>
+
+<br>Parents:<a href="#figure_0">figure</a>
+<br>
+<hr>
+
 <a name="object_0"></a>
 <h3>Element <span class="nomtitre">object</span>
 </h3>
@@ -12811,6 +13461,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">classid</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
@@ -12901,7 +13555,7 @@ Obsolete since HTML5.
 
 </div>
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <a href="#htmlLength_0">htmlLength</a>
+    <div class="indentation">optional<br>type: <a href="#htmlLength-or-perl_0">htmlLength-or-perl</a>
 <br>
 
 
@@ -12913,7 +13567,7 @@ The width of the display resource, in CSS pixels.
 
 </div>
 Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <a href="#htmlLength_0">htmlLength</a>
+    <div class="indentation">optional<br>type: <a href="#htmlLength-or-perl_0">htmlLength-or-perl</a>
 <br>
 
 
@@ -12951,7 +13605,7 @@ The name of valid browsing context (HTML5), or the name of the control (HTML 4).
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -13021,6 +13675,10 @@ The HTML &lt;embed&gt; Element represents an integration point for an external a
 
 
 <div class="indentation">
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:ID</tt>
+<br>
+</div>
 Attribute <span class="nomattribut">src</span>:
     <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
@@ -13072,7 +13730,7 @@ The displayed height of the resource, in CSS pixels.
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -13098,6 +13756,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:ID</tt>
+<br>
+</div>
 Attribute <span class="nomattribut">codebase</span>:
     <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
@@ -13127,6 +13789,35 @@ Attribute <span class="nomattribut">height</span>:
     <div class="indentation">required<br>type: <a href="#non-negative-int-or-perl_0">non-negative-int-or-perl</a>
 <br>
 </div>
+Attribute <span class="nomattribut">align</span>:
+    <div class="indentation">optional<br>
+
+Value restriction based on xs:token<ul>
+
+<li>
+<tt>top</tt>
+</li>
+
+<li>
+<tt>middle</tt>
+</li>
+
+<li>
+<tt>bottom</tt>
+</li>
+
+<li>
+<tt>left</tt>
+</li>
+
+<li>
+<tt>right</tt>
+</li>
+
+</ul>
+
+
+</div>
 Attribute <span class="nomattribut">hspace</span>:
     <div class="indentation">optional<br>type: <tt>xs:nonNegativeInteger</tt>
 <br>
@@ -13138,7 +13829,7 @@ Attribute <span class="nomattribut">vspace</span>:
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -13160,6 +13851,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">src</span>:
     <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
@@ -13214,7 +13909,7 @@ Value restriction based on xs:string<ul>
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -13263,6 +13958,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">src</span>:
     <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
@@ -13309,7 +14008,7 @@ Value restriction based on xs:string<ul>
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -13362,7 +14061,7 @@ Attribute <span class="nomattribut">name</span>:
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -13471,7 +14170,7 @@ Choice between:<ul>
 <br>
 <br>
 Attribute <span class="nomattribut">width</span>:
-    <div class="indentation">optional<br>type: <a href="#htmlLength_0">htmlLength</a>
+    <div class="indentation">optional<br>type: <a href="#htmlLength-or-perl_0">htmlLength-or-perl</a>
 <br>
 
 
@@ -13483,7 +14182,7 @@ The width of the coordinate space in CSS pixels.
 
 </div>
 Attribute <span class="nomattribut">height</span>:
-    <div class="indentation">optional<br>type: <a href="#htmlLength_0">htmlLength</a>
+    <div class="indentation">optional<br>type: <a href="#htmlLength-or-perl_0">htmlLength-or-perl</a>
 <br>
 
 
@@ -13497,7 +14196,7 @@ The height of the coordinate space in CSS pixels.
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -13520,6 +14219,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">action</span>:
     <div class="indentation">required<br>type: <tt>xs:anyURI</tt>
 <br>
@@ -13564,7 +14267,7 @@ Attribute <span class="nomattribut">accept-charset</span>:
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -14034,7 +14737,7 @@ Sequence with:<ul>
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -14149,6 +14852,10 @@ The HTML &lt;iframe&gt; Element (or HTML inline frame element) represents a nest
 
 Can contain text<br>
 <div class="indentation">
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">name</span>:
     <div class="indentation">optional<br>type: <tt>xs:NMTOKEN</tt>
 <br>
@@ -14181,7 +14888,7 @@ Value restriction based on xs:string<ul>
 
 </div>
 
-<br>Parents:<a href="#blocks-with-responses_0">blocks-with-responses</a>, <a href="#blocks-without-responses_0">blocks-without-responses</a>
+<br>Parents:<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <hr>
 
@@ -14190,6 +14897,8 @@ Value restriction based on xs:string<ul>
 <a name="index"></a>
 <h3>Index</h3>
 <a href="#a_0">a</a>
+<br>
+<a href="#address_0">address</a>
 <br>
 <a href="#algebra_0">algebra</a>
 <br>
@@ -14200,7 +14909,7 @@ Value restriction based on xs:string<ul>
             (under mathresponse)
           <br>
 <a href="#answer_10">answer</a>
-            (under mathhint)
+            (under mathhintcondition)
           <br>
 <a href="#answer_11">answer</a>
             (under functionplotcustomrule)
@@ -14209,7 +14918,7 @@ Value restriction based on xs:string<ul>
             (under customresponse)
           <br>
 <a href="#answer_17">answer</a>
-            (under customhint)
+            (under customhintcondition)
           <br>
 <a href="#answergroup_0">answergroup</a>
             (under numericalresponse)
@@ -14222,6 +14931,8 @@ Value restriction based on xs:string<ul>
 <a href="#arc_0">arc</a>
 <br>
 <a href="#area_0">area</a>
+<br>
+<a href="#aside_0">aside</a>
 <br>
 <a href="#audio_0">audio</a>
 <br>
@@ -14239,15 +14950,21 @@ Value restriction based on xs:string<ul>
 <a href="#big_0">big</a>
 <br>
 <a href="#block_0">block</a>
-            (under blocks-with-responses)
+            (under blocks-with-parts)
           <br>
 <a href="#block_1">block</a>
-            (under blocks-without-responses)
+            (under blocks-with-responses)
           <br>
 <a href="#block_2">block</a>
-            (under randomlist-with-responses)
+            (under blocks-without-responses)
           <br>
 <a href="#block_3">block</a>
+            (under randomlist-with-parts)
+          <br>
+<a href="#block_4">block</a>
+            (under randomlist-with-responses)
+          <br>
+<a href="#block_5">block</a>
             (under randomlist-without-responses)
           <br>
 <a href="#block-base_0">block-base</a>
@@ -14258,9 +14975,13 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#blocks-without-responses_0">blocks-without-responses</a>
 <br>
+<a href="#blocks-with-parts_0">blocks-with-parts</a>
+<br>
 <a href="#blocks-with-responses_0">blocks-with-responses</a>
 <br>
 <a href="#block-without-responses_0">block-without-responses</a>
+<br>
+<a href="#block-with-parts_0">block-with-parts</a>
 <br>
 <a href="#block-with-responses_0">block-with-responses</a>
 <br>
@@ -14309,9 +15030,9 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#curve_0">curve</a>
 <br>
-<a href="#customhint_0">customhint</a>
-<br>
 <a href="#customhint--answer_0">customhint--answer</a>
+<br>
+<a href="#customhintcondition_0">customhintcondition</a>
 <br>
 <a href="#customresponse_0">customresponse</a>
 <br>
@@ -14321,14 +15042,19 @@ Value restriction based on xs:string<ul>
             (under lonplot--curve)
           <br>
 <a href="#dd_0">dd</a>
-            (under dl-with-responses)
+            (under dl-with-parts)
           <br>
 <a href="#dd_1">dd</a>
+            (under dl-with-responses)
+          <br>
+<a href="#dd_2">dd</a>
             (under dl-without-responses)
           <br>
 <a href="#dd-base_0">dd-base</a>
 <br>
 <a href="#dd-without-responses_0">dd-without-responses</a>
+<br>
+<a href="#dd-with-parts_0">dd-with-parts</a>
 <br>
 <a href="#dd-with-responses_0">dd-with-responses</a>
 <br>
@@ -14339,32 +15065,45 @@ Value restriction based on xs:string<ul>
 <a href="#display_2">display</a>
 <br>
 <a href="#div_0">div</a>
-            (under blocks-with-responses)
+            (under blocks-with-parts)
           <br>
 <a href="#div_1">div</a>
+            (under blocks-with-responses)
+          <br>
+<a href="#div_2">div</a>
             (under blocks-without-responses)
           <br>
 <a href="#div-base_0">div-base</a>
 <br>
 <a href="#div-without-responses_0">div-without-responses</a>
 <br>
+<a href="#div-with-parts_0">div-with-parts</a>
+<br>
 <a href="#div-with-responses_0">div-with-responses</a>
 <br>
 <a href="#dl_0">dl</a>
-            (under blocks-with-responses)
+            (under blocks-with-parts)
           <br>
 <a href="#dl_1">dl</a>
-            (under blocks-without-responses)
+            (under blocks-with-responses)
           <br>
 <a href="#dl_2">dl</a>
-            (under randomlist-with-responses)
+            (under blocks-without-responses)
           <br>
 <a href="#dl_3">dl</a>
+            (under randomlist-with-parts)
+          <br>
+<a href="#dl_4">dl</a>
+            (under randomlist-with-responses)
+          <br>
+<a href="#dl_5">dl</a>
             (under randomlist-without-responses)
           <br>
 <a href="#dl-base_0">dl-base</a>
 <br>
 <a href="#dl-without-responses_0">dl-without-responses</a>
+<br>
+<a href="#dl-with-parts_0">dl-with-parts</a>
 <br>
 <a href="#dl-with-responses_0">dl-with-responses</a>
 <br>
@@ -14385,6 +15124,10 @@ Value restriction based on xs:string<ul>
 <a href="#externalresponse_0">externalresponse</a>
 <br>
 <a href="#fieldset_0">fieldset</a>
+<br>
+<a href="#figcaption_0">figcaption</a>
+<br>
+<a href="#figure_0">figure</a>
 <br>
 <a href="#fill_0">fill</a>
 <br>
@@ -14433,9 +15176,11 @@ Value restriction based on xs:string<ul>
 <a href="#foilgroup_4">foilgroup</a>
             (under imageresponse)
           <br>
+<a href="#footer_0">footer</a>
+<br>
 <a href="#form_1">form</a>
 <br>
-<a href="#formulahint_0">formulahint</a>
+<a href="#formulahintcondition_0">formulahintcondition</a>
 <br>
 <a href="#formularesponse_0">formularesponse</a>
 <br>
@@ -14471,6 +15216,8 @@ Value restriction based on xs:string<ul>
 <a href="#h6_0">h6</a>
 <br>
 <a href="#head.misc_0">head.misc</a>
+<br>
+<a href="#header_0">header</a>
 <br>
 <a href="#headerContent_0">headerContent</a>
 <br>
@@ -14573,15 +15320,21 @@ Value restriction based on xs:string<ul>
 <a href="#legend_0">legend</a>
 <br>
 <a href="#li_0">li</a>
-            (under ul-with-responses)
+            (under ul-with-parts)
           <br>
 <a href="#li_1">li</a>
-            (under ul-without-responses)
+            (under ul-with-responses)
           <br>
 <a href="#li_2">li</a>
-            (under ol-with-responses)
+            (under ul-without-responses)
           <br>
 <a href="#li_3">li</a>
+            (under ol-with-parts)
+          <br>
+<a href="#li_4">li</a>
+            (under ol-with-responses)
+          <br>
+<a href="#li_5">li</a>
             (under ol-without-responses)
           <br>
 <a href="#li-base_0">li-base</a>
@@ -14591,6 +15344,8 @@ Value restriction based on xs:string<ul>
 <a href="#link_0">link</a>
 <br>
 <a href="#li-without-responses_0">li-without-responses</a>
+<br>
+<a href="#li-with-parts_0">li-with-parts</a>
 <br>
 <a href="#li-with-responses_0">li-with-responses</a>
 <br>
@@ -14643,9 +15398,9 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#matchresponse--itemgroup_0">matchresponse--itemgroup</a>
 <br>
-<a href="#mathhint_0">mathhint</a>
-<br>
 <a href="#mathhint--answer_0">mathhint--answer</a>
+<br>
+<a href="#mathhintcondition_0">mathhintcondition</a>
 <br>
 <a href="#mathresponse_0">mathresponse</a>
 <br>
@@ -14663,27 +15418,35 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#num_0">num</a>
 <br>
-<a href="#numericalhint_0">numericalhint</a>
+<a href="#numericalhintcondition_0">numericalhintcondition</a>
 <br>
 <a href="#numericalresponse_0">numericalresponse</a>
 <br>
 <a href="#object_0">object</a>
 <br>
 <a href="#ol_0">ol</a>
-            (under blocks-with-responses)
+            (under blocks-with-parts)
           <br>
 <a href="#ol_1">ol</a>
-            (under blocks-without-responses)
+            (under blocks-with-responses)
           <br>
 <a href="#ol_2">ol</a>
-            (under randomlist-with-responses)
+            (under blocks-without-responses)
           <br>
 <a href="#ol_3">ol</a>
+            (under randomlist-with-parts)
+          <br>
+<a href="#ol_4">ol</a>
+            (under randomlist-with-responses)
+          <br>
+<a href="#ol_5">ol</a>
             (under randomlist-without-responses)
           <br>
 <a href="#ol-base_0">ol-base</a>
 <br>
 <a href="#ol-without-responses_0">ol-without-responses</a>
+<br>
+<a href="#ol-with-parts_0">ol-with-parts</a>
 <br>
 <a href="#ol-with-responses_0">ol-with-responses</a>
 <br>
@@ -14695,7 +15458,7 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#option_0">option</a>
 <br>
-<a href="#optionhint_0">optionhint</a>
+<a href="#optionhintcondition_0">optionhintcondition</a>
 <br>
 <a href="#optionresponse_0">optionresponse</a>
 <br>
@@ -14707,16 +15470,19 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#optionresponse--foilgroup_0">optionresponse--foilgroup</a>
 <br>
-<a href="#organichint_0">organichint</a>
+<a href="#organichintcondition_0">organichintcondition</a>
 <br>
 <a href="#organicresponse_0">organicresponse</a>
 <br>
 <a href="#organicstructure_0">organicstructure</a>
 <br>
 <a href="#p_0">p</a>
-            (under blocks-with-responses)
+            (under blocks-with-parts)
           <br>
 <a href="#p_1">p</a>
+            (under blocks-with-responses)
+          <br>
+<a href="#p_2">p</a>
             (under blocks-without-responses)
           <br>
 <a href="#param_0">param</a>
@@ -14756,20 +15522,28 @@ Value restriction based on xs:string<ul>
 <a href="#problem_0">problem</a>
 <br>
 <a href="#problemtype_0">problemtype</a>
-            (under blocks-with-responses)
+            (under blocks-with-parts)
           <br>
 <a href="#problemtype_1">problemtype</a>
-            (under blocks-without-responses)
+            (under blocks-with-responses)
           <br>
 <a href="#problemtype_2">problemtype</a>
-            (under randomlist-with-responses)
+            (under blocks-without-responses)
           <br>
 <a href="#problemtype_3">problemtype</a>
+            (under randomlist-with-parts)
+          <br>
+<a href="#problemtype_4">problemtype</a>
+            (under randomlist-with-responses)
+          <br>
+<a href="#problemtype_5">problemtype</a>
             (under randomlist-without-responses)
           <br>
 <a href="#problemtype-base_0">problemtype-base</a>
 <br>
 <a href="#problemtype-without-responses_0">problemtype-without-responses</a>
+<br>
+<a href="#problemtype-with-parts_0">problemtype-with-parts</a>
 <br>
 <a href="#problemtype-with-responses_0">problemtype-with-responses</a>
 <br>
@@ -14777,7 +15551,7 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#p-with-responses_0">p-with-responses</a>
 <br>
-<a href="#radiobuttonhint_0">radiobuttonhint</a>
+<a href="#radiobuttonhintcondition_0">radiobuttonhintcondition</a>
 <br>
 <a href="#radiobuttonresponse_0">radiobuttonresponse</a>
 <br>
@@ -14796,14 +15570,19 @@ Value restriction based on xs:string<ul>
 <a href="#randomlabel--location_0">randomlabel--location</a>
 <br>
 <a href="#randomlist_0">randomlist</a>
-            (under blocks-with-responses)
+            (under blocks-with-parts)
           <br>
 <a href="#randomlist_1">randomlist</a>
+            (under blocks-with-responses)
+          <br>
+<a href="#randomlist_2">randomlist</a>
             (under blocks-without-responses)
           <br>
 <a href="#randomlist-base_0">randomlist-base</a>
 <br>
 <a href="#randomlist-without-responses_0">randomlist-without-responses</a>
+<br>
+<a href="#randomlist-with-parts_0">randomlist-with-parts</a>
 <br>
 <a href="#randomlist-with-responses_0">randomlist-with-responses</a>
 <br>
@@ -14815,7 +15594,7 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#rankresponse--foilgroup_0">rankresponse--foilgroup</a>
 <br>
-<a href="#reactionhint_0">reactionhint</a>
+<a href="#reactionhintcondition_0">reactionhintcondition</a>
 <br>
 <a href="#reactionresponse_0">reactionresponse</a>
 <br>
@@ -14840,20 +15619,28 @@ Value restriction based on xs:string<ul>
 <a href="#scriptlib_0">scriptlib</a>
 <br>
 <a href="#section_0">section</a>
-            (under blocks-with-responses)
+            (under blocks-with-parts)
           <br>
 <a href="#section_1">section</a>
-            (under blocks-without-responses)
+            (under blocks-with-responses)
           <br>
 <a href="#section_2">section</a>
-            (under randomlist-with-responses)
+            (under blocks-without-responses)
           <br>
 <a href="#section_3">section</a>
+            (under randomlist-with-parts)
+          <br>
+<a href="#section_4">section</a>
+            (under randomlist-with-responses)
+          <br>
+<a href="#section_5">section</a>
             (under randomlist-without-responses)
           <br>
 <a href="#section-base_0">section-base</a>
 <br>
 <a href="#section-without-responses_0">section-without-responses</a>
+<br>
+<a href="#section-with-parts_0">section-with-parts</a>
 <br>
 <a href="#section-with-responses_0">section-with-responses</a>
 <br>
@@ -14871,7 +15658,7 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#standalone_0">standalone</a>
 <br>
-<a href="#stringhint_0">stringhint</a>
+<a href="#stringhintcondition_0">stringhintcondition</a>
 <br>
 <a href="#stringresponse_0">stringresponse</a>
 <br>
@@ -14884,42 +15671,60 @@ Value restriction based on xs:string<ul>
 <a href="#sup_0">sup</a>
 <br>
 <a href="#table_0">table</a>
-            (under blocks-with-responses)
+            (under blocks-with-parts)
           <br>
 <a href="#table_1">table</a>
-            (under blocks-without-responses)
+            (under blocks-with-responses)
           <br>
 <a href="#table_2">table</a>
-            (under randomlist-with-responses)
+            (under blocks-without-responses)
           <br>
 <a href="#table_3">table</a>
+            (under randomlist-with-parts)
+          <br>
+<a href="#table_4">table</a>
+            (under randomlist-with-responses)
+          <br>
+<a href="#table_5">table</a>
             (under randomlist-without-responses)
           <br>
 <a href="#table-base_0">table-base</a>
 <br>
 <a href="#table-without-responses_0">table-without-responses</a>
 <br>
+<a href="#table-with-parts_0">table-with-parts</a>
+<br>
 <a href="#table-with-responses_0">table-with-responses</a>
 <br>
 <a href="#tbody_0">tbody</a>
-            (under table-with-responses)
+            (under table-with-parts)
           <br>
 <a href="#tbody_1">tbody</a>
+            (under table-with-responses)
+          <br>
+<a href="#tbody_2">tbody</a>
             (under table-without-responses)
           <br>
 <a href="#tbody-without-responses_0">tbody-without-responses</a>
 <br>
+<a href="#tbody-with-parts_0">tbody-with-parts</a>
+<br>
 <a href="#tbody-with-responses_0">tbody-with-responses</a>
 <br>
 <a href="#td_0">td</a>
-            (under tr-with-responses)
+            (under tr-with-parts)
           <br>
 <a href="#td_1">td</a>
+            (under tr-with-responses)
+          <br>
+<a href="#td_2">td</a>
             (under tr-without-responses)
           <br>
 <a href="#td-base_0">td-base</a>
 <br>
 <a href="#td-without-responses_0">td-without-responses</a>
+<br>
+<a href="#td-with-parts_0">td-with-parts</a>
 <br>
 <a href="#td-with-responses_0">td-with-responses</a>
 <br>
@@ -14939,6 +15744,8 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#text-without-responses_0">text-without-responses</a>
 <br>
+<a href="#text-with-parts_0">text-with-parts</a>
+<br>
 <a href="#text-with-responses_0">text-with-responses</a>
 <br>
 <a href="#tfoot_0">tfoot</a>
@@ -14957,21 +15764,27 @@ Value restriction based on xs:string<ul>
 <a href="#togglebox_0">togglebox</a>
 <br>
 <a href="#tr_0">tr</a>
-            (under table-with-responses)
+            (under table-with-parts)
           <br>
 <a href="#tr_1">tr</a>
-            (under table-without-responses)
+            (under table-with-responses)
           <br>
 <a href="#tr_2">tr</a>
-            (under thead)
+            (under table-without-responses)
           <br>
 <a href="#tr_3">tr</a>
-            (under tfoot)
+            (under thead)
           <br>
 <a href="#tr_4">tr</a>
-            (under tbody-with-responses)
+            (under tfoot)
           <br>
 <a href="#tr_5">tr</a>
+            (under tbody-with-parts)
+          <br>
+<a href="#tr_6">tr</a>
+            (under tbody-with-responses)
+          <br>
+<a href="#tr_7">tr</a>
             (under tbody-without-responses)
           <br>
 <a href="#translated_0">translated</a>
@@ -14980,27 +15793,39 @@ Value restriction based on xs:string<ul>
 <br>
 <a href="#tr-without-responses_0">tr-without-responses</a>
 <br>
+<a href="#tr-with-parts_0">tr-with-parts</a>
+<br>
 <a href="#tr-with-responses_0">tr-with-responses</a>
 <br>
 <a href="#tt_0">tt</a>
 <br>
 <a href="#ul_0">ul</a>
-            (under blocks-with-responses)
+            (under blocks-with-parts)
           <br>
 <a href="#ul_1">ul</a>
-            (under blocks-without-responses)
+            (under blocks-with-responses)
           <br>
 <a href="#ul_2">ul</a>
-            (under randomlist-with-responses)
+            (under blocks-without-responses)
           <br>
 <a href="#ul_3">ul</a>
+            (under randomlist-with-parts)
+          <br>
+<a href="#ul_4">ul</a>
+            (under randomlist-with-responses)
+          <br>
+<a href="#ul_5">ul</a>
             (under randomlist-without-responses)
           <br>
 <a href="#ul-base_0">ul-base</a>
 <br>
 <a href="#ul-without-responses_0">ul-without-responses</a>
 <br>
+<a href="#ul-with-parts_0">ul-with-parts</a>
+<br>
 <a href="#ul-with-responses_0">ul-with-responses</a>
+<br>
+<a href="#universal-blocks_0">universal-blocks</a>
 <br>
 <a href="#value_4">value</a>
             (under caparesponse--answer)
