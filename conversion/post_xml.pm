@@ -1348,6 +1348,7 @@ sub fix_deprecated_in_img {
 # Replaces deprecated attributes in htmlbody (the style attribute could be used in a div for output)
 sub fix_deprecated_in_body {
   my ($root) = @_;
+  my $doc = $root->ownerDocument;
   my @bodies = $root->getElementsByTagName('htmlbody');
   foreach my $body (@bodies) {
     my $old_properties = get_css_properties($body);
@@ -1363,6 +1364,17 @@ sub fix_deprecated_in_body {
         }
       }
     }
+    my $color = $body->getAttribute('text');
+    if (defined $color) {
+      $body->removeAttribute('text');
+      if (!defined $old_properties->{'color'}) {
+        $color = trim($color);
+        $color =~ s/^x\s*//;
+        if ($color ne '') {
+          $new_properties{'color'} = $color;
+        }
+      }
+    }
     my $background = $body->getAttribute('background');
     if (defined $background && ($background =~ /\.jpe?g$|\.gif|\.png/i)) {
       $body->removeAttribute('background');
@@ -1373,9 +1385,56 @@ sub fix_deprecated_in_body {
         }
       }
     }
-    # NOTE: some other attributes like link and vlink should be converted but this requires a <style> block
+    # NOTE: these attributes have never been standard and are better removed with no replacement
+    foreach my $bad ('bottommargin', 'leftmargin', 'rightmargin', 'topmargin', 'marginheight', 'marginwidth') {
+      if ($body->hasAttribute($bad)) {
+        $body->removeAttribute($bad);
+      }
+    }
+    # NOTE: link alink and vlink require a <style> block to be converted
+    my $link = $body->getAttribute('link');
+    my $alink = $body->getAttribute('alink');
+    my $vlink = $body->getAttribute('vlink');
+    if (defined $link || defined $alink || defined $vlink) {
+      my $head;
+      my @heads = $root->getElementsByTagName('htmlhead');
+      if (scalar(@heads) > 0) {
+        $head = $heads[0];
+      } else {
+        $head = $doc->createElement('htmlhead');
+        $root->insertBefore($head, $root->firstChild);
+      }
+      my $style = $doc->createElement('style');
+      $head->appendChild($style);
+      my $css = "\n";
+      if (defined $link) {
+        $body->removeAttribute('link');
+        $link = trim($link);
+        $link =~ s/^x\s*//;
+        $css .= '      a:link { color:'.$link.' }';
+        $css .= "\n";
+      }
+      if (defined $alink) {
+        $body->removeAttribute('alink');
+        $alink = trim($alink);
+        $alink =~ s/^x\s*//;
+        $css .= '      a:active { color:'.$alink.' }';
+        $css .= "\n";
+      }
+      if (defined $vlink) {
+        $body->removeAttribute('vlink');
+        $vlink = trim($vlink);
+        $vlink =~ s/^x\s*//;
+        $css .= '      a:visited { color:'.$vlink.' }';
+        $css .= "\n";
+      }
+      $css .= '    ';
+      $style->appendChild($doc->createTextNode($css));
+    }
     if (scalar(keys %new_properties) > 0) {
       set_css_properties($body, \%new_properties);
+    } elsif (!$body->hasAttributes) {
+      $body->parentNode->removeChild($body);
     }
   }
 }
