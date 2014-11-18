@@ -188,6 +188,7 @@
       <xs:element ref="aside"/>
       <xs:element ref="pre"/>
       <xs:element ref="hr"/>
+      <xs:element ref="address"/>
       <xs:element ref="blockquote"/>
       <xs:element ref="figure"/>
       <xs:element ref="object"/>
@@ -5968,6 +5969,19 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
+      <xs:attributeGroup ref="coreattrs"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="address">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;address&gt; Element may be used by authors to supply contact information for its nearest &lt;article&gt; or &lt;body&gt; ancestor; in the latter case, it applies to the whole document.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+      </xs:choice>
       <xs:attributeGroup ref="coreattrs"/>
     </xs:complexType>
   </xs:element>

@@ -425,6 +425,7 @@
     </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="br" type="br"/>
     <AFFICHAGE_ELEMENT element="hr" type="hr"/>
+    <AFFICHAGE_ELEMENT element="address" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="blockquote" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="img" type="vide"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="figure" type="lcdblock"/>
@@ -3150,6 +3151,12 @@
       <TITRE>Horizontal Rule</TITRE>
       <DOCUMENTATION>
         The HTML &lt;hr&gt; element represents a thematic break between paragraph-level elements (for example, a change of scene in a story, or a shift of topic with a section). In previous versions of HTML, it represented a horizontal rule. It may still be displayed as a horizontal rule in visual browsers, but is now defined in semantic terms, rather than presentational terms.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="address">
+      <TITRE>Address</TITRE>
+      <DOCUMENTATION>
+        The HTML &lt;address&gt; Element may be used by authors to supply contact information for its nearest &lt;article&gt; or &lt;body&gt; ancestor; in the latter case, it applies to the whole document.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="blockquote">
