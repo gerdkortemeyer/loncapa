@@ -24,24 +24,24 @@ use Apache::lc_asset_safeeval;
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_im_html start_im_meta);
+our @EXPORT = qw(start_tm_html start_tm_meta, start_dtm_html start_dtm_meta);
 
-sub start_im_html {
+sub start_tm_html {
    my ($p,$safe,$stack,$token)=@_;
-   return '\\('.&tex_eval($p,$safe,$stack,$token,'im').'\\)';
+   return '\\('.&tex_eval($p,$safe,$stack,$token,'tm').'\\)';
 }
 
-sub start_dm_html {
+sub start_dtm_html {
    my ($p,$safe,$stack,$token)=@_;
-   return '\\['.&tex_eval($p,$safe,$stack,$token,'dm').'\\]';
+   return '\\['.&tex_eval($p,$safe,$stack,$token,'dtm').'\\]';
 }
 
-sub start_im_meta {
+sub start_tm_meta {
    &start_im_html(@_);
    return '';
 }
 
-sub start_dm_meta {
+sub start_dtm_meta {
    &start_dm_html(@_);
    return '';
 }
