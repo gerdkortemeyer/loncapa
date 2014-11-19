@@ -191,7 +191,51 @@ sub evaluate_intervals {
 # Split into chunks - should get the same number of chunks
    my @vectorchunks=split(/\s*\;\s*/,$vector);
    my @termchunks=split(/\s*[u\;]\s*/,$term);
-&logdebug("Compare: ".$#vectorchunks.' '.$#termchunks);
+   my @intervals;
+   for (my $i=0; $i<$#vectorchunks; $i+=2) {
+       &logdebug("Start: ".$vectorchunks[$i].' - '.$termchunks[$i]);
+       &logdebug("End: ".$vectorchunks[$i+1].' - '.$termchunks[$i+1]);
+       $vectorchunks[$i]=~s/^\s*\[\s*//s;
+       $vectorchunks[$i+1]=~s/\s*\]\s*$//s;
+       my ($lowervalue,$lowerunit)=&value_unit($vectorchunks[$i]);
+       my ($uppervalue,$upperunit)=&value_unit($vectorchunks[$i+1]);
+       if ($lowerunit ne $upperunit) {
+&logdebug("[$lowerunit] [$upperunit]");
+          return(&wrong_unit_dimension,undef);
+       }
+       if ($lowervalue>$uppervalue) {
+&logdebug("Oops $lowervalue $uppervalue");
+          return(&bad_formula,undef);
+       }
+       my $lefttype;
+       if ($termchunks[$i]=~/\(/) {
+          $lefttype='open';
+       } elsif ($termchunks[$i]=~/\[/) {
+          $lefttype='closed';
+       }
+       unless ($lefttype) {
+&logdebug("No left");
+          return(&bad_formula,undef);
+       }
+       my $righttype;
+       if ($termchunks[$i+1]=~/\)/) {
+          $righttype='open';
+       } elsif ($termchunks[$i+1]=~/\]/) {
+          $righttype='closed';
+       }
+       unless ($righttype) {
+&logdebug("No right");
+          return(&bad_formula,undef);
+       }
+       push(@intervals,{ 'leftvalue' => $lowervalue,
+                         'leftunit' => $lowerunit,
+                         'lefttype' => $lefttype,
+                         'rightvalue' => $uppervalue,
+                         'rightunit' => $upperunit,
+                         'righttype' => $righttype });
+   }
+ use Data::Dumper;
+&logdebug("Found: ".Dumper(\@intervals));
    return(undef,undef,undef);
 }
 
