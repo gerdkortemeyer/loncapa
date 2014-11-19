@@ -176,18 +176,16 @@ sub evaluate_intervals {
       $vector='['.$vector;
       $vector=~s/([\)\]])([^\)\]]+)$/$1\]$2/s;
    }
-&logdebug("Vector: $vector");
 # See if this works
    my ($vectorerror,$vector)=&evaluate_in_parser($parser,$env,$vector);
    if ($vectorerror) {
       return($vectorerror,undef,undef);
    }
-&logdebug("Evaluated  Vector: $vector");
 # Now we have an evaluated vector of vectors and the original
    $vector=~s/^\[//;
-   $vector=~s/\]^//;
+   $vector=~s/\]$//;
    $term=~s/^\[//;
-   $term=~s/\]^//;
+   $term=~s/\]$//;
 # Split into chunks - should get the same number of chunks
    my @vectorchunks=split(/\s*\;\s*/,$vector);
    my @termchunks=split(/\s*[u\;]\s*/,$term);
@@ -200,11 +198,9 @@ sub evaluate_intervals {
        my ($lowervalue,$lowerunit)=&value_unit($vectorchunks[$i]);
        my ($uppervalue,$upperunit)=&value_unit($vectorchunks[$i+1]);
        if ($lowerunit ne $upperunit) {
-&logdebug("[$lowerunit] [$upperunit]");
           return(&wrong_unit_dimension,undef);
        }
        if ($lowervalue>$uppervalue) {
-&logdebug("Oops $lowervalue $uppervalue");
           return(&bad_formula,undef);
        }
        my $lefttype;
@@ -214,7 +210,6 @@ sub evaluate_intervals {
           $lefttype='closed';
        }
        unless ($lefttype) {
-&logdebug("No left");
           return(&bad_formula,undef);
        }
        my $righttype;
@@ -224,7 +219,6 @@ sub evaluate_intervals {
           $righttype='closed';
        }
        unless ($righttype) {
-&logdebug("No right");
           return(&bad_formula,undef);
        }
        push(@intervals,{ 'leftvalue' => $lowervalue,
@@ -236,6 +230,12 @@ sub evaluate_intervals {
    }
  use Data::Dumper;
 &logdebug("Found: ".Dumper(\@intervals));
+# Now collapse overlapping intervals
+   for (my $i=0;$i<=$#intervals;$i++) {
+      for (my $j=0;$j<=$#intervals;$j++) {
+
+      }
+   }
    return(undef,undef,undef);
 }
 
