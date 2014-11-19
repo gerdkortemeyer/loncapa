@@ -182,18 +182,27 @@ sub qneg {
 }
 
 ##
-# Multiplication by a scalar
-# @param {Quantity}
+# Multiplication by a scalar, or element-by-element multiplication by a vector
+# @param {Quantity|QVector}
 # @returns {QVector}
 ##
 sub qmult {
-    my ( $self, $q ) = @_;
-    if (!$q->isa(Quantity)) {
-        die CalcException->new("Vector multiplication: second member is not a quantity.");
+    my ( $self, $qv ) = @_;
+    if (!$qv->isa(Quantity) && !$qv->isa(QVector)) {
+        die CalcException->new("Vector multiplication: second member is not a quantity or a vector.");
     }
     my @t = (); # array of Quantity
-    for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
-        $t[$i] = $self->quantities->[$i] * $q;
+    if ($qv->isa(Quantity)) {
+        for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
+            $t[$i] = $self->quantities->[$i] * $qv;
+        }
+    } else {
+        if (scalar(@{$self->quantities}) != scalar(@{$qv->quantities})) {
+            die CalcException->new("Vector element-by-element multiplication: the vectors have different sizes.");
+        }
+        for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
+            $t[$i] = $self->quantities->[$i]->qmult($qv->quantities->[$i]);
+        }
     }
     return QVector->new(\@t);
 }
@@ -216,18 +225,21 @@ sub qpow {
 ##
 # Dot product
 # @param {QVector}
-# @returns {QVector}
+# @returns {Quantity}
 ##
 sub qdot {
     my ( $self, $v ) = @_;
+    if (!$v->isa(QVector)) {
+        die CalcException->new("Vector dot product: second member is not a vector.");
+    }
     if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
         die CalcException->new("Vector dot product: the vectors have different sizes.");
     }
-    my @t = (); # array of Quantity
+    my $q = Quantity->new(0);
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
-        $t[$i] = $self->quantities->[$i]->qmult($v->quantities->[$i]);
+        $q = $q + $self->quantities->[$i]->qmult($v->quantities->[$i]);
     }
-    return QVector->new(\@t);
+    return $q;
 }
 
 1;
