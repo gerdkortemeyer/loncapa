@@ -80,6 +80,8 @@ sub post_xml {
   remove_empty_style($root);
 
   fix_empty_lc_elements($root);
+  
+  replace_numericalresponse_unit_attribute($root);
 
   pretty($root, \@all_block);
 
@@ -2197,6 +2199,19 @@ sub fix_empty_lc_elements {
       fix_empty_lc_elements($child);
     }
   }
+}
+
+# fixes spelling mistakes for numericalresponse/@unit
+sub replace_numericalresponse_unit_attribute {
+  my ($root) = @_;
+  my @numericalresponses = $root->getElementsByTagName('numericalresponse');
+  foreach my $numericalresponse (@numericalresponses) {
+    if (defined $numericalresponse->getAttribute('units') && !defined $numericalresponse->getAttribute('unit')) {
+      $numericalresponse->setAttribute('unit', $numericalresponse->getAttribute('units'));
+      $numericalresponse->removeAttribute('units');
+    }
+  }
+  
 }
 
 # pretty-print using im-memory DOM tree
