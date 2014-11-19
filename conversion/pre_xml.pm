@@ -31,6 +31,8 @@ sub pre_xml {
   
   fix_missing_quotes($lines);
   
+  fix_empty_li($lines);
+  
   remove_doctype($lines);
   
   add_root($lines);
@@ -311,6 +313,15 @@ sub fix_missing_quotes {
     }
     $line =~ s/(<[a-zA-Z]+ [a-zA-Z]+="[^"<>\s]+)(>\s*<[a-zA-Z]+ [a-zA-Z]+=")/$1"$2/;
     $line =~ s/^([^"<>]*<[a-zA-Z]+ [a-zA-Z]+="[^"<>\s]+)(>[^"]*)$/$1"$2/;
+  }
+}
+
+
+# Replaces <li/> by <li> (the end tag will be added in html_to_xml
+sub fix_empty_li {
+  my ($lines) = @_;
+  foreach my $line (@{$lines}) {
+    $line =~ s/<li\s?\/>/<li>/;
   }
 }
 
