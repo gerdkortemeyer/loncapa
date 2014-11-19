@@ -1687,7 +1687,12 @@ sub change_hints {
     
     # how to deal with <*response><while><hintgroup> ?
     if (defined $response && $hintgroup->parentNode != $response) {
-      if (string_in_array(['foilgroup', 'foil'], $hintgroup->parentNode->nodeName)) {
+      if ($hintgroup->parentNode->nodeName eq 'p' && $hintgroup->parentNode->parentNode == $response) {
+        # move hintgroup out of p if necessary
+        my $p = $hintgroup->parentNode;
+        $p->removeChild($hintgroup);
+        $response->insertAfter($hintgroup, $p);
+      } elsif (string_in_array(['foilgroup', 'foil'], $hintgroup->parentNode->nodeName)) {
         print "Warning: there is an intermediary element between a response and a hintgroup: ".$hintgroup->parentNode->nodeName."\n";
       } else {
         die "There is an intermediary element between a response and a hintgroup: ".$hintgroup->parentNode->nodeName;
