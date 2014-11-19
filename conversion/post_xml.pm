@@ -463,7 +463,7 @@ sub fix_block_styles {
   my ($element, $all_block) = @_;
   my $doc = $element->ownerDocument;
   # list of elements that can contain style elements:
-  my @containing_styles = ('loncapa','problem','stringresponse','essayresponse','radiobuttonresponse','optionresponse','matchresponse','rankresponse','imageresponse','numericalresponse','formularesponse','mathresponse','functionplotresponse','organicresponse','reactionresponse','customresponse','externalresponse','foil','item','text','hintgroup','hintpart','label','part','preduedate','postanswerdate','solved','notsolved','block','while','web','standalone','problemtype','languageblock','translated','lang','window','windowlink','togglebox','instructorcomment','section','div','p','li','dd','td','th','blockquote','object','applet','video','audio','canvas','fieldset','button',
+  my @containing_styles = ('loncapa','problem',@responses,'foil','item','text','hintgroup','hintpart','label','part','preduedate','postanswerdate','solved','notsolved','block','while','web','standalone','problemtype','languageblock','translated','lang','window','windowlink','togglebox','instructorcomment','section','div','p','li','dd','td','th','blockquote','object','applet','video','audio','canvas','fieldset','button',
   'span','strong','em','b','i','sup','sub','code','kbd','samp','tt','ins','del','var','small','big','u','font');
   my @styles = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'u');
   if (string_in_array(\@styles, $element->nodeName)) {
@@ -1863,7 +1863,7 @@ sub fix_paragraphs_inside {
   my ($node, $all_block) = @_;
   # blocks in which paragrahs will be added:
   my @blocks_with_p = ('loncapa','problem','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','togglebox','standalone','form');
-  my @fix_p_if_br_or_p = ('foil','item','text','label','hintgroup','hintpart','hint','web','windowlink','div','li','dd','td','th','blockquote');
+  my @fix_p_if_br_or_p = (@responses,'foil','item','text','label','hintgroup','hintpart','hint','web','windowlink','div','li','dd','td','th','blockquote');
   if ((string_in_array(\@blocks_with_p, $node->nodeName) && paragraph_needed($node)) ||
       (string_in_array(\@fix_p_if_br_or_p, $node->nodeName) && paragraph_inside($node))) {
     # if non-empty, add a paragraph containing everything inside, paragraphs inside paragraphs will be fixed afterwards
