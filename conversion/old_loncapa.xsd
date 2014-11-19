@@ -2021,11 +2021,7 @@
           <xs:union memberTypes="perl">
             <xs:simpleType>
               <xs:restriction base="xs:string">
-                <xs:enumeration value="autoez"/>
-                <xs:enumeration value="multipart"/>
-                <xs:enumeration value="nostereo"/>
-                <xs:enumeration value="reaction"/>
-                <xs:enumeration value="number"/>
+                <xs:pattern value="(autoez|multipart|nostereo|reaction|number)(\s*,\s*(autoez|multipart|nostereo|reaction|number))*"/>
               </xs:restriction>
             </xs:simpleType>
           </xs:union>
