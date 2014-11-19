@@ -463,7 +463,7 @@ sub fix_block_styles {
   my ($element, $all_block) = @_;
   my $doc = $element->ownerDocument;
   # list of elements that can contain style elements:
-  my @containing_styles = ('loncapa','problem','foil','item','text','hintgroup','hintpart','label','part','preduedate','postanswerdate','solved','notsolved','block','while','web','standalone','problemtype','languageblock','translated','lang','window','windowlink','togglebox','instructorcomment','section','div','p','li','dd','td','th','blockquote','object','applet','video','audio','canvas','fieldset','button',
+  my @containing_styles = ('loncapa','problem','stringresponse','essayresponse','radiobuttonresponse','optionresponse','matchresponse','rankresponse','imageresponse','numericalresponse','formularesponse','mathresponse','functionplotresponse','organicresponse','reactionresponse','customresponse','externalresponse','foil','item','text','hintgroup','hintpart','label','part','preduedate','postanswerdate','solved','notsolved','block','while','web','standalone','problemtype','languageblock','translated','lang','window','windowlink','togglebox','instructorcomment','section','div','p','li','dd','td','th','blockquote','object','applet','video','audio','canvas','fieldset','button',
   'span','strong','em','b','i','sup','sub','code','kbd','samp','tt','ins','del','var','small','big','u','font');
   my @styles = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'u');
   if (string_in_array(\@styles, $element->nodeName)) {
@@ -508,7 +508,8 @@ sub fix_block_styles {
         if ($child->nodeType == XML_ELEMENT_NODE && (string_in_array($all_block, $child->nodeName) ||
             $child->nodeName eq 'br' || $no_style_here)) {
           # avoid inverting a style with a style with $no_style_here (that would cause endless recursion)
-          if (!$no_style_here || !string_in_array(\@styles, $child->nodeName)) {
+          if (!$no_style_here || (!string_in_array(\@styles, $child->nodeName) &&
+              string_in_array(\@containing_styles, $child->nodeName))) {
             # block node or inline node when the style is not allowed:
             # move all children inside the style, and make the style the only child
             $s = $element->cloneNode();
