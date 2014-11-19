@@ -183,7 +183,8 @@ sub start {
         $att_value =~ s/\x0A/&#xA;/g;
         $att_value =~ s/\x0D/&#xD;/g;
       }
-      if ($att_name_modified eq 'xmlns' && $att_value eq 'http://www.w3.org/1999/xhtml') {
+      if ($att_name_modified eq 'xmlns' && ($att_value eq 'http://www.w3.org/1999/xhtml' ||
+          $att_value eq 'http://www.w3.org/TR/REC-html40')) {
         next;
       }
       $result .= ' '.$att_name_modified.'="'.$att_value.'"';
