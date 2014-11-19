@@ -2019,8 +2019,9 @@ sub fix_paragraph {
             $right->removeAttribute($att->nodeName);
           }
         }
-        if ($right->firstChild->nodeType == XML_TEXT_NODE && $right->firstChild->nodeValue =~ /^\s*$/) {
+        if ($right->firstChild->nodeType == XML_TEXT_NODE && $right->firstChild->nodeValue =~ /^[ \t\f\n\r]*$/) {
           # remove the first text node with whitespace only from the p, it should not trigger the creation of a p
+          # (but take nbsp into account, so we should not use \s here)
           my $first = $right->firstChild;
           $right->removeChild($first);
           $replacement->appendChild($first);
@@ -2320,11 +2321,11 @@ sub pretty {
         }
       }
       
-      # removes whitespace at the beginning and end of p td, th and li
+      # removes whitespace at the beginning and end of p td, th and li (except for nbsp at the beginning)
       my @to_trim = ('p','td','th','li');
       if (string_in_array(\@to_trim, $name) && defined $node->firstChild && $node->firstChild->nodeType == XML_TEXT_NODE) {
         my $text = $node->firstChild->nodeValue;
-        $text =~ s/^\s*//;
+        $text =~ s/^[ \t\f\n\r]*//;
         if ($text eq '') {
           $node->removeChild($node->firstChild);
         } else {
