@@ -1857,16 +1857,14 @@ sub change_hints {
   }
 }
 
-# calls fix_paragraphs for all children
+# adds a paragraph inside if needed and calls fix_paragraph for all paragraphs (including new ones)
 sub fix_paragraphs_inside {
   my ($node, $all_block) = @_;
   # blocks in which paragrahs will be added:
   my @blocks_with_p = ('loncapa','problem','part','problemtype','window','block','while','postanswerdate','preduedate','solved','notsolved','languageblock','translated','lang','instructorcomment','togglebox','standalone','form');
   my @fix_p_if_br_or_p = ('foil','item','text','label','hintgroup','hintpart','hint','web','windowlink','div','li','dd','td','th','blockquote');
   if ((string_in_array(\@blocks_with_p, $node->nodeName) && paragraph_needed($node)) ||
-      (string_in_array(\@fix_p_if_br_or_p, $node->nodeName) &&
-      (scalar(@{$node->getChildrenByTagName('br')}) > 0 ||
-       scalar(@{$node->getChildrenByTagName('p')}) > 0))) {
+      (string_in_array(\@fix_p_if_br_or_p, $node->nodeName) && paragraph_inside($node))) {
     # if non-empty, add a paragraph containing everything inside, paragraphs inside paragraphs will be fixed afterwards
     my $doc = $node->ownerDocument;
     my $p = $doc->createElement('p');
@@ -1906,6 +1904,27 @@ sub paragraph_needed {
   return(0);
 }
 
+# returns 1 if there is a paragraph or br in a child of this node, or inside an inline child
+sub paragraph_inside {
+  my ($node) = @_;
+  # inline elements that can be split in half if there is a paragraph inside (currently all HTML):
+  # (also used in first_block below)
+  my @splitable_inline = ('span', 'a', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'code', 'kbd', 'samp', 'tt', 'ins', 'del', 'var', 'small', 'big', 'font', 'u');
+  for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
+    if ($child->nodeType == XML_ELEMENT_NODE) {
+      my $name = $child->nodeName;
+      if ($name eq 'p' || $name eq 'br') {
+        return(1);
+      } elsif (string_in_array(\@splitable_inline, $name)) {
+        if (paragraph_inside($child)) {
+          return(1);
+        }
+      }
+    }
+  }
+  return(0);
+}
+
 # fixes paragraphs inside paragraphs (without a block in-between)
 sub fix_paragraph {
   my ($p, $all_block) = @_;
@@ -1920,7 +1939,14 @@ sub fix_paragraph {
       my $left = $trees->{'left'};
       my $middle = $trees->{'middle'};
       my $right = $trees->{'right'};
+      
       if (defined $left) {
+        # fix paragraphs inside, in case one of the descendants can have paragraphs inside (like numericalresponse/hintgroup):
+        for (my $child=$left->firstChild; defined $child; $child=$child->nextSibling) {
+          if ($child->nodeType == XML_ELEMENT_NODE) {
+            fix_paragraphs_inside($child, $all_block);
+          }
+        }
         if (!paragraph_needed($left)) {
           # this was just blank text, comments or inline responses, it should not create a new paragraph
           my $next;
@@ -1931,14 +1957,9 @@ sub fix_paragraph {
           }
         } else {
           $replacement->appendChild($left);
-          # fix paragraphs inside, in case one of the descendants can have paragraphs inside (like numericalresponse/hintgroup):
-          my $next;
-          for (my $child=$left->firstChild; defined $child; $child=$next) {
-            $next = $child->nextSibling;
-            fix_paragraphs_inside($child, $all_block);
-          }
         }
       }
+      
       my $n = $middle->firstChild;
       while (defined $n) {
         if ($n->nodeType == XML_ELEMENT_NODE && (string_in_array($all_block, $n->nodeName) || $n->nodeName eq 'br')) {
@@ -1989,6 +2010,7 @@ sub fix_paragraph {
           die "Error in post_xml.fix_paragraph: block not found";
         }
       }
+      
       if (defined $right) {
         if ($block->nodeName eq 'p') {
           # remove attributes on the right paragraph
@@ -2016,20 +2038,29 @@ sub fix_paragraph {
               $next = $child->nextSibling;
               $right->removeChild($child);
               $replacement->appendChild($child);
+              # fix paragraphs inside, in case one of the descendants can have paragraphs inside (like numericalresponse/hintgroup):
+              if ($child->nodeType == XML_ELEMENT_NODE) {
+                fix_paragraphs_inside($child, $all_block);
+              }
             }
           }
         }
       }
+      
       $p->parentNode->replaceChild($replacement, $p);
+      
       if ($loop_right) {
         $p = $right;
       }
+      
     } else {
       # fix paragraphs inside, in case one of the descendants can have paragraphs inside (like numericalresponse/hintgroup):
       my $next;
       for (my $child=$p->firstChild; defined $child; $child=$next) {
         $next = $child->nextSibling;
-        fix_paragraphs_inside($child, $all_block);
+        if ($child->nodeType == XML_ELEMENT_NODE) {
+          fix_paragraphs_inside($child, $all_block);
+        }
       }
     }
   }
