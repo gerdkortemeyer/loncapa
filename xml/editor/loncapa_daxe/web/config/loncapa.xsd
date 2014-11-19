@@ -78,6 +78,37 @@
   
   <xs:annotation>
     <xs:documentation>
+      Shared attributes
+    </xs:documentation>
+  </xs:annotation>
+  <xs:attributeGroup name="loncapa-css">
+    <xs:annotation>
+      <xs:documentation>
+        CSS attributes for LON-CAPA elements. They differ from HTML core attributes because the id attribute does not have the same constraints.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="class" type="xs:NMTOKENS">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute is a space-separated list of the classes of the element. Classes allows CSS and Javascript to select and access specific elements via the class selectors or functions like the DOM method document.getElementsByClassName.
+          
+          Usage note: Though the specification doesn't put requirements on the name of classes, web developers are encouraged to use names that describe the semantic purpose of the element, rather to the presentation of the element (e.g., attribute to describe an attribute rather than italics, although an element of this class may be presented by italics). Semantic names remain logical even if the presentation of the page changes.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="style" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          This attribute contains CSS styling declarations to be applied to the element. Note that it is recommended for styles to be defined in a separate file or files. This attribute and the &lt;style&gt; element have mainly the purpose of allowing for quick styling, for example for testing purposes.
+          
+          Usage note: This attribute must not be used to convey semantic information. Even if all styling is removed, a page should remain semantically correct. Typically it shouldn't be used to hide irrelevant information; this should be done using the hidden attribute.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  
+  <xs:annotation>
+    <xs:documentation>
       Root element and problem.
     </xs:documentation>
   </xs:annotation>
@@ -112,6 +143,7 @@
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
       </xs:choice>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   
@@ -415,6 +447,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="stringhintcondition">
@@ -484,6 +517,7 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   
@@ -541,6 +575,7 @@
           </xs:union>
         </xs:simpleType>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:complexType name="radiobuttonresponse--foilgroup">
@@ -690,6 +725,7 @@
           </xs:union>
         </xs:simpleType>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:complexType name="optionresponse--foilgroup">
@@ -863,6 +899,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:complexType name="matchresponse--itemgroup">
@@ -1026,6 +1063,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:complexType name="rankresponse--foilgroup">
@@ -1098,6 +1136,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:complexType name="imageresponse--foilgroup">
@@ -1245,6 +1284,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:complexType name="caparesponse--answergroup">
@@ -1386,6 +1426,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="formulahintcondition">
@@ -1498,6 +1539,7 @@
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="libraries" type="xs:string"/>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:complexType mixed="true" name="mathresponse--answer">
@@ -1674,6 +1716,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="functionplotelements">
@@ -2293,6 +2336,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="organichintcondition">
@@ -2350,6 +2394,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="reactionhintcondition">
@@ -2409,6 +2454,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:complexType mixed="true" name="customresponse--answer">
@@ -2517,6 +2563,7 @@
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="answerdisplay" type="xs:string"/>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   
@@ -3282,6 +3329,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:simpleType name="lonplot--title">
@@ -4555,6 +4603,7 @@
           </xs:union>
         </xs:simpleType>
       </xs:attribute>
+      <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="drawimage">
