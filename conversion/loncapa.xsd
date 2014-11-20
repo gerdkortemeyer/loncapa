@@ -2924,40 +2924,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="title" type="lonplot--title"/>
-        <xs:element name="axis" type="lonplot--axis">
-          <xs:annotation>
-            <xs:documentation>
-              The Plot Axes tag allows you to specify the domain and range of the data to display. It is closely tied with the Plot Ticks tags, which specify where the gridlines are drawn on the plot.
-            </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element name="curve" type="lonplot--curve">
-          <xs:annotation>
-            <xs:documentation>
-              The curve tag is where you set the data to be plotted by gnuplot.
-            </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element name="key" type="lonplot--key">
-          <xs:annotation>
-            <xs:documentation>
-              The key tag causes a key to be drawn on the plot when it is generated. The key will contain an entry for each curve which has a name.
-              The key is the color of the foreground of the plot, specified in the gnuplot tag.
-            </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element name="label" type="lonplot--label">
-          <xs:annotation>
-            <xs:documentation>
-              The label tag allows the author to place text at any position on the plot. There may be many label tags on one plot and all the labels which fall within the plot will show. The color used will be to foreground color of the plot and the font will be the size specified for the plot, both of which are set in the gnuplot tag.
-            </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element name="xtics" type="lonplot--xtics"/>
-        <xs:element name="ytics" type="lonplot--ytics"/>
-        <xs:element name="xlabel" type="lonplot--xlabel"/>
-        <xs:element name="ylabel" type="lonplot--ylabel"/>
+        <xs:group ref="gnuplot-children"/>
       </xs:choice>
       <xs:attribute default="dynamically generated plot" name="alttag" type="xs:string">
         <xs:annotation>
@@ -3328,6 +3295,50 @@
       <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
+  <xs:group name="gnuplot-children">
+    <xs:annotation>
+      <xs:documentation>
+        List of children, used in gnuplot and lonplot--block
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="title" type="lonplot--title"/>
+      <xs:element name="axis" type="lonplot--axis">
+        <xs:annotation>
+          <xs:documentation>
+            The Plot Axes tag allows you to specify the domain and range of the data to display. It is closely tied with the Plot Ticks tags, which specify where the gridlines are drawn on the plot.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="curve" type="lonplot--curve">
+        <xs:annotation>
+          <xs:documentation>
+            The curve tag is where you set the data to be plotted by gnuplot.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="key" type="lonplot--key">
+        <xs:annotation>
+          <xs:documentation>
+            The key tag causes a key to be drawn on the plot when it is generated. The key will contain an entry for each curve which has a name.
+            The key is the color of the foreground of the plot, specified in the gnuplot tag.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="label" type="lonplot--label">
+        <xs:annotation>
+          <xs:documentation>
+            The label tag allows the author to place text at any position on the plot. There may be many label tags on one plot and all the labels which fall within the plot will show. The color used will be to foreground color of the plot and the font will be the size specified for the plot, both of which are set in the gnuplot tag.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="xtics" type="lonplot--xtics"/>
+      <xs:element name="ytics" type="lonplot--ytics"/>
+      <xs:element name="xlabel" type="lonplot--xlabel"/>
+      <xs:element name="ylabel" type="lonplot--ylabel"/>
+      <xs:element name="block" type="lonplot--block"/>
+    </xs:choice>
+  </xs:group>
   <xs:simpleType name="lonplot--title">
     <xs:annotation>
       <xs:documentation>Plot Title</xs:documentation>
@@ -3871,6 +3882,27 @@
     </xs:annotation>
     <xs:restriction base="xs:string"/>
   </xs:simpleType>
+  <xs:complexType name="lonplot--block">
+    <xs:annotation>
+      <xs:documentation>
+        Conditional Block
+        
+        This has a required argument condition that is evaluated. If the condition is true, everything inside the tag is evaluated; otherwise, everything inside the block tag is skipped.
+        
+        When found inside the gnuplot element, a block can only have gnuplot children inside, with no text.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:group ref="gnuplot-children"/>
+    </xs:choice>
+    <xs:attribute name="condition" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Test Condition
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
   
   <xs:annotation>
     <xs:documentation>
@@ -4125,6 +4157,11 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  <xs:annotation>
+    <xs:documentation>
+      see also: lonplot--block
+    </xs:documentation>
+  </xs:annotation>
   <xs:element name="while">
     <xs:annotation>
       <xs:documentation>
