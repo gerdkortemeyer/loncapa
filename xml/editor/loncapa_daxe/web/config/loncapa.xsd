@@ -597,7 +597,20 @@
     <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="radiobuttonresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="concept" type="xs:string" use="required"/>
+    <xs:attribute name="id" type="xs:ID">
+      <xs:annotation>
+        <xs:documentation>
+          Unique identifier.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="display" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Displayed name.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType mixed="true" name="radiobuttonresponse--foil">
     <xs:annotation>
@@ -807,7 +820,20 @@
     <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="optionresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="concept" type="xs:string" use="required"/>
+    <xs:attribute name="id" type="xs:ID">
+      <xs:annotation>
+        <xs:documentation>
+          Unique identifier.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="display" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Displayed name.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType mixed="true" name="optionresponse--foil">
     <xs:annotation>
@@ -844,7 +870,7 @@
         
         This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
         
-        There are two types of option response hint conditions: one for standalone foils and one for concept groups. In both cases the option hint tag includes two parameters: answer and name for standalone foils, and concept and name for foils grouped together in a concept group. For the answer parameter, the names and submitted values for each of the foils that are being included in the hint condition are provided in a hash, i.e., in the format: ('Foil1'= &gt; 'True','Foil2'= &gt; 'False'). In the case of a conditional hint for a concept group, the format of the concept parameter is also a hash that links the name of each concept group included in the hint condition to either 'correct' or 'incorrect' - e.g., &lt; optionhint concept="('buoyancy'= &gt; 'correct','density'= &gt; 'correct')" name="fluids" / &gt; If 'correct' is specified for a named concept then when the conditional hint is evaluated answers for each of the foils selected by a student must be correct for the hint action to be triggered. If anything other than 'correct' is provided in the concept hash in the optionhint tag then then students answers will be compared with the set answers for the foils in the concept group and as long as at least one answer is incorrect (i.e., the concept group was not correctly answered) then the corresponding hint action will be triggered. 
+        There are two types of option response hint conditions: one for standalone foils and one for concept groups. In both cases the option hint tag includes two parameters: answer and name for standalone foils, and concept and name for foils grouped together in a concept group. For the answer parameter, the names and submitted values for each of the foils that are being included in the hint condition are provided in a hash, i.e., in the format: ('Foil1'= &gt; 'True','Foil2'= &gt; 'False'). In the case of a conditional hint for a concept group, the format of the concept parameter is also a hash that links the name of each concept group included in the hint condition to either 'correct' or 'incorrect' - e.g., &lt;optionhintcondition concept="('buoyancy'= &gt; 'correct','density'= &gt; 'correct')" name="fluids" / &gt; If 'correct' is specified for a named concept then when the conditional hint is evaluated answers for each of the foils selected by a student must be correct for the hint action to be triggered. If anything other than 'correct' is provided in the concept hash in the optionhint tag then then students answers will be compared with the set answers for the foils in the concept group and as long as at least one answer is incorrect (i.e., the concept group was not correctly answered) then the corresponding hint action will be triggered. 
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -1005,7 +1031,20 @@
     <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="matchresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="concept" type="xs:string" use="required"/>
+    <xs:attribute name="id" type="xs:ID">
+      <xs:annotation>
+        <xs:documentation>
+          Unique identifier.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="display" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Displayed name.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType mixed="true" name="matchresponse--foil">
     <xs:annotation>
@@ -1085,7 +1124,20 @@
     <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="rankresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="concept" type="xs:string" use="required"/>
+    <xs:attribute name="id" type="xs:ID">
+      <xs:annotation>
+        <xs:documentation>
+          Unique identifier.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="display" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Displayed name.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType mixed="true" name="rankresponse--foil">
     <xs:annotation>
@@ -1158,7 +1210,20 @@
     <xs:choice maxOccurs="unbounded">
       <xs:element name="foil" type="imageresponse--foil"/>
     </xs:choice>
-    <xs:attribute name="concept" type="xs:string" use="required"/>
+    <xs:attribute name="id" type="xs:ID">
+      <xs:annotation>
+        <xs:documentation>
+          Unique identifier.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="display" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Displayed name.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="imageresponse--foil">
     <xs:annotation>

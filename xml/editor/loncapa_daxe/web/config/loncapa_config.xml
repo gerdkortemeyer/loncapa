@@ -595,8 +595,17 @@
         Collection of similar foils.
         When a problem is displayed, only one of the contained foils is selected for display.
       </DOCUMENTATION>
-      <STRINGS_ATTRIBUT attribut="concept">
-        <TITRE>concept</TITRE>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="display">
+        <TITRE>display</TITRE>
+        <DOCUMENTATION>
+          Displayed name.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="foil">

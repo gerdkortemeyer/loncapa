@@ -76,9 +76,12 @@ sub post_xml {
   fix_paragraphs_inside($root, \@all_block);
 
   change_hints($root); # after fix_paragraphs_inside to avoid problems with hintgroup/p/hintpart
+                       # (problem: because it is after fix_paragraphs_inside, this will create invalid p/block/hint)
   
   remove_empty_style($root);
-
+  
+  convert_conceptgroup($root); # must be after change_hints (uses 'optionhintcondition')
+  
   fix_empty_lc_elements($root);
   
   lowercase_attribute_values($root);
@@ -2217,6 +2220,39 @@ sub remove_empty_style {
         }
       }
     }
+  }
+}
+
+# renames conceptgroup/@concept 'display' and creates a new id attribute
+sub convert_conceptgroup {
+  my ($root) = @_;
+  my %display_id = ();
+  my @conceptgroups = $root->getElementsByTagName('conceptgroup');
+  my $number = 1;
+  foreach my $conceptgroup (@conceptgroups) {
+    my $concept = $conceptgroup->getAttribute('concept');
+    if (defined $concept) {
+      $conceptgroup->removeAttribute('concept');
+      $conceptgroup->setAttribute('display', $concept);
+    }
+    my $id = 'conceptgroup_'.$number;
+    $conceptgroup->setAttribute('id', $id);
+    $display_id{$concept} = $id;
+    $number++;
+  }
+  my @optionhintconditions = $root->getElementsByTagName('optionhintcondition');
+  foreach my $optionhintcondition (@optionhintconditions) {
+    my $concept = $optionhintcondition->getAttribute('concept');
+    if (!defined $concept) {
+      next;
+    }
+    foreach my $display (keys %display_id) {
+      my $ind = index($concept, $display);
+      if ($ind != -1) {
+        $concept = substr($concept, 0, $ind).$display_id{$display}.substr($concept, $ind + length($display));
+      }
+    }
+    $optionhintcondition->setAttribute('concept', $concept);
   }
 }
 
