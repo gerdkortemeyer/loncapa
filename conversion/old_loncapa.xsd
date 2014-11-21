@@ -536,6 +536,7 @@
     <xs:choice maxOccurs="unbounded">
       <xs:element name="conceptgroup" type="radiobuttonresponse--conceptgroup"/>
       <xs:element name="foil" type="radiobuttonresponse--foil"/>
+      <xs:element ref="comment"/>
     </xs:choice>
   </xs:complexType>
   <xs:complexType name="radiobuttonresponse--conceptgroup">
@@ -649,6 +650,7 @@
     <xs:choice maxOccurs="unbounded">
       <xs:element name="conceptgroup" type="optionresponse--conceptgroup"/>
       <xs:element name="foil" type="optionresponse--foil"/>
+      <xs:element ref="comment"/>
     </xs:choice>
     <xs:attribute name="options" use="required">
       <xs:annotation>
@@ -890,6 +892,7 @@
       <xs:element name="itemgroup" type="matchresponse--itemgroup"/>
       <xs:element name="conceptgroup" type="matchresponse--conceptgroup"/>
       <xs:element name="foil" type="matchresponse--foil"/>
+      <xs:element ref="comment"/>
     </xs:choice>
   </xs:complexType>
   <xs:complexType name="matchresponse--conceptgroup">
@@ -967,6 +970,7 @@
     <xs:choice maxOccurs="unbounded">
       <xs:element name="conceptgroup" type="rankresponse--conceptgroup"/>
       <xs:element name="foil" type="rankresponse--foil"/>
+      <xs:element ref="comment"/>
     </xs:choice>
   </xs:complexType>
   <xs:complexType name="rankresponse--conceptgroup">
@@ -1037,6 +1041,7 @@
     <xs:choice maxOccurs="unbounded">
       <xs:element name="conceptgroup" type="imageresponse--conceptgroup"/>
       <xs:element name="foil" type="imageresponse--foil"/>
+      <xs:element ref="comment"/>
     </xs:choice>
   </xs:complexType>
   <xs:complexType name="imageresponse--conceptgroup">
@@ -1072,6 +1077,9 @@
         Example: &lt;image&gt;/res/adm/includes/templates/man1.jpg&lt;/image&gt;. The following image formats are recommended - gif, jpg or png. Other formats may work, but there may be printing or display issues. The image should only appear once per foil.
       </xs:documentation>
     </xs:annotation>
+    <xs:choice minOccurs="0">
+      <xs:element ref="gnuplot"/>
+    </xs:choice>
   </xs:complexType>
   <xs:simpleType name="imageresponse--rectangle">
     <xs:annotation>
@@ -4843,7 +4851,8 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:element ref="part"/>
+        <xs:group ref="text-with-responses"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
