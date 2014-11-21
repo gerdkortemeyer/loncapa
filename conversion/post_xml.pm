@@ -64,6 +64,8 @@ sub post_xml {
   fix_tables($root);
 
   fix_lists($root);
+  
+  fix_wrong_name_for_img($root); # should be before replace_deprecated_attributes_by_css
 
   replace_deprecated_attributes_by_css($root);
   
@@ -939,6 +941,33 @@ sub fix_lists {
         $next = $next_next;
       }
     }
+  }
+}
+
+# Some "image" elements are actually img element with a wrong name. This renames them.
+# Amazingly enough, "<image src=..." displays an image in some browsers
+# ("image" has existed at some point as an experimental HTML element).
+sub fix_wrong_name_for_img {
+  my ($root) = @_;
+  my @images = $root->getElementsByTagName('image');
+  foreach my $image (@images) {
+    if (!defined $image->getAttribute('src')) {
+      next;
+    }
+    my $found_correct_ancestor = 0;
+    my $ancestor = $image->parentNode;
+    while (defined $ancestor) {
+      if ($ancestor->nodeName eq 'drawimage' || $ancestor->nodeName eq 'imageresponse') {
+        $found_correct_ancestor = 1;
+        last;
+      }
+      $ancestor = $ancestor->parentNode;
+    }
+    if ($found_correct_ancestor) {
+      next;
+    }
+    # this really has to be renamed "img"
+    $image->setNodeName('img');
   }
 }
 
