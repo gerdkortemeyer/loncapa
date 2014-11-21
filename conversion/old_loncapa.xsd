@@ -856,6 +856,18 @@
         </xs:union>
       </xs:simpleType>
     </xs:attribute>
+    <xs:attribute name="TeXitemgroupwidth" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          TeXitemgroupwidth attribute allows you to specify the width of table with items for matching. The value of this attribute defines the width in percents with respect to text line width.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="\d+%"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType mixed="true" name="matchresponse--item">
     <xs:annotation>
