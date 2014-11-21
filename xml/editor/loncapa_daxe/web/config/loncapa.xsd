@@ -5752,6 +5752,7 @@
     <xs:complexContent>
       <xs:extension base="table-base">
         <xs:sequence>
+          <xs:element minOccurs="0" ref="caption"/>
           <xs:element minOccurs="0" ref="thead"/>
           <xs:element minOccurs="0" ref="tfoot"/>
           <xs:choice>
@@ -5766,6 +5767,7 @@
     <xs:complexContent>
       <xs:extension base="table-base">
         <xs:sequence>
+          <xs:element minOccurs="0" ref="caption"/>
           <xs:element minOccurs="0" ref="thead"/>
           <xs:element minOccurs="0" ref="tfoot"/>
           <xs:choice>
@@ -5780,6 +5782,7 @@
     <xs:complexContent>
       <xs:extension base="table-base">
         <xs:sequence>
+          <xs:element minOccurs="0" ref="caption"/>
           <xs:element minOccurs="0" ref="thead"/>
           <xs:element minOccurs="0" ref="tfoot"/>
           <xs:choice>
@@ -5790,7 +5793,24 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  <xs:element name="caption">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML &lt;caption&gt; Element (or HTML Table Caption Element) represents the title of a table. Though it is always the first descendant of a &lt;table&gt;, its styling, using CSS, may place it elsewhere, relative to the table.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="thead">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML Table Head Element (&lt;thead&gt;) defines a set of rows defining the head of the columns of the table.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:sequence>
         <xs:element maxOccurs="unbounded" name="tr" type="tr-without-responses"/>
@@ -5798,6 +5818,11 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="tfoot">
+    <xs:annotation>
+      <xs:documentation>
+        The HTML Table Foot Element (&lt;tfoot&gt;) defines a set of rows summarizing the columns of the table.
+      </xs:documentation>
+    </xs:annotation>
     <xs:complexType>
       <xs:sequence>
         <xs:element maxOccurs="unbounded" name="tr" type="tr-without-responses"/>
