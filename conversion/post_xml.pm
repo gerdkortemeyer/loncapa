@@ -81,6 +81,8 @@ sub post_xml {
 
   fix_empty_lc_elements($root);
   
+  lowercase_attribute_values($root);
+  
   replace_numericalresponse_unit_attribute($root);
 
   pretty($root, \@all_block);
@@ -2235,6 +2237,44 @@ sub fix_empty_lc_elements {
   for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
     if ($child->nodeType == XML_ELEMENT_NODE) {
       fix_empty_lc_elements($child);
+    }
+  }
+}
+
+# turn some attribute values into lowercase when they should be
+sub lowercase_attribute_values {
+  my ($root) = @_;
+  my @with_yesno = (['radiobuttonresponse', ['randomize']],
+                    ['optionresponse', ['randomize']],
+                    ['matchresponse', ['randomize']],
+                    ['itemgroup', ['randomize']],
+                    ['rankresponse', ['randomize']],
+                    ['functionplotresponse', ['xaxisvisible', 'yaxisvisible', 'gridvisible']],
+                    ['backgroundplot', ['fixed']],
+                    ['drawvectorsum', ['showvalue']],
+                    ['textline', ['readonly']],
+                    ['hint', ['showoncorrect']],
+                    ['img', ['encrypturl']]
+                   );
+  foreach my $el_attributes (@with_yesno) {
+    my $el_name = $el_attributes->[0];
+    my @elements = $root->getElementsByTagName($el_name);
+    foreach my $element (@elements) {
+      my $att_list = $el_attributes->[1];
+      foreach my $att_name (@$att_list) {
+        my $att_value = $element->getAttribute($att_name);
+        if (!defined $att_value) {
+          next;
+        }
+        if ($att_value eq 'yes' || $att_value eq 'no') {
+          next;
+        }
+        if ($att_value =~ /\s*yes\s*/i) {
+          $element->setAttribute($att_name, 'yes');
+        } elsif ($att_value =~ /\s*no\s*/i) {
+          $element->setAttribute($att_name, 'no');
+        }
+      }
     }
   }
 }
