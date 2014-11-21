@@ -35,7 +35,7 @@ sub post_xml {
 
   my $root = create_new_structure($dom_doc);
 
-  remove_elements($root, ['startouttext','startoutext','startottext','startouttex','startouttect','starttextarea','endouttext','endoutext','endoutttext','endouttxt','endouutext','endtextarea','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','x-claris-tagview','x-claris-window','x-sas-window']);
+  remove_elements($root, ['startouttext','startoutext','startottext','startouttex','startouttect','starttextarea','endouttext','endoutext','endoutttext','endouttxt','endouutext','ednouttext','endtextarea','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','x-claris-tagview','x-claris-window','x-sas-window']);
   
   remove_empty_attributes($root);
   
@@ -70,6 +70,8 @@ sub post_xml {
   replace_deprecated_attributes_by_css($root);
   
   replace_center($root, \@all_block); # must come after replace_deprecated_attributes_by_css
+  
+  replace_nobr($root);
   
   remove_useless_notsolved($root); # must happen before change_hints
   
@@ -1536,6 +1538,16 @@ sub replace_center {
         $center->parentNode->replaceChild($new_node, $center);
       }
     }
+  }
+}
+
+# replaces <nobr> by <span style="white-space:nowrap">
+sub replace_nobr {
+  my ($root) = @_;
+  my @nobrs = $root->getElementsByTagName('nobr');
+  foreach my $nobr (@nobrs) {
+    $nobr->setNodeName('span');
+    $nobr->setAttribute('style', 'white-space:nowrap');
   }
 }
 
