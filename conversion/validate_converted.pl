@@ -65,6 +65,7 @@ sub validate_file {
     $xmlschema->validate($doc);
     print "$pathname is valid\n";
   } catch {
+    $_ =~ s/%20/ /g;
     print "$_\n";
   }
 }
