@@ -2269,17 +2269,30 @@ sub convert_conceptgroup {
   my ($root) = @_;
   my %display_id = ();
   my @conceptgroups = $root->getElementsByTagName('conceptgroup');
-  my $number = 1;
   foreach my $conceptgroup (@conceptgroups) {
     my $concept = $conceptgroup->getAttribute('concept');
     if (defined $concept) {
       $conceptgroup->removeAttribute('concept');
       $conceptgroup->setAttribute('display', $concept);
     }
-    my $id = 'conceptgroup_'.$number;
+    my $id = $concept;
+    $id =~ tr/ /_/;
+    $id =~ s/[^a-zA-Z0-9_.-]//g;
+    if ($id !~ /^[a-zA-Z_]/) {
+      $id = 'conceptgroup_'.$id;
+    }
+    my @id_values = values(%display_id);
+    if (string_in_array(\@id_values, $id)) {
+      my $number = 2;
+      my $id2 = $id.'_'.$number;
+      while (string_in_array(\@id_values, $id2)) {
+        $number++;
+        $id2 = $id.'_'.$number;
+      }
+      $id = $id2;
+    }
     $conceptgroup->setAttribute('id', $id);
     $display_id{$concept} = $id;
-    $number++;
   }
   my @optionhintconditions = $root->getElementsByTagName('optionhintcondition');
   foreach my $optionhintcondition (@optionhintconditions) {
