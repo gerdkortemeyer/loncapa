@@ -2306,7 +2306,8 @@ sub convert_conceptgroup {
         $concept = substr($concept, 0, $ind).$display_id{$display}.substr($concept, $ind + length($display));
       }
     }
-    $optionhintcondition->setAttribute('concept', $concept);
+    $optionhintcondition->removeAttribute('concept');
+    $optionhintcondition->setAttribute('forconcept', $concept);
   }
 }
 
