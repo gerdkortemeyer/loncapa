@@ -23,16 +23,21 @@ through which recipients can access the Corresponding Source.
 /**
  * Parsed tree node. ENode.toMathML(hcolors) contains the code for the transformation into MathML.
  * @constructor
- * @param {number} type - ENode.UNKNOWN | NAME | NUMBER | OPERATOR | FUNCTION | VECTOR
+ * @param {number} type - ENode.UNKNOWN | NAME | NUMBER | OPERATOR | FUNCTION | VECTOR | INTERVAL | SET | SUBSCRIPT
  * @param {Operator} op - The operator
  * @param {string} value - Node value as a string, null for type VECTOR
- * @param {Array.<ENode>} children - The children nodes, only for types OPERATOR, FUNCTION, VECTOR, SUBSCRIPT
+ * @param {Array.<ENode>} children - The children nodes, only for types OPERATOR, FUNCTION, VECTOR, INTERVAL, SET, SUBSCRIPT
+ * @param {number} [interval_type] - ENode.NOT_AN_INTERVAL | OPEN_OPEN | OPEN_CLOSED | CLOSED_OPEN | CLOSED_CLOSED
  */
-function ENode(type, op, value, children) {
+function ENode(type, op, value, children, interval_type) {
     this.type = type;
     this.op = op;
     this.value = value;
     this.children = children;
+    if (typeof interval_type == "undefined")
+        this.interval_type = ENode.NOT_AN_INTERVAL;
+    else
+        this.interval_type = interval_type;
 }
 
 ENode.UNKNOWN = 0;
@@ -41,10 +46,18 @@ ENode.NUMBER = 2;
 ENode.OPERATOR = 3;
 ENode.FUNCTION = 4;
 ENode.VECTOR = 5;
-ENode.SUBSCRIPT = 6;
+ENode.INTERVAL = 6;
+ENode.SET = 7;
+ENode.SUBSCRIPT = 8;
 ENode.COLORS = ["#E01010", "#0010FF", "#009000", "#FF00FF", "#00B0B0", "#F09000", 
                 "#800080", "#F080A0", "#6090F0", "#902000", "#70A050", "#A07060",
                 "#5000FF", "#E06050", "#008080", "#808000"];
+
+ENode.NOT_AN_INTERVAL = 0;
+ENode.OPEN_OPEN = 1;
+ENode.OPEN_CLOSED = 2;
+ENode.CLOSED_OPEN = 3;
+ENode.CLOSED_CLOSED = 4;
 
 /**
  * Returns the node as a string, for debug
@@ -71,6 +84,12 @@ ENode.prototype.toString = function() {
         case ENode.VECTOR:
             s += 'VECTOR';
             break;
+        case ENode.INTERVAL:
+            s += 'INTERVAL';
+            break;
+        case ENode.SET:
+            s += 'SET';
+            break;
         case ENode.SUBSCRIPT:
             s += 'SUBSCRIPT';
             break;
@@ -87,6 +106,9 @@ ENode.prototype.toString = function() {
                 s += ',';
         }
         s += ']';
+    }
+    if (this.interval_type) {
+        s += " " + this.interval_type;
     }
     s+= ')';
     return s;
@@ -115,7 +137,7 @@ ENode.prototype.getColorForIdentifier = function(name, hcolors) {
  * @returns {Element}
  */
 ENode.prototype.toMathML = function(context) {
-    var c0, c1, c2, c3, c4, i, j, el, par, mrow, mo, mtable, mfrac, msub, msup;
+    var c0, c1, c2, c3, c4, i, j, el, par, mrow, mo, mtable, mfrac, msub, msup, mrow2;
     if (typeof context == "undefined")
         context = { hcolors: {}, depth: 0 };
     if (this.children != null && this.children.length > 0)
@@ -396,7 +418,7 @@ ENode.prototype.toMathML = function(context) {
                 var mo = this.mo("\u2211");
                 mo.setAttribute("stretchy", "true"); // doesn't work with MathJax
                 munderover.appendChild(mo);
-                var mrow2 = document.createElement('mrow');
+                mrow2 = document.createElement('mrow');
                 mrow2.appendChild(c2.toMathML(context));
                 mrow2.appendChild(this.mo("="));
                 mrow2.appendChild(c3.toMathML(context));
@@ -414,7 +436,7 @@ ENode.prototype.toMathML = function(context) {
                 var mo = this.mo("\u220F");
                 mo.setAttribute("stretchy", "true"); // doesn't work with MathJax
                 munderover.appendChild(mo);
-                var mrow2 = document.createElement('mrow');
+                mrow2 = document.createElement('mrow');
                 mrow2.appendChild(c2.toMathML(context));
                 mrow2.appendChild(this.mo("="));
                 mrow2.appendChild(c3.toMathML(context));
@@ -521,7 +543,41 @@ ENode.prototype.toMathML = function(context) {
             mrow.appendChild(mtable);
             mrow.appendChild(this.mo(")"));
             return(mrow);
+        
+        case ENode.INTERVAL:
+            mrow = document.createElement('mrow');
+            if (this.interval_type == ENode.OPEN_OPEN || this.interval_type == ENode.OPEN_CLOSED) {
+                mo = this.mo("(");
+            } else {
+                mo = this.mo("[");
+            }
+            mrow.appendChild(mo);
+            mrow2 = document.createElement('mrow');
+            mrow2.appendChild(this.children[0].toMathML(context));
+            mrow2.appendChild(this.mo(":"));
+            mrow2.appendChild(this.children[1].toMathML(context));
+            mrow.appendChild(mrow2);
+            if (this.interval_type == ENode.OPEN_OPEN || this.interval_type == ENode.CLOSED_OPEN) {
+                mo = this.mo(")");
+            } else {
+                mo = this.mo("]");
+            }
+            mrow.appendChild(mo);
+            return(mrow);
             
+        case ENode.SET:
+            mrow = document.createElement('mrow');
+            mrow.appendChild(this.mo("{"));
+            mrow2 = document.createElement('mrow');
+            for (i=0; i<this.children.length; i++) {
+                if (i > 0)
+                    mrow2.appendChild(this.mo(";"));
+                mrow2.appendChild(this.children[i].toMathML(context));
+            }
+            mrow.appendChild(mrow2);
+            mrow.appendChild(this.mo("}"));
+            return(mrow);
+        
         case ENode.SUBSCRIPT:
             msub = document.createElement('msub');
             msub.appendChild(c0.toMathML(context));
@@ -537,6 +593,7 @@ ENode.prototype.toMathML = function(context) {
                 msub.appendChild(c1.toMathML(context));
             }
             return(msub);
+            
     }
 };
 

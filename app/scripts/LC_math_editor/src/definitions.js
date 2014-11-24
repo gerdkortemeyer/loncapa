@@ -31,6 +31,7 @@ function Definitions() {
 Definitions.ARG_SEPARATOR = ";";
 Definitions.DECIMAL_SIGN_1 = ".";
 Definitions.DECIMAL_SIGN_2 = ",";
+Definitions.INTERVAL_SEPARATOR = ":";
 
 /**
  * Creates a new operator.
@@ -122,6 +123,38 @@ Definitions.prototype.findOperator = function(id) {
 }
 
 /**
+ * Returns the ENode for the interval, parsing starting just before the interval separator
+ * @param {boolean} closed - was the first operator closed ?
+ * @param {ENode} e1 - First argument (already parsed)
+ * @param {Operator} op - The operator
+ * @param {Parser} p - The parser
+ * @returns {ENode}
+ */
+Definitions.prototype.buildInterval = function(closed, e1, op, p) {
+    p.advance(Definitions.INTERVAL_SEPARATOR);
+    var e2 = p.expression(0);
+    if (p.current_token == null || p.current_token.op == null ||
+            (p.current_token.op.id !== ")" && p.current_token.op.id !== "]")) {
+        throw new ParseException("Wrong interval syntax.", p.tokens[p.token_nr - 1].from);
+    }
+    var interval_type;
+    if (p.current_token.op.id == ")") {
+        p.advance(")");
+        if (closed)
+            interval_type = ENode.CLOSED_OPEN;
+        else
+            interval_type = ENode.OPEN_OPEN;
+    } else {
+        p.advance("]");
+        if (closed)
+            interval_type = ENode.CLOSED_CLOSED;
+        else
+            interval_type = ENode.OPEN_CLOSED;
+    }
+    return new ENode(ENode.INTERVAL, op, null, [e1, e2], interval_type);
+}
+
+/**
  * Defines all the operators.
  */
 Definitions.prototype.define = function() {
@@ -182,9 +215,15 @@ Definitions.prototype.define = function() {
     
     this.separator(")");
     this.separator(Definitions.ARG_SEPARATOR);
+    this.separator(Definitions.INTERVAL_SEPARATOR);
+    var defs = this;
     this.operator("(", Operator.BINARY, 200, 200, function(p) {
-        // nud (for parenthesis)
+        // nud (for parenthesis and intervals)
         var e = p.expression(0);
+        if (p.current_token != null && p.current_token.op != null &&
+                p.current_token.op.id == Definitions.INTERVAL_SEPARATOR) {
+            return defs.buildInterval(false, e, this, p);
+        }
         p.advance(")");
         return e;
     }, function(p, left) {
@@ -207,15 +246,21 @@ Definitions.prototype.define = function() {
     
     this.separator("]");
     this.operator("[", Operator.BINARY, 200, 70, function(p) {
-        // nud (for vectors)
+        // nud (for vectors and intervals)
         var children = [];
         if (p.current_token == null || p.current_token.op == null || p.current_token.op.id !== "]") {
+            var e = p.expression(0);
+            if (p.current_token != null && p.current_token.op != null &&
+                    p.current_token.op.id == Definitions.INTERVAL_SEPARATOR) {
+                return defs.buildInterval(true, e, this, p);
+            }
             while (true) {
-                children.push(p.expression(0));
+                children.push(e);
                 if (p.current_token == null || p.current_token.op == null || p.current_token.op.id !== Definitions.ARG_SEPARATOR) {
                     break;
                 }
                 p.advance(Definitions.ARG_SEPARATOR);
+                e = p.expression(0);
             }
         }
         p.advance("]");
@@ -236,6 +281,23 @@ Definitions.prototype.define = function() {
         }
         p.advance("]");
         return new ENode(ENode.SUBSCRIPT, this, "[", children);
+    });
+    
+    this.separator("}");
+    this.prefix("{", 200, function(p) {
+        // nud (for sets)
+        var children = [];
+        if (p.current_token == null || p.current_token.op == null || p.current_token.op.id !== "}") {
+            while (true) {
+                children.push(p.expression(0));
+                if (p.current_token == null || p.current_token.op == null || p.current_token.op.id !== Definitions.ARG_SEPARATOR) {
+                    break;
+                }
+                p.advance(Definitions.ARG_SEPARATOR);
+            }
+        }
+        p.advance("}");
+        return new ENode(ENode.SET, this, null, children);
     });
 };
 

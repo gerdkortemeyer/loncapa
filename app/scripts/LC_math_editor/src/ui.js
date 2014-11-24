@@ -43,8 +43,15 @@ var handleChange = function(math_object) {
         test2 = test1.replace(/\([^\(\)]*\)/g, '');
       }
       if (test2.split("(").length == test2.split(")").length) {
-        if (test2.indexOf(Definitions.ARG_SEPARATOR) != -1) {
-          txt = '['+txt+']';
+        test1 = '';
+        while (test2 != test1) {
+          test1 = test2;
+          test2 = test1.replace(/\{[^\{\}]*\}/g, '');
+        }
+        if (test2.split("{").length == test2.split("}").length) {
+          if (test2.indexOf(Definitions.ARG_SEPARATOR) != -1) {
+            txt = '['+txt+']';
+          }
         }
       }
     }
