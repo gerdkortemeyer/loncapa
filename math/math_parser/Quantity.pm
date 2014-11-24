@@ -29,8 +29,6 @@ use utf8;
 use Math::Complex;
 use POSIX;
 
-use Apache::lc_ui_localize;
-
 use aliased 'Apache::math::math_parser::CalcException';
 use aliased 'Apache::math::math_parser::Quantity';
 use aliased 'Apache::math::math_parser::QVector';
@@ -44,7 +42,7 @@ use overload
     '^' => \&qpow;
 
 # compare() return codes:
-use enum qw(IDENTICAL WRONG_TYPE WRONG_DIMENSIONS MISSING_UNITS ADDED_UNITS WRONG_UNITS WRONG_VALUE);
+use enum qw(IDENTICAL WRONG_TYPE WRONG_DIMENSIONS MISSING_UNITS ADDED_UNITS WRONG_UNITS WRONG_VALUE WRONG_ENDPOINT);
 
 
 ##
@@ -202,6 +200,15 @@ sub compare {
         }
     }
     return IDENTICAL;
+}
+
+##
+# Clone this object
+##
+sub clone {
+    my ( $self ) = @_;
+    my %units = %{$self->units};
+    return Quantity->new($self->value, \%units);
 }
 
 ##

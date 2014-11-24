@@ -40,6 +40,7 @@ use aliased 'Apache::math::math_parser::Token';
 use constant ARG_SEPARATOR => ";";
 use constant DECIMAL_SIGN_1 => ".";
 use constant DECIMAL_SIGN_2 => ",";
+use constant INTERVAL_SEPARATOR => ":";
 
 ##
 # Constructor
@@ -200,7 +201,7 @@ sub unitsLed {
 }
 
 ##
-# nud function for the ( operator (used to parse mathematical sub-expressions)
+# nud function for the ( operator (used to parse mathematical sub-expressions and intervals)
 # @param {Operator} op
 # @param {Parser} p
 # @returns {ENode}
@@ -208,6 +209,10 @@ sub unitsLed {
 sub parenthesisNud {
     my( $op, $p ) = @_;
     my $e = $p->expression(0);
+    if (defined $p->current_token && defined $p->current_token->op &&
+            $p->current_token->op->id eq INTERVAL_SEPARATOR) {
+        return buildInterval(0, $e, $op, $p);
+    }
     $p->advance(")");
     return $e;
 }
@@ -239,21 +244,27 @@ sub parenthesisLed {
 }
 
 ##
-# nud function for the [ operator (used to parse vectors)
+# nud function for the [ operator (used to parse vectors and intervals)
 # @param {Operator} op
 # @param {Parser} p
 # @returns {ENode}
 ##
-sub vectorNud {
+sub squareBracketNud {
     my( $op, $p ) = @_;
     my @children = ();
     if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id ne "]") {
+        my $e = $p->expression(0);
+        if (defined $p->current_token && defined $p->current_token->op &&
+                $p->current_token->op->id eq INTERVAL_SEPARATOR) {
+            return buildInterval(1, $e, $op, $p);
+        }
         while (1) {
-            push(@children, $p->expression(0));
+            push(@children, $e);
             if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id ne ARG_SEPARATOR) {
                 last;
             }
             $p->advance(ARG_SEPARATOR);
+            $e = $p->expression(0);
         }
     }
     $p->advance("]");
@@ -287,6 +298,63 @@ sub subscriptLed {
 }
 
 ##
+# Returns the ENode for the interval, parsing starting just before the interval separator
+# @param {boolean} closed - was the first operator closed ?
+# @param {ENode} e1 - First argument (already parsed)
+# @param {Operator} op - The operator
+# @param {Parser} p - The parser
+# @returns {ENode}
+##
+sub buildInterval {
+    my ($closed, $e1, $op, $p) = @_;
+    $p->advance(INTERVAL_SEPARATOR);
+    my $e2 = $p->expression(0);
+    if (!defined $p->current_token || !defined $p->current_token->op ||
+            ($p->current_token->op->id ne ")" && $p->current_token->op->id ne "]")) {
+        die ParseException->new("Wrong interval syntax", $p->tokens->[$p->token_nr - 1]->from);
+    }
+    my $interval_type;
+    if ($p->current_token->op->id eq ")") {
+        $p->advance(")");
+        if ($closed) {
+            $interval_type = ENode->CLOSED_OPEN;
+        } else {
+            $interval_type = ENode->OPEN_OPEN;
+        }
+    } else {
+        $p->advance("]");
+        if ($closed) {
+            $interval_type = ENode->CLOSED_CLOSED;
+        } else {
+            $interval_type = ENode->OPEN_CLOSED;
+        }
+    }
+    return ENode->new(ENode->INTERVAL, $op, undef, [$e1, $e2], $interval_type);
+}
+
+##
+# nud function for the { operator (used to parse sets)
+# @param {Operator} op
+# @param {Parser} p
+# @returns {ENode}
+##
+sub curlyBracketNud {
+    my( $op, $p ) = @_;
+    my @children = ();
+    if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id ne "}") {
+        while (1) {
+            push(@children, $p->expression(0));
+            if (!defined $p->current_token || !defined $p->current_token->op || $p->current_token->op->id ne ARG_SEPARATOR) {
+                last;
+            }
+            $p->advance(ARG_SEPARATOR);
+        }
+    }
+    $p->advance("}");
+    return ENode->new(ENode->SET, $op, undef, \@children);
+}
+
+##
 # Defines all the operators.
 ##
 sub define {
@@ -317,10 +385,14 @@ sub define {
     
     $self->separator(")");
     $self->separator(ARG_SEPARATOR);
+    $self->separator(INTERVAL_SEPARATOR);
     $self->operator("(", Operator->BINARY, 200, 200, \&parenthesisNud, \&parenthesisLed);
     
     $self->separator("]");
-    $self->operator("[", Operator->BINARY, 200, 70, \&vectorNud, \&subscriptLed);
+    $self->operator("[", Operator->BINARY, 200, 70, \&squareBracketNud, \&subscriptLed);
+    
+    $self->separator("}");
+    $self->prefix("{", 200, \&curlyBracketNud);
 }
 
 

@@ -36,15 +36,19 @@ use aliased 'Apache::math::math_parser::ParseException';
 use aliased 'Apache::math::math_parser::QMatrix';
 use aliased 'Apache::math::math_parser::Quantity';
 use aliased 'Apache::math::math_parser::QVector';
+use aliased 'Apache::math::math_parser::QInterval';
+use aliased 'Apache::math::math_parser::QSet';
 use aliased 'Apache::math::math_parser::Units';
 
-use enum qw(UNKNOWN NAME NUMBER OPERATOR FUNCTION VECTOR SUBSCRIPT);
+use enum qw(UNKNOWN NAME NUMBER OPERATOR FUNCTION VECTOR INTERVAL SET SUBSCRIPT);
+use enum qw(NOT_AN_INTERVAL OPEN_OPEN OPEN_CLOSED CLOSED_OPEN CLOSED_CLOSED);
 
 ##
-# @param {integer} type - UNKNOWN | NAME | NUMBER | OPERATOR | FUNCTION | VECTOR
+# @param {integer} type - UNKNOWN | NAME | NUMBER | OPERATOR | FUNCTION | VECTOR | INTERVAL | SET | SUBSCRIPT
 # @param {Operator} op - The operator
 # @param {string} value - Node value as a string, undef for type VECTOR
-# @param {ENode[]} children - The children nodes, only for types OPERATOR, FUNCTION, VECTOR, SUBSCRIPT
+# @param {ENode[]} children - The children nodes, only for types OPERATOR, FUNCTION, VECTOR, INTERVAL, SET, SUBSCRIPT
+# @param {interval_type} - The interval type, QInterval->NOT_AN_INTERVAL | OPEN_OPEN | OPEN_CLOSED | CLOSED_OPEN | CLOSED_CLOSED
 ##
 sub new {
     my $class = shift;
@@ -53,6 +57,7 @@ sub new {
         _op => shift,
         _value => shift,
         _children => shift,
+        _interval_type => shift // NOT_AN_INTERVAL,
     };
     bless $self, $class;
     return $self;
@@ -76,6 +81,10 @@ sub children {
     my $self = shift;
     return $self->{_children};
 }
+sub interval_type {
+    my $self = shift;
+    return $self->{_interval_type};
+}
 
 ##
 # Returns the node as a string, for debug
@@ -91,6 +100,8 @@ sub toString {
         when (OPERATOR) { $s .= "OPERATOR"; }
         when (FUNCTION) { $s .= "FUNCTION"; }
         when (VECTOR) { $s .= "VECTOR"; }
+        when (INTERVAL) { $s .= "INTERVAL"; }
+        when (SET) { $s .= "SET"; }
         when (SUBSCRIPT) { $s .= "SUBSCRIPT"; }
     }
     if (defined $self->op) {
@@ -108,6 +119,9 @@ sub toString {
             }
         }
         $s .= ']';
+    }
+    if (defined $self->interval_type) {
+        $s .= " " . $self->interval_type;
     }
     $s.= ')';
     return $s;
@@ -272,6 +286,29 @@ sub calc {
         when (VECTOR) {
             return $self->createVectorOrMatrix($env);
         }
+        when (INTERVAL) {
+            my @children = @{$self->children};
+            if (scalar(@children) != 2) {
+                die CalcException->new("Interval should have 2 parameters.");
+            }
+            my $qmin = $children[0]->calc($env);
+            my $qmax = $children[1]->calc($env);
+            my ($qminopen, $qmaxopen);
+            given ($self->interval_type) {
+                when (OPEN_OPEN) { $qminopen = 1; $qmaxopen = 1; }
+                when (OPEN_CLOSED) { $qminopen = 1; $qmaxopen = 0; }
+                when (CLOSED_OPEN) { $qminopen = 0; $qmaxopen = 1; }
+                when (CLOSED_CLOSED) { $qminopen = 0; $qmaxopen = 0; }
+            }
+            return QInterval->new($qmin, $qmax, $qminopen, $qmaxopen);
+        }
+        when (SET) {
+            my @t = ();
+            foreach my $child (@{$self->children}) {
+                push(@t, $child->calc($env));
+            }
+            return QSet->new(\@t);
+        }
         when (SUBSCRIPT) {
             die CalcException->new("Subscript cannot be evaluated: [_1]", $self->value);
         }
@@ -381,6 +418,21 @@ sub toMaxima {
             } else {
                 $s .= "]";
             }
+            return($s);
+        }
+        when (INTERVAL) {
+            die CalcException->new("Maxima syntax: intervals are not implemented");
+        }
+        when (SET) {
+            my @children = @{$self->children};
+            my $s = "{";
+            for (my $i=0; $i<scalar(@children); $i++) {
+                if ($i != 0) {
+                    $s .= ", ";
+                }
+                $s .= $children[$i]->toMaxima();
+            }
+            $s .= "}";
             return($s);
         }
         when (SUBSCRIPT) {
@@ -665,6 +717,47 @@ sub toTeX {
                 }
             }
             $s .= "\\end{pmatrix}";
+            return($s);
+        }
+        when (INTERVAL) {
+            my @children = @{$self->children};
+            if (scalar(@children) != 2) {
+                die CalcException->new("Interval should have 2 parameters.");
+            }
+            my ($qminopen, $qmaxopen);
+            given ($self->interval_type) {
+                when (OPEN_OPEN) { $qminopen = 1; $qmaxopen = 1; }
+                when (OPEN_CLOSED) { $qminopen = 1; $qmaxopen = 0; }
+                when (CLOSED_OPEN) { $qminopen = 0; $qmaxopen = 1; }
+                when (CLOSED_CLOSED) { $qminopen = 0; $qmaxopen = 0; }
+            }
+            my $s = "\\left";
+            if ($qminopen) {
+                $s .= "(";
+            } else {
+                $s .= "[";
+            }
+            $s .= $children[0]->toTeX();
+            $s .= ", ";
+            $s .= $children[1]->toTeX();
+            $s .= "\\right";
+            if ($qmaxopen) {
+                $s .= ")";
+            } else {
+                $s .= "]";
+            }
+            return($s);
+        }
+        when (SET) {
+            my @children = @{$self->children};
+            my $s = "\\left\\{ {";
+            for (my $i=0; $i<scalar(@children); $i++) {
+                if ($i != 0) {
+                    $s .= ", ";
+                }
+                $s .= $children[$i]->toTeX();
+            }
+            $s .= "}\\right\\}";
             return($s);
         }
         when (SUBSCRIPT) {
