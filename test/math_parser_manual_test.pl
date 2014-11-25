@@ -18,20 +18,20 @@ use aliased 'Apache::math::math_parser::CalcEnv';
 
 
 Apache::lc_ui_localize::set_language('en');
+$| = 1;
 my $implicit_operators = 1;
 my $unit_mode = 1;
 print "Expression: ";
 $_ = <STDIN>;
 chomp;
 my $eqtxt = $_;
+my ($p, $root, $env);
 try {
-    my $p = Parser->new($implicit_operators, $unit_mode);
-    my $root = $p->parse($eqtxt);
-    print "Parsing: ".$root->toString()."\n\n";
-    my $env = CalcEnv->new($unit_mode);
-    print "TeX syntax: ".$root->toTeX()."\n";
-    print "Maxima syntax: ".$root->toMaxima()."\n";
-    print "Value: ".$root->calc($env)->toString()."\n";
+    $p = Parser->new($implicit_operators, $unit_mode);
+    $root = $p->parse($eqtxt);
+    print "\nParsing: ";
+    print $root->toString()."\n";
+    $env = CalcEnv->new($unit_mode);
 } catch {
     if (UNIVERSAL::isa($_,CalcException)) {
         die "Calculation error: ".$_->getLocalizedMessage()."\n";
@@ -40,4 +40,43 @@ try {
     } else {
         die "Internal error: $_\n";
     }
-}
+};
+
+try {
+    print "\nTeX syntax: ";
+    print $root->toTeX()."\n";
+} catch {
+    if (UNIVERSAL::isa($_,CalcException)) {
+        print STDERR "Calculation error: ".$_->getLocalizedMessage()."\n";
+    } elsif (UNIVERSAL::isa($_,ParseException)) {
+        print STDERR "Parsing error: ".$_->getLocalizedMessage()."\n";
+    } else {
+        print STDERR "Internal error: $_\n";
+    }
+};
+
+try {
+    print "\nMaxima syntax: ";
+    print $root->toMaxima()."\n";
+} catch {
+    if (UNIVERSAL::isa($_,CalcException)) {
+        print STDERR "Calculation error: ".$_->getLocalizedMessage()."\n";
+    } elsif (UNIVERSAL::isa($_,ParseException)) {
+        print STDERR "Parsing error: ".$_->getLocalizedMessage()."\n";
+    } else {
+        print STDERR "Internal error: $_\n";
+    }
+};
+
+try {
+    print "\nValue: ";
+    print $root->calc($env)->toString()."\n";
+} catch {
+    if (UNIVERSAL::isa($_,CalcException)) {
+        print STDERR "Calculation error: ".$_->getLocalizedMessage()."\n";
+    } elsif (UNIVERSAL::isa($_,ParseException)) {
+        print STDERR "Parsing error: ".$_->getLocalizedMessage()."\n";
+    } else {
+        print STDERR "Internal error: $_\n";
+    }
+};
