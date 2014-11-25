@@ -58,7 +58,7 @@ sub new {
     };
     if ("".$self->{_value} eq "i") {
         $self->{_value} = i;
-    } elsif ($self->{_value} eq "inf") {
+    } elsif ("".$self->{_value} eq "inf") {
         $self->{_value} = 9**9**9;
     }
     if (!defined $self->{_units}) {
