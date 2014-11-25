@@ -119,10 +119,10 @@ sub equals {
     if (!$self->qmax->equals($int->qmax)) {
         return 0;
     }
-    if (!$self->qminopen->equals($int->qminopen)) {
+    if (!$self->qminopen == $int->qminopen) {
         return 0;
     }
-    if (!$self->qmaxopen->equals($int->qmaxopen)) {
+    if (!$self->qmaxopen == $int->qmaxopen) {
         return 0;
     }
     return 1;
@@ -151,10 +151,10 @@ sub compare {
             }
         }
     }
-    if (!$self->qminopen->equals($int->qminopen)) {
+    if ($self->qminopen != $int->qminopen) {
         return Quantity->WRONG_ENDPOINT;
     }
-    if (!$self->qmaxopen->equals($int->qmaxopen)) {
+    if ($self->qmaxopen != $int->qmaxopen) {
         return Quantity->WRONG_ENDPOINT;
     }
     return Quantity->IDENTICAL;

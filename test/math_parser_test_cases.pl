@@ -55,6 +55,8 @@ my %unit_mode_cases = (
     "2 pi hbar c" => "2 pi (1.956E9 J) * (1.616199E-35 m)",
     "2%c" => "2*c/100",
     "[1m;2m]+[3m;4m]" => "[4m;6m]",
+    "[1m:2m]+[2m:4m]" => "[1m:4m]",
+    "{1m;2m;3m}+{2m;3m;4m}" => "{4m;3m;2m;1m}",
 );
 
 my %symbolic_mode_cases = (
@@ -87,6 +89,8 @@ my %symbolic_mode_cases = (
     "binomial(5;3)" => "10",
     "13 + 1 + 20 + 8" => "x",
     "1/(1/2-1/3-1/7)" => "x",
+    "[x:2x]+(2x:4x]" => "[x:4x]",
+    "{1;2;3}+{2;3;4}" => "{4;3;2;1}",
 );
 
 my @compare_test_cases = (
@@ -111,6 +115,10 @@ my @compare_test_cases = (
     ['[1m;2m]', '[1s;3s]', Quantity->WRONG_UNITS],
     ['1m', '2m', Quantity->WRONG_VALUE],
     ['[1;2]', '[1;3]', Quantity->WRONG_VALUE],
+    ['[1:2]', '[1:3]', Quantity->WRONG_VALUE],
+    ['[1:2]', '[1:2)', Quantity->WRONG_ENDPOINT],
+    ['{1m;2m;3m}', '{2s;3s;1s}', Quantity->WRONG_UNITS],
+    ['{1;2;3}', '{1;2;4}', Quantity->WRONG_VALUE],
 );
 
 sub test {

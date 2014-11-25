@@ -91,15 +91,22 @@ sub toString {
 # @returns {boolean}
 ##
 sub equals {
-    my ( $self, $v, $tolerance ) = @_;
-    if (!$v->isa(QSet)) {
+    my ( $self, $set, $tolerance ) = @_;
+    if (!$set->isa(QSet)) {
         return 0;
     }
-    if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
+    if (scalar(@{$self->quantities}) != scalar(@{$set->quantities})) {
         return 0;
     }
-    for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
-        if (!$self->quantities->[$i]->equals($v->quantities->[$i], $tolerance)) {
+    foreach my $q1 (@{$self->quantities}) {
+        my $found = 0;
+        foreach my $q2 (@{$set->quantities}) {
+            if ($q1->equals($q2, $tolerance)) {
+                $found = 1;
+                last;
+            }
+        }
+        if (!$found) {
             return 0;
         }
     }
@@ -113,24 +120,27 @@ sub equals {
 # @returns {int}
 ##
 sub compare {
-    my ( $self, $v, $tolerance ) = @_;
-    if (!$v->isa(QSet)) {
+    my ( $self, $set, $tolerance ) = @_;
+    if (!$set->isa(QSet)) {
         return Quantity->WRONG_TYPE;
     }
-    if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
+    if (scalar(@{$self->quantities}) != scalar(@{$set->quantities})) {
         return Quantity->WRONG_DIMENSIONS;
     }
     my @codes = ();
-    for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
-        push(@codes, $self->quantities->[$i]->compare($v->quantities->[$i], $tolerance));
-    }
-    my @test_order = (Quantity->WRONG_TYPE, Quantity->WRONG_DIMENSIONS, Quantity->MISSING_UNITS, Quantity->ADDED_UNITS,
-        Quantity->WRONG_UNITS, Quantity->WRONG_VALUE);
-    foreach my $test (@test_order) {
-        foreach my $code (@codes) {
-            if ($code == $test) {
-                return $test;
+    foreach my $q1 (@{$self->quantities}) {
+        my $best_code = Quantity->WRONG_TYPE;
+        foreach my $q2 (@{$set->quantities}) {
+            my $code = $q1->compare($q2, $tolerance);
+            if ($code == Quantity->IDENTICAL) {
+                $best_code = $code;
+                last;
+            } elsif ($code > $best_code) {
+                $best_code = $code;
             }
+        }
+        if ($best_code != Quantity->IDENTICAL) {
+            return $best_code;
         }
     }
     return Quantity->IDENTICAL;
