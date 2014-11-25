@@ -26,9 +26,8 @@ use strict;
 use warnings;
 use utf8;
 
-use Apache::lc_ui_localize;
-
 use aliased 'Apache::math::math_parser::Definitions';
+use aliased 'Apache::math::math_parser::ParseException';
 use aliased 'Apache::math::math_parser::Token';
 
 ##

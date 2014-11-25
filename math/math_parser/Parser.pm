@@ -28,8 +28,6 @@ use utf8;
 
 use File::Util;
 
-use Apache::lc_ui_localize;
-
 use aliased 'Apache::math::math_parser::Definitions';
 use aliased 'Apache::math::math_parser::ENode';
 use aliased 'Apache::math::math_parser::Operator';

@@ -28,8 +28,6 @@ use utf8;
 
 use feature "switch"; # Perl 5.10.1
 
-use Apache::lc_ui_localize;
-
 use aliased 'Apache::math::math_parser::CalcException';
 use aliased 'Apache::math::math_parser::Operator';
 use aliased 'Apache::math::math_parser::ParseException';

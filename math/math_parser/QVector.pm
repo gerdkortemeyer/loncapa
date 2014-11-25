@@ -26,8 +26,6 @@ use strict;
 use warnings;
 use utf8;
 
-use Apache::lc_ui_localize;
-
 use aliased 'Apache::math::math_parser::CalcException';
 use aliased 'Apache::math::math_parser::Quantity';
 use aliased 'Apache::math::math_parser::QVector';
