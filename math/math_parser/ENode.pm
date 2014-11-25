@@ -138,6 +138,9 @@ sub calc {
             die CalcException->new("Unknown node type: [_1]", $self->value);
         }
         when (NAME) {
+            if ($self->value eq 'inf') {
+                return Quantity->new(9**9**9);
+            }
             if ($env->unit_mode) {
                 return $env->convertToSI($self->value);
             } else {
@@ -278,6 +281,23 @@ sub calc {
                     my $p = $children[2]->calc($env);
                     return $n->qfact() / ($p->qfact() * ($n - $p)->qfact());
                 }
+                when (["union","intersection"]) {
+                    if (!defined $children[2]) {
+                        die CalcException->new("Missing parameter for function [_1]", $fname);
+                    }
+                    if ($children[1]->type != SET || $children[2]->type != SET) {
+                        if ($children[1]->type != INTERVAL || $children[2]->type != INTERVAL) {
+                            die CalcException->new("Wrong type for function [_1] (arguments should be sets or intervals)", $fname);
+                        }
+                    }
+                    my $p1 = $children[1]->calc($env);
+                    my $p2 = $children[2]->calc($env);
+                    if ($fname eq "union") {
+                        return $p1->union($p2);
+                    } else {
+                        return $p1->intersection($p2);
+                    }
+                }
                 default {            die CalcException->new("Unknown function: [_1]",$fname); }
             }
         }
@@ -340,7 +360,11 @@ sub toMaxima {
             my @children = @{$self->children};
             given ($self->value) {
                 when ("+") {
-                    return("(".$children[0]->toMaxima()."+".$children[1]->toMaxima().")");
+                    if ($children[0]->type == SET && $children[1]->type == SET) {
+                        return("union(".$children[0]->toMaxima().", ".$children[1]->toMaxima().")");
+                    } else {
+                        return("(".$children[0]->toMaxima()."+".$children[1]->toMaxima().")");
+                    }
                 }
                 when ("-") {
                     if (!defined $children[1]) {
@@ -420,6 +444,8 @@ sub toMaxima {
         }
         when (INTERVAL) {
             die CalcException->new("Maxima syntax: intervals are not implemented");
+            # see http://ieeexplore.ieee.org/xpls/icp.jsp?arnumber=5959544
+            # "New Package in Maxima for Single-Valued Interval Computation on Real Numbers"
         }
         when (SET) {
             my @children = @{$self->children};
@@ -551,7 +577,7 @@ sub toTeX {
                     return $s;
                 }
                 when ("/") {
-                    return("cfrac{".$c0->toTeX()."}{".$c1->toTeX()."}");
+                    return("\\cfrac{".$c0->toTeX()."}{".$c1->toTeX()."}");
                 }
                 when ("^") {
                     my $par;

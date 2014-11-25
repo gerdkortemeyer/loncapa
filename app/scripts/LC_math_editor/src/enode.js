@@ -505,6 +505,34 @@ ENode.prototype.toMathML = function(context) {
                 mrow.appendChild(mtable);
                 mrow.appendChild(this.mo(")"));
                 el = mrow;
+            } else if (c0.value == "union" && this.children.length == 3) {
+                for (i=1; i<this.children.length; i++) {
+                    // check that all children are intervals or sets
+                    if (this.children[i].type !== ENode.INTERVAL && this.children[i].type !== ENode.SET) {
+                        el = document.createElement('mtext');
+                        el.appendChild(document.createTextNode("???"));
+                        return(el);
+                    }
+                }
+                mrow = document.createElement('mrow');
+                mrow.appendChild(c1.toMathML(context));
+                mrow.appendChild(this.mo("\u222A"));
+                mrow.appendChild(c2.toMathML(context));
+                el = mrow;
+            } else if (c0.value == "intersection" && this.children.length == 3) {
+                for (i=1; i<this.children.length; i++) {
+                    // check that all children are intervals or sets
+                    if (this.children[i].type !== ENode.INTERVAL && this.children[i].type !== ENode.SET) {
+                        el = document.createElement('mtext');
+                        el.appendChild(document.createTextNode("???"));
+                        return(el);
+                    }
+                }
+                mrow = document.createElement('mrow');
+                mrow.appendChild(c1.toMathML(context));
+                mrow.appendChild(this.mo("\u2229"));
+                mrow.appendChild(c2.toMathML(context));
+                el = mrow;
             } else {
                 // default display for a function
                 mrow = document.createElement('mrow');
