@@ -138,8 +138,10 @@ sub calc {
             die CalcException->new("Unknown node type: [_1]", $self->value);
         }
         when (NAME) {
-            if ($self->value eq 'inf') {
+            if ($self->value =~ /^inf$/i) {
                 return Quantity->new(9**9**9);
+            } elsif ($self->value =~ /^nan$/i) {
+                return Quantity->new(-sin(9**9**9));
             }
             if ($env->unit_mode) {
                 return $env->convertToSI($self->value);
@@ -189,6 +191,38 @@ sub calc {
                 }
                 when ("`") {
                     return($children[0]->calc($env) * $children[1]->calc($env));
+                }
+                when ("<") {
+                    my $q1 = $children[0]->calc($env);
+                    my $q2 = $children[1]->calc($env);
+                    if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
+                        die CalcException->new("Operator < : one of the arguments is not a Quantity");
+                    }
+                    return($q1 < $q2);
+                }
+                when ("<=") {
+                    my $q1 = $children[0]->calc($env);
+                    my $q2 = $children[1]->calc($env);
+                    if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
+                        die CalcException->new("Operator <= : one of the arguments is not a Quantity");
+                    }
+                    return($q1 <= $q2);
+                }
+                when (">") {
+                    my $q1 = $children[0]->calc($env);
+                    my $q2 = $children[1]->calc($env);
+                    if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
+                        die CalcException->new("Operator > : one of the arguments is not a Quantity");
+                    }
+                    return($q1 > $q2);
+                }
+                when (">=") {
+                    my $q1 = $children[0]->calc($env);
+                    my $q2 = $children[1]->calc($env);
+                    if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
+                        die CalcException->new("Operator >= : one of the arguments is not a Quantity");
+                    }
+                    return($q1 >= $q2);
                 }
                 default {
                     die CalcException->new("Unknown operator: [_1]", $self->value);
@@ -394,6 +428,18 @@ sub toMaxima {
                 }
                 when ("`") {
                     return("(".$children[0]->toMaxima()."`".$children[1]->toMaxima().")");
+                }
+                when ("<") {
+                    return("(".$children[0]->toMaxima()."<".$children[1]->toMaxima().")");
+                }
+                when (">") {
+                    return("(".$children[0]->toMaxima().">".$children[1]->toMaxima().")");
+                }
+                when ("<=") {
+                    return("(".$children[0]->toMaxima()."<=".$children[1]->toMaxima().")");
+                }
+                when (">=") {
+                    return("(".$children[0]->toMaxima().">=".$children[1]->toMaxima().")");
                 }
                 default {
                     die CalcException->new("Unknown operator: [_1]", $self->value);

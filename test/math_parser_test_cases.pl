@@ -57,6 +57,7 @@ my %unit_mode_cases = (
     "[1m;2m]+[3m;4m]" => "[4m;6m]",
     "[1m:2m]+[2m:4m]" => "[1m:4m]",
     "{1m;2m;3m}+{2m;3m;4m}" => "{4m;3m;2m;1m}",
+    "1m < 2m" => "1",
 );
 
 my %symbolic_mode_cases = (
@@ -94,6 +95,7 @@ my %symbolic_mode_cases = (
     "[x:2x]+(2x:4x]" => "[x:4x]",
     "{1;2;3}+{2;3;4}" => "{4;3;2;1}",
     "intersection({1;2;3};{2;3;4})" => "{3;2}",
+    "2 >= 2" => "1",
 );
 
 my @compare_test_cases = (

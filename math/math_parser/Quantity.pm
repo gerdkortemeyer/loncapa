@@ -26,8 +26,8 @@ use strict;
 use warnings;
 use utf8;
 
-use Math::Complex;
 use POSIX;
+use Math::Complex; # must be after POSIX for redefinition of log10
 
 use aliased 'Apache::math::math_parser::CalcException';
 use aliased 'Apache::math::math_parser::Quantity';
@@ -39,7 +39,11 @@ use overload
     '-' => \&qsub,
     '*' => \&qmult,
     '/' => \&qdiv,
-    '^' => \&qpow;
+    '^' => \&qpow,
+    '<' => \&qlt,
+    '<=' => \&qle,
+    '>' => \&qgt,
+    '>=' => \&qge;
 
 # compare() return codes:
 use enum qw(IDENTICAL WRONG_TYPE WRONG_DIMENSIONS MISSING_UNITS ADDED_UNITS WRONG_UNITS WRONG_VALUE WRONG_ENDPOINT);
@@ -205,6 +209,78 @@ sub compare {
 }
 
 ##
+# Less than
+# @param {Quantity}
+# @returns {boolean}
+##
+sub lt {
+    my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die CalcException->new("Quantity lt: second member is not a Quantity.");
+    }
+    $self->unitsMatch($q, 'lt');
+    if ($self->value < $q->value) {
+        return(1);
+    } else {
+        return(0);
+    }
+}
+
+##
+# Less than or equal
+# @param {Quantity}
+# @returns {boolean}
+##
+sub le {
+    my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die CalcException->new("Quantity le: second member is not a Quantity.");
+    }
+    $self->unitsMatch($q, 'le');
+    if ($self->value <= $q->value) {
+        return(1);
+    } else {
+        return(0);
+    }
+}
+
+##
+# Greater than
+# @param {Quantity}
+# @returns {boolean}
+##
+sub gt {
+    my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die CalcException->new("Quantity gt: second member is not a Quantity.");
+    }
+    $self->unitsMatch($q, 'gt');
+    if ($self->value > $q->value) {
+        return(1);
+    } else {
+        return(0);
+    }
+}
+
+##
+# Greater than or equal
+# @param {Quantity}
+# @returns {boolean}
+##
+sub ge {
+    my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die CalcException->new("Quantity ge: second member is not a Quantity.");
+    }
+    $self->unitsMatch($q, 'ge');
+    if ($self->value >= $q->value) {
+        return(1);
+    } else {
+        return(0);
+    }
+}
+
+##
 # Clone this object
 ##
 sub clone {
@@ -224,12 +300,7 @@ sub qadd {
         die CalcException->new("Quantity addition: second member is not a Quantity.");
     }
     my $v = $self->value + $q->value;
-    my %units = %{$self->units};
-    foreach my $unit (keys %units) {
-        if ($units{$unit} != $q->units->{$unit}) {
-            die CalcException->new("addition: units don't match");
-        }
-    }
+    $self->unitsMatch($q, 'addition');
     return Quantity->new($v, $self->units);
 }
 
@@ -244,12 +315,7 @@ sub qsub {
         die CalcException->new("Quantity substraction: second member is not a Quantity.");
     }
     my $v = $self->value - $q->value;
-    my %units = %{$self->units};
-    foreach my $unit (keys %units) {
-        if ($units{$unit} != $q->units->{$unit}) {
-            die CalcException->new("substraction: units don't match");
-        }
-    }
+    $self->unitsMatch($q, 'substraction');
     return Quantity->new($v, $self->units);
 }
 
@@ -291,6 +357,7 @@ sub qmult {
 
 ##
 # Division
+# @param {Quantity}
 # @returns {Quantity}
 ##
 sub qdiv {
@@ -381,8 +448,12 @@ sub qexp {
 sub qln {
     my ( $self ) = @_;
     $self->noUnits("ln");
-    if ($self->value < 0) {
-        die CalcException->new("Ln of number < 0");
+    # this will return a complex if the value is < 0
+    #if ($self->value < 0) {
+    #    die CalcException->new("Ln of number < 0");
+    #}
+    if ($self->value == 0) {
+        die CalcException->new("log(0)");
     }
     return Quantity->new(log($self->value), $self->units);
 }
@@ -394,8 +465,12 @@ sub qln {
 sub qlog10 {
     my ( $self ) = @_;
     $self->noUnits("log10");
-    if ($self->value < 0) {
-        die CalcException->new("Log10 of number < 0");
+    # this will return a complex if the value is < 0
+    #if ($self->value < 0) {
+    #    die CalcException->new("Log10 of number < 0");
+    #}
+    if ($self->value == 0) {
+        die CalcException->new("log10(0)");
     }
     return Quantity->new(log10($self->value), $self->units);
 }
@@ -578,6 +653,63 @@ sub qatanh {
     my ( $self ) = @_;
     $self->noUnits("atanh");
     return Quantity->new(atanh($self->value), $self->units);
+}
+
+##
+# Less than
+# @param {Quantity}
+# @returns {Quantity}
+##
+sub qlt {
+    my ( $self, $q ) = @_;
+    my $v = $self->lt($q);
+    return Quantity->new($v);
+}
+
+##
+# Less than or equal
+# @param {Quantity}
+# @returns {Quantity}
+##
+sub qle {
+    my ( $self, $q ) = @_;
+    my $v = $self->le($q);
+    return Quantity->new($v);
+}
+
+##
+# Greater than
+# @param {Quantity}
+# @returns {Quantity}
+##
+sub qgt {
+    my ( $self, $q ) = @_;
+    my $v = $self->gt($q);
+    return Quantity->new($v);
+}
+
+##
+# Greater than or equal
+# @param {Quantity}
+# @returns {Quantity}
+##
+sub qge {
+    my ( $self, $q ) = @_;
+    my $v = $self->ge($q);
+    return Quantity->new($v);
+}
+
+##
+# Dies if units do not match.
+##
+sub unitsMatch {
+    my ( $self, $q, $fct_name ) = @_;
+    my %units = %{$self->units};
+    foreach my $unit (keys %units) {
+        if ($units{$unit} != $q->units->{$unit}) {
+            die CalcException->new("[_1]: units do not match", $fct_name);
+        }
+    }
 }
 
 ##
