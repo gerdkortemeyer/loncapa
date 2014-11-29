@@ -41,6 +41,10 @@ our @EXPORT = qw(start_numericalresponse_html  end_numericalresponse_html
                  start_numericalresponse_grade end_numericalresponse_grade 
                  start_numericalhintcondition_html end_numericalhintcondition_html);
 
+#
+# Just start the numerical response environment.
+# Everything happens at the end tag
+#
 sub start_numericalresponse_html {
    my ($p,$safe,$stack,$token)=@_;
    &Apache::lc_asset_xml::init_response($stack);
@@ -51,6 +55,10 @@ sub start_numericalresponse_grade {
    return &start_numericalresponse_html(@_);
 }
 
+
+#
+# Output
+#
 sub end_numericalresponse_html {
    my ($p,$safe,$stack,$token)=@_;
 #FIXME: do stuff
@@ -60,26 +68,37 @@ sub end_numericalresponse_html {
           '<pre>'.Dumper($answers).'</pre>';
 }
 
+#
+# This evaluates the computer answer
+# If an array is passed, it is turned into a string for sets or vectors
+# If a string is passed, it is returned
+# Units are attached to the end
+#
 sub evaluate_answer {
-   my ($stack)=@_;
+   my ($stack,$special)=@_;
    my $answer=&Apache::lc_asset_xml::open_tag_attribute('answer',$stack);
    my $expected='';
    my $expected='';
    if (ref($answer) eq 'ARRAY') {
-# We have an array or a matrix
-      $expected='[';
-      if (ref($answer->[0]) eq 'ARRAY') {
-         $expected.='[';
-         my @rows=();
-         foreach my $row (@{$answer}) {
-            push(@rows,join(';',@{$row}));
-         }
-         $expected.=join('];[',@rows);
-         $expected.=']';
+      if ($special eq 'sets') {
+# The array contains elements of a set
+         $expected='{'.join(';',@{$answer}).'}';
       } else {
-         $expected.=join(';',@{$answer});
+# We have an array or a matrix
+         $expected='[';
+         if (ref($answer->[0]) eq 'ARRAY') {
+            $expected.='[';
+            my @rows=();
+            foreach my $row (@{$answer}) {
+               push(@rows,join(';',@{$row}));
+            }
+            $expected.=join('];[',@rows);
+            $expected.=']';
+         } else {
+            $expected.=join(';',@{$answer});
+         }
+         $expected.=']';
       }
-      $expected.=']';
    } else {
       $expected=$answer;
    }
@@ -91,27 +110,42 @@ sub evaluate_answer {
    }
 }
 
+#
+# This collects the learner responses
+# If there is only one answer field, it is returned
+# If there are multiple answer fields, they are concatinated into
+# a string for sets or vectors
+#
 sub evaluate_responses {
-   my ($stack)=@_;
+   my ($stack,$special)=@_;
    my $responses=&Apache::lc_asset_xml::collect_responses($stack);
    if ($#{$responses}>0) {
-      return '['.join(';',@{$responses}).']';
+# There was more than one answer field
+      if ($special eq 'sets') {
+# Must be elements in a set
+         return '{'.join(';',@{$responses}).'}';
+      } else {
+# Just a normal array 
+         return '['.join(';',@{$responses}).']';
+      }
    } else {
       return $responses->[0];
    }
 }
 
-
+#
+# This is where the grading is happening
+#
 sub end_numericalresponse_grade {
    my ($p,$safe,$stack,$token)=@_;
-# Get student-entered answer
-   my $responses=&evaluate_responses($stack);
 # Get tolerance parameter
    my $tolerance=&Apache::lc_asset_xml::cascade_parameter('tol',$stack);
-# Get the correct answer and unit
-   my $expected=&evaluate_answer($stack);
 # Special mode?
    my $mode=&Apache::lc_asset_xml::open_tag_attribute('mode',$stack);
+# Get the correct answer and unit
+   my $expected=&evaluate_answer($stack,$mode);
+# Get student-entered answer
+   my $responses=&evaluate_responses($stack,$mode);
 # Initialize parser
    my $implicit_operators = 1;
    my $unit_mode = 1;
