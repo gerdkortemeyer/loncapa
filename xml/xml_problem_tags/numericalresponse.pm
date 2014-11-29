@@ -69,12 +69,14 @@ sub end_numericalresponse_html {
 sub evaluate_answer {
    my ($stack,$special)=@_;
    my $answer=&Apache::lc_asset_xml::open_tag_attribute('answer',$stack);
+   my $unit=&Apache::lc_asset_xml::open_tag_attribute('unit',$stack);
+   unless ($unit) { $unit=''; }
    my $expected='';
    my $expected='';
    if (ref($answer) eq 'ARRAY') {
       if ($special eq 'sets') {
 # The array contains elements of a set
-         $expected='{'.join(';',@{$answer}).'}';
+         $expected='{'.join(';',map{$_.' '.$unit}@{$answer}).'}';
       } elsif ($#{$answer}>0) {
 # We have an array or a matrix with more than one element
          $expected='[';
@@ -89,20 +91,14 @@ sub evaluate_answer {
          } else {
             $expected.=join(';',@{$answer});
          }
-         $expected.=']';
+         $expected.='] '.$unit;
       } else {
 # We have an array, but it has only one element
-         $expected=$answer->[0];
+         $expected=$answer->[0].' '.$unit;
       }
    } else {
 # We have a string as answer
-      $expected=$answer;
-   }
-   my $unit=&Apache::lc_asset_xml::open_tag_attribute('unit',$stack);
-   if ($unit) {
-      return $expected.' '.$unit;
-   } else {
-      return $expected;
+      $expected=$answer.' '.$unit;
    }
 }
 
