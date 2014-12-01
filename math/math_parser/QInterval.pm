@@ -224,23 +224,23 @@ sub union {
         return QInterval->new($self->qmin, $self->qmax, $self->qminopen, $self->qmaxopen);
     }
     my ($qmin, $qminopen);
-    if ($self->qmin->value < $int->qmin->value) {
+    if ($self->qmin->value == $int->qmin->value) {
+        $qmin = $int->qmin->clone();
+        $qminopen = $self->qminopen && $int->qminopen;
+    } elsif ($self->qmin->value < $int->qmin->value) {
         $qmin = $self->qmin->clone();
         $qminopen = $self->qminopen;
-    } elsif ($self->qmin->value == $int->qmin->value) {
-        $qmin = $int->qmin->clone();
-        $qminopen = !$self->qminopen && !$int->qminopen;
     } else {
         $qmin = $int->qmin->clone();
         $qminopen = $int->qminopen;
     }
     my ($qmax, $qmaxopen);
-    if ($self->qmax->value > $int->qmax->value) {
+    if ($self->qmax->value == $int->qmax->value) {
+        $qmax = $self->qmax->clone();
+        $qmaxopen = $self->qmaxopen && $int->qmaxopen;
+    } elsif ($self->qmax->value > $int->qmax->value) {
         $qmax = $self->qmax->clone();
         $qmaxopen = $self->qmaxopen;
-    } elsif ($self->qmax->value == $int->qmax->value) {
-        $qmax = $self->qmax->clone();
-        $qmaxopen = !$self->$qmaxopen && !$int->$qmaxopen;
     } else {
         $qmax = $int->qmax->clone();
         $qmaxopen = $int->qmaxopen;
