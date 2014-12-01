@@ -29,6 +29,7 @@ use utf8;
 use aliased 'Apache::math::math_parser::CalcException';
 use aliased 'Apache::math::math_parser::Quantity';
 use aliased 'Apache::math::math_parser::QInterval';
+use aliased 'Apache::math::math_parser::QIntervalUnion';
 
 use overload
     '""' => \&toString,
@@ -57,6 +58,9 @@ sub new {
             die CalcException->new("Interval creation: different units are used for the two endpoints.");
         }
     }
+    if ($self->qmin > $self->qmax) {
+        die CalcException->new("Interval creation: qmin > qmax");
+    }
     return $self;
 }
 
@@ -77,6 +81,18 @@ sub qminopen {
 sub qmaxopen {
     my $self = shift;
     return $self->{_qmaxopen};
+}
+
+##
+# Returns 1 if the interval is empty
+# @returns {boolean}
+##
+sub is_empty {
+    my ( $self ) = @_;
+    if ($self->qmin->value == $self->qmax->value && $self->qminopen && $self->qmaxopen) {
+        return(1);
+    }
+    return(0);
 }
 
 ##
@@ -112,6 +128,9 @@ sub equals {
     my ( $self, $int, $tolerance ) = @_;
     if (!$int->isa(QInterval)) {
         return 0;
+    }
+    if ($self->is_empty() && $int->is_empty()) {
+        return 1;
     }
     if (!$self->qmin->equals($int->qmin)) {
         return 0;
@@ -161,29 +180,40 @@ sub compare {
 }
 
 ##
+# Clone this object
+##
+sub clone {
+    my ( $self ) = @_;
+    return QInterval->new($self->qmin->clone(), $self->qmax->clone(), $self->qminopen, $self->qmaxopen);
+}
+
+##
 # Union
-# @param {QInterval}
-# @returns {QInterval}
+# @param {QInterval|QIntervalUnion}
+# @returns {QInterval|QIntervalUnion}
 ##
 sub union {
     my ( $self, $int ) = @_;
-    if (!$int->isa(QInterval)) {
-        die CalcException->new("Interval addition: second member is not an interval.");
+    if (!$int->isa(QInterval) && !$int->isa(QIntervalUnion)) {
+        die CalcException->new("Interval union: second member is not an interval or an interval union.");
+    }
+    if ($int->isa(QIntervalUnion)) {
+        return($int->union($self));
     }
     my %units = %{$self->qmin->units};
     foreach my $unit (keys %units) {
         if ($units{$unit} != $int->qmin->units->{$unit}) {
-            die CalcException->new("Interval addition: different units are used in the two intervals.");
+            die CalcException->new("Interval union: different units are used in the two intervals.");
         }
     }
     if ($self->qmax->value < $int->qmin->value || $self->qmin->value > $int->qmax->value) {
-        die CalcException->new("Interval addition: intervals do not meet");
+        return QIntervalUnion->new([$self, $int]);
     }
     if ($self->qmax->equals($int->qmin) && $self->qmaxopen && $int->qminopen) {
-        die CalcException->new("Interval addition: intervals do not meet");
+        return QIntervalUnion->new([$self, $int]);
     }
     if ($self->qmin->equals($int->qmax) && $self->qmaxopen && $int->qminopen) {
-        die CalcException->new("Interval addition: intervals do not meet");
+        return QIntervalUnion->new([$self, $int]);
     }
     if ($self->qmin->value == $self->qmax->value && $self->qminopen && $self->qmaxopen) {
         # $self is an empty interval
@@ -197,6 +227,9 @@ sub union {
     if ($self->qmin->value < $int->qmin->value) {
         $qmin = $self->qmin->clone();
         $qminopen = $self->qminopen;
+    } elsif ($self->qmin->value == $int->qmin->value) {
+        $qmin = $int->qmin->clone();
+        $qminopen = !$self->qminopen && !$int->qminopen;
     } else {
         $qmin = $int->qmin->clone();
         $qminopen = $int->qminopen;
@@ -205,6 +238,9 @@ sub union {
     if ($self->qmax->value > $int->qmax->value) {
         $qmax = $self->qmax->clone();
         $qmaxopen = $self->qmaxopen;
+    } elsif ($self->qmax->value == $int->qmax->value) {
+        $qmax = $self->qmax->clone();
+        $qmaxopen = !$self->$qmaxopen && !$int->$qmaxopen;
     } else {
         $qmax = $int->qmax->clone();
         $qmaxopen = $int->qmaxopen;
@@ -214,28 +250,31 @@ sub union {
 
 ##
 # Intersection
-# @param {QInterval}
+# @param {QInterval|QIntervalUnion}
 # @returns {QInterval}
 ##
 sub intersection {
     my ( $self, $int ) = @_;
-    if (!$int->isa(QInterval)) {
-        die CalcException->new("Interval intersection: second member is not an interval.");
+    if (!$int->isa(QInterval) && !$int->isa(QIntervalUnion)) {
+        die CalcException->new("Interval intersection: second member is not an interval or an interval union.");
+    }
+    if ($int->isa(QIntervalUnion)) {
+        return($int->intersection($self));
     }
     my %units = %{$self->qmin->units};
     foreach my $unit (keys %units) {
         if ($units{$unit} != $int->qmin->units->{$unit}) {
-            die CalcException->new("Interval addition: different units are used in the two intervals.");
+            die CalcException->new("Interval intersection: different units are used in the two intervals.");
         }
     }
     if ($self->qmax->value < $int->qmin->value || $self->qmin->value > $int->qmax->value) {
-        return QInterval->new($self->qmin, $self->qmin, 0, 0); # empty interval
+        return QInterval->new($self->qmin, $self->qmin, 1, 1); # empty interval
     }
     if ($self->qmax->equals($int->qmin) && $self->qmaxopen && $int->qminopen) {
-        return QInterval->new($self->qmax, $self->qmax, 0, 0); # empty interval
+        return QInterval->new($self->qmax, $self->qmax, 1, 1); # empty interval
     }
     if ($self->qmin->equals($int->qmax) && $self->qmaxopen && $int->qminopen) {
-        return QInterval->new($self->qmin, $self->qmin, 0, 0); # empty interval
+        return QInterval->new($self->qmin, $self->qmin, 1, 1); # empty interval
     }
     my ($qmin, $qminopen);
     if ($self->qmin->value == $int->qmin->value) {

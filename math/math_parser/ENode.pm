@@ -35,6 +35,7 @@ use aliased 'Apache::math::math_parser::QMatrix';
 use aliased 'Apache::math::math_parser::Quantity';
 use aliased 'Apache::math::math_parser::QVector';
 use aliased 'Apache::math::math_parser::QInterval';
+use aliased 'Apache::math::math_parser::QIntervalUnion';
 use aliased 'Apache::math::math_parser::QSet';
 use aliased 'Apache::math::math_parser::Units';
 
@@ -319,13 +320,11 @@ sub calc {
                     if (!defined $children[2]) {
                         die CalcException->new("Missing parameter for function [_1]", $fname);
                     }
-                    if ($children[1]->type != SET || $children[2]->type != SET) {
-                        if ($children[1]->type != INTERVAL || $children[2]->type != INTERVAL) {
-                            die CalcException->new("Wrong type for function [_1] (arguments should be sets or intervals)", $fname);
-                        }
-                    }
                     my $p1 = $children[1]->calc($env);
                     my $p2 = $children[2]->calc($env);
+                    if (!$p1->isa(QSet) && !$p1->isa(QInterval) && !$p1->isa(QIntervalUnion)) {
+                        die CalcException->new("Wrong type for function [_1] (should be a set or interval)", $fname);
+                    }
                     if ($fname eq "union") {
                         return $p1->union($p2);
                     } else {

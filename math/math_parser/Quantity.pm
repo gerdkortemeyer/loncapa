@@ -209,6 +209,21 @@ sub compare {
 }
 
 ##
+# Not equal
+# @param {Quantity}
+# @optional {string|float} tolerance
+# @returns {boolean}
+##
+sub ne {
+    my ( $self, $q, $tolerance ) = @_;
+    if ($self->equals($q, $tolerance)) {
+        return(0);
+    } else {
+        return(1);
+    }
+}
+
+##
 # Less than
 # @param {Quantity}
 # @returns {boolean}
