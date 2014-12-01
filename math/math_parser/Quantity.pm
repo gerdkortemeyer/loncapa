@@ -43,7 +43,8 @@ use overload
     '<' => \&qlt,
     '<=' => \&qle,
     '>' => \&qgt,
-    '>=' => \&qge;
+    '>=' => \&qge,
+    '<=>' => \&perl_compare;
 
 # compare() return codes:
 use enum qw(IDENTICAL WRONG_TYPE WRONG_DIMENSIONS MISSING_UNITS ADDED_UNITS WRONG_UNITS WRONG_VALUE WRONG_ENDPOINT);
@@ -206,6 +207,21 @@ sub compare {
         }
     }
     return IDENTICAL;
+}
+
+##
+# <=> operator.
+# Compare this quantity with another one, and returns -1, 0 or 1.
+# @param {Quantity}
+# @returns {int}
+##
+sub perl_compare {
+    my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die CalcException->new("Quantity perl_compare: second member is not a Quantity.");
+    }
+    $self->unitsMatch($q, 'perl_compare');
+    return($self->value <=> $q->value);
 }
 
 ##

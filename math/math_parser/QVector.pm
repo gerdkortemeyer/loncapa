@@ -127,6 +127,27 @@ sub compare {
 }
 
 ##
+# Interprets this vector as an unordered list of quantities, compares it with another one, and returns a code.
+# @param {Quantity|QVector|QMatrix}
+# @optional {string|float} tolerance
+# @returns {int}
+##
+sub compare_unordered {
+    my ( $self, $v, $tolerance ) = @_;
+    if (!$v->isa(QVector)) {
+        return Quantity->WRONG_TYPE;
+    }
+    if (scalar(@{$self->quantities}) != scalar(@{$v->quantities})) {
+        return Quantity->WRONG_DIMENSIONS;
+    }
+    my @quantities_1 = sort {$a <=> $b} @{$self->quantities};
+    my $v1 = QVector->new(\@quantities_1);
+    my @quantities_2 = sort {$a <=> $b} @{$v->quantities};
+    my $v2 = QVector->new(\@quantities_2);
+    return($v1->compare($v2, $tolerance));
+}
+
+##
 # Addition
 # @param {QVector}
 # @returns {QVector}
