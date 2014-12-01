@@ -158,29 +158,23 @@ This means that \texttt{"i"} should never be used as a variable.
 
 \subsection{Operators}
 \begin{itemize}
-\item arithmetic: \texttt{+ - * / \^}
+\item arithmetic: \texttt{+ - * / \^}\\
+(for vectors and matrices, \texttt{*} is an element-by-element multiplication)
 \item factorial: \texttt{!}
 \item relational: \texttt{= \# < <= >= >}
-\item percent of a constant: \texttt{\%}
+\item percent of a constant: \texttt{\%}\\
 Example: \texttt{2\%c = 2/100*c}
-\item units: \texttt{`}
+\item units: \texttt{`}\\
 Example: \texttt{2`m + 3`m = 5`m}
+\item scalar product for vectors, multiplication for matrices: \texttt{.}
 \end{itemize}
 
 \subsection{Implicit operators}
 \texttt{*} and \texttt{`} are implicit in LON-CAPA.
 The parser will try to guess which operator is missing whenever possible.
-The choice between \texttt{*} and \texttt{`} depends on the mode for interpreting equations.
+The choice between \texttt{*} and \texttt{`} depends on the mode for interpreting equations.\\
 Example: \texttt{2c+3m/s} is understood in unit mode to be \texttt{2*c + 3`(m/s)}.
 In symbolic mode, it would be interpreted \texttt{2*c + (3*m)/s} (\texttt{m} and \texttt{s} being variables).
-
-\subsection{Vectors and matrices}
-Vectors and matrices are defined with square brackets. A matrix is made of a list of row vectors.
-\begin{itemize}
-\item vectors: \texttt{[1;2;3]}
-\item matrices: \texttt{[[1;2];[3,4;5,6]]}
-(remember the comma is a decimal separator)
-\end{itemize}
 
 \subsection{Functions}
 Functions use the syntax \texttt{f(a;b)}.
@@ -199,8 +193,8 @@ Functions use the syntax \texttt{f(a;b)}.
 \begin{verbatim}
     sum(f(x);x;x1;x2), product(f(x);x;x1;x2)
 \end{verbatim}
-"i" cannot be used as a variable name because it can be confused with the imaginary number.
-Example: \texttt{sum(a\^2; a; 1; 5)}
+"i" cannot be used as a variable name because it can be confused with the imaginary number.\\
+Example: \texttt{sum(a\^{}2; a; 1; 5)}
 \item requiring a CAS like Maxima for calculation:
 \begin{verbatim}
     diff(expr; x; n), integrate(expr; x; a; b), limit(expr; x; val; dir)
@@ -212,3 +206,30 @@ sin(x), cos(x), tan(x), asin(x), acos(x), atan(x), atan2(x;y),
 sinh(x), cosh(x), tanh(x), asinh(x), acosh(x), atanh(x)
 \end{verbatim}
 \end{itemize}
+
+\subsection{Vectors and matrices}
+Vectors and matrices are defined with square brackets. A matrix is made of a list of row vectors.
+\begin{itemize}
+\item vectors: \texttt{[1;2;3]}
+\item matrices: \texttt{[[1;2];[3,4;5,6]]}
+(remember the comma is a decimal separator)
+\end{itemize}
+
+\subsection{Sets}
+Sets are defined with curly brackets: \texttt{\{1;2;3\}}
+
+Possible operations:
+\begin{itemize}
+\item union: \texttt{\{1;2\}+\{1;3\} = union(\{1;2\};\{1;3\}) = \{1;2;3\}}
+\item intersection: \texttt{intersection(\{1;2\};\{1;3\}) = \{1\}}
+\end{itemize}
+
+\subsection{Intervals}
+Intervals are defined with square brackets and parenthesis, and colon as a separator.
+\begin{itemize}
+\item closed interval: \texttt{[1:2]}
+\item open interval: \texttt{(1:2)}
+\item left-open interval: \texttt{(1:2]}
+\item right-open interval: \texttt{[1:2)}
+\end{itemize}
+As with sets, the \texttt{+} operator and the \texttt{union} and \texttt{intersection} functions can be used.
