@@ -188,6 +188,28 @@ sub clone {
 }
 
 ##
+# Tests if this interval contains a quantity.
+# @param {Quantity}
+# @returns {boolean}
+##
+sub contains {
+    my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die CalcException->new("Interval contains: second member is not a quantity.");
+    }
+    if (!$self->qminopen && $self->qmin->equals($q)) {
+        return 1;
+    }
+    if (!$self->qmaxopen && $self->qmax->equals($q)) {
+        return 1;
+    }
+    if ($self->qmin < $q && $self->qmax > $q) {
+        return 1;
+    }
+    return 0;
+}
+
+##
 # Union
 # @param {QInterval|QIntervalUnion}
 # @returns {QInterval|QIntervalUnion}

@@ -217,6 +217,24 @@ sub reduce {
 }
 
 ##
+# Tests if this union of intervals contains a quantity.
+# @param {Quantity}
+# @returns {boolean}
+##
+sub contains {
+    my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die CalcException->new("Interval contains: second member is not a quantity.");
+    }
+    foreach my $inter (@{$self->intervals}) {
+        if ($inter->contains($q)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+##
 # Union
 # @param {QIntervalUnion|QInterval}
 # @returns {QIntervalUnion|QInterval}
