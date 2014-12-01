@@ -1,0 +1,18 @@
+<loncapa>
+<head>
+<title>Or Numerical Problem</title>
+</head>
+<body>
+Simple or problem
+<problem>
+<part>
+<perl>
+@vector=(1,2,3);
+</perl>
+<numericalresponse answer="@vector" unit="N" mode="or">
+<textline />
+</numericalresponse>
+</part>
+</problem>
+</body>
+</loncapa>
