@@ -58,6 +58,12 @@ my %unit_mode_cases = (
     "[1m:2m]+[2m:4m]" => "[1m:4m]",
     "{1m;2m;3m}+{2m;3m;4m}" => "{4m;3m;2m;1m}",
     "1m < 2m" => "1",
+    "(15 kg+40kg)*(4.5 m/s)^2/2 < 600 J" => "1",
+    "c*sqrt(1-50s/300s)>90%c" => "1",
+    "(30+50)<(300+500)" => "1",
+    "3s*[4;5;6]m/s" => "[12m;15m;18m]",
+    "300 kW*50s" => "15 MJ",
+    "1000 hPa*2 m^2" => "200 kN"
 );
 
 my %symbolic_mode_cases = (
@@ -124,6 +130,10 @@ my @compare_test_cases = (
     ['[1:2]', '[1:2)', Quantity->WRONG_ENDPOINT],
     ['{1m;2m;3m}', '{2s;3s;1s}', Quantity->WRONG_UNITS],
     ['{1;2;3}', '{1;2;4}', Quantity->WRONG_VALUE],
+    ['{1;2;3;3;3;3}','{1;2;4}', Quantity->WRONG_VALUE],
+    ['{1;2;3;3;3;3}','{1;2;3}', Quantity->IDENTICAL],
+    ['[1:4)+[2:16)+[2:3]','[1:16)', Quantity->IDENTICAL],
+    ['[1m:(3 m/s)^2/(2*9.81 m/s^2))','[1m:0.5*(3 m/s)^2/(9.81 m/s^2))', Quantity->IDENTICAL]
 );
 
 sub test {
