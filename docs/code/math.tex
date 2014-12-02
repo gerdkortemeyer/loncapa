@@ -130,6 +130,49 @@ and it is possible to get the raw error message or a localized one.
     print "Value: ".$root->calc($env)->toString()."\n";
 \end{verbatim}
 
+Note that these examples are using aliases to avoid giving the full package name for classes:
+\begin{verbatim}
+use aliased 'Apache::math::math_parser::CalcEnv';
+use aliased 'Apache::math::math_parser::Parser';
+\end{verbatim}
+
+\subsection{Comparing results of calculations}
+The \texttt{calc} method of \texttt{ENode} returns an object of one of these classes: Quantity, QVector, QMatrix, QSet, QInterval or QIntervalUnion. The type of the result can be checked with the \texttt{isa} method, for instance:
+\begin{verbatim}
+    my $result = $root->calc($env);
+    if ($result->isa(QInterval)) {
+        print "This is an interval.\n";
+    }
+\end{verbatim}
+
+All the returned objects have the \texttt{equals} method, which returns 1 if the two objects are equal, 0 in all other cases (including when the type is different). This can be used to check if a result matches some expectation. For instance:
+\begin{verbatim}
+    my $result = $p->parse("1+2")->calc($env);
+    my $expected = $p->parse("3")->calc($env);
+    if (!$expected->equals($result)) {
+        print "This is not the expected result.\n";
+    }
+\end{verbatim}
+
+To compare the result more precisely with the expected result, the \texttt{compare} method can be used. It is also implemented in all returned classes. It returns a code that explains why the two objects are different. The returned code is enumerated in \texttt{Quantity} : \texttt{IDENTICAL}, \texttt{WRONG\_TYPE}, \texttt{WRONG\_DIMENSIONS}, \texttt{MISSING\_UNITS}, \texttt{ADDED\_UNITS}, \texttt{WRONG\_UNITS}, \texttt{WRONG\_VALUE}, \texttt{WRONG\_ENDPOINT}.
+\begin{verbatim}
+    my $result = $p->parse("1+2")->calc($env);
+    my $expected = $p->parse("3")->calc($env);
+    my $code = $expected->compare($result, $tolerance);
+    if ($code != Quantity->IDENTICAL) {
+        print "This is not the expected result.\n";
+    }
+\end{verbatim}
+
+\subsection{API}
+The API can be useful to do more operations with the results. Constructors for the various calculation result classes can also be used to create these objects without the parser and do further calculations.
+The HTML documentation can be created automatically with the lcdoc.pl Perl script, in the git:
+\begin{verbatim}
+cd loncapa/docs
+mkdir -p code/lcdoc/math/math_parser
+bin/lcdoc.pl -d code/lcdoc/math/math_parser ../math/math_parser/*.pm
+\end{verbatim}
+
 
 \section{Equation syntax}\index{equation syntax}
 
