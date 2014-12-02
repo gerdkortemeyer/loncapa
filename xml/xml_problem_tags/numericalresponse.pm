@@ -75,7 +75,7 @@ sub evaluate_answer {
    if (ref($answer) eq 'ARRAY') {
       if ($special eq 'sets') {
 # The array contains elements of a set
-         $expected='{'.join(';',map{$_.' '.$unit}@{$answer}).'}';
+         $expected='{'.join(';',@{$answer}).'} '.$unit;
       } elsif ($#{$answer}>0) {
 # We have an array or a matrix with more than one element
          $expected='[';
@@ -97,12 +97,13 @@ sub evaluate_answer {
       }
    } else {
 # We have a string as answer
-      if (($special eq 'intervals') || ($special eq 'contained')) {
-# For intervals, the units need to be pulled into each boundary
+      if (($special eq 'intervals') || 
+          ($special eq 'contained') ||
+          ($special eq 'sets')) {
+# For unions, the units need to be pulled in
          $expected=$answer;
-         $expected=~s/\:/ $unit\:/gs;
-         $expected=~s/([\]\)])\s*u/ $unit$1\+/gsi;
-         $expected=~s/([\]\)])\s*$/ $unit$1/s;
+         $expected=~s/([\]\)\}])\s*u\s*([\{\[\(])/$1 $unit \+ $2/gsi;
+         $expected.=' '.$unit;
       } else {
 # Just normal ...
          $expected=$answer.' '.$unit;
@@ -132,8 +133,8 @@ sub evaluate_responses {
          return '['.join(';',@{$responses}).']';
       }
    } else {
-      if ($special eq 'intervals') {
-         $responses->[0]=~s/([\]\)])\s*u\s*([\[\(])/$1\+$2/gsi;
+      if (($special eq 'intervals') || ($special eq 'sets')) {
+         $responses->[0]=~s/([\]\)\}])\s*u\s*([\{\[\(])/$1\+$2/gsi;
       }
       return $responses->[0];
    }

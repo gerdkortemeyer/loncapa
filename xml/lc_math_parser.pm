@@ -83,12 +83,22 @@ sub compare_in_parser {
       if ($mode eq 'ne') {
 # Unequal
          $code = $expected_quantity->ne($input_quantity, $tolerance);
+         if ($code) {
+            return(&correct,undef);
+         } else {
+            return(&incorrect,undef);
+         }
       } elsif ($mode eq 'unordered') {
 # Unordered comparison of "vectors"
          $code = $expected_quantity->compare_unordered($input_quantity, $tolerance);
       } elsif ($mode eq 'contained') {
 # Is the input contained in the interval?
          $code = $expected_quantity->contains($input_quantity);
+         if ($code) {
+            return(&correct,undef);
+         } else {
+            return(&incorrect,undef);
+         }
       } else {
 # Normal comparison for equality
          $code = $expected_quantity->compare($input_quantity, $tolerance);

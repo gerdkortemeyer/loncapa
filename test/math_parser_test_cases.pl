@@ -136,6 +136,7 @@ my @compare_test_cases = (
     ['{1;2;3}', '{1;2;4}', Quantity->WRONG_VALUE],
     ['{1;2;3;3;3;3}','{1;2;4}', Quantity->WRONG_VALUE],
     ['{1;2;3;3;3;3}','{1;2;3}', Quantity->IDENTICAL],
+    ['{1;2;3} N+ {3;3;3} N','{1;2;3} N', Quantity->IDENTICAL],
     ['[1:4)+[2:16)+[2:3]','[1:16)', Quantity->IDENTICAL],
     ['[(3 m/s)^2/(2*9.81 m/s^2):1m)','[0.5*(3 m/s)^2/(9.81 m/s^2):1m)', Quantity->IDENTICAL]
 );
@@ -227,6 +228,8 @@ compare_test($p,$env,['{1 N; 2 N; 3 N}','{2;3;1} N',Quantity->IDENTICAL],0);
 compare_test($p,$env,['[3 N:4 N)','3.7 N',1],0,'contained');
 compare_test($p,$env,['[3:4) N','3.8 N',1],0,'contained');
 
+compare_test($p,$env,['[3:4) N + (5:17] N','3.9 N',1],0,'contained');
+compare_test($p,$env,['[3:4) N + (5:17] N','4.5 N',0],0,'contained');
 
 
 # symbolic mode
