@@ -81,7 +81,7 @@ sub toString {
 
 ##
 # Equality test
-# @param {QVector}
+# @param {QVector} v
 # @optional {string|float} tolerance
 # @returns {boolean}
 ##
@@ -104,7 +104,7 @@ sub equals {
 ##
 # Compare this vector with another one, and returns a code.
 # Returns Quantity->WRONG_TYPE if the parameter is not a QVector.
-# @param {Quantity|QVector|QMatrix|QSet|QInterval}
+# @param {Quantity|QVector|QMatrix|QSet|QInterval} v
 # @optional {string|float} tolerance
 # @returns {int} Quantity->WRONG_TYPE|WRONG_DIMENSIONS|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|IDENTICAL
 ##
@@ -135,7 +135,7 @@ sub compare {
 ##
 # Interprets this vector as an unordered list of quantities, compares it with another one, and returns a code.
 # Returns Quantity->WRONG_TYPE if the parameter is not a QVector.
-# @param {Quantity|QVector|QMatrix|QSet|QInterval}
+# @param {Quantity|QVector|QMatrix|QSet|QInterval} v
 # @optional {string|float} tolerance
 # @returns {int} Quantity->WRONG_TYPE|WRONG_DIMENSIONS|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|IDENTICAL
 ##
@@ -156,7 +156,7 @@ sub compare_unordered {
 
 ##
 # Addition
-# @param {QVector}
+# @param {QVector} v
 # @returns {QVector}
 ##
 sub qadd {
@@ -176,7 +176,7 @@ sub qadd {
 
 ##
 # Substraction
-# @param {QVector}
+# @param {QVector} v
 # @returns {QVector}
 ##
 sub qsub {
@@ -209,7 +209,7 @@ sub qneg {
 
 ##
 # Multiplication by a scalar, or element-by-element multiplication by a vector
-# @param {Quantity|QVector}
+# @param {Quantity|QVector} qv
 # @returns {QVector}
 ##
 sub qmult {
@@ -235,7 +235,7 @@ sub qmult {
 
 ##
 # Power by a scalar
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {QVector}
 ##
 sub qpow {
@@ -253,7 +253,7 @@ sub qpow {
 
 ##
 # Dot product
-# @param {QVector}
+# @param {QVector} v
 # @returns {Quantity}
 ##
 sub qdot {

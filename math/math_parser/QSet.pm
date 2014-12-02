@@ -91,7 +91,7 @@ sub toString {
 
 ##
 # Equality test
-# @param {QSet}
+# @param {QSet} set
 # @optional {string|float} tolerance
 # @returns {boolean}
 ##
@@ -121,7 +121,7 @@ sub equals {
 ##
 # Compare this set with another one, and returns a code.
 # Returns Quantity->WRONG_TYPE if the parameter is not a QSet.
-# @param {QSet|QInterval|Quantity|QVector|QMatrix}
+# @param {QSet|QInterval|Quantity|QVector|QMatrix} set
 # @optional {string|float} tolerance
 # @returns {int} Quantity->WRONG_TYPE|WRONG_DIMENSIONS|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|IDENTICAL
 ##
@@ -154,7 +154,7 @@ sub compare {
 
 ##
 # Multiplication by a Quantity
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {QSet}
 ##
 sub qmult {
@@ -171,7 +171,7 @@ sub qmult {
 
 ##
 # Union
-# @param {QSet}
+# @param {QSet} set
 # @returns {QSet}
 ##
 sub union {
@@ -197,7 +197,7 @@ sub union {
 
 ##
 # Intersection
-# @param {QSet}
+# @param {QSet} set
 # @returns {QSet}
 ##
 sub intersection {

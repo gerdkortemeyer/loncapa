@@ -89,7 +89,7 @@ sub toString {
 
 ##
 # Equality test
-# @param {QMatrix}
+# @param {QMatrix} m
 # @optional {string|float} tolerance
 # @returns {boolean}
 ##
@@ -116,7 +116,7 @@ sub equals {
 
 ##
 # Compare this matrix with another one, and returns a code.
-# @param {Quantity|QVector|QMatrix|QSet|QInterval}
+# @param {Quantity|QVector|QMatrix|QSet|QInterval} m
 # @optional {string|float} tolerance
 # @returns {int} Quantity->WRONG_TYPE|WRONG_DIMENSIONS|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|IDENTICAL
 ##
@@ -151,7 +151,7 @@ sub compare {
 
 ##
 # Addition
-# @param {QMatrix}
+# @param {QMatrix} m
 # @returns {QMatrix}
 ##
 sub qadd {
@@ -175,7 +175,7 @@ sub qadd {
 
 ##
 # Substraction
-# @param {QMatrix}
+# @param {QMatrix} m
 # @returns {QMatrix}
 ##
 sub qsub {
@@ -215,7 +215,7 @@ sub qneg {
 
 ##
 # Element-by-element multiplication by a quantity, vector or matrix (like Maxima)
-# @param {Quantity|QVector|QMatrix}
+# @param {Quantity|QVector|QMatrix} m
 # @returns {QMatrix}
 ##
 sub qmult {
@@ -264,7 +264,7 @@ sub qmult {
 
 ##
 # Noncommutative multiplication by a vector or matrix
-# @param {QVector|QMatrix}
+# @param {QVector|QMatrix} m
 # @returns {QVector|QMatrix}
 ##
 sub qdot {
@@ -300,7 +300,7 @@ sub qdot {
 
 ##
 # Power by a scalar
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {QMatrix}
 ##
 sub qpow {

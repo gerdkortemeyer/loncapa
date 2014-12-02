@@ -141,28 +141,28 @@ sub toString {
 
 ##
 # Equality test
-# @param {QInterval}
+# @param {QInterval} inter
 # @optional {string|float} tolerance
 # @returns {boolean}
 ##
 sub equals {
-    my ( $self, $int, $tolerance ) = @_;
-    if (!$int->isa(QInterval)) {
+    my ( $self, $inter, $tolerance ) = @_;
+    if (!$inter->isa(QInterval)) {
         return 0;
     }
-    if ($self->is_empty() && $int->is_empty()) {
+    if ($self->is_empty() && $inter->is_empty()) {
         return 1;
     }
-    if (!$self->qmin->equals($int->qmin)) {
+    if (!$self->qmin->equals($inter->qmin)) {
         return 0;
     }
-    if (!$self->qmax->equals($int->qmax)) {
+    if (!$self->qmax->equals($inter->qmax)) {
         return 0;
     }
-    if (!$self->qminopen == $int->qminopen) {
+    if (!$self->qminopen == $inter->qminopen) {
         return 0;
     }
-    if (!$self->qmaxopen == $int->qmaxopen) {
+    if (!$self->qmaxopen == $inter->qmaxopen) {
         return 0;
     }
     return 1;
@@ -171,18 +171,18 @@ sub equals {
 ##
 # Compare this vector with another one, and returns a code.
 # Returns Quantity->WRONG_TYPE if the parameter is not a QInterval.
-# @param {QInterval|QSet|Quantity|QVector|QMatrix}
+# @param {QInterval|QSet|Quantity|QVector|QMatrix} inter
 # @optional {string|float} tolerance
 # @returns {int} Quantity->WRONG_TYPE|WRONG_DIMENSIONS|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|WRONG_ENDPOINT|IDENTICAL
 ##
 sub compare {
-    my ( $self, $int, $tolerance ) = @_;
-    if (!$int->isa(QInterval)) {
+    my ( $self, $inter, $tolerance ) = @_;
+    if (!$inter->isa(QInterval)) {
         return Quantity->WRONG_TYPE;
     }
     my @codes = ();
-    push(@codes, $self->qmin->compare($int->qmin, $tolerance));
-    push(@codes, $self->qmax->compare($int->qmax, $tolerance));
+    push(@codes, $self->qmin->compare($inter->qmin, $tolerance));
+    push(@codes, $self->qmax->compare($inter->qmax, $tolerance));
     my @test_order = (Quantity->WRONG_TYPE, Quantity->WRONG_DIMENSIONS, Quantity->MISSING_UNITS, Quantity->ADDED_UNITS,
         Quantity->WRONG_UNITS, Quantity->WRONG_VALUE);
     foreach my $test (@test_order) {
@@ -192,10 +192,10 @@ sub compare {
             }
         }
     }
-    if ($self->qminopen != $int->qminopen) {
+    if ($self->qminopen != $inter->qminopen) {
         return Quantity->WRONG_ENDPOINT;
     }
-    if ($self->qmaxopen != $int->qmaxopen) {
+    if ($self->qmaxopen != $inter->qmaxopen) {
         return Quantity->WRONG_ENDPOINT;
     }
     return Quantity->IDENTICAL;
@@ -212,7 +212,7 @@ sub clone {
 
 ##
 # Tests if this interval contains a quantity.
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {boolean}
 ##
 sub contains {
@@ -234,7 +234,7 @@ sub contains {
 
 ##
 # Multiplication by a Quantity
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {QInterval}
 ##
 sub qmult {
@@ -247,111 +247,111 @@ sub qmult {
 
 ##
 # Union
-# @param {QInterval|QIntervalUnion}
+# @param {QInterval|QIntervalUnion} inter
 # @returns {QInterval|QIntervalUnion}
 ##
 sub union {
-    my ( $self, $int ) = @_;
-    if (!$int->isa(QInterval) && !$int->isa(QIntervalUnion)) {
+    my ( $self, $inter ) = @_;
+    if (!$inter->isa(QInterval) && !$inter->isa(QIntervalUnion)) {
         die CalcException->new("Interval union: second member is not an interval or an interval union.");
     }
-    if ($int->isa(QIntervalUnion)) {
-        return($int->union($self));
+    if ($inter->isa(QIntervalUnion)) {
+        return($inter->union($self));
     }
     my %units = %{$self->qmin->units};
     foreach my $unit (keys %units) {
-        if ($units{$unit} != $int->qmin->units->{$unit}) {
+        if ($units{$unit} != $inter->qmin->units->{$unit}) {
             die CalcException->new("Interval union: different units are used in the two intervals.");
         }
     }
-    if ($self->qmax->value < $int->qmin->value || $self->qmin->value > $int->qmax->value) {
-        return QIntervalUnion->new([$self, $int]);
+    if ($self->qmax->value < $inter->qmin->value || $self->qmin->value > $inter->qmax->value) {
+        return QIntervalUnion->new([$self, $inter]);
     }
-    if ($self->qmax->equals($int->qmin) && $self->qmaxopen && $int->qminopen) {
-        return QIntervalUnion->new([$self, $int]);
+    if ($self->qmax->equals($inter->qmin) && $self->qmaxopen && $inter->qminopen) {
+        return QIntervalUnion->new([$self, $inter]);
     }
-    if ($self->qmin->equals($int->qmax) && $self->qmaxopen && $int->qminopen) {
-        return QIntervalUnion->new([$self, $int]);
+    if ($self->qmin->equals($inter->qmax) && $self->qmaxopen && $inter->qminopen) {
+        return QIntervalUnion->new([$self, $inter]);
     }
     if ($self->qmin->value == $self->qmax->value && $self->qminopen && $self->qmaxopen) {
         # $self is an empty interval
-        return QInterval->new($int->qmin, $int->qmax, $int->qminopen, $int->qmaxopen);
+        return QInterval->new($inter->qmin, $inter->qmax, $inter->qminopen, $inter->qmaxopen);
     }
-    if ($int->qmin->value == $int->qmax->value && $int->qminopen && $int->qmaxopen) {
-        # $int is an empty interval
+    if ($inter->qmin->value == $inter->qmax->value && $inter->qminopen && $inter->qmaxopen) {
+        # $inter is an empty interval
         return QInterval->new($self->qmin, $self->qmax, $self->qminopen, $self->qmaxopen);
     }
     my ($qmin, $qminopen);
-    if ($self->qmin->value == $int->qmin->value) {
-        $qmin = $int->qmin->clone();
-        $qminopen = $self->qminopen && $int->qminopen;
-    } elsif ($self->qmin->value < $int->qmin->value) {
+    if ($self->qmin->value == $inter->qmin->value) {
+        $qmin = $inter->qmin->clone();
+        $qminopen = $self->qminopen && $inter->qminopen;
+    } elsif ($self->qmin->value < $inter->qmin->value) {
         $qmin = $self->qmin->clone();
         $qminopen = $self->qminopen;
     } else {
-        $qmin = $int->qmin->clone();
-        $qminopen = $int->qminopen;
+        $qmin = $inter->qmin->clone();
+        $qminopen = $inter->qminopen;
     }
     my ($qmax, $qmaxopen);
-    if ($self->qmax->value == $int->qmax->value) {
+    if ($self->qmax->value == $inter->qmax->value) {
         $qmax = $self->qmax->clone();
-        $qmaxopen = $self->qmaxopen && $int->qmaxopen;
-    } elsif ($self->qmax->value > $int->qmax->value) {
+        $qmaxopen = $self->qmaxopen && $inter->qmaxopen;
+    } elsif ($self->qmax->value > $inter->qmax->value) {
         $qmax = $self->qmax->clone();
         $qmaxopen = $self->qmaxopen;
     } else {
-        $qmax = $int->qmax->clone();
-        $qmaxopen = $int->qmaxopen;
+        $qmax = $inter->qmax->clone();
+        $qmaxopen = $inter->qmaxopen;
     }
     return QInterval->new($qmin, $qmax, $qminopen, $qmaxopen);
 }
 
 ##
 # Intersection
-# @param {QInterval|QIntervalUnion}
+# @param {QInterval|QIntervalUnion} inter
 # @returns {QInterval}
 ##
 sub intersection {
-    my ( $self, $int ) = @_;
-    if (!$int->isa(QInterval) && !$int->isa(QIntervalUnion)) {
+    my ( $self, $inter ) = @_;
+    if (!$inter->isa(QInterval) && !$inter->isa(QIntervalUnion)) {
         die CalcException->new("Interval intersection: second member is not an interval or an interval union.");
     }
-    if ($int->isa(QIntervalUnion)) {
-        return($int->intersection($self));
+    if ($inter->isa(QIntervalUnion)) {
+        return($inter->intersection($self));
     }
     my %units = %{$self->qmin->units};
     foreach my $unit (keys %units) {
-        if ($units{$unit} != $int->qmin->units->{$unit}) {
+        if ($units{$unit} != $inter->qmin->units->{$unit}) {
             die CalcException->new("Interval intersection: different units are used in the two intervals.");
         }
     }
-    if ($self->qmax->value < $int->qmin->value || $self->qmin->value > $int->qmax->value) {
+    if ($self->qmax->value < $inter->qmin->value || $self->qmin->value > $inter->qmax->value) {
         return QInterval->new($self->qmin, $self->qmin, 1, 1); # empty interval
     }
-    if ($self->qmax->equals($int->qmin) && $self->qmaxopen && $int->qminopen) {
+    if ($self->qmax->equals($inter->qmin) && $self->qmaxopen && $inter->qminopen) {
         return QInterval->new($self->qmax, $self->qmax, 1, 1); # empty interval
     }
-    if ($self->qmin->equals($int->qmax) && $self->qmaxopen && $int->qminopen) {
+    if ($self->qmin->equals($inter->qmax) && $self->qmaxopen && $inter->qminopen) {
         return QInterval->new($self->qmin, $self->qmin, 1, 1); # empty interval
     }
     my ($qmin, $qminopen);
-    if ($self->qmin->value == $int->qmin->value) {
+    if ($self->qmin->value == $inter->qmin->value) {
         $qmin = $self->qmin->clone();
-        $qminopen = $self->qminopen || $int->qminopen;
-    } elsif ($self->qmin->value < $int->qmin->value) {
-        $qmin = $int->qmin->clone();
-        $qminopen = $int->qminopen;
+        $qminopen = $self->qminopen || $inter->qminopen;
+    } elsif ($self->qmin->value < $inter->qmin->value) {
+        $qmin = $inter->qmin->clone();
+        $qminopen = $inter->qminopen;
     } else {
         $qmin = $self->qmin->clone();
         $qminopen = $self->qminopen;
     }
     my ($qmax, $qmaxopen);
-    if ($self->qmax->value == $int->qmax->value) {
+    if ($self->qmax->value == $inter->qmax->value) {
         $qmax = $self->qmax->clone();
-        $qmaxopen = $self->qmaxopen || $int->qmaxopen;
-    } elsif ($self->qmax->value > $int->qmax->value) {
-        $qmax = $int->qmax->clone();
-        $qmaxopen = $int->qmaxopen;
+        $qmaxopen = $self->qmaxopen || $inter->qmaxopen;
+    } elsif ($self->qmax->value > $inter->qmax->value) {
+        $qmax = $inter->qmax->clone();
+        $qmaxopen = $inter->qmaxopen;
     } else {
         $qmax = $self->qmax->clone();
         $qmaxopen = $self->qmaxopen;

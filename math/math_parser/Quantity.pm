@@ -174,7 +174,7 @@ sub equals {
 ##
 # Compare this quantity with another one, and returns a code.
 # Returns Quantity->WRONG_TYPE if the parameter is not a Quantity.
-# @param {Quantity|QVector|QMatrix|QSet|QInterval}
+# @param {Quantity|QVector|QMatrix|QSet|QInterval} q
 # @optional {string|float} tolerance
 # @returns {int} WRONG_TYPE|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|IDENTICAL
 ##
@@ -227,7 +227,7 @@ sub compare {
 ##
 # <=> operator.
 # Compare this quantity with another one, and returns -1, 0 or 1.
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {int}
 ##
 sub perl_compare {
@@ -241,7 +241,7 @@ sub perl_compare {
 
 ##
 # Not equal
-# @param {Quantity}
+# @param {Quantity} q
 # @optional {string|float} tolerance
 # @returns {boolean}
 ##
@@ -256,7 +256,7 @@ sub ne {
 
 ##
 # Less than
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {boolean}
 ##
 sub lt {
@@ -274,7 +274,7 @@ sub lt {
 
 ##
 # Less than or equal
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {boolean}
 ##
 sub le {
@@ -292,7 +292,7 @@ sub le {
 
 ##
 # Greater than
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {boolean}
 ##
 sub gt {
@@ -310,7 +310,7 @@ sub gt {
 
 ##
 # Greater than or equal
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {boolean}
 ##
 sub ge {
@@ -328,6 +328,7 @@ sub ge {
 
 ##
 # Clone this object
+# @returns {Quantity}
 ##
 sub clone {
     my ( $self ) = @_;
@@ -337,7 +338,7 @@ sub clone {
 
 ##
 # Addition
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {Quantity}
 ##
 sub qadd {
@@ -352,7 +353,7 @@ sub qadd {
 
 ##
 # Substraction
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {Quantity}
 ##
 sub qsub {
@@ -378,7 +379,7 @@ sub qneg {
 
 ##
 # Multiplication
-# @param {Quantity|QVector|QMatrix|QInterval|QSet}
+# @param {Quantity|QVector|QMatrix|QInterval|QSet} qv
 # @returns {Quantity|QVector|QMatrix|QInterval|QSet}
 ##
 sub qmult {
@@ -400,7 +401,7 @@ sub qmult {
 
 ##
 # Division
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {Quantity}
 ##
 sub qdiv {
@@ -421,7 +422,7 @@ sub qdiv {
 
 ##
 # Power
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {Quantity}
 ##
 sub qpow {
@@ -527,7 +528,7 @@ sub qlog10 {
 
 ##
 # Modulo
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {Quantity}
 ##
 sub qmod {
@@ -724,7 +725,7 @@ sub qlt {
 
 ##
 # Less than or equal
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {Quantity}
 ##
 sub qle {
@@ -735,7 +736,7 @@ sub qle {
 
 ##
 # Greater than
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {Quantity}
 ##
 sub qgt {
@@ -746,7 +747,7 @@ sub qgt {
 
 ##
 # Greater than or equal
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {Quantity}
 ##
 sub qge {

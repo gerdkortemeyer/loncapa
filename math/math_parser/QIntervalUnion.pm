@@ -107,7 +107,7 @@ sub toString {
 
 ##
 # Equality test
-# @param {QIntervalUnion|QInterval|QSet|Quantity|QVector|QMatrix}
+# @param {QIntervalUnion|QInterval|QSet|Quantity|QVector|QMatrix} qui
 # @optional {string|float} tolerance
 # @returns {boolean}
 ##
@@ -138,7 +138,7 @@ sub equals {
 # Compare this interval union with another one, and returns a code.
 # Returns Quantity->WRONG_TYPE if the parameter is not a QIntervalUnion
 # (this might happen if a union of disjoint intervals is compared with a simple interval).
-# @param {QIntervalUnion|QInterval|QSet|Quantity|QVector|QMatrix}
+# @param {QIntervalUnion|QInterval|QSet|Quantity|QVector|QMatrix} qui
 # @optional {string|float} tolerance
 # @returns {int} Quantity->WRONG_TYPE|WRONG_DIMENSIONS|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|WRONG_ENDPOINT|IDENTICAL
 ##
@@ -225,7 +225,7 @@ sub reduce {
 
 ##
 # Tests if this union of intervals contains a quantity.
-# @param {Quantity}
+# @param {Quantity} q
 # @returns {boolean}
 ##
 sub contains {
@@ -243,7 +243,7 @@ sub contains {
 
 ##
 # Union
-# @param {QIntervalUnion|QInterval}
+# @param {QIntervalUnion|QInterval} qui
 # @returns {QIntervalUnion|QInterval}
 ##
 sub union {
@@ -271,7 +271,7 @@ sub union {
 
 ##
 # Intersection
-# @param {QIntervalUnion|QInterval}
+# @param {QIntervalUnion|QInterval} qui
 # @returns {QIntervalUnion|QInterval}
 ##
 sub intersection {
