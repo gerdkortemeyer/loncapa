@@ -33,8 +33,9 @@ use aliased 'Apache::math::math_parser::CalcException';
 use aliased 'Apache::math::math_parser::Quantity';
 use aliased 'Apache::math::math_parser::QVector';
 use aliased 'Apache::math::math_parser::QMatrix';
-use aliased 'Apache::math::math_parser::QInterval';
 use aliased 'Apache::math::math_parser::QSet';
+use aliased 'Apache::math::math_parser::QInterval';
+use aliased 'Apache::math::math_parser::QIntervalUnion';
 
 use overload
     '""' => \&toString,
@@ -379,15 +380,16 @@ sub qneg {
 
 ##
 # Multiplication
-# @param {Quantity|QVector|QMatrix|QInterval|QSet} qv
-# @returns {Quantity|QVector|QMatrix|QInterval|QSet}
+# @param {Quantity|QVector|QMatrix|QSet|QInterval|QIntervalUnion} qv
+# @returns {Quantity|QVector|QMatrix|QSet|QInterval|QIntervalUnion}
 ##
 sub qmult {
     my ( $self, $qv ) = @_;
-    if (!$qv->isa(Quantity) && !$qv->isa(QVector) && !$qv->isa(QMatrix) && !$qv->isa(QInterval) && !$qv->isa(QSet)) {
-        die CalcException->new("Quantity multiplication: second member is not a quantity/vector/matrix/interval/set.");
+    if (!$qv->isa(Quantity) && !$qv->isa(QVector) && !$qv->isa(QMatrix) &&
+            !$qv->isa(QSet) && !$qv->isa(QInterval) && !$qv->isa(QIntervalUnion)) {
+        die CalcException->new("Quantity multiplication: second member is not a quantity/vector/matrix/set/interval.");
     }
-    if ($qv->isa(QVector) || $qv->isa(QMatrix) || $qv->isa(QInterval) || $qv->isa(QSet)) {
+    if ($qv->isa(QVector) || $qv->isa(QMatrix) || $qv->isa(QSet) || $qv->isa(QInterval) || $qv->isa(QIntervalUnion)) {
         return($qv->qmult($self));
     }
     my $q = $qv;
