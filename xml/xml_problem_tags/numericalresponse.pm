@@ -215,7 +215,8 @@ sub answertest {
 # Nothing found
        return(&incorrect,undef);
     } else {
-       my ($code,$message)=&Apache::lc_math_parser::compare_in_parser($parser,$env,$expression,$expected,$tolerance);
+# This is equal, ne, or unordered
+       my ($code,$message)=&Apache::lc_math_parser::compare_in_parser($parser,$env,$expression,$expected,$tolerance,$special);
     }
 }
 
