@@ -178,24 +178,7 @@ sub answertest {
        return(&no_valid_answer(),undef);
     }
 # Everything is ready now, let's see what we have
-    if ($special=~/^(gt|ge|lt|le)$/) {
-# This is a relative comparison, do as a statement
-       my ($error,$value)=&Apache::lc_math_parser::evaluate_in_parser($parser,$env,
-                                                $expression.
-                                                    ($special eq 'gt'?'>':'').
-                                                    ($special eq 'ge'?'>=':'').
-                                                    ($special eq 'lt'?'<':'').
-                                                    ($special eq 'le'?'<=':'').
-                                                                      $expected);
-       if ($error) {
-          return($error,$value);
-       }
-       if ($value) {
-          return(&correct(),undef);
-       } else {
-          return(&incorrect(),undef);
-       }
-    } elsif ($special eq 'or') {
+    if ($special eq 'or') {
 # One of the values in an array
        if ($expression=~/\;/) {
           return(&response_scalar_required(),undef);
@@ -217,7 +200,7 @@ sub answertest {
 # Nothing found
        return(&incorrect,undef);
     } else {
-# This is equal, ne, or unordered
+# There's only one answer
        my ($code,$message)=&Apache::lc_math_parser::compare_in_parser($parser,$env,$expression,$expected,$tolerance,$special);
     }
 }

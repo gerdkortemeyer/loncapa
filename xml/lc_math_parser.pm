@@ -80,20 +80,22 @@ sub compare_in_parser {
       my $expected_quantity = $parser->parse($expected)->calc($env);
       my $input_quantity = $parser->parse($expression)->calc($env);
       my $code;
-      if ($mode eq 'ne') {
-# Unequal
-         $code = $expected_quantity->ne($input_quantity, $tolerance);
-         if ($code) {
-            return(&correct,undef);
-         } else {
-            return(&incorrect,undef);
+      if ($mode=~/^(ne|gt|ge|lt|le|unordered|contained)$/) {
+         if ($mode eq 'ne') {
+            $code = $expected_quantity->ne($input_quantity, $tolerance);
+         } elsif ($mode eq 'gt') {
+            $code = $expected_quantity->gt($input_quantity, $tolerance);
+         } elsif ($mode eq 'ge') {
+            $code = $expected_quantity->ge($input_quantity, $tolerance);
+         } elsif ($mode eq 'lt') {
+            $code = $expected_quantity->lt($input_quantity, $tolerance);
+         } elsif ($mode eq 'le') {
+            $code = $expected_quantity->le($input_quantity, $tolerance);
+         } elsif ($mode eq 'unordered') {
+            $code = $expected_quantity->compare_unordered($input_quantity, $tolerance);
+         } elsif ($mode eq 'contained') {
+            $code = $expected_quantity->contains($input_quantity);
          }
-      } elsif ($mode eq 'unordered') {
-# Unordered comparison of "vectors"
-         $code = $expected_quantity->compare_unordered($input_quantity, $tolerance);
-      } elsif ($mode eq 'contained') {
-# Is the input contained in the interval?
-         $code = $expected_quantity->contains($input_quantity);
          if ($code) {
             return(&correct,undef);
          } else {
@@ -102,21 +104,21 @@ sub compare_in_parser {
       } else {
 # Normal comparison for equality
          $code = $expected_quantity->compare($input_quantity, $tolerance);
-      }
-      if ($code == Quantity->IDENTICAL) {
-         return(&correct(),undef);
-      } elsif ($code == Quantity->WRONG_TYPE) {
-         return(&wrong_type(),undef);
-      } elsif ($code == Quantity->WRONG_DIMENSIONS) {
-         return(&wrong_dimension(),undef);
-      } elsif ($code == Quantity->MISSING_UNITS) {
-         return(&unit_missing(),undef);
-      } elsif ($code == Quantity->ADDED_UNITS) {
-         return(&no_unit_required(),undef);
-      } elsif ($code == Quantity->WRONG_UNITS) {
-          return(&wrong_unit_dimension,undef);
-      } elsif ($code == Quantity->WRONG_VALUE) {
-          return(&incorrect(),undef);
+         if ($code == Quantity->IDENTICAL) {
+            return(&correct(),undef);
+         } elsif ($code == Quantity->WRONG_TYPE) {
+            return(&wrong_type(),undef);
+         } elsif ($code == Quantity->WRONG_DIMENSIONS) {
+            return(&wrong_dimension(),undef);
+         } elsif ($code == Quantity->MISSING_UNITS) {
+            return(&unit_missing(),undef);
+         } elsif ($code == Quantity->ADDED_UNITS) {
+            return(&no_unit_required(),undef);
+         } elsif ($code == Quantity->WRONG_UNITS) {
+            return(&wrong_unit_dimension,undef);
+         } elsif ($code == Quantity->WRONG_VALUE) {
+            return(&incorrect(),undef);
+         }
       }
    } catch {
       if (UNIVERSAL::isa($_,CalcException)) {
