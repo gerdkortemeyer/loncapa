@@ -55,9 +55,6 @@ sub new_numerical_parser {
 #
 sub evaluate_in_parser {
    my ($parser,$env,$term)=@_;
-
-&logdebug("Evaluating [$term]");
-
    try {
       my $result=$parser->parse($term)->calc($env);
       return(undef,$result);
@@ -78,6 +75,7 @@ sub evaluate_in_parser {
 #
 sub compare_in_parser {
    my ($parser,$env,$expression, $expected, $tolerance, $mode)=@_;
+&logdebug("Compare: Input:[$expression] Answer:[$expected]");
    try {
       my $expected_quantity = $parser->parse($expected)->calc($env);
       my $input_quantity = $parser->parse($expression)->calc($env);
@@ -88,6 +86,9 @@ sub compare_in_parser {
       } elsif ($mode eq 'unordered') {
 # Unordered comparison of "vectors"
          $code = $expected_quantity->compare_unordered($input_quantity, $tolerance);
+      } elsif ($mode eq 'contained') {
+# Is the input contained in the interval?
+         $code = $expected_quantity->contains($input_quantity);
       } else {
 # Normal comparison for equality
          $code = $expected_quantity->compare($input_quantity, $tolerance);

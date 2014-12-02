@@ -163,15 +163,25 @@ sub test {
 }
 
 sub compare_test {
-    my( $parser, $env, $test_case, $tolerance ) = @_;
+    my( $parser, $env, $test_case, $tolerance, $mode ) = @_;
     my ($expected, $input, $expected_code) = @$test_case;
     if (!defined $tolerance) {
         $tolerance = 1e-5;
     }
+    if (!defined $mode) {
+       $mode='normal';
+    }
     try {
         my $expected_quantity = $parser->parse($expected)->calc($env);
         my $input_quantity = $parser->parse($input)->calc($env);
-        my $code = $expected_quantity->compare($input_quantity, $tolerance);
+        my $code;
+        if ($mode eq 'ne') {
+           $code = $expected_quantity->ne($input_quantity, $tolerance);
+        } elsif ($mode eq 'contained') {
+           $code = $expected_quantity->contains($input_quantity);
+        } else {
+           $code = $expected_quantity->compare($input_quantity, $tolerance);
+        }
         if ($code != $expected_code) {
             die "Wrong result in compare test: ".$code." instead of ".$expected_code;
         }
@@ -216,5 +226,6 @@ $env->setVariable("y", 2.3e-1);
 foreach my $s (keys %symbolic_mode_cases) {
     test($p, $env, $s, $symbolic_mode_cases{$s});
 }
-
+compare_test($p,$env,['17','42',Quantity->IDENTICAL],0,'ne');
+compare_test($p,$env,['[3:4)','3.5',Quantity->IDENTICAL],0,'contained');
 print "All tests OK !\n";

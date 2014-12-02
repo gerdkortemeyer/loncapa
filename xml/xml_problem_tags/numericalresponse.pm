@@ -97,7 +97,7 @@ sub evaluate_answer {
       }
    } else {
 # We have a string as answer
-      if ($special eq 'intervals') {
+      if (($special eq 'intervals') || ($special eq 'contained')) {
 # For intervals, the units need to be pulled into each boundary
          $expected=$answer;
          $expected=~s/\:/ $unit\:/gs;
