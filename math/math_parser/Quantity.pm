@@ -32,6 +32,9 @@ use Math::Complex; # must be after POSIX for redefinition of log10
 use aliased 'Apache::math::math_parser::CalcException';
 use aliased 'Apache::math::math_parser::Quantity';
 use aliased 'Apache::math::math_parser::QVector';
+use aliased 'Apache::math::math_parser::QMatrix';
+use aliased 'Apache::math::math_parser::QInterval';
+use aliased 'Apache::math::math_parser::QSet';
 
 use overload
     '""' => \&toString,
@@ -363,27 +366,24 @@ sub qneg {
 
 ##
 # Multiplication
-# @param {Quantity|QVector}
-# @returns {Quantity|QVector}
+# @param {Quantity|QVector|QMatrix|QInterval|QSet}
+# @returns {Quantity|QVector|QMatrix|QInterval|QSet}
 ##
 sub qmult {
     my ( $self, $qv ) = @_;
-    if ($qv->isa(Quantity)) {
-        my $q = $qv;
-        my $v = $self->value * $q->value;
-        my %units = %{$self->units};
-        foreach my $unit (keys %units) {
-            $units{$unit} = $units{$unit} + $q->units->{$unit};
-        }
-        return Quantity->new($v, \%units);
-    } else { # QVector
-        my $v = $qv;
-        my @t = (); # array of Quantity
-        for (my $i=0; $i < scalar(@{$v->quantities}); $i++) {
-            $t[$i] = $v->quantities->[$i]->qmult($self);
-        }
-        return QVector->new(\@t);
+    if (!$qv->isa(Quantity) && !$qv->isa(QVector) && !$qv->isa(QMatrix) && !$qv->isa(QInterval) && !$qv->isa(QSet)) {
+        die CalcException->new("Quantity multiplication: second member is not a quantity/vector/matrix/interval/set.");
     }
+    if ($qv->isa(QVector) || $qv->isa(QMatrix) || $qv->isa(QInterval) || $qv->isa(QSet)) {
+        return($qv->qmult($self));
+    }
+    my $q = $qv;
+    my $v = $self->value * $q->value;
+    my %units = %{$self->units};
+    foreach my $unit (keys %units) {
+        $units{$unit} = $units{$unit} + $q->units->{$unit};
+    }
+    return Quantity->new($v, \%units);
 }
 
 ##

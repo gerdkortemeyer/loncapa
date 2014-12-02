@@ -147,6 +147,23 @@ sub compare {
 }
 
 ##
+# Multiplication by a Quantity
+# @param {Quantity}
+# @returns {QSet}
+##
+sub qmult {
+    my ( $self, $qv ) = @_;
+    if (!$qv->isa(Quantity)) {
+        die CalcException->new("Set multiplication: second member is not a quantity.");
+    }
+    my @t = ();
+    foreach my $q (@{$self->quantities}) {
+        push(@t, $q * $qv);
+    }
+    return QSet->new(\@t);
+}
+
+##
 # Union
 # @param {QSet}
 # @returns {QSet}

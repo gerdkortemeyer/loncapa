@@ -172,18 +172,18 @@ sub addHiddenOperators {
                 ($token_type == Token->NAME && $next_token_type == Token->NAME) ||
                 ($token_type == Token->NUMBER && $next_token_type == Token->NAME) ||
                 ($token_type == Token->NUMBER && $next_token_type == Token->NUMBER) ||
-                ($token_type == Token->NUMBER && $next_token_value ~~ ["(","["]) ||
+                ($token_type == Token->NUMBER && $next_token_value ~~ ["(","[","{"]) ||
                 # ($token_type == Token->NAME && $next_token_value eq "(") ||
                 # name ( could be a function call
-                ($token_value ~~ [")","]"] && $next_token_type == Token->NAME) ||
-                ($token_value ~~ [")","]"] && $next_token_type == Token->NUMBER) ||
-                ($token_value ~~ [")","]"] && $next_token_value eq "(")
+                ($token_value ~~ [")","]","}"] && $next_token_type == Token->NAME) ||
+                ($token_value ~~ [")","]","}"] && $next_token_type == Token->NUMBER) ||
+                ($token_value ~~ [")","]","}"] && $next_token_value eq "(")
            ) {
             # support for things like "(1/2) (m/s)" is complex...
             my $units = ($self->unit_mode && !$in_units &&
-                ($token_type == Token->NUMBER || $token_value ~~ [")","]"]) &&
+                ($token_type == Token->NUMBER || $token_value ~~ [")","]","}"]) &&
                 ($next_token_type == Token->NAME ||
-                    ($next_token_value ~~ ["(","["] && scalar(@{$self->tokens}) > $i + 2 &&
+                    ($next_token_value ~~ ["(","[","{"] && scalar(@{$self->tokens}) > $i + 2 &&
                     $self->tokens->[$i + 2]->type == Token->NAME)));
             if ($units) {
                 my( $test_token, $index_test);
