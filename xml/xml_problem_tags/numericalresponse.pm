@@ -72,7 +72,6 @@ sub evaluate_answer {
    my $unit=&Apache::lc_asset_xml::open_tag_attribute('unit',$stack);
    unless ($unit) { $unit=''; }
    my $expected='';
-   my $expected='';
    if (ref($answer) eq 'ARRAY') {
       if ($special eq 'sets') {
 # The array contains elements of a set
@@ -98,8 +97,18 @@ sub evaluate_answer {
       }
    } else {
 # We have a string as answer
-      $expected=$answer.' '.$unit;
+      if ($special eq 'intervals') {
+# For intervals, the units need to be pulled into each boundary
+         $expected=$answer;
+         $expected=~s/\:/ $unit\:/gs;
+         $expected=~s/([\]\)])\s*u/ $unit$1\+/gsi;
+         $expected=~s/([\]\)])\s*$/ $unit$1/s;
+      } else {
+# Just normal ...
+         $expected=$answer.' '.$unit;
+      }
    }
+   return $expected;
 }
 
 #
@@ -116,11 +125,16 @@ sub evaluate_responses {
       if ($special eq 'sets') {
 # Must be elements in a set
          return '{'.join(';',@{$responses}).'}';
+      } elsif ($special eq 'intervals') {
+         return join('+',@{$responses});
       } else {
 # Just a normal array 
          return '['.join(';',@{$responses}).']';
       }
    } else {
+      if ($special eq 'intervals') {
+         $responses->[0]=~s/([\]\)])\s*u\s*([\[\(])/$1\+$2/gsi;
+      }
       return $responses->[0];
    }
 }

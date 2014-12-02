@@ -1,9 +1,9 @@
 <loncapa>
 <head>
-<title>Or Numerical Problem</title>
+<title>Unordered Numerical Problem</title>
 </head>
 <body>
-Simple or problem
+Simple unordered problem 1, 2, 3 N
 <problem>
 <part>
 <perl>
