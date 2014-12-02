@@ -67,13 +67,13 @@ sub end_numericalresponse_html {
 # Units are attached to the end
 #
 sub evaluate_answer {
-   my ($stack,$special)=@_;
+   my ($stack,$mode)=@_;
    my $answer=&Apache::lc_asset_xml::open_tag_attribute('answer',$stack);
    my $unit=&Apache::lc_asset_xml::open_tag_attribute('unit',$stack);
    unless ($unit) { $unit=''; }
    my $expected='';
    if (ref($answer) eq 'ARRAY') {
-      if ($special eq 'sets') {
+      if ($mode eq 'sets') {
 # The array contains elements of a set
          $expected='{'.join(';',@{$answer}).'} '.$unit;
       } elsif ($#{$answer}>0) {
@@ -109,14 +109,14 @@ sub evaluate_answer {
 # a string for sets or vectors
 #
 sub evaluate_responses {
-   my ($stack,$special)=@_;
+   my ($stack,$mode)=@_;
    my $responses=&Apache::lc_asset_xml::collect_responses($stack);
    if ($#{$responses}>0) {
 # There was more than one answer field
-      if ($special eq 'sets') {
+      if ($mode eq 'sets') {
 # Must be elements in a set
          return '{'.join(';',@{$responses}).'}';
-      } elsif ($special eq 'intervals') {
+      } elsif ($mode eq 'intervals') {
          return join('+',@{$responses});
       } else {
 # Just a normal array 
@@ -136,6 +136,8 @@ sub end_numericalresponse_grade {
    my $tolerance=&Apache::lc_asset_xml::cascade_parameter('tol',$stack);
 # Special mode?
    my $mode=&Apache::lc_asset_xml::open_tag_attribute('mode',$stack);
+# Or?
+   my $or=&Apache::lc_asset_xml::open_tag_switch('or',$stack);
 # Get the correct answer and unit
    my $expected=&evaluate_answer($stack,$mode);
 # Get student-entered answer
@@ -145,7 +147,7 @@ sub end_numericalresponse_grade {
 # Get ourselves a numerical parser and environment
    my ($parser,$env)=&Apache::lc_math_parser::new_numerical_parser($customunits);
 # Do the actual grading
-   my ($outcome,$message)=&answertest($parser,$env,$responses,$expected,$tolerance,$mode);
+   my ($outcome,$message)=&answertest($parser,$env,$responses,$expected,$tolerance,$mode,$or);
    &logdebug($outcome.' - '.$message.' - '.$responses.' - '.$expected.' - '.$tolerance.' - '.$mode);
 }
 
@@ -164,8 +166,8 @@ sub end_numericalhintcondition_html {
 # A numeric comparison of $expression and $expected
 #
 sub answertest {
-    my ($parser,$env,$expression, $expected, $tolerance, $special)=@_;
-&logdebug("Answertest [$expression] [$expected] [$special]");
+    my ($parser,$env,$expression, $expected, $tolerance, $mode, $or)=@_;
+&logdebug("Answertest [$expression] [$expected] [$mode] [$or]");
 # No tolerance? Be absolutely tolerant!
     if (!defined $tolerance) {
         $tolerance = 1e-5;
@@ -178,11 +180,7 @@ sub answertest {
        return(&no_valid_answer(),undef);
     }
 # Everything is ready now, let's see what we have
-    if ($special eq 'or') {
-# One of the values in an array
-       if ($expression=~/\;/) {
-          return(&response_scalar_required(),undef);
-       }
+    if ($or) {
 # Evaluate the instructor answers, will result in vector
        my ($error,$answers)=&Apache::lc_math_parser::evaluate_in_parser($parser,$env,$expected);
        if ($error) {
@@ -191,7 +189,7 @@ sub answertest {
 # Split the vector, test each component
        $answers=~s/[\[\]]//gs;
        foreach my $attempt (split(/\;/,$answers)) {
-          my ($code,$message)=&answertest($parser,$env,$expression,$attempt,$tolerance);
+          my ($code,$message)=&answertest($parser,$env,$expression,$attempt,$tolerance,$mode);
 # If it's not incorrect, return it
           if ($code ne &incorrect()) {
              return($code,$message);
@@ -201,7 +199,7 @@ sub answertest {
        return(&incorrect,undef);
     } else {
 # There's only one answer
-       my ($code,$message)=&Apache::lc_math_parser::compare_in_parser($parser,$env,$expression,$expected,$tolerance,$special);
+       my ($code,$message)=&Apache::lc_math_parser::compare_in_parser($parser,$env,$expression,$expected,$tolerance,$mode);
     }
 }
 

@@ -99,6 +99,13 @@ sub open_tag_attribute {
    return undef;
 }
 
+#
+# Returns 0 or 1
+#
+sub open_tag_switch {
+   my ($name,$stack)=@_;
+   return (&open_tag_attribute($name,$stack)=~/^(\Q$name\E|y|yes|1|on|true)$/i);
+}
 
 #
 # Check if we are inside of tag

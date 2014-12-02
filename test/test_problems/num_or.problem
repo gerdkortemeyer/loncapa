@@ -9,7 +9,8 @@ Simple or problem
 <perl>
 @vector=(1,2,3);
 </perl>
-<numericalresponse answer="@vector" unit="N" mode="or">
+1 N or 2 N or 3 N 
+<numericalresponse answer="@vector" unit="N" or="or">
 <textline />
 </numericalresponse>
 </part>
