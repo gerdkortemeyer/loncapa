@@ -33,7 +33,8 @@ use aliased 'Apache::math::math_parser::QIntervalUnion';
 
 use overload
     '""' => \&toString,
-    '+' => \&union;
+    '+' => \&union,
+    '*' => \&qmult;
 
 ##
 # Constructor
@@ -239,6 +240,23 @@ sub contains {
         }
     }
     return 0;
+}
+
+##
+# Multiplication by a Quantity
+# @param {Quantity} q
+# @returns {QIntervalUnion}
+##
+sub qmult {
+    my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die CalcException->new("QIntervalUnion multiplication: second member is not a quantity.");
+    }
+    my @t = ();
+    foreach my $inter (@{$self->intervals}) {
+        push(@t, $inter * $q);
+    }
+    return QIntervalUnion->new(\@t);
 }
 
 ##
