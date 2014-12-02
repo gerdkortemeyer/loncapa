@@ -54,30 +54,60 @@ sub new {
 
 # Attribute helpers
 
+##
+# Implicit operators ?
+# @returns {boolean}
+##
 sub implicit_operators {
     my $self = shift;
     return $self->{_implicit_operators};
 }
+
+##
+# Unit mode ?
+# @returns {boolean}
+##
 sub unit_mode {
     my $self = shift;
     return $self->{_unit_mode};
 }
+
+##
+# Definitions
+# @returns {Definitions}
+##
 sub defs {
     my $self = shift;
     return $self->{_defs};
 }
+
+##
+# Tokens
+# @returns {Token[]}
+##
 sub tokens {
     my $self = shift;
     return $self->{_tokens};
 }
+
+##
+# Current token
+# @returns {Token}
+##
 sub current_token {
     my $self = shift;
     return $self->{_current_token};
 }
+
+##
+# Current token number
+# @returns {int}
+##
 sub token_nr {
     my $self = shift;
     return $self->{_token_nr};
 }
+
 
 ##
 # Returns the right node at the current token, based on top-down operator precedence.

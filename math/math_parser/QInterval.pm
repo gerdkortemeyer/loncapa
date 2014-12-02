@@ -39,10 +39,10 @@ use overload
 
 ##
 # Constructor
-# @param {Quantity} quantity min
-# @param {Quantity} quantity max
-# @param {boolean} qmin open ?
-# @param {boolean} qmax open ?
+# @param {Quantity} qmin - quantity min
+# @param {Quantity} qmax - quantity max
+# @param {boolean} qminopen - qmin open ?
+# @param {boolean} qmaxopen - qmax open ?
 ##
 sub new {
     my $class = shift;
@@ -67,22 +67,42 @@ sub new {
 
 # Attribute helpers
 
+##
+# Min quantity.
+# @returns {Quantity}
+##
 sub qmin {
     my $self = shift;
     return $self->{_qmin};
 }
+
+##
+# Max quantity.
+# @returns {Quantity}
+##
 sub qmax {
     my $self = shift;
     return $self->{_qmax};
 }
+
+##
+# Returns 1 if the interval minimum is open, 0 otherwise.
+# @returns {boolean}
+##
 sub qminopen {
     my $self = shift;
     return $self->{_qminopen};
 }
+
+##
+# Returns 1 if the interval maximum is open, 0 otherwise.
+# @returns {boolean}
+##
 sub qmaxopen {
     my $self = shift;
     return $self->{_qmaxopen};
 }
+
 
 ##
 # Returns 1 if the interval is empty
@@ -150,9 +170,10 @@ sub equals {
 
 ##
 # Compare this vector with another one, and returns a code.
-# @param {QInterval|QSset|Quantity|QVector|QMatrix}
+# Returns Quantity->WRONG_TYPE if the parameter is not a QInterval.
+# @param {QInterval|QSet|Quantity|QVector|QMatrix}
 # @optional {string|float} tolerance
-# @returns {int}
+# @returns {int} Quantity->WRONG_TYPE|WRONG_DIMENSIONS|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|WRONG_ENDPOINT|IDENTICAL
 ##
 sub compare {
     my ( $self, $int, $tolerance ) = @_;
@@ -181,7 +202,8 @@ sub compare {
 }
 
 ##
-# Clone this object
+# Clone this object.
+# @returns {QInterval}
 ##
 sub clone {
     my ( $self ) = @_;

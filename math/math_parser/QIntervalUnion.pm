@@ -78,10 +78,15 @@ sub new {
 
 # Attribute helpers
 
+##
+# The intervals in the interval union, in canonical form (sorted disjoint intervals)
+# @returns {QInterval[]}
+##
 sub intervals {
     my $self = shift;
     return $self->{_intervals};
 }
+
 
 ##
 # Returns a readable view of the object
@@ -131,9 +136,11 @@ sub equals {
 
 ##
 # Compare this interval union with another one, and returns a code.
+# Returns Quantity->WRONG_TYPE if the parameter is not a QIntervalUnion
+# (this might happen if a union of disjoint intervals is compared with a simple interval).
 # @param {QIntervalUnion|QInterval|QSet|Quantity|QVector|QMatrix}
 # @optional {string|float} tolerance
-# @returns {int}
+# @returns {int} Quantity->WRONG_TYPE|WRONG_DIMENSIONS|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|WRONG_ENDPOINT|IDENTICAL
 ##
 sub compare {
     my ( $self, $qiu, $tolerance ) = @_;

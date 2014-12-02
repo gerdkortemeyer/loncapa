@@ -57,14 +57,24 @@ sub new {
 
 # Attribute helpers
 
+##
+# The operators.
+# @returns {Operator[]}
+##
 sub operators {
     my $self = shift;
     return $self->{_operators};
 }
+
+##
+# The constants, read from constants.json.
+# @returns {hash} A hash name -> hash with the keys value and units
+##
 sub constants {
     my $self = shift;
     return $self->{_constants};
 }
+
 
 ##
 # Creates a new operator.

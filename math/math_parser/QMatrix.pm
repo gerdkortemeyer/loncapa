@@ -53,10 +53,15 @@ sub new {
 
 # Attribute helpers
 
+##
+# The components of the matrix.
+# @returns {Quantity[][]}
+##
 sub quantities {
     my $self = shift;
     return $self->{_quantities};
 }
+
 
 ##
 # Returns a readable view of the object
@@ -111,9 +116,9 @@ sub equals {
 
 ##
 # Compare this matrix with another one, and returns a code.
-# @param {Quantity|QVector|QMatrix}
+# @param {Quantity|QVector|QMatrix|QSet|QInterval}
 # @optional {string|float} tolerance
-# @returns {int}
+# @returns {int} Quantity->WRONG_TYPE|WRONG_DIMENSIONS|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|IDENTICAL
 ##
 sub compare {
     my ( $self, $m, $tolerance ) = @_;

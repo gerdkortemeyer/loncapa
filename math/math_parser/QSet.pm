@@ -62,10 +62,15 @@ sub new {
 
 # Attribute helpers
 
+##
+# The components of the set.
+# @returns {Quantity[]}
+##
 sub quantities {
     my $self = shift;
     return $self->{_quantities};
 }
+
 
 ##
 # Returns a readable view of the object
@@ -115,9 +120,10 @@ sub equals {
 
 ##
 # Compare this set with another one, and returns a code.
+# Returns Quantity->WRONG_TYPE if the parameter is not a QSet.
 # @param {QSet|QInterval|Quantity|QVector|QMatrix}
 # @optional {string|float} tolerance
-# @returns {int}
+# @returns {int} Quantity->WRONG_TYPE|WRONG_DIMENSIONS|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|IDENTICAL
 ##
 sub compare {
     my ( $self, $set, $tolerance ) = @_;

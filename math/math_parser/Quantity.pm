@@ -86,14 +86,25 @@ sub new {
 
 # Attribute helpers
 
+##
+# Value.
+# @returns {Complex}
+##
 sub value {
     my $self = shift;
     return $self->{_value};
 }
+
+
+##
+# Units
+# @returns {Object.<string, integer>} hash: unit name -> exponent for each SI unit
+##
 sub units {
     my $self = shift;
     return $self->{_units};
 }
+
 
 ##
 # Returns a readable view of the object
@@ -162,9 +173,10 @@ sub equals {
 
 ##
 # Compare this quantity with another one, and returns a code.
-# @param {Quantity|QVector|QMatrix}
+# Returns Quantity->WRONG_TYPE if the parameter is not a Quantity.
+# @param {Quantity|QVector|QMatrix|QSet|QInterval}
 # @optional {string|float} tolerance
-# @returns {int}
+# @returns {int} WRONG_TYPE|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|IDENTICAL
 ##
 sub compare {
     my ( $self, $q, $tolerance ) = @_;

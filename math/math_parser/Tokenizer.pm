@@ -47,14 +47,24 @@ sub new {
 
 # Attribute helpers
 
+##
+# Operator definitions
+# @returns {Definitions}
+##
 sub defs {
     my $self = shift;
     return $self->{_defs};
 }
+
+##
+# The text to tokenize
+# @returns {string}
+##
 sub text {
     my $self = shift;
     return $self->{_text};
 }
+
 
 ##
 # Tokenizes the text.

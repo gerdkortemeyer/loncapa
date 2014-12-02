@@ -50,14 +50,24 @@ sub new {
 
 # Attribute helpers
 
+##
+# Error message, using [_1] for the first parameter.
+# @returns {string}
+##
 sub msg {
     my $self = shift;
     return $self->{_msg};
 }
+
+##
+# Parameters for the message.
+# @returns {string[]}
+##
 sub params {
     my $self = shift;
     return $self->{_params};
 }
+
 
 ##
 # Returns the exception as a string, for debug only.

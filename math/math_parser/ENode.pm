@@ -47,7 +47,7 @@ use enum qw(NOT_AN_INTERVAL OPEN_OPEN OPEN_CLOSED CLOSED_OPEN CLOSED_CLOSED);
 # @param {Operator} op - The operator
 # @param {string} value - Node value as a string, undef for type VECTOR
 # @param {ENode[]} children - The children nodes, only for types OPERATOR, FUNCTION, VECTOR, INTERVAL, SET, SUBSCRIPT
-# @param {interval_type} - The interval type, QInterval->NOT_AN_INTERVAL | OPEN_OPEN | OPEN_CLOSED | CLOSED_OPEN | CLOSED_CLOSED
+# @param {interval_type} - The interval type, NOT_AN_INTERVAL | OPEN_OPEN | OPEN_CLOSED | CLOSED_OPEN | CLOSED_CLOSED
 ##
 sub new {
     my $class = shift;
@@ -64,26 +64,51 @@ sub new {
 
 # Attribute helpers
 
+##
+# Node type
+# @returns {int} UNKNOWN | NAME | NUMBER | OPERATOR | FUNCTION | VECTOR | INTERVAL | SET | SUBSCRIPT
+##
 sub type {
     my $self = shift;
     return $self->{_type};
 }
+
+##
+# Operator
+# @returns {Operator}
+##
 sub op {
     my $self = shift;
     return $self->{_op};
 }
+
+##
+# Node value as a string, undef for type VECTOR.
+# @returns {string}
+##
 sub value {
     my $self = shift;
     return $self->{_value};
 }
+
+##
+# The children nodes, only for types OPERATOR, FUNCTION, VECTOR, INTERVAL, SET, SUBSCRIPT
+# @returns {ENode[]}
+##
 sub children {
     my $self = shift;
     return $self->{_children};
 }
+
+##
+# The interval type, NOT_AN_INTERVAL | OPEN_OPEN | OPEN_CLOSED | CLOSED_OPEN | CLOSED_CLOSED
+# @returns {int}
+##
 sub interval_type {
     my $self = shift;
     return $self->{_interval_type};
 }
+
 
 ##
 # Returns the node as a string, for debug

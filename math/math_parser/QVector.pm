@@ -52,10 +52,15 @@ sub new {
 
 # Attribute helpers
 
+##
+# The components of the vector.
+# @returns {Quantity[]}
+##
 sub quantities {
     my $self = shift;
     return $self->{_quantities};
 }
+
 
 ##
 # Returns a readable view of the object
@@ -98,9 +103,10 @@ sub equals {
 
 ##
 # Compare this vector with another one, and returns a code.
-# @param {Quantity|QVector|QMatrix}
+# Returns Quantity->WRONG_TYPE if the parameter is not a QVector.
+# @param {Quantity|QVector|QMatrix|QSet|QInterval}
 # @optional {string|float} tolerance
-# @returns {int}
+# @returns {int} Quantity->WRONG_TYPE|WRONG_DIMENSIONS|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|IDENTICAL
 ##
 sub compare {
     my ( $self, $v, $tolerance ) = @_;
@@ -128,9 +134,10 @@ sub compare {
 
 ##
 # Interprets this vector as an unordered list of quantities, compares it with another one, and returns a code.
-# @param {Quantity|QVector|QMatrix}
+# Returns Quantity->WRONG_TYPE if the parameter is not a QVector.
+# @param {Quantity|QVector|QMatrix|QSet|QInterval}
 # @optional {string|float} tolerance
-# @returns {int}
+# @returns {int} Quantity->WRONG_TYPE|WRONG_DIMENSIONS|MISSING_UNITS|ADDED_UNITS|WRONG_UNITS|WRONG_VALUE|IDENTICAL
 ##
 sub compare_unordered {
     my ( $self, $v, $tolerance ) = @_;

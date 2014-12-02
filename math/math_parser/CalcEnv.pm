@@ -48,18 +48,33 @@ sub new {
 
 # Attribute helpers
 
+##
+# Unit mode ?
+# @returns {boolean}
+##
 sub unit_mode {
     my $self = shift;
     return $self->{_unit_mode};
 }
+
+##
+# Units
+# @returns {Units}
+##
 sub units {
     my $self = shift;
     return $self->{_units};
 }
+
+##
+# Variables
+# @returns {Object.<string, string>} hash variable name -> value
+##
 sub variables {
     my $self = shift;
     return $self->{_variables};
 }
+
 
 ##
 # Changes an existing unit or defines a new one.
