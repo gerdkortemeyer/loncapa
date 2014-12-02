@@ -93,21 +93,11 @@ sub evaluate_answer {
          $expected.='] '.$unit;
       } else {
 # We have an array, but it has only one element
-         $expected=$answer->[0].' '.$unit;
+         $expected='('.$answer->[0].') '.$unit;
       }
    } else {
 # We have a string as answer
-      if (($special eq 'intervals') || 
-          ($special eq 'contained') ||
-          ($special eq 'sets')) {
-# For unions, the units need to be pulled in
-         $expected=$answer;
-         $expected=~s/([\]\)\}])\s*u\s*([\{\[\(])/$1 $unit \+ $2/gsi;
-         $expected.=' '.$unit;
-      } else {
-# Just normal ...
-         $expected=$answer.' '.$unit;
-      }
+     $expected='('.$answer.')'.$unit;
    }
    return $expected;
 }
@@ -133,9 +123,6 @@ sub evaluate_responses {
          return '['.join(';',@{$responses}).']';
       }
    } else {
-      if (($special eq 'intervals') || ($special eq 'sets')) {
-         $responses->[0]=~s/([\]\)\}])\s*u\s*([\{\[\(])/$1\+$2/gsi;
-      }
       return $responses->[0];
    }
 }
