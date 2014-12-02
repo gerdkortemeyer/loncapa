@@ -152,9 +152,10 @@ sub toString {
 }
 
 ##
-# Evaluates the node, returning either a number, a complex or a vector with associated units.
+# Evaluates the node, returning a quantity or an object from a more complex class using quantities as base components.
+# Can throw a CalcException if a result cannot be calculated.
 # @param {CalcEnv} env - Calculation environment.
-# @returns {Quantity|QVector|QMatrix}
+# @returns {Quantity|QVector|QMatrix|QSet|QInterval|QIntervalUnion}
 ##
 sub calc {
     my ( $self, $env ) = @_;
