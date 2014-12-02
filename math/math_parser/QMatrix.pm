@@ -215,6 +215,9 @@ sub qneg {
 ##
 sub qmult {
     my ( $self, $m ) = @_;
+    if (!$m->isa(Quantity) && !$m->isa(QVector) && !$m->isa(QMatrix)) {
+        die CalcException->new("Matrix element-by-element multiplication: second member is not a quantity, vector or matrix.");
+    }
     if ($m->isa(Quantity)) {
         my @t = (); # 2d array of Quantity
         for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
@@ -261,8 +264,8 @@ sub qmult {
 ##
 sub qdot {
     my ( $self, $m ) = @_;
-    if ($m->isa(Quantity)) {
-        die CalcException->new("Dot product Matrix: Quantity is not defined.");
+    if (!$m->isa(QVector) && !$m->isa(QMatrix)) {
+        die CalcException->new("Matrix product: second member is not a vector or a matrix.");
     }
     if (scalar(@{$self->quantities->[0]}) != scalar(@{$m->quantities})) {
         die CalcException->new("Matrix product: the matrices sizes do not match.");

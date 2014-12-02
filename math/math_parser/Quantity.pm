@@ -393,6 +393,9 @@ sub qmult {
 ##
 sub qdiv {
     my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die CalcException->new("Quantity division: second member is not a quantity.");
+    }
     if ($q->value == 0) {
         die CalcException->new("Division by 0");
     }
@@ -406,10 +409,14 @@ sub qdiv {
 
 ##
 # Power
+# @param {Quantity}
 # @returns {Quantity}
 ##
 sub qpow {
     my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die CalcException->new("Quantity power: second member is not a quantity.");
+    }
     my $v = $self->value ** $q->value;
     $q->noUnits("Power");
     my %units = %{$self->units};
@@ -513,6 +520,9 @@ sub qlog10 {
 ##
 sub qmod {
     my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die CalcException->new("Quantity modulo: second member is not a quantity.");
+    }
     my $v = $self->value % $q->value;
     return Quantity->new($v, $self->units);
 }
@@ -621,6 +631,9 @@ sub qatan {
 ##
 sub qatan2 {
     my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die CalcException->new("Quantity atan2: second member is not a quantity.");
+    }
     $self->noUnits("atan2");
     my $v = atan2($self->value, $q->value);
     return Quantity->new($v, $self->units);

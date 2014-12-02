@@ -216,11 +216,11 @@ sub contains {
 # @returns {QInterval}
 ##
 sub qmult {
-    my ( $self, $qv ) = @_;
-    if (!$qv->isa(Quantity)) {
+    my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
         die CalcException->new("Interval multiplication: second member is not a quantity.");
     }
-    return QInterval->new($self->qmin * $qv, $self->qmax * $qv, $self->qminopen, $self->qmaxopen);
+    return QInterval->new($self->qmin * $q, $self->qmax * $q, $self->qminopen, $self->qmaxopen);
 }
 
 ##

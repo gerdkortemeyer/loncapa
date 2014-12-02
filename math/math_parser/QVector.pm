@@ -233,6 +233,9 @@ sub qmult {
 ##
 sub qpow {
     my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
+        die CalcException->new("Vector power: second member is not a quantity.");
+    }
     $q->noUnits("Power");
     my @t = (); # array of Quantity
     for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {

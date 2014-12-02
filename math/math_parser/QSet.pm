@@ -152,13 +152,13 @@ sub compare {
 # @returns {QSet}
 ##
 sub qmult {
-    my ( $self, $qv ) = @_;
-    if (!$qv->isa(Quantity)) {
+    my ( $self, $q ) = @_;
+    if (!$q->isa(Quantity)) {
         die CalcException->new("Set multiplication: second member is not a quantity.");
     }
     my @t = ();
-    foreach my $q (@{$self->quantities}) {
-        push(@t, $q * $qv);
+    foreach my $sq (@{$self->quantities}) {
+        push(@t, $sq * $q);
     }
     return QSet->new(\@t);
 }
