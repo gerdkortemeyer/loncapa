@@ -39,8 +39,8 @@ sub start_textline_html {
    &Apache::lc_asset_xml::add_response_input($stack);
    if (&Apache::lc_asset_xml::enclosed_in('numericalresponse',$stack)) {
       return
- '<textarea class="math" data-implicit_operators="true" data-unit_mode="true"
-data-constants="c, pi, e, hbar, amu, G" spellcheck="false" autofocus="autofocus" name="'.$token->[2]->{'id'}.'"></textarea>';
+ '<input class="math" data-implicit_operators="true" data-unit_mode="true"
+data-constants="c, pi, e, hbar, amu, G" spellcheck="false" autocomplete="false" name="'.$token->[2]->{'id'}.'" />';
    }
    return '';
 }
