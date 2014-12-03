@@ -1,3 +1,6 @@
+\lstset{keywordstyle=\color{blue}}
+\lstdefinelanguage{apache}{morekeywords={Location, LocationMatch}}
+
 \chapter{Interface Programming}
 \label{interfaceprogramming}
 \section{Interface Pages}
@@ -17,11 +20,214 @@ directly injected into the page, are located in {\tt loncapa/xml/xml\_includes}.
 
 
 \subsection{Examples}
-Let's walk through a couple examples to see how these different files are used.  We begin at the homepage of the site which loads {\tt loncapa/app/html/index.html}.  This sets the general structure of the page and defines space for things like the page header and the menu.  It also loads the JavaScript file, {\tt loncapa/app/scripts/lc\_default.js}, which includes common JavaScript functions.  One such function that is called upon loading is {\tt menubar()}.  This function dynamically generates the menu based on the context.  It communicates with the server through a JSON call, {\tt \$.getJSON("menu",...)}.  {\tt  lc.conf} directs all "menu" requests to the Perl handler, {\tt loncapa/app/scripts/lc\_ui\_menu.pm}.  The handler returns a JSON object containing the appropriate menu data.
+Let's walk through a couple examples to see how these different files are used.  We begin at the homepage of the site which loads {\tt index.html}.  This sets the general structure of the page and defines space for things like the page header and the menu.  It also loads the JavaScript file, {\tt lc\_default.js}, which includes common JavaScript functions.  One such function that is called upon loading is {\tt menubar()}.  This function dynamically generates the menu based on the context.  It communicates with the server through a JSON call, {\tt \$.getJSON("menu",...)}.  {\tt  lc.conf} directs all "menu" requests to the Perl handler, {\tt lc\_ui\_menu.pm}.  The handler returns a JSON object containing the appropriate menu data.
 
 Another function in {\tt lc\_defaults.js} is {\tt display\_asset(newuri)} which replaces the main iframe with the contents of the passed uri.  {\tt lc\_default.js} also calls the JavaScript function, {\tt dashboard()}, which loads the Dashboard.  It uses {\tt display\_asset()} to load {\tt lc\_dashboard.html} into the iframe.
 
-Now let's see what happens when we go to the Portfolio space.  Clicking on the menu option, Portfolio, calls the JavaScript function, portfolio(), which uses {\tt display\_asset()} to load {\tt lc\_portfolio.html} into the iframe.  {\tt lc\_portfolio.html} loads {\tt lc\_portfolio.js} containing additional JavaScript functions needed in the portfolio space.  Upon loading, {\tt lc\_portfolio.js} calls {\tt load\_path()} which accesses another Perl handler with the request {\tt \$.getJSON( "/portfolio", ...)}.  {\tt lc.conf} directs "portfolio" requests to {\tt loncapa/app/handlers/lc\_ui\_portfolio.pm} which returns the contents of the user's portfolio.
+\subsubsection{Portfolio}
+Now let's see what happens when we go to the Portfolio space.  Clicking on the menu option, Portfolio, calls the JavaScript function, portfolio(), which uses {\tt display\_asset()} to load {\tt lc\_portfolio.html} into the iframe.  {\tt lc\_portfolio.html} loads {\tt lc\_portfolio.js}, containing additional JavaScript functions needed in the portfolio space.  {\tt lc\_portfolio.html} also creates the datatable with the following code: 
+
+\begin{lstlisting}[language=HTML,frame=single,title=lc\_portfolio.html]
+<lcform id="portfolio" screendefaults="portfolio">
+  <lcformtable id="paths">
+    <span class="lcerror"><localize>A problem occured, please try again later.
+        </localize></span>
+    <lcformtableinput description="Path" id="pathrow" type="portfoliopath" />
+  </lcformtable>
+  <lcfileupload id="newfile" target='/upload_file' successcall="uploadsuccess" 
+      failurecall="uploadfailure" />
+  <lcdatatable id="portfoliolist" class="portfoliomanager" pathfield="path" />
+</lcform> 
+\end{lstlisting}
+
+Upon loading, {\tt lc\_portfolio.js} calls {\tt init\_datatable()} which populates the user's portfolio.  It does so with the following command:
+
+\begin{lstlisting}[language=Java,frame=single,title=lc\_portfolio.js]
+$('#portfoliolist').dataTable( {"sAjaxSource" : '/portfolio?'+$('#portfolio').serialize()+
+    '&command=listdirectory&showhidden='+showhidden+'&noCache='+noCache,...  
+\end{lstlisting}
+
+\begin{sloppypar}
+The beginning of this statement, {\tt \$('\#portfoliolist').dataTable(}, selects the table with id ``portfoliolist'' defined in {\tt lc\_portfolio.html} and populates it with the results of the {\tt dataTable()} call.  The first argument of {\tt dataTable()}, {\tt sAjaxSource}, contains the URL from which the data is pulled.  {\tt lc.conf} directs this request to the handlers {\tt lc\_auth\_acc.pm} and {\tt lc\_ui\_portfolio.pm}.
+\end{sloppypar}
+
+\begin{lstlisting}[language=apache,frame=single,title=lc.conf]
+<Location /portfolio>
+SetHandler perl-script
+PerlAccessHandler Apache::lc_auth_acc
+PerlHandler Apache::lc_ui_portfolio
+</Location>
+\end{lstlisting}
+
+{\tt lc\_auth\_acc.pm} passes the query string from {\tt sAjaxSource} along to {\tt lc\_entity\_sessions.pm}.
+
+\begin{lstlisting}[language=Perl,frame=single,title=lc\_auth\_acc.pm]
+sub handler {
+  my $r = shift;
+  return &get_session($r);
+}
+
+sub get_session {
+  my $r = shift;
+  ...
+  &Apache::lc_entity_sessions::get_posted_content($r);
+  ...
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Perl,frame=single,title=lc\_entity\_sessions.pm]
+...
+use vars qw($lc_session);
+
+sub posted_content {
+  return %{$lc_session->{'content'}};
+}
+
+sub get_posted_content {
+  my ($r)=@_;
+  my $query = new CGI($r);
+  my %content=$query->Vars;
+  ...
+  $lc_session->{'content'}=\%content;
+}
+\end{lstlisting}
+
+{\tt get\_session()} in {\tt lc\_auth\_acc.pm} calls {\tt get\_posted\_content()} in {\tt lc\_entity\_sessions.pm} which uses CGI to load the query string into the global hash variable, {\tt \$lc\_session}.  {\tt lc\_ui\_portfolio.pm}, called by {\tt lc.conf} does most of the work of populating the portfolio.
+
+\begin{lstlisting}[language=Perl,frame=single,title=lc\_ui\_portfolio.pm]
+sub handler
+  my %content=&Apache::lc_entity_sessions::posted_content();
+  ...
+  if ($content{'command'} eq 'listdirectory') {
+    # Do a directory listing
+    $r->content_type('application/json; charset=utf-8');
+    $r->print(&listdirectory($path,$content{'showhidden'}));
+
+sub listdirectory
+  ...
+  my $output;
+  $output->{'aaData'}=[];
+  ...
+  my $dir_list=&Apache::lc_entity_urls::full_dir_list($path);
+  foreach my $file (@{$dir_list}) {
+    ...
+    push(@{$output->{'aaData'}},
+    ...
+  }
+  return &Apache::lc_json_utils::perl_to_json($output);
+\end{lstlisting}
+
+This handler calls {\tt posted\_content()} from {\tt lc\_entity\_sessions.pm} to retrieve the contents of {\tt \$lc\_session}.  Recall the {\tt command=listdirectory} part of the {\tt sAjaxSource} query. {\tt lc\_ui\_portfolio.pm} checks for this and then proceeds to call {\tt listdirectory()}.  
+
+{\tt listdirectory()} creates a hash reference called {\tt \$output} to hold the contents of the portfolio.  The {\tt 'aaData'} entry is defined as an empty list.  The metadata for each portfolio element is pushed to this list.  Finally, {\tt perl\_to\_json()} is used to convert the list containing hash reference, {\tt \$output}, to a string in proper JSON format.  The perl module {\tt JSON::DWIW} (``Does what I want'') handles the conversion.
+
+The JSON object is returned as the arguement of {\tt \$('\#portfoliolist').dataTable()} in {\tt lc\_ui\_portfolio.js} which originally made the request.  The portfolio table is populated and displayed.
+
+\subsubsection{Upload content}
+From the portfolio page, new content can be added by clicking the ``Upload file'' button.  Generating the upload button involves the XML parsing described in Chapter~\ref{xmlparser}.  {\tt lc\_portfolio.html} contains the line:
+
+\begin{lstlisting}[language=HTML,frame=single,title=lc\_portfolio.html]
+<lcfileupload id="newfile" target='/upload_file' successcall="uploadsuccess" 
+    failurecall="uploadfailure" /> 
+\end{lstlisting}
+
+{\tt lcfileupload} is a custom tag that must be interpreted.  {\tt lc.conf} parses HTML files with {\tt lc\_asset\_xml.pm}.
+
+\begin{lstlisting}[language=apache,frame=single,title=lc.conf]
+<LocationMatch "(?i)\.(xml|html|htm|xhtml|xhtm|problem)$">
+SetHandler perl-script
+PerlHandler Apache::lc_asset_xml
+</LocationMatch> 
+\end{lstlisting}
+
+\newpage
+
+\begin{lstlisting}[language=Perl,frame=single,title=lc\_asset\_xml.pm]
+sub handler {
+  my $r = shift;
+  my $fn=$r->filename();
+  ...
+    $r->print((&target_render($fn,['html'],{}))[0]);
+  ...
+}
+
+sub target_render {
+  my ($fn,$targets,$stack,$content,$context,$outputid)=@_;
+  ...
+  my $p=HTML::TokeParser->new($fn);
+  ...
+  my $output=&parser($p,$safe,$stack,$status,$targets->[-1]);
+  return ($output,$stack);
+}
+\end{lstlisting}
+
+The main handler passes the filename to {\tt \&target\_render()} along with the target, 'html'.  {\tt \&target\_render()} creates a new parser object for {\tt lc\_portfolio.html} and passes it to {\tt \&parser()}.
+
+\begin{lstlisting}[language=Perl,frame=single,title=lc\_asset\_xml.pm (cont.)]
+sub parser {
+  my ($p,$safe,$stack,$status,$target)=@_;
+  ...
+  while (my $token = $p->get_token) {
+    ...
+    } elsif ($token->[0] eq 'S') {
+      # A start tag - evaluate the attributes in here
+      ...
+      $tmpout=&process_tag('start',$token->[1],$p,$safe,$stack,$status,$target,$token);
+      ...
+      $output.=$tmpout
+  ...
+  return $output;
+}
+
+sub process_tag {
+  my ($type,$tag,$p,$safe,$stack,$status,$target,$token)=@_;
+  ...
+  my $outtag=$type.'_'.$tag.'_'.$target;
+  ...
+  }
+  ...
+  if (defined(&$outtag)) {
+    $tag_output.=&{$outtag}($p,$safe,$stack,$token);
+  ...
+}
+\end{lstlisting}
+
+The {\tt while} loop processes each line. The {\tt <lcfileupload/>} statement is considered a start tag and is passed to {\tt \&process\_tag()}.  {\tt \&process\_tag()} calls {\tt \&start\_lcfileupload\_html()} imported from {\tt lc\_xml\_forms.pm}.
+
+\begin{lstlisting}[showstringspaces=false, language=Perl,frame=single,title=lc\_xml\_forms.pm]
+sub start_lcfileupload_html {
+  my ($p,$safe,$stack,$token)=@_;
+  my $id=$token->[2]->{'id'};
+  my $name=$token->[2]->{'name'};
+  my $target=$token->[2]->{'target'};
+  my $description=$token->[2]->{'description'};
+  my $success=$token->[2]->{'successcall'};
+  my $fail=$token->[2]->{'failurecall'};
+  unless ($name) { $name=$id; }
+  unless ($description) { $description="Upload file"; }
+  my $output='<label class="lcfileuploadlabel" for="'.$id.'" id="'.$id.'label">'
+      .&mt($description).'</label>';
+  $output.='<input id="'.$id.'" name="'.$name.'" class="lcinnerfileupload"
+      type="file" onChange="do_upload(this.form,event,'."'$target','$id',
+      '$success','$fail'".')" />';
+  $output.=&hidden_field($id.'_path','');
+  return $output;
+}
+\end{lstlisting}
+
+The following HTML is generated and ultimately passed to the client:
+
+\begin{lstlisting}[showstringspaces=false, language=HTML,frame=single]
+<label id="newfilelabel" class="lcfileuploadlabel" for="newfile">Upload file</label>
+<input id="newfile" class="lcinnerfileupload" type="file" 
+    onchange="do_upload(this.form,event,'/upload_file','newfile',
+    'uploadsuccess','uploadfailure')" name="newfile">
+</input> 
+\end{lstlisting}
+
+
+
+%{\tt load\_path()} which accesses another Perl handler with the request {\tt \$.getJSON( "/portfolio", ...)}.  {\tt lc.conf} directs "portfolio" requests to {\tt loncapa/app/handlers/lc\_ui\_portfolio.pm} which returns the contents of the user's portfolio.
 
 Many of the menu options follow this pattern.  Menu options execute JavaScript functions which replace the contents of the iframe through a call to {\tt display\_asset()}.  The important contents of the page can be quickly changed without having to rebuild the entire page.  The replacement HTML can load a JavaScript file containing any additional functions needed in that setting.  Those JavaScript files can communicate with the server through JSON requests. {\tt lc.conf} directs the JSON request to  a specific Perl handler depending on the given path.
 
