@@ -103,25 +103,50 @@ var initEditors = function() {
     if (init_done)
         return;
     init_done = true;
+    MathJax.Hub.Config({
+        messageStyle: "none"
+    });
     var math_objects = [];
     var math_inputs = document.getElementsByClassName('math');
     for (var i=0; i<math_inputs.length; i++) {
         var ta = math_inputs[i];
         if (ta.nodeName == "TEXTAREA" || ta.nodeName == "INPUT") {
             var output_node = document.createElement("span");
-            output_node.setAttribute("style", "display:none");
+            output_node.style.display = "none";
+            output_node.style.position = "absolute";
+            output_node.style.backgroundColor = "rgba(255,255,224,0.9)";
+            output_node.style.border = "1px solid #A0A0A0";
+            output_node.style.padding = "5px";
+            var place = function(ta, output_node) {
+                // position the output_node below or on top of ta
+                var ta_rect = ta.getBoundingClientRect();
+                var root = document.documentElement;
+                var docTop = (window.pageYOffset || root.scrollTop)  - (root.clientTop || 0);
+                var docLeft = (window.pageXOffset || root.scrollLeft) - (root.clientLeft || 0);
+                output_node.style.left = (docLeft + ta_rect.left) + "px";
+                if (window.innerHeight > ta_rect.bottom + output_node.offsetHeight)
+                    output_node.style.top = (docTop + ta_rect.bottom) + "px";
+                else
+                    output_node.style.top = (docTop + ta_rect.top - output_node.offsetHeight) + "px";
+            }
             if (ta.nextSibling)
                 ta.parentNode.insertBefore(output_node, ta.nextSibling);
             else
                 ta.parentNode.appendChild(output_node);
-            var hideNode = function(node) {
-                return function(e) { node.setAttribute("style", "display:none"); };
+            var blur = function(output_node) {
+                return function(e) {
+                  output_node.style.display = "none";
+                };
             };
-            var showNode = function(node) {
-                return function(e) { node.setAttribute("style", "display: inline-block; background-color: #FFFFE0"); };
+            var focus = function(ta, output_node) {
+                return function(e) {
+                    if (ta.value != '')
+                        output_node.style.display = "block";
+                        place(ta, output_node);
+                };
             };
-            ta.addEventListener("blur", hideNode(output_node), false);
-            ta.addEventListener("focus", showNode(output_node), false);
+            ta.addEventListener("blur", blur(output_node), false);
+            ta.addEventListener("focus", focus(ta, output_node), false);
             var implicit_operators = (ta.getAttribute("data-implicit_operators") === "true");
             var unit_mode = (ta.getAttribute("data-unit_mode") === "true");
             var constants = ta.getAttribute("data-constants");
@@ -137,12 +162,17 @@ var initEditors = function() {
             var changeObjectN = function(n) {
                 return function(e) {
                   var obj = math_objects[n];
-                  if (document.activeElement == obj.ta) {
-                    // this is useful if there is data in the field with the page default focus
-                    // (there might not be a focus event for the active element)
-                    obj.output_node.setAttribute("style", "display: inline-block; background-color: #FFFFE0");
-                  }
                   handleChange(obj);
+                  if (document.activeElement == obj.ta) {
+                      if (obj.ta.value != '')
+                          obj.output_node.style.display = "block";
+                      else
+                          obj.output_node.style.display = "none";
+                      MathJax.Hub.Queue(function () {
+                          // position the element only when MathJax is done, because the output_node height might change
+                          place(obj.ta, obj.output_node);
+                      });
+                  }
                 };
             };
             var startChange = changeObjectN(i);
