@@ -40,7 +40,9 @@ sub post_xml {
   remove_empty_attributes($root);
   
   replace_tex_and_web($root);
-
+  
+  replace_m($root);
+  
   my @all_block = (@block_elements, @block_html);
   add_sty_blocks($new_path, $root, \@all_block); # must come before the subs using @all_block
 
@@ -332,6 +334,93 @@ sub replace_tex_and_web {
   }
   if ($warning_script) {
     print "WARNING: &web and &tex in script element have to be fixed by hand !\n";
+  }
+}
+
+# Replaces m by HTML, tm and/or dtm.
+# m might contain non-math LaTeX, while tm and dtm may only contain math.
+sub replace_m {
+  my ($root) = @_;
+  my $doc = $root->ownerDocument;
+  # search for variable declarations
+  my @variables = ();
+  my @scripts = $root->getElementsByTagName('script');
+  foreach my $script (@scripts) {
+    my $type = $script->getAttribute('type');
+    if (defined $type && $type eq 'loncapa/perl') {
+      if (defined $script->firstChild && $script->firstChild->nodeType == XML_TEXT_NODE) {
+        my $text = $script->firstChild->nodeValue;
+        # NOTE: we are not interested in replacing "@value", only "$value"
+        while ($text =~ /^[ \t]*\$([a-zA-Z_0-9]+)[ \t]*=/gm) {
+          if (!string_in_array(\@variables, $1)) {
+            push(@variables, $1);
+          }
+        }
+        while ($text =~ /^[ \t]*\([ \t]*\$([a-zA-Z_0-9]+)([ \t]*,[ \t]*\$([a-zA-Z_0-9]+))*[ \t]*\)[ \t]*=/gm) {
+          my $i = 1;
+          my $varref = eval('\$' . $i);
+          while (defined $$varref) {
+            if (!string_in_array(\@variables, $$varref)) {
+              push(@variables, $$varref);
+            }
+            $i += 2;
+            $varref = eval('\$' . $i);
+          }
+        }
+      }
+    }
+  }
+  my @ms = $root->getElementsByTagName('m');
+  foreach my $m (@ms) {
+    if (!defined $m->firstChild) {
+      $m->parentNode->removeChild($m);
+      next;
+    }
+    if (defined $m->firstChild->nextSibling || $m->firstChild->nodeType != XML_TEXT_NODE) {
+      print "WARNING: m value is not simple text\n";
+      next;
+    }
+    my $text = $m->firstChild->nodeValue;
+    my $key1 = 'dfhg3df54hg65hg4';
+    my $key2 = 'dfhg654d6f5g4h5f';
+    my $eval = defined $m->getAttribute('eval') && $m->getAttribute('eval') eq 'on';
+    if ($eval) {
+      # replace variables
+      foreach my $variable (@variables) {
+        my $replacement = $key1.$variable.$key2;
+        $text =~ s/\$$variable/$replacement/ge;
+      }
+    }
+    # check if there are math separators: $ $$ \( \) \[ \]
+    # if so, replace the whole node by dtm or tm
+    my $new_text;
+    my $new_node_name;
+    if ($text =~ /^\$\$(.*)\$\$$/) {
+      $new_node_name = 'dtm';
+      $new_text = $1;
+    } elsif ($text =~ /^\\\[(.*)\\\]$/) {
+      $new_node_name = 'dtm';
+      $new_text = $1;
+    } elsif ($text =~ /^\$(.*)\$$/) {
+      $new_node_name = 'tm';
+      $new_text = $1;
+    } elsif ($text =~ /^\\\((.*)\\\)$/) {
+      $new_node_name = 'tm';
+      $new_text = $1;
+    }
+    if (defined $new_node_name) {
+      if ($eval) {
+        foreach my $variable (@variables) {
+          my $replacement = $key1.$variable.$key2;
+          $new_text =~ s/$replacement/\$$variable/g;
+        }
+      }
+      my $new_node = $doc->createElement($new_node_name);
+      $new_node->appendChild($doc->createTextNode($new_text));
+      $m->parentNode->replaceChild($new_node, $m);
+      next;
+    }
+    
   }
 }
 
