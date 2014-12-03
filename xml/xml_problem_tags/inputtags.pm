@@ -38,7 +38,9 @@ sub start_textline_html {
    my ($p,$safe,$stack,$token)=@_;
    &Apache::lc_asset_xml::add_response_input($stack);
    if (&Apache::lc_asset_xml::enclosed_in('numericalresponse',$stack)) {
-      return '<input type="text" name="'.$token->[2]->{'id'}.'" />';
+      return
+ '<textarea class="math" data-implicit_operators="true" data-unit_mode="true"
+data-constants="c, pi, e, hbar, amu, G" spellcheck="false" autofocus="autofocus" name="'.$token->[2]->{'id'}.'"></textarea>';
    }
    return '';
 }
