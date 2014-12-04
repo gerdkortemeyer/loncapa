@@ -169,9 +169,9 @@ sub add_response_input {
 }
 
 #
-# Collect all responses
+# Collect all inputs made to the response
 #
-sub collect_responses {
+sub collect_response_inputs {
    my ($stack)=@_;
    my $answers=[];
    foreach my $response (@{$stack->{'response_inputs'}}) {
@@ -196,6 +196,31 @@ sub add_response_hint {
 sub get_response_hints {
    my ($stack)=@_;
    return $stack->{'response_hints'};
+}
+
+#
+# Parts
+# - get things ready for grading parts
+#
+sub init_part_grade {
+   my ($stack)=@_;
+   $stack->{'response_grades'}=[];
+}
+
+#
+# Problems
+# - get things ready for grading problems
+#
+sub init_problem_grade {
+   my ($stack)=@_;
+   $stack->{'part_grades'}=[];
+}
+
+#
+# Add a grade
+#
+sub add_response_grade {
+   my ($code,$message,$stack)=@_;
 }
 
 # Output a piece of text

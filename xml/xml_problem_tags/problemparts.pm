@@ -33,7 +33,9 @@ our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
 our @EXPORT = qw(start_problem_html end_problem_html
-                 start_part_html    end_part_html);
+                 start_problem_grade end_problem_grade
+                 start_part_html    end_part_html
+                 start_part_grade   end_part_grade);
 
 sub start_problem_html {
    my ($p,$safe,$stack,$token)=@_;
@@ -56,6 +58,23 @@ sub end_part_html {
    return '<input type="submit" /></form></div>';
 }
 
+sub start_part_grade {
+   my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_asset_xml::init_part_grade($stack);
+}
+
+sub end_part_grade {
+   my ($p,$safe,$stack,$token)=@_;
+}
+
+sub start_problem_grade {
+   my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_asset_xml::init_problem_grade($stack);
+}
+
+sub end_problem_grade {
+   my ($p,$safe,$stack,$token)=@_;
+}
 
 1;
 __END__

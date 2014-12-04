@@ -55,7 +55,7 @@ sub end_numericalresponse_html {
    my ($p,$safe,$stack,$token)=@_;
 #FIXME: do stuff
 #Debug only here
-   my $answers=&Apache::lc_asset_xml::collect_responses($stack);
+   my $answers=&Apache::lc_asset_xml::collect_response_inputs($stack);
    return "Get: ".&Apache::lc_asset_xml::cascade_parameter('tol',$stack).'<br /><pre>'.Dumper($stack).'</pre>'.
           '<pre>'.Dumper($answers).'</pre>';
 }
@@ -110,7 +110,7 @@ sub evaluate_answer {
 #
 sub evaluate_responses {
    my ($stack,$mode)=@_;
-   my $responses=&Apache::lc_asset_xml::collect_responses($stack);
+   my $responses=&Apache::lc_asset_xml::collect_response_inputs($stack);
    if ($#{$responses}>0) {
 # There was more than one answer field
       if ($mode eq 'sets') {
