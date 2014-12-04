@@ -29,6 +29,8 @@ use Apache::lc_entity_users();
 use Apache::lc_xml_forms();
 use Apache::lc_asset_xml();
 
+use Data::Dumper;
+
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
@@ -39,6 +41,7 @@ our @EXPORT = qw(start_problem_html end_problem_html
 
 sub start_problem_html {
    my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_asset_xml::load_record($stack);
    return '<div class="lcproblemdiv">';
 }
 
@@ -55,7 +58,9 @@ sub start_part_html {
 
 sub end_part_html {
    my ($p,$safe,$stack,$token)=@_;
-   return '<input type="submit" /></form></div>';
+   return '<input type="submit" /></form></div>'.
+#FIXME: debug
+          '<pre>'.Dumper($stack).'</pre>';
 }
 
 sub start_part_grade {
@@ -69,11 +74,13 @@ sub end_part_grade {
 
 sub start_problem_grade {
    my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_asset_xml::load_record($stack);
    &Apache::lc_asset_xml::init_problem_grade($stack);
 }
 
 sub end_problem_grade {
    my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_asset_xml::save_record($stack);
 }
 
 1;

@@ -223,6 +223,18 @@ sub add_response_grade {
    my ($code,$message,$stack)=@_;
 }
 
+#
+# Loading and saving of asset data
+#
+sub load_record {
+   my ($stack)=@_;
+}
+
+sub save_record {
+   my ($stack)=@_;
+}
+
+
 # Output a piece of text
 #
 sub process_text {
