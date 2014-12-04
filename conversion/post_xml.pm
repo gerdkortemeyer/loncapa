@@ -2470,12 +2470,16 @@ sub remove_empty_style {
 sub convert_conceptgroup {
   my ($root) = @_;
   my %display_id = ();
+  my $number = 1;
   my @conceptgroups = $root->getElementsByTagName('conceptgroup');
   foreach my $conceptgroup (@conceptgroups) {
     my $concept = $conceptgroup->getAttribute('concept');
     if (defined $concept) {
       $conceptgroup->removeAttribute('concept');
       $conceptgroup->setAttribute('display', $concept);
+    } else {
+      $concept = 'conceptgroup_'.$number;
+      $number++;
     }
     my $id = $concept;
     $id =~ tr/ /_/;
