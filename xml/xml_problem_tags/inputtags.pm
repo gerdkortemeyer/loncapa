@@ -40,7 +40,7 @@ sub start_textline_html {
    if (&Apache::lc_asset_xml::enclosed_in('numericalresponse',$stack)) {
       return
  '<input class="math" data-implicit_operators="true" data-unit_mode="true"
-data-constants="c, pi, e, hbar, amu, G" spellcheck="false" autocomplete="false" name="'.$token->[2]->{'id'}.'" />';
+data-constants="c, pi, e, hbar, amu, G" spellcheck="off" autocomplete="off" name="'.$token->[2]->{'id'}.'" />';
    }
    return '';
 }
