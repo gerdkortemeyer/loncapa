@@ -199,41 +199,11 @@ sub get_response_hints {
 }
 
 #
-# Parts
-# - get things ready for grading parts
-#
-sub init_part_grade {
-   my ($stack)=@_;
-   $stack->{'response_grades'}=[];
-}
-
-#
-# Problems
-# - get things ready for grading problems
-#
-sub init_problem_grade {
-   my ($stack)=@_;
-   $stack->{'part_grades'}=[];
-}
-
-#
-# Add a grade
+# Add a grade, to be collected by end_part
 #
 sub add_response_grade {
    my ($code,$message,$stack)=@_;
 }
-
-#
-# Loading and saving of asset data
-#
-sub load_record {
-   my ($stack)=@_;
-}
-
-sub save_record {
-   my ($stack)=@_;
-}
-
 
 # Output a piece of text
 #

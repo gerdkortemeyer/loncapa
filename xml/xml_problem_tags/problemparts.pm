@@ -19,15 +19,11 @@
 package Apache::xml_problem_tags::problemparts;
 
 use strict;
-use Apache::lc_ui_localize;
-use Apache::lc_ui_utils;
-use Apache::lc_date_utils;
-use Apache::lc_ui_localize();
-use Apache::lc_xml_utils();
 use Apache::lc_entity_sessions();
 use Apache::lc_entity_users();
-use Apache::lc_xml_forms();
 use Apache::lc_asset_xml();
+use Apache::lc_json_utils();
+use Apache::lc_entity_assessments();
 
 use Data::Dumper;
 
@@ -35,13 +31,13 @@ our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
 our @EXPORT = qw(start_problem_html end_problem_html
-                 start_problem_grade end_problem_grade
+                 start_problem_grade
                  start_part_html    end_part_html
                  start_part_grade   end_part_grade);
 
 sub start_problem_html {
    my ($p,$safe,$stack,$token)=@_;
-   &Apache::lc_asset_xml::load_record($stack);
+   &init_problem($safe,$stack);
    return '<div class="lcproblemdiv">';
 }
 
@@ -50,14 +46,22 @@ sub end_problem_html {
    return '</div>';
 }
 
+sub start_problem_grade {
+   my ($p,$safe,$stack,$token)=@_;
+   &init_problem($safe,$stack);
+}
+
 sub start_part_html {
    my ($p,$safe,$stack,$token)=@_;
+   &load_part_data($stack);
    return '<div class="lcpartdiv">'.
           '<form id="'.$token->[2]->{'id'}.'" name="'.$token->[2]->{'id'}.'" class="lcpartform">';
 }
 
 sub end_part_html {
    my ($p,$safe,$stack,$token)=@_;
+#FIXME: do stuff
+   &save_part_data($stack);
    return '<input type="submit" /></form></div>'.
 #FIXME: debug
           '<pre>'.Dumper($stack).'</pre>';
@@ -65,22 +69,34 @@ sub end_part_html {
 
 sub start_part_grade {
    my ($p,$safe,$stack,$token)=@_;
-   &Apache::lc_asset_xml::init_part_grade($stack);
+   &load_part_data($stack)
 }
 
 sub end_part_grade {
    my ($p,$safe,$stack,$token)=@_;
 }
 
-sub start_problem_grade {
-   my ($p,$safe,$stack,$token)=@_;
-   &Apache::lc_asset_xml::load_record($stack);
-   &Apache::lc_asset_xml::init_problem_grade($stack);
+# =============================================
+# Initialize problem
+# =============================================
+
+sub init_problem {
+   my ($save,$stack)=@_;
 }
 
-sub end_problem_grade {
-   my ($p,$safe,$stack,$token)=@_;
-   &Apache::lc_asset_xml::save_record($stack);
+
+
+
+# =============================================
+# Loading and saving part data
+# =============================================
+
+sub load_part_data {
+   my ($stack)=@_;
+}
+
+sub save_part_data {
+   my ($stack)=@_;
 }
 
 1;
