@@ -7,6 +7,7 @@ use utf8;
 use warnings;
 
 use File::Basename;
+use File::Temp qw/ tempfile /;
 use Cwd 'abs_path';
 use XML::LibXML;
 use HTML::TokeParser; # used to parse sty files
@@ -24,7 +25,20 @@ my @block_html = ('html','head','body','section','h1','h2','h3','h4','h5','h6','
 my @no_newline_inside = ('import','parserlib','scriptlib','data','function','label','xlabel','ylabel','tic','text','rectangle','image','title','h1','h2','h3','h4','h5','h6','li','td','p');
 my @preserve_elements = ('script','answer','perl', 'pre');
 my @accepting_style = ('section','h1','h2','h3','h4','h5','h6','div','p','li','td','th','dt','dd','pre','blockquote');
-
+my @latex_math = ('\alpha', '\theta', '\omicron', '\tau', '\beta', '\vartheta', '\pi', '\upsilon', '\gamma', '\gamma', '\varpi', '\phi', '\delta', '\kappa', '\rho', '\varphi', '\epsilon', '\lambda', '\varrho', '\chi', '\varepsilon', '\mu', '\sigma', '\psi', '\zeta', '\nu', '\varsigma', '\omega', '\eta', '\xi',
+  '\Gamma', '\Lambda', '\Sigma', '\Psi', '\Delta', '\Xi', '\Upsilon', '\Omega', '\Theta', '\Pi', '\Phi',
+  '\pm', '\cap', '\diamond', '\oplus', '\mp', '\cup', '\bigtriangleup', '\ominus', '\times', '\uplus', '\bigtriangledown', '\otimes', '\div', '\sqcap', '\triangleleft', '\oslash', '\ast', '\sqcup', '\triangleright', '\odot', '\star', '\vee', '\lhd$', '\bigcirc', '\circ', '\wedge', '\rhd$', '\dagger', '\bullet', '\setminus', '\unlhd$', '\ddagger', '\cdot', '\wr', '\unrhd$', '\amalg', '+', '-',
+  '\leq', '\geq', '\equiv', '\models', '\prec', '\succ', '\sim', '\perp', '\preceq', '\succeq', '\simeq', '\mid', '\ll', '\gg', '\asymp', '\parallel', '\subset', '\supset', '\approx', '\bowtie', '\subseteq', '\supseteq', '\cong', '\Join$', '\sqsubset$', '\sqsupset$', '\neq', '\smile', '\sqsubseteq', '\sqsupseteq', '\doteq', '\frown', '\in', '\ni', '\propto', '\vdash', '\dashv',
+  '\colon', '\ldotp', '\cdotp',
+  '\leftarrow', '\longleftarrow', '\uparrow', '\Leftarrow', '\Longleftarrow', '\Uparrow', '\rightarrow', '\longrightarrow', '\downarrow', '\Rightarrow', '\Longrightarrow', '\Downarrow', '\leftrightarrow', '\longleftrightarrow', '\updownarrow', '\Leftrightarrow', '\Longleftrightarrow', '\Updownarrow', '\mapsto', '\longmapsto', '\nearrow', '\hookleftarrow', '\hookrightarrow', '\searrow', '\leftharpoonup', '\rightharpoonup', '\swarrow', '\leftharpoondown', '\rightharpoondown', '\nwarrow', '\rightleftharpoons', '\leadsto$',
+  '\ldots', '\cdots', '\vdots', '\ddots', '\aleph', '\prime', '\forall', '\infty', '\hbar', '\emptyset', '\exists', '\Box$', '\imath', '\nabla', '\neg', '\Diamond$', '\jmath', '\surd', '\flat', '\triangle', '\ell', '\top', '\natural', '\clubsuit', '\wp', '\bot', '\sharp', '\diamondsuit', '\Re', '\|', '\backslash', '\heartsuit', '\Im', '\angle', '\partial', '\spadesuit', '\mho$',
+  '\sum', '\bigcap', '\bigodot', '\prod', '\bigcup', '\bigotimes', '\coprod', '\bigsqcup', '\bigoplus', '\int', '\bigvee', '\biguplus', '\oint', '\bigwedge',
+  '\arccos', '\cos', '\csc', '\exp', '\ker', '\limsup', '\min', '\sinh', '\arcsin', '\cosh', '\deg', '\gcd', '\lg', '\ln', '\Pr', '\sup', '\arctan', '\cot', '\det', '\hom', '\lim', '\log', '\sec', '\tan', '\arg', '\coth', '\dim', '\inf', '\liminf', '\max', '\sin', '\tanh',
+  '\uparrow', '\Uparrow', '\downarrow', '\Downarrow', '\updownarrow', '\Updownarrow', '\lfloor', '\rfloor', '\lceil', '\rceil', '\langle', '\rangle', '\backslash',
+  '\rmoustache', '\lmoustache', '\rgroup', '\lgroup', '\arrowvert', '\Arrowvert', '\bracevert',
+  '\hat{', '\acute{', '\bar{', '\dot{', '\breve{', '\check{', '\grave{', '\vec{', '\ddot{', '\tilde{',
+  '\widetilde{', '\widehat{', '\overleftarrow{', '\overrightarrow{', '\overline{', '\underline{', '\overbrace{', '\underbrace{', '\sqrt{', '\sqrt[', '\frac{'
+);
 
 # Parses the XML document and fixes many things to turn it into a LON-CAPA 3 document
 # Returns the text of the document.
@@ -351,20 +365,17 @@ sub replace_m {
       if (defined $script->firstChild && $script->firstChild->nodeType == XML_TEXT_NODE) {
         my $text = $script->firstChild->nodeValue;
         # NOTE: we are not interested in replacing "@value", only "$value"
+        # this regexp is for "  $a = ..."
         while ($text =~ /^[ \t]*\$([a-zA-Z_0-9]+)[ \t]*=/gm) {
           if (!string_in_array(\@variables, $1)) {
             push(@variables, $1);
           }
         }
-        while ($text =~ /^[ \t]*\([ \t]*\$([a-zA-Z_0-9]+)([ \t]*,[ \t]*\$([a-zA-Z_0-9]+))*[ \t]*\)[ \t]*=/gm) {
-          my $i = 1;
-          my $varref = eval('\$' . $i);
-          while (defined $$varref) {
-            if (!string_in_array(\@variables, $$varref)) {
-              push(@variables, $$varref);
-            }
-            $i += 2;
-            $varref = eval('\$' . $i);
+        # this regexp is for "  ($a, $b, $c) = ..."
+        my @matches = ($text =~ /^[ \t]*\([ \t]*\$([a-zA-Z_0-9]+)(?:[ \t]*,[ \t]*\$([a-zA-Z_0-9]+))*[ \t]*\)[ \t]*=/gm);
+        foreach my $match (@matches) {
+          if (!string_in_array(\@variables, $match)) {
+            push(@variables, $match);
           }
         }
       }
@@ -381,13 +392,14 @@ sub replace_m {
       next;
     }
     my $text = $m->firstChild->nodeValue;
-    my $key1 = 'dfhg3df54hg65hg4';
-    my $key2 = 'dfhg654d6f5g4h5f';
+    my $text_before_variable_replacement = $text;
+    my $var_key1 = 'dfhg3df54hg65hg4';
+    my $var_key2 = 'dfhg654d6f5g4h5f';
     my $eval = defined $m->getAttribute('eval') && $m->getAttribute('eval') eq 'on';
     if ($eval) {
       # replace variables
       foreach my $variable (@variables) {
-        my $replacement = $key1.$variable.$key2;
+        my $replacement = $var_key1.$variable.$var_key2;
         $text =~ s/\$$variable/$replacement/ge;
       }
     }
@@ -411,7 +423,7 @@ sub replace_m {
     if (defined $new_node_name) {
       if ($eval) {
         foreach my $variable (@variables) {
-          my $replacement = $key1.$variable.$key2;
+          my $replacement = $var_key1.$variable.$var_key2;
           $new_text =~ s/$replacement/\$$variable/g;
         }
       }
@@ -420,8 +432,109 @@ sub replace_m {
       $m->parentNode->replaceChild($new_node, $m);
       next;
     }
+    if ($text !~ /\$|\\\(|\\\)|\\\[|\\\]/) {
+      # there are no math separators inside
+      # try to guess if this is meant as math
+      my $found_math = 0;
+      foreach my $symbol (@latex_math) {
+        if (index($text, $symbol) != -1) {
+          $found_math = 1;
+          last;
+        }
+      }
+      if ($found_math) {
+        # interpret the whole text as LaTeX inline math
+        my $new_node = $doc->createElement('tm');
+        $new_node->appendChild($doc->createTextNode($text_before_variable_replacement));
+        $m->parentNode->replaceChild($new_node, $m);
+        next;
+      }
+      # no math symbol found, we will convert the text with tth
+    }
+    
+    # there are math separators inside, even after hiding variables, or there was no math symbol
+    
+    # hide math parts inside before running tth
+    # FIXME: no space before or after replacements -> could concat with other things and confuse tth
+    my $math_key = 'ghjgdh5hg45gf';
+    my @maths = ();
+    my @separators = (['$$','$$'], ['\\(','\\)'], ['\\[','\\]'], ['$','$']);
+    foreach my $seps (@separators) {
+      my $sep1 = $seps->[0];
+      my $sep2 = $seps->[1];
+      my $pos1 = index($text, $sep1);
+      if ($pos1 == -1) {
+        next;
+      }
+      my $pos2 = index($text, $sep2, $pos1+length($sep1));
+      if ($pos2 == -1) {
+        next;
+      }
+      my $replace = substr($text, $pos1, $pos2+length($sep2)-$pos1);
+      push(@maths, $replace);
+      my $by = $math_key.scalar(@maths).'z';
+      $text = substr($text, 0, $pos1).$by.substr($text, $pos2+length($sep2));
+    }
+    # get HTML as text from tth
+    my $html_text = tth($text);
+    # replace variables if necessary
+    if ($eval) {
+      foreach my $variable (@variables) {
+        my $replacement = $var_key1.$variable.$var_key2;
+        $html_text =~ s/$replacement/\$$variable/g;
+      }
+    }
+    # replace math by replacements
+    for (my $i=0; $i < scalar(@maths); $i++) {
+      my $math = $maths[$i];
+      if ($math =~ /^\$\$(.*)\$\$$/) {
+        $math = '<dtm>'.$1.'</dtm>';
+      } elsif ($math =~ /^\\\[(.*)\\\]$/) {
+        $math = '<dtm>'.$1.'</dtm>';
+      } elsif ($math =~ /^\\\((.*)\\\)$/) {
+        $math = '<tm>'.$1.'</tm>';
+      } elsif ($math =~ /^\$(.*)\$$/) {
+        $math = '<tm>'.$1.'</tm>';
+      }
+      my $replace = $math_key.($i+1).'z';
+      $html_text =~ s/$replace/$math/;
+    }
+    my $fragment = html_to_dom($html_text);
+    $doc->adoptNode($fragment);
+    $m->parentNode->replaceChild($fragment, $m);
     
   }
+}
+
+# Returns the HTML equivalent of LaTeX input, using tth
+sub tth {
+  my ($text) = @_;
+  my ($fh, $tmp_path) = tempfile();
+  print $fh $text;
+  close $fh;
+  my $output = `tth -r -w2 -u -y0 < $tmp_path 2>/dev/null`;
+  # hopefully the temp file will not be removed before this point (otherwise we should use unlink_on_destroy 0)
+  $output =~ s/^\s*|\s*$//;
+  return $output;
+}
+
+# transform simple HTML into a DOM fragment (which will need to be adopted by the document)
+sub html_to_dom {
+  my ($text) = @_;
+  $text = '<root>'.$text.'</root>';
+  my $textref = html_to_xml::html_to_xml(\$text);
+  utf8::upgrade($$textref); # otherwise the XML parser fails when the HTML parser turns &nbsp; into a character
+  my $dom_doc = XML::LibXML->load_xml(string => $textref);
+  my $root = $dom_doc->documentElement;
+  remove_empty_style($root);
+  my $fragment = $dom_doc->createDocumentFragment();
+  my $next;
+  for (my $n=$root->firstChild; defined $n; $n=$next) {
+    $next = $n->nextSibling;
+    $root->removeChild($n);
+    $fragment->appendChild($n);
+  }
+  return($fragment);
 }
 
 # use the linked sty files to guess which newly defined elements should be considered blocks
@@ -2357,12 +2470,16 @@ sub remove_empty_style {
 sub convert_conceptgroup {
   my ($root) = @_;
   my %display_id = ();
+  my $number = 1;
   my @conceptgroups = $root->getElementsByTagName('conceptgroup');
   foreach my $conceptgroup (@conceptgroups) {
     my $concept = $conceptgroup->getAttribute('concept');
     if (defined $concept) {
       $conceptgroup->removeAttribute('concept');
       $conceptgroup->setAttribute('display', $concept);
+    } else {
+      $concept = 'conceptgroup_'.$number;
+      $number++;
     }
     my $id = $concept;
     $id =~ tr/ /_/;
