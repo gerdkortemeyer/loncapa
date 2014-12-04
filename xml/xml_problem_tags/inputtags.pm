@@ -37,10 +37,18 @@ our @EXPORT = qw(start_textline_html start_textline_grade);
 sub start_textline_html {
    my ($p,$safe,$stack,$token)=@_;
    &Apache::lc_asset_xml::add_response_input($stack);
+   my $size=&Apache::lc_asset_xml::open_tag_attribute('size',$stack);
+   unless ($size) { $size=20; }
+   my $hidden=&Apache::lc_asset_xml::open_tag_switch('hidden',$stack);
    if (&Apache::lc_asset_xml::enclosed_in('numericalresponse',$stack)) {
+      my $data_constants=&Apache::lc_asset_xml::open_tag_attribute('constants',$stack);
+      unless ($data_constants) {
+         $data_constants='c, pi, e, hbar, amu, G';
+      }
       return
- '<input class="math" data-implicit_operators="true" data-unit_mode="true"
-data-constants="c, pi, e, hbar, amu, G" spellcheck="off" autocomplete="off" name="'.$token->[2]->{'id'}.'" />';
+ '<input class="math" data-implicit_operators="true" data-unit_mode="true" data-constants="'.$data_constants.
+ '" spellcheck="off" autocomplete="off" name="'.$token->[2]->{'id'}.
+ '" size="'.$size.'"'.($hidden?' hidden="hidden"':'').' />';
    }
    return '';
 }
