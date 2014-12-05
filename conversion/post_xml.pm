@@ -417,13 +417,13 @@ sub replace_m {
     if ($text =~ /^\$\$([^\$]*)\$\$$/) {
       $new_node_name = 'dtm';
       $new_text = $1;
-    } elsif ($text =~ /^\\\[(.*)\\\]$/) {
+    } elsif ($text =~ /^\\\[(.*)\\\]$/s) {
       $new_node_name = 'dtm';
       $new_text = $1;
     } elsif ($text =~ /^\$([^\$]*)\$$/) {
       $new_node_name = 'tm';
       $new_text = $1;
-    } elsif ($text =~ /^\\\((.*)\\\)$/) {
+    } elsif ($text =~ /^\\\((.*)\\\)$/s) {
       $new_node_name = 'tm';
       $new_text = $1;
     }
@@ -487,27 +487,27 @@ sub replace_m {
     }
     # get HTML as text from tth
     my $html_text = tth($text);
+    # replace math by replacements
+    for (my $i=0; $i < scalar(@maths); $i++) {
+      my $math = $maths[$i];
+      if ($math =~ /^\$\$(.*)\$\$$/s) {
+        $math = '<dtm>'.$1.'</dtm>';
+      } elsif ($math =~ /^\\\[(.*)\\\]$/s) {
+        $math = '<dtm>'.$1.'</dtm>';
+      } elsif ($math =~ /^\\\((.*)\\\)$/s) {
+        $math = '<tm>'.$1.'</tm>';
+      } elsif ($math =~ /^\$(.*)\$$/s) {
+        $math = '<tm>'.$1.'</tm>';
+      }
+      my $replace = $math_key1.($i+1).$math_key2;
+      $html_text =~ s/$replace/$math/;
+    }
     # replace variables if necessary
     if ($eval) {
       foreach my $variable (@variables) {
         my $replacement = $var_key1.$variable.$var_key2;
         $html_text =~ s/$replacement/\$$variable/g;
       }
-    }
-    # replace math by replacements
-    for (my $i=0; $i < scalar(@maths); $i++) {
-      my $math = $maths[$i];
-      if ($math =~ /^\$\$(.*)\$\$$/) {
-        $math = '<dtm>'.$1.'</dtm>';
-      } elsif ($math =~ /^\\\[(.*)\\\]$/) {
-        $math = '<dtm>'.$1.'</dtm>';
-      } elsif ($math =~ /^\\\((.*)\\\)$/) {
-        $math = '<tm>'.$1.'</tm>';
-      } elsif ($math =~ /^\$(.*)\$$/) {
-        $math = '<tm>'.$1.'</tm>';
-      }
-      my $replace = $math_key1.($i+1).$math_key2;
-      $html_text =~ s/$replace/$math/;
     }
     my $fragment = html_to_dom($html_text);
     $doc->adoptNode($fragment);
