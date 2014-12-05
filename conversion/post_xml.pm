@@ -381,6 +381,10 @@ sub replace_m {
             push(@variables, $match);
           }
         }
+        # use the opportunity to report usage of <m> in Perl scripts
+        if ($text =~ /<m[ >]/) {
+          print "WARNING: <m> is used in a script, it should be converted by hand\n";
+        }
       }
     }
   }
