@@ -24,6 +24,7 @@ use Apache::lc_entity_users();
 use Apache::lc_asset_xml();
 use Apache::lc_json_utils();
 use Apache::lc_entity_assessments();
+use Apache::lc_xml_forms();
 
 use Data::Dumper;
 
@@ -55,7 +56,9 @@ sub start_part_html {
    my ($p,$safe,$stack,$token)=@_;
    &load_part_data($stack);
    return '<div class="lcpartdiv">'.
-          '<form id="'.$token->[2]->{'id'}.'" name="'.$token->[2]->{'id'}.'" class="lcpartform">';
+          '<form id="'.$token->[2]->{'id'}.'" name="'.$token->[2]->{'id'}.'" class="lcpartform">'.
+          &Apache::lc_xml_forms::hidden_field('assetid',$stack->{'context'}->{'asset'}->{'assetid'}).
+          &Apache::lc_xml_forms::hidden_field('partid',$token->[2]->{'id'});
 }
 
 sub end_part_html {

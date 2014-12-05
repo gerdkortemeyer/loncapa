@@ -25,6 +25,9 @@ use Apache2::Const qw(:common :http);
 use HTML::TokeParser();
 use Apache::lc_asset_safeeval();
 use Apache::lc_ui_localize;
+use Apache::lc_entity_sessions();
+use Apache::lc_entity_urls();
+
 
 # Import all tag definitions (without "()")
 #
@@ -39,7 +42,6 @@ use Apache::lc_xml_conditionals;
 use Apache::lc_xml_include;
 use Apache::lc_xml_gadgets;
 use Apache::lc_xml_parameters;
-use Apache::lc_entity_sessions();
 
 # Problem tags
 #
@@ -336,7 +338,7 @@ sub parser {
 # targets: pointer to an array of targets that need to be parsed in sequence
 # stack: where we store stuff, recycled between targets
 # content: anything posted to the page
-# context: the user and course
+# context: the user and course, etc.
 # outputid: only render inside this ID
 #
 sub target_render {
@@ -388,7 +390,21 @@ sub handler {
    $r->content_type('text/html; charset=utf-8');
    if ($r->uri=~/^\/asset\//) {
       my %content=&Apache::lc_entity_sessions::posted_content();
-      $r->print((&target_render($fn,['analysis','grade','html'],{},\%content))[0]);
+      my $context={};
+      ($context->{'user'}->{'entity'},$context->{'user'}->{'domain'})=
+           &Apache::lc_entity_sessions::user_entity_domain();
+      ($context->{'course'}->{'entity'},$context->{'course'}->{'domain'})=
+           &Apache::lc_entity_sessions::course_entity_domain();
+      my $full_url=$r->uri;
+      $context->{'asset'}->{'entity'}=&Apache::lc_entity_urls::url_to_entity($full_url);
+      ($context->{'asset'}->{'version_type'},
+       $context->{'asset'}->{'version_arg'},
+       $context->{'asset'}->{'domain'},
+       $context->{'asset'}->{'author'},
+       $context->{'asset'}->{'url'})=&Apache::lc_entity_urls::split_url($full_url);
+      $context->{'asset'}->{'assetid'}=$content{'assetid'};
+      $context->{'asset'}->{'partid'}=$content{'partid'};
+      $r->print((&target_render($fn,['analysis','grade','html'],{},\%content,$context))[0]);
    } else {
       $r->print((&target_render($fn,['html'],{}))[0]);
    }
