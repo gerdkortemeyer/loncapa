@@ -73,7 +73,7 @@ sub cascade_attribute {
 }
 
 #
-# Return the attribute $name from enclosing $tag
+# Return the attribute $name from an enclosing $tag
 #
 sub tag_attribute {
    my ($tag,$name,$stack)=@_;
@@ -404,6 +404,7 @@ sub handler {
        $context->{'asset'}->{'url'})=&Apache::lc_entity_urls::split_url($full_url);
       $context->{'asset'}->{'assetid'}=$content{'assetid'};
       $context->{'asset'}->{'partid'}=$content{'partid'};
+      $context->{'asset'}->{'problemid'}=$content{'problemid'};
       $r->print((&target_render($fn,['analysis','grade','html'],{},\%content,$context))[0]);
    } else {
       $r->print((&target_render($fn,['html'],{}))[0]);

@@ -58,7 +58,8 @@ sub start_part_html {
    return '<div class="lcpartdiv">'.
           '<form id="'.$token->[2]->{'id'}.'" name="'.$token->[2]->{'id'}.'" class="lcpartform">'.
           &Apache::lc_xml_forms::hidden_field('assetid',$stack->{'context'}->{'asset'}->{'assetid'}).
-          &Apache::lc_xml_forms::hidden_field('partid',$token->[2]->{'id'});
+          &Apache::lc_xml_forms::hidden_field('partid',$token->[2]->{'id'}).
+          &Apache::lc_xml_forms::hidden_field('problemid',&Apache::lc_asset_xml::tag_attribute('problem','id',$stack));
 }
 
 sub end_part_html {
