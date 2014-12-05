@@ -10,6 +10,12 @@ window.addEventListener('load', function(e) {
         LCMATH.initEditors();
 }, false);
 
+function attach_submit_button(partid) {
+   $('#'+partid+'_submit_button').click(function() {
+       $('#'+partid).submit();
+   });
+}
+
 function adjust_framesize() {
       var frameheight=document.body.offsetHeight + 50;
       $("#contentframe",window.parent.document).css({ height : frameheight + 'px' });

@@ -64,9 +64,9 @@ sub start_part_html {
 
 sub end_part_html {
    my ($p,$safe,$stack,$token)=@_;
-#FIXME: do stuff
-   &save_part_data($stack);
-   return '<input type="submit" /></form></div>'.
+   my $partid=&Apache::lc_asset_xml::open_tag_attribute('id',$stack);
+   return &Apache::lc_xml_forms::triggerbutton($partid.'_submit_button','Submit').'</form>'.
+          '<script>attach_submit_button("'.$partid.'")</script></div>'.
 #FIXME: debug
           '<pre>'.Dumper($stack).'</pre>';
 }
@@ -78,6 +78,7 @@ sub start_part_grade {
 
 sub end_part_grade {
    my ($p,$safe,$stack,$token)=@_;
+   &save_part_data($stack);
 }
 
 # =============================================
