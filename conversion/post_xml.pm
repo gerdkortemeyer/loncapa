@@ -410,13 +410,13 @@ sub replace_m {
     # if so, replace the whole node by dtm or tm
     my $new_text;
     my $new_node_name;
-    if ($text =~ /^\$\$(.*)\$\$$/) {
+    if ($text =~ /^\$\$([^\$]*)\$\$$/) {
       $new_node_name = 'dtm';
       $new_text = $1;
     } elsif ($text =~ /^\\\[(.*)\\\]$/) {
       $new_node_name = 'dtm';
       $new_text = $1;
-    } elsif ($text =~ /^\$(.*)\$$/) {
+    } elsif ($text =~ /^\$([^\$]*)\$$/) {
       $new_node_name = 'tm';
       $new_text = $1;
     } elsif ($text =~ /^\\\((.*)\\\)$/) {
@@ -458,8 +458,8 @@ sub replace_m {
     # there are math separators inside, even after hiding variables, or there was no math symbol
     
     # hide math parts inside before running tth
-    # FIXME: no space before or after replacements -> could concat with other things and confuse tth
-    my $math_key = 'ghjgdh5hg45gf';
+    my $math_key1 = '#ghjgdh5hg45gf';
+    my $math_key2 = '#';
     my @maths = ();
     my @separators = (['$$','$$'], ['\\(','\\)'], ['\\[','\\]'], ['$','$']);
     foreach my $seps (@separators) {
@@ -470,13 +470,16 @@ sub replace_m {
         next;
       }
       my $pos2 = index($text, $sep2, $pos1+length($sep1));
-      if ($pos2 == -1) {
-        next;
+      while ($pos1 != -1 && $pos2 != -1) {
+        my $replace = substr($text, $pos1, $pos2+length($sep2)-$pos1);
+        push(@maths, $replace);
+        my $by = $math_key1.scalar(@maths).$math_key2;
+        $text = substr($text, 0, $pos1).$by.substr($text, $pos2+length($sep2));
+        $pos1 = index($text, $sep1);
+        if ($pos1 != -1) {
+          $pos2 = index($text, $sep2, $pos1+length($sep1));
+        }
       }
-      my $replace = substr($text, $pos1, $pos2+length($sep2)-$pos1);
-      push(@maths, $replace);
-      my $by = $math_key.scalar(@maths).'z';
-      $text = substr($text, 0, $pos1).$by.substr($text, $pos2+length($sep2));
     }
     # get HTML as text from tth
     my $html_text = tth($text);
@@ -499,7 +502,7 @@ sub replace_m {
       } elsif ($math =~ /^\$(.*)\$$/) {
         $math = '<tm>'.$1.'</tm>';
       }
-      my $replace = $math_key.($i+1).'z';
+      my $replace = $math_key1.($i+1).$math_key2;
       $html_text =~ s/$replace/$math/;
     }
     my $fragment = html_to_dom($html_text);
@@ -518,6 +521,7 @@ sub tth {
   my $output = `tth -r -w2 -u -y0 < $tmp_path 2>/dev/null`;
   # hopefully the temp file will not be removed before this point (otherwise we should use unlink_on_destroy 0)
   $output =~ s/^\s*|\s*$//;
+  $output =~ s/<div class="p"><!----><\/div>/<br\/>/; # why is tth using such ugly markup for \newline ?
   return $output;
 }
 
