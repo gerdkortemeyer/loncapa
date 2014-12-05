@@ -39,7 +39,7 @@ our @EXPORT = qw(start_problem_html end_problem_html
 sub start_problem_html {
    my ($p,$safe,$stack,$token)=@_;
    &init_problem($safe,$stack);
-   return '<div class="lcproblemdiv">';
+   return '<div class="lcproblemdiv" id="'.$token->[2]->{'id'}.'">';
 }
 
 sub end_problem_html {
@@ -55,8 +55,8 @@ sub start_problem_grade {
 sub start_part_html {
    my ($p,$safe,$stack,$token)=@_;
    &load_part_data($stack);
-   return '<div class="lcpartdiv">'.
-          '<form id="'.$token->[2]->{'id'}.'" name="'.$token->[2]->{'id'}.'" class="lcpartform">'.
+   return '<div class="lcpartdiv" id="'.$token->[2]->{'id'}.'">'.
+          '<form id="'.$token->[2]->{'id'}.'_form" name="'.$token->[2]->{'id'}.'_form" class="lcpartform">'.
           &Apache::lc_xml_forms::hidden_field('assetid',$stack->{'context'}->{'asset'}->{'assetid'}).
           &Apache::lc_xml_forms::hidden_field('partid',$token->[2]->{'id'}).
           &Apache::lc_xml_forms::hidden_field('problemid',&Apache::lc_asset_xml::tag_attribute('problem','id',$stack));
@@ -64,9 +64,10 @@ sub start_part_html {
 
 sub end_part_html {
    my ($p,$safe,$stack,$token)=@_;
+   my $problemid=&Apache::lc_asset_xml::tag_attribute('problem','id',$stack);
    my $partid=&Apache::lc_asset_xml::open_tag_attribute('id',$stack);
    return &Apache::lc_xml_forms::triggerbutton($partid.'_submit_button','Submit').'</form>'.
-          '<script>attach_submit_button("'.$partid.'")</script></div>'.
+          '<script>attach_submit_button("'.$problemid.'","'.$partid.'")</script></div>'.
 #FIXME: debug
           '<pre>'.Dumper($stack).'</pre>';
 }

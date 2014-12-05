@@ -10,9 +10,18 @@ window.addEventListener('load', function(e) {
         LCMATH.initEditors();
 }, false);
 
-function attach_submit_button(partid) {
+function attach_submit_button(problemid,partid) {
    $('#'+partid+'_submit_button').click(function() {
-       $('#'+partid).submit();
+       $('#'+partid+'_submit_button').hide();
+       var data = $('#'+partid+'_form').serialize();
+       $.ajax({
+             data: data+"&outputid="+problemid,
+             async: false,
+             type:'POST',
+             success: function(response) {
+                 $('#'+problemid).replaceWith(response);
+             }
+       });
    });
 }
 
