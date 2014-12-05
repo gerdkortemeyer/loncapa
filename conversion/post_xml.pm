@@ -374,6 +374,9 @@ sub replace_m {
         # this regexp is for "  ($a, $b, $c) = ..."
         my @matches = ($text =~ /^[ \t]*\([ \t]*\$([a-zA-Z_0-9]+)(?:[ \t]*,[ \t]*\$([a-zA-Z_0-9]+))*[ \t]*\)[ \t]*=/gm);
         foreach my $match (@matches) {
+          if (!defined $match) {
+            next; # not sure why it happens, but it does
+          }
           if (!string_in_array(\@variables, $match)) {
             push(@variables, $match);
           }
