@@ -117,7 +117,7 @@ sub load_part_data {
               $stack->{'context'}->{'user'}->{'domain'},
               $stack->{'context'}->{'asset'}->{'assetid'},
               $stack->{'context'}->{'asset'}->{'partid'});
-   $stack->{'responsedetails'}={};
+   $stack->{'response_details'}={};
    if ($data) {
       ($stack->{'scores'}->{'partid'},
        $stack->{'scores'}->{'scoretype'},
@@ -127,7 +127,7 @@ sub load_part_data {
        $stack->{'scores'}->{'status'},
         my $responsedetailsjson)=@{$data->[0]};
       if ($responsedetailsjson) {
-         $stack->{'responsedetails'}=&Apache::lc_json_utils::json_to_perl($responsedetailsjson);
+         $stack->{'response_details'}=&Apache::lc_json_utils::json_to_perl($responsedetailsjson);
       }
    }
 }
@@ -154,7 +154,7 @@ sub save_part_data {
                                      $stack->{'scores'}->{'totaltries'},
                                      $stack->{'scores'}->{'countedtries'},
                                      $stack->{'scores'}->{'status'},
-                                     &Apache::lc_json_utils::perl_to_json($stack->{'responsedetails'}));
+                                     &Apache::lc_json_utils::perl_to_json($stack->{'response_details'}));
 }
 
 1;

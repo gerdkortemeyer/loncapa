@@ -39,12 +39,12 @@ our @EXPORT = qw(start_numericalresponse_html  end_numericalresponse_html
 #
 sub start_numericalresponse_html {
    my ($p,$safe,$stack,$token)=@_;
-   &Apache::lc_asset_xml::init_response($stack);
    return '';
 }
 
 sub start_numericalresponse_grade {
-   return &start_numericalresponse_html(@_);
+   my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_asset_xml::init_response($stack);
 }
 
 
@@ -144,6 +144,7 @@ sub end_numericalresponse_grade {
    my ($parser,$env)=&Apache::lc_math_parser::new_numerical_parser($customunits);
 # Do the actual grading
    my ($outcome,$message)=&answertest($parser,$env,$responses,$expected,$tolerance,$mode,$or);
+# Put that on the grading stack to look at end_part_grade
    &logdebug($outcome.' - '.$message.' - '.$responses.' - '.$expected.' - '.$tolerance.' - '.$mode);
 }
 

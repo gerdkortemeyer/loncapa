@@ -212,12 +212,12 @@ sub add_response_grade {
 #
 sub add_response_details {
    my ($responseid,$details,$stack)=@_;
-   $stack->{'responsedetails'}->{$responseid}=$details;
+   $stack->{'response_details'}->{$responseid}=$details;
 }
 
 sub get_response_details {
    my ($responseid,$stack)=@_;
-   return $stack->{'responsedetails'}->{$responseid};
+   return $stack->{'response_details'}->{$responseid};
 }
 
 # Output a piece of text
