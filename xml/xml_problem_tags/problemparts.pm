@@ -80,7 +80,14 @@ sub start_part_grade {
 
 sub end_part_grade {
    my ($p,$safe,$stack,$token)=@_;
-   &save_part_data($stack);
+#FIXME: exit if nothing to grade
+# One more try, not necessarily counted
+   $stack->{'scores'}->{'totaltries'}++;
+# Save the information
+   unless (&save_part_data($stack)) {
+      &logerror("Could not save part infomation");
+#FIXME: don't leave the user in the dark
+   }
 }
 
 # =============================================
@@ -98,6 +105,9 @@ sub init_problem {
 # Loading and saving part data
 # =============================================
 
+#
+# Get the stored data for a problem part
+#
 sub load_part_data {
    my ($stack)=@_;
    my $data=&Apache::lc_entity_assessments::get_one_user_assessment(
@@ -109,18 +119,29 @@ sub load_part_data {
               $stack->{'context'}->{'asset'}->{'partid'});
    $stack->{'responsedetails'}={};
    if ($data) {
-      my ($partid,
-          $gradingmode,$gradingvalue,
-          $totalties,$countedtries,
-          $status,$responsedetailsjson)=@{$data->[0]};
+      ($stack->{'scores'}->{'partid'},
+       $stack->{'scores'}->{'scoretype'},
+       $stack->{'scores'}->{'score'},
+       $stack->{'scores'}->{'totaltries'},
+       $stack->{'scores'}->{'countedtries'},
+       $stack->{'scores'}->{'status'},
+        my $responsedetailsjson)=@{$data->[0]};
       if ($responsedetailsjson) {
          $stack->{'responsedetails'}=&Apache::lc_json_utils::json_to_perl($responsedetailsjson);
       }
    }
 }
 
+#
+# Save the data from a problem part
+#
 sub save_part_data {
    my ($stack)=@_;
+   if ($stack->{'context'}->{'asset'}->{'partid'} ne
+       $stack->{'scores'}->{'partid'}) {
+      &logerror("Partid mismatch");
+      return 0;
+   }
    return &Apache::lc_entity_assessments::store_assessment(
                                      $stack->{'context'}->{'course'}->{'entity'},
                                      $stack->{'context'}->{'course'}->{'domain'},
@@ -128,9 +149,11 @@ sub save_part_data {
                                      $stack->{'context'}->{'user'}->{'domain'},
                                      $stack->{'context'}->{'asset'}->{'assetid'},
                                      $stack->{'context'}->{'asset'}->{'partid'},
-                                     'absolute','42',
-                                     '1','0',
-                                     'correct',
+                                     $stack->{'scores'}->{'scoretype'},
+                                     $stack->{'scores'}->{'score'},
+                                     $stack->{'scores'}->{'totaltries'},
+                                     $stack->{'scores'}->{'countedtries'},
+                                     $stack->{'scores'}->{'status'},
                                      &Apache::lc_json_utils::perl_to_json($stack->{'responsedetails'}));
 }
 
