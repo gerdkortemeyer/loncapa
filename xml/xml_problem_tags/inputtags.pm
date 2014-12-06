@@ -42,12 +42,13 @@ sub start_textline_html {
    my $size=&Apache::lc_asset_xml::open_tag_attribute('size',$stack);
    unless ($size) { $size=20; }
    my $hidden=&Apache::lc_asset_xml::open_tag_switch('hidden',$stack);
+   my $responsedetails=&Apache::lc_asset_xml::get_response_details($token->[2]->{'id'},$stack);
    if (&Apache::lc_asset_xml::enclosed_in('numericalresponse',$stack)) {
       my $data_constants=&Apache::lc_asset_xml::open_tag_attribute('constants',$stack);
       unless ($data_constants) {
          $data_constants='c, pi, e, hbar, amu, G';
       }
-      my $value='';
+      my $value=$responsedetails->{'value'};
       return
  '<input class="math" data-implicit_operators="true" data-unit_mode="true" data-constants="'.$data_constants.
  '" spellcheck="off" autocomplete="off" name="'.$token->[2]->{'id'}.
