@@ -220,6 +220,15 @@ sub get_response_details {
    return $stack->{'response_details'}->{$responseid};
 }
 
+#
+# Collect grades from all responses in a part
+#
+sub add_response_grade {
+   my ($status,$message,$stack)=@_;
+   push(@{$stack->{'response_grades'}},{ 'status' => $status, 'message' => $message });
+}
+
+
 # Output a piece of text
 #
 sub process_text {

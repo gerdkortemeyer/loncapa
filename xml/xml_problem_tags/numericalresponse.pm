@@ -145,7 +145,7 @@ sub end_numericalresponse_grade {
 # Do the actual grading
    my ($outcome,$message)=&answertest($parser,$env,$responses,$expected,$tolerance,$mode,$or);
 # Put that on the grading stack to look at end_part_grade
-   &logdebug($outcome.' - '.$message.' - '.$responses.' - '.$expected.' - '.$tolerance.' - '.$mode);
+   &Apache::lc_asset_xml::add_response_grade($outcome,$message,$stack);
 }
 
 sub start_numericalhintcondition_html {

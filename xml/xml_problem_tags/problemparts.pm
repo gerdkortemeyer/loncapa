@@ -26,6 +26,7 @@ use Apache::lc_json_utils();
 use Apache::lc_entity_assessments();
 use Apache::lc_xml_forms();
 use Apache::lc_logs;
+use Apache::lc_problem_const;
 
 use Data::Dumper;
 
@@ -75,6 +76,7 @@ sub end_part_html {
 
 sub start_part_grade {
    my ($p,$safe,$stack,$token)=@_;
+   $stack->{'response_grades'}=[];
    &load_part_data($stack)
 }
 
@@ -83,6 +85,26 @@ sub end_part_grade {
 #FIXME: exit if nothing to grade
 # One more try, not necessarily counted
    $stack->{'scores'}->{'totaltries'}++;
+# Collect all of the response status
+   my $allcorrect=1;
+   my $allincorrect=1;
+   foreach my $responsestatus (@{$stack->{'response_grades'}}) {
+       if ($responsestatus->{'status'} ne &correct()) { $allcorrect=0; }
+       if ($responsestatus->{'status'} ne &incorrect()) { $allincorrect=0; }
+   }
+#FIXME: partial correctness
+   $stack->{'scores'}->{'status'}=&incorrect();
+#FIXME: absolute possible
+   $stack->{'scores'}->{'scoretype'}='relative';
+   $stack->{'scores'}->{'score'}=0;
+   if ($allcorrect) {
+      $stack->{'scores'}->{'countedtries'}++;
+      $stack->{'scores'}->{'status'}=&correct();
+#FIXME: absolute and partial credit
+      $stack->{'scores'}->{'score'}=1;
+   } elsif ($allincorrect) {
+      $stack->{'scores'}->{'countedtries'}++;
+   }
 # Save the information
    unless (&save_part_data($stack)) {
       &logerror("Could not save part infomation");
