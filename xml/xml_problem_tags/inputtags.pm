@@ -29,6 +29,8 @@ use Apache::lc_entity_users();
 use Apache::lc_xml_forms();
 use Apache::lc_asset_xml();
 
+use Apache::lc_logs;
+
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
@@ -45,10 +47,11 @@ sub start_textline_html {
       unless ($data_constants) {
          $data_constants='c, pi, e, hbar, amu, G';
       }
+      my $value='';
       return
  '<input class="math" data-implicit_operators="true" data-unit_mode="true" data-constants="'.$data_constants.
  '" spellcheck="off" autocomplete="off" name="'.$token->[2]->{'id'}.
- '" size="'.$size.'"'.($hidden?' hidden="hidden"':'').' />';
+ '" size="'.$size.'"'.($hidden?' hidden="hidden"':'').' value="'.$value.'" />';
    }
    return '';
 }
@@ -56,6 +59,15 @@ sub start_textline_html {
 sub start_textline_grade {
    my ($p,$safe,$stack,$token)=@_;
    &Apache::lc_asset_xml::add_response_input($stack);
+#FIXME: need to adapt to type of response
+   my $id=&Apache::lc_asset_xml::open_tag_attribute('id',$stack);
+
+
+&logdebug("ID: $id ".$stack->{'content'}->{$id});
+
+   &Apache::lc_asset_xml::add_response_details($id,
+                                               { 'value' => $stack->{'content'}->{$id} },
+                                               $stack);
 }
 1;
 __END__

@@ -25,6 +25,7 @@ use Apache::lc_asset_xml();
 use Apache::lc_json_utils();
 use Apache::lc_entity_assessments();
 use Apache::lc_xml_forms();
+use Apache::lc_logs;
 
 use Data::Dumper;
 
@@ -99,10 +100,40 @@ sub init_problem {
 
 sub load_part_data {
    my ($stack)=@_;
+   my $data=&Apache::lc_entity_assessments::get_one_user_assessment(
+              $stack->{'context'}->{'course'}->{'entity'},
+              $stack->{'context'}->{'course'}->{'domain'},
+              $stack->{'context'}->{'user'}->{'entity'},
+              $stack->{'context'}->{'user'}->{'domain'},
+              $stack->{'context'}->{'asset'}->{'assetid'},
+              $stack->{'context'}->{'asset'}->{'partid'});
+&logdebug("Retrieved: ".Dumper($data));
+   my ($partid,
+       $gradingmode,$gradingvalue,
+       $totalties,$countedtries,
+       $status,$responsedetailjson)=@{$data};
+   if ($responsedetailjson) {
+      $stack->{'responsedetails'}=&Apache::lc_json_utils::json_to_perl($responsedetailjson);
+   } else {
+      $stack->{'responsedetails'}={};
+   }
 }
 
 sub save_part_data {
    my ($stack)=@_;
+&logdebug("About to save ".Dumper($stack));
+&logdebug("JSON ".&Apache::lc_json_utils::perl_to_json($stack->{'responsedetails'}));
+   return &Apache::lc_entity_assessments::store_assessment(
+                                     $stack->{'context'}->{'course'}->{'entity'},
+                                     $stack->{'context'}->{'course'}->{'domain'},
+                                     $stack->{'context'}->{'user'}->{'entity'},
+                                     $stack->{'context'}->{'user'}->{'domain'},
+                                     $stack->{'context'}->{'asset'}->{'assetid'},
+                                     $stack->{'context'}->{'asset'}->{'partid'},
+                                     'absolute','42',
+                                     '1','0',
+                                     'correct',
+                                     &Apache::lc_json_utils::perl_to_json($stack->{'responsedetails'}));
 }
 
 1;

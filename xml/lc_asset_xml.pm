@@ -207,6 +207,19 @@ sub add_response_grade {
    my ($code,$message,$stack)=@_;
 }
 
+#
+# Response details
+#
+sub add_response_details {
+   my ($responseid,$details,$stack)=@_;
+   $stack->{'responsedetails'}->{$responseid}=$details;
+}
+
+sub get_response_details {
+   my ($responseid,$stack)=@_;
+   return $stack->{'responsedetails'}->{$responseid};
+}
+
 # Output a piece of text
 #
 sub process_text {
