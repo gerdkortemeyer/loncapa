@@ -490,6 +490,9 @@ sub replace_m {
     # replace math by replacements
     for (my $i=0; $i < scalar(@maths); $i++) {
       my $math = $maths[$i];
+      $math =~ s/&/&amp;/;
+      $math =~ s/</&lt;/;
+      $math =~ s/>/&gt;/;
       if ($math =~ /^\$\$(.*)\$\$$/s) {
         $math = '<dtm>'.$1.'</dtm>';
       } elsif ($math =~ /^\\\[(.*)\\\]$/s) {
