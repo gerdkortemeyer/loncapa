@@ -211,6 +211,8 @@
       <xs:element ref="gnuplot"/>
       <xs:element ref="organicstructure"/>
       <xs:element ref="drawimage"/>
+      <xs:element ref="dtm"/>
+      <xs:element ref="dlm"/>
       
       <xs:element ref="script"/>
       <xs:group ref="heading"/>
@@ -300,7 +302,8 @@
     </xs:annotation>
     <xs:choice>
       <xs:element ref="display"/>
-      <xs:element ref="m"/>
+      <xs:element ref="tm"/>
+      <xs:element ref="lm"/>
       <xs:element ref="chem"/>
       <xs:element ref="num"/>
       <xs:element ref="parse"/>
@@ -4821,16 +4824,37 @@
       </xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:element name="m">
+  <xs:element name="tm" type="xs:string">
     <xs:annotation>
       <xs:documentation>
-        The inside text is LaTeX, and is converted to HTML (or MathML) on the fly.
+        LaTeX inline math (no need to add $ characters), displayed with MathJax.
+        Perl variables are evaluated.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:attribute name="display" type="xs:string"/>
-      <xs:attribute default="off" name="eval" type="onoff-or-perl"/>
-    </xs:complexType>
+  </xs:element>
+  <xs:element name="dtm" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        LaTeX display math (no need to add $$ characters), displayed with MathJax.
+        Perl variables are evaluated.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="lm" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        Inline math with the LON-CAPA syntax (use &lt;tm&gt; for LaTeX inline math).
+        Perl variables are evaluated.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="dlm" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        Display math with the LON-CAPA syntax (use &lt;dtm&gt; for LaTeX display math).
+        Perl variables are evaluated.
+      </xs:documentation>
+    </xs:annotation>
   </xs:element>
   <xs:element name="num">
     <xs:annotation>

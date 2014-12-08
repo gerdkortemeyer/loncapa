@@ -211,6 +211,8 @@
       <xs:element ref="gnuplot"/>
       <xs:element ref="organicstructure"/>
       <xs:element ref="drawimage"/>
+      <xs:element ref="dtm"/>
+      <xs:element ref="dlm"/>
       
       <xs:element ref="script"/>
       <xs:group ref="heading"/>
@@ -300,7 +302,8 @@
     </xs:annotation>
     <xs:choice>
       <xs:element ref="display"/>
-      <xs:element ref="m"/>
+      <xs:element ref="tm"/>
+      <xs:element ref="lm"/>
       <xs:element ref="chem"/>
       <xs:element ref="num"/>
       <xs:element ref="parse"/>
@@ -872,7 +875,7 @@
         
         This can be used as a condition to display a hint, with the name of the condition in the "on" attribute of the hint element (which has to be created outside of the response).
         
-        There are two types of option response hint conditions: one for standalone foils and one for concept groups. In both cases the option hint tag includes two parameters: answer and name for standalone foils, and concept and name for foils grouped together in a concept group. For the answer parameter, the names and submitted values for each of the foils that are being included in the hint condition are provided in a hash, i.e., in the format: ('Foil1'= &gt; 'True','Foil2'= &gt; 'False'). In the case of a conditional hint for a concept group, the format of the concept parameter is also a hash that links the name of each concept group included in the hint condition to either 'correct' or 'incorrect' - e.g., &lt;optionhintcondition concept="('buoyancy'= &gt; 'correct','density'= &gt; 'correct')" name="fluids" / &gt; If 'correct' is specified for a named concept then when the conditional hint is evaluated answers for each of the foils selected by a student must be correct for the hint action to be triggered. If anything other than 'correct' is provided in the concept hash in the optionhint tag then then students answers will be compared with the set answers for the foils in the concept group and as long as at least one answer is incorrect (i.e., the concept group was not correctly answered) then the corresponding hint action will be triggered. 
+        There are two types of option response hint conditions: one for standalone foils and one for concept groups. In both cases the option hint tag includes two parameters: answer and name for standalone foils, and concept and name for foils grouped together in a concept group. For the answer parameter, the names and submitted values for each of the foils that are being included in the hint condition are provided in a hash, i.e., in the format: ('Foil1'= &gt; 'True','Foil2'= &gt; 'False'). In the case of a conditional hint for a concept group, the format of the concept parameter is also a hash that links the name of each concept group included in the hint condition to either 'correct' or 'incorrect' - e.g., &lt;optionhintcondition forconcept="('buoyancy'= &gt; 'correct','density'= &gt; 'correct')" name="fluids" / &gt; If 'correct' is specified for a named concept then when the conditional hint is evaluated answers for each of the foils selected by a student must be correct for the hint action to be triggered. If anything other than 'correct' is provided in the forconcept hash in the optionhintcondition tag then then students answers will be compared with the set answers for the foils in the concept group and as long as at least one answer is incorrect (i.e., the concept group was not correctly answered) then the corresponding hint action will be triggered.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -888,7 +891,7 @@
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="answer" type="xs:string"/>
-      <xs:attribute name="concept" type="xs:string"/>
+      <xs:attribute name="forconcept" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   
@@ -4821,16 +4824,37 @@
       </xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:element name="m">
+  <xs:element name="tm" type="xs:string">
     <xs:annotation>
       <xs:documentation>
-        The inside text is LaTeX, and is converted to HTML (or MathML) on the fly.
+        LaTeX inline math (no need to add $ characters), displayed with MathJax.
+        Perl variables are evaluated.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:attribute name="display" type="xs:string"/>
-      <xs:attribute default="off" name="eval" type="onoff-or-perl"/>
-    </xs:complexType>
+  </xs:element>
+  <xs:element name="dtm" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        LaTeX display math (no need to add $$ characters), displayed with MathJax.
+        Perl variables are evaluated.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="lm" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        Inline math with the LON-CAPA syntax (use &lt;tm&gt; for LaTeX inline math).
+        Perl variables are evaluated.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="dlm" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>
+        Display math with the LON-CAPA syntax (use &lt;dtm&gt; for LaTeX display math).
+        Perl variables are evaluated.
+      </xs:documentation>
+    </xs:annotation>
   </xs:element>
   <xs:element name="num">
     <xs:annotation>

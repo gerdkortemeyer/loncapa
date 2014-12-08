@@ -18,7 +18,7 @@
 part of loncapa_daxe;
 
 /**
- * Displays a TeX expression with MathJax.
+ * Displays tm and dtm elements (LaTeX inline and display math) with MathJax.
  * Jaxe display type: 'texmathjax'.
  */
 class TeXMathJax extends DaxeNode {
@@ -77,22 +77,12 @@ class TeXMathJax extends DaxeNode {
     dlg.show();
   }
   
-  static String convertForMathJaxe(String text) {
+  String convertForMathJaxe(String text) {
     bool hasDelimiters = false;
     js.JsObject queue = js.context['MathJax']['Hub']['Queue'];
-    if (text.length > 3 && text.substring(0, 2) == '\$\$' &&
-        text.substring(text.length-2, text.length) == '\$\$')
-      hasDelimiters = true;
-    else if (text.length > 0 && text[0] == '\$' && text[text.length - 1] == '\$') {
-      hasDelimiters = true;
-      text = "\\(" + text.substring(1, text.length - 1) + "\\)";
-    } else if (text.length > 3 && text.substring(0, 2) == '\\(' &&
-        text.substring(text.length-2, text.length) == '\\)')
-      hasDelimiters = true;
-    else if (text.length > 3 && text.substring(0, 2) == '\\[' &&
-        text.substring(text.length-2, text.length) == '\\]')
-      hasDelimiters = true;
-    if (!hasDelimiters)
+    if (nodeName == 'dtm')
+      text = "\\[$text\\]";
+    else
       text = "\\($text\\)";
     return(text);
   }
@@ -118,7 +108,7 @@ class TeXMathJaxeDialog {
     h.TextAreaElement ta = new h.TextAreaElement();
     ta.id = 'eqtext';
     if (dn.firstChild != null)
-      ta.value = dn.firstChild.nodeValue;
+      ta.value = dn.firstChild.nodeValue.trim();
     ta.style.width = '100%';
     ta.style.height = '4em';
     ta.attributes['spellcheck'] = 'false';
@@ -156,20 +146,6 @@ class TeXMathJaxeDialog {
     h.TextAreaElement ta = h.querySelector('textarea#eqtext');
     String equationText = ta.value;
     if (equationText != '') {
-      bool hasDelimiters = false;
-      if (equationText.length > 0 && equationText[0] == '\$' && equationText[equationText.length - 1] == '\$')
-        hasDelimiters = true;
-      else if (equationText.length > 3 && equationText.substring(0, 2) == '\$\$' &&
-          equationText.substring(equationText.length-2, equationText.length) == '\$\$')
-        hasDelimiters = true;
-      else if (equationText.length > 3 && equationText.substring(0, 2) == '\\(' &&
-          equationText.substring(equationText.length-2, equationText.length) == '\\)')
-        hasDelimiters = true;
-      else if (equationText.length > 3 && equationText.substring(0, 2) == '\\[' &&
-          equationText.substring(equationText.length-2, equationText.length) == '\\]')
-        hasDelimiters = true;
-      if (!hasDelimiters)
-        equationText = "\$$equationText\$";
       if (dn.firstChild != null)
         dn.firstChild.nodeValue = equationText;
       else
@@ -205,7 +181,7 @@ class TeXMathJaxeDialog {
     js.JsObject params = new js.JsObject.jsify(['Text', math, "\\displaystyle{$text}"]);
     queue.callMethod('Push', [params]);
     */
-    previewDiv.text = TeXMathJax.convertForMathJaxe(text);
+    previewDiv.text = dn.convertForMathJaxe(text);
     js.JsArray params = new js.JsObject.jsify( ['Typeset', js.context['MathJax']['Hub'], 'preview'] );
     js.context['MathJax']['Hub'].callMethod('Queue', [params]);
     

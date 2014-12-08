@@ -151,7 +151,10 @@
     </MENU>
     <MENU nom="Text">
       <MENU_INSERTION nom="display"/>
-      <MENU_INSERTION nom="m"/>
+      <MENU_INSERTION nom="tm"/>
+      <MENU_INSERTION nom="dtm"/>
+      <MENU_INSERTION nom="lm"/>
+      <MENU_INSERTION nom="dlm"/>
       <MENU_INSERTION nom="num"/>
       <MENU_INSERTION nom="parse"/>
       <MENU_INSERTION nom="algebra"/>
@@ -322,7 +325,10 @@
     <AFFICHAGE_ELEMENT element="display" type="string">
       <PARAMETRE nom="police" valeur="Monospaced"/>
     </AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="m" type="texmathjax"/>
+    <AFFICHAGE_ELEMENT element="tm" type="texmathjax"/>
+    <AFFICHAGE_ELEMENT element="dtm" type="texmathjax"/>
+    <AFFICHAGE_ELEMENT element="lm" type="string"/>
+    <AFFICHAGE_ELEMENT element="dlm" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="num" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="algebra" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="chem" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
@@ -2624,10 +2630,32 @@
         The intervening Perl script is evaluated in the safe space and the return value of the script replaces the entire tag.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
-    <STRINGS_ELEMENT element="m">
-      <TITRE>TeX</TITRE>
+    <STRINGS_ELEMENT element="tm">
+      <TITRE>LaTeX inline math</TITRE>
       <DOCUMENTATION>
-        The inside text is LaTeX, and is converted to HTML (or MathML) on the fly.
+        LaTeX inline math (no need to add $ characters), displayed with MathJax.
+        Perl variables are evaluated.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="dtm">
+      <TITRE>LaTeX display math</TITRE>
+      <DOCUMENTATION>
+        LaTeX display math (no need to add $$ characters), displayed with MathJax.
+        Perl variables are evaluated.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="lm">
+      <TITRE>LON-CAPA inline math</TITRE>
+      <DOCUMENTATION>
+        Inline math with the LON-CAPA syntax (use &lt;tm&gt; for LaTeX inline math).
+        Perl variables are evaluated.
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="dlm">
+      <TITRE>LON-CAPA inline math</TITRE>
+      <DOCUMENTATION>
+        Display math with the LON-CAPA syntax (use &lt;dtm&gt; for LaTeX display math).
+        Perl variables are evaluated.
       </DOCUMENTATION>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="num">
