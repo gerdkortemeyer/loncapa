@@ -49,7 +49,7 @@ sub post_xml {
 
   my $root = create_new_structure($dom_doc);
 
-  remove_elements($root, ['startouttext','startoutext','startottext','startouttex','startouttect','starttextarea','endouttext','endoutext','endoutttext','endouttxt','endouutext','ednouttext','endtextarea','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','x-claris-tagview','x-claris-window','x-sas-window']);
+  remove_elements($root, ['startouttext','startoutext','startottext','startouttex','startouttect','starttextarea','endouttext','endoutext','endoutttext','endouttxt','endouutext','ednouttext','endtextarea','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','allows','x-claris-tagview','x-claris-window','x-sas-window']);
   
   remove_empty_attributes($root);
   
@@ -1766,8 +1766,15 @@ sub replace_nobr {
   my ($root) = @_;
   my @nobrs = $root->getElementsByTagName('nobr');
   foreach my $nobr (@nobrs) {
-    $nobr->setNodeName('span');
-    $nobr->setAttribute('style', 'white-space:nowrap');
+    if (!defined $nobr->previousSibling && !defined $nobr->nextSibling &&
+        string_in_array(\@accepting_style, $nobr->parentNode->nodeName)) {
+      # use CSS on the parent block
+      set_css_property($nobr->parentNode, 'white-space', 'nowrap');
+      replace_by_children($nobr);
+    } else {
+      $nobr->setNodeName('span');
+      $nobr->setAttribute('style', 'white-space:nowrap');
+    }
   }
 }
 
