@@ -1724,7 +1724,11 @@ sub replace_center {
     if ($center->getChildrenByTagName('table')->size() > 0) { # note: getChildrenByTagName is not DOM (LibXML specific)
       replace_by_children($center);
     } else {
-      if (!defined $center->previousSibling && !defined $center->nextSibling && string_in_array(\@accepting_style, $center->parentNode->nodeName)) {
+      if ((!defined $center->previousSibling ||
+          ($center->previousSibling->nodeType == XML_TEXT_NODE && $center->previousSibling->nodeValue =~ /^\s*$/ && !defined $center->previousSibling->previousSibling)) &&
+          (!defined $center->nextSibling ||
+          ($center->nextSibling->nodeType == XML_TEXT_NODE && $center->nextSibling->nodeValue =~ /^\s*$/ && !defined $center->nextSibling->nextSibling)) &&
+          string_in_array(\@accepting_style, $center->parentNode->nodeName)) {
         # use CSS on the parent block and replace center by its children
         set_css_property($center->parentNode, 'text-align', 'center');
         replace_by_children($center);
