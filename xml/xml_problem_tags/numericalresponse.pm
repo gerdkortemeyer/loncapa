@@ -128,6 +128,8 @@ sub evaluate_responses {
 #
 sub end_numericalresponse_grade {
    my ($p,$safe,$stack,$token)=@_;
+# ID
+   my $id=&Apache::lc_asset_xml::open_tag_attribute('id',$stack);
 # Get tolerance parameter
    my $tolerance=&Apache::lc_asset_xml::cascade_parameter('tol',$stack);
 # Special mode?
@@ -144,6 +146,17 @@ sub end_numericalresponse_grade {
    my ($parser,$env)=&Apache::lc_math_parser::new_numerical_parser($customunits);
 # Do the actual grading
    my ($outcome,$message)=&answertest($parser,$env,$responses,$expected,$tolerance,$mode,$or);
+# Log this
+   &Apache::lc_asset_xml::add_response_details($id,
+                                               { 'type'        => 'numerical',
+                                                 'answer'      => $expected,
+                                                 'responses'   => $responses,
+                                                 'or'          => $or,
+                                                 'customunits' => $customunits,
+                                                 'mode'        => $mode,
+                                                 'status'      => $outcome,
+                                                 'message'     => $message},
+                                               $stack);
 # Put that on the grading stack to look at end_part_grade
    &Apache::lc_asset_xml::add_response_grade($outcome,$message,$stack);
 }
@@ -164,7 +177,6 @@ sub end_numericalhintcondition_html {
 #
 sub answertest {
     my ($parser,$env,$expression, $expected, $tolerance, $mode, $or)=@_;
-&logdebug("Answertest [$expression] [$expected] [$mode] [$or]");
 # No tolerance? Be absolutely tolerant!
     if (!defined $tolerance) {
         $tolerance = 1e-5;
