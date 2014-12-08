@@ -63,13 +63,9 @@ sub store_assessment_transaction {
     "Checking number of tries failed for course ($courseentity) ($coursedomain) ($userentity) ($userdomain) ($resourceid) ($partid): $prev_totaltries/$totaltries");
          return -1;
       }
-# Merge the new responsedetails into the old ones
-      my $newresponsedetails=&Apache::lc_json_utils::perl_to_json($merge->merge(
-                               &Apache::lc_json_utils::json_to_perl($responsedetailsjson),
-                               &Apache::lc_json_utils::json_to_perl($oldresponsedetails)));
       $sth=$dbh->prepare(
     "update assessments set scoretype = ?, score = ?, totaltries = ?, countedtries = ?, status = ?, responsedetailsjson = ? where courseentity = ? and coursedomain = ? and userentity = ? and userdomain = ? and resourceid = ? and partid = ?");
-      return $sth->execute($scoretype,$score,$totaltries,$countedtries,$status,$newresponsedetails,
+      return $sth->execute($scoretype,$score,$totaltries,$countedtries,$status,$responsedetailsjson,
                            $courseentity,$coursedomain,$userentity,$userdomain,$resourceid,$partid);
    } else {
 # New record

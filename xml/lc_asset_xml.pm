@@ -27,7 +27,7 @@ use Apache::lc_asset_safeeval();
 use Apache::lc_ui_localize;
 use Apache::lc_entity_sessions();
 use Apache::lc_entity_urls();
-
+use Apache::lc_date_utils();
 
 # Import all tag definitions (without "()")
 #
@@ -212,7 +212,11 @@ sub add_response_grade {
 #
 sub add_response_details {
    my ($responseid,$details,$stack)=@_;
-   $stack->{'response_details'}->{$responseid}=$details;
+   unless (ref($stack->{'response_details'}->{$responseid}) eq 'ARRAY') {
+      $stack->{'response_details'}->{$responseid}=[];
+   }
+   $details->{'date'}=&Apache::lc_date_utils::now2str();
+   push(@{$stack->{'response_details'}->{$responseid}},$details);
 }
 
 sub get_response_details {

@@ -48,7 +48,12 @@ sub start_textline_html {
       unless ($data_constants) {
          $data_constants='c, pi, e, hbar, amu, G';
       }
-      my $value=$responsedetails->{'value'};
+      my $value='';
+      if (ref($responsedetails) eq 'ARRAY') {
+         $value=$responsedetails->[-1]->{'value'};
+      } else {
+         $value=&Apache::lc_asset_xml::open_tag_attribute('value',$stack);
+      }
       return
  '<input class="math" data-implicit_operators="true" data-unit_mode="true" data-constants="'.$data_constants.
  '" spellcheck="off" autocomplete="off" name="'.$token->[2]->{'id'}.
