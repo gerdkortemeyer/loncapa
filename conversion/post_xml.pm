@@ -49,7 +49,7 @@ sub post_xml {
 
   my $root = create_new_structure($dom_doc);
 
-  remove_elements($root, ['startouttext','startoutext','startottext','startouttex','startouttect','starttextarea','endouttext','endoutext','endoutttext','endouttxt','endouutext','ednouttext','endtextarea','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','x-claris-tagview','x-claris-window','x-sas-window']);
+  remove_elements($root, ['startouttext','startoutext','startottext','startouttex','startouttect','starttextarea','endouttext','endoutext','endoutttext','endouttxt','endouutext','ednouttext','endtextarea','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','allows','x-claris-tagview','x-claris-window','x-sas-window']);
   
   remove_empty_attributes($root);
   
@@ -490,6 +490,9 @@ sub replace_m {
     # replace math by replacements
     for (my $i=0; $i < scalar(@maths); $i++) {
       my $math = $maths[$i];
+      $math =~ s/&/&amp;/;
+      $math =~ s/</&lt;/;
+      $math =~ s/>/&gt;/;
       if ($math =~ /^\$\$(.*)\$\$$/s) {
         $math = '<dtm>'.$1.'</dtm>';
       } elsif ($math =~ /^\\\[(.*)\\\]$/s) {
@@ -1721,7 +1724,11 @@ sub replace_center {
     if ($center->getChildrenByTagName('table')->size() > 0) { # note: getChildrenByTagName is not DOM (LibXML specific)
       replace_by_children($center);
     } else {
-      if (!defined $center->previousSibling && !defined $center->nextSibling && string_in_array(\@accepting_style, $center->parentNode->nodeName)) {
+      if ((!defined $center->previousSibling ||
+          ($center->previousSibling->nodeType == XML_TEXT_NODE && $center->previousSibling->nodeValue =~ /^\s*$/ && !defined $center->previousSibling->previousSibling)) &&
+          (!defined $center->nextSibling ||
+          ($center->nextSibling->nodeType == XML_TEXT_NODE && $center->nextSibling->nodeValue =~ /^\s*$/ && !defined $center->nextSibling->nextSibling)) &&
+          string_in_array(\@accepting_style, $center->parentNode->nodeName)) {
         # use CSS on the parent block and replace center by its children
         set_css_property($center->parentNode, 'text-align', 'center');
         replace_by_children($center);
@@ -1759,8 +1766,15 @@ sub replace_nobr {
   my ($root) = @_;
   my @nobrs = $root->getElementsByTagName('nobr');
   foreach my $nobr (@nobrs) {
-    $nobr->setNodeName('span');
-    $nobr->setAttribute('style', 'white-space:nowrap');
+    if (!defined $nobr->previousSibling && !defined $nobr->nextSibling &&
+        string_in_array(\@accepting_style, $nobr->parentNode->nodeName)) {
+      # use CSS on the parent block
+      set_css_property($nobr->parentNode, 'white-space', 'nowrap');
+      replace_by_children($nobr);
+    } else {
+      $nobr->setNodeName('span');
+      $nobr->setAttribute('style', 'white-space:nowrap');
+    }
   }
 }
 
@@ -2481,16 +2495,28 @@ sub remove_empty_style {
 sub convert_conceptgroup {
   my ($root) = @_;
   my %display_id = ();
-  my $number = 1;
+  my $cg_number = 1;
   my @conceptgroups = $root->getElementsByTagName('conceptgroup');
   foreach my $conceptgroup (@conceptgroups) {
     my $concept = $conceptgroup->getAttribute('concept');
     if (defined $concept) {
       $conceptgroup->removeAttribute('concept');
+      if (defined $display_id{$concept}) {
+        # concept has already been used, there is an error in the document
+        # -> print a warning and add a number to it
+        print "Warning: several conceptgroups with the same name\n";
+        my $co_number = 2;
+        my $concept2 = $concept.' '.$co_number;
+        while (defined $display_id{$concept2}) {
+          $co_number++;
+          $concept2 = $concept.' '.$co_number;
+        }
+        $concept = $concept2;
+      }
       $conceptgroup->setAttribute('display', $concept);
     } else {
-      $concept = 'conceptgroup_'.$number;
-      $number++;
+      $concept = 'conceptgroup '.$cg_number;
+      $cg_number++;
     }
     my $id = $concept;
     $id =~ tr/ /_/;
@@ -2500,11 +2526,11 @@ sub convert_conceptgroup {
     }
     my @id_values = values(%display_id);
     if (string_in_array(\@id_values, $id)) {
-      my $number = 2;
-      my $id2 = $id.'_'.$number;
+      my $id_number = 2;
+      my $id2 = $id.'_'.$id_number;
       while (string_in_array(\@id_values, $id2)) {
-        $number++;
-        $id2 = $id.'_'.$number;
+        $id_number++;
+        $id2 = $id.'_'.$id_number;
       }
       $id = $id2;
     }
