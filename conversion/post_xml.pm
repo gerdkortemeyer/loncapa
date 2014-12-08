@@ -49,7 +49,7 @@ sub post_xml {
 
   my $root = create_new_structure($dom_doc);
 
-  remove_elements($root, ['startouttext','startoutext','startottext','startouttex','startouttect','starttextarea','endouttext','endoutext','endoutttext','endouttxt','endouutext','ednouttext','endtextarea','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','allows','x-claris-tagview','x-claris-window','x-sas-window']);
+  remove_elements($root, ['startouttext','startoutext','startottext','startouttex','startouttect','atartouttext','starttextarea','endouttext','endoutext','endoutttext','endouttxt','endouutext','ednouttext','endtextarea','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','allows','x-claris-tagview','x-claris-window','x-sas-window']);
   
   remove_empty_attributes($root);
   
@@ -365,8 +365,8 @@ sub replace_m {
       if (defined $script->firstChild && $script->firstChild->nodeType == XML_TEXT_NODE) {
         my $text = $script->firstChild->nodeValue;
         # NOTE: we are not interested in replacing "@value", only "$value"
-        # this regexp is for "  $a = ..."
-        while ($text =~ /^[ \t]*\$([a-zA-Z_0-9]+)[ \t]*=/gm) {
+        # this regexp is for "  $a = ..." and "  $a[...] = ..."
+        while ($text =~ /^[ \t]*\$([a-zA-Z_0-9]+)(?:\[[^\]]+\])?[ \t]*=/gm) {
           if (!string_in_array(\@variables, $1)) {
             push(@variables, $1);
           }
@@ -379,6 +379,12 @@ sub replace_m {
           }
           if (!string_in_array(\@variables, $match)) {
             push(@variables, $match);
+          }
+        }
+        # and this one is for "push @a"
+        while ($text =~ /^[ \t]*push @([a-zA-Z_0-9]+)[ \t,]*/gm) {
+          if (!string_in_array(\@variables, $1)) {
+            push(@variables, $1);
           }
         }
         # use the opportunity to report usage of <m> in Perl scripts
