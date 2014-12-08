@@ -2481,16 +2481,28 @@ sub remove_empty_style {
 sub convert_conceptgroup {
   my ($root) = @_;
   my %display_id = ();
-  my $number = 1;
+  my $cg_number = 1;
   my @conceptgroups = $root->getElementsByTagName('conceptgroup');
   foreach my $conceptgroup (@conceptgroups) {
     my $concept = $conceptgroup->getAttribute('concept');
     if (defined $concept) {
       $conceptgroup->removeAttribute('concept');
+      if (defined $display_id{$concept}) {
+        # concept has already been used, there is an error in the document
+        # -> print a warning and add a number to it
+        print "Warning: several conceptgroups with the same name\n";
+        my $co_number = 2;
+        my $concept2 = $concept.' '.$co_number;
+        while (defined $display_id{$concept2}) {
+          $co_number++;
+          $concept2 = $concept.' '.$co_number;
+        }
+        $concept = $concept2;
+      }
       $conceptgroup->setAttribute('display', $concept);
     } else {
-      $concept = 'conceptgroup_'.$number;
-      $number++;
+      $concept = 'conceptgroup '.$cg_number;
+      $cg_number++;
     }
     my $id = $concept;
     $id =~ tr/ /_/;
@@ -2500,11 +2512,11 @@ sub convert_conceptgroup {
     }
     my @id_values = values(%display_id);
     if (string_in_array(\@id_values, $id)) {
-      my $number = 2;
-      my $id2 = $id.'_'.$number;
+      my $id_number = 2;
+      my $id2 = $id.'_'.$id_number;
       while (string_in_array(\@id_values, $id2)) {
-        $number++;
-        $id2 = $id.'_'.$number;
+        $id_number++;
+        $id2 = $id.'_'.$id_number;
       }
       $id = $id2;
     }
