@@ -71,6 +71,7 @@ sub start {
   if (scalar(@stack) > 0 && $stack[scalar(@stack)-1] eq 'tr' && $tagname ne 'tr' && $tagname ne 'td' && $tagname ne 'th' &&
       !string_in_array(['part','block','comment','endouttext','problemtype','standalone','startouttext','tex','translated','web','while'], $tagname)) {
     # NOTE: a 'part' or 'block' element between tr and td will not be valid, but changing tag order would make things worse
+    print "Warning: a <td> tag was added because a $tagname element was directly under a tr\n";
     start('td');
   }
   if ($tagname eq 'p' && scalar(@stack) > 0 && $stack[scalar(@stack)-1] eq 'p') {

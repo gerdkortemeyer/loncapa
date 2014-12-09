@@ -38,7 +38,7 @@ if (-d "$pathname") {
   my $seconds = $elapsed - ($minutes*60);
   print "\n".scalar(@$converted)." files were converted in $minutes minutes $seconds seconds\n";
   if (scalar(@$failures) > 0) {
-    print "\n".scalar(@$failures)." files could not be converted, and need a manual fix:\n";
+    print "\n".scalar(@$failures)." files need a manual fix:\n";
     foreach my $failure (@$failures) {
       print "  $failure\n";
     }

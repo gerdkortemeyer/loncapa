@@ -53,9 +53,9 @@ sub post_xml {
   
   remove_empty_attributes($root);
   
-  replace_tex_and_web($root);
+  my $fix_by_hand = replace_tex_and_web($root);
   
-  replace_m($root);
+  $fix_by_hand = $fix_by_hand || replace_m($root);
   
   my @all_block = (@block_elements, @block_html);
   add_sty_blocks($new_path, $root, \@all_block); # must come before the subs using @all_block
@@ -91,7 +91,7 @@ sub post_xml {
   
   remove_useless_notsolved($root); # must happen before change_hints
   
-  fix_parts($root);
+  $fix_by_hand = $fix_by_hand || fix_parts($root);
   
   fix_paragraphs_inside($root, \@all_block);
 
@@ -113,6 +113,10 @@ sub post_xml {
   open my $out, '>', $new_path;
   print $out $dom_doc->toString(); # byte string !
   close $out;
+  
+  if ($fix_by_hand) {
+    die "The file has been converted but it should be fixed by hand.";
+  }
 }
 
 sub create_new_structure {
@@ -286,8 +290,10 @@ sub remove_empty_attributes {
 
 # This is only replacing <tex>\noindent</tex>, <web><br /><br /></web>, <web><br /></web>, <web><p /></web>
 # Other uses of tex and web will have to be fixed by hand (replaced by equivalent CSS).
+# Returns 1 if the file should be fixed by hand, 0 otherwise.
 sub replace_tex_and_web {
   my ($root) = @_;
+  my $fix_by_hand = 0;
   my $warning_tex = 0;
   my $warning_web = 0;
   my $warning_script = 0;
@@ -342,20 +348,26 @@ sub replace_tex_and_web {
   }
   if ($warning_tex) {
     print "WARNING: remaining tex elements have to be fixed by hand !\n";
+    $fix_by_hand = 1;
   }
   if ($warning_web) {
     print "WARNING: remaining web elements have to be fixed by hand !\n";
+    $fix_by_hand = 1;
   }
   if ($warning_script) {
     print "WARNING: &web and &tex in script element have to be fixed by hand !\n";
+    $fix_by_hand = 1;
   }
+  return $fix_by_hand;
 }
 
 # Replaces m by HTML, tm and/or dtm.
 # m might contain non-math LaTeX, while tm and dtm may only contain math.
+# Returns 1 if the file should be fixed by hand, 0 otherwise.
 sub replace_m {
   my ($root) = @_;
   my $doc = $root->ownerDocument;
+  my $fix_by_hand = 0;
   # search for variable declarations
   my @variables = ();
   my @scripts = $root->getElementsByTagName('script');
@@ -390,6 +402,7 @@ sub replace_m {
         # use the opportunity to report usage of <m> in Perl scripts
         if ($text =~ /<m[ >]/) {
           print "WARNING: <m> is used in a script, it should be converted by hand\n";
+          $fix_by_hand = 1;
         }
       }
     }
@@ -402,6 +415,7 @@ sub replace_m {
     }
     if (defined $m->firstChild->nextSibling || $m->firstChild->nodeType != XML_TEXT_NODE) {
       print "WARNING: m value is not simple text\n";
+      $fix_by_hand = 1;
       next;
     }
     my $text = $m->firstChild->nodeValue;
@@ -416,20 +430,20 @@ sub replace_m {
         $text =~ s/\$$variable/$replacement/ge;
       }
     }
-    # check if there are math separators: $ $$ \( \) \[ \]
+    # check if the expression is enclosed in math separators: $ $$ \( \) \[ \]
     # if so, replace the whole node by dtm or tm
     my $new_text;
     my $new_node_name;
-    if ($text =~ /^\$\$([^\$]*)\$\$$/) {
+    if ($text =~ /^\s*\$\$([^\$]*)\$\$\s*$/) {
       $new_node_name = 'dtm';
       $new_text = $1;
-    } elsif ($text =~ /^\\\[(.*)\\\]$/s) {
+    } elsif ($text =~ /^\s*\\\[(.*)\\\]\s*$/s) {
       $new_node_name = 'dtm';
       $new_text = $1;
-    } elsif ($text =~ /^\$([^\$]*)\$$/) {
+    } elsif ($text =~ /^\s*\$([^\$]*)\$\s*$/) {
       $new_node_name = 'tm';
       $new_text = $1;
-    } elsif ($text =~ /^\\\((.*)\\\)$/s) {
+    } elsif ($text =~ /^\s*\\\((.*)\\\)\s*$/s) {
       $new_node_name = 'tm';
       $new_text = $1;
     }
@@ -496,9 +510,9 @@ sub replace_m {
     # replace math by replacements
     for (my $i=0; $i < scalar(@maths); $i++) {
       my $math = $maths[$i];
-      $math =~ s/&/&amp;/;
-      $math =~ s/</&lt;/;
-      $math =~ s/>/&gt;/;
+      $math =~ s/&/&amp;/g;
+      $math =~ s/</&lt;/g;
+      $math =~ s/>/&gt;/g;
       if ($math =~ /^\$\$(.*)\$\$$/s) {
         $math = '<dtm>'.$1.'</dtm>';
       } elsif ($math =~ /^\\\[(.*)\\\]$/s) {
@@ -523,6 +537,7 @@ sub replace_m {
     $m->parentNode->replaceChild($fragment, $m);
     
   }
+  return $fix_by_hand;
 }
 
 # Returns the HTML equivalent of LaTeX input, using tth
@@ -1806,9 +1821,11 @@ sub remove_useless_notsolved {
 }
 
 # checks for errors and adds a part if a problem with responses has no part
+# Returns 1 if the file should be fixed by hand, 0 otherwise.
 sub fix_parts {
   my ($root) = @_;
   my $doc = $root->ownerDocument;
+  my $fix_by_hand = 0;
   my @parts = $root->getElementsByTagName('part');
   my $with_parts = (scalar(@parts) > 0);
   my $one_not_in_part = 0;
@@ -1821,7 +1838,8 @@ sub fix_parts {
       while (defined $ancestor) {
         if ($ancestor->nodeName eq 'part') {
           if ($in_part) {
-            die "part in part !!!";
+            print "WARNING: part in part !!!\n";
+            $fix_by_hand = 1;
           }
           $in_part = 1;
         }
@@ -1832,22 +1850,25 @@ sub fix_parts {
     }
   }
   if ($with_parts && $one_not_in_part) {
-    die "parts are used but at least one response is not in a part";
+    print "WARNING: parts are used but at least one response is not in a part\n";
+    $fix_by_hand = 1;
   }
   if ($all_in_parts) {
-    return;
+    return $fix_by_hand;
   }
   # we are now in the case where parts are not used at all
   if (scalar(@responses) == 0) {
     # no response, no need to create a part
-    return;
+    return $fix_by_hand;
   }
   # there is at least one response, we will move everything inside problem in a part
   my @problems = $root->getElementsByTagName('problem');
   if (scalar(@problems) < 1) {
-    die "there is a response but no problem";
+    print "WARNING: there is a response but no problem\n";
+    $fix_by_hand = 1;
   } elsif (scalar(@problems) > 1) {
-    die "there is more than one problem";
+    print "WARNING: there is more than one problem\n";
+    $fix_by_hand = 1;
   }
   foreach my $problem (@problems) {
     my $part = $doc->createElement('part');
@@ -1859,6 +1880,7 @@ sub fix_parts {
     }
     $problem->appendChild($part);
   }
+  return $fix_by_hand;
 }
 
 # changes the hints according to the new schema
