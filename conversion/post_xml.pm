@@ -49,7 +49,7 @@ sub post_xml {
 
   my $root = create_new_structure($dom_doc);
 
-  remove_elements($root, ['startouttext','startoutext','startottext','startouttex','startouttect','atartouttext','starouttext','starttextarea','endouttext','endoutext','endoutttext','endouttxt','endouutext','ednouttext','endouttex','endoouttext','endtextarea','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','allows','x-claris-tagview','x-claris-window','x-sas-window']);
+  remove_elements($root, ['startouttext','startoutext','startottext','startouttex','startouttect','atartouttext','starouttext','starttextout','starttext','starttextarea','endouttext','endoutext','endoutttext','endouttxt','endouutext','ednouttext','endouttex','endoouttext','endouttest','endtextout','endtextarea','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','allows','x-claris-tagview','x-claris-window','x-sas-window']);
   
   remove_empty_attributes($root);
   
@@ -742,13 +742,6 @@ sub fix_block_styles {
       }
     }
     my $no_style_here = !string_in_array(\@containing_styles, $element->parentNode->nodeName);
-    if ($no_style_here && !$found_block) {
-      if (defined $element->firstChild && $element->firstChild->nodeType == XML_TEXT_NODE &&
-          !defined $element->firstChild->nextSibling && $element->firstChild->nodeValue !~ /^\s*$/) {
-        # keep the style if there is only text inside, even if it is not allowed here
-        $no_style_here = 0;
-      }
-    }
     if ($found_block || $no_style_here) {
       # there is a block or the style is not allowed here,
       # the style element has to be replaced by its modified children
@@ -1851,6 +1844,7 @@ sub fix_parts {
     foreach my $response (@response_nodes) {
       $with_a_response = 1;
       my $in_part = 0;
+      my $found_problem = 0;
       my $ancestor = $response->parentNode;
       while (defined $ancestor) {
         if ($ancestor->nodeName eq 'part') {
@@ -1859,8 +1853,14 @@ sub fix_parts {
             $fix_by_hand = 1;
           }
           $in_part = 1;
+        } elsif ($ancestor->nodeName eq 'problem') {
+          $found_problem = 1;
         }
         $ancestor = $ancestor->parentNode;
+      }
+      if (!$found_problem) {
+        print "WARNING: a response does not have a problem ancestor\n";
+        $fix_by_hand = 1;
       }
       $one_not_in_part = $one_not_in_part || !$in_part;
       $all_in_parts = $all_in_parts && $in_part;
@@ -2640,7 +2640,10 @@ sub lowercase_attribute_values {
                     ['drawvectorsum', ['showvalue']],
                     ['textline', ['readonly']],
                     ['hint', ['showoncorrect']],
-                    ['img', ['encrypturl']]
+                    ['body', ['dir']],
+                    ['img', ['encrypturl']],
+                    ['form', ['method']],
+                    ['input', ['type']]
                    );
   foreach my $el_attributes (@with_yesno) {
     my $el_name = $el_attributes->[0];
