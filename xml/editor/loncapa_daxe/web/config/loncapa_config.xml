@@ -20,7 +20,7 @@
       <MENU_INSERTION nom="randomlist"/>
       <MENU_INSERTION nom="solved"/>
       <MENU_INSERTION nom="notsolved"/>
-      <MENU_INSERTION nom="tex"/>
+      <MENU_INSERTION nom="print"/>
       <MENU_INSERTION nom="web"/>
       <MENU_INSERTION nom="standalone"/>
       <MENU_INSERTION nom="lcmeta"/>
@@ -297,6 +297,7 @@
     <AFFICHAGE_ELEMENT element="block" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="while" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="tex" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="print" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="web" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="standalone" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="problemtype" type="lcdblock"/>
@@ -2352,6 +2353,13 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="tex">
+      <TITRE>Print Only Block (LaTeX)</TITRE>
+      <DOCUMENTATION>
+        Print Only Block (in LaTeX).
+        This element is deprecated and will be removed any time now...
+      </DOCUMENTATION>
+    </STRINGS_ELEMENT>
+    <STRINGS_ELEMENT element="print">
       <TITRE>Print Only Block</TITRE>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="web">

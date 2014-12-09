@@ -198,6 +198,7 @@
       <xs:element ref="import"/>
       <xs:element ref="while"/>
       <xs:element ref="tex"/>
+      <xs:element ref="print"/>
       <xs:element ref="web"/>
       <xs:element ref="standalone"/>
       <xs:element ref="perl"/>
@@ -2671,6 +2672,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="tex"/>
+        <xs:element ref="print"/>
         <xs:element ref="web"/>
       </xs:choice>
       <xs:attribute default="10" name="rows" type="int-or-perl"/>
@@ -4251,12 +4253,29 @@
   </xs:element>
   <xs:element name="tex" type="xs:string">
     <xs:annotation>
-      <xs:documentation>Print Only Block</xs:documentation>
+      <xs:documentation>
+        Print Only Block (in LaTeX).
+        This element is deprecated and will be removed any time now...
+      </xs:documentation>
     </xs:annotation>
+  </xs:element>
+  <xs:element name="print">
+    <xs:annotation>
+      <xs:documentation>
+        Print Only Block
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:group ref="text-without-responses"/>
+      </xs:choice>
+    </xs:complexType>
   </xs:element>
   <xs:element name="web">
     <xs:annotation>
-      <xs:documentation>Web Only Block</xs:documentation>
+      <xs:documentation>
+        Web Only Block
+      </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
