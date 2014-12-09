@@ -82,28 +82,32 @@ sub start_part_grade {
 
 sub end_part_grade {
    my ($p,$safe,$stack,$token)=@_;
-#FIXME: exit if nothing to grade
-# One more try, not necessarily counted
-   $stack->{'scores'}->{'totaltries'}++;
 # Collect all of the response status
    my $allcorrect=1;
    my $allincorrect=1;
+   my $allprevious=1;
+   my $allinvalid=1;
    foreach my $responsestatus (@{$stack->{'response_grades'}}) {
+       unless ($responsestatus->{'previously_submitted'}) { $allprevious=0; }
        if ($responsestatus->{'status'} ne &correct()) { $allcorrect=0; }
        if ($responsestatus->{'status'} ne &incorrect()) { $allincorrect=0; }
+       if ($responsestatus->{'status'} ne &no_valid_response()) { $allinvalid=0; }
    }
+   if ($allinvalid) { return; }
+# One more try, not necessarily counted
+   $stack->{'scores'}->{'totaltries'}++;
 #FIXME: partial correctness
    $stack->{'scores'}->{'status'}=&incorrect();
 #FIXME: absolute possible
    $stack->{'scores'}->{'scoretype'}='relative';
    $stack->{'scores'}->{'score'}=0;
    if ($allcorrect) {
-      $stack->{'scores'}->{'countedtries'}++;
+      unless ($allprevious) { $stack->{'scores'}->{'countedtries'}++; }
       $stack->{'scores'}->{'status'}=&correct();
 #FIXME: absolute and partial credit
       $stack->{'scores'}->{'score'}=1;
    } elsif ($allincorrect) {
-      $stack->{'scores'}->{'countedtries'}++;
+      unless ($allprevious) { $stack->{'scores'}->{'countedtries'}++; }
    }
 # Save the information
    unless (&save_part_data($stack)) {

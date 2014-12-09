@@ -130,22 +130,44 @@ sub end_numericalresponse_grade {
    my ($p,$safe,$stack,$token)=@_;
 # ID
    my $id=&Apache::lc_asset_xml::open_tag_attribute('id',$stack);
-# Get tolerance parameter
-   my $tolerance=&Apache::lc_asset_xml::cascade_parameter('tol',$stack);
 # Special mode?
    my $mode=&Apache::lc_asset_xml::open_tag_attribute('mode',$stack);
+# Get student response
+   my $responses=&evaluate_responses($stack,$mode);
+# Did we get anything?
+   unless ($responses=~/\S/s) {
+# Nope? Well, nothing to do here.
+      return(&no_valid_response(),undef);
+   }
+# Get tolerance parameter
+   my $tolerance=&Apache::lc_asset_xml::cascade_parameter('tol',$stack);
 # Or?
    my $or=&Apache::lc_asset_xml::open_tag_switch('or',$stack);
 # Get the correct answer and unit
    my $expected=&evaluate_answer($stack,$mode);
-# Get student-entered answer
-   my $responses=&evaluate_responses($stack,$mode);
 # Get custom units 
    my $customunits=&Apache::lc_asset_xml::cascade_parameter('customunits',$stack);
 # Get ourselves a numerical parser and environment
    my ($parser,$env)=&Apache::lc_math_parser::new_numerical_parser($customunits);
 # Do the actual grading
    my ($outcome,$message)=&answertest($parser,$env,$responses,$expected,$tolerance,$mode,$or);
+# Did we have this answer before?
+   my $responsedetails=&Apache::lc_asset_xml::get_response_details($id,$stack);
+# See if we had this before and came to the same conclusion
+   my $previously=0;
+   if (ref($responsedetails) eq 'ARRAY') {
+      foreach my $previous (@{$responsedetails}) {
+         if ($responses eq $previous->{'responses'}) {
+# Yes, we had it before. If the author fixed something in the problem,
+# we might get a different status this time around.
+            if ($outcome eq $previous->{'status'}) {
+# Nope, same thing
+               $previously=1;
+               last;
+            }
+         }
+      }
+   }
 # Log this
    &Apache::lc_asset_xml::add_response_details($id,
                                                { 'type'        => 'numerical',
@@ -158,7 +180,7 @@ sub end_numericalresponse_grade {
                                                  'message'     => $message},
                                                $stack);
 # Put that on the grading stack to look at end_part_grade
-   &Apache::lc_asset_xml::add_response_grade($outcome,$message,$stack);
+   &Apache::lc_asset_xml::add_response_grade($outcome,$message,$previously,$stack);
 }
 
 sub start_numericalhintcondition_html {
@@ -182,10 +204,10 @@ sub answertest {
         $tolerance = 1e-5;
     }
 # Nothing specified? Nothing we can do.
-    unless ($expression=~/\S/) {
+    unless ($expression=~/\S/s) {
        return(&no_valid_response(),undef);
     }
-    unless ($expected=~/\S/) {
+    unless ($expected=~/\S/s) {
        return(&no_valid_answer(),undef);
     }
 # Everything is ready now, let's see what we have

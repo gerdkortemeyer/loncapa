@@ -201,13 +201,6 @@ sub get_response_hints {
 }
 
 #
-# Add a grade, to be collected by end_part
-#
-sub add_response_grade {
-   my ($code,$message,$stack)=@_;
-}
-
-#
 # Response details
 #
 sub add_response_details {
@@ -225,11 +218,13 @@ sub get_response_details {
 }
 
 #
-# Collect grades from all responses in a part
+# Add a grade, to be collected by end_part
 #
 sub add_response_grade {
-   my ($status,$message,$stack)=@_;
-   push(@{$stack->{'response_grades'}},{ 'status' => $status, 'message' => $message });
+   my ($status,$message,$previously,$stack)=@_;
+   push(@{$stack->{'response_grades'}},{ 'status' => $status, 
+                                         'message' => $message,
+                                         'previously_submitted' => $previously });
 }
 
 
