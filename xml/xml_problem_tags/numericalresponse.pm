@@ -137,7 +137,8 @@ sub end_numericalresponse_grade {
 # Did we get anything?
    unless ($responses=~/\S/s) {
 # Nope? Well, nothing to do here.
-      return(&no_valid_response(),undef);
+      &Apache::lc_asset_xml::add_response_grade(&no_valid_response(),undef,undef,$stack);
+      return;
    }
 # Get tolerance parameter
    my $tolerance=&Apache::lc_asset_xml::cascade_parameter('tol',$stack);

@@ -93,9 +93,10 @@ sub end_part_grade {
        if ($responsestatus->{'status'} ne &incorrect()) { $allincorrect=0; }
        if ($responsestatus->{'status'} ne &no_valid_response()) { $allinvalid=0; }
    }
-   if ($allinvalid) { return; }
+   unless ($allinvalid) {
 # One more try, not necessarily counted
-   $stack->{'scores'}->{'totaltries'}++;
+      $stack->{'scores'}->{'totaltries'}++;
+   }
 #FIXME: partial correctness
    $stack->{'scores'}->{'status'}=&incorrect();
 #FIXME: absolute possible
