@@ -49,13 +49,14 @@ sub post_xml {
 
   my $root = create_new_structure($dom_doc);
 
-  remove_elements($root, ['startouttext','startoutext','startottext','startouttex','startouttect','atartouttext','starttextarea','endouttext','endoutext','endoutttext','endouttxt','endouutext','ednouttext','endouttex','endtextarea','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','allows','x-claris-tagview','x-claris-window','x-sas-window']);
+  remove_elements($root, ['startouttext','startoutext','startottext','startouttex','startouttect','atartouttext','starouttext','starttextarea','endouttext','endoutext','endoutttext','endouttxt','endouutext','ednouttext','endouttex','endoouttext','endtextarea','startpartmarker','endpartmarker','displayweight','displaystudentphoto','basefont','displaytitle','displayduedate','allow','allows','x-claris-tagview','x-claris-window','x-sas-window']);
   
   remove_empty_attributes($root);
   
   my $fix_by_hand = replace_tex_and_web($root);
   
-  $fix_by_hand = $fix_by_hand || replace_m($root);
+  my $fix_by_hand2 = replace_m($root);
+  $fix_by_hand = $fix_by_hand || $fix_by_hand2;
   
   my @all_block = (@block_elements, @block_html);
   add_sty_blocks($new_path, $root, \@all_block); # must come before the subs using @all_block
@@ -93,7 +94,8 @@ sub post_xml {
   
   remove_useless_notsolved($root); # must happen before change_hints
   
-  $fix_by_hand = $fix_by_hand || fix_parts($root);
+  $fix_by_hand2 = fix_parts($root);
+  $fix_by_hand = $fix_by_hand || $fix_by_hand2;
   
   fix_paragraphs_inside($root, \@all_block);
 
@@ -1841,11 +1843,13 @@ sub fix_parts {
   my $fix_by_hand = 0;
   my @parts = $root->getElementsByTagName('part');
   my $with_parts = (scalar(@parts) > 0);
+  my $with_a_response = 0;
   my $one_not_in_part = 0;
   my $all_in_parts = 1;
   foreach my $response_tag (@responses) {
     my @response_nodes = $root->getElementsByTagName($response_tag);
     foreach my $response (@response_nodes) {
+      $with_a_response = 1;
       my $in_part = 0;
       my $ancestor = $response->parentNode;
       while (defined $ancestor) {
@@ -1870,7 +1874,7 @@ sub fix_parts {
     return $fix_by_hand;
   }
   # we are now in the case where parts are not used at all
-  if (scalar(@responses) == 0) {
+  if (!$with_a_response) {
     # no response, no need to create a part
     return $fix_by_hand;
   }
