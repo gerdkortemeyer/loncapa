@@ -157,9 +157,10 @@ sub cascade_parameter {
 # Get things ready for a response
 #
 sub init_response {
-   my ($stack)=@_;
-   $stack->{'response_inputs'}=[];
-   $stack->{'response_hints'}=[];
+   my ($id,$stack)=@_;
+   $stack->{'response_inputs'}->{$id}=[];
+   $stack->{'response_hints'}->{$id}=[];
+   $stack->{'response_id'}=$id;
 }
 
 #
@@ -167,7 +168,7 @@ sub init_response {
 #
 sub add_response_input {
    my ($stack)=@_;
-   push(@{$stack->{'response_inputs'}},${$stack->{'tags'}}[-1]);
+   push(@{$stack->{'response_inputs'}->{$stack->{'response_id'}}},${$stack->{'tags'}}[-1]);
 }
 
 #
@@ -176,7 +177,7 @@ sub add_response_input {
 sub collect_response_inputs {
    my ($stack)=@_;
    my $answers=[];
-   foreach my $response (@{$stack->{'response_inputs'}}) {
+   foreach my $response (@{$stack->{'response_inputs'}->{$stack->{'response_id'}}}) {
        push(@{$answers},$stack->{'content'}->{$response->{'args'}->{'id'}});
    }
    return $answers;
@@ -192,12 +193,7 @@ sub get_response_inputs {
 
 sub add_response_hint {
    my ($stack)=@_;
-   push(@{$stack->{'response_hints'}},${$stack->{'tags'}}[-1]);
-}
-
-sub get_response_hints {
-   my ($stack)=@_;
-   return $stack->{'response_hints'};
+   push(@{$stack->{'response_hints'}->{$stack->{'response_id'}}},${$stack->{'tags'}}[-1]);
 }
 
 #
@@ -424,7 +420,6 @@ sub handler {
        $context->{'asset'}->{'author'},
        $context->{'asset'}->{'url'})=&Apache::lc_entity_urls::split_url($full_url);
       $context->{'asset'}->{'assetid'}=$content{'assetid'};
-      $context->{'asset'}->{'partid'}=$content{'partid'};
       $context->{'asset'}->{'problemid'}=$content{'problemid'};
       my $outputid=undef;
       if ($content{'outputid'}=~/\w/) { $outputid=$content{'outputid'}; }

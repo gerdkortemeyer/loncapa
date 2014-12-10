@@ -56,6 +56,7 @@ sub start_problem_grade {
 
 sub start_part_html {
    my ($p,$safe,$stack,$token)=@_;
+   $stack->{'context'}->{'asset'}->{'partid'}=$token->[2]->{'id'};
    &load_part_data($stack);
    return '<div class="lcpartdiv" id="'.$token->[2]->{'id'}.'">'.
           '<form id="'.$token->[2]->{'id'}.'_form" name="'.$token->[2]->{'id'}.'_form" class="lcpartform">'.
@@ -77,7 +78,8 @@ sub end_part_html {
 sub start_part_grade {
    my ($p,$safe,$stack,$token)=@_;
    $stack->{'response_grades'}=[];
-   &load_part_data($stack)
+   $stack->{'context'}->{'asset'}->{'partid'}=$token->[2]->{'id'};
+   &load_part_data($stack);
 }
 
 sub end_part_grade {
@@ -166,7 +168,8 @@ sub save_part_data {
    my ($stack)=@_;
    if ($stack->{'context'}->{'asset'}->{'partid'} ne
        $stack->{'scores'}->{'partid'}) {
-      &logerror("Partid mismatch");
+      &logerror("Partid mismatch, scores for [".$stack->{'scores'}->{'partid'}."], but record for [".
+                                                $stack->{'context'}->{'asset'}->{'partid'}."]");
       return 0;
    }
    return &Apache::lc_entity_assessments::store_assessment(

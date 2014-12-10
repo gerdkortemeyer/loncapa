@@ -44,7 +44,7 @@ sub start_numericalresponse_html {
 
 sub start_numericalresponse_grade {
    my ($p,$safe,$stack,$token)=@_;
-   &Apache::lc_asset_xml::init_response($stack);
+   &Apache::lc_asset_xml::init_response($token->[2]->{'id'},$stack);
 }
 
 
