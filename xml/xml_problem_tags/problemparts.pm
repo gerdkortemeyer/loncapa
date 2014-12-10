@@ -40,7 +40,7 @@ our @EXPORT = qw(start_problem_html end_problem_html
 
 sub start_problem_html {
    my ($p,$safe,$stack,$token)=@_;
-   &init_problem($safe,$stack);
+   &init_problem($stack);
    return '<div class="lcproblemdiv" id="'.$token->[2]->{'id'}.'">';
 }
 
@@ -51,7 +51,7 @@ sub end_problem_html {
 
 sub start_problem_grade {
    my ($p,$safe,$stack,$token)=@_;
-   &init_problem($safe,$stack);
+   &init_problem($stack);
 }
 
 sub start_part_html {
@@ -124,7 +124,13 @@ sub end_part_grade {
 # =============================================
 
 sub init_problem {
-   my ($save,$stack)=@_;
+   my ($stack)=@_;
+   $stack->{'scoredata'}=&Apache::lc_entity_assessments::get_one_user_assessment(
+              $stack->{'context'}->{'course'}->{'entity'},
+              $stack->{'context'}->{'course'}->{'domain'},
+              $stack->{'context'}->{'user'}->{'entity'},
+              $stack->{'context'}->{'user'}->{'domain'},
+              $stack->{'context'}->{'asset'}->{'assetid'});
 }
 
 
@@ -139,26 +145,29 @@ sub init_problem {
 #
 sub load_part_data {
    my ($stack)=@_;
-   my $data=&Apache::lc_entity_assessments::get_one_user_assessment(
-              $stack->{'context'}->{'course'}->{'entity'},
-              $stack->{'context'}->{'course'}->{'domain'},
-              $stack->{'context'}->{'user'}->{'entity'},
-              $stack->{'context'}->{'user'}->{'domain'},
-              $stack->{'context'}->{'asset'}->{'assetid'},
-              $stack->{'context'}->{'asset'}->{'partid'});
-   $stack->{'response_details'}={};
-   if ($data) {
-      ($stack->{'scores'}->{'partid'},
-       $stack->{'scores'}->{'scoretype'},
-       $stack->{'scores'}->{'score'},
-       $stack->{'scores'}->{'totaltries'},
-       $stack->{'scores'}->{'countedtries'},
-       $stack->{'scores'}->{'status'},
-        my $responsedetailsjson)=@{$data->[0]};
-      if ($responsedetailsjson) {
-         $stack->{'response_details'}=&Apache::lc_json_utils::json_to_perl($responsedetailsjson);
+   if (ref($stack->{'scoredata'}) eq 'ARRAY') {
+# Let's see if we find existing data for this part
+      foreach my $partdata (@{$stack->{'scoredata'}}) {
+         if ($partdata->[0] eq $stack->{'context'}->{'asset'}->{'partid'}) {
+            ($stack->{'scores'}->{'partid'},
+             $stack->{'scores'}->{'scoretype'},
+             $stack->{'scores'}->{'score'},
+             $stack->{'scores'}->{'totaltries'},
+             $stack->{'scores'}->{'countedtries'},
+             $stack->{'scores'}->{'status'},
+             my $responsedetailsjson)=@{$partdata};
+            if ($responsedetailsjson) {
+               $stack->{'response_details'}=&Apache::lc_json_utils::json_to_perl($responsedetailsjson);
+            }
+            return;
+         }
       }
    }
+# Nope, none found, start with clean slate
+   delete($stack->{'scores'});
+   $stack->{'scores'}->{'partid'}=$stack->{'context'}->{'asset'}->{'partid'};
+   $stack->{'scores'}->{'totaltries'}=0;
+   $stack->{'scores'}->{'countedtries'}=0;
 }
 
 #
