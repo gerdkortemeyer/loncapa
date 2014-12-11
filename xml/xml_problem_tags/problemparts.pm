@@ -69,10 +69,32 @@ sub end_part_html {
    my ($p,$safe,$stack,$token)=@_;
    my $problemid=&Apache::lc_asset_xml::tag_attribute('problem','id',$stack);
    my $partid=&Apache::lc_asset_xml::open_tag_attribute('id',$stack);
-   return &Apache::lc_xml_forms::triggerbutton($partid.'_submit_button','Submit').'</form>'.
-          '<script>attach_submit_button("'.$problemid.'","'.$partid.'")</script></div>'.
+# Check our state
+   my $status=undef;
+   my $countedtries=0;
+   my $totaltries=0;
+   if (ref($stack->{'scoredata'}) eq 'ARRAY') {
+      foreach my $partdata (@{$stack->{'scoredata'}}) {
+         if ($partdata->[0] eq $partid) {
+            $status=$partdata->[5];
+            $countedtries=$partdata->[4];
+            $totaltries=$partdata->[3];
+         }
+      }
+   }
+   my $output='';
+#FIXME: out of tries, etc, if(1) - debug
+   if (1) {
+      $output.=&Apache::lc_xml_forms::triggerbutton($partid.'_submit_button','Submit');
+   }
+#FIXME: if feedback is off, don't say anything
+   if (1) {
+      $output.="[$status] [$totaltries] [$countedtries]";
+   }
+   $output.='</form><script>attach_submit_button("'.$problemid.'","'.$partid.'")</script></div>'.
 #FIXME: debug
-          '<pre>'.Dumper($stack).'</pre>';
+   $output.='<pre>'.Dumper($stack).'</pre>';
+   return $output;
 }
 
 sub start_part_grade {
