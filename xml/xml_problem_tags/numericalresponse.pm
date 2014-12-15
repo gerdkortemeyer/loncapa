@@ -137,7 +137,7 @@ sub end_numericalresponse_grade {
 # Did we get anything?
    unless ($responses=~/\S/s) {
 # Nope? Well, nothing to do here.
-      &Apache::lc_asset_xml::add_response_grade(&no_valid_response(),undef,undef,$stack);
+      &Apache::lc_asset_xml::add_response_grade($id,&no_valid_response(),undef,undef,$stack);
       return;
    }
 # Get tolerance parameter
@@ -181,7 +181,7 @@ sub end_numericalresponse_grade {
                                                  'message'     => $message},
                                                $stack);
 # Put that on the grading stack to look at end_part_grade
-   &Apache::lc_asset_xml::add_response_grade($outcome,$message,$previously,$stack);
+   &Apache::lc_asset_xml::add_response_grade($id,$outcome,$message,$previously,$stack);
 }
 
 sub start_numericalhintcondition_html {

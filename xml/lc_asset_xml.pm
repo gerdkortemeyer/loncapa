@@ -217,10 +217,10 @@ sub get_response_details {
 # Add a grade, to be collected by end_part
 #
 sub add_response_grade {
-   my ($status,$message,$previously,$stack)=@_;
-   push(@{$stack->{'response_grades'}},{ 'status' => $status, 
-                                         'message' => $message,
-                                         'previously_submitted' => $previously });
+   my ($id,$status,$message,$previously,$stack)=@_;
+   $stack->{'response_grades'}->{$id}={ 'status' => $status, 
+                                        'message' => $message,
+                                        'previously_submitted' => $previously };
 }
 
 

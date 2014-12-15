@@ -99,7 +99,7 @@ sub end_part_html {
 
 sub start_part_grade {
    my ($p,$safe,$stack,$token)=@_;
-   $stack->{'response_grades'}=[];
+   $stack->{'response_grades'}={};
    $stack->{'context'}->{'asset'}->{'partid'}=$token->[2]->{'id'};
    &load_part_data($stack);
 }
@@ -111,7 +111,8 @@ sub end_part_grade {
    my $allincorrect=1;
    my $allprevious=1;
    my $allinvalid=1;
-   foreach my $responsestatus (@{$stack->{'response_grades'}}) {
+   foreach my $responseid (keys(%{$stack->{'response_grades'}})) {
+       my $responsestatus=$stack->{'response_grades'}->{$responseid};
        unless ($responsestatus->{'previously_submitted'}) { $allprevious=0; }
        if ($responsestatus->{'status'} ne &correct()) { $allcorrect=0; }
        if ($responsestatus->{'status'} ne &incorrect()) { $allincorrect=0; }

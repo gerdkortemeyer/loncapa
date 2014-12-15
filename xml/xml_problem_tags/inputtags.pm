@@ -50,14 +50,19 @@ sub start_textline_html {
       }
       my $value='';
       if (ref($responsedetails) eq 'ARRAY') {
+#FIXME: more than one input field
          $value=$responsedetails->[-1]->{'value'};
       } else {
          $value=&Apache::lc_asset_xml::open_tag_attribute('value',$stack);
       }
+      my $status='';
+      my $message='';
       return
  '<input class="math" data-implicit_operators="true" data-unit_mode="true" data-constants="'.$data_constants.
  '" spellcheck="off" autocomplete="off" name="'.$token->[2]->{'id'}.
- '" size="'.$size.'"'.($hidden?' hidden="hidden"':'').' value="'.$value.'" />';
+ '" size="'.$size.'"'.($hidden?' hidden="hidden"':'').' value="'.$value.'" />'.
+#FIXME: not for all
+     '['.$status.']['.$message.']';
    }
    return '';
 }
