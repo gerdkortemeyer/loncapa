@@ -79,61 +79,63 @@
 \BOOKMARK [1][-]{section.8.5}{Tokens}{chapter.8}% 79
 \BOOKMARK [1][-]{section.8.6}{Namespaces}{chapter.8}% 80
 \BOOKMARK [0][-]{chapter.9}{XML}{}% 81
-\BOOKMARK [1][-]{section.9.1}{Structure of Documents}{chapter.9}% 82
-\BOOKMARK [2][-]{subsection.9.1.1}{Classic LON-CAPA Content}{section.9.1}% 83
-\BOOKMARK [2][-]{subsection.9.1.2}{Overview of differences to classic LON-CAPA}{section.9.1}% 84
-\BOOKMARK [1][-]{section.9.2}{Editing}{chapter.9}% 85
-\BOOKMARK [2][-]{subsection.9.2.1}{Main editors}{section.9.2}% 86
-\BOOKMARK [2][-]{subsection.9.2.2}{Emergency editor}{section.9.2}% 87
-\BOOKMARK [0][-]{chapter.10}{XML Parser}{}% 88
-\BOOKMARK [1][-]{section.10.1}{Invocation}{chapter.10}% 89
-\BOOKMARK [1][-]{section.10.2}{Tag types}{chapter.10}% 90
-\BOOKMARK [1][-]{section.10.3}{Stacks and safeeval}{chapter.10}% 91
-\BOOKMARK [0][-]{chapter.11}{Interface Programming}{}% 92
-\BOOKMARK [1][-]{section.11.1}{Interface Pages}{chapter.11}% 93
-\BOOKMARK [2][-]{subsection.11.1.1}{General Mechanism}{section.11.1}% 94
-\BOOKMARK [2][-]{subsection.11.1.2}{Examples}{section.11.1}% 95
-\BOOKMARK [2][-]{subsection.11.1.3}{Where should I be working?}{section.11.1}% 96
-\BOOKMARK [0][-]{chapter.12}{Internationalization}{}% 97
-\BOOKMARK [1][-]{section.12.1}{Encoding}{chapter.12}% 98
-\BOOKMARK [1][-]{section.12.2}{Maketext}{chapter.12}% 99
-\BOOKMARK [1][-]{section.12.3}{Invocation in documents}{chapter.12}% 100
-\BOOKMARK [1][-]{section.12.4}{Invocation from Perl}{chapter.12}% 101
-\BOOKMARK [1][-]{section.12.5}{Internal codes}{chapter.12}% 102
-\BOOKMARK [1][-]{section.12.6}{Special cases}{chapter.12}% 103
-\BOOKMARK [2][-]{subsection.12.6.1}{JavaScript configuration files}{section.12.6}% 104
-\BOOKMARK [2][-]{subsection.12.6.2}{Loading locatilization files}{section.12.6}% 105
-\BOOKMARK [0][-]{chapter.13}{Math editor, parser and equation syntax}{}% 106
-\BOOKMARK [1][-]{section.13.1}{Introduction}{chapter.13}% 107
-\BOOKMARK [1][-]{section.13.2}{A new user interface}{chapter.13}% 108
-\BOOKMARK [2][-]{subsection.13.2.1}{Usage}{section.13.2}% 109
-\BOOKMARK [1][-]{section.13.3}{The server-side parser}{chapter.13}% 110
-\BOOKMARK [2][-]{subsection.13.3.1}{Usage}{section.13.3}% 111
-\BOOKMARK [2][-]{subsection.13.3.2}{Calculation environment}{section.13.3}% 112
-\BOOKMARK [2][-]{subsection.13.3.3}{Conversion to Maxima syntax}{section.13.3}% 113
-\BOOKMARK [2][-]{subsection.13.3.4}{Catching errors}{section.13.3}% 114
-\BOOKMARK [2][-]{subsection.13.3.5}{Example with unit node}{section.13.3}% 115
-\BOOKMARK [2][-]{subsection.13.3.6}{Example with symbolic node}{section.13.3}% 116
-\BOOKMARK [2][-]{subsection.13.3.7}{Comparing results of calculations}{section.13.3}% 117
-\BOOKMARK [2][-]{subsection.13.3.8}{API}{section.13.3}% 118
-\BOOKMARK [1][-]{section.13.4}{Equation syntax}{chapter.13}% 119
-\BOOKMARK [2][-]{subsection.13.4.1}{Spaces}{section.13.4}% 120
-\BOOKMARK [2][-]{subsection.13.4.2}{Decimal separators and function parameter separators}{section.13.4}% 121
-\BOOKMARK [2][-]{subsection.13.4.3}{Constants}{section.13.4}% 122
-\BOOKMARK [2][-]{subsection.13.4.4}{Units}{section.13.4}% 123
-\BOOKMARK [2][-]{subsection.13.4.5}{Parenthesis}{section.13.4}% 124
-\BOOKMARK [2][-]{subsection.13.4.6}{Complex numbers}{section.13.4}% 125
-\BOOKMARK [2][-]{subsection.13.4.7}{Operators}{section.13.4}% 126
-\BOOKMARK [2][-]{subsection.13.4.8}{Implicit operators}{section.13.4}% 127
-\BOOKMARK [2][-]{subsection.13.4.9}{Functions}{section.13.4}% 128
-\BOOKMARK [2][-]{subsection.13.4.10}{Vectors and matrices}{section.13.4}% 129
-\BOOKMARK [2][-]{subsection.13.4.11}{Sets}{section.13.4}% 130
-\BOOKMARK [2][-]{subsection.13.4.12}{Intervals}{section.13.4}% 131
-\BOOKMARK [0][-]{chapter.14}{Graphical editor}{}% 132
-\BOOKMARK [1][-]{section.14.1}{Introduction}{chapter.14}% 133
-\BOOKMARK [1][-]{section.14.2}{Choice of tools}{chapter.14}% 134
-\BOOKMARK [1][-]{section.14.3}{Development}{chapter.14}% 135
-\BOOKMARK [2][-]{subsection.14.3.1}{Tasks}{section.14.3}% 136
-\BOOKMARK [2][-]{subsection.14.3.2}{Git paths}{section.14.3}% 137
-\BOOKMARK [2][-]{subsection.14.3.3}{Edition and launch in Dart Editor}{section.14.3}% 138
-\BOOKMARK [0][-]{chapter.15}{Glossary}{}% 139
+\BOOKMARK [1][-]{section.9.1}{Document types}{chapter.9}% 82
+\BOOKMARK [1][-]{section.9.2}{Format and structure of LON-CAPA documents}{chapter.9}% 83
+\BOOKMARK [2][-]{subsection.9.2.1}{Classic LON-CAPA Content}{section.9.2}% 84
+\BOOKMARK [2][-]{subsection.9.2.2}{Overview of differences to classic LON-CAPA}{section.9.2}% 85
+\BOOKMARK [1][-]{section.9.3}{Editing}{chapter.9}% 86
+\BOOKMARK [2][-]{subsection.9.3.1}{Main editors}{section.9.3}% 87
+\BOOKMARK [2][-]{subsection.9.3.2}{Source editor}{section.9.3}% 88
+\BOOKMARK [2][-]{subsection.9.3.3}{Publication}{section.9.3}% 89
+\BOOKMARK [0][-]{chapter.10}{XML Parser}{}% 90
+\BOOKMARK [1][-]{section.10.1}{Invocation}{chapter.10}% 91
+\BOOKMARK [1][-]{section.10.2}{Tag types}{chapter.10}% 92
+\BOOKMARK [1][-]{section.10.3}{Stacks and safeeval}{chapter.10}% 93
+\BOOKMARK [0][-]{chapter.11}{Interface Programming}{}% 94
+\BOOKMARK [1][-]{section.11.1}{Interface Pages}{chapter.11}% 95
+\BOOKMARK [2][-]{subsection.11.1.1}{General Mechanism}{section.11.1}% 96
+\BOOKMARK [2][-]{subsection.11.1.2}{Examples}{section.11.1}% 97
+\BOOKMARK [2][-]{subsection.11.1.3}{Where should I be working?}{section.11.1}% 98
+\BOOKMARK [0][-]{chapter.12}{Internationalization}{}% 99
+\BOOKMARK [1][-]{section.12.1}{Encoding}{chapter.12}% 100
+\BOOKMARK [1][-]{section.12.2}{Maketext}{chapter.12}% 101
+\BOOKMARK [1][-]{section.12.3}{Invocation in documents}{chapter.12}% 102
+\BOOKMARK [1][-]{section.12.4}{Invocation from Perl}{chapter.12}% 103
+\BOOKMARK [1][-]{section.12.5}{Internal codes}{chapter.12}% 104
+\BOOKMARK [1][-]{section.12.6}{Special cases}{chapter.12}% 105
+\BOOKMARK [2][-]{subsection.12.6.1}{JavaScript configuration files}{section.12.6}% 106
+\BOOKMARK [2][-]{subsection.12.6.2}{Loading locatilization files}{section.12.6}% 107
+\BOOKMARK [0][-]{chapter.13}{Math editor, parser and equation syntax}{}% 108
+\BOOKMARK [1][-]{section.13.1}{Introduction}{chapter.13}% 109
+\BOOKMARK [1][-]{section.13.2}{A new user interface}{chapter.13}% 110
+\BOOKMARK [2][-]{subsection.13.2.1}{Usage}{section.13.2}% 111
+\BOOKMARK [1][-]{section.13.3}{The server-side parser}{chapter.13}% 112
+\BOOKMARK [2][-]{subsection.13.3.1}{Usage}{section.13.3}% 113
+\BOOKMARK [2][-]{subsection.13.3.2}{Calculation environment}{section.13.3}% 114
+\BOOKMARK [2][-]{subsection.13.3.3}{Conversion to Maxima syntax}{section.13.3}% 115
+\BOOKMARK [2][-]{subsection.13.3.4}{Catching errors}{section.13.3}% 116
+\BOOKMARK [2][-]{subsection.13.3.5}{Example with unit node}{section.13.3}% 117
+\BOOKMARK [2][-]{subsection.13.3.6}{Example with symbolic node}{section.13.3}% 118
+\BOOKMARK [2][-]{subsection.13.3.7}{Comparing results of calculations}{section.13.3}% 119
+\BOOKMARK [2][-]{subsection.13.3.8}{API}{section.13.3}% 120
+\BOOKMARK [1][-]{section.13.4}{Equation syntax}{chapter.13}% 121
+\BOOKMARK [2][-]{subsection.13.4.1}{Spaces}{section.13.4}% 122
+\BOOKMARK [2][-]{subsection.13.4.2}{Decimal separators and function parameter separators}{section.13.4}% 123
+\BOOKMARK [2][-]{subsection.13.4.3}{Constants}{section.13.4}% 124
+\BOOKMARK [2][-]{subsection.13.4.4}{Units}{section.13.4}% 125
+\BOOKMARK [2][-]{subsection.13.4.5}{Parenthesis}{section.13.4}% 126
+\BOOKMARK [2][-]{subsection.13.4.6}{Complex numbers}{section.13.4}% 127
+\BOOKMARK [2][-]{subsection.13.4.7}{Operators}{section.13.4}% 128
+\BOOKMARK [2][-]{subsection.13.4.8}{Implicit operators}{section.13.4}% 129
+\BOOKMARK [2][-]{subsection.13.4.9}{Functions}{section.13.4}% 130
+\BOOKMARK [2][-]{subsection.13.4.10}{Vectors and matrices}{section.13.4}% 131
+\BOOKMARK [2][-]{subsection.13.4.11}{Sets}{section.13.4}% 132
+\BOOKMARK [2][-]{subsection.13.4.12}{Intervals}{section.13.4}% 133
+\BOOKMARK [0][-]{chapter.14}{Graphical editor}{}% 134
+\BOOKMARK [1][-]{section.14.1}{Introduction}{chapter.14}% 135
+\BOOKMARK [1][-]{section.14.2}{Choice of tools}{chapter.14}% 136
+\BOOKMARK [1][-]{section.14.3}{Development}{chapter.14}% 137
+\BOOKMARK [2][-]{subsection.14.3.1}{Tasks}{section.14.3}% 138
+\BOOKMARK [2][-]{subsection.14.3.2}{Git paths}{section.14.3}% 139
+\BOOKMARK [2][-]{subsection.14.3.3}{Edition and launch in Dart Editor}{section.14.3}% 140
+\BOOKMARK [0][-]{chapter.15}{Glossary}{}% 141
