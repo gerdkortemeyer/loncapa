@@ -49,6 +49,20 @@ sub new_numerical_parser {
    return($parser,$env);
 }
 
+
+#
+# See if we have an error message
+#
+sub message {
+   my ($message)=@_;
+   unless ($message) { return undef; }
+   if ($message->can('getLocalizedMessage')) {
+      return $message->getLocalizedMessage();
+   } else {
+      return $message;
+   }
+}
+
 #
 # Evaluate a term in the parser
 # Return error code and result
@@ -60,11 +74,11 @@ sub evaluate_in_parser {
       return(undef,$result);
    } catch {
       if (UNIVERSAL::isa($_,CalcException)) {
-         return(&numerical_error(),undef);
+         return(&numerical_error(),&message($_));
       } elsif (UNIVERSAL::isa($_,ParseException)) {
-         return(&bad_formula(),undef);
+         return(&bad_formula(),&message($_));
       } else {
-         return(&internal_error(),$_);
+         return(&internal_error(),&message($_));
       }
    }
 }
@@ -107,26 +121,26 @@ sub compare_in_parser {
          if ($code == Quantity->IDENTICAL) {
             return(&correct(),undef);
          } elsif ($code == Quantity->WRONG_TYPE) {
-            return(&wrong_type(),undef);
+            return(&wrong_type(),&message($_));
          } elsif ($code == Quantity->WRONG_DIMENSIONS) {
-            return(&wrong_dimension(),undef);
+            return(&wrong_dimension(),&message($_));
          } elsif ($code == Quantity->MISSING_UNITS) {
-            return(&unit_missing(),undef);
+            return(&unit_missing(),&message($_));
          } elsif ($code == Quantity->ADDED_UNITS) {
-            return(&no_unit_required(),undef);
+            return(&no_unit_required(),&message($_));
          } elsif ($code == Quantity->WRONG_UNITS) {
-            return(&wrong_unit_dimension,undef);
+            return(&wrong_unit_dimension,&message($_));
          } elsif ($code == Quantity->WRONG_VALUE) {
             return(&incorrect(),undef);
          }
       }
    } catch {
       if (UNIVERSAL::isa($_,CalcException)) {
-          return(&numerical_error(),undef);
+          return(&numerical_error(),&message($_));
       } elsif (UNIVERSAL::isa($_,ParseException)) {
-          return(&bad_formula(),undef);
+          return(&bad_formula(),&message($_));
       } else {
-          return(&internal_error(),$_);
+          return(&internal_error(),&message($_));
       }
    }
 }

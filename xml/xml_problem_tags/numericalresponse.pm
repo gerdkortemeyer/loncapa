@@ -232,6 +232,7 @@ sub answertest {
     } else {
 # There's only one answer
        my ($code,$message)=&Apache::lc_math_parser::compare_in_parser($parser,$env,$expression,$expected,$tolerance,$mode);
+       return($code,$message);
     }
 }
 
