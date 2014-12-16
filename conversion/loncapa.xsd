@@ -122,9 +122,10 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="htmlhead"/>
         <xs:element ref="htmlbody"/>
-        <xs:element ref="problem"/>
-        <xs:group ref="text-without-responses"/>
         <xs:element ref="lcmeta"/>
+        <xs:group ref="text-with-problems"/>
+        <xs:element ref="parserlib"/>
+        <xs:element ref="scriptlib"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -151,10 +152,21 @@
       Groups of block and inline elements.
     </xs:documentation>
   </xs:annotation>
+  <xs:group name="text-with-problems">
+    <xs:annotation>
+      <xs:documentation>
+        List of block and inline elements mixed with text. These elements can contain problems but not parts or responses.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:group ref="blocks-with-problems"/>
+      <xs:group ref="inlines"/>
+    </xs:choice>
+  </xs:group>
   <xs:group name="text-with-parts">
     <xs:annotation>
       <xs:documentation>
-        List of block and inline elements mixed with text. These elements can contain parts but not responses.
+        List of block and inline elements mixed with text. These elements can contain parts but not problems or responses.
       </xs:documentation>
     </xs:annotation>
     <xs:choice>
@@ -165,7 +177,7 @@
   <xs:group name="text-with-responses">
     <xs:annotation>
       <xs:documentation>
-        List of block and inline elements mixed with text. These elements can contain responses.
+        List of block and inline elements mixed with text. These elements can contain responses but not problems or parts.
       </xs:documentation>
     </xs:annotation>
     <xs:choice>
@@ -179,7 +191,7 @@
   <xs:group name="text-without-responses">
     <xs:annotation>
       <xs:documentation>
-        List of block and inline elements mixed with text. These elements cannot contain responses.
+        List of block and inline elements mixed with text. These elements cannot contain problems, parts or responses.
       </xs:documentation>
     </xs:annotation>
     <xs:choice>
@@ -236,6 +248,24 @@
       <xs:element ref="form"/>
       <xs:element ref="fieldset"/>
       <xs:element ref="iframe"/>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="blocks-with-problems">
+    <xs:choice>
+      <xs:element ref="problem"/>
+      
+      <xs:group ref="universal-blocks"/>
+      
+      <xs:element name="block" type="block-with-problems"/>
+      <xs:element name="randomlist" type="randomlist-with-problems"/>
+      
+      <xs:element name="section" type="section-with-problems"/>
+      <xs:element name="div" type="div-with-problems"/>
+      <xs:element name="p" type="p-without-responses"/>
+      <xs:element name="ul" type="ul-without-responses"/>
+      <xs:element name="ol" type="ol-without-responses"/>
+      <xs:element name="table" type="table-without-responses"/>
+      <xs:element name="dl" type="dl-without-responses"/>
     </xs:choice>
   </xs:group>
   <xs:group name="blocks-with-parts">
@@ -4190,6 +4220,17 @@
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
+  <xs:complexType mixed="true" name="block-with-problems">
+    <xs:complexContent mixed="true">
+      <xs:extension base="block-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-problems"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType mixed="true" name="block-with-parts">
     <xs:complexContent mixed="true">
       <xs:extension base="block-base">
@@ -4386,6 +4427,39 @@
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="randomlist-with-problems">
+    <xs:complexContent>
+      <xs:extension base="randomlist-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:element ref="problem"/>
+          <xs:element ref="img"/>
+          <xs:element name="block" type="block-with-problems"/>
+          <xs:element ref="while"/>
+          <xs:element ref="window"/>
+          <xs:element ref="display"/>
+          <xs:element ref="gnuplot"/>
+          <xs:element ref="organicstructure"/>
+          <xs:element ref="instructorcomment"/>
+          <xs:element ref="drawimage"/>
+          <xs:element ref="import"/>
+          
+          <xs:element name="section" type="section-with-problems"/>
+          <xs:element name="ul" type="ul-without-responses"/>
+          <xs:element name="ol" type="ol-without-responses"/>
+          <xs:element name="table" type="table-without-responses"/>
+          <xs:element name="dl" type="dl-without-responses"/>
+          <xs:element ref="object"/>
+          <xs:element ref="applet"/>
+          <xs:element ref="embed"/>
+          <xs:element ref="video"/>
+          <xs:element ref="audio"/>
+          <xs:element ref="canvas"/>
+          <xs:element ref="form"/>
+          <xs:element ref="iframe"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="randomlist-with-parts">
     <xs:complexContent>
@@ -5336,7 +5410,7 @@
       <xs:attribute name="onunload" type="xs:string"/>
     </xs:complexType>
   </xs:element>
-  <xs:complexType name="section-base">
+  <xs:complexType mixed="true" name="section-base">
     <xs:annotation>
       <xs:documentation>
         The HTML Section Element (&lt;section&gt;) represents a generic section of a document, i.e., a thematic grouping of content, typically with a heading. Each &lt;section&gt; should be identified, typically by including a heading (h1-h6 element) as a child of the &lt;section&gt; element.
@@ -5344,30 +5418,38 @@
     </xs:annotation>
     <xs:attributeGroup ref="coreattrs"/>
   </xs:complexType>
-  <xs:complexType name="section-with-parts">
-    <xs:complexContent>
+  <xs:complexType mixed="true" name="section-with-problems">
+    <xs:complexContent mixed="true">
       <xs:extension base="section-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="blocks-with-parts"/>
+          <xs:group ref="text-with-problems"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="section-with-responses">
-    <xs:complexContent>
+  <xs:complexType mixed="true" name="section-with-parts">
+    <xs:complexContent mixed="true">
       <xs:extension base="section-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="blocks-with-responses"/>
-          <xs:group ref="blockResponses"/>
+          <xs:group ref="text-with-parts"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="section-without-responses">
-    <xs:complexContent>
+  <xs:complexType mixed="true" name="section-with-responses">
+    <xs:complexContent mixed="true">
       <xs:extension base="section-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="blocks-without-responses"/>
+          <xs:group ref="text-with-responses"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="section-without-responses">
+    <xs:complexContent mixed="true">
+      <xs:extension base="section-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-without-responses"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -5475,6 +5557,17 @@
       </xs:documentation>
     </xs:annotation>
     <xs:attributeGroup ref="coreattrs"/>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="div-with-problems">
+    <xs:complexContent mixed="true">
+      <xs:extension base="div-base">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:group ref="text-with-problems"/>
+          <xs:element ref="parserlib"/>
+          <xs:element ref="scriptlib"/>
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType mixed="true" name="div-with-parts">
     <xs:complexContent mixed="true">
