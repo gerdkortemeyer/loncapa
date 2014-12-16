@@ -7,9 +7,10 @@ HTML documents that are modified with LON-CAPA, as well as new content documents
 \section{Format and structure of LON-CAPA documents}
 LON-CAPA documents use the XML syntax (they are \emph{well-formed}). The XML language is defined by an XML schema, \texttt{loncapa.xsd}. LON-CAPA documents are normally valid with this schema, but they can also be invalid in some cases (for instance, when they have been converted from invalid documents and could not be fixed safely, or when they are incomplete).
 LON-CAPA will assume that these documents follow the schema, but will also gracefully handle invalid documents with controlled degradation or error messages.
-The schema is using a mixture of HTML and LON-CAPA-specific elements, and the root element is \texttt{loncapa}. All these element are processed with the built-in parser (see chapter~\ref{xmlparser} on page~\pageref{xmlparser}): the rendering of any tag can be defined or modified.
+The schema is using a mixture of HTML and LON-CAPA-specific elements, and the root element is \texttt{loncapa}. All these elements are processed with the built-in parser (see chapter~\ref{xmlparser} on page~\pageref{xmlparser}): the rendering of any tag can be defined or modified.
 \subsection{Classic LON-CAPA Content}
 More than 99\% of the classic LON-CAPA content needs to be automatically convertable into the new format.
+The conversion is done by \texttt{convert.pl}, which can convert a whole directory with its sub-directories.
 \subsection{Overview of differences to classic LON-CAPA}
 Major differences to classic LON-CAPA are:
 \begin{itemize}
@@ -17,19 +18,25 @@ Major differences to classic LON-CAPA are:
 \item Newly created HTML documents and problem documents no longer have a different format: they are now all LON-CAPA documents.
 \item There can be more than one problem in a document:
 \begin{verbatim}
-<html>
-<h1>Electrical Current</h1>
-<h2>Charge per Time</h2>
-... (random HTML) ...
-<problem>
-...
-</problem>
-<h2>Measuring Current</h2>
-...
-<problem>
-...
-</problem>
-</html>
+<loncapa>
+  <section>
+    <h1>Electrical Current</h1>
+    <section>
+      <h1>Charge per Time</h1>
+        ... (random HTML) ...
+      <problem>
+        ...
+      </problem>
+    </section>
+    <section>
+      <h1>Measuring Current</h1>
+      ...
+      <problem>
+        ...
+      </problem>
+    </section>
+  </section>
+</loncapa>
 \end{verbatim}
 \item \texttt{problem} elements always have parts.
 \item Several elements get renamed, e.g.,
@@ -37,12 +44,13 @@ Major differences to classic LON-CAPA are:
 \item \texttt{<script type='loncapa/perl'>} becomes \texttt{<perl>}
 \item \texttt{<m>} becomes HTML (when it was not math), \texttt{<tm>} (for inline math) or \texttt{<dtm>} (for display math).
 \end{itemize}
-\item Because of the XML syntax, CDATA or entities are used on disk, e.g.,
+\item Because of the XML syntax, CDATA sections or entities are used on disk, e.g.,
 \begin{itemize}
-\item $<$perl$><![$CDATA$[$if (\$a<\$b) \{ \$a=42; \}$]]><$/perl$>$
-\item $<$tm$><![$CDATA$[$\$a<b\$$]]><$/tm$>$
+\item \texttt{<perl><![CDATA[if (\$a<\$b) \{ \$a=42; \}]]></perl>}
+\item \texttt{<tm>a\&lt;b</tm>}
 \end{itemize}
-\item All tags are lowercase
+\item All tags are lowercase.
+\item LaTeX can no longer be used outside of math. \texttt{<tex>} is no longer supported. Printing is now done with HTML and CSS. Print-specific content can be added with \texttt{<print>}, and print-specific style or layout can be changed with CSS (with @media print).
 \end{itemize}
 
 \section{Editing}
@@ -53,9 +61,10 @@ Editors will be client-side. There will be two user interfaces:
 \item Text editor
 \end{itemize}
 The graphical editor will only able to handle well-formed documents. The text editor should be able to handle even non-well-formed documents (i.e., any text document). Both editors should be able to handle invalid documents, although of course the interface might be affected, depending on the validity problem. They will both help to create valid documents, and the graphical editor will always produce well-formed documents.
-The text editor will be ``pseudo source code,'' in that it will not expose CDATA and entity encoding. It is meant as a textual user interface, not a source editor.
+The text editor will be ``pseudo source code,'' in that it will not expose CDATA sections and character entities. It is meant as a textual user interface, not a source editor.
+More information about the graphical editor is available in chapter~\ref{graphical_editor} on page~\pageref{graphical_editor}.
 \subsection{Source editor}
 There will be an emergency raw source code editor, which could be used to directly access the source code. This editor could be used to rescue files that become corrupted, or to clean up imported code.
 \subsection{Publication}
-Documents that are not well-formed cannot be published. A number of additional constraints will be added to documents before they can be published (to be defined). There will also be warnings for all invalid documents.
+Documents that are not well-formed cannot be published. A number of additional constraints will be added for publication (to be defined). There will also be warnings for all invalid documents.
 
