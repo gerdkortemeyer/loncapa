@@ -37,12 +37,14 @@ sub start_dtm_html {
 }
 
 sub start_tm_meta {
-   &start_im_html(@_);
+   my ($p,$safe,$stack,$token)=@_;
+   $p->get_text('/tm');
    return '';
 }
 
 sub start_dtm_meta {
-   &start_dm_html(@_);
+   my ($p,$safe,$stack,$token)=@_;
+   $p->get_text('/dtm');
    return '';
 }
 
@@ -51,7 +53,6 @@ sub tex_eval {
    my $text=$p->get_text('/'.$end);
    $p->get_token;
    pop(@{$stack->{'tags'}});
-   $text=~s/\\/\\\\/gs;
    return &Apache::lc_asset_safeeval::texteval($safe,$text);
 }
 
