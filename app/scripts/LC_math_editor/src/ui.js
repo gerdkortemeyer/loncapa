@@ -147,6 +147,7 @@ var initEditors = function() {
                 output_node.style.display = "none";
                 output_node.style.position = "absolute";
                 output_node.style.backgroundColor = "rgba(255,255,224,0.9)";
+                output_node.style.color = "black";
                 output_node.style.border = "1px solid #A0A0A0";
                 output_node.style.padding = "5px";
                 var place = function(ta, output_node) {
@@ -172,9 +173,10 @@ var initEditors = function() {
                 };
                 var focus = function(ta, output_node) {
                     return function(e) {
-                        if (ta.value != '')
+                        if (ta.value != '') {
                             output_node.style.display = "block";
                             place(ta, output_node);
+                        }
                     };
                 };
                 ta.addEventListener("blur", blur(output_node), false);
@@ -192,14 +194,15 @@ var initEditors = function() {
                       var obj = math_objects[n];
                       handleChange(obj);
                       if (document.activeElement == obj.ta) {
-                          if (obj.ta.value != '')
+                          if (obj.ta.value != '') {
                               obj.output_node.style.display = "block";
-                          else
+                              MathJax.Hub.Queue(function () {
+                                  // position the element only when MathJax is done, because the output_node height might change
+                                  place(obj.ta, obj.output_node);
+                              });
+                          } else {
                               obj.output_node.style.display = "none";
-                          MathJax.Hub.Queue(function () {
-                              // position the element only when MathJax is done, because the output_node height might change
-                              place(obj.ta, obj.output_node);
-                          });
+                          }
                       }
                     };
                 };
