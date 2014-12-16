@@ -51,6 +51,7 @@ sub end_problem_html {
 
 sub start_problem_grade {
    my ($p,$safe,$stack,$token)=@_;
+   $stack->{'response_grades'}={};
    &init_problem($stack);
 }
 
@@ -99,7 +100,6 @@ sub end_part_html {
 
 sub start_part_grade {
    my ($p,$safe,$stack,$token)=@_;
-   $stack->{'response_grades'}={};
    $stack->{'context'}->{'asset'}->{'partid'}=$token->[2]->{'id'};
    &load_part_data($stack);
 }

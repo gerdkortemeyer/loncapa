@@ -223,6 +223,14 @@ sub add_response_grade {
                                         'previously_submitted' => $previously };
 }
 
+#
+# Get an individual response
+# Gets result of grading the named response if called inside of it
+#
+sub get_response_grade {
+   my ($responsetag,$stack)=@_;
+   return $stack->{'response_grades'}->{&tag_attribute($responsetag,'id',$stack)};
+}
 
 # Output a piece of text
 #

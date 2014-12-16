@@ -55,14 +55,13 @@ sub start_textline_html {
       } else {
          $value=&Apache::lc_asset_xml::open_tag_attribute('value',$stack);
       }
-      my $status='';
-      my $message='';
+      my $responsegrade=&Apache::lc_asset_xml::get_response_grade('numericalresponse',$stack);
       return
  '<input class="math" data-implicit_operators="true" data-unit_mode="true" data-constants="'.$data_constants.
  '" spellcheck="off" autocomplete="off" name="'.$token->[2]->{'id'}.
  '" size="'.$size.'"'.($hidden?' hidden="hidden"':'').' value="'.$value.'" />'.
 #FIXME: not for all
-     '['.$status.']['.$message.']';
+     '['.$responsegrade->{'status'}.']['.$responsegrade->{'message'}.']';
    }
    return '';
 }
