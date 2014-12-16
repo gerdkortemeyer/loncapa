@@ -8,6 +8,37 @@
         textarea.math { font-family: monospace; height: 3em; width: 100%; }
         span.math-error { border: solid 1px red; min-width: 1px; }
     </style>
+    <script>
+      function addField() {
+        var div = document.createElement('div');
+        div.classList.add('eqnbox');
+        var input = document.createElement('input');
+        input.classList.add('math');
+        input.setAttribute('data-implicit_operators', 'true');
+        input.setAttribute('data-unit_mode', 'true');
+        input.setAttribute('data-constants', 'c, pi, e, hbar, amu');
+        div.appendChild(input);
+        var removeb = document.createElement('button');
+        removeb.appendChild(document.createTextNode('remove'));
+        removeb.addEventListener('click', function(e) {
+            div.parentNode.removeChild(div);
+            initEditors();
+        }, false);
+        div.appendChild(removeb);
+        var modeb = document.createElement('button');
+        modeb.appendChild(document.createTextNode('switch mode'));
+        modeb.addEventListener('click', function(e) {
+            if (input.getAttribute('data-unit_mode') == 'true')
+                input.setAttribute('data-unit_mode', 'false');
+            else
+                input.setAttribute('data-unit_mode', 'true');
+            initEditors();
+        }, false);
+        div.appendChild(modeb);
+        document.body.appendChild(div);
+        initEditors();
+      }
+    </script>
 </head>
 <body>
     <p>Strict syntax, symbolic mode:</p>
@@ -29,6 +60,7 @@
     <div class="eqnbox">
         Test in a field <input class="math" data-implicit_operators="true" spellcheck="false" autofocus="autofocus"> with text around (Lax syntax, symbolic mode)
     </div>
+    <p><button onclick="addField();">click to add a field</button></p>
     <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML"></script>
     <script src="src/definitions.js"></script>
     <script src="src/enode.js"></script>

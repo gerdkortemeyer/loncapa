@@ -36,7 +36,7 @@ function Parser(implicit_operators, unit_mode, constants) {
         this.unit_mode = false;
     else
         this.unit_mode = unit_mode;
-    if (typeof constants == "undefined")
+    if (typeof constants == "undefined" || constants == null)
         this.constants = [];
     else
         this.constants = constants;
