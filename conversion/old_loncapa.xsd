@@ -194,14 +194,14 @@
       <xs:group ref="inlines"/>
     </xs:choice>
   </xs:group>
-  <xs:group name="text-without-responses">
+  <xs:group name="text-only">
     <xs:annotation>
       <xs:documentation>
         List of block and inline elements mixed with text. These elements cannot contain responses.
       </xs:documentation>
     </xs:annotation>
     <xs:choice>
-      <xs:group ref="blocks-without-responses"/>
+      <xs:group ref="blocks-with-text"/>
       <xs:group ref="inlines"/>
     </xs:choice>
   </xs:group>
@@ -249,16 +249,16 @@
       <xs:element ref="iframe"/>
     </xs:choice>
   </xs:group>
-  <xs:group name="blocks-without-responses">
+  <xs:group name="blocks-with-text">
     <xs:choice>
       <xs:element ref="import"/>
-      <xs:element name="block" type="block-without-responses"/>
+      <xs:element name="block" type="block-with-text"/>
       <xs:element ref="while"/>
       <xs:element ref="tex"/>
       <xs:element ref="web"/>
       <xs:element ref="standalone"/>
-      <xs:element name="problemtype" type="problemtype-without-responses"/>
-      <xs:element name="randomlist" type="randomlist-without-responses"/>
+      <xs:element name="problemtype" type="problemtype-with-text"/>
+      <xs:element name="randomlist" type="randomlist-with-text"/>
       <xs:element ref="script"/>
       <xs:element ref="languageblock"/>
       <xs:element ref="translated"/>
@@ -274,12 +274,12 @@
       <xs:element ref="endouttext"/>
       
       <xs:group ref="heading"/>
-      <xs:element name="div" type="div-without-responses"/>
-      <xs:element name="p" type="p-without-responses"/>
-      <xs:element name="ul" type="ul-without-responses"/>
-      <xs:element name="ol" type="ol-without-responses"/>
-      <xs:element name="table" type="table-without-responses"/>
-      <xs:element name="dl" type="dl-without-responses"/>
+      <xs:element name="div" type="div-with-text"/>
+      <xs:element name="p" type="p-with-text"/>
+      <xs:element name="ul" type="ul-with-text"/>
+      <xs:element name="ol" type="ol-with-text"/>
+      <xs:element name="table" type="table-with-text"/>
+      <xs:element name="dl" type="dl-with-text"/>
       <xs:element ref="pre"/>
       <xs:element ref="noscript"/>
       <xs:element ref="hr"/>
@@ -559,7 +559,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text-without-responses"/>
+      <xs:group ref="text-only"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
@@ -733,7 +733,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text-without-responses"/>
+      <xs:group ref="text-only"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
@@ -859,7 +859,7 @@
         </xs:union>
       </xs:simpleType>
     </xs:attribute>
-    <xs:attribute name="TeXitemgroupwidth" type="xs:string">
+    <xs:attribute name="TeXitemgroupwidth">
       <xs:annotation>
         <xs:documentation>
           TeXitemgroupwidth attribute allows you to specify the width of table with items for matching. The value of this attribute defines the width in percents with respect to text line width.
@@ -877,7 +877,7 @@
       <xs:documentation>Item</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text-without-responses"/>
+      <xs:group ref="text-only"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
@@ -913,7 +913,7 @@
       <xs:documentation>Foil</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text-without-responses"/>
+      <xs:group ref="text-only"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
@@ -991,7 +991,7 @@
       <xs:documentation>Foil</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text-without-responses"/>
+      <xs:group ref="text-only"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
@@ -1120,7 +1120,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text-without-responses"/>
+      <xs:group ref="text-only"/>
       <xs:element ref="randomlabel"/>
       <xs:element ref="parserlib"/>
       <xs:element ref="scriptlib"/>
@@ -2233,7 +2233,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:element ref="textline"/>
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
@@ -2421,7 +2421,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:element ref="hintpart"/>
         <xs:element ref="stringhint"/>
         <xs:element ref="radiobuttonhint"/>
@@ -2453,7 +2453,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -2887,7 +2887,7 @@
       <xs:documentation>Label Text or Path to image</xs:documentation>
     </xs:annotation>
     <xs:choice maxOccurs="unbounded" minOccurs="0">
-      <xs:group ref="text-without-responses"/>
+      <xs:group ref="text-only"/>
       <xs:element ref="preduedate"/>
       <xs:element ref="postanswerdate"/>
       <xs:element ref="parserlib"/>
@@ -3930,7 +3930,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -3943,7 +3943,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -3994,7 +3994,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -4044,7 +4044,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -4086,7 +4086,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -4099,7 +4099,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -4318,7 +4318,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:element ref="displayduedate"/>
         <xs:element ref="displaytitle"/>
         <xs:element ref="randomlabel"/>
@@ -4349,7 +4349,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:group ref="inserts"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -4443,11 +4443,11 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType mixed="true" name="block-without-responses">
+  <xs:complexType mixed="true" name="block-with-text">
     <xs:complexContent mixed="true">
       <xs:extension base="block-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="text-without-responses"/>
+          <xs:group ref="text-only"/>
           <xs:group ref="inserts"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
@@ -4473,7 +4473,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:group ref="inserts"/>
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
@@ -4500,7 +4500,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4512,7 +4512,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4573,11 +4573,11 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType mixed="true" name="problemtype-without-responses">
+  <xs:complexType mixed="true" name="problemtype-with-text">
     <xs:complexContent mixed="true">
       <xs:extension base="problemtype-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="text-without-responses"/>
+          <xs:group ref="text-only"/>
           <xs:group ref="inserts"/>
           <xs:element ref="randomlabel"/>
           <xs:element ref="parserlib"/>
@@ -4636,16 +4636,16 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="randomlist-without-responses">
+  <xs:complexType name="randomlist-with-text">
     <xs:complexContent>
       <xs:extension base="randomlist-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:element ref="img"/>
           <xs:element ref="postanswerdate"/>
           <xs:element ref="preduedate"/>
-          <xs:element name="block" type="block-without-responses"/>
+          <xs:element name="block" type="block-with-text"/>
           <xs:element ref="while"/>
-          <xs:element name="problemtype" type="problemtype-without-responses"/>
+          <xs:element name="problemtype" type="problemtype-with-text"/>
           <xs:element ref="window"/>
           <xs:element ref="display"/>
           <xs:element ref="gnuplot"/>
@@ -4654,10 +4654,10 @@
           <xs:element ref="drawimage"/>
           <xs:element ref="import"/>
           
-          <xs:element name="ul" type="ul-without-responses"/>
-          <xs:element name="ol" type="ol-without-responses"/>
-          <xs:element name="table" type="table-without-responses"/>
-          <xs:element name="dl" type="dl-without-responses"/>
+          <xs:element name="ul" type="ul-with-text"/>
+          <xs:element name="ol" type="ol-with-text"/>
+          <xs:element name="table" type="table-with-text"/>
+          <xs:element name="dl" type="dl-with-text"/>
           <xs:element ref="object"/>
           <xs:element ref="applet"/>
           <xs:element ref="embed"/>
@@ -4688,7 +4688,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
       <xs:attribute name="include" type="xs:string"/>
       <xs:attribute name="exclude" type="xs:string"/>
@@ -4705,7 +4705,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:element ref="lang"/>
       </xs:choice>
     </xs:complexType>
@@ -4720,7 +4720,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
       <xs:attribute name="which" type="xs:string"/>
       <xs:attribute name="other" type="xs:string"/>
@@ -4737,7 +4737,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
         <xs:group ref="inserts"/>
         <xs:element ref="randomlabel"/>
         <xs:element ref="solved"/>
@@ -4771,7 +4771,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
       <xs:attribute name="href" type="xs:string"/>
       <xs:attribute name="height" type="int-or-perl">
@@ -4799,7 +4799,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
       <xs:attribute name="heading" type="xs:string">
         <xs:annotation>
@@ -4839,7 +4839,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -5357,7 +5357,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blocks-without-responses"/>
+        <xs:group ref="blocks-with-text"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -5369,7 +5369,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blocks-without-responses"/>
+        <xs:group ref="blocks-with-text"/>
       </xs:choice>
       <xs:attributeGroup ref="coreattrs"/>
       <xs:attributeGroup ref="i18n"/>
@@ -5475,11 +5475,11 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType mixed="true" name="div-without-responses">
+  <xs:complexType mixed="true" name="div-with-text">
     <xs:complexContent mixed="true">
       <xs:extension base="div-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="text-without-responses"/>
+          <xs:group ref="text-only"/>
           <xs:group ref="inserts"/>
           <xs:element ref="meta"/>
           <xs:element ref="parameter"/>
@@ -5512,7 +5512,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType mixed="true" name="p-without-responses">
+  <xs:complexType mixed="true" name="p-with-text">
     <xs:complexContent mixed="true">
       <xs:extension base="p-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -5539,11 +5539,11 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="ul-without-responses">
+  <xs:complexType name="ul-with-text">
     <xs:complexContent>
       <xs:extension base="ul-base">
         <xs:sequence maxOccurs="unbounded">
-          <xs:element name="li" type="li-without-responses"/>
+          <xs:element name="li" type="li-with-text"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -5566,11 +5566,11 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="ol-without-responses">
+  <xs:complexType name="ol-with-text">
     <xs:complexContent>
       <xs:extension base="ol-base">
         <xs:sequence maxOccurs="unbounded">
-          <xs:element name="li" type="li-without-responses"/>
+          <xs:element name="li" type="li-with-text"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -5619,11 +5619,11 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType mixed="true" name="li-without-responses">
+  <xs:complexType mixed="true" name="li-with-text">
     <xs:complexContent mixed="true">
       <xs:extension base="li-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="text-without-responses"/>
+          <xs:group ref="text-only"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -5648,12 +5648,12 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="dl-without-responses">
+  <xs:complexType name="dl-with-text">
     <xs:complexContent>
       <xs:extension base="dl-base">
         <xs:choice maxOccurs="unbounded">
           <xs:element ref="dt"/>
-          <xs:element name="dd" type="dd-without-responses"/>
+          <xs:element name="dd" type="dd-with-text"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -5682,11 +5682,11 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType mixed="true" name="dd-without-responses">
+  <xs:complexType mixed="true" name="dd-with-text">
     <xs:complexContent mixed="true">
       <xs:extension base="dd-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="text-without-responses"/>
+          <xs:group ref="text-only"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -5790,7 +5790,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="table-without-responses">
+  <xs:complexType name="table-with-text">
     <xs:complexContent>
       <xs:extension base="table-base">
         <xs:sequence>
@@ -5798,8 +5798,8 @@
           <xs:element minOccurs="0" ref="thead"/>
           <xs:element minOccurs="0" ref="tfoot"/>
           <xs:choice>
-            <xs:element maxOccurs="unbounded" name="tbody" type="tbody-without-responses"/>
-            <xs:element maxOccurs="unbounded" name="tr" type="tr-without-responses"/>
+            <xs:element maxOccurs="unbounded" name="tbody" type="tbody-with-text"/>
+            <xs:element maxOccurs="unbounded" name="tr" type="tr-with-text"/>
           </xs:choice>
         </xs:sequence>
       </xs:extension>
@@ -5813,7 +5813,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -5825,7 +5825,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" name="tr" type="tr-without-responses"/>
+        <xs:element maxOccurs="unbounded" name="tr" type="tr-with-text"/>
       </xs:sequence>
       <xs:attribute name="align" type="xs:string"/>
     </xs:complexType>
@@ -5838,7 +5838,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" name="tr" type="tr-without-responses"/>
+        <xs:element maxOccurs="unbounded" name="tr" type="tr-with-text"/>
       </xs:sequence>
       <xs:attribute name="align" type="xs:string"/>
     </xs:complexType>
@@ -5851,10 +5851,10 @@
     </xs:sequence>
     <xs:attribute name="align" type="xs:string"/>
   </xs:complexType>
-  <xs:complexType name="tbody-without-responses">
+  <xs:complexType name="tbody-with-text">
     <xs:sequence>
       <xs:choice>
-        <xs:element maxOccurs="unbounded" name="tr" type="tr-without-responses"/>
+        <xs:element maxOccurs="unbounded" name="tr" type="tr-with-text"/>
       </xs:choice>
     </xs:sequence>
     <xs:attribute name="align" type="xs:string"/>
@@ -5878,12 +5878,12 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="tr-without-responses">
+  <xs:complexType name="tr-with-text">
     <xs:complexContent>
       <xs:extension base="tr-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:element ref="th"/>
-          <xs:element name="td" type="td-without-responses"/>
+          <xs:element name="td" type="td-with-text"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -5945,11 +5945,11 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType mixed="true" name="td-without-responses">
+  <xs:complexType mixed="true" name="td-with-text">
     <xs:complexContent mixed="true">
       <xs:extension base="td-base">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="text-without-responses"/>
+          <xs:group ref="text-only"/>
         </xs:choice>
       </xs:extension>
     </xs:complexContent>
@@ -5962,7 +5962,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
       <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute name="colspan" type="xs:int">
@@ -6286,7 +6286,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
       <xs:attributeGroup ref="coreattrs"/>
     </xs:complexType>
@@ -6299,7 +6299,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
       <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute name="cite" type="xs:anyURI"/>
@@ -6443,7 +6443,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="param"/>
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
       <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute name="classid" type="xs:string">
@@ -6599,7 +6599,7 @@
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:element ref="param"/>
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
       <xs:attribute name="id" type="xs:ID"/>
       <xs:attribute name="codebase" type="xs:anyURI"/>
@@ -6635,7 +6635,7 @@
     <xs:complexType>
       <xs:choice>
         <xs:choice maxOccurs="unbounded">
-          <xs:group ref="blocks-without-responses"/>
+          <xs:group ref="blocks-with-text"/>
         </xs:choice>
         <xs:element maxOccurs="unbounded" ref="area"/>
       </xs:choice>
@@ -6690,7 +6690,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="blocks-without-responses"/>
+        <xs:group ref="blocks-with-text"/>
       </xs:choice>
       <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute name="action" type="xs:anyURI" use="required"/>
@@ -6911,7 +6911,7 @@
       <xs:sequence>
         <xs:element ref="legend"/>
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:group ref="text-without-responses"/>
+          <xs:group ref="text-only"/>
         </xs:choice>
       </xs:sequence>
     </xs:complexType>
@@ -6944,7 +6944,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:group ref="text-without-responses"/>
+        <xs:group ref="text-only"/>
       </xs:choice>
       <xs:attribute name="name"/>
       <xs:attribute name="value"/>
