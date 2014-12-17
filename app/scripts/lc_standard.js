@@ -21,6 +21,7 @@ function attach_submit_button(problemid,partid) {
              success: function(response) {
                  $('#'+problemid).replaceWith(response);
                  LCMATH.initEditors();
+                 MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
              }
        });
    });
