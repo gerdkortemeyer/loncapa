@@ -71,7 +71,7 @@ sub start_textline_html {
       my $responsegrade=&Apache::lc_asset_xml::get_response_grade('numericalresponse',$stack);
       return
  '<input class="math" data-implicit_operators="true" data-unit_mode="true" data-constants="'.$data_constants.
- '" spellcheck="off" autocomplete="off" name="'.$token->[2]->{'id'}.
+ '" spellcheck="off" autocomplete="off" name="'.$token->[2]->{'id'}.'" id="'.$token->[2]->{'id'}.
  '" size="'.$size.'"'.($hidden?' hidden="hidden"':'').' value="'.
  &Apache::lc_xml_utils::form_escape($value).'" />'.
  &textboxmessaging($token->[2]->{'id'},$responsegrade->{'status'},$responsegrade->{'message'});
