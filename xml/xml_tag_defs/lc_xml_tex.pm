@@ -28,12 +28,12 @@ our @EXPORT = qw(start_tm_html start_tm_meta, start_dtm_html start_dtm_meta);
 
 sub start_tm_html {
    my ($p,$safe,$stack,$token)=@_;
-   return '\\('.&tex_eval($p,$safe,$stack,$token,'tm').'\\)';
+   return '<span class="tm">\\('.&tex_eval($p,$safe,$stack,$token,'tm').'\\)</span>';
 }
 
 sub start_dtm_html {
    my ($p,$safe,$stack,$token)=@_;
-   return '\\['.&tex_eval($p,$safe,$stack,$token,'dtm').'\\]';
+   return '<span class="tm">\\['.&tex_eval($p,$safe,$stack,$token,'dtm').'\\]</span>';
 }
 
 sub start_tm_meta {

@@ -27,6 +27,7 @@ use Apache::lc_entity_assessments();
 use Apache::lc_xml_forms();
 use Apache::lc_logs;
 use Apache::lc_problem_const;
+use Apache::lc_ui_localize;
 
 use Data::Dumper;
 
@@ -90,7 +91,18 @@ sub end_part_html {
    }
 #FIXME: if feedback is off, don't say anything
    if (1) {
-      $output.="[$status] [$totaltries] [$countedtries]";
+#FIXME: more statusses possible
+      $output.="\n<div class='lcpartfeedback'>\n";
+      if ($status eq 'correct') {
+         $output.="<div class='lccorrectpart'><span class='lcpartfeedbackmessage'>".&mt("Correct.");
+      } elsif ($status eq 'incorrect') {
+         $output.="<div class='lcincorrectpart'><span class='lcpartfeedbackmessage'>".&mt("Incorrect.");
+      } else {
+         $output.="<div class='lcinvalidpart'><span class='lcpartfeedbackmessage'>".&mt("Ungraded.");
+      }
+      $output.='</span><br />'.&mt("Total tries: [_1]",$totaltries);
+      $output.='<br />'.&mt("Counted tries: [_1]",$countedtries);
+      $output.="\n</div></div>\n";
    }
    $output.='</form><script>attach_submit_button("'.$problemid.'","'.$partid.'")</script></div>';
    return $output;
