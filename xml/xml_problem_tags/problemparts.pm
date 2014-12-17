@@ -92,9 +92,7 @@ sub end_part_html {
    if (1) {
       $output.="[$status] [$totaltries] [$countedtries]";
    }
-   $output.='</form><script>attach_submit_button("'.$problemid.'","'.$partid.'")</script></div>'.
-#FIXME: debug
-   $output.='<pre>'.Dumper($stack).'</pre>';
+   $output.='</form><script>attach_submit_button("'.$problemid.'","'.$partid.'")</script></div>';
    return $output;
 }
 
