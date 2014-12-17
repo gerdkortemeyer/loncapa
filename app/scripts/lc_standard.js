@@ -20,6 +20,7 @@ function attach_submit_button(problemid,partid) {
              type:'POST',
              success: function(response) {
                  $('#'+problemid).replaceWith(response);
+                 LCMATH.initEditors();
              }
        });
    });
