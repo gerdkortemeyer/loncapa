@@ -22,6 +22,7 @@ function attach_submit_button(problemid,partid) {
                  $('#'+problemid).replaceWith(response);
                  LCMATH.initEditors();
                  MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+                 adjust_framesize();
              }
        });
    });
