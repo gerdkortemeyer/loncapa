@@ -218,7 +218,8 @@ sub get_response_details {
 #
 sub add_response_grade {
    my ($id,$status,$message,$previously,$stack)=@_;
-   $stack->{'response_grades'}->{$id}={ 'status' => $status, 
+   $stack->{'response_grades'}->{$stack->{'context'}->{'asset'}->{'partid'}}->{$id}={ 
+                                        'status' => $status, 
                                         'message' => $message,
                                         'previously_submitted' => $previously };
 }
@@ -229,7 +230,7 @@ sub add_response_grade {
 #
 sub get_response_grade {
    my ($responsetag,$stack)=@_;
-   return $stack->{'response_grades'}->{&tag_attribute($responsetag,'id',$stack)};
+   return $stack->{'response_grades'}->{$stack->{'context'}->{'asset'}->{'partid'}}->{&tag_attribute($responsetag,'id',$stack)};
 }
 
 # Output a piece of text
