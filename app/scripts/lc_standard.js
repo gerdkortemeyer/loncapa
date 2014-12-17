@@ -28,6 +28,10 @@ function attach_submit_button(problemid,partid) {
    });
 }
 
+function attach_textfield_message(id,stat,msg) {
+   $('#'+id).css('background','#FFFF66');
+}
+
 function adjust_framesize() {
       var frameheight=document.body.offsetHeight + 50;
       $("#contentframe",window.parent.document).css({ height : frameheight + 'px' });

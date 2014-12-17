@@ -130,27 +130,35 @@ h3 {
    color: #ffffff;
 }
 
+.lcpartdiv {
+   border-radius: 7px 7px 7px 7px;
+   padding: 3px;
+   border-color: #000000;
+   border-style: solid;
+   border-width: 1px;
+}
+
 .lcpartfeedback {
    font-family: sans-serif;
    font-size: 10px;
-   margin: 3px;
-   border-radius: 3px 3px 3px 3px;
-   box-shadow: 2px 2px 3px #111111;
 }
 
 .lccorrectpart {
    padding: 3px;
    background: #D6FF5C;
+   border-radius: 5px 5px 5px 5px;
 }
 
 .lcincorrectpart {
    padding: 3px;
    background: #FF6666;
+   border-radius: 5px 5px 5px 5px;
 }
 
 .lcinvalidpart {
    padding: 3px;
    background: #FFFF66;
+   border-radius: 5px 5px 5px 5px;
 }
 
 .lcpartfeedbackmessage {

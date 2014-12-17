@@ -36,6 +36,19 @@ our @ISA = qw(Exporter);
 # Export all tags that this module defines in the list below
 our @EXPORT = qw(start_textline_html start_textline_grade);
 
+sub textboxmessaging {
+   my ($id,$status,$message)=@_;
+   if (($status ne 'no_valid_response') &&
+       ($status ne 'correct') &&
+       ($status ne 'incorrect')) {
+      return '<script>attach_textfield_message("'.$id.'","'.
+         &Apache::lc_xml_utils::form_escape($status).'","'.
+         &Apache::lc_xml_utils::form_escape($message).'");</script>';
+   } else {
+      return '';
+   }
+}
+
 sub start_textline_html {
    my ($p,$safe,$stack,$token)=@_;
    &Apache::lc_asset_xml::add_response_input($stack);
@@ -59,9 +72,9 @@ sub start_textline_html {
       return
  '<input class="math" data-implicit_operators="true" data-unit_mode="true" data-constants="'.$data_constants.
  '" spellcheck="off" autocomplete="off" name="'.$token->[2]->{'id'}.
- '" size="'.$size.'"'.($hidden?' hidden="hidden"':'').' value="'.$value.'" />'.
-#FIXME: not for all
-     '['.$responsegrade->{'status'}.']['.$responsegrade->{'message'}.']';
+ '" size="'.$size.'"'.($hidden?' hidden="hidden"':'').' value="'.
+ &Apache::lc_xml_utils::form_escape($value).'" />'.
+ &textboxmessaging($token->[2]->{'id'},$responsegrade->{'status'},$responsegrade->{'message'});
    }
    return '';
 }

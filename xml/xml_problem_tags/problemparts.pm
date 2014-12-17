@@ -87,7 +87,7 @@ sub end_part_html {
    my $output='';
 #FIXME: out of tries, etc, if(1) - debug
    if (1) {
-      $output.=&Apache::lc_xml_forms::triggerbutton($partid.'_submit_button','Submit');
+      $output.='<p>'.&Apache::lc_xml_forms::triggerbutton($partid.'_submit_button','Submit').'</p>';
    }
 #FIXME: if feedback is off, don't say anything
    if (1) {
