@@ -53,7 +53,7 @@ sub post_xml {
   
   remove_empty_attributes($root);
   
-  my $fix_by_hand = replace_tex_and_web($root);
+  my $fix_by_hand = replace_tex_and_web($root); # must come before replace_m
   
   my $fix_by_hand2 = replace_m($root);
   $fix_by_hand = $fix_by_hand || $fix_by_hand2;
@@ -292,11 +292,14 @@ sub remove_empty_attributes {
   }
 }
 
-# This is only replacing <tex>\noindent</tex>, <web><br /><br /></web>, <web><br /></web>, <web><p /></web>
+# This is only replacing <tex>\noindent</tex>, <tex>\strut</tex>, <tex>\newpage</tex>, <tex>\newpage\strut</tex>,
+# <tex>\newpage\strut\newpage</tex>, <tex>$[^$]*$</tex>, <tex>[a-zA-Z .,]*</tex>,
+# <web><br /><br /></web>, <web><br /></web>, <web><p /></web>
 # Other uses of tex and web will have to be fixed by hand (replaced by equivalent CSS).
 # Returns 1 if the file should be fixed by hand, 0 otherwise.
 sub replace_tex_and_web {
   my ($root) = @_;
+  my $doc = $root->ownerDocument;
   my $fix_by_hand = 0;
   my $warning_tex = 0;
   my $warning_web = 0;
@@ -306,9 +309,53 @@ sub replace_tex_and_web {
     my $first = $tex->firstChild;
     if (defined $first && $first->nodeType == XML_TEXT_NODE && !defined $first->nextSibling) {
       my $content = $first->nodeValue;
-      if ($content =~ /\s*\\noindent\s*/) {
+      if ($content =~ /^\s*$/ || $content =~ /^\s*\\noindent\s*$/) {
         # remove the node
         $tex->parentNode->removeChild($tex);
+      } elsif ($content =~ /^\s*\\strut\s*$/) {
+        # \strut: replace by <p/> (\strut is only used for printing exams)
+        my $p = $doc->createElement('p');
+        $tex->parentNode->replaceChild($p, $tex);
+      } elsif ($content =~ /^\s*\\newpage\s*\\strut\s*\\newpage\s*(?:\\strut\s*)$/) {
+          # blank page
+          my $p = $doc->createElement('p');
+          set_css_property($p, 'page-break-before', 'always');
+          set_css_property($p, 'page-break-after', 'always');
+          $tex->parentNode->replaceChild($p, $tex);
+      } elsif ($content =~ /^\s*\\newpage\s*(?:\\strut\s*)?$/) {
+        # page break; try to use CSS on previous or next block if possible, otherwise add a p
+        my $block_before = $tex->previousSibling;
+        while (defined $block_before && $block_before->nodeType == XML_TEXT_NODE && $block_before->nodeValue =~ /^\s*$/) {
+          $block_before = $block_before->previousSibling;
+        }
+        if (defined $block_before && $block_before->nodeType == XML_ELEMENT_NODE &&
+            string_in_array(\@block_html, $block_before->nodeName)) {
+          set_css_property($block_before, 'page-break-after', 'always');
+          $tex->parentNode->removeChild($tex);
+        } else {
+          my $block_after = $tex->nextSibling;
+          while (defined $block_after && $block_after->nodeType == XML_TEXT_NODE && $block_after->nodeValue =~ /^\s*$/) {
+            $block_after = $block_after->nextSibling;
+          }
+          if (defined $block_after && $block_after->nodeType == XML_ELEMENT_NODE &&
+              string_in_array(\@block_html, $block_after->nodeName)) {
+            set_css_property($block_after, 'page-break-before', 'always');
+            $tex->parentNode->removeChild($tex);
+          } else {
+            my $p = $doc->createElement('p');
+            set_css_property($p, 'page-break-after', 'always');
+            $tex->parentNode->replaceChild($p, $tex);
+          }
+        }
+      } elsif ($content =~ /^\$[^\$]*\$$/) {
+        # replace by print/m (m might be replaced later)
+        my $print = $doc->createElement('print');
+        $tex->parentNode->replaceChild($print, $tex);
+        $tex->setNodeName('m');
+        $print->appendChild($tex);
+      } elsif ($content =~ /^\s*[a-zA-Z .,]*\s*$/) {
+        # replace by print
+        $tex->setNodeName('print');
       } else {
         $warning_tex = 1;
       }
@@ -2543,8 +2590,13 @@ sub convert_conceptgroup {
   my %display_id = ();
   my $cg_number = 1;
   my @conceptgroups = $root->getElementsByTagName('conceptgroup');
+  my $warning_conceptgroups = 0;
   foreach my $conceptgroup (@conceptgroups) {
     my $concept = $conceptgroup->getAttribute('concept');
+    if (defined $concept && $concept =~ /^\s*$/) {
+      $concept = undef;
+      $conceptgroup->removeAttribute('concept');
+    }
     if (!defined $concept && defined $conceptgroup->getAttribute('name')) {
       # author has confused the attribute name, let's fix it
       $concept = $conceptgroup->getAttribute('name');
@@ -2556,7 +2608,7 @@ sub convert_conceptgroup {
       if (defined $display_id{$concept}) {
         # concept has already been used, there is an error in the document
         # -> print a warning and add a number to it
-        print "Warning: several conceptgroups with the same name\n";
+        $warning_conceptgroups = 1;
         my $co_number = 2;
         my $concept2 = $concept.' '.$co_number;
         while (defined $display_id{$concept2}) {
@@ -2589,9 +2641,16 @@ sub convert_conceptgroup {
     $conceptgroup->setAttribute('id', $id);
     $display_id{$concept} = $id;
   }
+  if ($warning_conceptgroups) {
+    print "Warning: several conceptgroups with the same name\n";
+  }
   my @optionhintconditions = $root->getElementsByTagName('optionhintcondition');
   foreach my $optionhintcondition (@optionhintconditions) {
     my $concept = $optionhintcondition->getAttribute('concept');
+    if (defined $concept && $concept =~ /^\s*$/) {
+      $concept = undef;
+      $optionhintcondition->removeAttribute('concept');
+    }
     if (!defined $concept) {
       next;
     }
