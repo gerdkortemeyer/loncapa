@@ -295,7 +295,7 @@ sub remove_empty_attributes {
 # This is only replacing <tex>\noindent</tex>, <tex>\strut</tex>, <tex>\newpage</tex>, <tex>\newpage\strut</tex>,
 # <tex>\newpage\strut\newpage</tex>, <tex>$[^$]*$</tex>, <tex>[a-zA-Z .,]*</tex>,
 # <web><br /><br /></web>, <web><br /></web>, <web><p /></web>
-# Other uses of tex and web will have to be fixed by hand (replaced by equivalent CSS).
+# Other uses of tex and web (except for simple text) will have to be fixed by hand (replaced by equivalent CSS).
 # Returns 1 if the file should be fixed by hand, 0 otherwise.
 sub replace_tex_and_web {
   my ($root) = @_;
@@ -381,6 +381,12 @@ sub replace_tex_and_web {
         !defined $first->nextSibling) {
       # replace <web><p /></web> by content
       replace_by_children($web);
+    } elsif (!defined $first ||
+        (defined $first && !defined $second && $first->nodeType == XML_TEXT_NODE && $first->nodeValue =~ /^\s*$/)) {
+      # remove empty web
+      $web->parentNode->removeChild($web);
+    } elsif (defined $first && !defined $second && $first->nodeType == XML_TEXT_NODE) {
+      # ignore pure text (no warning)
     } else {
       $warning_web = 1;
     }
