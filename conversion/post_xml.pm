@@ -2311,6 +2311,7 @@ sub fix_paragraph {
       my $left = $trees->{'left'};
       my $middle = $trees->{'middle'};
       my $right = $trees->{'right'};
+      my $left_needs_p = 0; # 1 if it needs a paragraph (used to replace br later)
       
       if (defined $left) {
         # fix paragraphs inside, in case one of the descendants can have paragraphs inside (like numericalresponse/hintgroup):
@@ -2328,6 +2329,7 @@ sub fix_paragraph {
             $replacement->appendChild($child);
           }
         } else {
+          $left_needs_p = 1;
           $replacement->appendChild($left);
         }
       }
@@ -2367,7 +2369,7 @@ sub fix_paragraph {
             if ($n->nodeName eq 'br') {
               # replace a br by a paragraph if there was nothing before in the paragraph,
               # otherwise remove it because it already broke the paragraph in half
-              if (!defined $left) {
+              if (!defined $left || !$left_needs_p) {
                 $replacement->appendChild($middle);
               }
             } else {
