@@ -295,7 +295,8 @@ sub remove_empty_attributes {
 # This is only replacing <tex>\noindent</tex>, <tex>\strut</tex>, <tex>\newpage</tex>, <tex>\newpage\strut</tex>,
 # <tex>\newpage\strut\newpage</tex>, <tex>$[^$]*$</tex>, <tex>[a-zA-Z .,]*</tex>,
 # <web><br /><br /></web>, <web><br /></web>, <web><p /></web>
-# Other uses of tex and web (except for simple text) will have to be fixed by hand (replaced by equivalent CSS).
+# Other uses of tex will have to be fixed by hand (replaced by equivalent CSS).
+# Note: non-closing elements within web have already thrown an exception in html_to_xml, so they are not handled here.
 # Returns 1 if the file should be fixed by hand, 0 otherwise.
 sub replace_tex_and_web {
   my ($root) = @_;
@@ -408,8 +409,7 @@ sub replace_tex_and_web {
     $fix_by_hand = 1;
   }
   if ($warning_web) {
-    print "WARNING: remaining web elements have to be fixed by hand !\n";
-    $fix_by_hand = 1;
+    print "Warning: remaining web elements containing markup.\n";
   }
   if ($warning_script) {
     print "WARNING: &web and &tex in script element have to be fixed by hand !\n";
