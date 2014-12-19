@@ -297,6 +297,7 @@ sub remove_empty_attributes {
 # <web><br /><br /></web>, <web><br /></web>, <web><p /></web>
 # Other uses of tex will have to be fixed by hand (replaced by equivalent CSS).
 # Note: non-closing elements within web have already thrown an exception in html_to_xml, so they are not handled here.
+# Also replaces &web and &tex when possible.
 # Returns 1 if the file should be fixed by hand, 0 otherwise.
 sub replace_tex_and_web {
   my ($root) = @_;
@@ -392,12 +393,37 @@ sub replace_tex_and_web {
       $warning_web = 1;
     }
   }
-  # look for &web in script to display a warning
+  # look for &web in script to replace or display a warning
   my @scripts = $root->getElementsByTagName('script');
   foreach my $script (@scripts) {
     my $first = $script->firstChild;
     if (defined $first && $first->nodeType == XML_TEXT_NODE) {
       my $text = $first->nodeValue;
+      my $replacement = replace_web_and_tex_subs($text);
+      if ($replacement) {
+        $text = $replacement;
+        $script->replaceChild($doc->createTextNode($text), $first);
+        $first = $script->firstChild;
+      }
+      if ($text =~ /^[^#].*&web/m || $text =~ /^[^#].*&tex/m) {
+        $warning_script = 1;
+        last;
+      }
+    }
+  }
+  # look for &web in display to replace or display a warning
+  # NOTE: most of them should have been replaced in pre_xml
+  my @displays = $root->getElementsByTagName('display');
+  foreach my $display (@displays) {
+    my $first = $display->firstChild;
+    if (defined $first && $first->nodeType == XML_TEXT_NODE) {
+      my $text = $first->nodeValue;
+      my $replacement = replace_web_and_tex_subs($text);
+      if ($replacement) {
+        $text = $replacement;
+        $display->replaceChild($doc->createTextNode($text), $first);
+        $first = $display->firstChild;
+      }
       if ($text =~ /&web/ || $text =~ /&tex/) {
         $warning_script = 1;
         last;
@@ -412,10 +438,52 @@ sub replace_tex_and_web {
     print "Warning: remaining web elements containing markup.\n";
   }
   if ($warning_script) {
-    print "WARNING: &web and &tex in script element have to be fixed by hand !\n";
+    print "WARNING: &web and &tex in script or display element have to be fixed by hand !\n";
     $fix_by_hand = 1;
   }
   return $fix_by_hand;
+}
+
+# Takes a string, replaces &web and &tex if possible, and returns the string if modified.
+# see pre_xml->replace_display_web_and_tex, the regexp should match
+sub replace_web_and_tex_subs {
+  my ($text) = @_;
+  my $replaced = 0;
+  # replace &web(' deg','$^\circ$','&#176;')  by  '&#176;'
+  #if ($text =~ /\&web\(['"][^'"]*['"] ?, ?['"]\$[^\$'"]+\$['"] ?, ?['"]\&#[0-9]*;['"]\)/) {
+  #  $text =~ s/\&web\(['"][^'"]*['"] ?, ?['"]\$[^\$'"]+\$['"] ?, ?(['"]\&#[0-9]*;['"])\)/$1/g;
+  #  $replaced = 1;
+  #}
+  # this is not needed because the web alternative is chosen later in this case
+  
+  # replace &web with an <img> in the web part by the LaTeX alternative when it is pure math, for instance
+  # &web(' --> ','$\longrightarrow $',' <img src="/res/sfu/batchelo/Gallery/rarrow.gif" alt="-->" align=center />')
+  # by '$\longrightarrow $'
+  if ($text =~ /\&web\(['"][^'"]*['"] ?, ?['"]\$[^\$'"]+\$['"] ?, ?['"][^'"]*<img[^>]* ?\/?>[^'"]*['"]\)/i) {
+    $text =~ s/\&web\(['"][^'"]*['"] ?, ?(['"]\$[^\$'"]+\$['"]) ?, ?['"][^'"]*<img[^>]* ?\/?>[^'"]*['"]\)/$1/gi;
+    $replaced = 1;
+  }
+  # replace other &web by the web alternative unless there are quotes in it and unless
+  # the tex alternative is using an eps, for instance
+  # replace &web('OCl^-','OCl$^-$','OCl<sup>-</sup>') by 'OCl<sup>-</sup>'
+  if ($text =~ /\&web\(['"][^'"]*['"] ?, ?['"](?![^'"]*\.eps)[^'"]*['"] ?, ?['"][^'"]+['"]\)/i) {
+    $text =~ s/\&web\(['"][^'"]*['"] ?, ?['"](?![^'"]*\.eps)[^'"]*['"] ?, ?(['"][^'"]+['"])\)/$1/gi;
+    $replaced = 1;
+  }
+  
+  # &tex: choose the web alternative if it contains tags without quotes, except td and tr
+  if ($text =~ /\&tex\(['"][^'"]*['"] ?, ?['"][^'"]*<(?!t[dr])[a-zA-Z]+[^'"]*['"]\)/i) {
+    $text =~ s/\&tex\(['"][^'"]*['"] ?, ?(['"][^'"]*<(?!t[dr])[a-zA-Z]+[^'"]*['"])\)/$1/gi;
+    $replaced = 1;
+  }
+  # otherwise use the tex alternative if it is pure math
+  if ($text =~ /\&tex\(['"]\$[^\$'"]+\$['"] ?, ?['"][^'"]*['"]\)/i) {
+    $text =~ s/\&tex\((['"]\$[^\$'"]+\$['"]) ?, ?['"][^'"]*['"]\)/$1/gi;
+    $replaced = 1;
+  }
+  if ($replaced) {
+    return $text;
+  }
 }
 
 # Replaces m by HTML, tm and/or dtm.

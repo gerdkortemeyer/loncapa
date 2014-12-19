@@ -23,6 +23,8 @@ sub pre_xml {
 
   remove_control_characters($lines);
   
+  replace_display_web_and_tex($lines);
+  
   warning_xmlparse($lines);
   
   fix_cdata_elements($lines);
@@ -146,6 +148,19 @@ sub remove_control_characters {
     $line =~ s/&#[0-7];//g;
     $line =~ s/&#1[4-9];//g;
     $line =~ s/&#2[0-9];//g;
+  }
+}
+
+# replaces <display>&web()</display> and <display>&tex()</display> whenever possible
+# (this way we don't have to parse more HTML in post_xml)
+# see post_xml->replace_tex_and_web and replace_web_and_tex_subs for explanations
+sub replace_display_web_and_tex {
+  my ($lines) = @_;
+  foreach my $line (@{$lines}) {
+    $line =~ s/<display>\&web\(['"][^'"]*['"] ?, ?['"](\$[^\$'"]+\$)['"] ?, ?['"][^'"]*<img[^>]* ?\/?>[^'"]*['"]\)<\/display>/$1/gi;
+    $line =~ s/<display>\&web\(['"][^'"]*['"] ?, ?['"](?![^'"]*\.eps)[^'"]*['"] ?, ?['"]([^'"]+)['"]\)<\/display>/$1/gi;
+    $line =~ s/<display>\&tex\(['"][^'"]*['"] ?, ?['"]([^'"]*<(?!t[dr])[a-zA-Z]+[^'"]*)['"]\)<\/display>/$1/gi;
+    $line =~ s/<display>\&tex\(['"](\$[^\$'"]+\$)['"] ?, ?['"][^'"]*['"]\)<\/display>/$1/gi;
   }
 }
 
