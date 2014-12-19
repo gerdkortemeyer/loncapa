@@ -178,7 +178,15 @@ sub dump_namespace {
 \end{verbatim}
 The named arguments are sent as JSON.
 
-Most routines that register services are in /entities --- other handlers should use the routines provided in the entity-handlers and {\it never} directly access the disk, the databases, or the network. The routines to be called are the ones without ``local'' or ``remote.''
+Most routines that register services are in {\tt /entities} and contained in modules called {\tt lc\_entity\_\ldots} --- other handlers should use the routines provided in the entity-handlers and {\it never} directly access the disk, the databases, or the network. The routines to be called are the ones without ``local'' or ``remote'' (see Fig.~\ref{fig:entities}).
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=12cm]{entities}
+\end{center}
+\caption{Scheme for storing and retrieving data.\label{fig:entities}}
+\end{figure}
+
 
 \section{Replication}\index{replication}\label{replication}
 Assets are replicated between servers. Any server in the network can serve any asset in the server under the same URL path. This is transparent, i.e., the same URL path can be requested from any server, regardless of whether or not that asset is already locally present. The server needs to locate the asset in the network and replicate it if needed.
