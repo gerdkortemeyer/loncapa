@@ -316,6 +316,9 @@ my $comparedate='2014-04-16 01:00:01';
 
    $r->print("Course: ".join(',',&Apache::lc_entity_sessions::course_entity_domain()));
 
+return OK;
+
+
 my $contenttext='';
 open(IN,"/home/www/loncapa/test/toc.json");
 while (my $line=<IN>) {
