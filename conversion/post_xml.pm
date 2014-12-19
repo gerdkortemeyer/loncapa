@@ -318,7 +318,7 @@ sub replace_tex_and_web {
         # \strut: replace by <p/> (\strut is only used for printing exams)
         my $p = $doc->createElement('p');
         $tex->parentNode->replaceChild($p, $tex);
-      } elsif ($content =~ /^\s*\\newpage\s*\\strut\s*\\newpage\s*(?:\\strut\s*)$/) {
+      } elsif ($content =~ /^\s*\\newpage\s*\\strut\s*\\newpage\s*(?:\\strut\s*)?$/) {
           # blank page
           my $p = $doc->createElement('p');
           set_css_property($p, 'page-break-before', 'always');
