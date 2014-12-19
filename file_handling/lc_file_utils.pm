@@ -121,7 +121,7 @@ sub readurl {
    my ($url)=@_;
    my $filepath=&Apache::lc_entity_urls::url_to_filepath($url);
    unless ($filepath) {
-      &logwarning("Trying to read ($url), but does not exist");
+      &logwarning("Trying to read ($url) at ($filepath), but does not exist");
       return undef;
    }
    unless (-e $filepath) {

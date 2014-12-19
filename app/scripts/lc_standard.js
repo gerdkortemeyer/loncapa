@@ -30,6 +30,9 @@ function attach_submit_button(problemid,partid) {
 
 function attach_textfield_message(id,stat,msg) {
    $('#'+id).css('background-color','#FFFF66');
+   $('#'+id).change(function(){
+       $('#'+id).css('background-color','#FFFFFF');
+   });
 }
 
 function adjust_framesize() {
