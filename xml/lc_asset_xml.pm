@@ -332,7 +332,7 @@ sub parser {
                                                'found'    => $token->[-1] });
          }
 # If we are only rendering part of the document, see if we are done after this
-         if ($stack->{'tags'}->[-1]->{'name'} eq $outputid) {
+         if ($stack->{'tags'}->[-1]->{'args'}->{'id'} eq $outputid) {
             $outputdone=1;
          }
 # Pop the stack again

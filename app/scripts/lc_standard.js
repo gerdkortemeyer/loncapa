@@ -28,14 +28,19 @@ function attach_submit_button(problemid,partid) {
    });
 }
 
-function attach_textfield_message(id,stat,msg) {
-   $('#'+id).css('background-color','#FFFF66');
+function attach_textfield_message(id) {
+   $('#'+id+'_message').hide();
+   $('#'+id).css('background-color','#FFFFAA');
    $('#'+id).css('background-image', 'url("/images/warning.png")');
    $('#'+id).css('background-repeat','no-repeat');
    $('#'+id).css('background-position','right top');
    $('#'+id).change(function(){
        $('#'+id).css('background-color','#FFFFFF');
+       $('#'+id).css('background-image', '');
+       $('#'+id).mouseover(function(){ $('#'+id+'_message').hide(); });
    });
+   $('#'+id).mouseover(function(){ $('#'+id+'_message').show(); });
+   $('#'+id).mouseout(function(){ $('#'+id+'_message').hide(); });
 }
 
 function adjust_framesize() {

@@ -41,9 +41,7 @@ sub textboxmessaging {
    if (($status ne 'no_valid_response') &&
        ($status ne 'correct') &&
        ($status ne 'incorrect')) {
-      return '<script>attach_textfield_message("'.$id.'","'.
-         &Apache::lc_xml_utils::form_escape($status).'","'.
-         &Apache::lc_xml_utils::form_escape($message).'");</script>';
+      return '<span class="lcresponseerror" id="'.$id.'_message">'.$message.'</span><script>attach_textfield_message("'.$id.'");</script>';
    } else {
       return '';
    }
@@ -84,10 +82,6 @@ sub start_textline_grade {
    &Apache::lc_asset_xml::add_response_input($stack);
 #FIXME: need to adapt to type of response
    my $id=&Apache::lc_asset_xml::open_tag_attribute('id',$stack);
-
-
-&logdebug("ID: $id ".$stack->{'content'}->{$id});
-
    &Apache::lc_asset_xml::add_response_details($id,
                                                { 'value' => $stack->{'content'}->{$id} },
                                                $stack);

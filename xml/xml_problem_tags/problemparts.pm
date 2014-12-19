@@ -52,7 +52,6 @@ sub end_problem_html {
 
 sub start_problem_grade {
    my ($p,$safe,$stack,$token)=@_;
-   $stack->{'response_grades'}={};
    &init_problem($stack);
 }
 

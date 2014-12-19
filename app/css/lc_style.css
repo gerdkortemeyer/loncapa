@@ -161,6 +161,11 @@ h3 {
    border-radius: 5px 5px 5px 5px;
 }
 
+.lcresponseerror {
+   padding: 3px;
+   background: #FFFFAA;
+}
+
 .lcpartfeedbackmessage {
    font-size: 14px;
 }

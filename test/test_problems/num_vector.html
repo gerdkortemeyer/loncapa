@@ -17,8 +17,9 @@ Simple vector problem
 </numericalresponse>
 <br />[4;5;6] m/s
 <numericalresponse answer="@vector2" unit="m/s">
-<textline size="60" />
+<textline size="60" />Test text
 </numericalresponse>
+More test text
 </part>
 <part>
 <br />[1;2;3] m/s^2
@@ -31,5 +32,33 @@ Simple vector problem
 </numericalresponse>
 </part>
 </problem>
+Outside of a problem.
+<problem>
+<perl>
+@vector3=(1,2,3);
+@vector4=(4,5,6);
+</perl>
+<part>
+<br />[1;2;3] N
+<numericalresponse answer="@vector3" unit="N">
+<textline size="60" />
+</numericalresponse>
+<br />[4;5;6] m/s
+<numericalresponse answer="@vector4" unit="m/s">
+<textline size="60" />
+</numericalresponse>
+</part>
+<part>
+<br />[1;2;3] m/s^2
+<numericalresponse answer="@vector3" unit="m/s^2">
+<textline size="60" />
+</numericalresponse>
+<br />[4;5;6] m
+<numericalresponse answer="@vector4" unit="m">
+<textline size="60" />
+</numericalresponse>
+</part>
+</problem>
+
 </body>
 </loncapa>
