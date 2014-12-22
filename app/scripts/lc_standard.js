@@ -34,6 +34,8 @@ function attach_textfield_message(id) {
    $('#'+id).css('background-image', 'url("/images/warning.png")');
    $('#'+id).css('background-repeat','no-repeat');
    $('#'+id).css('background-position','right top');
+   var position=$('#'+id).position();
+   $('#'+id+'_message').css('left',position.left);
    $('#'+id).change(function(){
        $('#'+id).css('background-color','#FFFFFF');
        $('#'+id).css('background-image', '');

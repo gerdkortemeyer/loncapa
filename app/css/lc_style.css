@@ -164,6 +164,7 @@ h3 {
 .lcresponseerror {
    padding: 3px;
    background: #FFFFAA;
+   position:absolute;
 }
 
 .lcpartfeedbackmessage {
