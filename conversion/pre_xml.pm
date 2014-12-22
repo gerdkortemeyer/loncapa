@@ -61,7 +61,7 @@ sub guess_encoding_and_read {
   }
   
   # try to get a charset from a meta at the beginning of the file
-  my $beginning = substr($data, 0, 500); # to avoid a full match; hopefully we won't cut the charset in half
+  my $beginning = substr($data, 0, 1024); # to avoid a full match; hopefully we won't cut the charset in half
   if ($beginning =~ /<meta[^>]*charset\s?=\s?([^\n>"';]*)/i) {
     my $meta_charset = $1;
     if ($meta_charset ne '') {
@@ -157,10 +157,14 @@ sub remove_control_characters {
 sub replace_display_web_and_tex {
   my ($lines) = @_;
   foreach my $line (@{$lines}) {
-    $line =~ s/<display>\&web\(['"][^'"]*['"] ?, ?['"](\$[^\$'"]+\$)['"] ?, ?['"][^'"]*<img[^>]* ?\/?>[^'"]*['"]\)<\/display>/$1/gi;
-    $line =~ s/<display>\&web\(['"][^'"]*['"] ?, ?['"](?![^'"]*\.eps)[^'"]*['"] ?, ?['"]([^'"]+)['"]\)<\/display>/$1/gi;
-    $line =~ s/<display>\&tex\(['"][^'"]*['"] ?, ?['"]([^'"]*<(?!t[dr])[a-zA-Z]+[^'"]*)['"]\)<\/display>/$1/gi;
-    $line =~ s/<display>\&tex\(['"](\$[^\$'"]+\$)['"] ?, ?['"][^'"]*['"]\)<\/display>/$1/gi;
+    # we are not using /i here to avoid warnings for non-Unicode characters
+    $line =~ s/<display>\&web\('[^']*' ?, ?'\s*(\$[^\$']+\$)\s*' ?, ?'[^']*<[iI][mM][gG][^']* ?\/?>[^']*'\)<\/display>/$1/g;
+    $line =~ s/<display>\&web\(['"][^'"]*['"] ?, ?['"](?![^'"]*\.[eE][pP][sS])[^'"]*['"] ?, ?['"]([^'"]+)['"]\)<\/display>/$1/g;
+    $line =~ s/<display>\&tex\(['"][^'"]*['"] ?, ?['"]([^'"]*<(?![tT][dDrR])[a-zA-Z]+[^'"]*)['"]\)<\/display>/$1/g;
+    $line =~ s/<display>\&tex\(['"](\$[^\$'"]+\$)['"] ?, ?['"][^'"]*['"]\)<\/display>/$1/g;
+    # added this one which is not in post_xml:
+    # removing <display>&tex('\vskip .0[0-9]*in','')</display>
+    $line =~ s/<display>\&tex\(['"]\\vskip \.0[0-9]*in['"] ?, ?''\)<\/display>//g;
   }
 }
 

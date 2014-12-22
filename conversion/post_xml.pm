@@ -39,6 +39,11 @@ my @latex_math = ('\alpha', '\theta', '\omicron', '\tau', '\beta', '\vartheta', 
   '\hat{', '\acute{', '\bar{', '\dot{', '\breve{', '\check{', '\grave{', '\vec{', '\ddot{', '\tilde{',
   '\widetilde{', '\widehat{', '\overleftarrow{', '\overrightarrow{', '\overline{', '\underline{', '\overbrace{', '\underbrace{', '\sqrt{', '\sqrt[', '\frac{'
 );
+# list of elements that can contain style elements:
+my @containing_styles = ('loncapa','problem',@responses,'foil','item','text','hintgroup','hintpart','label','part','preduedate','postanswerdate','solved','notsolved','block','while','web','standalone','problemtype','languageblock','translated','lang','window','windowlink','togglebox','instructorcomment','section','div','p','li','dd','td','th','blockquote','object','applet','video','audio','canvas','fieldset','button',
+'span','strong','em','b','i','sup','sub','code','kbd','samp','tt','ins','del','var','small','big','u','font');
+my @html_styles = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'u');
+
 
 # Parses the XML document and fixes many things to turn it into a LON-CAPA 3 document
 # Returns the text of the document.
@@ -293,7 +298,7 @@ sub remove_empty_attributes {
 }
 
 # This is only replacing <tex>\noindent</tex>, <tex>\strut</tex>, <tex>\newpage</tex>, <tex>\newpage\strut</tex>,
-# <tex>\newpage\strut\newpage</tex>, <tex>$[^$]*$</tex>, <tex>[a-zA-Z .,]*</tex>,
+# <tex>\newpage\strut\newpage</tex>, <tex>$[^$]*$</tex>, <tex>[a-zA-Z .,]*</tex>, <tex>\newline</tex>,
 # <web><br /><br /></web>, <web><br /></web>, <web><p /></web>
 # Other uses of tex will have to be fixed by hand (replaced by equivalent CSS).
 # Note: non-closing elements within web have already thrown an exception in html_to_xml, so they are not handled here.
@@ -311,7 +316,7 @@ sub replace_tex_and_web {
     my $first = $tex->firstChild;
     if (defined $first && $first->nodeType == XML_TEXT_NODE && !defined $first->nextSibling) {
       my $content = $first->nodeValue;
-      if ($content =~ /^\s*$/ || $content =~ /^\s*\\noindent\s*$/) {
+      if ($content =~ /^\s*$/ || $content =~ /^\s*\\noindent\s*$/ || $content =~ /^\s*\\newline\s*$/) {
         # remove the node
         $tex->parentNode->removeChild($tex);
       } elsif ($content =~ /^\s*\\strut\s*$/) {
@@ -405,7 +410,7 @@ sub replace_tex_and_web {
         $script->replaceChild($doc->createTextNode($text), $first);
         $first = $script->firstChild;
       }
-      if ($text =~ /^[^#].*&web/m || $text =~ /^[^#].*&tex/m) {
+      if ($text =~ /^[^#].*&web/m || $text =~ /^[^#].*&tex/m || $text =~ /^[^#].*&html/m) {
         $warning_script = 1;
         last;
       }
@@ -424,7 +429,7 @@ sub replace_tex_and_web {
         $display->replaceChild($doc->createTextNode($text), $first);
         $first = $display->firstChild;
       }
-      if ($text =~ /&web/ || $text =~ /&tex/) {
+      if ($text =~ /&web/ || $text =~ /&tex/ || $text =~ /&html/) {
         $warning_script = 1;
         last;
       }
@@ -438,7 +443,7 @@ sub replace_tex_and_web {
     print "Warning: remaining web elements containing markup.\n";
   }
   if ($warning_script) {
-    print "WARNING: &web and &tex in script or display element have to be fixed by hand !\n";
+    print "WARNING: &web &tex and &html in script or display element have to be fixed by hand !\n";
     $fix_by_hand = 1;
   }
   return $fix_by_hand;
@@ -459,8 +464,8 @@ sub replace_web_and_tex_subs {
   # replace &web with an <img> in the web part by the LaTeX alternative when it is pure math, for instance
   # &web(' --> ','$\longrightarrow $',' <img src="/res/sfu/batchelo/Gallery/rarrow.gif" alt="-->" align=center />')
   # by '$\longrightarrow $'
-  if ($text =~ /\&web\(['"][^'"]*['"] ?, ?['"]\$[^\$'"]+\$['"] ?, ?['"][^'"]*<img[^>]* ?\/?>[^'"]*['"]\)/i) {
-    $text =~ s/\&web\(['"][^'"]*['"] ?, ?(['"]\$[^\$'"]+\$['"]) ?, ?['"][^'"]*<img[^>]* ?\/?>[^'"]*['"]\)/$1/gi;
+  if ($text =~ /\&web\('[^']*' ?, ?'\s*\$[^\$']+\$\s*' ?, ?'[^']*<img[^']* ?\/?>[^']*'\)/i) {
+    $text =~ s/\&web\('[^']*' ?, ?('\s*\$[^\$']+\$\s*') ?, ?'[^']*<img[^']* ?\/?>[^']*'\)/$1/gi;
     $replaced = 1;
   }
   # replace other &web by the web alternative unless there are quotes in it and unless
@@ -525,7 +530,7 @@ sub replace_m {
           }
         }
         # use the opportunity to report usage of <m> in Perl scripts
-        if ($text =~ /<m[ >]/) {
+        if ($text =~ /^[^#].*<m[ >]/m) {
           print "WARNING: <m> is used in a script, it should be converted by hand\n";
           $fix_by_hand = 1;
         }
@@ -698,7 +703,8 @@ sub html_to_dom {
   return($fragment);
 }
 
-# use the linked sty files to guess which newly defined elements should be considered blocks
+# Use the linked sty files to guess which newly defined elements should be considered blocks.
+# Also adds to @containing_styles the sty elements that contain styles.
 # @param {string} fn - the .lc file path (we only extract the directory path from it)
 sub add_sty_blocks {
   my ($fn, $root, $all_block) = @_;
@@ -792,7 +798,8 @@ sub parse_sty {
 }
 
 ##
-# marks as block the elements that contain block elements in the input file
+# Marks as block the elements that contain block elements in the input file.
+# Also adds to @containing_styles the sty elements that contain styles.
 # @param {string} fn - the file path
 # @param {Hash<string,Array>} new_elements - contains arrays in 'block' and 'inline'
 ##
@@ -821,6 +828,22 @@ sub better_guess {
     splice(@{$new_inlines}, $index, 1);
     push(@{$new_blocks}, $inline);
   }
+  # add to @containing_styles when a style is used inside
+  # NOTE: some sty elements will be added even though they should not, but if we don't do that
+  # all style will be removed in the sty elements.
+  foreach my $tag ((@{$new_blocks}, @{$new_inlines})) {
+    my @nodes = $root->getElementsByTagName($tag);
+    NODE_LOOP: foreach my $node (@nodes) {
+      for (my $child=$node->firstChild; defined $child; $child=$child->nextSibling) {
+        if ($child->nodeType == XML_ELEMENT_NODE) {
+          if (string_in_array(\@html_styles, $child->nodeName)) {
+            push(@containing_styles, $tag);
+            last NODE_LOOP;
+          }
+        }
+      }
+    }
+  }
 }
 
 # When a style element contains a block, move the style inside the block where it is allowed.
@@ -830,15 +853,11 @@ sub better_guess {
 # The fix is not perfect in the case of element_not_containing_styles/style1/style2/block/text (style1 will be lost):
 # element_not_containing_styles/style1/style2/block/text -> element_not_containing_styles/block/style2/text
 # (a solution to this problem would be to merge the styles in a span)
-# NOTE: .sty defined elements are not considered like elements containing styles
+# NOTE: .sty defined elements might have been added to @containing_styles by better_guess().
 sub fix_block_styles {
   my ($element, $all_block) = @_;
   my $doc = $element->ownerDocument;
-  # list of elements that can contain style elements:
-  my @containing_styles = ('loncapa','problem',@responses,'foil','item','text','hintgroup','hintpart','label','part','preduedate','postanswerdate','solved','notsolved','block','while','web','standalone','problemtype','languageblock','translated','lang','window','windowlink','togglebox','instructorcomment','section','div','p','li','dd','td','th','blockquote','object','applet','video','audio','canvas','fieldset','button',
-  'span','strong','em','b','i','sup','sub','code','kbd','samp','tt','ins','del','var','small','big','u','font');
-  my @styles = ('span', 'strong', 'em' , 'b', 'i', 'sup', 'sub', 'tt', 'var', 'small', 'big', 'u');
-  if (string_in_array(\@styles, $element->nodeName)) {
+  if (string_in_array(\@html_styles, $element->nodeName)) {
     # move spaces out of the style element
     if (defined $element->firstChild && $element->firstChild->nodeType == XML_TEXT_NODE) {
       my $child = $element->firstChild;
@@ -873,7 +892,7 @@ sub fix_block_styles {
         if ($child->nodeType == XML_ELEMENT_NODE && (string_in_array($all_block, $child->nodeName) ||
             $child->nodeName eq 'br' || $no_style_here)) {
           # avoid inverting a style with a style with $no_style_here (that would cause endless recursion)
-          if (!$no_style_here || (!string_in_array(\@styles, $child->nodeName) &&
+          if (!$no_style_here || (!string_in_array(\@html_styles, $child->nodeName) &&
               string_in_array(\@containing_styles, $child->nodeName))) {
             # block node or inline node when the style is not allowed:
             # move all children inside the style, and make the style the only child
