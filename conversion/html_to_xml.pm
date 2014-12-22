@@ -69,8 +69,10 @@ sub start {
   #$tagname = lc($tagname); this is done by default by the parser
   $tagname = fix_tag($tagname);
   if (scalar(@stack) > 0 && $stack[scalar(@stack)-1] eq 'tr' && $tagname ne 'tr' && $tagname ne 'td' && $tagname ne 'th' &&
-      !string_in_array(['part','block','comment','endouttext','problemtype','standalone','startouttext','tex','translated','web','while'], $tagname)) {
+      !string_in_array(['part','block','comment','endouttext','problemtype','standalone','startouttext','tex','translated','web','while','randomlist','font','b','form'], $tagname)) {
     # NOTE: a 'part' or 'block' element between tr and td will not be valid, but changing tag order would make things worse
+    # font and b will be removed in post_xml, so we can leave it for now, to handle things like <TR><FONT FACE="Palatino"><TD...
+    # form is to avoid an empty form in some cases (it might not work anyway, but it is better to keep this bug the way it is)
     print "Warning: a <td> tag was added because a $tagname element was directly under a tr\n";
     start('td');
   }
