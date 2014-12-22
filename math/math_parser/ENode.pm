@@ -310,7 +310,7 @@ sub calc {
                         die CalcException->new("[_1] cannot work in unit mode.", $fname);
                     }
                     if (scalar(@children) != 5) {
-                        die CalcException->new("[_1]: should have four parameters.", $fname);
+                        die CalcException->new("[_1] should have four parameters.", $fname);
                     }
                     my $var = "".$children[2]->value;
                     if ($var eq "i") {
@@ -336,7 +336,7 @@ sub calc {
                 }
                 when ("binomial") {
                     if (scalar(@children) != 3) {
-                        die CalcException->new("[_1]: should have two parameters.", $fname);
+                        die CalcException->new("[_1] should have two parameters.", $fname);
                     }
                     my $n = $children[1]->calc($env);
                     my $p = $children[2]->calc($env);

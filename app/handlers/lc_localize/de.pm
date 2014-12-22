@@ -232,6 +232,264 @@ use utf8;
 "Zhuang" => "Zhuang",
 "Zulu" => "Zulu",
 
+'All components of the union must be intervals.' =>
+'All components of the union must be intervals.',
+
+'Cannot calculate [_1] of something with units.' =>
+'Cannot calculate [_1] of something with units.',
+
+'Cannot calculate atan2 if second argument is not a quantity.' =>
+'Cannot calculate atan2 if second argument is not a quantity.',
+
+'Cannot calculate the modulus with respect to something that is not a quantity.' =>
+'Cannot calculate the modulus with respect to something that is not a quantity.',
+
+'Cannot divide by something that is not a quantity.' =>
+'Cannot divide by something that is not a quantity.',
+
+'Cannot form a union if second  member is not an interval union or an interval.' =>
+'Cannot form a union if second  member is not an interval union or an interval.',
+
+'Cannot form an intersection if second member is not an interval union or an interval.' =>
+'Cannot form an intersection if second member is not an interval union or an interval.',
+
+'Cannot multiply with something that is not a quantity, vector, matrix, set, or interval.' =>
+'Cannot multiply with something that is not a quantity, vector, matrix, set, or interval.',
+
+'Cannot raise to the power of something that is not a number.' =>
+'Cannot raise to the power of something that is not a number.',
+
+'Different units are used in the intervals.' =>
+'Different units are used in the intervals.',
+
+'Division by zero.' =>
+'Division by zero.',
+
+"Expected '[_1]'" =>
+"Expected '[_1]'",
+
+"Expected '[_1]' at the end" =>
+"Expected '[_1]' at the end",
+
+'Expected something at the end' =>
+'Expected something at the end',
+
+'Expected the end' =>
+'Expected the end',
+
+'Factorial of a number smaller than zero.' =>
+'Factorial of a number smaller than zero.',
+
+'Function name expected before a parenthesis.' =>
+'Function name expected before a parenthesis.',
+
+'Inconsistent number of elements in a matrix.' =>
+'Inconsistent number of elements in a matrix.',
+
+'Interval contains: second member is not a quantity.' =>
+'Interval contains: second member is not a quantity.',
+
+'Interval creation: different units are used for the two endpoints.' =>
+'Interval creation: different units are used for the two endpoints.',
+
+'Interval creation: qmin > qmax' =>
+'Interval creation: qmin > qmax',
+
+'Interval intersection: different units are used in the two intervals.' =>
+'Interval intersection: different units are used in the two intervals.',
+
+'Interval intersection: second member is not an interval or an interval union.' =>
+'Interval intersection: second member is not an interval or an interval union.',
+
+'Interval multiplication: second member is not a quantity.' =>
+'Interval multiplication: second member is not a quantity.',
+
+'Interval should have two parameters.' =>
+'Interval should have two parameters.',
+
+'Interval union: different units are used in the two intervals.' =>
+'Interval union: different units are used in the two intervals.',
+
+'Interval union: second member is not an interval or an interval union.' =>
+'Interval union: second member is not an interval or an interval union.',
+
+'Intervals can only be multiplied by quantities.' =>
+'Intervals can only be multiplied by quantities.',
+
+'Ln of number < 0' =>
+'Ln of number < 0',
+
+'Log10 of number < 0' =>
+'Log10 of number < 0',
+
+'Logarithm of zero.' =>
+'Logarithm of zero.',
+
+'Matrix addition: second member is not a matrix.' =>
+'Matrix addition: second member is not a matrix.',
+
+'Matrix addition: the matrices have different sizes.' =>
+'Matrix addition: the matrices have different sizes.',
+
+'Matrix element-by-element multiplication: second member is not a quantity, vector or matrix.' =>
+'Matrix element-by-element multiplication: second member is not a quantity, vector or matrix.',
+
+'Matrix product: second member is not a vector or a matrix.' =>
+'Matrix product: second member is not a vector or a matrix.',
+
+'Matrix product: the matrices sizes do not match.' =>
+'Matrix product: the matrices sizes do not match.',
+
+'Matrix substraction: second member is not a matrix.' =>
+'Matrix substraction: second member is not a matrix.',
+
+'Matrix substraction: the matrices have different sizes.' =>
+'Matrix substraction: the matrices have different sizes.',
+
+'Maxima syntax: intervals are not implemented.' =>
+'Maxima syntax: intervals are not implemented.',
+
+'Missing parameter for function [_1].' =>
+'Missing parameter for function [_1].',
+
+'Name expected before a square bracket.' =>
+'Name expected before a square bracket.',
+
+'Natural logarithm of zero.' =>
+'Natural logarithm of zero.',
+
+'No token found' =>
+'No token found',
+
+'Operator < : one of the arguments is not a quantity.' =>
+'Operator < : one of the arguments is not a quantity.',
+
+'Operator <= : one of the arguments is not a quantity.' =>
+'Operator <= : one of the arguments is not a quantity.',
+
+'Operator > : one of the arguments is not a quantity.' =>
+'Operator > : one of the arguments is not a quantity.',
+
+'Operator >= : one of the arguments is not a quantity.' =>
+'Operator >= : one of the arguments is not a quantity.',
+
+'Quantity addition: second member is not a quantity.' =>
+'Quantity addition: second member is not a quantity.',
+
+'Quantity comparison: second member is not a quantity.' =>
+'Quantity comparison: second member is not a quantity.',
+
+'Quantity greater or equal: second member is not a quantity.' =>
+'Quantity greater or equal: second member is not a quantity.',
+
+'Quantity greater than: second member is not a quantity.' =>
+'Quantity greater than: second member is not a quantity.',
+
+'Quantity smaller or equal: second member is not a quantity.' =>
+'Quantity smaller or equal: second member is not a quantity.',
+
+'Quantity smaller than: second member is not a quantity.' =>
+'Quantity smaller than: second member is not a quantity.',
+
+'Quantity substraction: second member is not a quantity.' =>
+'Quantity substraction: second member is not a quantity.',
+
+'Second member of an interval is not a quantity.' =>
+'Second member of an interval is not a quantity.',
+
+'Set intersection: second member is not a set.' =>
+'Set intersection: second member is not a set.',
+
+'Set multiplication: second member is not a quantity.' =>
+'Set multiplication: second member is not a quantity.',
+
+'Set union: second member is not a set.' =>
+'Set union: second member is not a set.',
+
+'Subscript cannot be evaluated: [_1].' =>
+'Subscript cannot be evaluated: [_1].',
+
+'Syntax error in number exponent.' =>
+'Syntax error in number exponent.',
+
+'Syntax error in number.' =>
+'Syntax error in number.',
+
+"Unexpected operator '[_1]'" =>
+"Unexpected operator '[_1]'",
+
+'Unit not found: [_1]' =>
+'Unit not found: [_1]',
+
+'Units [_1] do not match.' =>
+'Units [_1] do not match.',
+
+'Unknown function: [_1].' =>
+'Unknown function: [_1].',
+
+'Unknown node type: [_1].' =>
+'Unknown node type: [_1].',
+
+'Unknown operator: [_1]' =>
+'Unknown operator: [_1]',
+
+'Unknown operator: [_1].' =>
+'Unknown operator: [_1].',
+
+'Unrecognized operator.' =>
+'Unrecognized operator.',
+
+'Variable has undefined value: [_1].' =>
+'Variable has undefined value: [_1].',
+
+'Vector addition: second member is not a vector.' =>
+'Vector addition: second member is not a vector.',
+
+'Vector addition: the vectors have different sizes.' =>
+'Vector addition: the vectors have different sizes.',
+
+'Vector dot product: second member is not a vector.' =>
+'Vector dot product: second member is not a vector.',
+
+'Vector dot product: the vectors have different sizes.' =>
+'Vector dot product: the vectors have different sizes.',
+
+'Vector element-by-element multiplication: the vectors have different sizes.' =>
+'Vector element-by-element multiplication: the vectors have different sizes.',
+
+'Vector multiplication: second member is not a quantity or a vector.' =>
+'Vector multiplication: second member is not a quantity or a vector.',
+
+'Vector power: second member is not a quantity.' =>
+'Vector power: second member is not a quantity.',
+
+'Vector substraction: second member is not a vector.' =>
+'Vector substraction: second member is not a vector.',
+
+'Vector substraction: the vectors have different sizes.' =>
+'Vector substraction: the vectors have different sizes.',
+
+'Wrong interval syntax.' =>
+'Wrong interval syntax.',
+
+'Wrong type for function [_1] (should be a set or interval).' =>
+'Wrong type for function [_1] (should be a set or interval).',
+
+'[_1] cannot work in unit mode.' =>
+'[_1] cannot work in unit mode.',
+
+'[_1] should have four parameters.' =>
+'[_1] should have four parameters.',
+
+'[_1] should have two parameters.' =>
+'[_1] should have two parameters.',
+
+'[_1]: are you trying to make me loop forever?' =>
+'[_1]: are you trying to make me loop forever?',
+
+'[_1]: please use another variable name, i is the imaginary number.' =>
+'[_1]: please use another variable name, i is the imaginary number.',
+
 'Select the keywords' => 'Wählen Sie die Schlüsselwörter',
 
 'Additional keywords' => 'Zusätzliche Schlüsselwörter',
