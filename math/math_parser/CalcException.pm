@@ -88,7 +88,7 @@ sub toString {
 ##
 sub getLocalizedMessage {
     my $self = shift;
-    return mt("Calculation error: [_1]", mt($self->msg, @{$self->params}));
+    return mt($self->msg, @{$self->params});
 }
 
 1;

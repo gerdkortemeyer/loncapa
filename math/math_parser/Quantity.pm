@@ -234,7 +234,7 @@ sub compare {
 sub perl_compare {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new("Quantity perl_compare: second member is not a Quantity.");
+        die CalcException->new("Quantity comparison: second member is not a quantity.");
     }
     $self->unitsMatch($q, 'perl_compare');
     return($self->value <=> $q->value);
@@ -263,7 +263,7 @@ sub ne {
 sub lt {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new("Quantity lt: second member is not a Quantity.");
+        die CalcException->new("Quantity smaller than: second member is not a quantity.");
     }
     $self->unitsMatch($q, 'lt');
     if ($self->value < $q->value) {
@@ -281,7 +281,7 @@ sub lt {
 sub le {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new("Quantity le: second member is not a Quantity.");
+        die CalcException->new("Quantity smaller or equal: second member is not a quantity.");
     }
     $self->unitsMatch($q, 'le');
     if ($self->value <= $q->value) {
@@ -299,7 +299,7 @@ sub le {
 sub gt {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new("Quantity gt: second member is not a Quantity.");
+        die CalcException->new("Quantity greater than: second member is not a quantity.");
     }
     $self->unitsMatch($q, 'gt');
     if ($self->value > $q->value) {
@@ -317,7 +317,7 @@ sub gt {
 sub ge {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new("Quantity ge: second member is not a Quantity.");
+        die CalcException->new("Quantity greater or equal: second member is not a quantity.");
     }
     $self->unitsMatch($q, 'ge');
     if ($self->value >= $q->value) {
@@ -345,7 +345,7 @@ sub clone {
 sub qadd {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new("Quantity addition: second member is not a Quantity.");
+        die CalcException->new("Quantity addition: second member is not a quantity.");
     }
     my $v = $self->value + $q->value;
     $self->unitsMatch($q, 'addition');
@@ -360,7 +360,7 @@ sub qadd {
 sub qsub {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new("Quantity substraction: second member is not a Quantity.");
+        die CalcException->new("Quantity substraction: second member is not a quantity.");
     }
     my $v = $self->value - $q->value;
     $self->unitsMatch($q, 'substraction');
@@ -387,7 +387,7 @@ sub qmult {
     my ( $self, $qv ) = @_;
     if (!$qv->isa(Quantity) && !$qv->isa(QVector) && !$qv->isa(QMatrix) &&
             !$qv->isa(QSet) && !$qv->isa(QInterval) && !$qv->isa(QIntervalUnion)) {
-        die CalcException->new("Quantity multiplication: second member is not a quantity/vector/matrix/set/interval.");
+        die CalcException->new("Cannot multiply with something that is not a quantity, vector, matrix, set, or interval.");
     }
     if ($qv->isa(QVector) || $qv->isa(QMatrix) || $qv->isa(QSet) || $qv->isa(QInterval) || $qv->isa(QIntervalUnion)) {
         return($qv->qmult($self));
@@ -409,10 +409,10 @@ sub qmult {
 sub qdiv {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new("Quantity division: second member is not a quantity.");
+        die CalcException->new("Cannot divide by something that is not a quantity.");
     }
     if ($q->value == 0) {
-        die CalcException->new("Division by 0");
+        die CalcException->new("Division by zero.");
     }
     my $v = $self->value / $q->value;
     my %units = %{$self->units};
@@ -430,7 +430,7 @@ sub qdiv {
 sub qpow {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new("Quantity power: second member is not a quantity.");
+        die CalcException->new("Cannot raise to the power of something that is not a number.");
     }
     my $v = $self->value ** $q->value;
     $q->noUnits("Power");
@@ -449,7 +449,7 @@ sub qfact {
     my ( $self ) = @_;
     my $v = $self->value;
     if ($v < 0) {
-        die CalcException->new("Factorial of number < 0");
+        die CalcException->new("Factorial of a number smaller than zero.");
     }
     # should check if integer
     my $n = $v;
@@ -506,7 +506,7 @@ sub qln {
     #    die CalcException->new("Ln of number < 0");
     #}
     if ($self->value == 0) {
-        die CalcException->new("log(0)");
+        die CalcException->new("Natural logarithm of zero.");
     }
     return Quantity->new(log($self->value), $self->units);
 }
@@ -523,7 +523,7 @@ sub qlog10 {
     #    die CalcException->new("Log10 of number < 0");
     #}
     if ($self->value == 0) {
-        die CalcException->new("log10(0)");
+        die CalcException->new("Logarithm of zero.");
     }
     return Quantity->new(log10($self->value), $self->units);
 }
@@ -536,7 +536,7 @@ sub qlog10 {
 sub qmod {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new("Quantity modulo: second member is not a quantity.");
+        die CalcException->new("Cannot calculate the modulus with respect to something that is not a quantity.");
     }
     my $v = $self->value % $q->value;
     return Quantity->new($v, $self->units);
@@ -580,7 +580,7 @@ sub qfloor {
 }
 
 ##
-# Sinus
+# Sine
 # @returns {Quantity}
 ##
 sub qsin {
@@ -590,7 +590,7 @@ sub qsin {
 }
 
 ##
-# Cosinus
+# Cosine
 # @returns {Quantity}
 ##
 sub qcos {
@@ -647,7 +647,7 @@ sub qatan {
 sub qatan2 {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new("Quantity atan2: second member is not a quantity.");
+        die CalcException->new("Cannot calculate atan2 if second argument is not a quantity.");
     }
     $self->noUnits("atan2");
     my $v = atan2($self->value, $q->value);
@@ -766,7 +766,7 @@ sub unitsMatch {
     my %units = %{$self->units};
     foreach my $unit (keys %units) {
         if ($units{$unit} != $q->units->{$unit}) {
-            die CalcException->new("[_1]: units do not match", $fct_name);
+            die CalcException->new("Units [_1] do not match.", $fct_name);
         }
     }
 }
@@ -779,7 +779,7 @@ sub noUnits {
     my %units = %{$self->units};
     foreach my $unit (keys %units) {
         if ($units{$unit} != 0) {
-            die CalcException->new("[_1] of something with units ???", $fct_name);
+            die CalcException->new("Cannot calculate [_1] of something with units.", $fct_name);
         }
     }
 }

@@ -320,7 +320,7 @@ sub buildInterval {
     my $e2 = $p->expression(0);
     if (!defined $p->current_token || !defined $p->current_token->op ||
             ($p->current_token->op->id ne ")" && $p->current_token->op->id ne "]")) {
-        die ParseException->new("Wrong interval syntax", $p->tokens->[$p->token_nr - 1]->from);
+        die ParseException->new("Wrong interval syntax.", $p->tokens->[$p->token_nr - 1]->from);
     }
     my $interval_type;
     if ($p->current_token->op->id eq ")") {

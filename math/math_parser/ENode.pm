@@ -162,7 +162,7 @@ sub calc {
     
     given ($self->type) {
         when (UNKNOWN) {
-            die CalcException->new("Unknown node type: [_1]", $self->value);
+            die CalcException->new("Unknown node type: [_1].", $self->value);
         }
         when (NAME) {
             if ($self->value =~ /^inf$/i) {
@@ -176,7 +176,7 @@ sub calc {
                 my $name = $self->value;
                 my $value = $env->getVariable($name);
                 if (!defined $value) {
-                    die CalcException->new("Variable has undefined value: [_1]", $name);
+                    die CalcException->new("Variable has undefined value: [_1].", $name);
                 }
                 return Quantity->new($value);
             }
@@ -223,7 +223,7 @@ sub calc {
                     my $q1 = $children[0]->calc($env);
                     my $q2 = $children[1]->calc($env);
                     if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
-                        die CalcException->new("Operator < : one of the arguments is not a Quantity");
+                        die CalcException->new("Operator < : one of the arguments is not a quantity.");
                     }
                     return($q1 < $q2);
                 }
@@ -231,7 +231,7 @@ sub calc {
                     my $q1 = $children[0]->calc($env);
                     my $q2 = $children[1]->calc($env);
                     if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
-                        die CalcException->new("Operator <= : one of the arguments is not a Quantity");
+                        die CalcException->new("Operator <= : one of the arguments is not a quantity.");
                     }
                     return($q1 <= $q2);
                 }
@@ -239,7 +239,7 @@ sub calc {
                     my $q1 = $children[0]->calc($env);
                     my $q2 = $children[1]->calc($env);
                     if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
-                        die CalcException->new("Operator > : one of the arguments is not a Quantity");
+                        die CalcException->new("Operator > : one of the arguments is not a quantity.");
                     }
                     return($q1 > $q2);
                 }
@@ -247,12 +247,12 @@ sub calc {
                     my $q1 = $children[0]->calc($env);
                     my $q2 = $children[1]->calc($env);
                     if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
-                        die CalcException->new("Operator >= : one of the arguments is not a Quantity");
+                        die CalcException->new("Operator >= : one of the arguments is not a quantity.");
                     }
                     return($q1 >= $q2);
                 }
                 default {
-                    die CalcException->new("Unknown operator: [_1]", $self->value);
+                    die CalcException->new("Unknown operator: [_1].", $self->value);
                 }
             }
         }
@@ -261,13 +261,13 @@ sub calc {
             my $fname = $children[0]->value;
             
             if (!defined $children[1]) {
-                die CalcException->new("Missing parameter for function [_1]", $fname);
+                die CalcException->new("Missing parameter for function [_1].", $fname);
             }
             given ($fname) {
                 when ("matrix") {    return $self->createVectorOrMatrix($env); }
                 when ("pow") {
                     if (!defined $children[2]) {
-                        die CalcException->new("Missing parameter for function [_1]", $fname);
+                        die CalcException->new("Missing parameter for function [_1].", $fname);
                     }
                     return $children[1]->calc($env)->qpow($children[2]->calc($env));
                 }
@@ -280,7 +280,7 @@ sub calc {
                 when ("factorial") { return $children[1]->calc($env)->qfact(); }
                 when ("mod") {
                     if (!defined $children[2]) {
-                        die CalcException->new("Missing parameter for function [_1]", $fname);
+                        die CalcException->new("Missing parameter for function [_1].", $fname);
                     }
                     return $children[1]->calc($env)->qmod($children[2]->calc($env));
                 }
@@ -295,7 +295,7 @@ sub calc {
                 when ("atan") {      return $children[1]->calc($env)->qatan(); }
                 when ("atan2") {
                     if (!defined $children[2]) {
-                        die CalcException->new("Missing parameter for function [_1]", $fname);
+                        die CalcException->new("Missing parameter for function [_1].", $fname);
                     }
                     return $children[1]->calc($env)->qatan2($children[2]->calc($env));
                 }
@@ -310,17 +310,17 @@ sub calc {
                         die CalcException->new("[_1] cannot work in unit mode.", $fname);
                     }
                     if (scalar(@children) != 5) {
-                        die CalcException->new("[_1]: should have 4 parameters.", $fname);
+                        die CalcException->new("[_1]: should have four parameters.", $fname);
                     }
                     my $var = "".$children[2]->value;
                     if ($var eq "i") {
-                        die CalcException->new("[_1]: please use another variable name, i is the imaginary number", $fname);
+                        die CalcException->new("[_1]: please use another variable name, i is the imaginary number.", $fname);
                     }
                     my $initial = $env->getVariable($var);
                     my $var_value_1 = $children[3]->value;
                     my $var_value_2 = $children[4]->value;
                     if ($var_value_1 > $var_value_2) {
-                        die CalcException->new("[_1]: are you trying to make me loop forever ???", $fname);
+                        die CalcException->new("[_1]: are you trying to make me loop forever?", $fname);
                     }
                     my $sum = Quantity->new($fname eq "sum" ? 0 : 1);
                     for (my $var_value=$var_value_1; $var_value <= $var_value_2; $var_value++) {
@@ -336,7 +336,7 @@ sub calc {
                 }
                 when ("binomial") {
                     if (scalar(@children) != 3) {
-                        die CalcException->new("[_1]: should have 2 parameters.", $fname);
+                        die CalcException->new("[_1]: should have two parameters.", $fname);
                     }
                     my $n = $children[1]->calc($env);
                     my $p = $children[2]->calc($env);
@@ -344,12 +344,12 @@ sub calc {
                 }
                 when (["union","intersection"]) {
                     if (!defined $children[2]) {
-                        die CalcException->new("Missing parameter for function [_1]", $fname);
+                        die CalcException->new("Missing parameter for function [_1].", $fname);
                     }
                     my $p1 = $children[1]->calc($env);
                     my $p2 = $children[2]->calc($env);
                     if (!$p1->isa(QSet) && !$p1->isa(QInterval) && !$p1->isa(QIntervalUnion)) {
-                        die CalcException->new("Wrong type for function [_1] (should be a set or interval)", $fname);
+                        die CalcException->new("Wrong type for function [_1] (should be a set or interval).", $fname);
                     }
                     if ($fname eq "union") {
                         return $p1->union($p2);
@@ -357,7 +357,7 @@ sub calc {
                         return $p1->intersection($p2);
                     }
                 }
-                default {            die CalcException->new("Unknown function: [_1]",$fname); }
+                default {            die CalcException->new("Unknown function: [_1].",$fname); }
             }
         }
         when (VECTOR) {
@@ -366,7 +366,7 @@ sub calc {
         when (INTERVAL) {
             my @children = @{$self->children};
             if (scalar(@children) != 2) {
-                die CalcException->new("Interval should have 2 parameters.");
+                die CalcException->new("Interval should have two parameters.");
             }
             my $qmin = $children[0]->calc($env);
             my $qmax = $children[1]->calc($env);
@@ -387,7 +387,7 @@ sub calc {
             return QSet->new(\@t);
         }
         when (SUBSCRIPT) {
-            die CalcException->new("Subscript cannot be evaluated: [_1]", $self->value);
+            die CalcException->new("Subscript cannot be evaluated: [_1].", $self->value);
         }
     }
 }
@@ -401,7 +401,7 @@ sub toMaxima {
     
     given ($self->type) {
         when (UNKNOWN) {
-            die CalcException->new("Unknown node type: [_1]", $self->value);
+            die CalcException->new("Unknown node type: [_1].", $self->value);
         }
         when (NAME) {
             # constants have already been transformed, so this should be a variable (no % necessary)
@@ -514,7 +514,7 @@ sub toMaxima {
             return($s);
         }
         when (INTERVAL) {
-            die CalcException->new("Maxima syntax: intervals are not implemented");
+            die CalcException->new("Maxima syntax: intervals are not implemented.");
             # see http://ieeexplore.ieee.org/xpls/icp.jsp?arnumber=5959544
             # "New Package in Maxima for Single-Valued Interval Computation on Real Numbers"
         }
@@ -546,7 +546,7 @@ sub toTeX {
     
     given ($self->type) {
         when (UNKNOWN) {
-            die CalcException->new("Unknown node type: [_1]", $self->value);
+            die CalcException->new("Unknown node type: [_1].", $self->value);
         }
         when (NAME) {
             my $name = $self->value;
@@ -817,7 +817,7 @@ sub toTeX {
         when (INTERVAL) {
             my @children = @{$self->children};
             if (scalar(@children) != 2) {
-                die CalcException->new("Interval should have 2 parameters.");
+                die CalcException->new("Interval should have two parameters.");
             }
             my ($qminopen, $qmaxopen);
             given ($self->interval_type) {

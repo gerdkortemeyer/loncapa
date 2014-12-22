@@ -51,7 +51,7 @@ sub new {
     # sanity checks
     foreach my $inter (@{$self->intervals}) {
         if (!$inter->isa(QInterval)) {
-            die CalcException->new("QIntervalUnion constructor: a member is not an interval.");
+            die CalcException->new("All components of the union must be intervals.");
         }
     }
     if (scalar(@{$self->intervals}) > 0) {
@@ -60,7 +60,7 @@ sub new {
             my $inter = $self->intervals->[$i];
             foreach my $unit (keys %units) {
                 if ($units{$unit} != $inter->qmin->units->{$unit}) {
-                    die CalcException->new("QIntervalUnion constructor: different units are used in the intervals.");
+                    die CalcException->new("Different units are used in the intervals.");
                 }
             }
         }
@@ -232,7 +232,7 @@ sub reduce {
 sub contains {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new("Interval contains: second member is not a quantity.");
+        die CalcException->new("Second member of an interval is not a quantity.");
     }
     foreach my $inter (@{$self->intervals}) {
         if ($inter->contains($q)) {
@@ -250,7 +250,7 @@ sub contains {
 sub qmult {
     my ( $self, $q ) = @_;
     if (!$q->isa(Quantity)) {
-        die CalcException->new("QIntervalUnion multiplication: second member is not a quantity.");
+        die CalcException->new("Intervals can only be multiplied by quantities.");
     }
     my @t = ();
     foreach my $inter (@{$self->intervals}) {
@@ -267,7 +267,7 @@ sub qmult {
 sub union {
     my ( $self, $qiu ) = @_;
     if (!$qiu->isa(QIntervalUnion) && !$qiu->isa(QInterval)) {
-        die CalcException->new("QIntervalUnion union: second member is not an interval union or an interval.");
+        die CalcException->new("Cannot form a union if second  member is not an interval union or an interval.");
     }
     my @t = ();
     foreach my $inter (@{$self->intervals}) {
@@ -295,7 +295,7 @@ sub union {
 sub intersection {
     my ( $self, $qiu ) = @_;
     if (!$qiu->isa(QIntervalUnion) && !$qiu->isa(QInterval)) {
-        die CalcException->new("QIntervalUnion intersection: second member is not an interval union or an interval.");
+        die CalcException->new("Cannot form an intersection if second member is not an interval union or an interval.");
     }
     my @t = ();
     my $intervals2;

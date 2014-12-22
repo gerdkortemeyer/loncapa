@@ -93,8 +93,7 @@ sub toString {
 ##
 sub getLocalizedMessage {
     my $self = shift;
-    my $locmsg = mt($self->msg, @{$self->params});
-    return mt("Parsing error: [_1] at [_2] - [_3]", $locmsg, $self->from, $self->to);
+    return mt($self->msg, @{$self->params});
 }
 
 1;
