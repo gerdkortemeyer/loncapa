@@ -203,7 +203,8 @@ sub reduce {
             }
             $intervals[$i] = $inter1->union($inter2);
             splice(@intervals, $j, 1);
-            $j--;
+            $i--;
+            last;
         }
     }
     
