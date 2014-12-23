@@ -467,7 +467,7 @@ sub toMaxima {
                     return("(".$children[0]->toMaxima().">=".$children[1]->toMaxima().")");
                 }
                 default {
-                    die CalcException->new("Unknown operator: [_1]", $self->value);
+                    die CalcException->new("Unknown operator: [_1].", $self->value);
                 }
             }
         }
@@ -714,7 +714,7 @@ sub toTeX {
                     return($c0->toTeX()." \\geq ".$c1->toTeX());
                 }
                 default {
-                    die CalcException->new("Unknown operator: [_1]", $self->value);
+                    die CalcException->new("Unknown operator: [_1].", $self->value);
                 }
             }
         }

@@ -232,11 +232,19 @@ use utf8;
 "Zhuang" => "Zhuang",
 "Zulu" => "Zulu",
 
+'Incorrect.' => 'Unkorrekt.',
+
+'Correct.' => 'Korrekt',
+
+'Total tries: [_1]' => 'Gesamtversuche: [_1]',
+
+'Counted tries: [_1]' => 'Gezählte Versuche: [_1]',
+
 'All components of the union must be intervals.' =>
-'All components of the union must be intervals.',
+'Alle Komponenten einer Vereinigungsmenge müssen Intervalle sein.',
 
 'Cannot calculate [_1] of something with units.' =>
-'Cannot calculate [_1] of something with units.',
+'Kann [_1] nicht mit einer einheitenbelasteten Größe berechnen.',
 
 'Cannot calculate atan2 if second argument is not a quantity.' =>
 'Cannot calculate atan2 if second argument is not a quantity.',
@@ -260,22 +268,22 @@ use utf8;
 'Cannot raise to the power of something that is not a number.',
 
 'Different units are used in the intervals.' =>
-'Different units are used in the intervals.',
+'Verschiedene Einheiten in einem Interval genutzt.',
 
 'Division by zero.' =>
-'Division by zero.',
+'Teilen durch Null.',
 
-"Expected '[_1]'" =>
-"Expected '[_1]'",
+"Expected '[_1]'." =>
+"Erwartete '[_1]'.",
 
-"Expected '[_1]' at the end" =>
-"Expected '[_1]' at the end",
+"Expected '[_1]' at the end." =>
+"Erwartete '[_1]' am Ende.",
 
-'Expected something at the end' =>
-'Expected something at the end',
+'Expected something at the end.' =>
+'Erwartete etwas am Ende.',
 
-'Expected the end' =>
-'Expected the end',
+'Expected the end.' =>
+'Erwartete das Ende.',
 
 'Factorial of a number smaller than zero.' =>
 'Factorial of a number smaller than zero.',
@@ -292,7 +300,7 @@ use utf8;
 'Interval creation: different units are used for the two endpoints.' =>
 'Interval creation: different units are used for the two endpoints.',
 
-'Interval creation: qmin > qmax' =>
+'Interval creation: lower limit greater than upper limit.' =>
 'Interval creation: qmin > qmax',
 
 'Interval intersection: different units are used in the two intervals.' =>
@@ -316,14 +324,8 @@ use utf8;
 'Intervals can only be multiplied by quantities.' =>
 'Intervals can only be multiplied by quantities.',
 
-'Ln of number < 0' =>
-'Ln of number < 0',
-
-'Log10 of number < 0' =>
-'Log10 of number < 0',
-
 'Logarithm of zero.' =>
-'Logarithm of zero.',
+'Logarithmus von Null.',
 
 'Matrix addition: second member is not a matrix.' =>
 'Matrix addition: second member is not a matrix.',
@@ -356,43 +358,43 @@ use utf8;
 'Name expected before a square bracket.',
 
 'Natural logarithm of zero.' =>
-'Natural logarithm of zero.',
+'Natürlicher Logarithmus von Null.',
 
-'No token found' =>
-'No token found',
+'No information found.' =>
+'Keine Information gefunden.',
 
 'Operator < : one of the arguments is not a quantity.' =>
-'Operator < : one of the arguments is not a quantity.',
+'Operator < : eines der Argumente ist keine Größe.',
 
 'Operator <= : one of the arguments is not a quantity.' =>
-'Operator <= : one of the arguments is not a quantity.',
+'Operator <= : eines der Argumente ist keine Größe.',
 
 'Operator > : one of the arguments is not a quantity.' =>
-'Operator > : one of the arguments is not a quantity.',
+'Operator > : eines der Argumente ist keine Größe.',
 
 'Operator >= : one of the arguments is not a quantity.' =>
-'Operator >= : one of the arguments is not a quantity.',
+'Operator >= : eines der Argumente ist keine Größe.',
 
 'Quantity addition: second member is not a quantity.' =>
-'Quantity addition: second member is not a quantity.',
+'Größenaddition: das zweite Argument ist keine Größe.',
 
 'Quantity comparison: second member is not a quantity.' =>
-'Quantity comparison: second member is not a quantity.',
+'Größenvergleich: das zweite Argument ist keine Größe.',
 
 'Quantity greater or equal: second member is not a quantity.' =>
-'Quantity greater or equal: second member is not a quantity.',
+'Größen größer oder gleich: das zweite Argument ist keine Größe.',
 
 'Quantity greater than: second member is not a quantity.' =>
-'Quantity greater than: second member is not a quantity.',
+'Größen größer als: das zweite Argument ist keine Größe.',
 
 'Quantity smaller or equal: second member is not a quantity.' =>
-'Quantity smaller or equal: second member is not a quantity.',
+'Größen kleiner oder gleich: das zweite Argument ist keine Größe.',
 
 'Quantity smaller than: second member is not a quantity.' =>
-'Quantity smaller than: second member is not a quantity.',
+'Größen kleiner als: das zweite Argument ist keine Größe.',
 
 'Quantity substraction: second member is not a quantity.' =>
-'Quantity substraction: second member is not a quantity.',
+'Größensubtraktion: das zweite Argument ist keine Größe.',
 
 'Second member of an interval is not a quantity.' =>
 'Second member of an interval is not a quantity.',
@@ -413,34 +415,31 @@ use utf8;
 'Syntax error in number exponent.',
 
 'Syntax error in number.' =>
-'Syntax error in number.',
+'Syntaktischer Fehler in Zahl.',
 
-"Unexpected operator '[_1]'" =>
-"Unexpected operator '[_1]'",
+"Unexpected operator '[_1]'." =>
+"Unerwarteter Operator '[_1]'",
 
 'Unit not found: [_1]' =>
-'Unit not found: [_1]',
+'Einheit nicht gefunden: [_1]',
 
 'Units [_1] do not match.' =>
-'Units [_1] do not match.',
+'Einheiten [_1] passen nicht zueinander.',
 
 'Unknown function: [_1].' =>
-'Unknown function: [_1].',
+'Unbekannte Funktion: [_1].',
 
 'Unknown node type: [_1].' =>
-'Unknown node type: [_1].',
-
-'Unknown operator: [_1]' =>
-'Unknown operator: [_1]',
+'Unbekannter Knotentyp: [_1].',
 
 'Unknown operator: [_1].' =>
-'Unknown operator: [_1].',
+'Unbekannter operator: [_1].',
 
 'Unrecognized operator.' =>
-'Unrecognized operator.',
+'Unerkannter Operator.',
 
 'Variable has undefined value: [_1].' =>
-'Variable has undefined value: [_1].',
+'Variable hat nichtdefinierten Wert: [_1].',
 
 'Vector addition: second member is not a vector.' =>
 'Vector addition: second member is not a vector.',

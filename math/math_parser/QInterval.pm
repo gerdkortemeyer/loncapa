@@ -60,7 +60,7 @@ sub new {
         }
     }
     if ($self->qmin > $self->qmax) {
-        die CalcException->new("Interval creation: qmin > qmax");
+        die CalcException->new("Interval creation: lower limit greater than upper limit.");
     }
     return $self;
 }
