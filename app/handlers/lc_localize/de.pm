@@ -247,25 +247,25 @@ use utf8;
 'Kann [_1] nicht mit einer einheitenbelasteten Größe berechnen.',
 
 'Cannot calculate atan2 if second argument is not a quantity.' =>
-'Cannot calculate atan2 if second argument is not a quantity.',
+'Kann den atan2 nicht berechnen wenn das zweite Argument keine Größe ist.',
 
 'Cannot calculate the modulus with respect to something that is not a quantity.' =>
-'Cannot calculate the modulus with respect to something that is not a quantity.',
+'Kann den Modulo nur bezüglich einer Größe berechnen.',
 
 'Cannot divide by something that is not a quantity.' =>
-'Cannot divide by something that is not a quantity.',
+'Kann nicht durch etwas teilen das keine Größe ist.',
 
 'Cannot form a union if second  member is not an interval union or an interval.' =>
-'Cannot form a union if second  member is not an interval union or an interval.',
+'Kann keine Vereinigung bilden wenn die zweite Kompenente weder ein Interval noch eine Intervalvereinigung ist.',
 
 'Cannot form an intersection if second member is not an interval union or an interval.' =>
-'Cannot form an intersection if second member is not an interval union or an interval.',
+'Kann keinen Schnitt bilden wenn die zweite Kompenente weder ein Interval noch eine Intervalvereinigung ist..',
 
 'Cannot multiply with something that is not a quantity, vector, matrix, set, or interval.' =>
-'Cannot multiply with something that is not a quantity, vector, matrix, set, or interval.',
+'Kann nicht multiplizieren mit etwas was weder Größe, Vektor Matrix, Menge noch Interval ist.',
 
 'Cannot raise to the power of something that is not a number.' =>
-'Cannot raise to the power of something that is not a number.',
+'Kann nicht mit etwas potenzieren das keine Nummer ist.',
 
 'Different units are used in the intervals.' =>
 'Verschiedene Einheiten in einem Interval genutzt.',
@@ -286,76 +286,76 @@ use utf8;
 'Erwartete das Ende.',
 
 'Factorial of a number smaller than zero.' =>
-'Factorial of a number smaller than zero.',
+'Fakultät einer negativen Zahl.',
 
 'Function name expected before a parenthesis.' =>
-'Function name expected before a parenthesis.',
+'Vor den Klammern wurde ein Funktionsname erwartet.',
 
 'Inconsistent number of elements in a matrix.' =>
-'Inconsistent number of elements in a matrix.',
+'Inkonsistente Anzahl von Elementen in einer Matrix.',
 
 'Interval contains: second member is not a quantity.' =>
-'Interval contains: second member is not a quantity.',
+'Intervalerzeugung: die zweite Grenze ist keine Größe.',
 
 'Interval creation: different units are used for the two endpoints.' =>
-'Interval creation: different units are used for the two endpoints.',
+'Intervalerzeugung: verschiedene Einheiten in den beiden Grenzen.',
 
 'Interval creation: lower limit greater than upper limit.' =>
-'Interval creation: qmin > qmax',
+'Intervalerzeugung: die untere Grenze ist größer als die obere.',
 
 'Interval intersection: different units are used in the two intervals.' =>
-'Interval intersection: different units are used in the two intervals.',
+'Intervalschnitt: verschiedene Einheiten in den beiden Intervallen.',
 
 'Interval intersection: second member is not an interval or an interval union.' =>
-'Interval intersection: second member is not an interval or an interval union.',
+'Intervalschnitt: die zweite Komponente ist weder ein Interval noch eine Intervalvereinigung.',
 
 'Interval multiplication: second member is not a quantity.' =>
-'Interval multiplication: second member is not a quantity.',
+'Intervalmultiplikation: die zweite Komponente ist keine Größe.',
 
 'Interval should have two parameters.' =>
-'Interval should have two parameters.',
+'Intervalle benötigen zwei Parameter.',
 
 'Interval union: different units are used in the two intervals.' =>
-'Interval union: different units are used in the two intervals.',
+'Intervalvereinigung: verschiedene Einheiten in den beiden Intervallen.',
 
 'Interval union: second member is not an interval or an interval union.' =>
-'Interval union: second member is not an interval or an interval union.',
+'Intervalvereinigung: die zweite Komponente ist weder ein Interval noch eine Intervalvereinigung.',
 
 'Intervals can only be multiplied by quantities.' =>
-'Intervals can only be multiplied by quantities.',
+'Intervalle können nur mit Größen multipliziert werden.',
 
 'Logarithm of zero.' =>
 'Logarithmus von Null.',
 
 'Matrix addition: second member is not a matrix.' =>
-'Matrix addition: second member is not a matrix.',
+'Matrizenaddition: die zweite Komponente ist keine Matrix.',
 
 'Matrix addition: the matrices have different sizes.' =>
-'Matrix addition: the matrices have different sizes.',
+'Matrizenaddition: die Matrizengrößen stimmen nicht überein.',
 
 'Matrix element-by-element multiplication: second member is not a quantity, vector or matrix.' =>
-'Matrix element-by-element multiplication: second member is not a quantity, vector or matrix.',
+'Matrizen kompentenweise Multiplikation: die zweite Kompenente ist weder Größe, Vektor noch Matrix.',
 
 'Matrix product: second member is not a vector or a matrix.' =>
-'Matrix product: second member is not a vector or a matrix.',
+'Matrizenprodukt: die zweite Kompenente ist weder ein Vektor noch eine Matrix.',
 
 'Matrix product: the matrices sizes do not match.' =>
-'Matrix product: the matrices sizes do not match.',
+'Matrizenprodukt: die Matrizengrößen stimmen nicht überein.',
 
 'Matrix substraction: second member is not a matrix.' =>
-'Matrix substraction: second member is not a matrix.',
+'Matrizensubstraktion: die zweite Kompenente ist keine Matrix.',
 
 'Matrix substraction: the matrices have different sizes.' =>
-'Matrix substraction: the matrices have different sizes.',
+'Matrizensubstraktion: die Matrizen haben verschiedene Größen.',
 
 'Maxima syntax: intervals are not implemented.' =>
-'Maxima syntax: intervals are not implemented.',
+'Maxima-Syntax: Intervalle sind nicht implementiert.',
 
 'Missing parameter for function [_1].' =>
-'Missing parameter for function [_1].',
+'Fehlendes Argument für die Funktion [_1].',
 
 'Name expected before a square bracket.' =>
-'Name expected before a square bracket.',
+'Name vor der eckigen Klammer erwartet.',
 
 'Natural logarithm of zero.' =>
 'Natürlicher Logarithmus von Null.',
@@ -397,22 +397,22 @@ use utf8;
 'Größensubtraktion: das zweite Argument ist keine Größe.',
 
 'Second member of an interval is not a quantity.' =>
-'Second member of an interval is not a quantity.',
+'Die zweite Grenze eines Intervals ist keine Größe.',
 
 'Set intersection: second member is not a set.' =>
-'Set intersection: second member is not a set.',
+'Schnittmenge: das zweite Argument ist keine Menge.',
 
 'Set multiplication: second member is not a quantity.' =>
-'Set multiplication: second member is not a quantity.',
+'Multiplikation mit einer Menge: das zweite Argument ist keine Größe.',
 
 'Set union: second member is not a set.' =>
-'Set union: second member is not a set.',
+'Vereinigungsmenge: das zweite Argument ist keine Menge.',
 
 'Subscript cannot be evaluated: [_1].' =>
-'Subscript cannot be evaluated: [_1].',
+'Subskript kann nicht ausgewertet werden: [_1].',
 
 'Syntax error in number exponent.' =>
-'Syntax error in number exponent.',
+'Syntaktischer Fehler im Exponenten einer Zahl.',
 
 'Syntax error in number.' =>
 'Syntaktischer Fehler in Zahl.',
@@ -442,52 +442,52 @@ use utf8;
 'Variable hat nichtdefinierten Wert: [_1].',
 
 'Vector addition: second member is not a vector.' =>
-'Vector addition: second member is not a vector.',
+'Vektoraddition: das zweite Argument ist kein Vektor.',
 
 'Vector addition: the vectors have different sizes.' =>
-'Vector addition: the vectors have different sizes.',
+'Vektoraddition: die Vektoren haben verschiedenen Komponentenzahlen.',
 
-'Vector dot product: second member is not a vector.' =>
-'Vector dot product: second member is not a vector.',
+'Vektor dot product: second member is not a vector.' =>
+'Vektorskalarprodukt: das zweite Argument ist kein Vektor.',
 
 'Vector dot product: the vectors have different sizes.' =>
-'Vector dot product: the vectors have different sizes.',
+'Vektorskalarprodukt: die Vektoren haben verschiedene Komponentenzahlen.',
 
 'Vector element-by-element multiplication: the vectors have different sizes.' =>
-'Vector element-by-element multiplication: the vectors have different sizes.',
+'Kompententweise Vektormultiplikation: die Vektoren haben verschiedene Komponentenzahlen.',
 
 'Vector multiplication: second member is not a quantity or a vector.' =>
-'Vector multiplication: second member is not a quantity or a vector.',
+'Vektormultiplikation: das zweite Argument ist weder eine Zahl noch ein Vektor.',
 
 'Vector power: second member is not a quantity.' =>
-'Vector power: second member is not a quantity.',
+'Vektorexponentation: das zweite Argument ist keine Größe.',
 
 'Vector substraction: second member is not a vector.' =>
-'Vector substraction: second member is not a vector.',
+'Vektorsubstraktion: das zweite Argument ist kein Vektor.',
 
 'Vector substraction: the vectors have different sizes.' =>
-'Vector substraction: the vectors have different sizes.',
+'Vektorsubstraktion: die Vektoren haben verschiedene Komponentenzahlen.',
 
 'Wrong interval syntax.' =>
-'Wrong interval syntax.',
+'Falsche Intervalsyntax.',
 
 'Wrong type for function [_1] (should be a set or interval).' =>
-'Wrong type for function [_1] (should be a set or interval).',
+'Falscher Typ für Funktion [_1] (sollte Menge oder Interval sein).',
 
 '[_1] cannot work in unit mode.' =>
-'[_1] cannot work in unit mode.',
+'[_1] funktioniert nicht in Einheitenmodus.',
 
 '[_1] should have four parameters.' =>
-'[_1] should have four parameters.',
+'[_1] sollte vier Parameter haben.',
 
 '[_1] should have two parameters.' =>
-'[_1] should have two parameters.',
+'[_1] sollte zwei Parameter haben.',
 
 '[_1]: are you trying to make me loop forever?' =>
-'[_1]: are you trying to make me loop forever?',
+'[_1]: soll das eine Endlosschleife sein?',
 
 '[_1]: please use another variable name, i is the imaginary number.' =>
-'[_1]: please use another variable name, i is the imaginary number.',
+'[_1]: bitte benutzen Sie einen anderen Variablennamen, i ist die imaginäre Einheit.',
 
 'Select the keywords' => 'Wählen Sie die Schlüsselwörter',
 
