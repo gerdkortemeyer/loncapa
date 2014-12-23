@@ -32,7 +32,8 @@ use aliased 'Apache::math::math_parser::QSet';
 
 use overload
     '""' => \&toString,
-    '+' => \&union;
+    '+' => \&union,
+    '*' => \&qmult;
 
 ##
 # Constructor
