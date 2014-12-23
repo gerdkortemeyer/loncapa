@@ -2330,16 +2330,61 @@ sub fix_paragraphs_inside {
   my @fix_p_if_br_or_p = (@responses,'foil','item','text','label','hintgroup','hintpart','hint','web','windowlink','div','li','dd','td','th','blockquote');
   if ((string_in_array(\@blocks_with_p, $node->nodeName) && paragraph_needed($node)) ||
       (string_in_array(\@fix_p_if_br_or_p, $node->nodeName) && paragraph_inside($node))) {
-    # if non-empty, add a paragraph containing everything inside, paragraphs inside paragraphs will be fixed afterwards
+    # if non-empty, add paragraphs where needed between all br and remove br
+    # (it would be easier to just put everything in a p and fix it afterwards, but there are performance issues
+    #  when a paragraph has many blocks directly inside)
     my $doc = $node->ownerDocument;
-    my $p = $doc->createElement('p');
+    my $p = undef;
+    my @new_children = ();
     my $next;
     for (my $child=$node->firstChild; defined $child; $child=$next) {
       $next = $child->nextSibling;
       $node->removeChild($child);
-      $p->appendChild($child);
+      if ($child->nodeType == XML_ELEMENT_NODE && $child->nodeName eq 'br') {
+        if (defined $p) {
+          push(@new_children, $p);
+        } else {
+          push(@new_children, $doc->createElement('p'));
+        }
+        $p = undef;
+      } elsif ($child->nodeType == XML_ELEMENT_NODE && string_in_array(\@inline_like_block, $child->nodeName)) {
+        # inline_like_block: use the paragraph if there is one, otherwise do not create one
+        if (defined $p) {
+          $p->appendChild($child);
+        } else {
+          push(@new_children, $child);
+        }
+      } elsif ($child->nodeType == XML_ELEMENT_NODE && string_in_array($all_block, $child->nodeName)) {
+        # these children are blocks and should not be in a paragraph
+        if (defined $p) {
+          push(@new_children, $p);
+          $p = undef;
+        }
+        push(@new_children, $child);
+      } elsif (($child->nodeType == XML_TEXT_NODE && $child->nodeValue !~ /^\s*$/) ||
+            $child->nodeType == XML_ELEMENT_NODE || $child->nodeType == XML_CDATA_SECTION_NODE ||
+            $child->nodeType == XML_ENTITY_NODE || $child->nodeType == XML_ENTITY_REF_NODE) {
+        # these children require a paragraph
+        if (!defined $p) {
+          $p = $doc->createElement('p');
+        }
+        $p->appendChild($child);
+      } else {
+        # these children do not require a paragraph (blank text, XML comments, PI)
+        # -> do not move them in a new paragraph
+        if (defined $p) {
+          push(@new_children, $p);
+          $p = undef;
+        }
+        push(@new_children, $child);
+      }
     }
-    $node->appendChild($p);
+    if (defined $p) {
+      push(@new_children, $p);
+    }
+    foreach my $child (@new_children) {
+      $node->appendChild($child);
+    }
   }
   # now fix the paragraphs everywhere, so that all inline nodes are inside a paragraph, and block nodes are outside
   my $next;
