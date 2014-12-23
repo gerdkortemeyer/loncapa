@@ -186,68 +186,97 @@ sub calc {
         }
         when (OPERATOR) {
             my @children = @{$self->children};
+            my ($q1, $q2);
+            if (defined $children[0]) {
+                $q1 = $children[0]->calc($env);
+            }
+            if (defined $children[1]) {
+                $q2 = $children[1]->calc($env);
+            }
             given ($self->value) {
                 when ("+") {
-                    return($children[0]->calc($env) + $children[1]->calc($env));
+                    if (!overload::Method($q1, '+')) {
+                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                    }
+                    return($q1 + $q2);
                 }
                 when ("-") {
-                    if (!defined $children[1]) {
-                        return($children[0]->calc($env)->qneg());
+                    if (!defined $q2) {
+                        if (!$q1->can('qneg')) {
+                            die CalcException->new("Negation is not implemented for this type");
+                        }
+                        return($q1->qneg());
                     } else {
-                        return($children[0]->calc($env) - $children[1]->calc($env));
+                        if (!overload::Method($q1, '-')) {
+                            die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                        }
+                        return($q1 - $q2);
                     }
                 }
                 when ("*") {
-                    return($children[0]->calc($env) * $children[1]->calc($env));
+                    if (!overload::Method($q1, '*')) {
+                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                    }
+                    return($q1 * $q2);
                 }
                 when ("/") {
-                    return($children[0]->calc($env) / $children[1]->calc($env));
+                    if (!overload::Method($q1, '/')) {
+                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                    }
+                    return($q1 / $q2);
                 }
                 when ("^") {
-                    return($children[0]->calc($env) ^ $children[1]->calc($env));
+                    if (!overload::Method($q1, '^')) {
+                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                    }
+                    return($q1 ^ $q2);
                 }
                 when ("!") {
-                    return $children[0]->calc($env)->qfact();
+                    if (!$q1->can('qfact')) {
+                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                    }
+                    return $q1->qfact();
                 }
                 when ("%") {
-                    return(($children[0]->calc($env) / Quantity->new(100)) * $children[1]->calc($env));
+                    if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
+                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                    }
+                    return(($q1 / Quantity->new(100)) * $q2);
                 }
                 when (".") {
                     # scalar product for vectors, multiplication for matrices
-                    return($children[0]->calc($env)->qdot($children[1]->calc($env)));
+                    if (!$q1->can('qdot')) {
+                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                    }
+                    return($q1->qdot($children[1]->calc($env)));
                 }
                 when ("`") {
-                    return($children[0]->calc($env) * $children[1]->calc($env));
+                    if (!overload::Method($q1, '*')) {
+                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                    }
+                    return($q1 * $q2);
                 }
                 when ("<") {
-                    my $q1 = $children[0]->calc($env);
-                    my $q2 = $children[1]->calc($env);
-                    if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
-                        die CalcException->new("Operator < : one of the arguments is not a quantity.");
+                    if (!overload::Method($q1, '<')) {
+                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
                     }
                     return($q1 < $q2);
                 }
                 when ("<=") {
-                    my $q1 = $children[0]->calc($env);
-                    my $q2 = $children[1]->calc($env);
-                    if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
-                        die CalcException->new("Operator <= : one of the arguments is not a quantity.");
+                    if (!overload::Method($q1, '<=')) {
+                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
                     }
                     return($q1 <= $q2);
                 }
                 when (">") {
-                    my $q1 = $children[0]->calc($env);
-                    my $q2 = $children[1]->calc($env);
-                    if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
-                        die CalcException->new("Operator > : one of the arguments is not a quantity.");
+                    if (!overload::Method($q1, '>')) {
+                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
                     }
                     return($q1 > $q2);
                 }
                 when (">=") {
-                    my $q1 = $children[0]->calc($env);
-                    my $q2 = $children[1]->calc($env);
-                    if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
-                        die CalcException->new("Operator >= : one of the arguments is not a quantity.");
+                    if (!overload::Method($q1, '>=')) {
+                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
                     }
                     return($q1 >= $q2);
                 }
@@ -263,48 +292,51 @@ sub calc {
             if (!defined $children[1]) {
                 die CalcException->new("Missing parameter for function [_1].", $fname);
             }
+            my ($q1, $q2);
+            if ($fname ~~ ['pow', 'sqrt', 'abs', 'exp', 'ln', 'log', 'log10', 'factorial',
+                    'mod', 'sgn', 'ceil', 'floor', 'sin', 'cos', 'tan', 'asin', 'acos', 'atan',
+                    'atan2', 'sinh', 'cosh', 'tanh', 'asinh', 'acosh', 'atanh']) {
+                $q1 = $children[1]->calc($env);
+                if (!$q1->isa(Quantity)) {
+                    die CalcException->new("The [_1] function is not implemented for this type", $fname);
+                }
+            }
+            if ($fname ~~ ['pow', 'mod', 'atan2']) {
+                if (!defined $children[2]) {
+                    die CalcException->new("Missing parameter for function [_1].", $fname);
+                }
+                $q2 = $children[2]->calc($env);
+                if (!$q2->isa(Quantity)) {
+                    die CalcException->new("The [_1] function is not implemented for this type", $fname);
+                }
+            }
             given ($fname) {
                 when ("matrix") {    return $self->createVectorOrMatrix($env); }
-                when ("pow") {
-                    if (!defined $children[2]) {
-                        die CalcException->new("Missing parameter for function [_1].", $fname);
-                    }
-                    return $children[1]->calc($env)->qpow($children[2]->calc($env));
-                }
-                when ("sqrt") {      return $children[1]->calc($env)->qsqrt(); }
-                when ("abs") {       return $children[1]->calc($env)->qabs(); }
-                when ("exp") {       return $children[1]->calc($env)->qexp(); }
-                when ("ln") {        return $children[1]->calc($env)->qln(); }
-                when ("log") {       return $children[1]->calc($env)->qln(); }
-                when ("log10") {     return $children[1]->calc($env)->qlog10(); }
-                when ("factorial") { return $children[1]->calc($env)->qfact(); }
-                when ("mod") {
-                    if (!defined $children[2]) {
-                        die CalcException->new("Missing parameter for function [_1].", $fname);
-                    }
-                    return $children[1]->calc($env)->qmod($children[2]->calc($env));
-                }
-                when ("sgn") {       return $children[1]->calc($env)->qsgn(); }
-                when ("ceil") {      return $children[1]->calc($env)->qceil(); }
-                when ("floor") {     return $children[1]->calc($env)->qfloor(); }
-                when ("sin") {       return $children[1]->calc($env)->qsin(); }
-                when ("cos") {       return $children[1]->calc($env)->qcos(); }
-                when ("tan") {       return $children[1]->calc($env)->qtan(); }
-                when ("asin") {      return $children[1]->calc($env)->qasin(); }
-                when ("acos") {      return $children[1]->calc($env)->qacos(); }
-                when ("atan") {      return $children[1]->calc($env)->qatan(); }
-                when ("atan2") {
-                    if (!defined $children[2]) {
-                        die CalcException->new("Missing parameter for function [_1].", $fname);
-                    }
-                    return $children[1]->calc($env)->qatan2($children[2]->calc($env));
-                }
-                when ("sinh") {      return $children[1]->calc($env)->qsinh(); }
-                when ("cosh") {      return $children[1]->calc($env)->qcosh(); }
-                when ("tanh") {      return $children[1]->calc($env)->qtanh(); }
-                when ("asinh") {     return $children[1]->calc($env)->qasinh(); }
-                when ("acosh") {     return $children[1]->calc($env)->qacosh(); }
-                when ("atanh") {     return $children[1]->calc($env)->qatanh(); }
+                when ("pow") {       return $q1->qpow($q2); }
+                when ("sqrt") {      return $q1->qsqrt(); }
+                when ("abs") {       return $q1->qabs(); }
+                when ("exp") {       return $q1->qexp(); }
+                when ("ln") {        return $q1->qln(); }
+                when ("log") {       return $q1->qln(); }
+                when ("log10") {     return $q1->qlog10(); }
+                when ("factorial") { return $q1->qfact(); }
+                when ("mod") {       return $q1->qmod($q2); }
+                when ("sgn") {       return $q1->qsgn(); }
+                when ("ceil") {      return $q1->qceil(); }
+                when ("floor") {     return $q1->qfloor(); }
+                when ("sin") {       return $q1->qsin(); }
+                when ("cos") {       return $q1->qcos(); }
+                when ("tan") {       return $q1->qtan(); }
+                when ("asin") {      return $q1->qasin(); }
+                when ("acos") {      return $q1->qacos(); }
+                when ("atan") {      return $q1->qatan(); }
+                when ("atan2") {     return $q1->qatan2($q2); }
+                when ("sinh") {      return $q1->qsinh(); }
+                when ("cosh") {      return $q1->qcosh(); }
+                when ("tanh") {      return $q1->qtanh(); }
+                when ("asinh") {     return $q1->qasinh(); }
+                when ("acosh") {     return $q1->qacosh(); }
+                when ("atanh") {     return $q1->qatanh(); }
                 when (["sum","product"]) {
                     if ($env->unit_mode) {
                         die CalcException->new("[_1] cannot work in unit mode.", $fname);
@@ -313,26 +345,41 @@ sub calc {
                         die CalcException->new("[_1] should have four parameters.", $fname);
                     }
                     my $var = "".$children[2]->value;
+                    if ($var !~ /^[a-zA-Z_][a-zA-Z_0-9]*$/) {
+                        die CalcException->new("[_1]: wrong variable name", $fname);
+                    }
                     if ($var eq "i") {
                         die CalcException->new("[_1]: please use another variable name, i is the imaginary number.", $fname);
                     }
                     my $initial = $env->getVariable($var);
                     my $var_value_1 = $children[3]->value;
                     my $var_value_2 = $children[4]->value;
+                    if ($var_value_1 !~ /^[0-9]+$/) {
+                        die CalcException->new("[_1]: the third parameter should be an integer", $fname);
+                    }
+                    if ($var_value_2 !~ /^[0-9]+$/) {
+                        die CalcException->new("[_1]: the fourth parameter should be an integer", $fname);
+                    }
                     if ($var_value_1 > $var_value_2) {
                         die CalcException->new("[_1]: are you trying to make me loop forever?", $fname);
                     }
-                    my $sum = Quantity->new($fname eq "sum" ? 0 : 1);
+                    my $result;
                     for (my $var_value=$var_value_1; $var_value <= $var_value_2; $var_value++) {
                         $env->setVariable($var, $var_value);
-                        if ($fname eq "sum") {
-                            $sum += $children[1]->calc($env);
+                        my $nq = $children[1]->calc($env);
+                        if (!$nq->isa(Quantity) && !$nq->isa(QVector) && !$nq->isa(QMatrix)) {
+                            die CalcException->new("[_1]: wrong type for a calculated value", $fname);
+                        }
+                        if (!defined $result) {
+                            $result = $nq;
+                        } elsif ($fname eq "sum") {
+                            $result += $nq;
                         } else {
-                            $sum *= $children[1]->calc($env);
+                            $result *= $nq;
                         }
                     }
                     $env->setVariable($var, $initial);
-                    return $sum;
+                    return $result;
                 }
                 when ("binomial") {
                     if (scalar(@children) != 3) {
@@ -340,6 +387,9 @@ sub calc {
                     }
                     my $n = $children[1]->calc($env);
                     my $p = $children[2]->calc($env);
+                    if (!$n->isa(Quantity) || !$p->isa(Quantity)) {
+                        die CalcException->new("Wrong parameter type for function [_1]", $fname);
+                    }
                     return $n->qfact() / ($p->qfact() * ($n - $p)->qfact());
                 }
                 when (["union","intersection"]) {
