@@ -196,87 +196,87 @@ sub calc {
             given ($self->value) {
                 when ("+") {
                     if (!overload::Method($q1, '+')) {
-                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                        die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                     }
                     return($q1 + $q2);
                 }
                 when ("-") {
                     if (!defined $q2) {
                         if (!$q1->can('qneg')) {
-                            die CalcException->new("Negation is not implemented for this type");
+                            die CalcException->new("Negation is not implemented for this type.");
                         }
                         return($q1->qneg());
                     } else {
                         if (!overload::Method($q1, '-')) {
-                            die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                            die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                         }
                         return($q1 - $q2);
                     }
                 }
                 when ("*") {
                     if (!overload::Method($q1, '*')) {
-                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                        die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                     }
                     return($q1 * $q2);
                 }
                 when ("/") {
                     if (!overload::Method($q1, '/')) {
-                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                        die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                     }
                     return($q1 / $q2);
                 }
                 when ("^") {
                     if (!overload::Method($q1, '^')) {
-                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                        die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                     }
                     return($q1 ^ $q2);
                 }
                 when ("!") {
                     if (!$q1->can('qfact')) {
-                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                        die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                     }
                     return $q1->qfact();
                 }
                 when ("%") {
                     if (!$q1->isa(Quantity) || !$q2->isa(Quantity)) {
-                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                        die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                     }
                     return(($q1 / Quantity->new(100)) * $q2);
                 }
                 when (".") {
                     # scalar product for vectors, multiplication for matrices
                     if (!$q1->can('qdot')) {
-                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                        die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                     }
                     return($q1->qdot($children[1]->calc($env)));
                 }
                 when ("`") {
                     if (!overload::Method($q1, '*')) {
-                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                        die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                     }
                     return($q1 * $q2);
                 }
                 when ("<") {
                     if (!overload::Method($q1, '<')) {
-                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                        die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                     }
                     return($q1 < $q2);
                 }
                 when ("<=") {
                     if (!overload::Method($q1, '<=')) {
-                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                        die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                     }
                     return($q1 <= $q2);
                 }
                 when (">") {
                     if (!overload::Method($q1, '>')) {
-                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                        die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                     }
                     return($q1 > $q2);
                 }
                 when (">=") {
                     if (!overload::Method($q1, '>=')) {
-                        die CalcException->new("The [_1] operator is not implemented for this type", $self->value);
+                        die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                     }
                     return($q1 >= $q2);
                 }
@@ -298,7 +298,7 @@ sub calc {
                     'atan2', 'sinh', 'cosh', 'tanh', 'asinh', 'acosh', 'atanh']) {
                 $q1 = $children[1]->calc($env);
                 if (!$q1->isa(Quantity)) {
-                    die CalcException->new("The [_1] function is not implemented for this type", $fname);
+                    die CalcException->new("The [_1] function is not implemented for this type.", $fname);
                 }
             }
             if ($fname ~~ ['pow', 'mod', 'atan2']) {
@@ -307,7 +307,7 @@ sub calc {
                 }
                 $q2 = $children[2]->calc($env);
                 if (!$q2->isa(Quantity)) {
-                    die CalcException->new("The [_1] function is not implemented for this type", $fname);
+                    die CalcException->new("The [_1] function is not implemented for this type.", $fname);
                 }
             }
             given ($fname) {

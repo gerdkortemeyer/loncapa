@@ -363,18 +363,6 @@ use utf8;
 'No information found.' =>
 'Keine Information gefunden.',
 
-'Operator < : one of the arguments is not a quantity.' =>
-'Operator < : eines der Argumente ist keine Größe.',
-
-'Operator <= : one of the arguments is not a quantity.' =>
-'Operator <= : eines der Argumente ist keine Größe.',
-
-'Operator > : one of the arguments is not a quantity.' =>
-'Operator > : eines der Argumente ist keine Größe.',
-
-'Operator >= : one of the arguments is not a quantity.' =>
-'Operator >= : eines der Argumente ist keine Größe.',
-
 'Quantity addition: second member is not a quantity.' =>
 'Größenaddition: das zweite Argument ist keine Größe.',
 
@@ -416,6 +404,12 @@ use utf8;
 
 'Syntax error in number.' =>
 'Syntaktischer Fehler in Zahl.',
+
+"The [_1] function is not implemented for this type." =>
+"Die Funktion [_1] ist für diesen Typ nicht implementiert.",
+
+"The [_1] operator is not implemented for this type." =>
+"Der Operator [_1] ist für diesen Typ nicht implementiert.",
 
 "Unexpected operator '[_1]'." =>
 "Unerwarteter Operator '[_1]'",
