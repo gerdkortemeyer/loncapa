@@ -42,7 +42,27 @@ use base qw(Apache::lc_localize);
 'community_organizer' => 'Community Organizer',
 'member' => 'Member',
 'author' => 'Author',
-'co_author' => 'Co-Author'
+'co_author' => 'Co-Author',
+
+'correct' => 'Correct',
+'incorrect' => 'Incorrect',
+'previously_submitted' => 'Previously submitted',
+'numerical_error' => 'Numerical error',
+'bad_formula' => 'Bad formula',
+'wrong_dimension' => 'Wrong dimension',
+'wrong_type' => 'Wrong type',
+'no_unit_required' => 'No unit required',
+'unit_missing' => 'Unit missing',
+'wrong_unit_dimension' => 'Wrong unit dimension',
+'wrong_endpoint' => 'Wrong endpoint',
+'no_valid_answer' => 'No valid answer',
+'no_valid_response' => 'No valid response',
+'answer_scalar_required' => 'Scalar answer required',
+'response_scalar_required' => 'Scalar response required',
+'answer_array_required' => 'Array answer required',
+'response_array_required' => 'Array response required',
+'internal_error' => 'Internal error'
+
 );
 
 1;

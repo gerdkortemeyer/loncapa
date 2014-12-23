@@ -164,6 +164,7 @@ h3 {
 .lcresponseerror {
    padding: 3px;
    background: #FFFFAA;
+   box-shadow: 2px 2px 3px #111111;
    position:absolute;
 }
 

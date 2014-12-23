@@ -489,6 +489,25 @@ use utf8;
 '[_1]: please use another variable name, i is the imaginary number.' =>
 '[_1]: bitte benutzen Sie einen anderen Variablennamen, i ist die imaginäre Einheit.',
 
+'correct' => 'Korrect', 
+'incorrect' => 'Inkorrect',
+'previously_submitted' => 'Bereits früher eingereicht', 
+'numerical_error' => 'Numerischer Fehler', 
+'bad_formula' => 'Unbrauchbare Formel', 
+'wrong_dimension' => 'Falsche Dimension', 
+'wrong_type' => 'Falsche Typ', 
+'no_unit_required' => 'Keine Einheit benötigt', 
+'unit_missing' => 'Einheit fehlt', 
+'wrong_unit_dimension' => 'Falsche Einheitsdimension', 
+'wrong_endpoint' => 'Falscher Endpunkt', 
+'no_valid_answer' => 'Keine gültige Antwort', 
+'no_valid_response' => 'Keine gültige Einreichung', 
+'answer_scalar_required' => 'Skalare Antwort benötigt', 
+'response_scalar_required' => 'Skalare Einreichung benötigt', 
+'answer_array_required' => 'Mehrkomponentige Antwort benötigt', 
+'response_array_required' => 'Mehrkomponentige Einreichung benötigt',
+'internal_error' => 'Interner Fehler',
+
 'Select the keywords' => 'Wählen Sie die Schlüsselwörter',
 
 'Additional keywords' => 'Zusätzliche Schlüsselwörter',
