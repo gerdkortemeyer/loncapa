@@ -45,6 +45,38 @@ sub reset_random_seed {
              1+scalar(Math::BigInt->new(substr($digest,16,16))->bmod(2147483398)));
 }
 
+# === Routines that can be called from Perl scripts (among others);
+#
+
+sub random {
+   my ($lower,$upper,$step)=@_;
+   $step=abs($step);
+# Sanity
+   unless ($step>0) { return $lower; }
+   if (($lower+$step)>$upper) { return $lower; } 
+# Restore the random seed
+   &pullseed();
+# Return value
+   my $value=0;
+# How many steps do we have?
+   my $maxn=($upper-$lower)/$step;
+   if ($maxn>1e300) {
+# Continuous case
+      $value=$lower+&Math::Random::random_uniform(1,0,$upper-$lower);
+   } elsif ($maxn>2147483561) {
+# Not enough available noise to do integer
+      $value=$lower+$step*int(0.5+&Math::Random::random_uniform(1,0,$upper-$lower)/$step);
+   } else {
+# Nice, we can do this smoothly
+      $value=$lower+$step*&Math::Random::random_uniform_integer(1,0,$maxn);
+   }
+# Push back the random seed
+   &pushseed();
+   return $value;
+}
+
+
+# === Internal routines
 #
 # Save and load seeds from global
 #
@@ -72,5 +104,11 @@ sub pushseed {
 sub pullseed {
    &Math::Random::random_set_seed(&loadseed());
 }
+
+BEGIN {
+   $lowerseed=1;
+   $upperseed=1;
+}
+
 1;
 __END__
