@@ -26,8 +26,8 @@ use Digest::MD5 qw(md5_hex);
 
 use Apache::lc_logs;
 
-my $lowerseed;
-my $upperseed;
+my @lowerseed;
+my @upperseed;
 
 #
 # Reset the random number generation based on a phrase
@@ -41,7 +41,7 @@ sub reset_random_seed {
    $digest=~tr/a-f/1-6/;
 # Now have 32 digits   
 # Split in half, turn into numbers, put in range of Math::Random, store
-   &saveseed(1+scalar(Math::BigInt->new(substr($digest,0,16))->bmod(2147483562)),
+   &pushseed(1+scalar(Math::BigInt->new(substr($digest,0,16))->bmod(2147483562)),
              1+scalar(Math::BigInt->new(substr($digest,16,16))->bmod(2147483398)));
 }
 
@@ -55,7 +55,7 @@ sub random {
    unless ($step>0) { return $lower; }
    if (($lower+$step)>$upper) { return $lower; } 
 # Restore the random seed
-   &pullseed();
+   &loadseed();
 # Return value
    my $value=0;
 # How many steps do we have?
@@ -70,44 +70,55 @@ sub random {
 # Nice, we can do this smoothly
       $value=$lower+$step*&Math::Random::random_uniform_integer(1,0,$maxn);
    }
-# Push back the random seed
-   &pushseed();
+# Save the random seed
+   &saveseed();
    return $value;
 }
 
 
 # === Internal routines
 #
-# Save and load seeds from global
+# The seed stack 
 #
-sub saveseed {
+sub pushseed {
    my ($lower,$upper)=@_;
    if (($lower>2147483562) || ($upper>2147483398) || ($lower<1) || ($upper<1)) {
       &logerror("Seed out of range: [$lower] [$upper]");
+      $lower=1;
+      $upper=1;
    }
-   $lowerseed=$lower;
-   $upperseed=$upper;
+   push(@lowerseed,$lower);
+   push(@upperseed,$upper);
 }
+
+sub popseed {
+   unless (($#lowerseed>=0) && ($#upperseed>=0)) {
+      &logwarning("Cannot pop empty random seed stack.");
+      return;
+   }
+   pop(@lowerseed);
+   pop(@upperseed);
+}
+
+sub resetseed {
+   unless (($#lowerseed==-1) && ($#upperseed==-1)) {
+      &logwarning("Random seed stack was not empty.");
+   }
+   @upperseed=[];
+   @lowerseed=[];
+}
+
 
 sub loadseed {
-   return($lowerseed,$upperseed);
+   &Math::Random::random_set_seed($lowerseed[-1],$upperseed[-1]);
 }
 
-#
-# Push and pull the seed
-#
-
-sub pushseed {
-   &saveseed(&Math::Random::random_get_seed());
-}
-
-sub pullseed {
-   &Math::Random::random_set_seed(&loadseed());
+sub saveseed {
+   ($lowerseed[-1],$upperseed[-1])=&Math::Random::random_get_seed();
 }
 
 BEGIN {
-   $lowerseed=1;
-   $upperseed=1;
+   &resetseed();
 }
 
 1;
