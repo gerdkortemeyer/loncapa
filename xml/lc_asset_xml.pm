@@ -294,6 +294,9 @@ sub parser {
    my $output='';
 # Counter to assign IDs
    my $idcnt=1;
+# Initialize random numbers
+   &Apache::lc_random::resetseed();
+   &Apache::lc_random::set_context_random_seed(&Apache::lc_random::contextseed($stack->{'context'},0));
 # If we are only rendering a subpart of the document
    my $outputid=$stack->{'outputid'};
    my $outputactive=0;
@@ -356,6 +359,8 @@ sub parser {
    for (my $i=0;$i<=$#{$stack->{'tags'}};$i++) {
       &error($stack,'missing_ending',{'expected' => $stack->{'tags'}->[$i]->{'name'} });
    }
+# Done with random numbers
+   &Apache::lc_random::popseed();
    return $output;
 }
 
@@ -383,9 +388,6 @@ sub target_render {
    $p->empty_element_tags(1);
 # Get safe space going (fresh)
    my $safe=&Apache::lc_asset_safeeval::init_safe();
-# Get the random numbers going
-   &Apache::lc_random::resetseed();
-   &Apache::lc_random::set_context_random_seed(&Apache::lc_random::contextseed($context,0));
 # Coming here for the first time? Remember stuff
    if ($content) {
       $stack->{'content'}=$content;
@@ -396,6 +398,7 @@ sub target_render {
    if ($outputid) {
       $stack->{'outputid'}=$outputid;
    }
+# Status determination
    my $status;
 #FIXME: actually find status
 #...
@@ -405,8 +408,6 @@ sub target_render {
    }
 # The final one actually produces the output
    my $output=&parser($p,$safe,$stack,$status,$targets->[-1]);
-# Clean up random stack
-   &Apache::lc_random::popseed();
    return ($output,$stack);
 }
 

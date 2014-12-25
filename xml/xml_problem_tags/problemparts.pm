@@ -35,7 +35,7 @@ our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
 our @EXPORT = qw(start_problem_html end_problem_html
-                 start_problem_grade
+                 start_problem_grade end_problem_grade
                  start_part_html    end_part_html
                  start_part_grade   end_part_grade);
 
@@ -47,12 +47,18 @@ sub start_problem_html {
 
 sub end_problem_html {
    my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_random::popseed();
    return '</div>';
 }
 
 sub start_problem_grade {
    my ($p,$safe,$stack,$token)=@_;
    &init_problem($token->[2]->{'id'},$stack);
+}
+
+sub end_problem_grade {
+   my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_random::popseed();
 }
 
 sub start_part_html {
