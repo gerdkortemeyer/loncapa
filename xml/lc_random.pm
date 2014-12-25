@@ -30,9 +30,9 @@ my @lowerseed;
 my @upperseed;
 
 #
-# Reset the random number generation based on a phrase
+# Set the random number generation based on a phrase
 #
-sub reset_random_seed {
+sub set_context_random_seed {
    my ($phrase)=@_;
 # Form the hex digest of the phrase
    my $digest=&md5_hex($phrase);
@@ -43,6 +43,20 @@ sub reset_random_seed {
 # Split in half, turn into numbers, put in range of Math::Random, store
    &pushseed(1+scalar(Math::BigInt->new(substr($digest,0,16))->bmod(2147483562)),
              1+scalar(Math::BigInt->new(substr($digest,16,16))->bmod(2147483398)));
+}
+
+#
+# Generate phrase
+#
+sub contextseed {
+   my ($context,$tagid)=@_;
+   return join(':',$context->{'user'}->{'entity'},
+                   $context->{'user'}->{'domain'},
+                   $context->{'course'}->{'entity'},
+                   $context->{'course'}->{'domain'},
+                   $context->{'asset'}->{'assetid'},
+                   $context->{'randversion'},
+                   $tagid);
 }
 
 # === Routines that can be called from Perl scripts (among others);
@@ -79,6 +93,7 @@ sub random {
 # === Internal routines
 #
 # The seed stack 
+# Push a new value on top of the stack (problem/part)
 #
 sub pushseed {
    my ($lower,$upper)=@_;
@@ -91,6 +106,9 @@ sub pushseed {
    push(@upperseed,$upper);
 }
 
+#
+# Pop the stack when end of problem/part is reached
+#
 sub popseed {
    unless (($#lowerseed>=0) && ($#upperseed>=0)) {
       &logwarning("Cannot pop empty random seed stack.");
@@ -100,6 +118,9 @@ sub popseed {
    pop(@upperseed);
 }
 
+#
+# Flush the stack
+#
 sub resetseed {
    unless (($#lowerseed==-1) && ($#upperseed==-1)) {
       &logwarning("Random seed stack was not empty.");
@@ -108,13 +129,19 @@ sub resetseed {
    @lowerseed=[];
 }
 
-
+#
+# Save and load top of stack
+#
 sub loadseed {
-   &Math::Random::random_set_seed($lowerseed[-1],$upperseed[-1]);
+   if (($#lowerseed>=0) && ($#upperseed>=0)) {
+      &Math::Random::random_set_seed($lowerseed[-1],$upperseed[-1]);
+   }
 }
 
 sub saveseed {
-   ($lowerseed[-1],$upperseed[-1])=&Math::Random::random_get_seed();
+   if (($#lowerseed>=0) && ($#upperseed>=0)) {
+      ($lowerseed[-1],$upperseed[-1])=&Math::Random::random_get_seed();
+   }
 }
 
 BEGIN {

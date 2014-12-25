@@ -28,6 +28,7 @@ use Apache::lc_ui_localize;
 use Apache::lc_entity_sessions();
 use Apache::lc_entity_urls();
 use Apache::lc_date_utils();
+use Apache::lc_random();
 
 # Import all tag definitions (without "()")
 #
@@ -382,6 +383,9 @@ sub target_render {
    $p->empty_element_tags(1);
 # Get safe space going (fresh)
    my $safe=&Apache::lc_asset_safeeval::init_safe();
+# Get the random numbers going
+   &Apache::lc_random::resetseed();
+   &Apache::lc_random::set_context_random_seed(&Apache::lc_random::contextseed($context,0));
 # Coming here for the first time? Remember stuff
    if ($content) {
       $stack->{'content'}=$content;
@@ -401,9 +405,10 @@ sub target_render {
    }
 # The final one actually produces the output
    my $output=&parser($p,$safe,$stack,$status,$targets->[-1]);
+# Clean up random stack
+   &Apache::lc_random::popseed();
    return ($output,$stack);
 }
-
 
 # ==== Main handler
 #

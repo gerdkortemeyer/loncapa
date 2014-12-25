@@ -41,7 +41,7 @@ our @EXPORT = qw(start_problem_html end_problem_html
 
 sub start_problem_html {
    my ($p,$safe,$stack,$token)=@_;
-   &init_problem($stack);
+   &init_problem($token->[2]->{'id'},$stack);
    return '<div class="lcproblemdiv" id="'.$token->[2]->{'id'}.'">';
 }
 
@@ -52,7 +52,7 @@ sub end_problem_html {
 
 sub start_problem_grade {
    my ($p,$safe,$stack,$token)=@_;
-   &init_problem($stack);
+   &init_problem($token->[2]->{'id'},$stack);
 }
 
 sub start_part_html {
@@ -161,17 +161,21 @@ sub end_part_grade {
 # =============================================
 
 sub init_problem {
-   my ($stack)=@_;
+   my ($id,$stack)=@_;
    $stack->{'scoredata'}=&Apache::lc_entity_assessments::get_one_user_assessment(
               $stack->{'context'}->{'course'}->{'entity'},
               $stack->{'context'}->{'course'}->{'domain'},
               $stack->{'context'}->{'user'}->{'entity'},
               $stack->{'context'}->{'user'}->{'domain'},
               $stack->{'context'}->{'asset'}->{'assetid'});
+#FIXME: actually determine
+   $stack->{'context'}->{'randversion'}=0;
+   &Apache::lc_random::set_context_random_seed(&Apache::lc_random::contextseed($stack->{'context'},$id));
 }
 
-
-
+# =============================================
+# Generate seed for problem/part
+# =============================================
 
 # =============================================
 # Loading and saving part data
