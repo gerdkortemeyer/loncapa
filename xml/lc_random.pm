@@ -41,8 +41,8 @@ sub set_context_random_seed {
    $digest=~tr/a-f/1-6/;
 # Now have 32 digits   
 # Split in half, turn into numbers, put in range of Math::Random, store
-   &pushseed(1+scalar(Math::BigInt->new(substr($digest,0,16))->bmod(2147483562)),
-             1+scalar(Math::BigInt->new(substr($digest,16,16))->bmod(2147483398)));
+   &pushseed(Math::BigInt->new(substr($digest,0,16))->bmod(2147483562)->badd(1)->numify(),
+             Math::BigInt->new(substr($digest,16,16))->bmod(2147483398)->badd(1)->numify());
 }
 
 #
@@ -125,8 +125,8 @@ sub resetseed {
    unless (($#lowerseed==-1) && ($#upperseed==-1)) {
       &logwarning("Random seed stack was not empty.");
    }
-   @upperseed=[];
-   @lowerseed=[];
+   @upperseed=();
+   @lowerseed=();
 }
 
 #

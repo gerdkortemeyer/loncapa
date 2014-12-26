@@ -89,7 +89,6 @@ sub evaluate_in_parser {
 #
 sub compare_in_parser {
    my ($parser,$env,$expression, $expected, $tolerance, $mode)=@_;
-&logdebug("Compare: Input:[$expression] Answer:[$expected]");
    try {
       my $expected_quantity = $parser->parse($expected)->calc($env);
       my $input_quantity = $parser->parse($expression)->calc($env);

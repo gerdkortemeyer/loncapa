@@ -65,6 +65,8 @@ sub start_part_html {
    my ($p,$safe,$stack,$token)=@_;
    $stack->{'context'}->{'asset'}->{'partid'}=$token->[2]->{'id'};
    &load_part_data($stack);
+   &Apache::lc_random::set_context_random_seed(&Apache::lc_random::contextseed($stack->{'context'},
+                                                                               $token->[2]->{'id'}));
    return '<div class="lcpartdiv" id="'.$token->[2]->{'id'}.'">'.
           '<form id="'.$token->[2]->{'id'}.'_form" name="'.$token->[2]->{'id'}.'_form" class="lcpartform">'.
           &Apache::lc_xml_forms::hidden_field('assetid',$stack->{'context'}->{'asset'}->{'assetid'}).
@@ -74,6 +76,7 @@ sub start_part_html {
 
 sub end_part_html {
    my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_random::popseed();
    my $problemid=&Apache::lc_asset_xml::tag_attribute('problem','id',$stack);
    my $partid=&Apache::lc_asset_xml::open_tag_attribute('id',$stack);
 # Check our state
@@ -118,10 +121,13 @@ sub start_part_grade {
    $stack->{'context'}->{'asset'}->{'partid'}=$token->[2]->{'id'};
    $stack->{'response_grades'}->{$token->[2]->{'id'}}={};
    &load_part_data($stack);
+   &Apache::lc_random::set_context_random_seed(&Apache::lc_random::contextseed($stack->{'context'},
+                                                                               $token->[2]->{'id'}));
 }
 
 sub end_part_grade {
    my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_random::popseed();
 # Collect all of the response status
    my $allcorrect=1;
    my $allprevious=1;
