@@ -46,7 +46,7 @@ $b=&random(3,42,0.5);
 <parameter name="tol" default="10%" />
 <numericalhintcondition name="toolow" answer="$b" unit="N" mode="lt" />
 <numericalhintcondition name="toohigh" answer="$b" unit="N" mode="gt" />
-<numericalhintcondition name="nothere" answer="42">
+<numericalhintcondition name="nothere" answer="42" unit="N">
 <parameter name="tol" default="1%" />
 </numericalhintcondition>
 <textline size="60" />
@@ -54,6 +54,7 @@ $b=&random(3,42,0.5);
 <br />[4;5;6] m/s
 <numericalresponse answer="@vector4" unit="m/s">
 <textline size="60" />
+<numericalhintcondition name="isother" answer="@vector3" unit="m/s" />
 </numericalresponse>
 <hintgroup showoncorrect="no">
 <hint on="toolow">

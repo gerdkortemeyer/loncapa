@@ -96,13 +96,13 @@ sub compare_in_parser {
       if ($mode=~/^(ne|gt|ge|lt|le|unordered|contained)$/) {
          if ($mode eq 'ne') {
             $code = $expected_quantity->ne($input_quantity, $tolerance);
-         } elsif ($mode eq 'gt') {
-            $code = $expected_quantity->gt($input_quantity, $tolerance);
-         } elsif ($mode eq 'ge') {
-            $code = $expected_quantity->ge($input_quantity, $tolerance);
          } elsif ($mode eq 'lt') {
-            $code = $expected_quantity->lt($input_quantity, $tolerance);
+            $code = $expected_quantity->gt($input_quantity, $tolerance);
          } elsif ($mode eq 'le') {
+            $code = $expected_quantity->ge($input_quantity, $tolerance);
+         } elsif ($mode eq 'gt') {
+            $code = $expected_quantity->lt($input_quantity, $tolerance);
+         } elsif ($mode eq 'ge') {
             $code = $expected_quantity->le($input_quantity, $tolerance);
          } elsif ($mode eq 'unordered') {
             $code = $expected_quantity->compare_unordered($input_quantity, $tolerance);

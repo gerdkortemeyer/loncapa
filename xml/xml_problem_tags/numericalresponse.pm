@@ -186,12 +186,15 @@ sub end_numericalresponse_grade {
    &Apache::lc_asset_xml::add_response_grade($id,$outcome,$message,$previously,$stack);
 # Now deal with the numerical hints
    foreach my $hintcondition (@{$stack->{'response_hints'}->{$id}}) {
-       unless ($hintcondition->{'name'} eq 'numericalhintcondition') {
+      unless ($hintcondition->{'name'} eq 'numericalhintcondition') {
 #FIXME: better message
-          next;
-       }
-use Data::Dumper;
-       &logdebug("Will check on: ".Dumper($hintcondition));
+         next;
+      }
+      my ($hout,$hmsg)=&answertest($parser,$env,$responses,$hintcondition->{'args'}->{'expected'},
+                                                           $hintcondition->{'parameters'}->{'tol'},
+                                                           $hintcondition->{'args'}->{'mode'},
+                                                           $hintcondition->{'args'}->{'or'});
+&logdebug("Returns [".$hintcondition->{'args'}->{'name'}."]:".$hout);
    }
 }
 
@@ -204,6 +207,8 @@ sub start_numericalhintcondition_grade {
 sub end_numericalhintcondition_grade {
    my ($p,$safe,$stack,$token)=@_;
    &Apache::lc_asset_xml::add_response_hint_parameters($stack,'tol');
+   &Apache::lc_asset_xml::add_response_hint_attribute($stack,'expected',
+                                                      &evaluate_answer($stack,&Apache::lc_asset_xml::open_tag_attribute('mode',$stack)));
    return '';
 }
 

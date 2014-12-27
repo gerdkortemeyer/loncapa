@@ -205,6 +205,10 @@ sub add_response_hint_parameters {
    }
 }
 
+sub add_response_hint_attribute {
+   my ($stack,$name,$value)=@_;
+   $stack->{'response_hints'}->{$stack->{'response_id'}}->[-1]->{'args'}->{$name}=$value;
+}
 
 #
 # Response details
