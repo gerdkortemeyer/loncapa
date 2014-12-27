@@ -43,11 +43,11 @@ $b=&random(3,42,0.5);
 <part id="id2part1">
 <br />$b N
 <numericalresponse answer="$b" unit="N">
-<parameter name="tol" value="10%" />
+<parameter name="tol" default="10%" />
 <numericalhintcondition name="toolow" answer="$b" unit="N" mode="lt" />
 <numericalhintcondition name="toohigh" answer="$b" unit="N" mode="gt" />
 <numericalhintcondition name="nothere" answer="42">
-<parameter name="tol" value="1%" />
+<parameter name="tol" default="1%" />
 </numericalhintcondition>
 <textline size="60" />
 </numericalresponse>
