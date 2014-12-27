@@ -197,6 +197,14 @@ sub add_response_hint {
    push(@{$stack->{'response_hints'}->{$stack->{'response_id'}}},${$stack->{'tags'}}[-1]);
 }
 
+sub add_response_hint_parameter {
+   my ($stack,@collect)=@_;
+   foreach my $name (@collect) {
+      $stack->{'response_hints'}->{$stack->{'response_id'}}->[-1]->{'parameters'}->{$name};
+   }
+}
+
+
 #
 # Response details
 #

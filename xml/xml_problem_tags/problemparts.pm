@@ -120,6 +120,7 @@ sub start_part_grade {
    my ($p,$safe,$stack,$token)=@_;
    $stack->{'context'}->{'asset'}->{'partid'}=$token->[2]->{'id'};
    $stack->{'response_grades'}->{$token->[2]->{'id'}}={};
+   $stack->{'response_hints'}={};
    &load_part_data($stack);
    &Apache::lc_random::set_context_random_seed(&Apache::lc_random::contextseed($stack->{'context'},
                                                                                $token->[2]->{'id'}));
