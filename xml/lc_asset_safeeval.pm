@@ -23,6 +23,7 @@ use Safe();
 use Safe::Hole();
 use Math::Cephes();
 use Math::Random();
+use Apache::lc_random();
 use Opcode();
 
 
@@ -103,7 +104,7 @@ sub init_safe {
   $safehole->wrap(\&Math::Cephes::Matrix::check,$safeeval,'&Math::Cephes::Matrix::check');
   $safehole->wrap(\&Math::Cephes::Matrix::check,$safeeval,'&Math::Cephes::Matrix::check');
 
-# Math::Random
+# Math::Random - completely random
 
   $safehole->wrap(\&Math::Random::random_beta,$safeeval,'&math_random_beta');
   $safehole->wrap(\&Math::Random::random_chi_square,$safeeval,'&math_random_chi_square');
@@ -123,9 +124,13 @@ sub init_safe {
   $safehole->wrap(\&Math::Random::random_negative_binomial,$safeeval,'&math_random_negative_binomial');
   $safehole->wrap(\&Math::Random::random_binomial,$safeeval,'&math_random_binomial');
   $safehole->wrap(\&Math::Random::random_seed_from_phrase,$safeeval,'&random_seed_from_phrase');
-  $safehole->wrap(\&Math::Random::random_set_seed_from_phrase,$safeeval,'&random_set_seed_from_phrase');
-  $safehole->wrap(\&Math::Random::random_get_seed,$safeeval,'&random_get_seed');
-  $safehole->wrap(\&Math::Random::random_set_seed,$safeeval,'&random_set_seed');
+  $safehole->wrap(\&Math::Random::random_set_seed_from_phrase,$safeeval,'&math_random_set_seed_from_phrase');
+  $safehole->wrap(\&Math::Random::random_get_seed,$safeeval,'&math_random_get_seed');
+  $safehole->wrap(\&Math::Random::random_set_seed,$safeeval,'&math_random_set_seed');
+
+# The standard random routines
+
+  $safehole->wrap(\&Apache::lc_random::random,$safeeval,'&random');
 
   return $safeeval;
 }
@@ -162,7 +167,11 @@ sub argeval {
 #
 sub codeeval {
    my ($safeeval,$code)=@_;
-   return $safeeval->reval($code);
+   $safeeval->reval($code);
+   if ($@) {
+      return $@;
+   }
+   return undef; 
 }
 
 1;

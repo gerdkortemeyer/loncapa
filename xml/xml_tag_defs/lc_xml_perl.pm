@@ -46,7 +46,11 @@ sub perl_eval {
    my $text=$p->get_text('/perl');
    $p->get_token;
    pop(@{$stack->{'tags'}});
-   &Apache::lc_asset_safeeval::codeeval($safe,$text);
+   my $error=&Apache::lc_asset_safeeval::codeeval($safe,$text);
+   if ($error) {
+#FIXME: better error handling
+      &logwarning("Perl error: ".$error);
+   }
    return '';
 }
 

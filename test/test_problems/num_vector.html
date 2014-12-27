@@ -4,12 +4,12 @@
 </head>
 <body>
 Simple vector problem
-<problem>
+<problem id="id1">
 <perl>
 @vector1=(1,2,3);
 @vector2=(4,5,6);
 </perl>
-<part>
+<part id="id1part1">
 <dtm>\frac{x^2}{4\pi}</dtm>
 <br />[1;2;3] N
 <numericalresponse answer="@vector1" unit="N">
@@ -21,7 +21,7 @@ Simple vector problem
 </numericalresponse>
 More test text
 </part>
-<part>
+<part id="id1part2">
 <br />[1;2;3] m/s^2
 <numericalresponse answer="@vector1" unit="m/s^2">
 <textline size="60" />
@@ -33,14 +33,16 @@ More test text
 </part>
 </problem>
 Outside of a problem.
-<problem>
+<problem id="id2">
 <perl>
 @vector3=(1,2,3);
 @vector4=(4,5,6);
+$a=&random(2,8,1);
+$b=&random(3,42,0.5);
 </perl>
-<part>
-<br />[1;2;3] N
-<numericalresponse answer="@vector3" unit="N">
+<part id="id2part1">
+<br />$b N
+<numericalresponse answer="$b" unit="N">
 <textline size="60" />
 </numericalresponse>
 <br />[4;5;6] m/s
@@ -48,9 +50,9 @@ Outside of a problem.
 <textline size="60" />
 </numericalresponse>
 </part>
-<part>
-<br />[1;2;3] m/s^2
-<numericalresponse answer="@vector3" unit="m/s^2">
+<part id="id2part2">
+<br />$a m/s^2
+<numericalresponse answer="$a" unit="m/s^2">
 <textline size="60" />
 </numericalresponse>
 <br />[4;5;6] m
