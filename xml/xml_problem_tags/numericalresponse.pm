@@ -22,8 +22,8 @@ use strict;
 
 use Apache::lc_math_parser();
 use Apache::lc_problem_const;
+use Apache::xml_problem_tags::hints();
 
-use Data::Dumper;
 use Apache::lc_logs;
 
 our @ISA = qw(Exporter);
