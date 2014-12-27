@@ -31,6 +31,7 @@ our @ISA = qw(Exporter);
 # Export all tags that this module defines in the list below
 our @EXPORT = qw(start_numericalresponse_html  end_numericalresponse_html
                  start_numericalresponse_grade end_numericalresponse_grade 
+                 start_numericalhintcondition_html end_numericalhintcondition_html
                  start_numericalhintcondition_grade end_numericalhintcondition_grade);
 
 #
@@ -205,6 +206,15 @@ sub end_numericalhintcondition_grade {
    &Apache::lc_asset_xml::add_response_hint_parameters($stack,'tol');
    return '';
 }
+
+sub start_numericalhintcondition_html {
+   return '';
+}
+
+sub end_numericalhintcondition_html {
+   return '';
+}
+
 #
 # A numeric comparison of $expression and $expected
 #
