@@ -42,13 +42,23 @@ $b=&random(3,42,0.5);
 </perl>
 <part id="id2part1">
 <br />$b N
-<numericalresponse answer="$b" unit="N">
+<numericalresponse answer="$b" unit="N" tol="10%">
+<numericalhintcondition name="toolow" answer="$b" unit="N" mode="lt" />
+<numericalhintcondition name="toohigh" answer="$b" unit="N" mode="gt" />
 <textline size="60" />
 </numericalresponse>
 <br />[4;5;6] m/s
 <numericalresponse answer="@vector4" unit="m/s">
 <textline size="60" />
 </numericalresponse>
+<hintgroup showoncorrect="no">
+<hint on="toolow">
+Too low!
+</hint>
+<hint on="toohigh">
+Too high!
+</hint>
+</hintgroup>
 </part>
 <part id="id2part2">
 <br />$a m/s^2
