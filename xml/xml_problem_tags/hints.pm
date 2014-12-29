@@ -31,21 +31,60 @@ our @EXPORT = qw(start_hintgroup_html end_hintgroup_html start_hint_html end_hin
 
 sub start_hintgroup_html {
    my ($p,$safe,$stack,$token)=@_;
+# Starting a new hintgroup, clear all previous stuff
+   $stack->{'hintgroup'}=[];
    return '';
 }
 
+#
+# At the end of a hintgroup the redirection stack is examined
+# and the relevant elements out
+# Redirection was needed because of "default"
+#
 sub end_hintgroup_html {
    my ($p,$safe,$stack,$token)=@_;
-   return '';
+   my $output='';
+   my $problemid=&Apache::lc_asset_xml::tag_attribute('problem','id',$stack);
+# First see if we need default
+   my $found=0;
+   foreach my $hint (@{$stack->{'hintgroup'}}) {
+      if ($hint->{'on'}=~/\S/s) {
+         if ($stack->{'hint_conditions'}->{$problemid}->{$hint->{'on'}} eq &correct()) {
+            $found=1;
+            last;
+         }
+      }
+   }
+# Now for real
+   foreach my $hint (@{$stack->{'hintgroup'}}) {
+   }
+# Just clean up
+   $stack->{'hintgroup'}=[];
+   return $output;
 }
 
+#
+# A particular hint
+# Just remember
+#
 sub start_hint_html {
    my ($p,$safe,$stack,$token)=@_;
+# Remember this for </hintgroup>
+   push(@{$stack->{'hintgroup'}},{
+                                   'id' => $token->[2]->{'id'}, 
+                                   'on' => $token->[2]->{'on'},
+                                   'default' => &Apache::lc_asset_xml::open_tag_switch('default',$stack)
+                                 });
+# Redirect, since we don't know yet if we need this
+   &Apache::lc_asset_xml::set_redirect($token->[2]->{'id'});
+# Nothing to say
    return '';
 }
 
 sub end_hint_html {
    my ($p,$safe,$stack,$token)=@_;
+# Done redirecting
+   &Apache::lc_asset_xml::clear_redirect();
    return '';
 }
 
