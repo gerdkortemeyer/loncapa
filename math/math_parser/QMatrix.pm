@@ -314,5 +314,17 @@ sub qpow {
     return $m;
 }
 
+##
+# Equals
+# @param {Quantity|QVector|QMatrix|QSet|QInterval} m
+# @optional {string|float} tolerance
+# @returns {Quantity}
+##
+sub qeq {
+    my ( $self, $m, $tolerance ) = @_;
+    my $q = $self->equals($m, $tolerance);
+    return Quantity->new($q);
+}
+
 1;
 __END__

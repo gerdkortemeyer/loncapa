@@ -222,6 +222,18 @@ sub intersection {
     return QSet->new(\@t);
 }
 
+##
+# Equals
+# @param {Quantity|QVector|QMatrix|QSet|QInterval} set
+# @optional {string|float} tolerance
+# @returns {Quantity}
+##
+sub qeq {
+    my ( $self, $set, $tolerance ) = @_;
+    my $q = $self->equals($set, $tolerance);
+    return Quantity->new($q);
+}
+
 
 1;
 __END__

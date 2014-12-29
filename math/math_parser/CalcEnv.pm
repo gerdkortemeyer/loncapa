@@ -42,6 +42,7 @@ sub new {
     } else {
         $self->{_variables} = { }; # hash variable name -> value
     }
+    $self->{_tolerance} = 0;
     bless $self, $class;
     return $self;
 }
@@ -75,6 +76,15 @@ sub variables {
     return $self->{_variables};
 }
 
+##
+# Tolerance
+# @returns {string|float} tolerance
+##
+sub tolerance {
+    my $self = shift;
+    return $self->{_tolerance};
+}
+
 
 ##
 # Changes an existing unit or defines a new one.
@@ -94,6 +104,15 @@ sub setUnit {
 sub setVariable {
     my( $self, $symbol, $value ) = @_;
     $self->variables->{$symbol} = $value;
+}
+
+##
+# Defines the tolerance to use for = operations.
+# @param {string|float} tolerance
+##
+sub setTolerance {
+    my( $self, $tolerance ) = @_;
+    $self->{_tolerance} = $tolerance;
 }
 
 ##
