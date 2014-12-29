@@ -260,7 +260,7 @@ sub calc {
                     if (!$q1->can('qeq')) {
                         die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
                     }
-                    return($q1->qeq($q2));
+                    return($q1->qeq($q2, $env->tolerance));
                 }
                 when ("<") {
                     if (!overload::Method($q1, '<')) {

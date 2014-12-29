@@ -153,10 +153,10 @@ sub equals {
     if ($self->is_empty() && $inter->is_empty()) {
         return 1;
     }
-    if (!$self->qmin->equals($inter->qmin)) {
+    if (!$self->qmin->equals($inter->qmin, $tolerance)) {
         return 0;
     }
-    if (!$self->qmax->equals($inter->qmax)) {
+    if (!$self->qmax->equals($inter->qmax, $tolerance)) {
         return 0;
     }
     if (!$self->qminopen == $inter->qminopen) {
@@ -362,11 +362,12 @@ sub intersection {
 ##
 # Equals
 # @param {Quantity|QVector|QMatrix|QSet|QInterval} inter
+# @optional {string|float} tolerance
 # @returns {Quantity}
 ##
 sub qeq {
-    my ( $self, $inter ) = @_;
-    my $q = $self->equals($inter);
+    my ( $self, $inter, $tolerance ) = @_;
+    my $q = $self->equals($inter, $tolerance);
     return Quantity->new($q);
 }
 

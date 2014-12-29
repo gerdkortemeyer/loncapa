@@ -716,12 +716,13 @@ sub qatanh {
 
 ##
 # Equals
-# @param {Quantity|QVector|QMatrix|QSet|QInterval}
+# @param {Quantity|QVector|QMatrix|QSet|QInterval} q
+# @optional {string|float} tolerance
 # @returns {Quantity}
 ##
 sub qeq {
-    my ( $self, $q ) = @_;
-    my $v = $self->equals($q);
+    my ( $self, $q, $tolerance ) = @_;
+    my $v = $self->equals($q, $tolerance);
     return Quantity->new($v);
 }
 

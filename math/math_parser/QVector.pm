@@ -274,11 +274,12 @@ sub qdot {
 ##
 # Equals
 # @param {Quantity|QVector|QMatrix|QSet|QInterval} v
+# @optional {string|float} tolerance
 # @returns {Quantity}
 ##
 sub qeq {
-    my ( $self, $v ) = @_;
-    my $q = $self->equals($v);
+    my ( $self, $v, $tolerance ) = @_;
+    my $q = $self->equals($v, $tolerance);
     return Quantity->new($q);
 }
 

@@ -323,11 +323,12 @@ sub intersection {
 ##
 # Equals
 # @param {Quantity|QVector|QMatrix|QSet|QInterval} qui
+# @optional {string|float} tolerance
 # @returns {Quantity}
 ##
 sub qeq {
-    my ( $self, $qui ) = @_;
-    my $q = $self->equals($qui);
+    my ( $self, $qui, $tolerance ) = @_;
+    my $q = $self->equals($qui, $tolerance);
     return Quantity->new($q);
 }
 
