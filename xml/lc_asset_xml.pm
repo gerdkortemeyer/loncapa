@@ -248,6 +248,32 @@ sub get_response_grade {
    return $stack->{'response_grades'}->{$stack->{'context'}->{'asset'}->{'partid'}}->{&tag_attribute($responsetag,'id',$stack)};
 }
 
+#
+# Redirecting
+# Needed if within a group, only at the end we know what needs outputting
+# 
+sub clear_redirect {
+   my ($stack)=@_;
+   $stack->{'redirecting'}=undef;
+}
+
+#
+# Will redirect all output into a buffer on the stack under
+# under $stack->{'redirecting'}
+#
+sub set_redirect {
+   my ($name,$stack)=@_;
+   $stack->{'redirecting'}=$name;
+}
+
+#
+# Retrieve redirected output
+#
+sub get_redirected_output {
+   my ($name,$stack)=@_;
+   return $stack->{'outputbuffer'}->{$name};
+}
+
 # Output a piece of text
 #
 sub process_text {
@@ -308,6 +334,8 @@ sub parser {
    my $output='';
 # Counter to assign IDs
    my $idcnt=1;
+# We are not redirecting
+   &clear_redirect($stack);
 # Initialize random numbers
    &Apache::lc_random::resetseed();
    &Apache::lc_random::set_context_random_seed(&Apache::lc_random::contextseed($stack->{'context'},0));
@@ -359,14 +387,27 @@ sub parser {
 # Other stuff, remember and keep going
          $tmpout=$token->[-1];
       }
-# Only output if within 
+# Only output if within tag of a certain ID, for AJAX
       if ($outputid) {
          if ($outputactive) {
-            $output.=$tmpout;
+            if ($stack->{'redirecting'}) {
+# We are redirecting
+               $stack->{'outputbuffer'}->{$stack->{'redirecting'}}.=$tmpout;
+            } else {
+# Just business as usual
+               $output.=$tmpout;
+            }
          }
          if ($outputdone) { $outputactive=0; }
       } else {
-         $output.=$tmpout;
+# We are not asked to selectively output, show everything
+         if ($stack->{'redirecting'}) {
+# We are redirecting, collecting output under an ID stored in $stack->{'redirecting'}
+            $stack->{'outputbuffer'}->{$stack->{'redirecting'}}.=$tmpout;
+         } else {
+# Just business as usual
+            $output.=$tmpout;
+         }
       }
    }
 # The tag stack should be empty again

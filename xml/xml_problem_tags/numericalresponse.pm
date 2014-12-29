@@ -196,7 +196,7 @@ sub end_numericalresponse_grade {
                                                            $hintcondition->{'args'}->{'mode'},
                                                            $hintcondition->{'args'}->{'or'});
 # Set it for later
-      &Apache::xml_problem_tags::set_hints($hintcondition->{'args'}->{'name'},$hout,$stack);
+      &Apache::xml_problem_tags::hints::set_hints($hintcondition->{'args'}->{'name'},$hout,$stack);
    }
 }
 

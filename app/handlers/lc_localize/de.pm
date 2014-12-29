@@ -236,6 +236,8 @@ use utf8;
 
 'Correct.' => 'Korrekt',
 
+'Ungraded.' => 'Nicht benoted.',
+
 'Total tries: [_1]' => 'Gesamtversuche: [_1]',
 
 'Counted tries: [_1]' => 'Gezählte Versuche: [_1]',
