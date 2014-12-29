@@ -256,6 +256,12 @@ sub calc {
                     }
                     return($q1 * $q2);
                 }
+                when ("=") {
+                    if (!$q1->can('qeq')) {
+                        die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
+                    }
+                    return($q1->qeq($q2));
+                }
                 when ("<") {
                     if (!overload::Method($q1, '<')) {
                         die CalcException->new("The [_1] operator is not implemented for this type.", $self->value);
@@ -503,6 +509,10 @@ sub toMaxima {
                 }
                 when ("`") {
                     return("(".$children[0]->toMaxima()."`".$children[1]->toMaxima().")");
+                }
+                when ("=") {
+                    # NOTE: should we use is(...) to evaluate the expression ?
+                    return("(".$children[0]->toMaxima()."=".$children[1]->toMaxima().")");
                 }
                 when ("<") {
                     return("(".$children[0]->toMaxima()."<".$children[1]->toMaxima().")");

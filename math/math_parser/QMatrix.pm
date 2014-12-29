@@ -314,5 +314,16 @@ sub qpow {
     return $m;
 }
 
+##
+# Equals
+# @param {Quantity|QVector|QMatrix|QSet|QInterval} m
+# @returns {Quantity}
+##
+sub qeq {
+    my ( $self, $m ) = @_;
+    my $q = $self->equals($m);
+    return Quantity->new($q);
+}
+
 1;
 __END__

@@ -222,6 +222,17 @@ sub intersection {
     return QSet->new(\@t);
 }
 
+##
+# Equals
+# @param {Quantity|QVector|QMatrix|QSet|QInterval} set
+# @returns {Quantity}
+##
+sub qeq {
+    my ( $self, $set ) = @_;
+    my $q = $self->equals($set);
+    return Quantity->new($q);
+}
+
 
 1;
 __END__

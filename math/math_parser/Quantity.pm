@@ -715,6 +715,17 @@ sub qatanh {
 }
 
 ##
+# Equals
+# @param {Quantity|QVector|QMatrix|QSet|QInterval}
+# @returns {Quantity}
+##
+sub qeq {
+    my ( $self, $q ) = @_;
+    my $v = $self->equals($q);
+    return Quantity->new($v);
+}
+
+##
 # Less than
 # @param {Quantity}
 # @returns {Quantity}

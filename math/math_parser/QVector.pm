@@ -271,5 +271,16 @@ sub qdot {
     return $q;
 }
 
+##
+# Equals
+# @param {Quantity|QVector|QMatrix|QSet|QInterval} v
+# @returns {Quantity}
+##
+sub qeq {
+    my ( $self, $v ) = @_;
+    my $q = $self->equals($v);
+    return Quantity->new($q);
+}
+
 1;
 __END__

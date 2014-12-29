@@ -320,6 +320,17 @@ sub intersection {
     return $new_qiu;
 }
 
+##
+# Equals
+# @param {Quantity|QVector|QMatrix|QSet|QInterval} qui
+# @returns {Quantity}
+##
+sub qeq {
+    my ( $self, $qui ) = @_;
+    my $q = $self->equals($qui);
+    return Quantity->new($q);
+}
+
 
 1;
 __END__

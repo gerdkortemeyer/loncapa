@@ -359,5 +359,16 @@ sub intersection {
     return QInterval->new($qmin, $qmax, $qminopen, $qmaxopen);
 }
 
+##
+# Equals
+# @param {Quantity|QVector|QMatrix|QSet|QInterval} inter
+# @returns {Quantity}
+##
+sub qeq {
+    my ( $self, $inter ) = @_;
+    my $q = $self->equals($inter);
+    return Quantity->new($q);
+}
+
 1;
 __END__
