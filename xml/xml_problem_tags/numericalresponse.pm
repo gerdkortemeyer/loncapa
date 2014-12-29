@@ -108,6 +108,23 @@ sub evaluate_answer {
 sub evaluate_responses {
    my ($stack,$mode)=@_;
    my $responses=&Apache::lc_asset_xml::collect_response_inputs($stack);
+   return &process_responses($responses,$mode);
+}
+
+#
+# This collects the learner's OLD responses
+#
+sub evaluate_old_responses {
+   my ($stack,$mode)=@_;
+   my $old_responses=&Apache::lc_asset_xml::collect_old_response_inputs($stack);
+   return &process_responses($old_responses,$mode);
+}
+
+#
+# Joins arrays into sets, intervals, or vectors, depending on "mode"
+
+sub process_responses {
+   my ($responses,$mode)=@_;
    if ($#{$responses}>0) {
 # There was more than one answer field
       if ($mode eq 'sets') {
@@ -144,6 +161,8 @@ sub end_numericalresponse_grade {
 # Nope? Store that there was nothing
       &Apache::lc_asset_xml::add_response_grade($id,&no_valid_response(),undef,undef,$stack);
 #FIXME: but we need to bring up the old hints
+      my $old_responses=&evaluate_old_responses($stack,$mode);
+      &evaluate_numericalhints($parser,$env,$old_responses,$id,$stack);
       return;
    }
 # Get tolerance parameter
