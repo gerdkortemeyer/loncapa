@@ -135,10 +135,15 @@ sub end_numericalresponse_grade {
    my $mode=&Apache::lc_asset_xml::open_tag_attribute('mode',$stack);
 # Get student response
    my $responses=&evaluate_responses($stack,$mode);
+# Get custom units 
+   my $customunits=&Apache::lc_asset_xml::cascade_parameter('customunits',$stack);
+# Get ourselves a numerical parser and environment
+   my ($parser,$env)=&Apache::lc_math_parser::new_numerical_parser($customunits);
 # Did we get anything?
    unless ($responses=~/\S/s) {
-# Nope? Well, nothing to do here.
+# Nope? Store that there was nothing
       &Apache::lc_asset_xml::add_response_grade($id,&no_valid_response(),undef,undef,$stack);
+#FIXME: but we need to bring up the old hints
       return;
    }
 # Get tolerance parameter
@@ -147,10 +152,6 @@ sub end_numericalresponse_grade {
    my $or=&Apache::lc_asset_xml::open_tag_switch('or',$stack);
 # Get the correct answer and unit
    my $expected=&evaluate_answer($stack,$mode);
-# Get custom units 
-   my $customunits=&Apache::lc_asset_xml::cascade_parameter('customunits',$stack);
-# Get ourselves a numerical parser and environment
-   my ($parser,$env)=&Apache::lc_math_parser::new_numerical_parser($customunits);
 # Do the actual grading
    my ($outcome,$message)=&answertest($parser,$env,$responses,$expected,$tolerance,$mode,$or);
 # Did we have this answer before?
@@ -184,7 +185,16 @@ sub end_numericalresponse_grade {
                                                $stack);
 # Put that on the grading stack to look at end_part_grade
    &Apache::lc_asset_xml::add_response_grade($id,$outcome,$message,$previously,$stack);
-# Now deal with the numerical hints
+# Finally, deal with the numerical hints
+   &evaluate_numericalhints($parser,$env,$responses,$id,$stack);
+}
+
+#
+# This evaluates the numerical responses, seeing which ones apply
+# "responses" can be the most recent input, or previous ones 
+#
+sub evaluate_numericalhints {
+   my ($parser,$env,$responses,$id,$stack)=@_;
    foreach my $hintcondition (@{$stack->{'response_hints'}->{$id}}) {
       unless ($hintcondition->{'name'} eq 'numericalhintcondition') {
 #FIXME: better message
