@@ -49,7 +49,7 @@ sub end_hintgroup_html {
    my $found=0;
    foreach my $hint (@{$stack->{'hintgroup'}}) {
       if ($hint->{'on'}=~/\S/s) {
-         if ($stack->{'hint_conditions'}->{$problemid}->{$hint->{'on'}} eq &correct()) {
+         if ($stack->{'hint_conditions'}->{$problemid}->{$hint->{'on'}}) {
             $found=1;
             last;
          }
@@ -57,6 +57,16 @@ sub end_hintgroup_html {
    }
 # Now for real
    foreach my $hint (@{$stack->{'hintgroup'}}) {
+      if ($found) {
+         if ($stack->{'hint_conditions'}->{$problemid}->{$hint->{'on'}}) {
+            $output.=&Apache::lc_asset_xml::get_redirected_output($hint->{'id'},$stack);
+         }
+      } else {
+# We are displaying the default hint(s)
+         if ($hint->{'default'}) {
+            $output.=&Apache::lc_asset_xml::get_redirected_output($hint->{'id'},$stack);
+         }
+      }
    }
 # Just clean up
    $stack->{'hintgroup'}=[];
@@ -76,7 +86,7 @@ sub start_hint_html {
                                    'default' => &Apache::lc_asset_xml::open_tag_switch('default',$stack)
                                  });
 # Redirect, since we don't know yet if we need this
-   &Apache::lc_asset_xml::set_redirect($token->[2]->{'id'});
+   &Apache::lc_asset_xml::set_redirect($token->[2]->{'id'},$stack);
 # Nothing to say
    return '';
 }
@@ -84,7 +94,7 @@ sub start_hint_html {
 sub end_hint_html {
    my ($p,$safe,$stack,$token)=@_;
 # Done redirecting
-   &Apache::lc_asset_xml::clear_redirect();
+   &Apache::lc_asset_xml::clear_redirect($stack);
    return '';
 }
 
