@@ -190,11 +190,13 @@ sub end_numericalresponse_grade {
 #FIXME: better message
          next;
       }
+# Determine the value of the hint condition
       my ($hout,$hmsg)=&answertest($parser,$env,$responses,$hintcondition->{'args'}->{'expected'},
                                                            $hintcondition->{'parameters'}->{'tol'},
                                                            $hintcondition->{'args'}->{'mode'},
                                                            $hintcondition->{'args'}->{'or'});
-&logdebug("Returns [".$hintcondition->{'args'}->{'name'}."]:".$hout);
+# Set it for later
+      &Apache::xml_problem_tags::set_hints($hintcondition->{'args'}->{'name'},$hout,$stack);
    }
 }
 

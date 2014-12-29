@@ -20,6 +20,7 @@ package Apache::xml_problem_tags::hints;
 
 use strict;
 use Apache::lc_asset_xml();
+use Apache::lc_problem_const;
 
 use Apache::lc_logs;
 
@@ -48,6 +49,16 @@ sub end_hint_html {
    return '';
 }
 
+#
+# Set the flag if a hint is true
+# Name of hint, value of answer, stack
+#
+sub set_hints {
+   my ($name,$value,$stack)=@_;
+   if ($value eq &correct()) {
+      $stack->{'hint_conditions'}->{&Apache::lc_asset_xml::tag_attribute('problem','id',$stack)}->{$name}=1;
+   }
+}
 
 1;
 __END__
