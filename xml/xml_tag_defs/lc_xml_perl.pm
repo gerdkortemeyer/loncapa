@@ -20,6 +20,7 @@ package Apache::lc_xml_perl;
 
 use strict;
 use Apache::lc_asset_safeeval;
+use Apache::lc_logs;
 
 our @ISA = qw(Exporter);
 

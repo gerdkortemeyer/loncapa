@@ -32,7 +32,11 @@ our @ISA = qw(Exporter);
 our @EXPORT = qw(start_numericalresponse_html  end_numericalresponse_html
                  start_numericalresponse_grade end_numericalresponse_grade 
                  start_numericalhintcondition_html end_numericalhintcondition_html
-                 start_numericalhintcondition_grade end_numericalhintcondition_grade);
+                 start_numericalhintcondition_grade end_numericalhintcondition_grade
+                 start_numericalhinttest_html end_numericalhinttest_html
+                 start_numericalhinttest_grade end_numericalhinttest_grade
+                 start_numericalhintscript_html end_numericalhintscript_html
+                 start_numericalhintscript_grade end_numericalhintscript_grade);
 
 #
 # Just start the numerical response environment.
@@ -66,6 +70,12 @@ sub end_numericalresponse_html {
 sub evaluate_answer {
    my ($stack,$mode)=@_;
    my $answer=&Apache::lc_asset_xml::open_tag_attribute('answer',$stack);
+   unless ($answer=~/\S/) {
+      $answer=&Apache::lc_asset_xml::open_tag_attribute('value',$stack);
+      unless ($answer=~/\S/) {
+         $answer=0;
+      }
+   }
    my $unit=&Apache::lc_asset_xml::open_tag_attribute('unit',$stack);
    unless ($unit) { $unit=''; }
    my $expected='';
@@ -229,6 +239,10 @@ sub evaluate_numericalhints {
    }
 }
 
+#
+# Numericalhintcondition
+# Works the same way as <numericalresponse> with set value, unit, and mode
+#
 sub start_numericalhintcondition_grade {
    my ($p,$safe,$stack,$token)=@_;
    &Apache::lc_asset_xml::add_response_hint($stack);
@@ -250,6 +264,61 @@ sub start_numericalhintcondition_html {
 sub end_numericalhintcondition_html {
    return '';
 }
+
+#
+# Numericalhinttest
+# Tests a condition inside of parser
+
+
+sub start_numericalhinttest_grade {
+   my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_asset_xml::add_response_hint($stack);
+   return '';
+}
+
+sub end_numericalhinttest_grade {
+   my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_asset_xml::add_response_hint_parameters($stack,'tol');
+   &Apache::lc_asset_xml::add_response_hint_attribute($stack,'expected',
+                                                      &evaluate_answer($stack,&Apache::lc_asset_xml::open_tag_attribute('mode',$stack)));
+   return '';
+}
+
+sub start_numericalhinttest_html {
+   return '';
+}
+
+sub end_numericalhinttest_html {
+   return '';
+}
+
+#
+# Numericalhintscript
+# Runs a Perl script to determine applicability
+#
+
+sub start_numericalhintscript_grade {
+   my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_asset_xml::add_response_hint($stack);
+   return '';
+}
+
+sub end_numericalhintscript_grade {
+   my ($p,$safe,$stack,$token)=@_;
+   &Apache::lc_asset_xml::add_response_hint_parameters($stack,'tol');
+   &Apache::lc_asset_xml::add_response_hint_attribute($stack,'expected',
+                                                      &evaluate_answer($stack,&Apache::lc_asset_xml::open_tag_attribute('mode',$stack)));
+   return '';
+}
+
+sub start_numericalhintscript_html {
+   return '';
+}
+
+sub end_numericalhintscript_html {
+   return '';
+}
+
 
 #
 # A numeric comparison of $expression and $expected

@@ -44,11 +44,19 @@ $b=&random(3,42,0.5);
 <br />$b N
 <numericalresponse answer="$b" unit="N">
 <parameter name="tol" default="10%" />
-<numericalhintcondition name="toolow" answer="$b" unit="N" mode="lt" />
-<numericalhintcondition name="toohigh" answer="$b" unit="N" mode="gt" />
-<numericalhintcondition name="nothere" answer="42" unit="N">
+<numericalhintcondition name="toolow" value="$b" unit="N" mode="lt" />
+<numericalhinttest name="toohigh" test="$submission>$b N" />
+<numericalhintcondition name="nothere" value="42" unit="N">
 <parameter name="tol" default="1%" />
 </numericalhintcondition>
+<numericalhintscript name="offbypower">
+<perl>
+($value,$unit)=&submission_value_unit();
+unless ($unit eq 'N') { return 0; }
+$log=log($value/$b);
+return (int($log)==$log);
+</perl>
+</numericalhintscript>
 <textline size="60" />
 </numericalresponse>
 <br />[4;5;6] m/s
