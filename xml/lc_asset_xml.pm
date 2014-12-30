@@ -191,15 +191,15 @@ sub collect_response_inputs {
 sub collect_old_response_inputs {
    my ($stack)=@_;
    my $answers=[];
-use Data::Dumper;
-&logdebug("Response inputs: ".Dumper($stack->{'response_inputs'}->{$stack->{'response_id'}}));
    foreach my $response (@{$stack->{'response_inputs'}->{$stack->{'response_id'}}}) {
-      my $responsedetails=&get_response_details($stack->{'response_id'},$stack);
-&logdebug("Response details for ".$stack->{'response_id'}.' '.Dumper($responsedetails));
+      my $inputid=$response->{'args'}->{'id'};
+      my $responsedetails=&get_response_details($inputid,$stack);
       my $value=undef;
       if (ref($responsedetails) eq 'ARRAY') {
 #FIXME: more than one input field
-         $value=$responsedetails->[-1]->{'value'};
+         if ($#{$responsedetails}>1) {
+            $value=$responsedetails->[-2]->{'value'};
+         }
       }
       push(@{$answers},$value);
    }

@@ -491,7 +491,7 @@ use utf8;
 'numerical_error' => 'Numerischer Fehler', 
 'bad_formula' => 'Unbrauchbare Formel', 
 'wrong_dimension' => 'Falsche Dimension', 
-'wrong_type' => 'Falsche Typ', 
+'wrong_type' => 'Falscher Typ', 
 'no_unit_required' => 'Keine Einheit benötigt', 
 'unit_missing' => 'Einheit fehlt', 
 'wrong_unit_dimension' => 'Falsche Einheitsdimension', 
