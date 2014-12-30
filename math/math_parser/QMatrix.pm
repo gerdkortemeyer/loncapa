@@ -36,6 +36,7 @@ use overload
     '+' => \&qadd,
     '-' => \&qsub,
     '*' => \&qmult,
+    '/' => \&qdiv,
     '^' => \&qpow;
 
 ##
@@ -257,6 +258,53 @@ sub qmult {
         $t[$i] = [];
         for (my $j=0; $j < scalar(@{$self->quantities->[$i]}); $j++) {
             $t[$i][$j] = $self->quantities->[$i][$j] * $m->quantities->[$i][$j];
+        }
+    }
+    return QMatrix->new(\@t);
+}
+
+##
+# Element-by-element division by a quantity, vector or matrix (like Maxima)
+# @param {Quantity|QVector|QMatrix} m
+# @returns {QMatrix}
+##
+sub qdiv {
+    my ( $self, $m ) = @_;
+    if (!$m->isa(Quantity) && !$m->isa(QVector) && !$m->isa(QMatrix)) {
+        die CalcException->new("Matrix element-by-element division: second member is not a quantity, vector or matrix.");
+    }
+    if ($m->isa(Quantity)) {
+        my @t = (); # 2d array of Quantity
+        for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
+            $t[$i] = [];
+            for (my $j=0; $j < scalar(@{$self->quantities->[$i]}); $j++) {
+                $t[$i][$j] = $self->quantities->[$i][$j] / $m;
+            }
+        }
+        return QMatrix->new(\@t);
+    }
+    if ($m->isa(QVector)) {
+        if (scalar(@{$self->quantities}) != scalar(@{$m->quantities})) {
+            die CalcException->new("Matrix-Vector element-by-element division: the sizes do not match.");
+        }
+        my @t = (); # 2d array of Quantity
+        for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
+            $t[$i] = [];
+            for (my $j=0; $j < scalar(@{$self->quantities->[$i]}); $j++) {
+                $t[$i][$j] = $self->quantities->[$i][$j] / $m->quantities->[$i];
+            }
+        }
+        return QMatrix->new(\@t);
+    }
+    if (scalar(@{$self->quantities}) != scalar(@{$m->quantities}) || 
+            scalar(@{$self->quantities->[0]}) != scalar(@{$m->quantities->[0]})) {
+        die CalcException->new("Matrix element-by-element division: the matrices have different sizes.");
+    }
+    my @t = (); # 2d array of Quantity
+    for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
+        $t[$i] = [];
+        for (my $j=0; $j < scalar(@{$self->quantities->[$i]}); $j++) {
+            $t[$i][$j] = $self->quantities->[$i][$j] / $m->quantities->[$i][$j];
         }
     }
     return QMatrix->new(\@t);

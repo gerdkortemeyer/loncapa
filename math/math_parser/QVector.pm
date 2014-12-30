@@ -35,6 +35,7 @@ use overload
     '+' => \&qadd,
     '-' => \&qsub,
     '*' => \&qmult,
+    '/' => \&qdiv,
     '^' => \&qpow;
 
 ##
@@ -228,6 +229,32 @@ sub qmult {
         }
         for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
             $t[$i] = $self->quantities->[$i]->qmult($qv->quantities->[$i]);
+        }
+    }
+    return QVector->new(\@t);
+}
+
+##
+# Division
+# @param {Quantity|QVector} qv
+# @returns {QVector}
+##
+sub qdiv {
+    my ( $self, $qv ) = @_;
+    if (!$qv->isa(Quantity) && !$qv->isa(QVector)) {
+        die CalcException->new("Vector division: second member is not a quantity or a vector.");
+    }
+    my @t = (); # array of Quantity
+    if ($qv->isa(Quantity)) {
+        for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
+            $t[$i] = $self->quantities->[$i] / $qv;
+        }
+    } else {
+        if (scalar(@{$self->quantities}) != scalar(@{$qv->quantities})) {
+            die CalcException->new("Vector element-by-element division: the vectors have different sizes.");
+        }
+        for (my $i=0; $i < scalar(@{$self->quantities}); $i++) {
+            $t[$i] = $self->quantities->[$i]->qdiv($qv->quantities->[$i]);
         }
     }
     return QVector->new(\@t);
