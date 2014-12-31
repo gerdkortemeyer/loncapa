@@ -167,8 +167,24 @@ sub argeval {
 #
 sub codeeval {
    my ($safeeval,$code)=@_;
-   return ($safeeval->reval($code),$@);
+   my $result=$safeeval->reval($code);
+   my $error=$@;
+   if ($error) {
+      return (undef,$error);
+   } else {
+      return ($result,undef);
+   }
 }
+
+#
+# Executes code inside safeeval, pre-loading "submission" routines
+#
+sub responseeval {
+   my ($safeeval,$script,$responses)=@_;
+   return &codeeval($safeeval,$script);
+}
+
+
 
 1;
 __END__

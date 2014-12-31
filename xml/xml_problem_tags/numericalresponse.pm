@@ -245,6 +245,12 @@ sub evaluate_numericalhints {
             &Apache::xml_problem_tags::hints::set_hints($hintcondition->{'args'}->{'name'},$mres,$stack);
          }
       } elsif ($hintcondition->{'name'} eq 'numericalhintscript') {
+# Calculate <perlevalscript> in safe space
+         my ($pres,$perr)=&Apache::lc_asset_safeeval::responseeval($safe,$stack->{'perl'}->{'script'},$responses);
+&logdebug("Res [$pres] Err [$perr]");
+         unless ($perr) {
+            &Apache::xml_problem_tags::hints::set_hints($hintcondition->{'args'}->{'name'},$pres,$stack);
+         }
       }
    }
 }
