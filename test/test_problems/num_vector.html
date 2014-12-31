@@ -46,6 +46,7 @@ $b=&random(3,42,0.5);
 <parameter name="tol" default="10%" />
 <numericalhintcondition name="toolow" value="$b" unit="N" mode="lt" />
 <numericalhinttest name="toohigh" test="$submission>$b N" />
+<numericalhinttest name="magtoohigh" test="abs($submission)>10*$b N" />
 <numericalhintcondition name="nothere" value="42" unit="N">
 <parameter name="tol" default="1%" />
 </numericalhintcondition>
@@ -74,17 +75,35 @@ Too high!
 <hint on="nothere">
 For a change, this is not true.
 </hint>
+<hint on="magtoohigh">
+The magnitude is way too high!
+</hint>
+<hint on="offbypower">
+You are off by a power of ten.
+</hint>
 </hintgroup>
 </part>
 <part id="id2part2">
 <br />$a m/s^2
 <numericalresponse answer="$a" unit="m/s^2">
 <textline size="60" />
+<numericalhintcondition value="42" unit="m/s^2" name="nope" />
 </numericalresponse>
 <br />[4;5;6] m
 <numericalresponse answer="@vector4" unit="m">
 <textline size="60" />
 </numericalresponse>
+<hintgroup showoncorrect="no">
+<hint default="default">
+First default hint.
+</hint>
+<hint on="nope">
+Nope, not 42.
+</hint>
+<hint default="default">
+Second default hint.
+</hint>
+</hintgroup>
 </part>
 </problem>
 
