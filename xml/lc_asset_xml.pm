@@ -371,6 +371,9 @@ sub parser {
       } elsif ($token->[0] eq 'S') {
 # A start tag - evaluate the attributes in here
          foreach my $key (keys(%{$token->[2]})) {
+# Except some attributes that need late evaluation 
+            if ($key eq 'test') { next; }
+# Evaluate in safespace
             $token->[2]->{$key}=&Apache::lc_asset_safeeval::argeval($safe,$token->[2]->{$key}); 
          }
 # Don't have an ID yet? Make up a temporary one.

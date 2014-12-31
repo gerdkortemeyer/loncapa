@@ -50,12 +50,12 @@ $b=&random(3,42,0.5);
 <parameter name="tol" default="1%" />
 </numericalhintcondition>
 <numericalhintscript name="offbypower">
-<perl>
+<perlevalscript>
 ($value,$unit)=&submission_value_unit();
 unless ($unit eq 'N') { return 0; }
 $log=log($value/$b);
 return (int($log)==$log);
-</perl>
+</perlevalscript>
 </numericalhintscript>
 <textline size="60" />
 </numericalresponse>

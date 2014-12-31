@@ -167,11 +167,7 @@ sub argeval {
 #
 sub codeeval {
    my ($safeeval,$code)=@_;
-   $safeeval->reval($code);
-   if ($@) {
-      return $@;
-   }
-   return undef; 
+   return ($safeeval->reval($code),$@);
 }
 
 1;

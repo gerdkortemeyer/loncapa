@@ -104,7 +104,7 @@ sub end_hint_html {
 #
 sub set_hints {
    my ($name,$value,$stack)=@_;
-   if ($value eq &correct()) {
+   if ($value) {
       $stack->{'hint_conditions'}->{&Apache::lc_asset_xml::tag_attribute('problem','id',$stack)}->{$name}=1;
    }
 }

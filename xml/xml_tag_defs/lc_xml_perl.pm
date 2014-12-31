@@ -20,12 +20,13 @@ package Apache::lc_xml_perl;
 
 use strict;
 use Apache::lc_asset_safeeval;
-use Apache::lc_logs;
 
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_perl_html start_perl_meta start_perl_grade start_perl_analysis);
+our @EXPORT = qw(start_perl_html start_perl_meta start_perl_grade start_perl_analysis
+                 start_perlevalscript_html start_perlevalscript_meta start_perlevalscript_grade 
+                 start_perlevalscript_analysis);
 
 #
 # The script should be evaluated for online, print, and analysis
@@ -47,11 +48,7 @@ sub perl_eval {
    my $text=$p->get_text('/perl');
    $p->get_token;
    pop(@{$stack->{'tags'}});
-   my $error=&Apache::lc_asset_safeeval::codeeval($safe,$text);
-   if ($error) {
-#FIXME: better error handling
-      &logwarning("Perl error: ".$error);
-   }
+   ($stack->{'perl'}->{'result'},$stack->{'perl'}->{'error'})=&Apache::lc_asset_safeeval::codeeval($safe,$text);
    return '';
 }
 
@@ -65,6 +62,42 @@ sub start_perl_meta {
    $p->get_token;
    pop(@{$stack->{'tags'}});
    return '';
+}
+
+#
+# Perl evaluation script
+#
+sub start_perlevalscript_analysis {
+   &perlevalscript_collect(@_);
+   return '';
+}
+
+sub start_perlevalscript_html {
+   &perlevalscript_collect(@_);
+   return '';
+}
+
+sub start_perlevalscript_grade {
+   my ($p,$safe,$stack,$token)=@_;
+   $stack->{'perl'}->{'script'}=&perlevalscript_collect($p,$safe,$stack,$token);
+   return '';
+}
+
+sub start_perlevalscript_meta {
+   &perlevalscript_collect(@_);
+   return '';
+}
+
+
+#
+# Skip script, just remember what it says
+#
+sub perlevalscript_collect {
+   my ($p,$safe,$stack,$token)=@_;
+   my $text=$p->get_text('/perlevalscript');
+   $p->get_token;
+   pop(@{$stack->{'tags'}});
+   return $text;
 }
 
 1;

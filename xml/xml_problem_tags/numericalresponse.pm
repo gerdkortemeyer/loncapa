@@ -23,7 +23,7 @@ use strict;
 use Apache::lc_math_parser();
 use Apache::lc_problem_const;
 use Apache::xml_problem_tags::hints();
-
+use Apache::lc_asset_safeeval();
 use Apache::lc_logs;
 
 our @ISA = qw(Exporter);
@@ -172,7 +172,7 @@ sub end_numericalresponse_grade {
       &Apache::lc_asset_xml::add_response_grade($id,&no_valid_response(),undef,undef,$stack);
 #FIXME: but we need to bring up the old hints
       my $old_responses=&evaluate_old_responses($stack,$mode);
-      &evaluate_numericalhints($parser,$env,$old_responses,$id,$stack);
+      &evaluate_numericalhints($parser,$env,$old_responses,$id,$stack,$safe);
       return;
    }
 # Get tolerance parameter
@@ -215,7 +215,7 @@ sub end_numericalresponse_grade {
 # Put that on the grading stack to look at end_part_grade
    &Apache::lc_asset_xml::add_response_grade($id,$outcome,$message,$previously,$stack);
 # Finally, deal with the numerical hints
-   &evaluate_numericalhints($parser,$env,$responses,$id,$stack);
+   &evaluate_numericalhints($parser,$env,$responses,$id,$stack,$safe);
 }
 
 #
@@ -223,19 +223,29 @@ sub end_numericalresponse_grade {
 # "responses" can be the most recent input, or previous ones 
 #
 sub evaluate_numericalhints {
-   my ($parser,$env,$responses,$id,$stack)=@_;
+   my ($parser,$env,$responses,$id,$stack,$safe)=@_;
    foreach my $hintcondition (@{$stack->{'response_hints'}->{$id}}) {
-      unless ($hintcondition->{'name'} eq 'numericalhintcondition') {
-#FIXME: better message
-         next;
-      }
+      if ($hintcondition->{'name'} eq 'numericalhintcondition') {
 # Determine the value of the hint condition
-      my ($hout,$hmsg)=&answertest($parser,$env,$responses,$hintcondition->{'args'}->{'expected'},
-                                                           $hintcondition->{'parameters'}->{'tol'},
-                                                           $hintcondition->{'args'}->{'mode'},
-                                                           $hintcondition->{'args'}->{'or'});
+         my ($hout,$hmsg)=&answertest($parser,$env,$responses,$hintcondition->{'args'}->{'expected'},
+                                                              $hintcondition->{'parameters'}->{'tol'},
+                                                              $hintcondition->{'args'}->{'mode'},
+                                                              $hintcondition->{'args'}->{'or'});
 # Set it for later
-      &Apache::xml_problem_tags::hints::set_hints($hintcondition->{'args'}->{'name'},$hout,$stack);
+         &Apache::xml_problem_tags::hints::set_hints($hintcondition->{'args'}->{'name'},($hout eq &correct()),$stack);
+      } elsif ($hintcondition->{'name'} eq 'numericalhinttest') {
+# Retrieve the test attribute (not preevaluated)
+         my $test=$hintcondition->{'args'}->{'test'};
+# Replace "$submission" by student response
+         $test=~s/\$submission/$responses/gs;
+# Evaluate that inside the math parser after inserting variables
+         my ($merr,$mres)=&Apache::lc_math_parser::evaluate_in_parser($parser,$env,
+                                                        &Apache::lc_asset_safeeval::texteval($safe,$test));
+         unless ($merr) {
+            &Apache::xml_problem_tags::hints::set_hints($hintcondition->{'args'}->{'name'},$mres,$stack);
+         }
+      } elsif ($hintcondition->{'name'} eq 'numericalhintscript') {
+      }
    }
 }
 
@@ -278,9 +288,6 @@ sub start_numericalhinttest_grade {
 
 sub end_numericalhinttest_grade {
    my ($p,$safe,$stack,$token)=@_;
-   &Apache::lc_asset_xml::add_response_hint_parameters($stack,'tol');
-   &Apache::lc_asset_xml::add_response_hint_attribute($stack,'expected',
-                                                      &evaluate_answer($stack,&Apache::lc_asset_xml::open_tag_attribute('mode',$stack)));
    return '';
 }
 
@@ -300,14 +307,13 @@ sub end_numericalhinttest_html {
 sub start_numericalhintscript_grade {
    my ($p,$safe,$stack,$token)=@_;
    &Apache::lc_asset_xml::add_response_hint($stack);
+   $stack->{'perl'}->{'script'}=undef;
    return '';
 }
 
 sub end_numericalhintscript_grade {
    my ($p,$safe,$stack,$token)=@_;
-   &Apache::lc_asset_xml::add_response_hint_parameters($stack,'tol');
-   &Apache::lc_asset_xml::add_response_hint_attribute($stack,'expected',
-                                                      &evaluate_answer($stack,&Apache::lc_asset_xml::open_tag_attribute('mode',$stack)));
+   &Apache::lc_asset_xml::add_response_hint_attribute($stack,'perlevalscript',$stack->{'perl'}->{'script'});
    return '';
 }
 
