@@ -26,6 +26,7 @@ use Math::Random();
 use Apache::lc_random();
 use Opcode();
 
+my $submission;
 
 # ====
 # Initialize a safespace
@@ -132,6 +133,12 @@ sub init_safe {
 
   $safehole->wrap(\&Apache::lc_random::random,$safeeval,'&random');
 
+# Return the submission 
+
+
+  $safehole->wrap(\&Apache::lc_asset_safeeval::submission,$safeeval,'&submission');
+  $safehole->wrap(\&Apache::lc_asset_safeeval::submission_value_unit,$safeeval,'&submission_value_unit');
+
   return $safeeval;
 }
 
@@ -179,12 +186,23 @@ sub codeeval {
 #
 # Executes code inside safeeval, pre-loading "submission" routines
 #
-sub responseeval {
-   my ($safeeval,$script,$responses)=@_;
-   return &codeeval($safeeval,$script);
+
+sub submission {
+   return $submission;
 }
 
+sub submission_value_unit {
+   my ($value,$unit)=($submission=~/^(\S*)\s(.*)$/);
+   return ($value,$unit);
+}
 
+sub responseeval {
+   my ($safeeval,$script,$responses)=@_;
+   $submission=$responses;
+   my ($result,$error)=&codeeval($safeeval,$script);
+   $submission=undef;
+   return ($result,$error);
+}
 
 1;
 __END__

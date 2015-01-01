@@ -53,9 +53,11 @@ $b=&random(3,42,0.5);
 <numericalhintscript name="offbypower">
 <perlevalscript>
 ($value,$unit)=&submission_value_unit();
-unless ($unit eq 'N') { return 0; }
-$log=log($value/$b);
-return (int($log)==$log);
+unless ($unit eq 'kg m s^-2') { return 0; }
+if ($value<0) { return 0; }
+$log=log($value/$b)/log(10);
+$rounded=int($log + $log/abs($log*2));
+return (abs($rounded-$log)<0.001);
 </perlevalscript>
 </numericalhintscript>
 <textline size="60" />
