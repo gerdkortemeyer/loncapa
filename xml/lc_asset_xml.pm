@@ -111,6 +111,11 @@ sub open_tag_switch {
    return (&open_tag_attribute($name,$stack)=~/^(\Q$name\E|y|yes|1|on|true)$/i);
 }
 
+sub cascade_switch {
+   my ($name,$stack)=@_;
+   return (&cascade_attribute($name,$stack)=~/^(\Q$name\E|y|yes|1|on|true)$/i);
+}
+
 #
 # Check if we are inside of tag
 #

@@ -83,7 +83,8 @@ sub start_hint_html {
    push(@{$stack->{'hintgroup'}},{
                                    'id' => $token->[2]->{'id'}, 
                                    'on' => $token->[2]->{'on'},
-                                   'default' => &Apache::lc_asset_xml::open_tag_switch('default',$stack)
+                                   'default' => &Apache::lc_asset_xml::open_tag_switch('default',$stack),
+                                   'showoncorrect' => &Apache::lc_asset_xml::cascade_switch('showoncorrect',$stack) 
                                  });
 # Redirect, since we don't know yet if we need this
    &Apache::lc_asset_xml::set_redirect($token->[2]->{'id'},$stack);
