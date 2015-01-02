@@ -29,6 +29,7 @@ use Apache::lc_entity_sessions();
 use Apache::lc_entity_urls();
 use Apache::lc_date_utils();
 use Apache::lc_random();
+use Apache::lc_problem_const;
 
 # Import all tag definitions (without "()")
 #
@@ -303,14 +304,14 @@ sub get_redirected_output {
 # Output a piece of text
 #
 sub process_text {
-   my ($p,$safe,$stack,$status,$target,$token)=@_;
+   my ($p,$safe,$stack,$target,$token)=@_;
    return &Apache::lc_asset_safeeval::texteval($safe,$token->[1]);
 }
 
 # Process an HTML tag, call routines if defined
 #
 sub process_tag {
-   my ($type,$tag,$p,$safe,$stack,$status,$target,$token)=@_;
+   my ($type,$tag,$p,$safe,$stack,$target,$token)=@_;
 # The output that this script is going to produce
    my $tag_output='';
 # The routine that would run any commands for this
@@ -355,7 +356,7 @@ sub default_html {
 # Central parser routine
 #
 sub parser {
-   my ($p,$safe,$stack,$status,$target)=@_;
+   my ($p,$safe,$stack,$target)=@_;
 # Output collected here
    my $output='';
 # Counter to assign IDs
@@ -372,7 +373,7 @@ sub parser {
       my $tmpout='';
       my $outputdone=0;
       if ($token->[0] eq 'T') {
-         $tmpout=&process_text($p,$safe,$stack,$status,$target,$token);
+         $tmpout=&process_text($p,$safe,$stack,$target,$token);
       } elsif ($token->[0] eq 'S') {
 # A start tag - evaluate the attributes in here
          foreach my $key (keys(%{$token->[2]})) {
@@ -392,10 +393,10 @@ sub parser {
          }
 # - remember for embedded tags and for the end tag
          push(@{$stack->{'tags'}},{ 'name' => $token->[1], 'args' => $token->[2] });
-         $tmpout=&process_tag('start',$token->[1],$p,$safe,$stack,$status,$target,$token);
+         $tmpout=&process_tag('start',$token->[1],$p,$safe,$stack,$target,$token);
       } elsif ($token->[0] eq 'E') {
 # An ending tag
-         $tmpout=&process_tag('end',$token->[1],$p,$safe,$stack,$status,$target,$token);
+         $tmpout=&process_tag('end',$token->[1],$p,$safe,$stack,$target,$token);
 # Unexpected ending tags
          if ($#{$stack->{'tags'}}>=0) {
             if ($stack->{'tags'}->[-1]->{'name'} ne $token->[1]) {
@@ -482,16 +483,15 @@ sub target_render {
    if ($outputid) {
       $stack->{'outputid'}=$outputid;
    }
-# Status determination
-   my $status;
-#FIXME: actually find status
-#...
+# State determination
+#FIXME: actually find state
+   $stack->{'context'}->{'state'}=&answerable();
 # Render for all requested targets except the last one
    for (my $i=0; $i<$#{$targets}; $i++) {
       &target_render($fn,[$targets->[$i]],$stack);
    }
 # The final one actually produces the output
-   my $output=&parser($p,$safe,$stack,$status,$targets->[-1]);
+   my $output=&parser($p,$safe,$stack,$targets->[-1]);
    return ($output,$stack);
 }
 

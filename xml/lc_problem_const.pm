@@ -25,7 +25,7 @@ use Apache2::Const qw(:common);
 
 require Exporter;
 our @ISA = qw (Exporter);
-our @EXPORT = qw(correct incorrect previously_submitted numerical_error bad_formula wrong_dimension wrong_type no_unit_required unit_missing wrong_unit_dimension wrong_endpoint no_valid_answer no_valid_response answer_scalar_required response_scalar_required answer_array_required response_array_required internal_error);
+our @EXPORT = qw(correct incorrect previously_submitted numerical_error bad_formula wrong_dimension wrong_type no_unit_required unit_missing wrong_unit_dimension wrong_endpoint no_valid_answer no_valid_response answer_scalar_required response_scalar_required answer_array_required response_array_required internal_error answerable);
 
 sub correct {
    return 'correct';
@@ -99,19 +99,8 @@ sub response_array_required {
    return 'response_array_required';
 }
 
-
-sub tries_charged {
-   my ($code)=@_;
-   if (($code eq &correct()) || ($code eq &incorrect())) {
-      return 1;
-   }
-   return 0; 
-}
-
-sub get_credit {
-   my ($code)=@_;
-   if ($code eq &correct()) { return 1; }
-   return 0;
+sub answerable {
+   return 'answerable';
 }
 
 1;
