@@ -227,6 +227,7 @@ sub end_numericalresponse_grade {
 #
 # This evaluates the numerical responses, seeing which ones apply
 # "responses" can be the most recent input, or previous ones 
+# "outcome" is the response's correctness
 #
 sub evaluate_numericalhints {
    my ($parser,$env,$responses,$outcome,$id,$stack,$safe)=@_;
@@ -238,7 +239,9 @@ sub evaluate_numericalhints {
                                                               $hintcondition->{'args'}->{'mode'},
                                                               $hintcondition->{'args'}->{'or'});
 # Set it for later
-         &Apache::xml_problem_tags::hints::set_hints($hintcondition->{'args'}->{'name'},($hout eq &correct()),$stack);
+         &Apache::xml_problem_tags::hints::set_hints($hintcondition->{'args'}->{'name'},($hout eq &correct()),
+                                                                                        ($outcome eq &correct()),
+                                                                                        $stack);
       } elsif ($hintcondition->{'name'} eq 'numericalhinttest') {
 # Retrieve the test attribute (not preevaluated)
          my $test=$hintcondition->{'args'}->{'test'};
@@ -248,7 +251,9 @@ sub evaluate_numericalhints {
          my ($merr,$mres)=&Apache::lc_math_parser::evaluate_in_parser($parser,$env,
                                                         &Apache::lc_asset_safeeval::texteval($safe,$test));
          unless ($merr) {
-            &Apache::xml_problem_tags::hints::set_hints($hintcondition->{'args'}->{'name'},$mres,$stack);
+            &Apache::xml_problem_tags::hints::set_hints($hintcondition->{'args'}->{'name'},$mres,
+                                                                                           ($outcome eq &correct()),
+                                                                                           $stack);
          }
       } elsif ($hintcondition->{'name'} eq 'numericalhintscript') {
 # Calculate <perlevalscript> in safe space
@@ -256,7 +261,9 @@ sub evaluate_numericalhints {
          unless ($merr) {
             my ($pres,$perr)=&Apache::lc_asset_safeeval::responseeval($safe,$stack->{'perl'}->{'script'},$mres);
             unless ($perr) {
-               &Apache::xml_problem_tags::hints::set_hints($hintcondition->{'args'}->{'name'},$pres,$stack);
+               &Apache::xml_problem_tags::hints::set_hints($hintcondition->{'args'}->{'name'},$pres,
+                                                                                              ($outcome eq &correct()),
+                                                                                              $stack);
             }
          }
       }

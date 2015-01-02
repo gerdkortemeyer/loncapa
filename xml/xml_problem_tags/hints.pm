@@ -58,13 +58,19 @@ sub end_hintgroup_html {
 # Now for real
    foreach my $hint (@{$stack->{'hintgroup'}}) {
       if ($found) {
-         if ($stack->{'hint_conditions'}->{$problemid}->{$hint->{'on'}}) {
-            $output.=&Apache::lc_asset_xml::get_redirected_output($hint->{'id'},$stack);
+         if ($stack->{'hint_conditions'}->{$problemid}->{$hint->{'on'}}->{'hintapplies'}) {
+            if (($hint->{'showoncorrect'}) || 
+                (!$stack->{'hint_conditions'}->{$problemid}->{$hint->{'on'}}->{'responsecorrect'})) {
+               $output.=&Apache::lc_asset_xml::get_redirected_output($hint->{'id'},$stack);
+            }
          }
       } else {
 # We are displaying the default hint(s)
          if ($hint->{'default'}) {
-            $output.=&Apache::lc_asset_xml::get_redirected_output($hint->{'id'},$stack);
+            if (($hint->{'showoncorrect'}) ||     
+                (!$stack->{'hint_conditions'}->{$problemid}->{$hint->{'on'}}->{'responsecorrect'})) {
+               $output.=&Apache::lc_asset_xml::get_redirected_output($hint->{'id'},$stack);
+            }
          }
       }
    }
@@ -104,9 +110,10 @@ sub end_hint_html {
 # Name of hint, value of answer, stack
 #
 sub set_hints {
-   my ($name,$value,$stack)=@_;
+   my ($name,$value,$outcome,$stack)=@_;
    if ($value) {
-      $stack->{'hint_conditions'}->{&Apache::lc_asset_xml::tag_attribute('problem','id',$stack)}->{$name}=1;
+      $stack->{'hint_conditions'}->{&Apache::lc_asset_xml::tag_attribute('problem','id',$stack)}->{$name}=
+          { 'hintapplies' => 1, 'responsecorrect' => $outcome };
    }
 }
 
