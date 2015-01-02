@@ -166,14 +166,20 @@ sub end_numericalresponse_grade {
    my $customunits=&Apache::lc_asset_xml::cascade_parameter('customunits',$stack);
 # Get ourselves a numerical parser and environment
    my ($parser,$env)=&Apache::lc_math_parser::new_numerical_parser($customunits);
-# Did we get anything?
+# Get the old response details
+   my $responsedetails=&Apache::lc_asset_xml::get_response_details($id,$stack);
+# Did we get anything new?
    unless ($stack->{'context'}->{'newsubmission'}) {
 # Nope? Store that there was nothing
       &Apache::lc_asset_xml::add_response_grade($id,&no_valid_response(),undef,undef,$stack);
 # ... but we need to bring up the old hints
       my $old_responses=&evaluate_old_responses($stack,$mode);
       if ($old_responses=~/\S/s) {
-         &evaluate_numericalhints($parser,$env,$old_responses,$id,$stack,$safe);
+         my $old_outcome=undef;
+         if (ref($responsedetails) eq 'ARRAY') {
+            $old_outcome=$responsedetails->[-1]->{'status'};
+         }
+         &evaluate_numericalhints($parser,$env,$old_responses,$old_outcome,$id,$stack,$safe);
       }
       return;
    }
@@ -185,8 +191,6 @@ sub end_numericalresponse_grade {
    my $expected=&evaluate_answer($stack,$mode);
 # Do the actual grading
    my ($outcome,$message)=&answertest($parser,$env,$responses,$expected,$tolerance,$mode,$or);
-# Did we have this answer before?
-   my $responsedetails=&Apache::lc_asset_xml::get_response_details($id,$stack);
 # See if we had this before and came to the same conclusion
    my $previously=0;
    if (ref($responsedetails) eq 'ARRAY') {
@@ -217,7 +221,7 @@ sub end_numericalresponse_grade {
 # Put that on the grading stack to look at end_part_grade
    &Apache::lc_asset_xml::add_response_grade($id,$outcome,$message,$previously,$stack);
 # Finally, deal with the numerical hints
-   &evaluate_numericalhints($parser,$env,$responses,$id,$stack,$safe);
+   &evaluate_numericalhints($parser,$env,$responses,$outcome,$id,$stack,$safe);
 }
 
 #
@@ -225,7 +229,7 @@ sub end_numericalresponse_grade {
 # "responses" can be the most recent input, or previous ones 
 #
 sub evaluate_numericalhints {
-   my ($parser,$env,$responses,$id,$stack,$safe)=@_;
+   my ($parser,$env,$responses,$outcome,$id,$stack,$safe)=@_;
    foreach my $hintcondition (@{$stack->{'response_hints'}->{$id}}) {
       if ($hintcondition->{'name'} eq 'numericalhintcondition') {
 # Determine the value of the hint condition
