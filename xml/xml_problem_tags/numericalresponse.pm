@@ -167,7 +167,7 @@ sub end_numericalresponse_grade {
 # Get ourselves a numerical parser and environment
    my ($parser,$env)=&Apache::lc_math_parser::new_numerical_parser($customunits);
 # Did we get anything?
-   unless ($responses=~/\S/s) {
+   unless ($stack->{'context'}->{'newsubmission'}) {
 # Nope? Store that there was nothing
       &Apache::lc_asset_xml::add_response_grade($id,&no_valid_response(),undef,undef,$stack);
 # ... but we need to bring up the old hints

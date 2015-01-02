@@ -511,6 +511,7 @@ sub handler {
            &Apache::lc_entity_sessions::user_entity_domain();
       ($context->{'course'}->{'entity'},$context->{'course'}->{'domain'})=
            &Apache::lc_entity_sessions::course_entity_domain();
+      $context->{'newsubmission'}=$content{'newsubmission'};
       my $full_url=$r->uri;
       $context->{'asset'}->{'entity'}=&Apache::lc_entity_urls::url_to_entity($full_url);
       ($context->{'asset'}->{'version_type'},
