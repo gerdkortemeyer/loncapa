@@ -108,12 +108,12 @@ sub open_tag_attribute {
 #
 sub open_tag_switch {
    my ($name,$stack)=@_;
-   return (&open_tag_attribute($name,$stack)=~/^(\Q$name\E|y|yes|1|on|true)$/i);
+   return ((&open_tag_attribute($name,$stack)=~/^(\Q$name\E|y|yes|1|on|true)$/i)?1:0);
 }
 
 sub cascade_switch {
    my ($name,$stack)=@_;
-   return (&cascade_attribute($name,$stack)=~/^(\Q$name\E|y|yes|1|on|true)$/i);
+   return ((&cascade_attribute($name,$stack)=~/^(\Q$name\E|y|yes|1|on|true)$/i)?1:0);
 }
 
 #

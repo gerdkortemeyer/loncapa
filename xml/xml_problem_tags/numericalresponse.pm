@@ -170,9 +170,11 @@ sub end_numericalresponse_grade {
    unless ($responses=~/\S/s) {
 # Nope? Store that there was nothing
       &Apache::lc_asset_xml::add_response_grade($id,&no_valid_response(),undef,undef,$stack);
-#FIXME: but we need to bring up the old hints
+# ... but we need to bring up the old hints
       my $old_responses=&evaluate_old_responses($stack,$mode);
-      &evaluate_numericalhints($parser,$env,$old_responses,$id,$stack,$safe);
+      if ($old_responses=~/\S/s) {
+         &evaluate_numericalhints($parser,$env,$old_responses,$id,$stack,$safe);
+      }
       return;
    }
 # Get tolerance parameter
