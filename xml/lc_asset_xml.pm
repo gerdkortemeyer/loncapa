@@ -186,7 +186,9 @@ sub collect_response_inputs {
    my ($stack)=@_;
    my $answers=[];
    foreach my $response (@{$stack->{'response_inputs'}->{$stack->{'response_id'}}}) {
-       push(@{$answers},$stack->{'content'}->{$response->{'args'}->{'id'}});
+       if (defined($stack->{'content'}->{$response->{'args'}->{'id'}})) {
+          push(@{$answers},$stack->{'content'}->{$response->{'args'}->{'id'}});
+       }
    }
    return $answers;
 }

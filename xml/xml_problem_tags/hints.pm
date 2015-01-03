@@ -49,7 +49,7 @@ sub end_hintgroup_html {
    my $found=0;
    foreach my $hint (@{$stack->{'hintgroup'}}) {
       if ($hint->{'on'}=~/\S/s) {
-         if ($stack->{'hint_conditions'}->{$problemid}->{$hint->{'on'}}) {
+         if ($stack->{'hint_conditions'}->{$problemid}->{$hint->{'on'}}->{'hintapplies'}) {
             $found=1;
             last;
          }
@@ -111,10 +111,10 @@ sub end_hint_html {
 #
 sub set_hints {
    my ($name,$value,$outcome,$stack)=@_;
-   if ($value) {
-      $stack->{'hint_conditions'}->{&Apache::lc_asset_xml::tag_attribute('problem','id',$stack)}->{$name}=
-          { 'hintapplies' => 1, 'responsecorrect' => $outcome };
-   }
+   if ($value) { $value=1; } else { $value=0; }
+   if ($outcome) { $outcome=1; } else { $outcome=0; } 
+   $stack->{'hint_conditions'}->{&Apache::lc_asset_xml::tag_attribute('problem','id',$stack)}->{$name}=
+      { 'hintapplies' => $value, 'responsecorrect' => $outcome };
 }
 
 1;
