@@ -262,6 +262,22 @@ h3 {
    display:none;
 }
 
+.lcshowanswertext {
+    font-family: monospace;
+    background-color: #D6FF5C;
+    padding: 2px;
+    margin: 2px;
+}
+
+.lcshowenteredtext {
+    font-family: monospace;
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+    margin: 2px;
+    padding: 2px;
+}
+
 #lcprogressbar {
       border-style:solid;
       border-color: black;

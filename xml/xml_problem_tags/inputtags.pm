@@ -28,6 +28,7 @@ use Apache::lc_entity_sessions();
 use Apache::lc_entity_users();
 use Apache::lc_xml_forms();
 use Apache::lc_asset_xml();
+use Apache::lc_problem_const;
 
 use Apache::lc_logs;
 
@@ -47,24 +48,55 @@ sub textboxmessaging {
    }
 }
 
+sub show_entered_text {
+   my ($value)=@_;
+   if ($value=~/\S/s) {
+      return '<span class="lcshowenteredtext">'.$value.'</span>';
+   } else {
+      return '<span class="lcshowenteredtext">&nbsp;&nbsp;</span>';
+   }
+}
+
+sub show_answer_text {
+   my ($value)=@_;
+   if ($value=~/\S/s) {
+      return '<span class="lcshowanswertext">'.$value.'</span>';
+   } else {
+      return '<span class="lcshowanswertext">&nbsp;&nbsp;</span>';
+   }
+}
+
 sub start_textline_html {
    my ($p,$safe,$stack,$token)=@_;
    &Apache::lc_asset_xml::add_response_input($stack);
+# Pick up some parameters that are the same for all flavors of textline
    my $size=&Apache::lc_asset_xml::open_tag_attribute('size',$stack);
    unless ($size) { $size=20; }
    my $hidden=&Apache::lc_asset_xml::open_tag_switch('hidden',$stack);
+# Get previously entered answers
    my $responsedetails=&Apache::lc_asset_xml::get_response_details($token->[2]->{'id'},$stack);
+   my $value='';
+   if (ref($responsedetails) eq 'ARRAY') {
+      $value=$responsedetails->[-1]->{'value'};
+   } else {
+      $value=&Apache::lc_asset_xml::open_tag_attribute('value',$stack);
+   }
+# Closed? Then just show what was entered before
+   if ($stack->{'context'}->{'state'} eq &closed()) {
+      return &show_entered_text($value);
+   }
+# Now deal with the different flavors for different responses
    if (&Apache::lc_asset_xml::enclosed_in('numericalresponse',$stack)) {
+# Deal with show_answer. Challenge: multiple fields
+      if ($stack->{'context'}->{'state'} eq &show_answer()) {
+         my $output=&show_entered_text($value);
+#FIXME: figure out answer
+         return $output;
+      } 
+# We are answerable!
       my $data_constants=&Apache::lc_asset_xml::open_tag_attribute('constants',$stack);
       unless ($data_constants) {
          $data_constants='c, pi, e, hbar, amu, G';
-      }
-      my $value='';
-      if (ref($responsedetails) eq 'ARRAY') {
-#FIXME: more than one input field
-         $value=$responsedetails->[-1]->{'value'};
-      } else {
-         $value=&Apache::lc_asset_xml::open_tag_attribute('value',$stack);
       }
       my $responsegrade=&Apache::lc_asset_xml::get_response_grade('numericalresponse',$stack);
       return
@@ -74,6 +106,7 @@ sub start_textline_html {
  &Apache::lc_xml_utils::form_escape($value).'" />'.
  &textboxmessaging($token->[2]->{'id'},$responsegrade->{'status'},$responsegrade->{'message'});
    }
+# Unknown flavor
    return '';
 }
 
