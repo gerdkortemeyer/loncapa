@@ -49,9 +49,10 @@ sub textboxmessaging {
 }
 
 sub show_entered_text {
-   my ($value)=@_;
+   my ($id,$value)=@_;
    if ($value=~/\S/s) {
-      return '<span class="lcshowenteredtext">'.$value.'</span>';
+      return '<span class="lcshowenteredtext">'.$value.'</span>'.
+             &Apache::lc_xml_forms::hidden_field($id,$value);
    } else {
       return '<span class="lcshowenteredtext">&nbsp;&nbsp;</span>';
    }
@@ -83,14 +84,22 @@ sub start_textline_html {
    }
 # Closed? Then just show what was entered before
    if ($stack->{'context'}->{'state'} eq &closed()) {
-      return &show_entered_text($value);
+      return &show_entered_text($token->[2]->{'id'},$value);
    }
+# Get response status
+   my $correct=0;
+#FIXME: debug
+#($stack->{'part_status'} eq &correct());
+   my $showanswer=($stack->{'context'}->{'state'} eq &show_answer());
 # Now deal with the different flavors for different responses
    if (&Apache::lc_asset_xml::enclosed_in('numericalresponse',$stack)) {
 # Deal with show_answer. Challenge: multiple fields
-      if ($stack->{'context'}->{'state'} eq &show_answer()) {
-         my $output=&show_entered_text($value);
-#FIXME: figure out answer
+      if (($showanswer) || ($correct)) {
+         my $output=&show_entered_text($token->[2]->{'id'},$value);
+         if ($showanswer) {
+#FIXME
+            $output.=&show_answer_text('Answer');
+         }
          return $output;
       } 
 # We are answerable!

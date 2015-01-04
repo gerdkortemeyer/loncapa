@@ -63,10 +63,23 @@ sub end_problem_grade {
 
 sub start_part_html {
    my ($p,$safe,$stack,$token)=@_;
+# Remember what part we are
    $stack->{'context'}->{'asset'}->{'partid'}=$token->[2]->{'id'};
+# Load the data for the part
    &load_part_data($stack);
+# Figure out if we are correct for the inputs
+   $stack->{'part_status'}=undef;
+   if (ref($stack->{'scoredata'}) eq 'ARRAY') {
+      foreach my $partdata (@{$stack->{'scoredata'}}) {
+         if ($partdata->[0] eq $token->[2]->{'id'}) {
+            $stack->{'part_status'}=$partdata->[5];
+         }
+      }
+   }
+# Set the random see for the part
    &Apache::lc_random::set_context_random_seed(&Apache::lc_random::contextseed($stack->{'context'},
                                                                                $token->[2]->{'id'}));
+# Produce the output
    return '<div class="lcpartdiv" id="'.$token->[2]->{'id'}.'">'.
           '<form id="'.$token->[2]->{'id'}.'_form" name="'.$token->[2]->{'id'}.'_form" class="lcpartform">'.
           &Apache::lc_xml_forms::hidden_field('assetid',$stack->{'context'}->{'asset'}->{'assetid'}).
