@@ -2370,7 +2370,7 @@ sub fix_paragraphs_inside {
           $p = undef;
         }
         push(@new_children, $child);
-      } elsif ($child->nodeType == XML_TEXT_NODE && $child->nodeValue =~ /^\s*$/) {
+      } elsif ($child->nodeType == XML_TEXT_NODE && $child->nodeValue =~ /^[ \t\f\n\r]*$/) {
         # blank text: add to paragraph if there is one and there is a next node, otherwise keep out of the paragraph
         if (defined $p && defined $next) {
           $p->appendChild($child);
