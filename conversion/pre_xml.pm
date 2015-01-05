@@ -152,8 +152,9 @@ sub remove_control_characters {
 }
 
 # replaces <display>&web()</display> and <display>&tex()</display> whenever possible
-# (this way we don't have to parse more HTML in post_xml)
-# see post_xml->replace_tex_and_web and replace_web_and_tex_subs for explanations
+# (this way we don't have to parse more HTML in post_xml).
+# see post_xml->replace_tex_and_web and replace_web_and_tex_subs for explanations.
+# Also removes things like <tex>\vspace*{-2mm}</tex> .
 sub replace_display_web_and_tex {
   my ($lines) = @_;
   foreach my $line (@{$lines}) {
@@ -165,6 +166,7 @@ sub replace_display_web_and_tex {
     # added this one which is not in post_xml:
     # removing <display>&tex('\vskip .0[0-9]*in','')</display>
     $line =~ s/<display>\&tex\(['"]\\vskip \.0[0-9]*in['"] ?, ?''\)<\/display>//g;
+    $line =~ s/<tex>\\vspace\*?\{-?[1-9]mm\}<\/tex>//g;
   }
 }
 
