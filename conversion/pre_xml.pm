@@ -166,7 +166,7 @@ sub replace_display_web_and_tex {
     # added this one which is not in post_xml:
     # removing <display>&tex('\vskip .0[0-9]*in','')</display>
     $line =~ s/<display>\&tex\(['"]\\vskip \.0[0-9]*in['"] ?, ?''\)<\/display>//g;
-    $line =~ s/<tex>\\vspace\*?\{-?[1-9]mm\}<\/tex>//g;
+    $line =~ s/<tex>(?:\\strut)?\\vspace\*?\{-?[1-9]mm\}<\/tex>//g;
   }
 }
 
