@@ -2370,7 +2370,14 @@ sub fix_paragraphs_inside {
           $p = undef;
         }
         push(@new_children, $child);
-      } elsif (($child->nodeType == XML_TEXT_NODE && $child->nodeValue !~ /^\s*$/) ||
+      } elsif ($child->nodeType == XML_TEXT_NODE && $child->nodeValue =~ /^\s*$/) {
+        # blank text: add to paragraph if there is one and there is a next node, otherwise keep out of the paragraph
+        if (defined $p && defined $next) {
+          $p->appendChild($child);
+        } else {
+          push(@new_children, $child);
+        }
+      } elsif ($child->nodeType == XML_TEXT_NODE ||
             $child->nodeType == XML_ELEMENT_NODE || $child->nodeType == XML_CDATA_SECTION_NODE ||
             $child->nodeType == XML_ENTITY_NODE || $child->nodeType == XML_ENTITY_REF_NODE) {
         # these children require a paragraph
@@ -2379,7 +2386,7 @@ sub fix_paragraphs_inside {
         }
         $p->appendChild($child);
       } else {
-        # these children do not require a paragraph (blank text, XML comments, PI)
+        # these children do not require a paragraph (XML comments, PI)
         # -> do not move them in a new paragraph
         if (defined $p) {
           push(@new_children, $p);
