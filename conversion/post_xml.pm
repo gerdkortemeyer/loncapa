@@ -2202,6 +2202,15 @@ sub change_hints {
           # remove a single blanck child
           $child->removeChild($child->firstChild);
         }
+        if ($child->nodeName eq 'numericalhintcondition' && defined $child->getAttribute('answer')) {
+          # rename numericalhint/@answer numericalhintcondition/@value
+          $child->setAttribute('value', $child->getAttribute('answer'));
+          $child->removeAttribute('answer');
+        }
+        if ($child->nodeName eq 'numericalhintcondition' && defined $child->getAttribute('format')) {
+          # remove numericalhint/@format
+          $child->removeAttribute('format');
+        }
         $move_conditions_after->parentNode->insertAfter($child, $move_conditions_after);
         $move_conditions_after = $child;
       } elsif ($child->nodeName eq 'hintpart') {
