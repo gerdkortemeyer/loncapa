@@ -129,7 +129,6 @@ sub courseselect {
 #
 sub courselist {
    my ($type)=@_;
-   my @courselist=&Apache::lc_entity_courses::courselist(&Apache::lc_entity_sessions::course_entity_domain());
    my $output='<thead>';
    $output.='<tr><td colspan="17">'.
             '<a href="#" class="lcselecttoggle" onClick="select_all()">'.&mt('Select All').'</a>'.
