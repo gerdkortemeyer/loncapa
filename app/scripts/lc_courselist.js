@@ -9,6 +9,7 @@ $(document).ready(function() {
     } );
 
     $('#courseuserlist').dataTable( {
+      "sAjaxSource" : '/courselist',
       "bStateSave": true,
       "oLanguage" : {
          "sUrl" : "/datatable_i14n"
