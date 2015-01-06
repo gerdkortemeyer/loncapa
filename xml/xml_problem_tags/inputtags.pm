@@ -89,7 +89,7 @@ sub start_textline_html {
 # Get response status
    my $correct=0;
 #FIXME: debug
-#($stack->{'part_status'} eq &correct());
+#($stack->{'context'}->{'part_status'} eq &correct());
    my $showanswer=($stack->{'context'}->{'state'} eq &show_answer());
 # Now deal with the different flavors for different responses
    if (&Apache::lc_asset_xml::enclosed_in('numericalresponse',$stack)) {

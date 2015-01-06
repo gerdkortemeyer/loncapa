@@ -68,11 +68,11 @@ sub start_part_html {
 # Load the data for the part
    &load_part_data($stack);
 # Figure out if we are correct for the inputs
-   $stack->{'part_status'}=undef;
+   $stack->{'context'}->{'part_status'}=undef;
    if (ref($stack->{'scoredata'}) eq 'ARRAY') {
       foreach my $partdata (@{$stack->{'scoredata'}}) {
          if ($partdata->[0] eq $token->[2]->{'id'}) {
-            $stack->{'part_status'}=$partdata->[5];
+            $stack->{'context'}->{'part_status'}=$partdata->[5];
          }
       }
    }
