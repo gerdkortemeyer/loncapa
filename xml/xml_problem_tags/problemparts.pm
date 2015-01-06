@@ -87,7 +87,6 @@ sub start_part_html {
           '<form id="'.$token->[2]->{'id'}.'_form" name="'.$token->[2]->{'id'}.'_form" class="lcpartform">'.
           &Apache::lc_xml_forms::hidden_field('assetid',$stack->{'context'}->{'asset'}->{'assetid'}).
           &Apache::lc_xml_forms::hidden_field('partid',$token->[2]->{'id'}).
-          &Apache::lc_xml_forms::hidden_field('problemid',&Apache::lc_asset_xml::tag_attribute('problem','id',$stack)).
           &Apache::lc_xml_forms::hidden_field('newsubmission',1);
 }
 

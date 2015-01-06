@@ -522,7 +522,6 @@ sub handler {
        $context->{'asset'}->{'author'},
        $context->{'asset'}->{'url'})=&Apache::lc_entity_urls::split_url($full_url);
       $context->{'asset'}->{'assetid'}=$content{'assetid'};
-      $context->{'asset'}->{'problemid'}=$content{'problemid'};
       my $outputid=undef;
       if ($content{'outputid'}=~/\w/) { $outputid=$content{'outputid'}; }
       $r->print((&target_render($fn,['analysis','grade','html'],{},\%content,$context,$outputid))[0]);
