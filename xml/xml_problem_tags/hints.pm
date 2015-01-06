@@ -68,7 +68,7 @@ sub end_hintgroup_html {
 # We are displaying the default hint(s)
          if ($hint->{'default'}) {
             if (($hint->{'showoncorrect'}) ||     
-                ($stack->{'context'}->{'part_status'} ne &correct())) {
+                ($stack->{'context'}->{'part_status'}->{'outcome'} ne &correct())) {
                $output.=&Apache::lc_asset_xml::get_redirected_output($hint->{'id'},$stack);
             }
          }

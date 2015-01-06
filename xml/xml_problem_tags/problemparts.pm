@@ -68,11 +68,14 @@ sub start_part_html {
 # Load the data for the part
    &load_part_data($stack);
 # Figure out if we are correct for the inputs
-   $stack->{'context'}->{'part_status'}=undef;
+   $stack->{'context'}->{'part_status'}={};
    if (ref($stack->{'scoredata'}) eq 'ARRAY') {
       foreach my $partdata (@{$stack->{'scoredata'}}) {
          if ($partdata->[0] eq $token->[2]->{'id'}) {
-            $stack->{'context'}->{'part_status'}=$partdata->[5];
+            $stack->{'context'}->{'part_status'}->{'outcome'}=$partdata->[5];
+            $stack->{'context'}->{'part_status'}->{'countedtries'}=$partdata->[4];
+            $stack->{'context'}->{'part_status'}->{'totaltries'}=$partdata->[3];
+
          }
       }
    }
@@ -93,19 +96,6 @@ sub end_part_html {
    &Apache::lc_random::popseed();
    my $problemid=&Apache::lc_asset_xml::tag_attribute('problem','id',$stack);
    my $partid=&Apache::lc_asset_xml::open_tag_attribute('id',$stack);
-# Check our state
-   my $status=undef;
-   my $countedtries=0;
-   my $totaltries=0;
-   if (ref($stack->{'scoredata'}) eq 'ARRAY') {
-      foreach my $partdata (@{$stack->{'scoredata'}}) {
-         if ($partdata->[0] eq $partid) {
-            $status=$partdata->[5];
-            $countedtries=$partdata->[4];
-            $totaltries=$partdata->[3];
-         }
-      }
-   }
    my $output='';
 #FIXME: out of tries, etc, if(1) - debug
    if (1) {
@@ -115,15 +105,15 @@ sub end_part_html {
    if (1) {
 #FIXME: more statusses possible
       $output.="\n<div class='lcpartfeedback'>\n";
-      if ($status eq 'correct') {
+      if ($stack->{'context'}->{'part_status'}->{'outcome'}  eq 'correct') {
          $output.="<div class='lccorrectpart'><span class='lcpartfeedbackmessage'>".&mt("Correct.");
-      } elsif ($status eq 'incorrect') {
+      } elsif ($stack->{'context'}->{'part_status'}->{'outcome'} eq 'incorrect') {
          $output.="<div class='lcincorrectpart'><span class='lcpartfeedbackmessage'>".&mt("Incorrect.");
       } else {
          $output.="<div class='lcinvalidpart'><span class='lcpartfeedbackmessage'>".&mt("Ungraded.");
       }
-      $output.='</span><br />'.&mt("Total tries: [_1]",$totaltries);
-      $output.='<br />'.&mt("Counted tries: [_1]",$countedtries);
+      $output.='</span><br />'.&mt("Total tries: [_1]",$stack->{'context'}->{'part_status'}->{'totaltries'});
+      $output.='<br />'.&mt("Counted tries: [_1]",$stack->{'context'}->{'part_status'}->{'countedtries'});
       $output.="\n</div></div>\n";
    }
    $output.='</form><script>attach_submit_button("'.$problemid.'","'.$partid.'")</script></div>';
