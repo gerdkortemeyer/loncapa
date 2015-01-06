@@ -1,5 +1,5 @@
 $(document).ready(function() {
-     $('#loginbutton').click(function() {
+     var submit_login = function() {
          var data = $('#loginform').serialize();
          $.ajax({
              url: '/login',
@@ -45,5 +45,14 @@ $(document).ready(function() {
                 $('.lcerror').show();
              }
          });         
+     }
+     $('#loginbutton').click(function(e) {
+         submit_login();
+     });
+     $('#username, #password').keypress(function(e) {
+         if (e.which == 13) {
+             submit_login();
+             return false;
+         }
      });
 });
