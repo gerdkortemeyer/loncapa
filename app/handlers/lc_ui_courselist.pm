@@ -87,11 +87,8 @@ sub json_courselist {
       }
 # Actually produce output
       push(@{$output->{'aaData'}},
-            [ &encode_entities(
-               &Apache::lc_json_utils::perl_to_json({entity => $record->{'entity'}, domain => $record->{'domain'}, 
+            [ &Apache::lc_json_utils::perl_to_json({entity => $record->{'entity'}, domain => $record->{'domain'}, 
                                                      role => $record->{'role'}, section => $record->{'section'}}),
-               '\W'
-              ),
               $record->{'firstname'},
               $record->{'middlename'},
               $record->{'lastname'},

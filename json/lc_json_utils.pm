@@ -35,7 +35,9 @@ sub json_to_perl {
 # Output: JSON text
 #
 sub perl_to_json {
-   return JSON::DWIW->new->to_json(@_[0]);
+   # Called in list context, to_json returns a list, so we need to use scalar context to get a string.
+   my $text = JSON::DWIW->new->to_json(@_[0]);
+   return $text;
 }
 
 1;
