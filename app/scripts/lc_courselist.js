@@ -1,21 +1,21 @@
 $(document).ready(function() {
-
-    $('#courseuserlist tr').click( function() {
-                if ( $(this).hasClass('row_selected') ) {
-                        $(this).removeClass('row_selected');
-                } else {
-                        $(this).addClass('row_selected');
-                }
-    } );
-
-    $('#courseuserlist').dataTable( {
+    
+    var dtable;
+    dtable = $('#courseuserlist').dataTable( {
       "sAjaxSource" : '/courselist',
       "bStateSave": true,
       "oLanguage" : {
          "sUrl" : "/datatable_i14n"
       },
      "fnInitComplete": function(oSettings, json) {
-         adjust_framesize();
+        adjust_framesize();
+        $( dtable.fnGetNodes() ).click( function () {
+            if ( $(this).hasClass('row_selected') ) {
+                $(this).removeClass('row_selected');
+            } else {
+                $(this).addClass('row_selected');
+            }
+        } );
       },
       "aoColumns" : [
          { "bVisible": false },
