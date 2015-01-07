@@ -97,7 +97,7 @@ sub end_part_html {
    my $partid=&Apache::lc_asset_xml::open_tag_attribute('id',$stack);
    my $output='';
 #FIXME: out of tries, etc, if(1) - debug
-   if (1) {
+   if ($stack->{'context'}->{'state'} eq &answerable()) {
       $output.='<p>'.&Apache::lc_xml_forms::triggerbutton($partid.'_submit_button','Submit').'</p>';
    }
 #FIXME: if feedback is off, don't say anything
