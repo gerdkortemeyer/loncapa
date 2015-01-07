@@ -64,8 +64,8 @@ sub convert_dir {
       push(@failures, @$new_failures);
     } elsif (-f $pathname) {
       # check that the file ends in .problem, .exam, .survey, .html or .htm but not .number.* or .lc
-      if (($pathname =~ /\.problem$/ || $pathname =~ /\.exam$/ || $pathname =~ /\.survey$/ ||
-          $pathname =~ /\.html$/ || $pathname =~ /\.htm$/) &&
+      if (($pathname =~ /\.problem$/i || $pathname =~ /\.exam$/i || $pathname =~ /\.survey$/i ||
+          $pathname =~ /\.html$/i || $pathname =~ /\.htm$/i || $pathname =~ /\.library$/i) &&
           $pathname !~ /\.[0-9]+\.[a-z]+$/ && $pathname !~ /\.lc$/) {
         try {
           convert_file($pathname);

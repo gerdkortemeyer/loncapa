@@ -37,7 +37,7 @@ sub pre_xml {
   
   remove_doctype($lines);
   
-  add_root($lines);
+  add_root($lines, $filepath);
   
   return(\join('', @$lines));
 }
@@ -167,6 +167,7 @@ sub replace_display_web_and_tex {
     # removing <display>&tex('\vskip .0[0-9]*in','')</display>
     $line =~ s/<display>\&tex\(['"]\\vskip \.0[0-9]*in['"] ?, ?''\)<\/display>//g;
     $line =~ s/<tex>(?:\\strut)?\\vspace\*?\{-?[1-9]mm\}<\/tex>//g;
+    $line =~ s/<tex>\\vskip 0?\.[1-9]cm<\/tex>//g;
   }
 }
 
@@ -356,14 +357,25 @@ sub remove_doctype {
 }
 
 
-# Adds a <loncapa> root element, enclosing things outside of the problem element.
+# Adds a loncapa or library root element, enclosing things outside of the problem element.
+# (any extra library element will be removed in post_xml, but this ensures one is added as root if missing).
 sub add_root {
-  my ($lines) = @_;
+  my ($lines, $filepath) = @_;
+  my $root_name;
+  if ($filepath =~ /\.library$/i) {
+    $root_name = 'library';
+  } else {
+    $root_name = 'loncapa';
+  }
   my $line1 = $lines->[0];
+  if ($root_name eq 'library' && $line1 !~ /^\s*<[a-z]/) {
+    # TODO: look at next lines if empty
+    die "this library does not start with a tag, it might be a scriptlib";
+  }
   $line1 =~ s/<\?.*\?>//; # remove any PI, it would cause problems later anyway
-  $line1 = '<loncapa>'.$line1;
+  $line1 = "<$root_name>".$line1;
   $lines->[0] = $line1;
-  $lines->[scalar(@$lines)-1] = $lines->[scalar(@$lines)-1]."</loncapa>";
+  $lines->[scalar(@$lines)-1] = $lines->[scalar(@$lines)-1]."</$root_name>";
 }
 
 
