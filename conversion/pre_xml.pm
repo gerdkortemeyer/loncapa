@@ -367,11 +367,17 @@ sub add_root {
   } else {
     $root_name = 'loncapa';
   }
-  my $line1 = $lines->[0];
-  if ($root_name eq 'library' && $line1 !~ /^\s*<[a-z]/) {
-    # TODO: look at next lines if empty
-    die "this library does not start with a tag, it might be a scriptlib";
+  if ($root_name eq 'library') {
+    foreach my $line (@{$lines}) {
+      if ($line =~ /^\s*<[a-z]/) {
+        last;
+      }
+      if ($line !~ /^\s*$/) {
+        die "this library does not start with a tag, it might be a scriptlib";
+      }
+    }
   }
+  my $line1 = $lines->[0];
   $line1 =~ s/<\?.*\?>//; # remove any PI, it would cause problems later anyway
   $line1 = "<$root_name>".$line1;
   $lines->[0] = $line1;
