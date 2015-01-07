@@ -69,7 +69,6 @@ sub show_answer_text {
 
 sub start_textline_html {
    my ($p,$safe,$stack,$token)=@_;
-   &Apache::lc_asset_xml::add_response_input($stack);
 # Pick up some parameters that are the same for all flavors of textline
    my $size=&Apache::lc_asset_xml::open_tag_attribute('size',$stack);
    unless ($size) { $size=20; }
@@ -88,7 +87,7 @@ sub start_textline_html {
    }
 # Get response status
    my $correct=0;
-#FIXME: debug
+#FIXME: debug - what $correct should be:
 #($stack->{'context'}->{'part_status'}->{'outcome'} eq &correct());
    my $showanswer=($stack->{'context'}->{'state'} eq &show_answer());
 # Now deal with the different flavors for different responses
@@ -97,6 +96,8 @@ sub start_textline_html {
       if (($showanswer) || ($correct)) {
          my $output=&show_entered_text($token->[2]->{'id'},$value);
          if ($showanswer) {
+# How many input fields are there?
+            my $num_inputs=$#{$stack->{'response_inputs'}->{$stack->{'response_id'}}};
 #FIXME
             $output.=&show_answer_text('Answer');
          }
