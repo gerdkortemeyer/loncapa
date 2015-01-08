@@ -42,6 +42,7 @@ sub end_loncapa_html {
 
 sub start_head_html {
    my ($p,$safe,$stack,$token)=@_;
+   $stack->{'context'}->{'header_emitted'}=1;
    return (<<ENDHEADER);
 <head>
 <meta charset="utf-8" />
