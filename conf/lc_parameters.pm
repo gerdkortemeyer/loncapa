@@ -86,7 +86,7 @@ sub lc_meta_detect_langs {
 }
 
 sub lc_match_parser {
-   return "(xml|html|htm|xhtml|xhtm|problem)";
+   return "(xml|html|htm|xhtml|xhtm|problem|lc)";
 } 
 
 1;
