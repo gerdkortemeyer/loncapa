@@ -109,7 +109,7 @@ sub incl_modify_courseusers_finalize {
 # Just do it, there's only one entry!
          if (&changerecord($modifyusers->[0],\%setfields)) {
             $output.=&Apache::lc_xml_utils::success_message('Success.').
-                     '<script>error=0;success=1;followup=0;</script>';
+                     '<script>error=0;success=1;followup=0;back_to_list();</script>';
          } else {
             $output.=&Apache::lc_xml_utils::standard_message('Failure.').
                      '<script>error=0;success=0;followup=0;</script>';

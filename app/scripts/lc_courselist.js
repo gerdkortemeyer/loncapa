@@ -95,12 +95,53 @@ function fnGetSelected() {
 }
 
 function modify_selected() {
-   var selectedUsers=fnGetSelected();
+   var selectedUsers = fnGetSelected();
    if (selectedUsers=='') { return; }
-   document.courseusers.postdata.value=selectedUsers;
-   document.courseusers.method="post";
-   document.courseusers.action="/pages/lc_modify_courselist.html";
-   parent.setbreadcrumbbar('add','modifycourselist','Modify Selected Entries','');
-   parent.breadcrumbbar();
-   document.courseusers.submit();
+    parent.setbreadcrumbbar('add','modifycourselist','Modify Selected Entries','');
+    parent.breadcrumbbar();
+    $('#courselist_page').fadeOut();
+    $('#modify_page').fadeIn();
+    $.ajax({
+        url : '/pages/lc_modify_courselist.html',
+        type: "POST",
+        data : {'postdata': selectedUsers},
+        success: function(data){
+          $('#modify_page').html(data);
+          init_modify_courselist();
+        },
+        complete: function() {
+            adjust_framesize();
+        }
+    });
+}
+
+function update_selected() {
+    var selectedUsers = fnGetSelected();
+    if (selectedUsers == '')
+        return;
+    $.ajax({
+        url: '/courselist',
+        type: 'POST',
+        data: {'postdata': selectedUsers},
+        success: function(data) {
+          var users = data; // already parsed
+          var dtable = $('#courseuserlist').dataTable();
+          var table_data = dtable.fnGetData();
+          for (var i=0; i<users.length; i++) {
+              var user = users[i];
+              var user_ident = user[0];
+              for (var j=0; j<table_data.length; j++) {
+                  var row = table_data[j];
+                  var row_ident = row[0];
+                  if (user_ident == row_ident) {
+                      dtable.fnUpdate(user, j);
+                      break;
+                  }
+              }
+          }
+        },
+        complete: function() {
+            adjust_framesize();
+        }
+    });
 }

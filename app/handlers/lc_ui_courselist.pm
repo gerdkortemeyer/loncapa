@@ -28,96 +28,124 @@ use Apache::lc_ui_utils;
 use Apache::lc_json_utils();
 use Apache::lc_entity_urls();
 use Apache::lc_entity_sessions();
+use Apache::lc_entity_profile();
 use Apache::lc_date_utils();
 use Apache::lc_authorize;
 use Apache::lc_xml_forms();
 use Apache::lc_logs;
 use Data::Dumper;
-use HTML::Entities;
 
-#
-# Returns a JSON string with all course/community participants
-#
-sub json_courselist {
-   my $output;
-   $output->{'aaData'}=[];
-   my @courselist=&Apache::lc_entity_courses::courselist(&Apache::lc_entity_sessions::course_entity_domain());
-   foreach my $record (@courselist) {
+
+# Returns an array of the fields for one record
+sub record_output {
+  my $record = shift;
 # Only show the roles that we are allowed to see
-      unless (&allowed_section('view_role',$record->{'role'},&Apache::lc_entity_sessions::course_entity_domain(),$record->{'section'})) { next; }
+  unless (&allowed_section('view_role',$record->{'role'},&Apache::lc_entity_sessions::course_entity_domain(),$record->{'section'})) { next; }
 # Translate date format for localized viewing and sorting
-      my $display_startdate;
-      my $sort_startdate;
-      if ($record->{'startdate'}) {
-             ($display_startdate,$sort_startdate)=&Apache::lc_ui_localize::locallocaltime(
-                                           &Apache::lc_date_utils::str2num($record->{'startdate'}));
-      } else {
-             $display_startdate=&mt('Never');
-             $sort_startdate=0;
-      }
-      my $display_enddate;
-      my $sort_enddate;
-      if ($record->{'enddate'}) {
-             ($display_enddate,$sort_enddate)=&Apache::lc_ui_localize::locallocaltime(
-                                           &Apache::lc_date_utils::str2num($record->{'enddate'}));
-      } else {
-          $display_enddate=&mt('Never');
-          $sort_enddate=0;
-      }
+  my $display_startdate;
+  my $sort_startdate;
+  if ($record->{'startdate'}) {
+          ($display_startdate,$sort_startdate)=&Apache::lc_ui_localize::locallocaltime(
+                                        &Apache::lc_date_utils::str2num($record->{'startdate'}));
+  } else {
+          $display_startdate=&mt('Never');
+          $sort_startdate=0;
+  }
+  my $display_enddate;
+  my $sort_enddate;
+  if ($record->{'enddate'}) {
+          ($display_enddate,$sort_enddate)=&Apache::lc_ui_localize::locallocaltime(
+                                        &Apache::lc_date_utils::str2num($record->{'enddate'}));
+  } else {
+      $display_enddate=&mt('Never');
+      $sort_enddate=0;
+  }
 # Figure out who put this role into the classlist, and if it will be automatically maintained
-      my $enrollment_mode;
-      my $enrolling_user;
-      if (($record->{'manualenrollentity'}) && ($record->{'manualenrolldomain'})) {
-         $enrollment_mode=&mt('Manual');
-         my ($firstname,$middlename,$lastname,$suffix)=&Apache::lc_entity_users::full_name($record->{'manualenrollentity'},$record->{'manualenrolldomain'});
-         $enrolling_user=$firstname.' '.$lastname;
-      } else {
-         $enrollment_mode=&mt('Automatic');
-         $enrolling_user='';
-      }
+  my $enrollment_mode;
+  my $enrolling_user;
+  if (($record->{'manualenrollentity'}) && ($record->{'manualenrolldomain'})) {
+      $enrollment_mode=&mt('Manual');
+      my ($firstname,$middlename,$lastname,$suffix)=&Apache::lc_entity_users::full_name($record->{'manualenrollentity'},$record->{'manualenrolldomain'});
+      $enrolling_user=$firstname.' '.$lastname;
+  } else {
+      $enrollment_mode=&mt('Automatic');
+      $enrolling_user='';
+  }
 # What is the status of the role? Active now?
-      my $active_status;
-      my $status_code=&Apache::lc_date_utils::status_date_range($sort_startdate,$sort_enddate);
-      if ($status_code eq 'active') {
-         $active_status=&mt('Active');
-      } elsif ($status_code eq 'future') {
-         $active_status=&mt('Future');
-      } else {
-         $active_status=&mt('Past');
-      }
-# Actually produce output
-      push(@{$output->{'aaData'}},
-            [ &Apache::lc_json_utils::perl_to_json({entity => $record->{'entity'}, domain => $record->{'domain'}, 
-                                                     role => $record->{'role'}, section => $record->{'section'}}),
-              $record->{'firstname'},
-              $record->{'middlename'},
-              $record->{'lastname'},
-              $record->{'suffix'},
-              $record->{'username'},
-              $record->{'domain'},
-              $record->{'pid'},
-              &Apache::lc_entity_roles::plaintext($record->{'role'}),
-              $record->{'section'},
-              ($sort_startdate?'<time datetime="'.$sort_startdate.'">':'').
-                $display_startdate.($sort_startdate?'</time>':''),
-              $sort_startdate,
-              ($sort_enddate?'<time datetime="'.$sort_enddate.'">':'').
-                $display_enddate.($sort_enddate?'</time>':''),
-              $sort_enddate,
-              $enrollment_mode,
-              $enrolling_user,
-              $active_status
-            ]
-          );
-   }
-   return &Apache::lc_json_utils::perl_to_json($output);
+  my $active_status;
+  my $status_code=&Apache::lc_date_utils::status_date_range($sort_startdate,$sort_enddate);
+  if ($status_code eq 'active') {
+      $active_status=&mt('Active');
+  } elsif ($status_code eq 'future') {
+      $active_status=&mt('Future');
+  } else {
+      $active_status=&mt('Past');
+  }
+# Return an array of the fields
+  return([ &Apache::lc_json_utils::perl_to_json({entity => $record->{'entity'}, domain => $record->{'domain'}}),
+# removed so that we can use entity,domain as a unique id       role => $record->{'role'}, section => $record->{'section'}}),
+          $record->{'firstname'},
+          $record->{'middlename'},
+          $record->{'lastname'},
+          $record->{'suffix'},
+          $record->{'username'},
+          $record->{'domain'},
+          $record->{'pid'},
+          $record->{'role'} ? &Apache::lc_entity_roles::plaintext($record->{'role'}) : '',
+          $record->{'section'},
+          ($sort_startdate?'<time datetime="'.$sort_startdate.'">':'').
+            $display_startdate.($sort_startdate?'</time>':''),
+          $sort_startdate,
+          ($sort_enddate?'<time datetime="'.$sort_enddate.'">':'').
+            $display_enddate.($sort_enddate?'</time>':''),
+          $sort_enddate,
+          $enrollment_mode,
+          $enrolling_user,
+          $active_status
+        ]);
 }
 
+#
+# Returns a JSON string with all course/community participants, in the aaData property
+#
+sub json_courselist {
+  my $output;
+  $output->{'aaData'}=[];
+  my @courselist=&Apache::lc_entity_courses::courselist(&Apache::lc_entity_sessions::course_entity_domain());
+  foreach my $record (@courselist) {
+    push(@{$output->{'aaData'}}, record_output($record));
+  }
+  return &Apache::lc_json_utils::perl_to_json($output);
+}
+
+# Returns a JSON string with a list of the selected users
+# @param {Array<Hash<string,string>>} users - list of user identifications (entity, domain, role, section)
+sub json_selection {
+  my $users = shift;
+  
+  my $output = [];
+  foreach my $user (@{$users}) {
+    my $profile = &Apache::lc_entity_profile::dump_profile($user->{'entity'}, $user->{'domain'});
+    $profile->{'entity'} = $user->{'entity'};
+    $profile->{'domain'} = $user->{'domain'};
+    # FIXME: missing: role, section...
+    push(@{$output}, record_output($profile));
+  }
+  return &Apache::lc_json_utils::perl_to_json($output);
+}
+
+
 sub handler {
-   my $r = shift;
-   $r->content_type('application/json; charset=utf-8');
-   $r->print(&json_courselist());
-   return OK;
+  my $r = shift;
+  $r->content_type('application/json; charset=utf-8');
+  my %content = &Apache::lc_entity_sessions::posted_content();
+  if ($content{'postdata'}) {
+    my $users = &Apache::lc_json_utils::json_to_perl($content{'postdata'});
+    $r->print(&json_selection($users));
+  } else {
+    $r->print(&json_courselist());
+  }
+  return OK;
 }
 
 1;
