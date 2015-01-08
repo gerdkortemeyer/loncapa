@@ -453,6 +453,14 @@ sub parser {
    }
 # Done with random numbers
    &Apache::lc_random::popseed();
+# Close up the document, if not already
+   if ($target eq 'html') {
+      if ($outputid) {
+         if ($outputactive) { $output.=&Apache::lc_xml_standard::finish_document($p,$safe,$stack,$target); }
+      } else {
+         $output.=&Apache::lc_xml_standard::finish_document($p,$safe,$stack,$target);
+      }
+   }
    return $output;
 }
 

@@ -25,6 +25,7 @@ use Apache::lc_asset_xml();
 use Apache::lc_json_utils();
 use Apache::lc_entity_assessments();
 use Apache::lc_xml_forms();
+use Apache::lc_xml_standard();
 use Apache::lc_logs;
 use Apache::lc_problem_const;
 use Apache::lc_ui_localize;
@@ -42,7 +43,11 @@ our @EXPORT = qw(start_problem_html end_problem_html
 sub start_problem_html {
    my ($p,$safe,$stack,$token)=@_;
    &init_problem($token->[2]->{'id'},$stack);
-   return '<div class="lcproblemdiv" id="'.$token->[2]->{'id'}.'">';
+   return &Apache::lc_xml_standard::begin_html(@_).
+          &Apache::lc_xml_standard::begin_head(@_).
+          &Apache::lc_xml_standard::end_head(@_).
+          &Apache::lc_xml_standard::begin_body(@_).
+          '<div class="lcproblemdiv" id="'.$token->[2]->{'id'}.'">';
 }
 
 sub end_problem_html {
