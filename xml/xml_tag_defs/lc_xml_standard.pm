@@ -24,25 +24,91 @@ use Apache::lc_ui_localize;
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_html_html start_head_html start_script_html start_script_meta start_title_meta start_meta_meta
+our @EXPORT = qw(start_html_html end_html_html
+                 start_body_html end_body_html
+                 start_head_html end_head_html
+                 start_script_html start_script_meta start_title_meta start_meta_meta
                  start_loncapa_html end_loncapa_html);
 
+# Ways to start HTML
+#
 sub start_html_html {
-   my ($p,$safe,$stack,$token)=@_;
-   return '<html lang="'.&mt('language_code').'" dir="'.&mt('language_direction').'">';
+   return &begin_html(@_);
 }
 
 sub start_loncapa_html {
-   return &start_html_html(@_);
+   return &begin_html(@_);
+}
+
+sub begin_html {
+   my ($p,$safe,$stack,$token)=@_;
+   if ($stack->{'context'}->{'start_html_emitted'}) { return ''; }
+   $stack->{'context'}->{'start_html_emitted'}=1;
+   return '<!DOCTYPE html>'."\n".
+          '<html lang="'.&mt('language_code').'" dir="'.&mt('language_direction').'">';
+}
+
+# Ways to end HTML
+#
+
+sub end_html_html {
+   return &end_html(@_);
 }
 
 sub end_loncapa_html {
+   return &end_html(@_);
+}
+
+sub end_html {
+   my ($p,$safe,$stack,$token)=@_;
+   if ($stack->{'context'}->{'end_html_emitted'}) { return ''; }
+   $stack->{'context'}->{'end_html_emitted'}=1;
    return '</html>';
 }
 
-sub start_head_html {
+# Start body
+#
+sub start_body_html {
+   return &begin_body(@_);
+}
+
+sub begin_body {
    my ($p,$safe,$stack,$token)=@_;
-   $stack->{'context'}->{'header_emitted'}=1;
+   if ($stack->{'context'}->{'start_body_emitted'}) { return ''; }
+   $stack->{'context'}->{'start_body_emitted'}=1;
+   return &begin_html(@_).&begin_head(@_).&end_head(@_).'<body>';
+}
+
+# End body
+#
+sub end_body_html {
+   return &end_body(@_);
+}
+
+sub end_body {
+   my ($p,$safe,$stack,$token)=@_;
+   if ($stack->{'context'}->{'end_body_emitted'}) { return ''; }
+   $stack->{'context'}->{'end_body_emitted'}=1;
+   return '</body>';
+}
+
+# Finish HTML document
+#
+sub finish_document {
+   return &end_body(@_).&end_html(@_);
+}
+
+# Start head
+#
+
+sub start_head_html {
+   return &begin_head(@_);
+}
+
+sub begin_head {
+   my ($p,$safe,$stack,$token)=@_;
+   if ($stack->{'context'}->{'start_header_emitted'}) { return ''; }
+   $stack->{'context'}->{'start_header_emitted'}=1;
    return (<<ENDHEADER);
 <head>
 <meta charset="utf-8" />
@@ -67,6 +133,21 @@ sub start_head_html {
 ENDHEADER
 }
 
+# End the header
+#
+sub end_head_html {
+   return &end_head(@_);
+}
+
+sub end_head {
+   my ($p,$safe,$stack,$token)=@_;
+   if ($stack->{'context'}->{'end_header_emitted'}) { return ''; }
+   $stack->{'context'}->{'end_header_emitted'}=1;
+   return '</head>';
+}
+
+# Script tag
+#
 sub start_script_html {
    my ($p,$safe,$stack,$token)=@_;
    unless (($token->[2]->{'src'}=~/\/jquery.*\.js$/) || 
