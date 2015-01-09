@@ -124,12 +124,15 @@ sub json_selection {
   my $users = shift;
   
   my $output = [];
+  my @courselist = &Apache::lc_entity_courses::courselist(&Apache::lc_entity_sessions::course_entity_domain());
+  # NOTE: this is not efficient, getting the right records from a list of entities would be better
   foreach my $user (@{$users}) {
-    my $profile = &Apache::lc_entity_profile::dump_profile($user->{'entity'}, $user->{'domain'});
-    $profile->{'entity'} = $user->{'entity'};
-    $profile->{'domain'} = $user->{'domain'};
-    # FIXME: missing: role, section...
-    push(@{$output}, record_output($profile));
+    foreach my $record (@courselist) {
+      if ($user->{'entity'} eq $record->{'entity'} && $user->{'domain'} eq $record->{'domain'}) {
+        push(@{$output}, record_output($record));
+        last;
+      }
+    }
   }
   return &Apache::lc_json_utils::perl_to_json($output);
 }
