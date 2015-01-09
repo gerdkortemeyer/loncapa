@@ -70,14 +70,14 @@ sub end_numericalresponse_html {
 #
 sub evaluate_answer {
    my ($stack,$mode)=@_;
-   my $answer=&Apache::lc_asset_xml::open_tag_attribute('answer',$stack);
+   my $answer=&Apache::lc_asset_xml::cascade_attribute('answer',$stack);
    unless ($answer=~/\S/) {
-      $answer=&Apache::lc_asset_xml::open_tag_attribute('value',$stack);
+      $answer=&Apache::lc_asset_xml::cascade_attribute('value',$stack);
       unless ($answer=~/\S/) {
          $answer=0;
       }
    }
-   my $unit=&Apache::lc_asset_xml::open_tag_attribute('unit',$stack);
+   my $unit=&Apache::lc_asset_xml::cascade_attribute('unit',$stack);
    unless ($unit) { $unit=''; }
    my $expected='';
    if (ref($answer) eq 'ARRAY') {

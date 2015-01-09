@@ -174,6 +174,7 @@ sub init_response {
 sub init_response_html {
    my ($id,$stack)=@_;
    $stack->{'response_id'}=$id;
+   $stack->{'response_input_count'}=0;
 }
 
 #

@@ -69,6 +69,8 @@ sub show_answer_text {
 
 sub start_textline_html {
    my ($p,$safe,$stack,$token)=@_;
+# Another one!
+   $stack->{'response_input_count'}++;
 # Pick up some parameters that are the same for all flavors of textline
    my $size=&Apache::lc_asset_xml::open_tag_attribute('size',$stack);
    unless ($size) { $size=20; }
@@ -96,10 +98,39 @@ sub start_textline_html {
       if (($showanswer) || ($correct)) {
          my $output=&show_entered_text($token->[2]->{'id'},$value);
          if ($showanswer) {
+            my $ans='';
 # How many input fields are there?
             my $num_inputs=$#{$stack->{'response_inputs'}->{$stack->{'response_id'}}};
-#FIXME
-            $output.=&show_answer_text('Answer');
+            if ($num_inputs>0) {
+# There are several input fields
+               my $answer=&Apache::lc_asset_xml::cascade_attribute('answer',$stack);
+               unless ($answer=~/\S/) { $answer=0; }
+               my $unit=&Apache::lc_asset_xml::cascade_attribute('unit',$stack);
+               unless ($unit) { $unit=''; }
+               if (ref($answer) eq 'ARRAY') {
+# Multidimensional answer given as an array
+                  my $num_answers=$#{$answer};
+                  if ($stack->{'response_input_count'}-1<=$num_answers) {
+                     $ans=$answer->[$stack->{'response_input_count'}-1].($unit?' '.$unit:'');
+                  }
+               } else {
+# Multidimensional answer given as a string
+                  $answer=~s/[\[\{\}\]]//gs;
+                  $ans=(split(/\s*\;\s*/,$answer))[$stack->{'response_input_count'}-1].($unit?' '.$unit:'');
+               }
+            } else {
+# Only one input field, just concatinate
+               my $mode=&Apache::lc_asset_xml::cascade_attribute('mode',$stack);
+               $ans=&Apache::xml_problem_tags::numericalresponse::evaluate_answer($stack,$mode);
+# Eliminate possible spurious parantheses around numerical value
+               $ans=~s/^\s*\((.+)\)\s*([^\)]*)$/$1 $2/;
+               if ($mode eq 'lt') { $ans='<'.$ans; }
+               if ($mode eq 'le') { $ans='<='.$ans; }
+               if ($mode eq 'gt') { $ans='>'.$ans; }
+               if ($mode eq 'ge') { $ans='>='.$ans; }
+               if ($mode eq 'ne') { $ans='<>'.$ans; }
+            }
+            $output.=&show_answer_text($ans);
          }
          return $output;
       } 
