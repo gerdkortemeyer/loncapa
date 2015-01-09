@@ -2,6 +2,8 @@ var followup=0;
 var error=1;
 
 function init_modify_courselist() {
+    followup = 0;
+    error = 1;
     showhide();
     $("#continue").click(function() {
         $.ajax({
