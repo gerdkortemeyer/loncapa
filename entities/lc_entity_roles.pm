@@ -38,7 +38,11 @@ use Data::Dumper;
 
 use Apache2::Const qw(:common :http);
 
-
+#
+# Turns section 007 into 7
+# Make sections lowercase and eliminates spaces
+# Making sure to not generate spurious sections
+#
 sub norm_section {
    my ($section)=@_;
    $section=~s/\s//gs;
@@ -105,6 +109,7 @@ sub local_modify_rolelist {
    if (&Apache::lc_postgresql::role_exists_rolelist($roleentity,$roledomain,$rolesection,
                                            $userentity,$userdomain,
                                            $role)) {
+# This is an existing role, we are changing it (for example, dates, etc)
       &lognotice("Modifying existing role for ($userentity) ($userdomain)");
       if (&Apache::lc_postgresql::modify_rolelist($roleentity,$roledomain,$rolesection,
                                            $userentity,$userdomain, 
@@ -117,6 +122,7 @@ sub local_modify_rolelist {
          return 1;
       }
    } else {
+# This is a new role, did not exist before
       &lognotice("Inserting role for ($userentity) ($userdomain)");
       if (&Apache::lc_postgresql::insert_into_rolelist($roleentity,$roledomain,$rolesection,
                                            $userentity,$userdomain, 
@@ -186,6 +192,11 @@ sub modify_role {
       &logerror("Type ($type) not supported for modifying roles of entity ($entity) domain ($domain)");
       return undef;
    }
+   unless ($role) {
+      &logerror("Modify role must provide role for entity ($entity) domain ($domain)");
+      return undef;
+   }
+# Nothing should be left undefined
    unless ($roledomain) { $roledomain=''; }
    unless ($roleentity) { $roleentity=''; }
    $rolesection=&norm_section($rolesection);
@@ -221,24 +232,30 @@ sub modify_role {
       $rolerecord->{'user'}->{$roledomain}->{$roleentity}->{$role}=$thisrole;
    }
 # Have the complete rolerecord now, which goes to the user
+   my $usersuccess=0;
    if (&Apache::lc_entity_utils::we_are_homeserver($entity,$domain)) {
-      &local_modify_rolerecord($entity,$domain,$rolerecord);
+      $usersuccess=&local_modify_rolerecord($entity,$domain,$rolerecord);
    } else {
-      &remote_modify_rolerecord(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain,$rolerecord);
+      $usersuccess=&remote_modify_rolerecord(&Apache::lc_entity_utils::homeserver($entity,$domain),$entity,$domain,$rolerecord);
+   }
+   unless ($usersuccess) {
+      &logerror("Failure to modify role record for ($entity) ($domain)");
+      return 0;
    }
 # === Deal with the rolelist lookup table according to type
+   my $rolesuccess=0;
    if (($type eq 'system') || ($type eq 'domain')) {
 # This needs to go to the cluster manager
 # Maybe that's us?
       if (&Apache::lc_init_cluster_table::we_are_manager()) {
-         &local_modify_rolelist($roleentity,$roledomain,$rolesection,
+         $rolesuccess=&local_modify_rolelist($roleentity,$roledomain,$rolesection,
                                 $entity,$domain,
                                 $role,
                                 $startdate,$enddate,
                                 $manualenrollentity,$manualenrolldomain);
       } else {
 # No, we are not the cluster manager
-         &remote_modify_rolelist(&Apache::lc_connection_utils::cluster_manager_host(),
+         $rolesuccess=&remote_modify_rolelist(&Apache::lc_connection_utils::cluster_manager_host(),
                                 $roleentity,$roledomain,$rolesection,
                                 $entity,$domain,
                                 $role,
@@ -249,14 +266,14 @@ sub modify_role {
 # Goes on the homeserver of the roleentity
 # Maybe that's us?
       if (&Apache::lc_entity_utils::we_are_homeserver($roleentity,$roledomain)) {
-         &local_modify_rolelist($roleentity,$roledomain,$rolesection,
+         $rolesuccess=&local_modify_rolelist($roleentity,$roledomain,$rolesection,
                                 $entity,$domain,
                                 $role,
                                 $startdate,$enddate,
                                 $manualenrollentity,$manualenrolldomain);
       } else {
 # Nope, not us
-         &remote_modify_rolelist(&Apache::lc_entity_utils::homeserver($roleentity,$roledomain),
+         $rolesuccess=&remote_modify_rolelist(&Apache::lc_entity_utils::homeserver($roleentity,$roledomain),
                                 $roleentity,$roledomain,$rolesection,
                                 $entity,$domain,
                                 $role,
@@ -264,11 +281,20 @@ sub modify_role {
                                 $manualenrollentity,$manualenrolldomain);
       }
    }
+# This better worked, because otherwise the lookup table is out of sync
+   unless ($rolesuccess) {
+      &logerror("Failure to update role list for ($entity) ($domain).");
+      return 0;
+   }
+# Done, success!
+   &lognotice("Success change role ($role) for ($entity) ($domain)"); 
    return 1;
 }
 
 #
 # Cleaning up usernames and domains
+# Want to norm these to deal with spurious
+# small modifications
 #
 sub cleaned_up_username {
    my ($username)=@_;

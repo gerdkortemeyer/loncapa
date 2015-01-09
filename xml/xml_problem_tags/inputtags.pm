@@ -88,9 +88,7 @@ sub start_textline_html {
       return &show_entered_text($token->[2]->{'id'},$value);
    }
 # Get response status
-   my $correct=0;
-#FIXME: debug - what $correct should be:
-#($stack->{'context'}->{'part_status'}->{'outcome'} eq &correct());
+   my $correct=($stack->{'context'}->{'part_status'}->{'outcome'} eq &correct());
    my $showanswer=($stack->{'context'}->{'state'} eq &show_answer());
 # Now deal with the different flavors for different responses
    if (&Apache::lc_asset_xml::enclosed_in('numericalresponse',$stack)) {
@@ -121,7 +119,7 @@ sub start_textline_html {
             } else {
 # Only one input field, just concatinate
                my $mode=&Apache::lc_asset_xml::cascade_attribute('mode',$stack);
-               $ans=&Apache::xml_problem_tags::numericalresponse::evaluate_answer($stack,$mode);
+               $ans=&Apache::xml_problem_tags::numericalresponse::evaluate_show_answer($stack,$mode);
 # Eliminate possible spurious parantheses around numerical value
                $ans=~s/^\s*\((.+)\)\s*([^\)]*)$/$1 $2/;
                if ($mode eq 'lt') { $ans='<'.$ans; }
