@@ -2,8 +2,6 @@ var followup=0;
 var error=1;
 
 function init_modify_courselist() {
-    followup = 0;
-    error = 1;
     showhide();
     $("#continue").click(function() {
         $.ajax({
@@ -30,7 +28,7 @@ function runbackground() {
             $('#messages').html(data);
             back_to_list();
         },
-        complete: function() {
+        error: function() {
             showhide();
             adjust_framesize();
         }

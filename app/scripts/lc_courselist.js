@@ -106,7 +106,9 @@ function modify_selected() {
         type: "POST",
         data : {'postdata': selectedUsers},
         success: function(data){
-          $('#modify_page').html(data);
+          followup = 0;
+          error = 1;
+          $('#modify_page').html(data); // NOTE: this is executing the scripts
           init_modify_courselist();
         },
         complete: function() {
