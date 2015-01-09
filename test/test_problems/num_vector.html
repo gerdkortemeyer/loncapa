@@ -1,13 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <loncapa>
-<head>
-<title>Vector Numerical Problem</title>
-</head>
 <body>
 Simple vector problem
 <problem id="id1">
 <perl>
+<![CDATA[
 @vector1=(1,2,3);
 @vector2=(4,5,6);
+]]>
 </perl>
 <part id="id1part1">
 <dtm>\frac{x^2}{4\pi}</dtm>
@@ -35,10 +35,12 @@ More test text
 Outside of a problem.
 <problem id="id2">
 <perl>
+<![CDATA[
 @vector3=(1,2,3);
 @vector4=(4,5,6);
 $a=&random(2,8,1);
 $b=&random(3,42,0.5);
+]]>
 </perl>
 <part id="id2part1">
 <br />$b N
@@ -116,6 +118,5 @@ Second default hint.
 </numericalresponse>
 </part>
 </problem>
-
 </body>
 </loncapa>

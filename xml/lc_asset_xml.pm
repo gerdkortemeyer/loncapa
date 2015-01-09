@@ -420,7 +420,7 @@ sub parser {
          }
 # Pop the stack again
          pop(@{$stack->{'tags'}});
-      } else {
+      } elsif ($token->[0] ne 'PI') {
 # Other stuff, remember and keep going
          $tmpout=$token->[-1];
       }
@@ -486,6 +486,7 @@ sub target_render {
       return (undef,undef);
    }
    $p->empty_element_tags(1);
+   $p->marked_sections(1);
 # Get safe space going (fresh)
    my $safe=&Apache::lc_asset_safeeval::init_safe();
 # Coming here for the first time? Remember stuff
