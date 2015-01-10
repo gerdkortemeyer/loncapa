@@ -374,6 +374,10 @@ sub parser {
 # Initialize random numbers
    &Apache::lc_random::resetseed();
    &Apache::lc_random::set_context_random_seed(&Apache::lc_random::contextseed($stack->{'context'},0));
+# In analysis mode, figure out highest used ID
+   if ($target eq 'analysis') {
+      $stack->{'maxid'}=0;
+   }
 # If we are only rendering a subpart of the document
    my $outputid=$stack->{'outputid'};
    my $outputactive=0;
@@ -381,6 +385,7 @@ sub parser {
       my $tmpout='';
       my $outputdone=0;
       if ($token->[0] eq 'T') {
+# A piece of text - extrapolate variables and output
          $tmpout=&process_text($p,$safe,$stack,$target,$token);
       } elsif ($token->[0] eq 'S') {
 # A start tag - evaluate the attributes in here
@@ -390,8 +395,18 @@ sub parser {
 # Evaluate in safespace
             $token->[2]->{$key}=&Apache::lc_asset_safeeval::argeval($safe,$token->[2]->{$key}); 
          }
+# In analysis mode, see if ID is higher than before
+         if ($token->[2]->{'id'}) {
+            if ($target eq 'analysis') {
+               my ($match)=($token->[2]->{'id'}=~/^id(\d+)$/);
+               if ($match=~/\d/) {
+                  if ($match>$stack->{'maxid'}) {
+                     $stack->{'maxid'}=$match;
+                  }
+               }
+            }
+         } else {
 # Don't have an ID yet? Make up a temporary one.
-         unless ($token->[2]->{'id'}) {
             $token->[2]->{'id'}='TMP_'.$idcnt;
             $idcnt++;
          }
