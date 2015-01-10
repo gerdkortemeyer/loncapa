@@ -139,6 +139,10 @@ sub init_safe {
   $safehole->wrap(\&Apache::lc_asset_safeeval::submission,$safeeval,'&submission');
   $safehole->wrap(\&Apache::lc_asset_safeeval::submission_value_unit,$safeeval,'&submission_value_unit');
 
+# Some other constants and values
+
+  &codeeval($safeeval,'$pi=2.*&acos(0);$deg2rad=$pi/180.;$rad2deg=180./$pi');
+
   return $safeeval;
 }
 
