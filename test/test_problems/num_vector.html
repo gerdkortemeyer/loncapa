@@ -3,6 +3,13 @@
 <body>
 Simple vector problem
 <problem id="id1">
+     <perl><![CDATA[
+# ************************************
+$fct3=&random(1.4,1.7,0.1);
+$thick=&random(5.0,10.0,1.0);
+$number=$thick/(6.3e-3*$fct3);
+]]></perl>
+      <p>You are handed a $thick cm stack of new one-dollar bills.  Assume the thickness of a dollar bill is $fct3 times thicker than textbook paper (textbook paper = 63 <tm>\mu</tm>m).  Estimate the number of dollars in your stack.</p>
 <perl>
 <![CDATA[
 @vector1=(1,2,3);

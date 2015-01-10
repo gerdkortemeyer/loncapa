@@ -152,7 +152,9 @@ sub init_safe {
 sub texteval {
    my ($safeeval,$text)=@_;
    unless ($text=~/[\$\@\%]/) { return $text; }
-   return $safeeval->reval('qq('.$text.')');
+   $text=~s/\"/\\\"/gs;
+   $text=~s/\'/\\\'/gs;
+   return $safeeval->reval('return "'.$text.'";');
 }
 
 #
