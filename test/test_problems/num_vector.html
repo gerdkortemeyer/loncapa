@@ -45,12 +45,12 @@ $b=&random(3,42,0.5);
 <part id="id2part1">
 <br />$b N
 <numericalresponse answer="$b" unit="N">
-<parameter name="tol" default="10%" />
+<parameter id="answertolerance" type="tolerance" name="tol" default="10%" />
 <numericalhintcondition name="toolow" value="$b" unit="N" mode="lt" />
 <numericalhinttest name="toohigh" test="$submission>$b N" />
 <numericalhinttest name="magtoohigh" test="abs($submission)>10*$b N" />
 <numericalhintcondition name="nothere" value="42" unit="N">
-<parameter name="tol" default="1%" />
+<parameter id="hinttolerance" type="tolerance" name="tol" default="1%" />
 </numericalhintcondition>
 <numericalhintscript name="offbypower">
 <perlevalscript>
