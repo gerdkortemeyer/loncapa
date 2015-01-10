@@ -49,7 +49,7 @@ For this to take effect, you will need to reboot your machine.
 \item in subdirectory {\tt install}, use {\tt install\_packages.sh} (do this on a fast connection, there are a ton of libraries, etc)
 \item in subdirectory {\tt testcerts}, use {\tt install\_test\_certs.sh}
 \item if not {\tt localhost:localdomain}, now copy customized server certificates into {\tt /home/loncapa/certs} --- please do not overwrite the sandbox certificates in the repository
-\item if not {\tt localhost:localdomain}, the cluster table (see Section~\ref{clustertable} on page~\pageref{clustertable}) and (possibly) the server name in the Apache configuration {\tt httpd.conf} need adjusting\index{cluster table} --- please do not overwrite the sandbox configurations in the repository
+\item if not {\tt localhost:localdomain}, the cluster table and manager (see Section~\ref{clustertable} on page~\pageref{clustertable}), as well as (possibly) the server name in the Apache configuration {\tt httpd.conf} need adjusting\index{cluster table} --- please do not overwrite the sandbox configurations in the repository
 \item back in {\tt install}, use {\tt install.sh}
 \item see if the whole thing starts. Then call {\tt http://localhost/test} - that should make an initial user ``zaphod'' with password ``zaphodB'' (for now)
 \end{itemize}
