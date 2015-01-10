@@ -476,6 +476,28 @@
       <DOCUMENTATION>
         A LON-CAPA problem.
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="id">
+        <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="class">
+        <TITRE>class</TITRE>
+        <DOCUMENTATION>
+          This attribute is a space-separated list of the classes of the element. Classes allows CSS and Javascript to select and access specific elements via the class selectors or functions like the DOM method document.getElementsByClassName.
+          
+          Usage note: Though the specification doesn't put requirements on the name of classes, web developers are encouraged to use names that describe the semantic purpose of the element, rather to the presentation of the element (e.g., attribute to describe an attribute rather than italics, although an element of this class may be presented by italics). Semantic names remain logical even if the presentation of the page changes.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="style">
+        <TITRE>style</TITRE>
+        <DOCUMENTATION>
+          This attribute contains CSS styling declarations to be applied to the element. Note that it is recommended for styles to be defined in a separate file or files. This attribute and the &lt;style&gt; element have mainly the purpose of allowing for quick styling, for example for testing purposes.
+          
+          Usage note: This attribute must not be used to convey semantic information. Even if all styling is removed, a page should remain semantically correct. Typically it shouldn't be used to hide irrelevant information; this should be done using the hidden attribute.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     
     <STRINGS_ELEMENT element="stringresponse">

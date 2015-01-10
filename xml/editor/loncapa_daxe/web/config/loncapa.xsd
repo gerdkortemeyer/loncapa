@@ -143,6 +143,13 @@
         <xs:element ref="parserlib"/>
         <xs:element ref="scriptlib"/>
       </xs:choice>
+      <xs:attribute name="id" type="xs:ID">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attributeGroup ref="loncapa-css"/>
     </xs:complexType>
   </xs:element>
@@ -1350,6 +1357,8 @@
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
         <xs:element ref="hiddenline"/>
         <xs:element ref="numericalhintcondition"/>
+        <xs:element ref="numericalhinttest"/>
+        <xs:element ref="numericalhintscript"/>
         <xs:group ref="text-only"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -1465,7 +1474,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="answer" type="xs:string">
+      <xs:attribute name="value" type="xs:string">
         <xs:annotation>
           <xs:documentation>
             Numerical answer for which the conditional is provided.
@@ -1474,7 +1483,6 @@
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="unit" type="xs:string"/>
-      <xs:attribute name="format" type="xs:string"/>
       <xs:attribute name="preprocess" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -1484,7 +1492,58 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-  
+  <xs:element name="numericalhinttest">
+    <xs:annotation>
+      <xs:documentation>
+        Numerical hint condition with a boolean test. This can be used to trigger hints for conditions more complex than a comparison with a number and unit (which would be defined with &lt;numericalhintcondition&gt;).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="parameter"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            the name of the hint condition, to use in the "on" attribute of the hint element
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="test" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Math expression that will trigger the hint specified in the &lt;hint&gt; element when it evaluates to true. The string returned by the student can be used with the $submission variable. Units are defined within the expression.
+            Example: "abs($submission) &gt; 2 N" (note that the hint will not be triggered in this example if the right units are not used).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="preprocess" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Pre-Processor Subroutine
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="numericalhintscript">
+    <xs:annotation>
+      <xs:documentation>
+        Numerical hint condition with a script test written in Perl. This can be used to trigger hints for conditions even more complex than a math expression (which would be defined with &lt;numericalhinttest&gt;).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            the name of the hint condition, to use in the "on" attribute of the hint element
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
   <xs:annotation>
     <xs:documentation>
       Formula response (using caparesponse--answergroup like numericalresponse).

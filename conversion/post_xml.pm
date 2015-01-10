@@ -102,6 +102,8 @@ sub post_xml {
   $fix_by_hand2 = fix_parts($root);
   $fix_by_hand = $fix_by_hand || $fix_by_hand2;
   
+  add_id_to_problem_and_part($root);
+  
   fix_paragraphs_inside($root, \@all_block);
 
   change_hints($root); # after fix_paragraphs_inside to avoid problems with hintgroup/p/hintpart
@@ -2332,6 +2334,27 @@ sub change_hints {
     }
     if (!defined $hint->firstChild) {
       $hint->parentNode->removeChild($hint);
+    }
+  }
+}
+
+# Add a unique id attribute to all problems and parts
+sub add_id_to_problem_and_part {
+  my ($root) = @_;
+  my @problems = $root->getElementsByTagName('problem');
+  my $n = 1;
+  foreach my $problem (@problems) {
+    if (!defined $problem->getAttribute('id')) {
+      $problem->setAttribute('id', 'problem'.$n);
+      $n++;
+    }
+  }
+  my @parts = $root->getElementsByTagName('part');
+  $n = 1;
+  foreach my $part (@parts) {
+    if (!defined $part->getAttribute('id')) {
+      $part->setAttribute('id', 'part'.$n);
+      $n++;
     }
   }
 }
