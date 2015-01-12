@@ -106,13 +106,13 @@ You are off by a power of ten.
 <textline size="60" />
 </numericalresponse>
 <hintgroup showoncorrect="no">
-<hint default="default">
+<hint default="yes">
 First default hint.
 </hint>
 <hint on="nope">
 Nope, not 42.
 </hint>
-<hint default="default">
+<hint default="yes">
 Second default hint.
 </hint>
 </hintgroup>
@@ -124,6 +124,12 @@ Second default hint.
 <textline size="10" />
 <textline size="10" />
 </numericalresponse>
+<hint>
+The answer is given in the problem.
+</hint>
+<hint default="yes">
+And this never shows up, ever.
+</hint>
 </part>
 </problem>
 </body>
