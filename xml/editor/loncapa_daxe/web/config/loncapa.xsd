@@ -2892,7 +2892,6 @@
         Hint
         
         The hint can use a condition defined in a response by using the condition name in the "on" attribute. In this case, the hint will only display when the condition is verified.
-        If no other hint is to show in the part or (when there is one) in the group of hints, then all hints with an on value set to “default” will show.
         
         This element must be inside a problem part.
       </xs:documentation>
@@ -2915,6 +2914,13 @@
         <xs:annotation>
           <xs:documentation>
             Show hint even if problem Correct
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute default="no" name="default" type="yesno-or-perl">
+        <xs:annotation>
+          <xs:documentation>
+            If set to yes, the hint will be displayed when no other hint is displayed.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>

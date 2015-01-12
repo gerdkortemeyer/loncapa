@@ -350,6 +350,18 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:ID</tt>
+<br>
+
+
+<div class="documentation">
+Unique identifier
+</div>
+<br>
+
+
+</div>
 
 <a href="#loncapa-css_0">loncapa-css</a>
 <br>
@@ -3341,6 +3353,14 @@ Choice between:<ul>
 <br>
 </li>
 <li>
+<a href="#numericalhinttest_0">numericalhinttest</a>
+<br>
+</li>
+<li>
+<a href="#numericalhintscript_0">numericalhintscript</a>
+<br>
+</li>
+<li>
 <a href="#text-only_0">text-only</a>
 <br>
 </li>
@@ -3586,7 +3606,7 @@ the name of the hint condition, to use in the "on" attribute of the hint element
 
 
 </div>
-Attribute <span class="nomattribut">answer</span>:
+Attribute <span class="nomattribut">value</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
 
@@ -3600,10 +3620,6 @@ Student submission of that answer in combination with the "unit" attribute in th
 
 </div>
 Attribute <span class="nomattribut">unit</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">format</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
 </div>
@@ -3626,6 +3642,106 @@ Pre-Processor Subroutine
 <br>
 <hr>
 
+<a name="numericalhinttest_0"></a>
+<h3>Element <span class="nomtitre">numericalhinttest</span>
+</h3>
+
+
+<div class="documentation">
+Numerical hint condition with a boolean test. This can be used to trigger hints for conditions more complex than a comparison with a number and unit (which would be defined with &lt;numericalhintcondition&gt;).
+</div>
+<br>
+
+
+<div class="indentation">
+Choice between:<ul>
+<li>
+<a href="#parameter_0">parameter</a>
+<br>
+</li>
+</ul>
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">name</span>:
+    <div class="indentation">required<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+the name of the hint condition, to use in the "on" attribute of the hint element
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">test</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Math expression that will trigger the hint specified in the &lt;hint&gt; element when it evaluates to true. The string returned by the student can be used with the $submission variable. Units are defined within the expression.
+Example: "abs($submission) &gt; 2 N" (note that the hint will not be triggered in this example if the right units are not used).
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">preprocess</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Pre-Processor Subroutine
+</div>
+<br>
+
+
+</div>
+
+</div>
+
+<br>Parents:<a href="#numericalresponse_0">numericalresponse</a>
+<br>
+<hr>
+
+<a name="numericalhintscript_0"></a>
+<h3>Element <span class="nomtitre">numericalhintscript</span>
+</h3>
+
+
+<div class="documentation">
+Numerical hint condition with a script test written in Perl. This can be used to trigger hints for conditions even more complex than a math expression (which would be defined with &lt;numericalhinttest&gt;).
+</div>
+<br>
+
+Can contain text<br>
+<div class="indentation">
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+</div>
+Attribute <span class="nomattribut">name</span>:
+    <div class="indentation">required<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+the name of the hint condition, to use in the "on" attribute of the hint element
+</div>
+<br>
+
+
+</div>
+
+</div>
+
+<br>Parents:<a href="#numericalresponse_0">numericalresponse</a>
+<br>
+<hr>
 
 
 <div class="documentation">
@@ -3835,7 +3951,7 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a name="answer_9"></a>
+<a name="answer_8"></a>
 <h3>Element <span class="nomtitre">answer</span>
 </h3>type: <a href="#mathresponse--answer_0">mathresponse--answer</a>
 <br>
@@ -3999,7 +4115,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="answer_10"></a>
+<a name="answer_9"></a>
 <h3>Element <span class="nomtitre">answer</span>
 </h3>type: <a href="#mathhint--answer_0">mathhint--answer</a>
 <br>
@@ -5277,7 +5393,7 @@ Used to create rules that aren't options using the other rules. The coding is do
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a name="answer_11"></a>
+<a name="answer_10"></a>
 <h3>Element <span class="nomtitre">answer</span>
 </h3>
 
@@ -5659,7 +5775,7 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
-<a name="answer_16"></a>
+<a name="answer_15"></a>
 <h3>Element <span class="nomtitre">answer</span>
 </h3>type: <a href="#customresponse--answer_0">customresponse--answer</a>
 <br>
@@ -5782,7 +5898,7 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="answer_17"></a>
+<a name="answer_16"></a>
 <h3>Element <span class="nomtitre">answer</span>
 </h3>type: <a href="#customhint--answer_0">customhint--answer</a>
 <br>
@@ -6299,7 +6415,6 @@ Choice between:<ul>
 Hint
 
 The hint can use a condition defined in a response by using the condition name in the "on" attribute. In this case, the hint will only display when the condition is verified.
-If no other hint is to show in the part or (when there is one) in the group of hints, then all hints with an on value set to &ldquo;default&rdquo; will show.
 
 This element must be inside a problem part.
 </div>
@@ -6344,6 +6459,18 @@ Attribute <span class="nomattribut">showoncorrect</span>:
 
 <div class="documentation">
 Show hint even if problem Correct
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">default</span>:
+    <div class="indentation">optional<br>type: <a href="#yesno-or-perl_0">yesno-or-perl</a>
+<br>
+
+
+<div class="documentation">
+If set to yes, the hint will be displayed when no other hint is displayed.
 </div>
 <br>
 
@@ -8763,7 +8890,7 @@ Title displayed on the parameter setting screen.
 
 </div>
 
-<br>Parents:<a href="#problem_0">problem</a>, <a href="#stringresponse_0">stringresponse</a>, <a href="#stringhintcondition_0">stringhintcondition</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#radiobuttonresponse_0">radiobuttonresponse</a>, <a href="#radiobuttonhintcondition_0">radiobuttonhintcondition</a>, <a href="#optionresponse_0">optionresponse</a>, <a href="#optionhintcondition_0">optionhintcondition</a>, <a href="#matchresponse_0">matchresponse</a>, <a href="#rankresponse_0">rankresponse</a>, <a href="#imageresponse_0">imageresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#numericalhintcondition_0">numericalhintcondition</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#formulahintcondition_0">formulahintcondition</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#mathhintcondition_0">mathhintcondition</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#organichintcondition_0">organichintcondition</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#reactionhintcondition_0">reactionhintcondition</a>, <a href="#customresponse_0">customresponse</a>, <a href="#customhintcondition_0">customhintcondition</a>, <a href="#part_0">part</a>
+<br>Parents:<a href="#problem_0">problem</a>, <a href="#stringresponse_0">stringresponse</a>, <a href="#stringhintcondition_0">stringhintcondition</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#radiobuttonresponse_0">radiobuttonresponse</a>, <a href="#radiobuttonhintcondition_0">radiobuttonhintcondition</a>, <a href="#optionresponse_0">optionresponse</a>, <a href="#optionhintcondition_0">optionhintcondition</a>, <a href="#matchresponse_0">matchresponse</a>, <a href="#rankresponse_0">rankresponse</a>, <a href="#imageresponse_0">imageresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#numericalhintcondition_0">numericalhintcondition</a>, <a href="#numericalhinttest_0">numericalhinttest</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#formulahintcondition_0">formulahintcondition</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#mathhintcondition_0">mathhintcondition</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#organichintcondition_0">organichintcondition</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#reactionhintcondition_0">reactionhintcondition</a>, <a href="#customresponse_0">customresponse</a>, <a href="#customhintcondition_0">customhintcondition</a>, <a href="#part_0">part</a>
 <br>
 <hr>
 
@@ -15887,19 +16014,19 @@ Value restriction based on xs:string<ul>
 <a href="#answer_5">answer</a>
             (under caparesponse--answergroup)
           <br>
-<a href="#answer_9">answer</a>
+<a href="#answer_8">answer</a>
             (under mathresponse)
           <br>
-<a href="#answer_10">answer</a>
+<a href="#answer_9">answer</a>
             (under mathhintcondition)
           <br>
-<a href="#answer_11">answer</a>
+<a href="#answer_10">answer</a>
             (under functionplotcustomrule)
           <br>
-<a href="#answer_16">answer</a>
+<a href="#answer_15">answer</a>
             (under customresponse)
           <br>
-<a href="#answer_17">answer</a>
+<a href="#answer_16">answer</a>
             (under customhintcondition)
           <br>
 <a href="#answergroup_0">answergroup</a>
@@ -16437,6 +16564,10 @@ Value restriction based on xs:string<ul>
 <a href="#num_0">num</a>
 <br>
 <a href="#numericalhintcondition_0">numericalhintcondition</a>
+<br>
+<a href="#numericalhintscript_0">numericalhintscript</a>
+<br>
+<a href="#numericalhinttest_0">numericalhinttest</a>
 <br>
 <a href="#numericalresponse_0">numericalresponse</a>
 <br>
