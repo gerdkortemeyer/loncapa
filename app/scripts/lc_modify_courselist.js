@@ -1,7 +1,8 @@
 var followup=0;
 var error=1;
+var list_context=0;
 
-function init_modify_courselist() {
+$(document).ready(function() {
     showhide();
     $("#continue").click(function() {
         $.ajax({
@@ -17,7 +18,7 @@ function init_modify_courselist() {
         }
       });
     });
-}
+});
 
 function runbackground() {
    $.ajax({
@@ -53,9 +54,8 @@ function showhide() {
 }
 
 function back_to_list() {
-    $('#modify_page').fadeOut();
-    $('#courselist_page').fadeIn();
-    parent.setbreadcrumbbar('fresh','courselist','Enrollment List','courselist()');
-    parent.breadcrumbbar();
-    update_selected()
+    if (list_context) {
+        parent.hide_modal();
+        parent.document.getElementById('contentframe').contentWindow.update_selected();
+    }
 }

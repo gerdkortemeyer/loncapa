@@ -232,6 +232,9 @@ sub incl_modify_courseusers_finalize {
                  20,undef,$locked);
 # End of the form table
       $output.=&Apache::lc_xml_forms::form_table_end().'<script>error=0;followup=1;</script>';
+      if ($content{'list_context'} eq '1') {
+        $output .= '<script>list_context=1;</script>';
+      }
    }
    return $output;
 }

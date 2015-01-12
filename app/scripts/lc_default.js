@@ -90,6 +90,31 @@ function display_large_modal(newuri) {
     $("#lcmodal").focus();
 }
 
+function display_large_modal_post(newuri, parameters) {
+    $.blockUI({
+                 message: '<iframe id="lcmodal" name="lcmodal" width="100%" height="100%" />',
+                 css: {
+                      border: 'none',
+                      padding: '15px',
+                      top: '2%',
+                      left: '2%',
+                      width: '94%',
+                      height: '94%',
+                      backgroundColor: '#ffffff',
+                      'border-radius': '10px'
+                      }
+                 });
+    $('body').append('<form action="'+newuri+'" method="POST" target="lcmodal" id="postToIframe"></form>');
+    $.each(parameters, function(name, value) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name', name);
+        input.setAttribute('value', value);
+        document.getElementById('postToIframe').appendChild(input);
+    });
+    $('#postToIframe').submit().remove();
+}
+
 
 function hide_modal() {
    $.unblockUI();

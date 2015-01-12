@@ -97,24 +97,7 @@ function fnGetSelected() {
 function modify_selected() {
    var selectedUsers = fnGetSelected();
    if (selectedUsers=='') { return; }
-    parent.setbreadcrumbbar('add','modifycourselist','Modify Selected Entries','');
-    parent.breadcrumbbar();
-    $('#courselist_page').fadeOut();
-    $('#modify_page').fadeIn();
-    $.ajax({
-        url : '/pages/lc_modify_courselist.html',
-        type: "POST",
-        data : {'postdata': selectedUsers},
-        success: function(data){
-          followup = 0;
-          error = 1;
-          $('#modify_page').html(data); // NOTE: this is executing the scripts
-          init_modify_courselist();
-        },
-        complete: function() {
-            adjust_framesize();
-        }
-    });
+    parent.display_large_modal_post('/pages/lc_modify_courselist.html', {'postdata': selectedUsers, 'list_context': '1'});
 }
 
 function update_selected() {
