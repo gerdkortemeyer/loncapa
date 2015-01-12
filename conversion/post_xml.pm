@@ -2055,6 +2055,7 @@ sub fix_parts {
 # but keep hintgroup when it is useful
 # (when it is in a part containing more than 1 hintgroup containing a hinpart with on="default")
 # Also replaces "hint" elements (that should not exists) by their content.
+# Also replaces on="default" by default="yes".
 sub change_hints {
   my ($root) = @_;
   my $doc = $root->ownerDocument;
@@ -2311,7 +2312,7 @@ sub change_hints {
   # Currently they are inline, with some exceptions in the conversion, like inline responses.
   
   # hints were blocks but are becoming inline; this removes blank text nodes at the beginning and the end of all hint elements
-  # and removes empty hints
+  # and removes empty hints, and replaces on="default" by default="yes".
   my @hints = $root->getElementsByTagName('hint');
   foreach my $hint (@hints) {
     if (defined $hint->firstChild && $hint->firstChild->nodeType == XML_TEXT_NODE) {
@@ -2334,6 +2335,10 @@ sub change_hints {
     }
     if (!defined $hint->firstChild) {
       $hint->parentNode->removeChild($hint);
+    }
+    if ($hint->getAttribute('on') eq 'default') {
+      $hint->removeAttribute('on');
+      $hint->setAttribute('default', 'yes');
     }
   }
 }

@@ -1732,6 +1732,12 @@
           Show hint even if problem Correct
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
+      <STRINGS_ATTRIBUT attribut="default">
+        <TITRE>default</TITRE>
+        <DOCUMENTATION>
+          If set to yes, the hint will be displayed when no other hint is displayed.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     
     <STRINGS_ELEMENT element="gnuplot">
