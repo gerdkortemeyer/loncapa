@@ -65,7 +65,7 @@ unzip app/scripts/ckeditor.zip -d /home/httpd/html/scripts
 if [ ! -d /home/httpd/html/scripts/datepick ]; then
    unzip app/scripts/datepick.zip -d /home/httpd/html/scripts/datepick
 fi
-cp app/scripts/ckeditor/config.js /home/httpd/html/scripts/ckeditor
+cp app/scripts/ckeditor/config.js /home/httpd/html/scripts/ckeditor/
 cp -r app/scripts/ckeditor/plugins/lcmath /home/httpd/html/scripts/ckeditor/plugins/
 cp app/scripts/jquery* /home/httpd/html/scripts
 cp app/scripts/lc* /home/httpd/html/scripts
