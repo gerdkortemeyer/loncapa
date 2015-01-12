@@ -77,6 +77,7 @@ sub toc_digest {
 # Unfortunately not cached, need to construct it
    $series=undef;
    @stack=();
+   $digest={};
    $digest->{'series'}=&folder_serialize_eval('#',&Apache::lc_entity_courses::load_contents(&Apache::lc_entity_sessions::course_entity_domain()));
 # Store information about accessible assets: predecessors, successors, url
    if ($digest) {

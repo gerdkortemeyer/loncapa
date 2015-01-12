@@ -52,13 +52,13 @@ sub handler {
    $r->print("Test Handler Tästing\n\n");
 
    my $kortemeyer=&Apache::lc_entity_users::username_to_entity('kortemeyer','msu');
-   my $phy233b=&Apache::lc_entity_courses::course_to_entity('phy233bss05','msu');
-   my $phy234b=&Apache::lc_entity_courses::course_to_entity('phy234bss05','msu');
+   my $phy233b=&Apache::lc_entity_courses::course_to_entity('phy233bss15','msu');
+   my $phy234b=&Apache::lc_entity_courses::course_to_entity('phy234bss15','msu');
    $r->print("[$kortemeyer] [$phy233b] [$phy234b]\n");
 
 
 my $contenttext='';
-open(IN,"/home/korte/phy233b.json");
+open(IN,"/home/korte/phy233b.json") or $r->print("Error: $!");
 while (my $line=<IN>) {
    $contenttext.=$line;
 }
@@ -67,6 +67,8 @@ close(IN);
    $r->print('<pre>'.$contenttext.'</pre>');
 
 return OK;
+
+   &Apache::lc_entity_urls::make_new_url('/asset/-/-/msu/'.$phy233b.'/toc.json');
 
    $r->print(">".Dumper(&Apache::lc_entity_courses::publish_contents($phy233b,'msu',
                                                                      &Apache::lc_json_utils::json_to_perl($contenttext))."\n"));

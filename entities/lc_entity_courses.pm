@@ -327,9 +327,11 @@ sub load_contents {
 
 
 # ==== Initialize new table of contents
+# for the course entity:domain
 #
 sub initialize_contents {
    my ($entity,$domain)=@_;
+   &Apache::lc_entity_urls::make_new_url(&toc_url($entity,$domain));
    unless (&publish_contents($entity,$domain,[])) {
       &logerror("Unable to publish table of contents of course ($entity) domain ($domain)");
       return undef;
