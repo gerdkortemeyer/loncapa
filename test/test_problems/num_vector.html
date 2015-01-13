@@ -77,11 +77,10 @@ return (abs($rounded-$log)<0.001);
 <textline size="60" />
 <numericalhintcondition name="isother" answer="@vector3" unit="m/s" />
 </numericalresponse>
-<hintgroup showoncorrect="no">
-<hint on="toolow">
+<hint on="toolow" showoncorrect="no">
 Too low!
 </hint>
-<hint on="toohigh">
+<hint on="toohigh" showoncorrect="no">
 Too high!
 </hint>
 <hint on="nothere">
@@ -93,7 +92,6 @@ The magnitude is way too high!
 <hint on="offbypower">
 You are off by a power of ten.
 </hint>
-</hintgroup>
 </part>
 <part id="id2part2">
 <br />$a m/s^2
@@ -126,9 +124,6 @@ Second default hint.
 </numericalresponse>
 <hint>
 The answer is given in the problem.
-</hint>
-<hint default="yes">
-And this never shows up, ever.
 </hint>
 </part>
 </problem>
