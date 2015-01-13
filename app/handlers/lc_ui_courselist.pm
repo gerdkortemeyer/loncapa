@@ -40,7 +40,9 @@ use Data::Dumper;
 sub record_output {
   my $record = shift;
 # Only show the roles that we are allowed to see
-  unless (&allowed_section('view_role',$record->{'role'},&Apache::lc_entity_sessions::course_entity_domain(),$record->{'section'})) { next; }
+  unless (&allowed_section('view_role',$record->{'role'},&Apache::lc_entity_sessions::course_entity_domain(),$record->{'section'})) {
+    return undef;
+  }
 # Translate date format for localized viewing and sorting
   my $display_startdate;
   my $sort_startdate;
@@ -113,7 +115,11 @@ sub json_courselist {
   $output->{'aaData'}=[];
   my @courselist=&Apache::lc_entity_courses::courselist(&Apache::lc_entity_sessions::course_entity_domain());
   foreach my $record (@courselist) {
-    push(@{$output->{'aaData'}}, record_output($record));
+    my $fields = record_output($record);
+    if (!defined $fields) {
+      next;
+    }
+    push(@{$output->{'aaData'}}, $fields);
   }
   return &Apache::lc_json_utils::perl_to_json($output);
 }
@@ -129,7 +135,11 @@ sub json_selection {
   foreach my $user (@{$users}) {
     foreach my $record (@courselist) {
       if ($user->{'entity'} eq $record->{'entity'} && $user->{'domain'} eq $record->{'domain'}) {
-        push(@{$output}, record_output($record));
+        my $fields = record_output($record);
+        if (!defined $fields) {
+          next;
+        }
+        push(@{$output}, $fields);
         last;
       }
     }
