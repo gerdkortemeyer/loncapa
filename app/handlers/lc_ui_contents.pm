@@ -49,6 +49,15 @@ sub toc {
 sub register {
    my ($r,$assetid)=@_;
    my $assetdata=&Apache::lc_entity_contents::toc_asset_data($assetid);
+# Did people jump on a folder? Fast forward to first real asset
+   if ($assetdata->{'current'}->{'type'} eq 'folder') {
+      if ($assetdata->{'current'}->{'next_asset'}) {
+         $assetdata=&Apache::lc_entity_contents::toc_asset_data($assetdata->{'current'}->{'next_asset'});
+      } else {
+# Wow, an empty folder at the end of the course. Not good.
+#FIXME: do something real here
+      }
+   }
    my $prevtitle=$assetdata->{'prev'}->{'title'};
    unless ($prevtitle) {
       $prevtitle=&mt('Start of course contents');

@@ -82,11 +82,25 @@ sub toc_digest {
 # Store information about accessible assets: predecessors, successors, url
    if ($digest) {
       my $prev=undef;
+      my @lastfolders=();
       for (my $i=0; $i<=$#{$digest->{'series'}}; $i++) {
           $digest->{'num'}->{$digest->{'series'}->[$i]->{'id'}}=$i;
-          unless ($digest->{'series'}->[$i]->{'type'} eq 'asset') { next; }
+# This is not an asset, we will need to remember what is the next real asset
+          unless ($digest->{'series'}->[$i]->{'type'} eq 'asset') { 
+             push(@lastfolders,$i);
+             next; 
+          }
           if ($i>0) { $digest->{'series'}->[$i]->{'prev'}=$prev; }
           $digest->{'series'}->[$digest->{'num'}->{$prev}]->{'next'}=$digest->{'series'}->[$i]->{'id'};
+# Since we are real, make all enclosing folders know who we are
+          if ($#lastfolders>=0) {
+             foreach my $previous (@lastfolders) {
+                $digest->{'series'}->[$previous]->{'next_asset'}=$digest->{'series'}->[$i]->{'id'};
+             }
+# Done here, the other stuff is presumably normal
+             @lastfolders=();
+          }
+# And we now turn into history
           $prev=$digest->{'series'}->[$i]->{'id'};
       }
       &Apache::lc_memcached::insert_tocdigest(
