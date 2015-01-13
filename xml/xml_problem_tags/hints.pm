@@ -39,7 +39,7 @@ sub start_hintgroup_html {
 #
 # At the end of a hintgroup the redirection stack is examined
 # and the relevant elements out
-# Redirection was needed because of "default"
+# Redirection within the hintgroup was needed because of "hintgroupdefault"
 #
 sub end_hintgroup_html {
    my ($p,$safe,$stack,$token)=@_;
@@ -65,7 +65,7 @@ sub end_hintgroup_html {
             }
          }
       } else {
-# We are displaying the default hint(s)
+# We are displaying the default hint(s) within this hintgroup
          if ($hint->{'default'}) {
             if (($hint->{'showoncorrect'}) ||     
                 ($stack->{'context'}->{'part_status'}->{'outcome'} ne &correct())) {
@@ -89,7 +89,7 @@ sub start_hint_html {
    push(@{$stack->{'hintgroup'}},{
                                    'id' => $token->[2]->{'id'}, 
                                    'on' => $token->[2]->{'on'},
-                                   'default' => &Apache::lc_asset_xml::open_tag_switch('default',$stack),
+                                   'hintgroupdefault' => &Apache::lc_asset_xml::open_tag_switch('hintgroupdefault',$stack),
                                    'showoncorrect' => &Apache::lc_asset_xml::cascade_switch('showoncorrect',$stack) 
                                  });
 # Redirect, since we don't know yet if we need this
