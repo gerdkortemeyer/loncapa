@@ -520,6 +520,12 @@ sub replace_m {
             push(@variables, $1);
           }
         }
+        # this regexp is for "...;  $a = ..." and "...;  $a[...] = ..."
+        while ($text =~ /^[^'"\/;]+;[ \t]*\$([a-zA-Z_0-9]+)(?:\[[^\]]+\])?[ \t]*=/gm) {
+          if (!string_in_array(\@variables, $1)) {
+            push(@variables, $1);
+          }
+        }
         # this regexp is for "  ($a, $b, $c) = ..."
         my @matches = ($text =~ /^[ \t]*\([ \t]*\$([a-zA-Z_0-9]+)(?:[ \t]*,[ \t]*\$([a-zA-Z_0-9]+))*[ \t]*\)[ \t]*=/gm);
         foreach my $match (@matches) {
@@ -564,7 +570,8 @@ sub replace_m {
       # replace variables
       foreach my $variable (@variables) {
         my $replacement = $var_key1.$variable.$var_key2;
-        $text =~ s/\$$variable/$replacement/ge;
+        $text =~ s/\$$variable(?![a-zA-Z])/$replacement/ge;
+        $text =~ s/\$\{$variable\}/$replacement/ge;
       }
     }
     # check if the expression is enclosed in math separators: $ $$ \( \) \[ \]
@@ -588,6 +595,7 @@ sub replace_m {
       if ($eval) {
         foreach my $variable (@variables) {
           my $replacement = $var_key1.$variable.$var_key2;
+          $new_text =~ s/$replacement([a-zA-Z])/\${$variable}$1/g;
           $new_text =~ s/$replacement/\$$variable/g;
         }
       }
@@ -666,6 +674,7 @@ sub replace_m {
     if ($eval) {
       foreach my $variable (@variables) {
         my $replacement = $var_key1.$variable.$var_key2;
+        $html_text =~ s/$replacement([a-zA-Z])/\${$variable}$1/g;
         $html_text =~ s/$replacement/\$$variable/g;
       }
     }
