@@ -18,6 +18,9 @@ $(document).ready(function() {
         }
       });
     });
+    $('#cancelbutton').click(function() {
+        parent.hide_modal();
+    });
 });
 
 function runbackground() {

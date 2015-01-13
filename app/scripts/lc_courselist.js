@@ -97,7 +97,7 @@ function fnGetSelected() {
 function modify_selected() {
    var selectedUsers = fnGetSelected();
    if (selectedUsers=='') { return; }
-    parent.display_large_modal_post('/pages/lc_modify_courselist.html', {'postdata': selectedUsers, 'list_context': '1'});
+    parent.display_large_modal_post('/modals/lc_modify_courselist.html', {'postdata': selectedUsers, 'list_context': '1'});
 }
 
 function update_selected() {
