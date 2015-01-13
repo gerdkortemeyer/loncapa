@@ -151,7 +151,6 @@ sub json_selection {
 sub handler {
   my $r = shift;
   $r->content_type('application/json; charset=utf-8');
-  unless (&allowed_course('view_role',undef,&Apache::lc_entity_sessions::course_entity_domain())) { $r-print('[]'); return OK; }
   my %content = &Apache::lc_entity_sessions::posted_content();
   if ($content{'postdata'}) {
     my $users = &Apache::lc_json_utils::json_to_perl($content{'postdata'});
