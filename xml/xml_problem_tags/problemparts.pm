@@ -72,6 +72,9 @@ sub start_part_html {
    $stack->{'context'}->{'asset'}->{'partid'}=$token->[2]->{'id'};
 # Load the data for the part
    &load_part_data($stack);
+# Clean slate on hints
+   $stack->{'hintgroup'}=[];
+   $stack->{'active_hintgroup'}=0;
 # Figure out if we are correct for the inputs
    $stack->{'context'}->{'part_status'}={};
    if (ref($stack->{'scoredata'}) eq 'ARRAY') {
@@ -181,7 +184,8 @@ sub end_part_grade {
 # =============================================
 # Initialize problem
 # =============================================
-
+# Sets the random seed, etc.
+#
 sub init_problem {
    my ($id,$stack)=@_;
    $stack->{'scoredata'}=&Apache::lc_entity_assessments::get_one_user_assessment(
@@ -194,10 +198,6 @@ sub init_problem {
    $stack->{'context'}->{'randversion'}=0;
    &Apache::lc_random::set_context_random_seed(&Apache::lc_random::contextseed($stack->{'context'},$id));
 }
-
-# =============================================
-# Generate seed for problem/part
-# =============================================
 
 # =============================================
 # Loading and saving part data

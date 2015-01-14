@@ -33,6 +33,7 @@ sub start_hintgroup_html {
    my ($p,$safe,$stack,$token)=@_;
 # Starting a new hintgroup, clear all previous stuff
    $stack->{'hintgroup'}=[];
+   $stack->{'active_hintgroup'}=1;
    return '';
 }
 
@@ -58,17 +59,15 @@ sub end_hintgroup_html {
 # Now for real
    foreach my $hint (@{$stack->{'hintgroup'}}) {
       if ($found) {
-         if ($stack->{'hint_conditions'}->{$problemid}->{$hint->{'on'}}->{'hintapplies'}) {
-            if (($hint->{'showoncorrect'}) || 
-                (!$stack->{'hint_conditions'}->{$problemid}->{$hint->{'on'}}->{'responsecorrect'})) {
+         if (&on_applies($stack,$problemid,$hint->{'on'})) {
+            if (($hint->{'showoncorrect'}) || (&not_correct($stack,$problemid,$hint->{'on'}))) {
                $output.=&Apache::lc_asset_xml::get_redirected_output($hint->{'id'},$stack);
             }
          }
       } else {
 # We are displaying the default hint(s) within this hintgroup
          if ($hint->{'hintgroupdefault'}) {
-            if (($hint->{'showoncorrect'}) ||     
-                ($stack->{'context'}->{'part_status'}->{'outcome'} ne &correct())) {
+            if (($hint->{'showoncorrect'}) || (&not_correct($stack,undef,undef))) {
                $output.=&Apache::lc_asset_xml::get_redirected_output($hint->{'id'},$stack);
             }
          }
@@ -76,32 +75,70 @@ sub end_hintgroup_html {
    }
 # Just clean up
    $stack->{'hintgroup'}=[];
+   $stack->{'active_hintgroup'}=0;
    return $output;
 }
 
 #
 # A particular hint
-# Just remember
+# If we are in a hintgroup, just remember, otherwise skip to end hint if not applicable
 #
 sub start_hint_html {
    my ($p,$safe,$stack,$token)=@_;
+   if ($stack->{'active_hintgroup'}) {
+# We are in a hint group
 # Remember this for </hintgroup>
-   push(@{$stack->{'hintgroup'}},{
+      push(@{$stack->{'hintgroup'}},{
                                    'id' => $token->[2]->{'id'}, 
                                    'on' => $token->[2]->{'on'},
                                    'hintgroupdefault' => &Apache::lc_asset_xml::open_tag_switch('hintgroupdefault',$stack),
                                    'showoncorrect' => &Apache::lc_asset_xml::cascade_switch('showoncorrect',$stack) 
                                  });
 # Redirect, since we don't know yet if we need this
-   &Apache::lc_asset_xml::set_redirect($token->[2]->{'id'},$stack);
+      &Apache::lc_asset_xml::set_redirect($token->[2]->{'id'},$stack);
+   } else {
+# We are not in a hintgroup, nothing to worry about.
+      my $problemid=&Apache::lc_asset_xml::tag_attribute('problem','id',$stack);
+      my $showhint=0;
+      if (&on_applies($stack,$problemid,$token->[2]->{'on'})) {
+         if ((&Apache::lc_asset_xml::cascade_switch('showoncorrect',$stack)) || (&not_correct($stack,$problemid,$token->[2]->{'on'}))) {
+            $showhint=1;
+         }
+      }
+# If the hint should not be shown, skip all the way to the end of it
+      unless ($showhint) {
+         $p->get_text('/hint');
+         $p->get_token;
+         pop(@{$stack->{'tags'}});
+      }
+   }
 # Nothing to say
    return '';
 }
 
+sub on_applies {
+   my ($stack,$problemid,$on)=@_;
+   if ($on!~/\S/s) { return 1; }
+   return $stack->{$problemid}->{$on}->{'hintapplies'};
+}
+
+sub not_correct {
+   my ($stack,$problemid,$on)=@_;
+   if ($on=~/\S/s) {
+# We have a condition, check if the corresponding response is correct
+      return !($stack->{'hint_conditions'}->{$problemid}->{$on}->{'responsecorrect'});
+   } else {
+# There is no condition, and thus we can only look at the whole part
+      return ($stack->{'context'}->{'part_status'}->{'outcome'} ne &correct());
+   }
+}
+
 sub end_hint_html {
    my ($p,$safe,$stack,$token)=@_;
+   if ($stack->{'active_hintgroup'}) {
 # Done redirecting
-   &Apache::lc_asset_xml::clear_redirect($stack);
+      &Apache::lc_asset_xml::clear_redirect($stack);
+   }
    return '';
 }
 
