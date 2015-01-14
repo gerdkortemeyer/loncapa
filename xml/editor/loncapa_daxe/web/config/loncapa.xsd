@@ -2917,10 +2917,11 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute default="no" name="default" type="yesno-or-perl">
+      <xs:attribute default="no" name="hintgroupdefault" type="yesno-or-perl">
         <xs:annotation>
           <xs:documentation>
-            If set to yes, the hint will be displayed when no other hint is displayed.
+            This attribute is ignored if the hint is not inside a hintgroup.
+            If set to yes, the hint will be displayed when no other hint is displayed in the group.
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>

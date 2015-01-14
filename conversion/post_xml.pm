@@ -2104,47 +2104,75 @@ sub change_hints {
     }
   }
   
+  # replaces <hintgroup>a<hintpart on="default">b</hintpart>c</hintgroup> by <hintgroup>abc</hintgroup>
   my @hintgroups = $root->getElementsByTagName('hintgroup');
+  foreach my $hintgroup (@hintgroups) {
+    my @subelements = $hintgroup->getChildrenByTagName('*');
+    if (scalar(@subelements) != 1) {
+      next;
+    }
+    if ($subelements[0]->nodeName ne 'hintpart') {
+      next;
+    }
+    my $on = $subelements[0]->getAttribute('on');
+    if (!defined $on || $on ne 'default') {
+      next;
+    }
+    replace_by_children($subelements[0]);
+  }
   
   # create a list of hintgroups that are in a part containing more than 1 hintgroup containing a hinpart with on="default"
+#   my @hintgroups_to_preserve = ();
+#   foreach my $hintgroup (@hintgroups) {
+#     # look for the ancestor part or problem (or if not found, the root element)
+#     my $part_or_problem;
+#     my $ancestor = $hintgroup->parentNode;
+#     while (defined $ancestor) {
+#       my $name = $ancestor->nodeName;
+#       if ($name eq 'part' || $name eq 'problem') {
+#         $part_or_problem = $ancestor;
+#         last;
+#       }
+#       $ancestor = $ancestor->parentNode;
+#     }
+#     if (!defined $part_or_problem) {
+#       $part_or_problem = $root;
+#     }
+#     # check to see if there is more than 1 hintgroup containing a hinpart with on="default" in the part
+#     my $nb_hintgroups_with_hintpart_default = 0;
+#     my @hintgroups_in_part = $part_or_problem->getElementsByTagName('hintgroup');
+#     foreach my $hintgroup_in_part (@hintgroups_in_part) {
+#       my $default_hinpart = 0;
+#       my @hintparts = $hintgroup_in_part->getElementsByTagName('hintpart');
+#       foreach my $hintpart (@hintparts) {
+#         my $on = $hintpart->getAttribute('on');
+#         if (defined $on) {
+#           $on = lc(trim($on));
+#           if ($on eq 'default') {
+#             $default_hinpart = 1;
+#             last;
+#           }
+#         }
+#       }
+#       if ($default_hinpart) {
+#         $nb_hintgroups_with_hintpart_default++;
+#       }
+#     }
+#     if ($nb_hintgroups_with_hintpart_default > 1 && scalar(@{$hintgroup->nonBlankChildNodes()}) > 0) {
+#       push(@hintgroups_to_preserve, $hintgroup);
+#     }
+#   }
+  
+  # create a list of hintgroups that contain a hinpart with on="default"
   my @hintgroups_to_preserve = ();
   foreach my $hintgroup (@hintgroups) {
-    # look for the ancestor part or problem (or if not found, the root element)
-    my $part_or_problem;
-    my $ancestor = $hintgroup->parentNode;
-    while (defined $ancestor) {
-      my $name = $ancestor->nodeName;
-      if ($name eq 'part' || $name eq 'problem') {
-        $part_or_problem = $ancestor;
+    my @hintparts = $hintgroup->getElementsByTagName('hintpart');
+    foreach my $hintpart (@hintparts) {
+      my $on = $hintpart->getAttribute('on');
+      if (defined $on && $on eq 'default') {
+        push(@hintgroups_to_preserve, $hintgroup);
         last;
       }
-      $ancestor = $ancestor->parentNode;
-    }
-    if (!defined $part_or_problem) {
-      $part_or_problem = $root;
-    }
-    # check to see if there is more than 1 hintgroup containing a hinpart with on="default" in the part
-    my $nb_hintgroups_with_hintpart_default = 0;
-    my @hintgroups_in_part = $part_or_problem->getElementsByTagName('hintgroup');
-    foreach my $hintgroup_in_part (@hintgroups_in_part) {
-      my $default_hinpart = 0;
-      my @hintparts = $hintgroup_in_part->getElementsByTagName('hintpart');
-      foreach my $hintpart (@hintparts) {
-        my $on = $hintpart->getAttribute('on');
-        if (defined $on) {
-          $on = lc(trim($on));
-          if ($on eq 'default') {
-            $default_hinpart = 1;
-            last;
-          }
-        }
-      }
-      if ($default_hinpart) {
-        $nb_hintgroups_with_hintpart_default++;
-      }
-    }
-    if ($nb_hintgroups_with_hintpart_default > 1 && scalar(@{$hintgroup->nonBlankChildNodes()}) > 0) {
-      push(@hintgroups_to_preserve, $hintgroup);
     }
   }
   
@@ -2321,7 +2349,7 @@ sub change_hints {
   # Currently they are inline, with some exceptions in the conversion, like inline responses.
   
   # hints were blocks but are becoming inline; this removes blank text nodes at the beginning and the end of all hint elements
-  # and removes empty hints, and replaces on="default" by default="yes".
+  # and removes empty hints, and replaces on="default" by hintgroupdefault="yes".
   my @hints = $root->getElementsByTagName('hint');
   foreach my $hint (@hints) {
     if (defined $hint->firstChild && $hint->firstChild->nodeType == XML_TEXT_NODE) {
@@ -2345,9 +2373,9 @@ sub change_hints {
     if (!defined $hint->firstChild) {
       $hint->parentNode->removeChild($hint);
     }
-    if ($hint->getAttribute('on') eq 'default') {
+    if (defined $hint->getAttribute('on') && $hint->getAttribute('on') eq 'default') {
       $hint->removeAttribute('on');
-      $hint->setAttribute('default', 'yes');
+      $hint->setAttribute('hintgroupdefault', 'yes');
     }
   }
 }

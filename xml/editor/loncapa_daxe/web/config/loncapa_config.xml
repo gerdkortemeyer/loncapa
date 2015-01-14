@@ -1733,9 +1733,10 @@
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="default">
-        <TITRE>default</TITRE>
+        <TITRE>hintgroupdefault</TITRE>
         <DOCUMENTATION>
-          If set to yes, the hint will be displayed when no other hint is displayed.
+          This attribute is ignored if the hint is not inside a hintgroup.
+          If set to yes, the hint will be displayed when no other hint is displayed in the group.
         </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
