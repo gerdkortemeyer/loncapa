@@ -58,9 +58,8 @@ sub end_hintgroup_html {
    }
 # Now for real
    foreach my $hint (@{$stack->{'hintgroup'}}) {
-use Data::Dumper;
-&logdebug(Dumper($hint));
       if ($found) {
+         if ($hint->{'hintgroupdefault'}) { next; }
          if (&on_applies($stack,$problemid,$hint->{'on'})) {
             if (($hint->{'showoncorrect'}) || (&not_correct($stack,$problemid,$hint->{'on'}))) {
                $output.=&Apache::lc_asset_xml::get_redirected_output($hint->{'id'},$stack);
