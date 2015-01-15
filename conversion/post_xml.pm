@@ -118,7 +118,9 @@ sub post_xml {
   lowercase_attribute_values($root);
   
   replace_numericalresponse_unit_attribute($root);
-
+  
+  replace_format_function_by_num($root);
+  
   pretty($root, \@all_block);
 
   open my $out, '>', $new_path;
@@ -2970,6 +2972,57 @@ sub replace_numericalresponse_unit_attribute {
     }
   }
   
+}
+
+sub replace_format_function_by_num {
+  my ($root) = @_;
+  my $doc = $root->ownerDocument;
+  my @preserve = ('script','answer','perl','parse','m','tm','dtm','numericalhintscript'); # display is handled later
+  my @all = $root->getElementsByTagName('*');
+  foreach my $element (@all) {
+    if (string_in_array(\@preserve, $element->nodeName)) {
+      next;
+    }
+    my $changed = 0;
+    my $next;
+    for (my $child=$element->firstChild; defined $child; $child=$next) {
+      $next = $child->nextSibling;
+      if ($child->nodeType == XML_TEXT_NODE) {
+        my $value = $child->nodeValue;
+        if ($value =~ /^(.*)&format\((\$\{?[a-zA-Z0-9]*\}?(?:\[[^\]]*\])?)\s?,\s?["']([0-9][eEfFgGsS])["']\)(.*)$/s) {
+          my $before = $1;
+          my $number = $2;
+          my $format = $3;
+          my $after = $4;
+          # do not change this if the parent is <display> and there are other things before or after &format
+          if ($element->nodeName eq 'display' && (defined $child->previousSibling || defined $next ||
+              $before !~ /^\s*$/ || $after !~ /^\s*$/)) {
+            last;
+          }
+          my $replacement = $doc->createDocumentFragment();
+          my $num = $doc->createElement('num');
+          $num->setAttribute('format', $format);
+          $num->appendChild($doc->createTextNode($number));
+          if (length($before) > 0) {
+            $replacement->appendChild($doc->createTextNode($before));
+          }
+          $replacement->appendChild($num);
+          if (length($after) > 0) {
+            $replacement->appendChild($doc->createTextNode($after));
+          }
+          $element->replaceChild($replacement, $child);
+          $changed = 1;
+        }
+      }
+    }
+    if ($changed && $element->nodeName eq 'display') {
+      my $first = $element->firstChild;
+      if ($first->nodeType == XML_ELEMENT_NODE && $first->nodeName eq 'num' && !defined $first->nextSibling) {
+        # remove useless display element
+        replace_by_children($element);
+      }
+    }
+  }
 }
 
 # pretty-print using im-memory DOM tree
