@@ -130,7 +130,7 @@ sub not_correct {
       return !($stack->{'hint_conditions'}->{$problemid}->{$on}->{'responsecorrect'});
    } else {
 # There is no condition, and thus we can only look at the whole part
-      return ($stack->{'context'}->{'part_status'}->{'outcome'} ne &correct());
+      return ($stack->{'context'}->{'part_status'}->{'outcome'} eq &incorrect());
    }
 }
 

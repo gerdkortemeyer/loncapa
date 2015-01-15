@@ -170,6 +170,8 @@ sub end_part_grade {
       $stack->{'scores'}->{'status'}=&correct();
 #FIXME: absolute and partial credit
       $stack->{'scores'}->{'score'}=1;
+   } elsif (!$allvalid) {
+      $stack->{'scores'}->{'status'}=&no_valid_response();
    }
    if (($allvalid) && (!$allprevious)) { 
       $stack->{'scores'}->{'countedtries'}++; 
