@@ -50,7 +50,7 @@ sub end_hintgroup_html {
    my $found=0;
    foreach my $hint (@{$stack->{'hintgroup'}}) {
       if ($hint->{'on'}=~/\S/s) {
-         if ($stack->{'hint_conditions'}->{$problemid}->{$hint->{'on'}}->{'hintapplies'}) {
+         if (&on_applies($stack,$problemid,$hint->{'on'})) {
             $found=1;
             last;
          }
@@ -58,6 +58,8 @@ sub end_hintgroup_html {
    }
 # Now for real
    foreach my $hint (@{$stack->{'hintgroup'}}) {
+use Data::Dumper;
+&logdebug(Dumper($hint));
       if ($found) {
          if (&on_applies($stack,$problemid,$hint->{'on'})) {
             if (($hint->{'showoncorrect'}) || (&not_correct($stack,$problemid,$hint->{'on'}))) {
@@ -119,7 +121,7 @@ sub start_hint_html {
 sub on_applies {
    my ($stack,$problemid,$on)=@_;
    if ($on!~/\S/s) { return 1; }
-   return $stack->{$problemid}->{$on}->{'hintapplies'};
+   return $stack->{'hint_conditions'}->{$problemid}->{$on}->{'hintapplies'};
 }
 
 sub not_correct {
