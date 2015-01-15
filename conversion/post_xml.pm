@@ -119,7 +119,7 @@ sub post_xml {
   
   replace_numericalresponse_unit_attribute($root);
   
-  replace_format_function_by_num($root);
+  replace_functions_by_elements($root);
   
   pretty($root, \@all_block);
 
@@ -2974,7 +2974,10 @@ sub replace_numericalresponse_unit_attribute {
   
 }
 
-sub replace_format_function_by_num {
+# Replaces &format and &prettyprint by <num> whenever possible.
+# Also replaces &chemparse by <chem>.
+# If the function call is enclosed in <display>, the <display> element is removed.
+sub replace_functions_by_elements {
   my ($root) = @_;
   my $doc = $root->ownerDocument;
   my @preserve = ('script','answer','perl','parse','m','tm','dtm','numericalhintscript'); # display is handled later
@@ -2989,7 +2992,7 @@ sub replace_format_function_by_num {
       $next = $child->nextSibling;
       if ($child->nodeType == XML_TEXT_NODE) {
         my $value = $child->nodeValue;
-        if ($value =~ /^(.*)&format\((\$\{?[a-zA-Z0-9]*\}?(?:\[[^\]]*\])?)\s?,\s?["']([0-9][eEfFgGsS])["']\)(.*)$/s) {
+        if ($value =~ /^(.*)&(?:format|prettyprint)\((\$\{?[a-zA-Z0-9]*\}?(?:\[[^\]]*\])?)\s?,\s?["']([0-9][eEfFgGsS])["']\)(.*)$/s) {
           my $before = $1;
           my $number = $2;
           my $format = $3;
@@ -3012,12 +3015,37 @@ sub replace_format_function_by_num {
           }
           $element->replaceChild($replacement, $child);
           $changed = 1;
+          $next = $element->firstChild; # start over, there might be another &format in the same text node
+        } elsif ($value =~ /^(.*)&chemparse\(([^'"()]*|'[^']*'|"[^"]*")\)(.*)$/s) {
+          my $before = $1;
+          my $reaction = $2;
+          my $after = $3;
+          $reaction =~ s/^'(.*)'$/$1/;
+          $reaction =~ s/^"(.*)"$/$1/;
+          if ($element->nodeName eq 'display' && (defined $child->previousSibling || defined $next ||
+              $before !~ /^\s*$/ || $after !~ /^\s*$/)) {
+            last;
+          }
+          my $replacement = $doc->createDocumentFragment();
+          my $chem = $doc->createElement('chem');
+          $chem->appendChild($doc->createTextNode($reaction));
+          if (length($before) > 0) {
+            $replacement->appendChild($doc->createTextNode($before));
+          }
+          $replacement->appendChild($chem);
+          if (length($after) > 0) {
+            $replacement->appendChild($doc->createTextNode($after));
+          }
+          $element->replaceChild($replacement, $child);
+          $changed = 1;
+          $next = $element->firstChild;
         }
       }
     }
     if ($changed && $element->nodeName eq 'display') {
       my $first = $element->firstChild;
-      if ($first->nodeType == XML_ELEMENT_NODE && $first->nodeName eq 'num' && !defined $first->nextSibling) {
+      if ($first->nodeType == XML_ELEMENT_NODE && string_in_array(['num','chem'], $first->nodeName) &&
+          !defined $first->nextSibling) {
         # remove useless display element
         replace_by_children($element);
       }
