@@ -32,74 +32,90 @@ our @ISA = qw (Exporter);
 our @EXPORT = qw(allowed_system allowed_domain allowed_course allowed_section allowed_user allowed_any_section);
 
 # Check privileges on system-level, going through all system roles
+# $action is the action (e.g., "view_user")
+# $item is any sub-action
 #
 sub allowed_system {
    my ($action,$item)=@_;
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'system'}})) {
-      if ($privileges->{$role}->{'system'}->{$action}) { return 1; }
+      if ($privileges->{$role}->{'system'}->{$action}->{'any'}) { return 1; }
       if ($item) {
-         if ($privileges->{$role}->{'system'}->{$action}->{$item}) { return 1; }
+         if ($privileges->{$role}->{'system'}->{$action}->{$item}->{'any'}) { return 1; }
       }
    }
    return 0;
 }
 
 # Check privileges on domain-level and above
+# $action is the action (e.g., "view_user")
+# $item is any sub-action
+# $domain is the domain that will be affected
 #
 sub allowed_domain {
    my ($action,$item,$domain)=@_;
    if (&allowed_system($action,$item)) { return 1; }
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'domain'}->{$domain}})) {
-      if ($privileges->{$role}->{'domain'}->{$action}) { return 1; }
+      if ($privileges->{$role}->{'domain'}->{$action}->{'any'}) { return 1; }
       if ($item) {
-         if ($privileges->{$role}->{'domain'}->{$action}->{$item}) { return 1; }
+         if ($privileges->{$role}->{'domain'}->{$action}->{$item}->{'any'}) { return 1; }
       }
    }
    return 0;
 }
 
 # Check privileges on course-level and above
+# $action is the action (e.g., "view_user")
+# $item is any sub-action
+# $entity, $domain are the course that will be affected
 #
 sub allowed_course {
    my ($action,$item,$entity,$domain)=@_;
    if (&allowed_domain($action,$item,$domain)) { return 1; }
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'any'}})) {
-      if ($privileges->{$role}->{'course'}->{$action}) { return 1; }
+      if ($privileges->{$role}->{'course'}->{$action}->{'any'}) { return 1; }
       if ($item) {
-         if ($privileges->{$role}->{'course'}->{$action}->{$item}) { return 1; }
+         if ($privileges->{$role}->{'course'}->{$action}->{$item}->{'any'}) { return 1; }
       }
    }
    return 0;
 }
 
 # Check privileges on section-level and above
-# 
+# $action is the action (e.g., "view_user")
+# $item is any sub-action
+# $entity, $domain are the course that will be affected
+# $section should be the section that will be affected, for
+# example the section that a student is in who will be graded
+#
 sub allowed_section {
    my ($action,$item,$entity,$domain,$section)=@_;
    if (&allowed_course($action,$item,$entity,$domain)) { return 1; }
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'section'}->{$section}})) {
-      if ($privileges->{$role}->{'section'}->{$action}) { return 1; }
+      if ($privileges->{$role}->{'section'}->{$action}->{'any'}) { return 1; }
       if ($item) {
-         if ($privileges->{$role}->{'section'}->{$action}->{$item}) { return 1; }
+         if ($privileges->{$role}->{'section'}->{$action}->{$item}->{'any'}) { return 1; }
       }
    }
    return 0;
 }
 
 # Check privileges on user-level and above
+# $action is the action (e.g., "view_user")
+# $item is any sub-action
+# $entity, $domain is the user that will be affected
 #
 sub allowed_user {
    my ($action,$item,$entity,$domain)=@_;
    if (&allowed_domain($action,$item,$domain)) { return 1; }
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $role (keys(%{$roles->{'user'}->{$domain}->{$entity}})) {
-      if ($privileges->{$role}->{'user'}->{$action}) { return 1; }
+      if ($privileges->{$role}->{'user'}->{$action}->{'any'}) { return 1; }
       if ($item) {
-         if ($privileges->{$role}->{'user'}->{$action}->{$item}) { return 1; }
+         if ($privileges->{$role}->{'user'}->{$action}->{$item}->{'any'}) { return 1; }
       }
    }
    return 0;
@@ -107,6 +123,13 @@ sub allowed_user {
 
 #
 # Allowed in any section of the course?
+# Will return true if the action is allowed for any section
+# - just see if some functionality should be pulled up in the first
+# place, but before actually doing anything, the particular section
+# needs to be checked.
+# $action is the action (e.g., "view_user")
+# $item is any sub-action
+# $entity, $domain are the course that will be affected
 #
 sub allowed_any_section {
    my ($action,$item,$entity,$domain)=@_;
@@ -114,9 +137,9 @@ sub allowed_any_section {
    my $roles=&Apache::lc_entity_sessions::roles();
    foreach my $section (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'section'}})) {
       foreach my $role (keys(%{$roles->{'course'}->{$domain}->{$entity}->{'section'}->{$section}})) {
-         if ($privileges->{$role}->{'section'}->{$action}) { return 1; }
+         if ($privileges->{$role}->{'section'}->{$action}->{'any'}) { return 1; }
          if ($item) {
-            if ($privileges->{$role}->{'section'}->{$action}->{$item}) { return 1; }
+            if ($privileges->{$role}->{'section'}->{$action}->{$item}->{'any'}) { return 1; }
          }
       }
    }
@@ -167,6 +190,11 @@ sub modifiable_course_roles {
 }
 
 
+#
+# This loads the role definitions into a global variable $permission
+# for quick lookup. The role definitions specify what roles can do on
+# which levels
+#
 BEGIN {
    unless ($privileges) {
       $privileges=&Apache::lc_json_utils::json_to_perl(&Apache::lc_file_utils::readfile(&lc_roles_defs()));
