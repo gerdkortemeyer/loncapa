@@ -2992,11 +2992,18 @@ sub replace_functions_by_elements {
       $next = $child->nextSibling;
       if ($child->nodeType == XML_TEXT_NODE) {
         my $value = $child->nodeValue;
-        if ($value =~ /^(.*)&(?:format|prettyprint)\((\$\{?[a-zA-Z0-9]*\}?(?:\[[^\]]*\])?)\s?,\s?["']([0-9][eEfFgGsS])["']\)(.*)$/s) {
+        if ($value =~ /^(.*)&(?:format|prettyprint)\((\$\{?[a-zA-Z0-9]*\}?(?:\[[^\]]*\])?|[0-9.]+)\s?,\s?(["'][,.\$]?[0-9][eEfFgGsS]["']|\$[a-zA-Z0-9]*)\)(.*)$/s) {
+          # NOTE: we don't check for &prettyprint's 3rd argument (target), but it has not been seen outside of script elements.
+          # NOTE: the format options ',' and '$' are not supported by &format in current LON-CAPA since rev 1.81 of default_homework.lcpm,
+          #       but are supported by &prettyprint;
+          #       if we use (like current LON-CAPA) &prettyprint for <num> implementation, it will change a few resulting documents
+          #       (by making them display something they were probably intended to display, but which did not).
+          #       Usage of <num> with &prettyprint instead of &format might also change the display when there is an exponent.
           my $before = $1;
           my $number = $2;
           my $format = $3;
           my $after = $4;
+          $format =~ s/^['"]|['"]$//g;
           # do not change this if the parent is <display> and there are other things before or after &format
           if ($element->nodeName eq 'display' && (defined $child->previousSibling || defined $next ||
               $before !~ /^\s*$/ || $after !~ /^\s*$/)) {
