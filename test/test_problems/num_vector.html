@@ -2,6 +2,45 @@
 <loncapa>
 <body>
 Simple vector problem
+  <problem id="id111">
+    <perl><![CDATA[
+#
+# by E.Kashy and S. Wolfe
+# kashy@nscl.msu.edu
+# No unauthorized commercial use.
+#
+$fx     = &random(5.05,6.0,0.02);
+$fy     = &random(7.07,8.0,0.02);
+$ansxy  = &sqrt($fx*$fx + $fy*$fy);
+$sangle = &asin($fx/$ansxy) * $rad2deg;
+]]></perl>
+    <part id="1111">
+      <p>Two perpendicular sides of a triangle are $fx m
+        and $fy m long, respectively.
+        Find the length of the third side of the triangle.</p>
+<p> $fx $fy $ansxy $sangle</p>
+      <numericalresponse unit="m" format="2E" answer="$ansxy" id="1112">
+        <parameter name="tol" type="tolerance" default="1.0%" description="Numerical Tolerance"/>
+        <p><textline/></p>
+      </numericalresponse>
+      <hint id="id114">
+        Use the Pythagorean theorem relating the three sides of a right triangle.
+      </hint>
+    </part>
+    <part id="1113">
+      <p>Find the smallest angle of the triangle in the previous problem.</p>
+      <numericalresponse unit="deg" format="2E" answer="$sangle" id="1114">
+        <parameter name="tol" type="tolerance" default="1%" description="Numerical Tolerance"/>
+        <textline/>
+      </numericalresponse>
+      <hint id="id116">
+        In a right triangle, the sine of any angle is the ratio of the
+        length of the side opposite that angle to the hypotenuse.
+      </hint>
+    </part>
+  </problem>
+
+
 <problem id="id1">
      <perl><![CDATA[
 # ************************************

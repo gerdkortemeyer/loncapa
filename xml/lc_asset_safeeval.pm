@@ -44,6 +44,9 @@ sub init_safe {
 
 # Math::Cephes
 
+  $safehole->wrap(\&Math::Cephes::round,$safeeval,'&round');
+  $safehole->wrap(\&Math::Cephes::pow,$safeeval,'&pow');
+  $safehole->wrap(\&Math::Cephes::sqrt,$safeeval,'&sqrt');
   $safehole->wrap(\&Math::Cephes::asin,$safeeval,'&asin');
   $safehole->wrap(\&Math::Cephes::acos,$safeeval,'&acos');
   $safehole->wrap(\&Math::Cephes::atan,$safeeval,'&atan');
