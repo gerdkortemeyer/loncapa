@@ -1,23 +1,18 @@
 {
 "superuser"          : { "realm"  : "system",
-                         "any" : "1",
-                         "system" : { "any"             " "1",
+                         "system" : {
                                       "view_role"       : "1",
                                       "search_users"    : "1",
                                       "modify_role"     : {
-                                                             "any" : "1",
                                                              "domain_coordinator" : "1"
                                                           }
                                     }
                        },
 "domain_coordinator" : { "realm"  : "domain",
-                         "any" : "1",
                          "domain" : {
-                                      "any" : "1",
                                       "view_role"       : "1",
                                       "search_users"    : "1",
                                       "modify_role"     : {
-							     "any" : "1",
                                                              "course_coordinator" : "1"
                                                           },
                                       "modify_auth"     : "1",
@@ -26,15 +21,12 @@
                                     }
                        },
 "course_coordinator" : { "realm"  : "regular",
-                         "any" : "1",
-                         "domain" : { "any" : "1",
+                         "domain" : { 
                                       "search_users"    : "1"
                                     },
                          "course" : {
-                                      "any" : "1",
                                       "view_role"       : "1",
                                       "modify_role"     : {
-                                                             "any" : "1",
                                                              "course_coordinator" : "1",
                                                              "instructor"         : "1",
                                                              "teaching_assistant" : "1",
@@ -43,7 +35,6 @@
                                       "modify_settings": "1",
                                       "edit_toc"       : "1",
                                       "access_content" : {
-                                                             "any" : "1",
                                                              "open"               : "1",
                                                              "closed"             : "1",
                                                              "hidden"             : "1"
@@ -53,84 +44,63 @@
                                     }
                        },
 "instructor"         : { "realm"  : "regular",
-                         "any" : "1",
                          "course" : { 
-				      "any" : "1",
                                       "access_content" : {
-                                                             "any" : "1",
                                                              "open"               : "1",
                                                              "closed"             : "1",
                                                              "hidden"             : "1"
                                                          }
                                     },
                          "section": {
-                                      "any" : "1",
                                       "view_role"      : "1",
                                       "modify_grade"   : "1",
                                       "notify"         : "1"
                                     }
                        },
 "teaching_assistant" : { "realm"  : "regular",
-                         "any" : "1",
                          "course" : { 
-                                      "any" : "1",
                                       "access_content" : {
-                                                             "any" : "1",
                                                              "open"               : "1"
                                                          }
                                     },
                          "section": {
-                                      "any" : "1",
                                       "view_role"      : "1",
                                       "modify_grade"   : "1",
                                       "notify"         : "1"
                                     }
                        },
 "student"            : { "realm"  : "regular",
-                         "any" : "1",
                          "course" : {
-                                      "any" : "1",
                                       "access_content" : {
-                                                             "any"                " "1",
                                                              "open"               : "1"
                                                          }
                                     }
                        },
-"community_organizer": { "realm"  : "community",
-                         "any" : "1"
+"community_organizer": { "realm"  : "community"
                        },
-"member"             : { "realm"  : "community",
-                         "any" : "1"
+"member"             : { "realm"  : "community"
                        },
 
 "portfolio_owner"    : { "realm"  : "user",
-                         "any" : "1",
                          "user"   : {
-                                      "any" : "1",
                                       "view_portfolio" : "1",
                                       "edit_portfolio" : "1"
                                     }
                        },
 "author"             : { "realm"  : "user",
-                         "any" : "1",
                          "user"   : {
-                                      "any" : "1",
                                       "view_portfolio" : "1",
                                       "edit_portfolio" : "1"
                                     }
                        },
 "co_author"          : { "realm"  : "user",
-                         "any" : "1",
                          "user"   : {
-                                      "any" : "1",
                                       "view_portfolio" : "1",
                                       "edit_portfolio" : "1"
                                     }
                        },
 "guest"		     : { "realm"  : "user",
-                         "any" : "1",
                          "user"   : {
-                                      "any" : "1",
                                       "view_portfolio" : "1"
                                     }
                        }
