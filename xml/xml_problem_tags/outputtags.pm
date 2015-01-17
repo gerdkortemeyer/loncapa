@@ -21,6 +21,7 @@ package Apache::xml_problem_tags::outputtags;
 use strict;
 use Apache::lc_asset_safeeval();
 use Math::SigFigs;
+use Number::Format;
 
 use Apache::lc_logs;
 
@@ -30,12 +31,48 @@ our @ISA = qw(Exporter);
 our @EXPORT = qw(start_num_html);
 
 #
+# Turn something into the right number of significant digits
+#
+sub format_sigfigs {
+   my ($num,$digits)=@_;
+   return Math::SigFigs::FormatSigFigs($num,$digits);
+}
+
+#
+# Turn something into scientific notation
+# using Math::SigFigs
+#
+sub format_scientific {
+   my ($num,$digits)=@_;
+}
+
+#
+# Format a number according to a formatting string, e.g., "3s"
+# using Number::Format
+#
+sub format {
+   my ($num,$formatstring)=@_;
+   if ($formatstring=~/^(\d+)s$/is) {
+      return &format_sigfigs($num,$1);
+   } elsif ($formatstring=~/^(\d+)e$/is) {
+      return &format_scientific($num,$1);
+   } else {
+# No idea what the format is supposed to be, just return
+      return $num;
+   }
+}
+ 
+
+
+#
 sub start_num_html {
    my ($p,$safe,$stack,$token)=@_;
+# Fetch everything up to </num> and clear the stack
    my $text=$p->get_text('/num');
    $p->get_token;
    pop(@{$stack->{'tags'}});
-   return $text;
+# Evaluate all variables that may be in there inside safespace, return formatted version
+   return &format(&Apache::lc_asset_safeeval::texteval($safe,$text),$token->[2]->{'format'});
 }
 
 1;
