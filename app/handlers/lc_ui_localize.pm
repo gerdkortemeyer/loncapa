@@ -33,17 +33,34 @@ our @EXPORT = qw(mt);
 
 # ========================================================= The language handle
 
-use vars qw($lh $current_language $mtcache %known_languages);
+use vars qw($lh $current_language $mtcache $tfcache %known_languages);
 
+
+#
+# Generate local time output correct locale date format and timezone
+# Needs time to be translated and optional format and timezone
+#
 sub locallocaltime {
-   my ($thistime) = @_;
-   my $timezone=&context_timezone();
+   my ($thistime,$format,$timezone) = @_;
+   unless ($timezone) {
+      $timezone=&context_timezone();
+   }
+   unless ($format) {
+      $format=$lh->maketext('date_locale');
+   }
+   if ($tfcache->{$timezone}->{$format}->{$thistime}->{'formatted'}=~/\S/) {
+      return ($tfcache->{$timezone}->{$format}->{$thistime}->{'formatted'},
+              $tfcache->{$timezone}->{$format}->{$thistime}->{'raw'});
+   }
+   my $cachekeyformat=$format;
    my $dt = DateTime->from_epoch(epoch => $thistime)
                     ->set_time_zone($timezone);
-   my $format=$lh->maketext('date_locale');
    my $f=DateTime::Format::RFC3339->new();
    if ($format!~/\$/) {
-      return ($dt->strftime("%a %b %e %I:%M:%S %P %Y (%Z)"),$f->format_datetime($dt));
+      $tfcache->{$timezone}->{$format}->{$thistime}->{'formatted'}=$dt->strftime("%a %b %e %I:%M:%S %P %Y (%Z)");
+      $tfcache->{$timezone}->{$format}->{$thistime}->{'raw'}=$f->format_datetime($dt);
+      return ($tfcache->{$timezone}->{$format}->{$thistime}->{'formatted'},
+              $tfcache->{$timezone}->{$format}->{$thistime}->{'raw'});
    }
    my $time_zone  = $dt->time_zone_short_name();
    my $seconds    = $dt->second();
@@ -69,7 +86,10 @@ sub locallocaltime {
    foreach ('seconds','minutes','twentyfour','twelve','day','year','month','weekday','ampm') {
       $format=~s/\$$_/eval('$'.$_)/gse;
    }
-   return ($format." $time_zone",$f->format_datetime($dt));
+   $tfcache->{$timezone}->{$cachekeyformat}->{$thistime}->{'formatted'}=$format." $time_zone";
+   $tfcache->{$timezone}->{$cachekeyformat}->{$thistime}->{'raw'}=$f->format_datetime($dt);
+   return ($tfcache->{$timezone}->{$cachekeyformat}->{$thistime}->{'formatted'},
+           $tfcache->{$timezone}->{$cachekeyformat}->{$thistime}->{'raw'});
 }
 
 sub inputdate_to_timestamp {
