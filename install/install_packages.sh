@@ -58,5 +58,7 @@ cpan Spreadsheet::XLSX
 cpan Spreadsheet::ParseExcel
 cpan Text::CSV_PP
 cpan Devel::StackTrace
+cpan Number::Format
+cpan Math::SigFigs
 cpan enum
 cpan aliased
