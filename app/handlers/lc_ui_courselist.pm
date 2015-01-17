@@ -38,7 +38,7 @@ use Data::Dumper;
 
 # Returns an array of the fields for one record
 sub record_output {
-  my $record = shift;
+  my ($record,$format,$timezone)=@_;
 # Only show the roles that we are allowed to see
   unless (&allowed_section('view_role',$record->{'role'},&Apache::lc_entity_sessions::course_entity_domain(),$record->{'section'})) {
     return undef;
@@ -48,7 +48,8 @@ sub record_output {
   my $sort_startdate;
   if ($record->{'startdate'}) {
           ($display_startdate,$sort_startdate)=&Apache::lc_ui_localize::locallocaltime(
-                                        &Apache::lc_date_utils::str2num($record->{'startdate'}));
+                                        &Apache::lc_date_utils::str2num($record->{'startdate'}),
+                                        $format,$timezone);
   } else {
           $display_startdate=&mt('Never');
           $sort_startdate=0;
@@ -57,7 +58,8 @@ sub record_output {
   my $sort_enddate;
   if ($record->{'enddate'}) {
           ($display_enddate,$sort_enddate)=&Apache::lc_ui_localize::locallocaltime(
-                                        &Apache::lc_date_utils::str2num($record->{'enddate'}));
+                                        &Apache::lc_date_utils::str2num($record->{'enddate'}),
+                                        $format,$timezone);
   } else {
       $display_enddate=&mt('Never');
       $sort_enddate=0;
@@ -113,9 +115,14 @@ sub record_output {
 sub json_courselist {
   my $output;
   $output->{'aaData'}=[];
+# Determine timezone and dateformat once for classlist
+  my $timezone=&Apache::lc_ui_localize::context_timezone();
+  my $format=&mt('date_locale');
+# Get the classlist
   my @courselist=&Apache::lc_entity_courses::courselist(&Apache::lc_entity_sessions::course_entity_domain());
+# Output all records
   foreach my $record (@courselist) {
-    my $fields = record_output($record);
+    my $fields = &record_output($record,$format,$timezone);
     if (!defined $fields) {
       next;
     }
@@ -128,14 +135,15 @@ sub json_courselist {
 # @param {Array<Hash<string,string>>} users - list of user identifications (entity, domain, role, section)
 sub json_selection {
   my $users = shift;
-  
+  my $timezone=&Apache::lc_ui_localize::context_timezone();
+  my $format=&mt('date_locale');
   my $output = [];
   my @courselist = &Apache::lc_entity_courses::courselist(&Apache::lc_entity_sessions::course_entity_domain());
   # NOTE: this is not efficient, getting the right records from a list of entities would be better
   foreach my $user (@{$users}) {
     foreach my $record (@courselist) {
       if ($user->{'entity'} eq $record->{'entity'} && $user->{'domain'} eq $record->{'domain'}) {
-        my $fields = record_output($record);
+        my $fields = &record_output($record,$format,$timezone);
         if (!defined $fields) {
           next;
         }

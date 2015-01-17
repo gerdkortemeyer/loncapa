@@ -38,7 +38,9 @@ use vars qw($lh $current_language $mtcache $tfcache %known_languages);
 
 #
 # Generate local time output correct locale date format and timezone
-# Needs time to be translated and optional format and timezone
+# Needs time to be translated and 
+# optional format (from maketext dictionary) and 
+# optional timezone (typically context_timezone)
 #
 sub locallocaltime {
    my ($thistime,$format,$timezone) = @_;
@@ -46,7 +48,7 @@ sub locallocaltime {
       $timezone=&context_timezone();
    }
    unless ($format) {
-      $format=$lh->maketext('date_locale');
+      $format=&mt('date_locale');
    }
    if ($tfcache->{$timezone}->{$format}->{$thistime}->{'formatted'}=~/\S/) {
       return ($tfcache->{$timezone}->{$format}->{$thistime}->{'formatted'},
