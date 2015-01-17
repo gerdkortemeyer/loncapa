@@ -32,6 +32,8 @@ our @EXPORT = qw(start_num_html);
 
 #
 # Turn something into the right number of significant digits
+# Using Math::SigFigs
+# Format like '3s'
 #
 sub format_sigfigs {
    my ($num,$digits)=@_;
@@ -40,7 +42,8 @@ sub format_sigfigs {
 
 #
 # Turn something into scientific notation
-# using Math::SigFigs
+# Using Number::Format
+# Format like '3e' 
 #
 sub format_scientific {
    my ($num,$digits)=@_;
@@ -48,7 +51,7 @@ sub format_scientific {
 
 #
 # Format a number according to a formatting string, e.g., "3s"
-# using Number::Format
+# Also exported to safespace
 #
 sub format {
    my ($num,$formatstring)=@_;

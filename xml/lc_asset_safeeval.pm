@@ -24,6 +24,7 @@ use Safe::Hole();
 use Math::Cephes();
 use Math::Random();
 use Apache::lc_random();
+use Apache::xml_problem_tags::outputtags();
 use Opcode();
 
 my $submission;
@@ -135,6 +136,10 @@ sub init_safe {
 # The standard random routines
 
   $safehole->wrap(\&Apache::lc_random::random,$safeeval,'&random');
+
+# Formatting stuff
+
+  $safehole->wrap(\&Apache::xml_problem_tags::outputtags::format,$safeeval,'&format');
 
 # Return the submission 
 
