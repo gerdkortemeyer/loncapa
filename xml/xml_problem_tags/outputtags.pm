@@ -47,6 +47,7 @@ sub format_sigfigs {
 #
 sub format_scientific {
    my ($num,$digits)=@_;
+   return $num;
 }
 
 #
