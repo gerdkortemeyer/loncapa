@@ -166,21 +166,24 @@ var initEditors = function() {
                     ta.parentNode.insertBefore(output_node, ta.nextSibling);
                 else
                     ta.parentNode.appendChild(output_node);
-                var blur = function(output_node) {
+                var hide_node = function(an_output_node) {
+                    // returns a function that will hide the node on any event
+                    // (we can't use the node directly because it changes in the loop)
                     return function(e) {
-                      output_node.style.display = "none";
+                      an_output_node.style.display = "none";
                     };
-                };
-                var focus = function(ta, output_node) {
+                }
+                var focus = function(a_ta, an_output_node) {
                     return function(e) {
-                        if (ta.value != '') {
-                            output_node.style.display = "block";
-                            place(ta, output_node);
+                        if (a_ta.value != '') {
+                            an_output_node.style.display = "block";
+                            place(a_ta, an_output_node);
                         }
                     };
                 };
-                ta.addEventListener("blur", blur(output_node), false);
+                ta.addEventListener("blur", hide_node(output_node), false);
                 ta.addEventListener("focus", focus(ta, output_node), false);
+                output_node.addEventListener("mouseenter", hide_node(output_node), false);
                 ind_math = math_objects.length;
                 var oldtxt = "";
                 math_objects[ind_math] = {
