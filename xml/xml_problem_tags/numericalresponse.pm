@@ -25,6 +25,7 @@ use Apache::lc_problem_const;
 use Apache::xml_problem_tags::hints();
 use Apache::lc_asset_safeeval();
 use Apache::lc_logs;
+use Apache::xml_problem_tags::outputtags();
 
 our @ISA = qw(Exporter);
 
@@ -79,7 +80,9 @@ sub evaluate_answer {
    }
    my $unit=&Apache::lc_asset_xml::open_tag_attribute('unit',$stack);
    unless ($unit) { $unit=''; }
-   return &assemble_answer($stack,$mode,$answer,$unit);
+   my $format=&Apache::lc_asset_xml::open_tag_attribute('format');
+   unless ($format) { $format=''; }
+   return &assemble_answer($stack,$mode,$answer,$unit,$format);
 }
 
 #
@@ -97,12 +100,14 @@ sub evaluate_show_answer {
    }
    my $unit=&Apache::lc_asset_xml::cascade_attribute('unit',$stack);
    unless ($unit) { $unit=''; }
-   return &assemble_answer($stack,$mode,$answer,$unit);
+   my $format=&Apache::lc_asset_xml::cascade_attribute('format');
+   unless ($format) { $format=''; }
+   return &assemble_answer($stack,$mode,$answer,$unit,$format);
 }
 
 
 sub assemble_answer {
-   my ($stack,$mode,$answer,$unit)=@_;
+   my ($stack,$mode,$answer,$unit,$format)=@_;
    my $expected='';
    if (ref($answer) eq 'ARRAY') {
       if ($mode eq 'sets') {
