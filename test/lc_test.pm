@@ -164,14 +164,14 @@ my $comparedate='2014-04-16 01:00:01';
        'course', # system, domain, course, user
        $courseentity,'msu','007', # what's the realm?
        'instructor', # what role is this?
-       '1998-01-08 04:05:06','2015-01-08 04:05:06', # duration
+       '1998-01-08 04:05:06','2017-01-08 04:05:06', # duration
        'ggf21wqffas','msu');
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
        'user', # system, domain, course, user
        $entity,'msu',undef, # what's the realm?
        'author', # what role is this?
-       '1998-01-08 04:05:06','2015-01-08 04:05:06', # duration
+       '1998-01-08 04:05:06','2017-01-08 04:05:06', # duration
        'ggf21wqffas','msu');
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
@@ -193,7 +193,7 @@ my $comparedate='2014-04-16 01:00:01';
        'course', # system, domain, course, user
        $courseentity,'msu','006', # what's the realm?
        'instructor', # what role is this?
-       '1998-01-08 04:05:06','2015-01-08 04:05:06', # duration
+       '1998-01-08 04:05:06','2017-01-08 04:05:06', # duration
        'ggf21wqffas','msu');
 
    &Apache::lc_entity_roles::modify_role($entity,'msu', # who gets the role?
