@@ -145,20 +145,20 @@ h3 {
 
 .lccorrectpart {
    padding: 3px;
-   background: #D6FF5C;
-   border-radius: 5px 5px 5px 5px;
+   color: #0A0;
+   font-weight: bold;
 }
 
 .lcincorrectpart {
    padding: 3px;
-   background: #FF6666;
-   border-radius: 5px 5px 5px 5px;
+   color: #F00;
+   font-weight: bold;
 }
 
 .lcinvalidpart {
    padding: 3px;
-   background: #FFFF66;
-   border-radius: 5px 5px 5px 5px;
+   color: #F80;
+   font-weight: bold;
 }
 
 .lcresponseerror {
