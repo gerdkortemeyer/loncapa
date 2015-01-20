@@ -90,6 +90,12 @@ h3 {
    border-width: 1px;
 }
 
+.lcgroup:after {
+   content: "";
+   display: table;
+   clear: both;
+}
+
 .lcinnerfileupload {
    visibility: hidden;
 }

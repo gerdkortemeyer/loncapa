@@ -47,7 +47,7 @@ sub start_problem_html {
           &Apache::lc_xml_standard::begin_head(@_).
           &Apache::lc_xml_standard::end_head(@_).
           &Apache::lc_xml_standard::begin_body(@_).
-          '<div class="lcproblemdiv" id="'.$token->[2]->{'id'}.'">';
+          '<div class="lcproblemdiv lcgroup" id="'.$token->[2]->{'id'}.'">';
 }
 
 sub end_problem_html {
