@@ -136,12 +136,19 @@ h3 {
    color: #ffffff;
 }
 
+.lcproblemdiv {
+   border-radius: 7px 7px 7px 7px;
+   border: 1px solid #AAA;
+   padding: 0.5em;
+   margin-top: 0.5em;
+   margin-bottom: 0.5em;
+}
+
 .lcpartdiv {
    border-radius: 7px 7px 7px 7px;
-   padding: 3px;
-   border-color: #000000;
-   border-style: solid;
-   border-width: 1px;
+   border: 1px solid #AAA;
+   padding: 0.5em;
+   margin: 0.5em;
 }
 
 .lcpartfeedback {
