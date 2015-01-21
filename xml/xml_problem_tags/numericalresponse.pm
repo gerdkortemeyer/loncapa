@@ -112,7 +112,7 @@ sub assemble_answer {
    if (ref($answer) eq 'ARRAY') {
       if ($mode eq 'sets') {
 # The array contains elements of a set
-         $expected='{'.join(';',@{$answer}).'} '.$unit;
+         $expected='{'.join(';',map{$format?&Apache::xml_problem_tags::outputtags::format($_,$format):$_}@{$answer}).'} '.$unit;
       } elsif ($#{$answer}>0) {
 # We have an array or a matrix with more than one element
          $expected='[';
@@ -120,21 +120,21 @@ sub assemble_answer {
             $expected.='[';
             my @rows=();
             foreach my $row (@{$answer}) {
-               push(@rows,join(';',@{$row}));
+               push(@rows,join(';',map{$format?&Apache::xml_problem_tags::outputtags::format($_,$format):$_}@{$row}));
             }
             $expected.=join('];[',@rows);
             $expected.=']';
          } else {
-            $expected.=join(';',@{$answer});
+            $expected.=join(';',map{$format?&Apache::xml_problem_tags::outputtags::format($_,$format):$_}@{$answer});
          }
          $expected.='] '.$unit;
       } else {
 # We have an array, but it has only one element
-         $expected='('.$answer->[0].') '.$unit;
+         $expected='('.$format?&Apache::xml_problem_tags::outputtags::format($answer->[0],$format):$answer->[0].') '.$unit;
       }
    } else {
 # We have a string as answer
-     $expected='('.$answer.')'.$unit;
+     $expected='('.$format?&Apache::xml_problem_tags::outputtags::format($answer,$format):$answer.')'.$unit;
    }
    return $expected;
 }
