@@ -64,18 +64,15 @@ sub end_radiobuttonresponse_grade {
    my $id=&Apache::lc_asset_xml::open_tag_attribute('id',$stack);
 # Special mode?
    my $mode=&Apache::lc_asset_xml::open_tag_attribute('mode',$stack);
-# Get student response
-   my $responses=&evaluate_responses($stack,$mode);
-# Get ourselves a numerical parser and environment
-   my ($parser,$env)=&Apache::lc_math_parser::new_numerical_parser($customunits);
 # Get the old response details
    my $responsedetails=&Apache::lc_asset_xml::get_response_details($id,$stack);
 # Did we get anything new?
    unless ($stack->{'context'}->{'newsubmission'}) {
 # Nope? Store that there was nothing
    }
-my $output;
+my $outcome;
 my $message;
+my $previously;
 # Log this
    &Apache::lc_asset_xml::add_response_details($id,
                                                { 'type'        => 'radiobutton',

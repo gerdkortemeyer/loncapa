@@ -51,6 +51,7 @@ use Apache::xml_problem_tags::problemparts;
 use Apache::xml_problem_tags::inputtags;
 use Apache::xml_problem_tags::numericalresponse;
 use Apache::xml_problem_tags::radiobuttonresponse;
+use Apache::xml_problem_tags::foilgroup;
 use Apache::xml_problem_tags::hints;
 use Apache::xml_problem_tags::outputtags;
 
