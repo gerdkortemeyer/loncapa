@@ -80,14 +80,13 @@ sub evaluate_answer {
    }
    my $unit=&Apache::lc_asset_xml::open_tag_attribute('unit',$stack);
    unless ($unit) { $unit=''; }
-   my $format=&Apache::lc_asset_xml::open_tag_attribute('format');
-   unless ($format) { $format=''; }
-   return &assemble_answer($stack,$mode,$answer,$unit,$format);
+   return &assemble_answer($stack,$mode,$answer,$unit);
 }
 
 #
 # About the same as the above, but it gets the answer from the enclosing response tag
 # Needed to show the correct answer in &show_answer mode
+# Respects the format
 #
 sub evaluate_show_answer {
    my ($stack,$mode)=@_;
@@ -108,6 +107,7 @@ sub evaluate_show_answer {
 
 sub assemble_answer {
    my ($stack,$mode,$answer,$unit,$format)=@_;
+   unless ($format) { $format=''; }
    my $expected='';
    if (ref($answer) eq 'ARRAY') {
       if ($mode eq 'sets') {

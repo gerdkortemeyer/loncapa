@@ -34,6 +34,8 @@ our @EXPORT = qw(allowed_system allowed_domain allowed_course allowed_section al
 # Check privileges on system-level, going through all system roles
 # $action is the action (e.g., "view_user")
 # $item is any sub-action
+# If $item is not specified, it checks if there are any allowed sub-actions
+# - thus, $item needs to be specified before doing a specific sub-action
 #
 sub allowed_system {
    my ($action,$item)=@_;
@@ -42,6 +44,8 @@ sub allowed_system {
       if ($privileges->{$role}->{'system'}->{$action} eq '1') { return 1; }
       if ($item) {
          if ($privileges->{$role}->{'system'}->{$action}->{$item} eq '1') { return 1; }
+      } else {
+         if ($privileges->{$role}->{'system'}->{$action}->{'any'} eq '1') { return 1; }
       }
    }
    return 0;
@@ -60,6 +64,8 @@ sub allowed_domain {
       if ($privileges->{$role}->{'domain'}->{$action} eq '1') { return 1; }
       if ($item) {
          if ($privileges->{$role}->{'domain'}->{$action}->{$item} eq '1') { return 1; }
+      } else {
+         if ($privileges->{$role}->{'domain'}->{$action}->{'any'} eq '1') { return 1; }
       }
    }
    return 0;
@@ -78,6 +84,8 @@ sub allowed_course {
       if ($privileges->{$role}->{'course'}->{$action} eq '1') { return 1; }
       if ($item) {
          if ($privileges->{$role}->{'course'}->{$action}->{$item} eq '1') { return 1; }
+      } else {
+         if ($privileges->{$role}->{'course'}->{$action}->{'any'} eq '1') { return 1; }
       }
    }
    return 0;
@@ -98,6 +106,8 @@ sub allowed_section {
       if ($privileges->{$role}->{'section'}->{$action} eq '1') { return 1; }
       if ($item) {
          if ($privileges->{$role}->{'section'}->{$action}->{$item} eq '1') { return 1; }
+      } else {
+         if ($privileges->{$role}->{'section'}->{$action}->{'any'} eq '1') { return 1; }
       }
    }
    return 0;
@@ -116,6 +126,8 @@ sub allowed_user {
       if ($privileges->{$role}->{'user'}->{$action} eq '1') { return 1; }
       if ($item) {
          if ($privileges->{$role}->{'user'}->{$action}->{$item} eq '1') { return 1; }
+      } else {
+         if ($privileges->{$role}->{'user'}->{$action}->{'any'} eq '1') { return 1; }
       }
    }
    return 0;
@@ -140,6 +152,8 @@ sub allowed_any_section {
          if ($privileges->{$role}->{'section'}->{$action} eq '1') { return 1; }
          if ($item) {
             if ($privileges->{$role}->{'section'}->{$action}->{$item} eq '1') { return 1; }
+         } else {
+            if ($privileges->{$role}->{'section'}->{$action}->{'any'} eq '1') { return 1; }
          }
       }
    }
