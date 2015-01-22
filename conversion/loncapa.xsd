@@ -6848,10 +6848,12 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:ID"/>
       <xs:attribute name="codebase" type="xs:anyURI"/>
-      <xs:attribute name="archive">
-        <xs:simpleType>
-          <xs:list itemType="xs:anyURI"/>
-        </xs:simpleType>
+      <xs:attribute name="archive" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Comma-separated list of URIs for archives containing classes and other resources that will be "preloaded".
+          </xs:documentation>
+        </xs:annotation>
       </xs:attribute>
       <xs:attribute name="code"/>
       <xs:attribute name="object"/>
