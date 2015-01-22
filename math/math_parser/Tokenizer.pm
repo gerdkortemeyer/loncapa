@@ -79,6 +79,9 @@ sub tokenize {
     my $dec2 = Definitions->DECIMAL_SIGN_2;
     
     $text = $self->text;
+    if (!defined $text) {
+        die "Math Tokenizer: undefined text";
+    }
     $i = 0;
     $c = $i < length($text) ? substr($text, $i, 1) : '';
     @tokens = ();
