@@ -78,6 +78,7 @@ sub evaluate_in_parser {
       } elsif (UNIVERSAL::isa($_,ParseException)) {
          return(&bad_formula(),&message($_));
       } else {
+         logerror($_);
          return(&internal_error(),&message($_));
       }
    }
