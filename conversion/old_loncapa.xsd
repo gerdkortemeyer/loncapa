@@ -2194,7 +2194,7 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="url" type="xs:string">
+      <xs:attribute name="url" type="xs:anyURI">
         <xs:annotation>
           <xs:documentation>
             url to submit the answer form to. It does not need to be a LON-CAPA machine.
@@ -2777,7 +2777,7 @@
         <xs:element name="bgimg">
           <xs:annotation>
             <xs:documentation>
-              ???
+              Element alternative to the bgimg attribute, which makes it possible to use a plot as a background image.
             </xs:documentation>
           </xs:annotation>
           <xs:complexType mixed="true">
@@ -2787,7 +2787,7 @@
           </xs:complexType>
         </xs:element>
       </xs:choice>
-      <xs:attribute name="bgimg" type="xs:string">
+      <xs:attribute name="bgimg" type="xs:anyURI">
         <xs:annotation>
           <xs:documentation>
             Either a fully qualified URL for an external image or a LON-CAPA resource. It supports relative references (../images/apicture.gif). The image must either be a GIF or JPEG.
@@ -4162,7 +4162,7 @@
       </xs:attribute>
     </xs:complexType>
   </xs:element>
-  <xs:element name="parserlib" type="xs:string">
+  <xs:element name="parserlib" type="xs:anyURI">
     <xs:annotation>
       <xs:documentation>
         Import Tag Definitions
@@ -4171,7 +4171,7 @@
       </xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:element name="scriptlib" type="xs:string">
+  <xs:element name="scriptlib" type="xs:anyURI">
     <xs:annotation>
       <xs:documentation>
         Import Script Library
@@ -4389,25 +4389,29 @@
         This causes the parse to read in the file named in the body of the tag and parse it as if the entire text of the file had existed at the location of the tag.
       </xs:documentation>
     </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="importmode">
-        <xs:annotation>
-          <xs:documentation>
-            Import as
-          </xs:documentation>
-        </xs:annotation>
-        <xs:simpleType>
-          <xs:union memberTypes="perl">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:anyURI">
+          <xs:attribute name="id" type="xs:string"/>
+          <xs:attribute name="importmode">
+            <xs:annotation>
+              <xs:documentation>
+                Import as
+              </xs:documentation>
+            </xs:annotation>
             <xs:simpleType>
-              <xs:restriction base="xs:string">
-                <xs:enumeration value="problem"/>
-                <xs:enumeration value="part"/>
-              </xs:restriction>
+              <xs:union memberTypes="perl">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="problem"/>
+                    <xs:enumeration value="part"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:union>
             </xs:simpleType>
-          </xs:union>
-        </xs:simpleType>
-      </xs:attribute>
+          </xs:attribute>
+        </xs:extension>
+      </xs:simpleContent>
     </xs:complexType>
   </xs:element>
   <xs:complexType mixed="true" name="block-base">
@@ -4773,7 +4777,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="text-only"/>
       </xs:choice>
-      <xs:attribute name="href" type="xs:string"/>
+      <xs:attribute name="href" type="xs:anyURI"/>
       <xs:attribute name="height" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
@@ -4972,16 +4976,20 @@
           </xs:complexType>
         </xs:element>
         <xs:element name="image">
-          <xs:complexType mixed="true">
-            <xs:attribute name="x" type="int-or-perl" use="required"/>
-            <xs:attribute name="y" type="int-or-perl" use="required"/>
-            <xs:attribute name="clipx" type="int-or-perl"/>
-            <xs:attribute name="clipy" type="int-or-perl"/>
-            <xs:attribute name="clipwidth" type="int-or-perl"/>
-            <xs:attribute name="clipheight" type="int-or-perl"/>
-            <xs:attribute name="scaledwidth" type="int-or-perl"/>
-            <xs:attribute name="scaledheight" type="int-or-perl"/>
-            <xs:attribute name="transparent" type="xs:string"/>
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:anyURI">
+                <xs:attribute name="x" type="int-or-perl" use="required"/>
+                <xs:attribute name="y" type="int-or-perl" use="required"/>
+                <xs:attribute name="clipx" type="int-or-perl"/>
+                <xs:attribute name="clipy" type="int-or-perl"/>
+                <xs:attribute name="clipwidth" type="int-or-perl"/>
+                <xs:attribute name="clipheight" type="int-or-perl"/>
+                <xs:attribute name="scaledwidth" type="int-or-perl"/>
+                <xs:attribute name="scaledheight" type="int-or-perl"/>
+                <xs:attribute name="transparent" type="xs:string"/>
+              </xs:extension>
+            </xs:simpleContent>
           </xs:complexType>
         </xs:element>
       </xs:choice>
@@ -6038,7 +6046,7 @@
       </xs:choice>
       <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="href" type="xs:string"/>
+      <xs:attribute name="href" type="xs:anyURI"/>
       <xs:attribute name="target" type="xs:string"/>
       <xs:attribute name="title" type="xs:string"/>
       <xs:attribute name="uriprint" type="xs:string"/>
@@ -6161,7 +6169,7 @@
       <xs:choice maxOccurs="unbounded" minOccurs="0">
         <xs:group ref="inlines"/>
       </xs:choice>
-      <xs:attribute name="cite" type="xs:string">
+      <xs:attribute name="cite" type="xs:anyURI">
         <xs:annotation>
           <xs:documentation>
             The value of this attribute is a URL that designates a source document or message for the information quoted. This attribute is intended to point to information explaining the context or the reference for the quote.
@@ -6333,7 +6341,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:attributeGroup ref="coreattrs"/>
-      <xs:attribute name="src" type="xs:string" use="required">
+      <xs:attribute name="src" type="xs:anyURI" use="required">
         <xs:annotation>
           <xs:documentation>
             Image URL
@@ -6454,7 +6462,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="codebase" type="xs:string">
+      <xs:attribute name="codebase" type="xs:anyURI">
         <xs:annotation>
           <xs:documentation>
             The base path used to resolve relative URIs specified by classid, data, or archive. If not specified, the default is the base URI of the current document.
@@ -6462,7 +6470,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="data" type="xs:string">
+      <xs:attribute name="data" type="xs:anyURI">
         <xs:annotation>
           <xs:documentation>
             The address of the resource as a valid URL. At least one of data and type must be defined.
@@ -6484,13 +6492,16 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="archive" type="xs:string">
+      <xs:attribute name="archive">
         <xs:annotation>
           <xs:documentation>
             A space-separated list of URIs for archives of resources for the object.
             Obsolete since HTML5.
           </xs:documentation>
         </xs:annotation>
+        <xs:simpleType>
+          <xs:list itemType="xs:anyURI"/>
+        </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="standby" type="xs:string">
         <xs:annotation>
@@ -6603,7 +6614,11 @@
       </xs:choice>
       <xs:attribute name="id" type="xs:ID"/>
       <xs:attribute name="codebase" type="xs:anyURI"/>
-      <xs:attribute name="archive"/>
+      <xs:attribute name="archive">
+        <xs:simpleType>
+          <xs:list itemType="xs:anyURI"/>
+        </xs:simpleType>
+      </xs:attribute>
       <xs:attribute name="code"/>
       <xs:attribute name="object"/>
       <xs:attribute name="alt" type="xs:string"/>
