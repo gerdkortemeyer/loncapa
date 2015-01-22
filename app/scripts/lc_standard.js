@@ -11,9 +11,10 @@ window.addEventListener('load', function(e) {
 }, false);
 
 function attach_submit_button(problemid,partid) {
-   $('#'+partid+'_submit_button').click(function() {
-       $('#'+partid+'_submit_button').hide();
+   $('#'+partid+'_submit_button').one('click',function() {
+       $('#'+partid+'_submit_button').addClass('disabled');// NOTE: what is the point of this if request is sync ?
        var data = $('#'+partid+'_form').serialize();
+       // TODO: make async, handle errors by re-enabling button, re-attaching handler and displaying a message
        $.ajax({
              data: data+"&outputid="+problemid,
              async: false,
@@ -21,7 +22,7 @@ function attach_submit_button(problemid,partid) {
              success: function(response) {
                  $('#'+problemid).replaceWith(response);
                  LCMATH.initEditors();
-                 MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+                 MathJax.Hub.Queue(["Typeset",MathJax.Hub, problemid]);
                  adjust_framesize();
              }
        });

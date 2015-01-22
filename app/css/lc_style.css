@@ -114,6 +114,10 @@ h3 {
    z-index: 999;
 }
 
+.lcformtrigger.disabled {
+   background: #999;
+}
+
 .lcformcancel {
    font-family: sans-serif;
    font-size: 14px;
