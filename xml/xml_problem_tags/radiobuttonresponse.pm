@@ -23,6 +23,7 @@ use strict;
 use Apache::lc_math_parser();
 use Apache::lc_problem_const;
 use Apache::xml_problem_tags::hints();
+use Apache::xml_problem_tags::foilgroup();
 use Apache::lc_logs;
 
 our @ISA = qw(Exporter);
@@ -44,6 +45,7 @@ sub start_radiobuttonresponse_html {
 sub start_radiobuttonresponse_grade {
    my ($p,$safe,$stack,$token)=@_;
    &Apache::lc_asset_xml::init_response($token->[2]->{'id'},$stack);
+   &Apache::xml_problem_tags::foilgroup::init_foils($stack);
 }
 
 

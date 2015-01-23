@@ -35,6 +35,14 @@ our @EXPORT = qw(start_foilgroup_html  end_foilgroup_html
                  start_foil_html  end_foil_html
                  start_foil_grade end_foil_grade);
 
+#
+# To be called by all responses that need foilgroups
+#
+sub init_foils {
+   my ($stack)=@_;
+   $stack->{'foils'}={};
+}
+
 # ============================================================
 # Foilgroup
 # ============================================================
@@ -46,6 +54,8 @@ sub start_foilgroup_html {
 
 sub start_foilgroup_grade {
    my ($p,$safe,$stack,$token)=@_;
+   $stack->{'conceptgroup'}=undef;
+   $stack->{'foilgroup'}=$token->[2]->{'id'};
 }
 
 sub end_foilgroup_html {
@@ -68,6 +78,7 @@ sub start_conceptgroup_html {
 
 sub start_conceptgroup_grade {
    my ($p,$safe,$stack,$token)=@_;
+   $stack->{'conceptgroup'}=$token->[2]->{'id'};
 }
 
 sub end_conceptgroup_html {
@@ -77,6 +88,7 @@ sub end_conceptgroup_html {
 
 sub end_conceptgroup_grade {
    my ($p,$safe,$stack,$token)=@_;
+   $stack->{'conceptgroup'}=undef;
 }
 
 # ============================================================
@@ -85,15 +97,20 @@ sub end_conceptgroup_grade {
 
 sub start_foil_html {
    my ($p,$safe,$stack,$token)=@_;
+# Definitely don't render in place, just store
+   &Apache::lc_asset_xml::set_redirect($token->[2]->{'id'},$stack);
    return '';
 }
 
 sub start_foil_grade {
    my ($p,$safe,$stack,$token)=@_;
+# Remember this foil
 }
 
 sub end_foil_html {
    my ($p,$safe,$stack,$token)=@_;
+# Done redirecting
+   &Apache::lc_asset_xml::clear_redirect($stack);
    return '';
 }
 
