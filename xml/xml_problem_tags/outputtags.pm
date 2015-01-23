@@ -56,20 +56,6 @@ sub format_scientific {
 #
 sub format_comma {
     my ($number) = @_;
-    if ($number =~ /\./) {
-        while ($number =~ /([^0-9]*)([0-9]+)([^\.,][^\.,][^\.,])([,0-9]*\.[0-9]*)$/) {
-            $number = $1.$2.','.$3.$4;
-        }
-    } else {
-        while ($number =~ /^([^0-9]*)([0-9]+)([^,][^,][^,])([,0-9]*)$/) {
-            $number = $1.$2.','.$3.$4;
-        }
-    }
-    return $number;
-}
-
-sub format_comma_new {
-    my ($number) = @_;
     return format_number($number);
 }
 
@@ -77,7 +63,7 @@ sub format_comma_new {
 # Format a number according to a formatting string, e.g., "3s"
 # Also exported to safespace
 #
-sub format_number {
+sub format {
     my ($num,$formatstring)=@_;
     my $result;
     my ($commamode,$alwaysperiod,$options);
@@ -128,7 +114,7 @@ sub start_num_html {
     $p->get_token;
     pop(@{$stack->{'tags'}});
 # Evaluate all variables that may be in there inside safespace, return formatted version
-    return &format_number(&Apache::lc_asset_safeeval::texteval($safe,$text),$token->[2]->{'format'});
+    return &format(&Apache::lc_asset_safeeval::texteval($safe,$text),$token->[2]->{'format'});
 }
 
 sub start_monetary_html {
