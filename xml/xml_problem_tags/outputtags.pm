@@ -44,75 +44,62 @@ sub format_sigfigs {
 # Using Number::Format
 # Format like '3e' 
 #
-#sub format_scientific {
-#   my ($num,$digits)=@_;
-#   return sprintf("%.$digits"."e", $num);
-#}
+sub format_scientific {
+    my ($num,$formatstring)=@_;
+    return sprintf('%.'.$formatstring,$num);
+}
+
+#
+# Groups of three digits are separated by commas
+#
+sub format_comma {
+    my ($number) = @_;
+    if ($number =~ /\./) {
+        while ($number =~ /([^0-9]*)([0-9]+)([^\.,][^\.,][^\.,])([,0-9]*\.[0-9]*)$/) {
+            $number = $1.$2.','.$3.$4;
+        }
+    } else {
+        while ($number =~ /^([^0-9]*)([0-9]+)([^,][^,][^,])([,0-9]*)$/) {
+            $number = $1.$2.','.$3.$4;
+        }
+    }
+    return $number;
+}
 
 #
 # Format a number according to a formatting string, e.g., "3s"
 # Also exported to safespace
 #
-#sub format {
-#   my ($num,$formatstring)=@_;
-#   if ($formatstring=~/^(\d+)s$/is) {
-#      return &format_sigfigs($num,$1);
-#   } elsif ($formatstring=~/^(\d+)e$/is) {
-#      return &format_scientific($num,$1);
-#   } else {
-## No idea what the format is supposed to be, just return
-#      return $num;
-#   }
-#}
- 
-
-
-
 sub format {
-    my ($value,$fmt)=@_;
+    my ($num,$formatstring)=@_;
     my $result;
-    #if ($fmt =~ /chem/i) { return(&chemparse($value)); }
-    my ($dollarmode,$commamode,$alwaysperiod,$options);
-    if ($fmt =~ /^([^\d]*)(.*)/) { $options=$1; $fmt=$2; }
-    if ($options =~ /\$/) { $dollarmode=1; }
+    my ($commamode,$alwaysperiod,$options);
+    # Look for any non-digit starting characters which indicate options
+    if ($formatstring =~ /^([^\d]*)(.*)/) { $options=$1; $formatstring=$2; }
     if ($options =~ /,/)  { $commamode=1; }
     if ($options =~ /\./) { $alwaysperiod=1; }
-    if ($fmt=~/^(\d+)s$/is) {
-       $value=&format_sigfigs($value,$1);
-    } elsif ($fmt) {
-       $value=sprintf('%.'.$fmt,$value);
-    }
-    if ($alwaysperiod && $fmt eq '0f') {
-       #if ($target eq 'tex') {
-       #   $value .='\\ensuremath{.}';
-       #} else {
-          $value .='.';
-       #}
-    }
-    if ($value =~ /([0-9\.\-\+]+)[eE]([0-9\-\+]+)/i ) {
-       my $frac=$1;
-       if ($dollarmode) { $frac=&dollarformat($frac); }
-       if ($commamode) { $frac=&commaformat($frac); }
-       my $exponent=$2;
-       $exponent=~s/^\+0*//;
-       $exponent=~s/^-0*/-/;
-       $exponent=~s/^-0*/-/;
-       if ($exponent eq '-') { undef($exponent); }
-       if ($exponent) {
-          #if ($target eq 'web') {
-             $result=$frac.'&#215;10<sup>'.$exponent.'</sup>';
-          #} elsif ($target eq 'tex') {
-          #   $result='\ensuremath{'.$frac.'\times 10^{'.$exponent.'}}';
-          #} else {
-          #   $result=$value;
-          #}
-       } else {
-          $result=$frac;
-       }
+    if ($formatstring =~ /^(\d+)s$/is) { $num = &format_sigfigs($num,$1); } 
+    # Otherwise process with "sprintf" (probably float or scientific notation)
+    elsif ($formatstring) { $num = &format_scientific($num, $formatstring); }
+    # Append a period with no trailing digits
+    if ($alwaysperiod && $formatstring eq '0f') { $num .='.'; }
+    # Change display format for scintific notation to use "x10^"
+    # First identify the significand and exponent ($1 and $2)
+    if ($num =~ /([0-9\.\-\+]+)[eE]([0-9\-\+]+)/i ) {
+        my $frac=$1;
+        if ($commamode) { $frac=&format_comma($frac); }
+        my $exponent=$2;
+        # Remove preceding zeros from the exponent
+        $exponent=~s/^\+0*//; 
+        $exponent=~s/^-0*/-/;
+        if ($exponent eq '-') { undef($exponent); }
+        if ($exponent) { $result=$frac.'&#215;10<sup>'.$exponent.'</sup>'; }
+        # For an exponent of +/-0, just print the significand
+        else { $result=$frac; } 
     } else {
-       $result=$value;
-       #if    ($dollarmode) { $result=&dollarformat($result,$target); }
-       #elsif ($commamode)  { $result=&commaformat($result,$target); }
+        # No idea what the format is supposed to be, just return
+        $result=$num;
+        if ($commamode) { $result = &format_comma($result); }
     }
     return $result;
 }
@@ -125,7 +112,6 @@ sub start_num_html {
    $p->get_token;
    pop(@{$stack->{'tags'}});
 # Evaluate all variables that may be in there inside safespace, return formatted version
-   #return &format(&Apache::lc_asset_safeeval::texteval($safe,$text),$token->[2]->{'format'});
    return &format(&Apache::lc_asset_safeeval::texteval($safe,$text),$token->[2]->{'format'});
 }
 
