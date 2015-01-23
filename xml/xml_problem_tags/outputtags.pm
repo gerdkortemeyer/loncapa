@@ -21,13 +21,15 @@ package Apache::xml_problem_tags::outputtags;
 use strict;
 use Apache::lc_asset_safeeval();
 use Math::SigFigs;
+use Number::Format qw(:subs);
+use Locale::Currency::Format;
 
 use Apache::lc_logs;
 
 our @ISA = qw(Exporter);
 
 # Export all tags that this module defines in the list below
-our @EXPORT = qw(start_num_html);
+our @EXPORT = qw(start_num_html start_monetary_html);
 
 #
 # Turn something into the right number of significant digits
@@ -66,11 +68,16 @@ sub format_comma {
     return $number;
 }
 
+sub format_comma_new {
+    my ($number) = @_;
+    return format_number($number);
+}
+
 #
 # Format a number according to a formatting string, e.g., "3s"
 # Also exported to safespace
 #
-sub format {
+sub format_number {
     my ($num,$formatstring)=@_;
     my $result;
     my ($commamode,$alwaysperiod,$options);
@@ -105,14 +112,33 @@ sub format {
 }
 
 #
+# Format currency with the appropriate symbol.  
+# Valid currency codes are from ISO 4217, e.g. currency="USD".
+#
+sub format_currency {
+    my ($num,$currencycode)=@_;
+    return currency_format($currencycode, $num, FMT_SYMBOL);
+}
+
+#
 sub start_num_html {
-   my ($p,$safe,$stack,$token)=@_;
+    my ($p,$safe,$stack,$token)=@_;
 # Fetch everything up to </num> and clear the stack
-   my $text=$p->get_text('/num');
-   $p->get_token;
-   pop(@{$stack->{'tags'}});
+    my $text=$p->get_text('/num');
+    $p->get_token;
+    pop(@{$stack->{'tags'}});
 # Evaluate all variables that may be in there inside safespace, return formatted version
-   return &format(&Apache::lc_asset_safeeval::texteval($safe,$text),$token->[2]->{'format'});
+    return &format_number(&Apache::lc_asset_safeeval::texteval($safe,$text),$token->[2]->{'format'});
+}
+
+sub start_monetary_html {
+    my ($p,$safe,$stack,$token)=@_;
+# Fetch everything up to </num> and clear the stack
+    my $text=$p->get_text('/monetary');
+    $p->get_token;
+    pop(@{$stack->{'tags'}});
+# Evaluate all variables that may be in there inside safespace, return formatted version
+    return &format_currency(&Apache::lc_asset_safeeval::texteval($safe,$text),$token->[2]->{'currency'});
 }
 
 1;

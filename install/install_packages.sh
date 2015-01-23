@@ -62,3 +62,4 @@ cpan Number::Format
 cpan Math::SigFigs
 cpan enum
 cpan aliased
+cpan Locale::Currency::Format
