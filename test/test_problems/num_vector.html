@@ -13,12 +13,25 @@ $fx     = &random(5.05,6.0,0.02);
 $fy     = &random(7.07,8.0,0.02);
 $ansxy  = &sqrt($fx*$fx + $fy*$fy);
 $sangle = &asin($fx/$ansxy) * $rad2deg;
+$stuff=10000.*$pi;
 ]]></perl>
     <part id="1111">
       <p>Two perpendicular sides of a triangle are <num format="6s">$fx</num> m
         and <num format="4e">$fy</num> m long, respectively.
         Find the length of the third side of the triangle.</p>
-<p> $fx $fy $ansxy $sangle</p>
+<table>
+<tr><td>3s</td><td><num format="3s">$stuff</num></tr>
+<tr><td>3f</td><td><num format="3f">$stuff</num></tr>
+<tr><td>,3f</td><td><num format=",3f">$stuff</num></tr>
+<tr><td>3e</td><td><num format="3e">$stuff</num></tr>
+<tr><td>,4s</td><td><num format=",4s">$stuff</num></tr>
+<tr><td>,6s</td><td><num format=",6s">$stuff</num></tr>
+<tr><td>Currency Euro</td><td><monetary currency="EUR">$stuff</monetary></td</tr>
+<tr><td>Currency Yen</td><td><monetary currency="jpy">$stuff</monetary></td</tr>
+<tr><td>Currency USD</td><td><monetary currency="USD">$stuff</monetary></td</tr>
+</table>
+
+
       <numericalresponse unit="m" format="2E" answer="$ansxy" id="1112">
         <parameter name="tol" type="tolerance" default="1.0%" description="Numerical Tolerance"/>
         <p><textline/></p>
