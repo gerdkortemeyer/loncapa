@@ -46,7 +46,63 @@ sub ext_to_func {
          return $error;
       }
    } elsif ($comp[0] eq 'user') {
-      return '';
+      if ($comp[1] eq 'resource') {
+         my $sub=undef;
+         unless ($comp[2] eq 'resource') {
+            ($sub)=($comp[2]=~/^(\d+)\:/);
+         }
+         my $args='';
+         if ($sub) {
+            $args='"'.$comp[3].'","'.$comp[4].'","'.$sub.'"';
+         } elsif ($comp[4]) {
+            $args='"'.$comp[3].'","'.$comp[4].'"';
+         } elsif ($comp[3]) {
+            $args='"'.$comp[3].'"';
+         }
+         if ($comp[-1] eq 'submission') {
+            return '&submission('.$args.')';
+         } elsif ($comp[-1] eq 'award') {
+            return '';
+         } elsif ($comp[-1] eq 'awarded') {
+            return '';
+         } elsif ($comp[-1] eq 'awarddetail') {
+            return '';
+         } elsif ($comp[-1] eq 'tries') {
+            return ''
+         } elsif ($comp[-1] eq 'solved') {
+            return '';
+         } elsif ($comp[-1] eq 'title') {
+            return '&title();';
+         } else {
+            return $error;
+         }
+      } elsif ($comp[1] eq 'environment') {
+         if ($comp[2] eq 'lastname') {
+            return '&lastname()';
+         } elsif ($comp[2] eq 'firstname') {
+            return '&firstname()';
+         } elsif ($comp[2] eq 'remotenavmap') {
+            return '0';
+         } elsif ($comp[2] eq 'clickers') {
+            return '&clickers()';
+         } else {
+            return $error;
+         }
+      } elsif ($comp[1] eq 'course') {
+         if (($comp[2] eq 'section') || ($comp[2] eq 'sec')) {
+            return '&sec()';
+         } elsif ($comp[2] eq 'group') {
+            return '&group()';
+         } else {
+            return $error;
+         }
+      } elsif ($comp[1] eq 'name') {
+         return '&username()';
+      } elsif ($comp[1] eq 'domain') {
+         return '&userdomain()';
+      } else {
+         return $error;
+      }
    } elsif ($comp[0] eq 'query') {
       return '';
    } elsif ($comp[0] eq 'request') {
@@ -122,6 +178,7 @@ sub ext_to_func {
       } elsif ($comp[-1] eq 'problemstatus') {
       } elsif ($comp[-1] eq 'scoreformat') {
       } elsif ($comp[-1] eq 'title') {
+         return '&title();';
       } elsif ($comp[-1] eq 'subject') {
       } elsif ($comp[-1] eq 'keywords') {
       } elsif ($comp[-1] eq 'author') {
