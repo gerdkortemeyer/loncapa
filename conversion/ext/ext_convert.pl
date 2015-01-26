@@ -6,8 +6,10 @@ use strict;
 sub ext_to_func {
    my ($ext)=@_;
    my $error="'*** ERROR ***'";
-   unless ($ext=~/^\s*\&EXT\(/) { return $error; }
-   if ($ext=~/\,/) { return $error; }
+# This should not hve been called
+   unless ($ext=~/^\s*\&EXT\(/) { return $ext; }
+# We cannot deal with calls outside the problem
+   if ($ext=~/\,/) { return $ext; }
    $ext=~s/^\s*\&EXT\s*\(\s*//;
    $ext=~s/\s*\)\s*$//s;
 # Get rid of Perlisms
@@ -100,15 +102,36 @@ sub ext_to_func {
       } elsif ($comp[-1] eq 'maxtries') {
       } elsif ($comp[-1] eq 'weight') {
       } elsif ($comp[-1] eq 'duedate') {
+         if ($comp[1]) {
+            return '&due_date_epoch("'.$comp[1].'")';
+         } else {
+            return '&due_date_epoch()"';
+         }
       } elsif ($comp[-1] eq 'answerdate') {
+         if ($comp[1]) {
+            return '&answer_date_epoch("'.$comp[1].'")';
+         } else {
+            return '&answer_date_epoch()"';
+         }
       } elsif ($comp[-1] eq 'opendate') {
+         if ($comp[1]) {
+            return '&open_date_epoch("'.$comp[1].'")';
+         } else {
+            return '&open_date_epoch()"';
+         }
       } elsif ($comp[-1] eq 'problemstatus') {
       } elsif ($comp[-1] eq 'scoreformat') {
       } elsif ($comp[-1] eq 'title') {
       } elsif ($comp[-1] eq 'subject') {
       } elsif ($comp[-1] eq 'keywords') {
+      } elsif ($comp[-1] eq 'author') {
       } else {
-         return $error;
+# Anything else would actually be a parameter
+         if ($comp[1]) {
+            return '&parameter_setting("'.$comp[2].'","'.$comp[1].'")';
+         } else {
+            return '&parameter_setting("'.$comp[2].'")';
+         }
       }
    } elsif ($comp[0] eq 'system') {
       return '';
@@ -122,6 +145,14 @@ sub ext_to_func {
    } else {
       return $error;
    }
+}
+
+# Takes external::XX and converts to a function
+#
+sub external_to_func {
+   my ($variable)=@_;
+# this should not have been called
+   unless ($variable=~/^external\:\:/) { return $variable; }
 }
 
 open(IN,"ext_calls.txt");
