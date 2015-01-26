@@ -66,7 +66,7 @@ sub ext_to_func {
          } elsif ($comp[-1] eq 'awarded') {
             return '';
          } elsif ($comp[-1] eq 'awarddetail') {
-            return '';
+            return '&awarddetail('.$args.')';
          } elsif ($comp[-1] eq 'tries') {
             return ''
          } elsif ($comp[-1] eq 'solved') {
@@ -154,9 +154,18 @@ sub ext_to_func {
          return $error;
       }
    } elsif ($comp[0] eq 'resource') {
-      if ($comp[-1] eq 'tolerance') {
-      } elsif ($comp[-1] eq 'maxtries') {
+      if ($comp[-1] eq 'maxtries') {
+         if ($comp[1]) {
+            return '&maxtries("'.$comp[1].'")';
+         } else {
+            return '&maxtries()"';
+         }
       } elsif ($comp[-1] eq 'weight') {
+         if ($comp[1]) {
+            return '&weight("'.$comp[1].'")';
+         } else {
+            return '&weight()"';
+         }
       } elsif ($comp[-1] eq 'duedate') {
          if ($comp[1]) {
             return '&due_date_epoch("'.$comp[1].'")';
@@ -177,6 +186,11 @@ sub ext_to_func {
          }
       } elsif ($comp[-1] eq 'problemstatus') {
       } elsif ($comp[-1] eq 'scoreformat') {
+         if ($comp[1]) {
+            return '&scoreformat("'.$comp[1].'")';
+         } else {
+            return '&scoreformat()"';
+         }
       } elsif ($comp[-1] eq 'title') {
          return '&title();';
       } elsif ($comp[-1] eq 'subject') {
