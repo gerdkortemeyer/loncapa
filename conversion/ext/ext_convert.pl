@@ -16,6 +16,8 @@ sub ext_to_func {
    $ext=~s/\'//gs;
    $ext=~s/\"//gs;
    $ext=~s/\.+/\./gs;
+# Current part is default
+   $ext=~s/\$external\:\:part//gs;
    $error.=' ('.$ext.')';
 # Now argument looks like user.resource.resource.$partid.$responseid.submission
    my @comp=split(/\./,$ext);
@@ -62,15 +64,31 @@ sub ext_to_func {
          if ($comp[-1] eq 'submission') {
             return '&submission('.$args.')';
          } elsif ($comp[-1] eq 'award') {
-            return '';
+            if ($comp[-2]) {
+               return '&awarddetail("'.$comp[-2].'")';
+            } else {
+               return '&awarddetail()';
+            }
          } elsif ($comp[-1] eq 'awarded') {
-            return '';
+            if ($comp[-2]) {
+               return '&awarded("'.$comp[-2].'")';
+            } else {
+               return '&awarded()';
+            }
          } elsif ($comp[-1] eq 'awarddetail') {
             return '&awarddetail('.$args.')';
          } elsif ($comp[-1] eq 'tries') {
-            return ''
+            if ($comp[-2]) {
+               return '&tries("'.$comp[-2].'")';
+            } else {
+               return '&tries()';
+            }
          } elsif ($comp[-1] eq 'solved') {
-            return '';
+            if ($comp[-2]) {
+               return '&solved("'.$comp[-2].'")';
+            } else {
+               return '&solved()';
+            }
          } elsif ($comp[-1] eq 'title') {
             return '&title();';
          } else {
@@ -170,7 +188,7 @@ sub ext_to_func {
          if ($comp[1]) {
             return '&due_date_epoch("'.$comp[1].'")';
          } else {
-            return '&due_date_epoch()"';
+            return '&due_date_epoch()';
          }
       } elsif ($comp[-1] eq 'answerdate') {
          if ($comp[1]) {
@@ -224,6 +242,11 @@ sub external_to_func {
    my ($variable)=@_;
 # this should not have been called
    unless ($variable=~/^external\:\:/) { return $variable; }
+   if ($variable eq '$external::part') {
+      return '&partid()';
+   } elsif ($variable eq '$external::randomseed') {
+      return '&seed()';
+   }
 }
 
 open(IN,"ext_calls.txt");
