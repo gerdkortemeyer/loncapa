@@ -132,7 +132,7 @@ ToolbarMenu _makeSectionMenu() {
     };
     menu.add(menuItem);
   }
-  ToolbarMenu tbmenu = new ToolbarMenu(menu, Toolbar.insertMenuUpdate);
+  ToolbarMenu tbmenu = new ToolbarMenu(menu, Toolbar.insertMenuUpdate, page.toolbar);
   return(tbmenu);
 }
 
