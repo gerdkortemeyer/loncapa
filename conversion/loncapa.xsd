@@ -7195,6 +7195,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
+      <xs:attributeGroup ref="coreattrs"/>
       <xs:attribute default="text" name="type" type="InputType"/>
       <xs:attribute name="name">
         <xs:annotation>
@@ -7233,6 +7234,17 @@
       <xs:attribute name="onselect" type="xs:string"/>
       <xs:attribute name="onchange" type="xs:string"/>
       <xs:attribute name="accept" type="xs:string"/>
+      <xs:attribute name="onclick" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Javascript event handler content attribute for the "click" event.
+            
+            Warning: event handler content attributes should be avoided. They make the markup bigger and less readable. Concerns of content/structure and behavior are not well-separated, making a bug harder to find. Furthermore, usage of event attributes almost always causes scripts to expose global functions on the Window object, polluting the global namespace.
+            
+            The EventTarget.addEventListener() function should be used instead to add a listener for the event.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="select">
