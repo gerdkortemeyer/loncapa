@@ -26,6 +26,8 @@
         { "name": "centi", "symbol": "c", "factor": "10^-2" },
         { "name": "milli", "symbol": "m", "factor": "10^-3" },
         { "name": "micro", "symbol": "u", "factor": "10^-6" },
+        { "name": "micro", "symbol": "µ", "factor": "10^-6", "comment": "micro sign character 00B5" },
+        { "name": "micro", "symbol": "μ", "factor": "10^-6", "comment": "greek mu character 03BC" },
         { "name": "nano",  "symbol": "n", "factor": "10^-9" },
         { "name": "pico",  "symbol": "p", "factor": "10^-12" },
         { "name": "femto", "symbol": "f", "factor": "10^-15" },
