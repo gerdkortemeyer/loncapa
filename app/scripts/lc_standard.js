@@ -44,6 +44,7 @@ function attach_textfield_message(id) {
    });
    $('#'+id).mouseover(function(){ $('#'+id+'_message').show(); });
    $('#'+id).mouseout(function(){ $('#'+id+'_message').hide(); });
+   $('#'+id).keydown(function(){ $('#'+id+'_message').hide(); });
 }
 
 function adjust_framesize() {
