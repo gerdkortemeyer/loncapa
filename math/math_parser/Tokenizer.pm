@@ -82,6 +82,9 @@ sub tokenize {
     if (!defined $text) {
         die "Math Tokenizer: undefined text";
     }
+    if (!utf8::is_utf8($text)) {
+        utf8::decode($text);
+    }
     $i = 0;
     $c = $i < length($text) ? substr($text, $i, 1) : '';
     @tokens = ();
@@ -178,12 +181,14 @@ main:
         }
         
         # names
-        if (($c ge 'a' && $c le 'z') || ($c ge 'A' && $c le 'Z')) {
+        if (($c ge 'a' && $c le 'z') || ($c ge 'A' && $c le 'Z') ||
+                ($c ge 'α' && $c le 'ω') || ($c ge 'Α' && $c le 'Ω') || $c eq 'µ') {
             $value = $c;
             $i++;
             for (;;) {
                 $c = $i < length($text) ? substr($text, $i, 1) : '';
                 if (($c ge 'a' && $c le 'z') || ($c ge 'A' && $c le 'Z') ||
+                        ($c ge 'α' && $c le 'ω') || ($c ge 'Α' && $c le 'Ω') || $c eq 'µ' ||
                         ($c ge '0' && $c le '9') || $c eq '_') {
                     $value .= $c;
                     $i++;
