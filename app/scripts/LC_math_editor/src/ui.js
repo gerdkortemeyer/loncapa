@@ -150,17 +150,33 @@ var initEditors = function() {
                 output_node.style.color = "black";
                 output_node.style.border = "1px solid #A0A0A0";
                 output_node.style.padding = "5px";
+                var getCSSAbsolutePosition = function getCSSAbsolutePosition(el) {
+                    var x = 0;
+                    var y = 0;
+                    while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+                        x += el.offsetLeft - el.scrollLeft;
+                        y += el.offsetTop - el.scrollTop;
+                        el = el.offsetParent;
+                        if (el) {
+                            var style = window.getComputedStyle(el);
+                            if (style.position == 'absolute' || style.position == 'relative')
+                                break;
+                        }
+                    }
+                    return {top: y, left: x};
+                }
                 var place = function(ta, output_node) {
                     // position the output_node below or on top of ta
                     var ta_rect = ta.getBoundingClientRect();
                     var root = document.documentElement;
                     var docTop = (window.pageYOffset || root.scrollTop)  - (root.clientTop || 0);
                     var docLeft = (window.pageXOffset || root.scrollLeft) - (root.clientLeft || 0);
-                    output_node.style.left = (docLeft + ta_rect.left) + "px";
+                    var ta_pos = getCSSAbsolutePosition(ta);
+                    output_node.style.left = ta_pos.left + "px";
                     if (window.innerHeight > ta_rect.bottom + output_node.offsetHeight)
-                        output_node.style.top = (docTop + ta_rect.bottom) + "px";
+                        output_node.style.top = (ta_pos.top + ta.offsetHeight) + "px";
                     else
-                        output_node.style.top = (docTop + ta_rect.top - output_node.offsetHeight) + "px";
+                        output_node.style.top = (ta_pos.top - output_node.offsetHeight) + "px";
                 }
                 if (ta.nextSibling)
                     ta.parentNode.insertBefore(output_node, ta.nextSibling);
