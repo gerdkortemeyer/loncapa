@@ -4921,7 +4921,7 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">url</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
 
 
@@ -6146,7 +6146,7 @@ One is required, but multiple are allowed. This declares a group of locations an
 
 
 <div class="documentation">
-???
+Element alternative to the bgimg attribute, which makes it possible to use a plot as a background image.
 </div>
 <br>
 
@@ -6165,7 +6165,7 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">bgimg</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
 
 
@@ -8934,7 +8934,7 @@ File Spec
 
 <a name="parserlib_0"></a>
 <h3>Element <span class="nomtitre">parserlib</span>
-</h3>type: <tt>xs:string</tt>
+</h3>type: <tt>xs:anyURI</tt>
 <br>
 
 
@@ -8952,7 +8952,7 @@ The enclosed filename contains definitions for new tags.
 
 <a name="scriptlib_0"></a>
 <h3>Element <span class="nomtitre">scriptlib</span>
-</h3>type: <tt>xs:string</tt>
+</h3>type: <tt>xs:anyURI</tt>
 <br>
 
 
@@ -9399,8 +9399,10 @@ This causes the parse to read in the file named in the body of the tag and parse
 </div>
 <br>
 
-Can contain text<br>
+
 <div class="indentation">
+
+
 Attribute <span class="nomattribut">id</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
@@ -9435,6 +9437,8 @@ Value restriction based on xs:string<ul>
 
 
 </div>
+
+
 
 </div>
 
@@ -10347,7 +10351,7 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">href</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">height</span>:
@@ -10826,8 +10830,10 @@ Attribute <span class="nomattribut">thickness</span>:
 <a name="image_1"></a>
 <h3>Element <span class="nomtitre">image</span>
 </h3>
-Can contain text<br>
+
 <div class="indentation">
+
+
 Attribute <span class="nomattribut">x</span>:
     <div class="indentation">required<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
@@ -10864,6 +10870,8 @@ Attribute <span class="nomattribut">transparent</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
 </div>
+
+
 
 </div>
 
@@ -11204,7 +11212,7 @@ Usage note: This attribute must not be used to convey semantic information. Even
 
 </div>
 
-<br>Parents:<a href="#headerContent_0">headerContent</a>, <a href="#body_0">body</a>, <a href="#div-base_0">div-base</a>, <a href="#p-base_0">p-base</a>, <a href="#ul-base_0">ul-base</a>, <a href="#ol-base_0">ol-base</a>, <a href="#li-base_0">li-base</a>, <a href="#dl-base_0">dl-base</a>, <a href="#table-base_0">table-base</a>, <a href="#tr-base_0">tr-base</a>, <a href="#td-base_0">td-base</a>, <a href="#th_0">th</a>, <a href="#span_0">span</a>, <a href="#a_0">a</a>, <a href="#hr_0">hr</a>, <a href="#address_0">address</a>, <a href="#blockquote_0">blockquote</a>, <a href="#img_0">img</a>, <a href="#object_0">object</a>, <a href="#form_1">form</a>, <a href="#iframe_0">iframe</a>
+<br>Parents:<a href="#headerContent_0">headerContent</a>, <a href="#body_0">body</a>, <a href="#div-base_0">div-base</a>, <a href="#p-base_0">p-base</a>, <a href="#ul-base_0">ul-base</a>, <a href="#ol-base_0">ol-base</a>, <a href="#li-base_0">li-base</a>, <a href="#dl-base_0">dl-base</a>, <a href="#table-base_0">table-base</a>, <a href="#tr-base_0">tr-base</a>, <a href="#td-base_0">td-base</a>, <a href="#th_0">th</a>, <a href="#span_0">span</a>, <a href="#a_0">a</a>, <a href="#hr_0">hr</a>, <a href="#address_0">address</a>, <a href="#blockquote_0">blockquote</a>, <a href="#img_0">img</a>, <a href="#object_0">object</a>, <a href="#form_1">form</a>, <a href="#input_0">input</a>, <a href="#iframe_0">iframe</a>
 <br>
 <hr>
 
@@ -13239,7 +13247,7 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">href</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
 </div>
 Attribute <span class="nomattribut">target</span>:
@@ -13500,7 +13508,7 @@ Choice between:<ul>
 </li>
 </ul>
 Attribute <span class="nomattribut">cite</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
 
 
@@ -13886,7 +13894,7 @@ Possible values:<ul>
 <br>
 <br>
 Attribute <span class="nomattribut">src</span>:
-    <div class="indentation">required<br>type: <tt>xs:string</tt>
+    <div class="indentation">required<br>type: <tt>xs:anyURI</tt>
 <br>
 
 
@@ -14110,7 +14118,7 @@ Obsolete since HTML5.
 
 </div>
 Attribute <span class="nomattribut">codebase</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
 
 
@@ -14123,7 +14131,7 @@ Obsolete since HTML5.
 
 </div>
 Attribute <span class="nomattribut">data</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+    <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
 
 
@@ -14160,8 +14168,7 @@ Obsolete since HTML5.
 
 </div>
 Attribute <span class="nomattribut">archive</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
+    <div class="indentation">optional<br>
 
 
 <div class="documentation">
@@ -14169,6 +14176,9 @@ A space-separated list of URIs for archives of resources for the object.
 Obsolete since HTML5.
 </div>
 <br>
+
+
+
 
 
 </div>
@@ -14396,7 +14406,16 @@ Attribute <span class="nomattribut">codebase</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">archive</span>:
-    <div class="indentation">optional<br>
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Comma-separated list of URIs for archives containing classes and other resources that will be "preloaded".
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">code</span>:
     <div class="indentation">optional<br>
@@ -14772,6 +14791,10 @@ The HTML &lt;input&gt; element is used to create interactive controls for web-ba
 
 
 <div class="indentation">
+
+<a href="#coreattrs_0">coreattrs</a>
+<br>
+<br>
 Attribute <span class="nomattribut">type</span>:
     <div class="indentation">optional<br>type: <a href="#InputType_0">InputType</a>
 <br>
@@ -14858,6 +14881,22 @@ Attribute <span class="nomattribut">onchange</span>:
 Attribute <span class="nomattribut">accept</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+</div>
+Attribute <span class="nomattribut">onclick</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Javascript event handler content attribute for the "click" event.
+
+Warning: event handler content attributes should be avoided. They make the markup bigger and less readable. Concerns of content/structure and behavior are not well-separated, making a bug harder to find. Furthermore, usage of event attributes almost always causes scripts to expose global functions on the Window object, polluting the global namespace.
+
+The EventTarget.addEventListener() function should be used instead to add a listener for the event.
+</div>
+<br>
+
+
 </div>
 
 </div>
