@@ -62,14 +62,14 @@ class TeXMathJax extends DaxeNode {
   }
   
   void updateEquationDisplay() {
-    if (firstChild != null) {
-      String equationText = firstChild.nodeValue;
-      js.JsObject queue = js.context['MathJax']['Hub']['Queue'];
-      h.SpanElement span = h.document.getElementById(id);
-      span.text = convertForMathJaxe(equationText);
-      js.JsArray params = new js.JsObject.jsify( ['Typeset', js.context['MathJax']['Hub'], id] );
-      js.context['MathJax']['Hub'].callMethod('Queue', [params]);
-    }
+    String equationText = '?';
+    if (firstChild != null && firstChild.nodeValue.trim() != '')
+      equationText = firstChild.nodeValue;
+    js.JsObject queue = js.context['MathJax']['Hub']['Queue'];
+    h.SpanElement span = h.document.getElementById(id);
+    span.text = convertForMathJaxe(equationText);
+    js.JsArray params = new js.JsObject.jsify( ['Typeset', js.context['MathJax']['Hub'], id] );
+    js.context['MathJax']['Hub'].callMethod('Queue', [params]);
   }
   
   void editDialog([ActionFunction okfct]) {
