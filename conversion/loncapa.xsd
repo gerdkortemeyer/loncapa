@@ -4991,19 +4991,41 @@
       </xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:element name="lm" type="xs:string">
+  <xs:complexType name="lm-type">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute default="symbols" name="mode">
+          <xs:annotation>
+            <xs:documentation>
+              In symbols mode, names are interpreted as constants or variables.
+              In units mode, names are interpreted as constants or units.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="symbols"/>
+              <xs:enumeration value="units"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:element name="lm" type="lm-type">
     <xs:annotation>
       <xs:documentation>
         Inline math with the LON-CAPA syntax (use &lt;tm&gt; for LaTeX inline math).
         Perl variables are evaluated.
+        The expression is interpreted with implicit operators (for multiplication or units).
       </xs:documentation>
     </xs:annotation>
   </xs:element>
-  <xs:element name="dlm" type="xs:string">
+  <xs:element name="dlm" type="lm-type">
     <xs:annotation>
       <xs:documentation>
         Display math with the LON-CAPA syntax (use &lt;dtm&gt; for LaTeX display math).
         Perl variables are evaluated.
+        The expression is interpreted with implicit operators (for multiplication or units).
       </xs:documentation>
     </xs:annotation>
   </xs:element>

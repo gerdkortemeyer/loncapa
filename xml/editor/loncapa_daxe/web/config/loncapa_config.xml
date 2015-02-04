@@ -328,8 +328,8 @@
     </AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="tm" type="texmathjax"/>
     <AFFICHAGE_ELEMENT element="dtm" type="texmathjax"/>
-    <AFFICHAGE_ELEMENT element="lm" type="string"/>
-    <AFFICHAGE_ELEMENT element="dlm" type="lcdblock"/>
+    <AFFICHAGE_ELEMENT element="lm" type="lm"/>
+    <AFFICHAGE_ELEMENT element="dlm" type="lm"/>
     <AFFICHAGE_ELEMENT element="num" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="algebra" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
     <AFFICHAGE_ELEMENT element="chem" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
@@ -2687,14 +2687,30 @@
       <DOCUMENTATION>
         Inline math with the LON-CAPA syntax (use &lt;tm&gt; for LaTeX inline math).
         Perl variables are evaluated.
+        The expression is interpreted with implicit operators (for multiplication or units).
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="mode">
+        <TITRE>mode</TITRE>
+        <DOCUMENTATION>
+          In symbols mode, names are interpreted as constants or variables.
+          In units mode, names are interpreted as constants or units.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="dlm">
-      <TITRE>LON-CAPA inline math</TITRE>
+      <TITRE>LON-CAPA display math</TITRE>
       <DOCUMENTATION>
         Display math with the LON-CAPA syntax (use &lt;dtm&gt; for LaTeX display math).
         Perl variables are evaluated.
+        The expression is interpreted with implicit operators (for multiplication or units).
       </DOCUMENTATION>
+      <STRINGS_ATTRIBUT attribut="mode">
+        <TITRE>mode</TITRE>
+        <DOCUMENTATION>
+          In symbols mode, names are interpreted as constants or variables.
+          In units mode, names are interpreted as constants or units.
+        </DOCUMENTATION>
+      </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="num">
       <TITRE>num</TITRE>
