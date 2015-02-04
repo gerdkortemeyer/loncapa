@@ -118,3 +118,12 @@
   padding-top: 0.5em;
   padding-bottom: 0.5em;
 }
+
+input.math {
+  font-family: monospace;
+}
+
+span.math-error {
+  border: solid 1px red;
+  min-width: 1px;
+}

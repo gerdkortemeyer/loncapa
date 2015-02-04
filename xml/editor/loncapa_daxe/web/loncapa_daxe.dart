@@ -29,6 +29,7 @@ import 'dart:js' as js;
 import 'lcd_strings.dart';
 part 'nodes/lcd_block.dart';
 part 'nodes/tex_mathjax.dart';
+part 'nodes/lm.dart';
 part 'lcd_button.dart';
 
 
@@ -43,6 +44,11 @@ void main() {
   addDisplayType('texmathjax',
         (x.Element ref) => new TeXMathJax.fromRef(ref),
         (x.Node node, DaxeNode parent) => new TeXMathJax.fromNode(node, parent)
+    );
+  
+  addDisplayType('lm',
+        (x.Element ref) => new Lm.fromRef(ref),
+        (x.Node node, DaxeNode parent) => new Lm.fromNode(node, parent)
     );
   
   Future.wait([Strings.load(), LCDStrings.load()]).then((List responses) {
