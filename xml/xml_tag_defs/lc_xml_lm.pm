@@ -101,6 +101,9 @@ sub output_lm {
   } else {
     $s .= ' data-unit_mode="false"';
   }
+  my $text_on_one_line = $text;
+  $text_on_one_line =~ s/[\n\r]/ /g;
+  $s .= ' role="math" aria-label="'.$text_on_one_line.'"';
   $s .= '>'.$text.'</';
   if ($bdisplay) {
     $s .= "div>\n";
