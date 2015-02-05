@@ -61,11 +61,14 @@
     <div class="eqnbox">
         Test in a field <input class="math" data-implicit_operators="true" spellcheck="false" autofocus="autofocus"> with text around (Lax syntax, symbolic mode)
     </div>
-    <div style="position: absolute; left: 500px; top: 500px; background: rgba(200, 255, 200, 0.7)">
+    <div style="position: absolute; left: 500px; top: 400px; background: rgba(200, 255, 200, 0.7)">
         inside an absolute position div (lax symbolic)<br>
         <textarea class="math" data-implicit_operators="true" spellcheck="false" autofocus="autofocus"></textarea>
     </div>
     <p><button onclick="addField();">click to add a field</button></p>
+    <p>static math on a line: <span class="math" data-implicit_operators="true">2x/(3y)</span></p>
+    <p>static math as a block:</p>
+    <div class="math" data-implicit_operators="true">2x/(3y)</div>
     <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML"></script>
     <script src="src/definitions.js"></script>
     <script src="src/enode.js"></script>
@@ -78,6 +81,7 @@
     <script>
         window.addEventListener('load', function(e) {
             initEditors(); // will be LCMATH.initEditors() with the minimized version
+            updateMathSpanAndDiv(); // will be LCMATH.updateMathSpanAndDiv()
         }, false);
     </script>
 </body>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <section>
+    <h1>Symbols</h1>
+    <p>inside text: <lm>2x/3y</lm></p>
+    <p>With display mode:</p>
+    <dlm>2x/3y</dlm>
+  </section>
+  <section>
+    <h1>Units</h1>
+    <p>inside text: <lm mode="units">2m/3m</lm></p>
+    <p>With display mode:</p>
+    <dlm mode="units">2m/3m</dlm>
+  </section>
+</loncapa>

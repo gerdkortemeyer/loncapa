@@ -8,6 +8,7 @@ CKEDITOR.on('instanceReady', function(){
 
 window.addEventListener('load', function(e) {
         LCMATH.initEditors();
+        LCMATH.updateMathSpanAndDiv();
 }, false);
 
 function attach_submit_button(problemid,partid) {
@@ -22,6 +23,7 @@ function attach_submit_button(problemid,partid) {
              success: function(response) {
                  $('#'+problemid).replaceWith(response);
                  LCMATH.initEditors();
+                 LCMATH.updateMathSpanAndDiv();
                  MathJax.Hub.Queue(["Typeset",MathJax.Hub, problemid]);
                  adjust_framesize();
              }

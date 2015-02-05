@@ -18,7 +18,8 @@ cat <<% >>$tmp
         "Operator": Operator,
         "ParseException": ParseException,
         "Parser": Parser,
-        "initEditors": initEditors
+        "initEditors": initEditors,
+        "updateMathSpanAndDiv": updateMathSpanAndDiv
     });
 }();
 %

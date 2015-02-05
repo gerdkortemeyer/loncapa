@@ -263,3 +263,46 @@ var initEditors = function() {
     }
 }
 
+/**
+ * Updates display for <span class="math"> and <div class="math"> (LON-CAPA ln and dlm tags)
+ */
+var updateMathSpanAndDiv = function() {
+    var nl = document.getElementsByClassName('math');
+    // convert to an array because the nodelist would change as we are removing nodes from the document
+    var math_nodes = [];
+    for (var i = 0, ref = math_nodes.length = nl.length; i < ref; i++) {
+      math_nodes[i] = nl[i];
+    }
+    for (var i=0; i<math_nodes.length; i++) {
+        var el = math_nodes[i];
+        if (el.nodeName == "SPAN" || el.nodeName == "DIV") {
+            if (el.firstChild == null || el.firstChild.nodeType != 3)
+                continue;
+            var bspan = (el.nodeName == "SPAN");
+            var txt = el.firstChild.nodeValue;
+            var implicit_operators = (el.getAttribute("data-implicit_operators") === "true");
+            var unit_mode = (el.getAttribute("data-unit_mode") === "true");
+            var constants = el.getAttribute("data-constants");
+            if (constants)
+                constants = constants.split(/[\s,]+/);
+            var parser = new Parser(implicit_operators, unit_mode, constants);
+            try {
+                var root = parser.parse(txt);
+                if (root != null) {
+                    var math = document.createElement("math");
+                    math.setAttribute("display", bspan ? "inline" : "block");
+                    math.appendChild(root.toMathML(['#000000']));
+                    // at this point it would be nice to replace el by math, but MathJax does not
+                    // always typeset math elements when given directly, so we need to typeset the parent...
+                    el.classList.remove('math');
+                    el.removeChild(el.firstChild);
+                    el.appendChild(math);
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, el]);
+                }
+            } catch (e) {
+                el.firstChild.nodeValue = "[syntax error in math:" + e + "]";
+                el.classList.remove('math');
+            }
+        }
+    }
+}
