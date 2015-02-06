@@ -119,7 +119,7 @@ Parser.prototype.addHiddenOperators = function() {
                     in_exp = false;
                 else if (!in_exp && token.type == Token.NUMBER)
                     in_units = false;
-                else if (token.type == Token.OPERATOR && "*/^()".indexOf(token.value) == -1)
+                else if (!in_exp && token.type == Token.OPERATOR && "*/^()".indexOf(token.value) == -1)
                     in_units = false;
                 else if (token.type == Token.NAME && next_token.value == "(")
                     in_units = false;

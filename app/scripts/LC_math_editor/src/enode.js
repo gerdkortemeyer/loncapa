@@ -251,6 +251,10 @@ ENode.prototype._toMathML = function(context) {
                     mrow.appendChild(this.mo("*"));
                 else if (firstinc1.type == ENode.NUMBER)
                     mrow.appendChild(this.mo("\u22C5"));
+                else if (context.units)
+                    mrow.appendChild(this.mo("\u22C5"));
+                else
+                    mrow.appendChild(this.mo("\u2062")); // invisible multiplication
                 if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
                     mrow.appendChild(this.addP(c1, context));
                 else
@@ -321,12 +325,20 @@ ENode.prototype._toMathML = function(context) {
                 else
                     mrow.appendChild(c0._toMathML(context));
                 // the units should not be in italics
+                // unit multiplication should not be displayed with an invisible operator
                 var mstyle = document.createElement("mstyle");
                 mstyle.setAttribute("fontstyle", "normal");
+                var units_context = {};
+                for (var prop in context) {
+                    if (context.hasOwnProperty(prop)) {
+                        units_context[prop] = context[prop];
+                    }
+                }
+                units_context.units = true;
                 if (c1.type == ENode.OPERATOR && (c1.value == "+" || c1.value == "-"))
-                    mstyle.appendChild(this.addP(c1, context));
+                    mstyle.appendChild(this.addP(c1, units_context));
                 else
-                    mstyle.appendChild(c1._toMathML(context));
+                    mstyle.appendChild(c1._toMathML(units_context));
                 mrow.appendChild(mstyle);
                 el = mrow;
             } else {

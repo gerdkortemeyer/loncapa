@@ -187,7 +187,7 @@ sub addHiddenOperators {
                     $in_exp = 0;
                 } elsif (!$in_exp && $token->type == Token->NUMBER) {
                     $in_units = 0;
-                } elsif ($token->type == Token->OPERATOR && index("*/^()", $token->value) == -1) {
+                } elsif (!$in_exp && $token->type == Token->OPERATOR && index("*/^()", $token->value) == -1) {
                     $in_units = 0;
                 } elsif ($token->type == Token->NAME && $next_token->value eq "(") {
                     $in_units = 0;
