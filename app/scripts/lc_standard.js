@@ -9,6 +9,7 @@ CKEDITOR.on('instanceReady', function(){
 window.addEventListener('load', function(e) {
         LCMATH.initEditors();
         LCMATH.updateMathSpanAndDiv();
+        adjust_framesize();
 }, false);
 
 function attach_submit_button(problemid,partid) {
@@ -50,8 +51,10 @@ function attach_textfield_message(id) {
 }
 
 function adjust_framesize() {
-      var frameheight=document.body.offsetHeight + 50;
-      $("#contentframe",window.parent.document).css({ height : frameheight + 'px' });
+      MathJax.Hub.Queue(function () {
+          var frameheight=document.body.offsetHeight + 50;
+          $("#contentframe",window.parent.document).css({ height : frameheight + 'px' });
+      });
 }
 
 function screendefaults(formname,storename) {
