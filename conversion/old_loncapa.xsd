@@ -404,8 +404,20 @@
         <xs:element ref="textline"/>
         <xs:element ref="hiddenline"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="answer" type="xs:string" use="required">
         <xs:annotation>
           <xs:documentation>
@@ -472,8 +484,20 @@
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   
@@ -495,8 +519,20 @@
         <xs:element name="foilgroup" type="radiobuttonresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="max" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
@@ -609,8 +645,20 @@
         <xs:element name="foilgroup" type="optionresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="max" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
@@ -772,8 +820,20 @@
         <xs:element ref="hintgroup"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="max" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
@@ -946,8 +1006,20 @@
         <xs:element name="foilgroup" type="rankresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="max" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
@@ -1024,8 +1096,20 @@
         <xs:element name="foilgroup" type="imageresponse--foilgroup"/>
         <xs:element ref="responseparam"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="max" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
@@ -1152,8 +1236,20 @@
         <xs:element name="unit" type="xs:string"/>
         <xs:element ref="hiddenline"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="answer" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -1169,7 +1265,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="unit" type="xs:string"/>
+      <xs:attribute name="unit" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Expected units for the answer. For instance, "m/s^2" or "km/(A*hr)".
+            LON-CAPA will automatically perform some conversions between units of the same dimension when units are provided for a problem. You can provide an answer of "1.45 km" for a distance. If the computer expects the answer in cm, it will convert your answer before comparing against the numerical solution.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="format" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -1198,8 +1301,20 @@
         <xs:element name="answergroup" type="caparesponse--answergroup"/>
         <xs:element ref="hiddenline"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="answer" type="xs:string"/>
       <xs:attribute name="samples" type="xs:string">
         <xs:annotation>
@@ -1310,8 +1425,20 @@
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="answerdisplay" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -1374,8 +1501,20 @@
         <xs:element ref="functionplotruleset"/>
         <xs:element ref="hintgroup"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="width" type="int-or-perl">
         <xs:annotation>
           <xs:documentation>
@@ -2035,8 +2174,20 @@
         <xs:element ref="textline"/>
         <xs:element ref="hiddenline"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute default="autoez" name="options">
         <xs:simpleType>
           <xs:union memberTypes="perl">
@@ -2097,8 +2248,20 @@
         <xs:element ref="textline"/>
         <xs:element ref="hiddenline"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="answer" type="xs:string" use="required"/>
       <xs:attribute name="initial" type="xs:string">
         <xs:annotation>
@@ -2132,8 +2295,20 @@
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="answerdisplay" type="xs:string">
         <xs:annotation>
           <xs:documentation>
@@ -2192,8 +2367,20 @@
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
-      <xs:attribute name="name" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="name" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            If set, the name will be used by the resource assembly tool when one is modifying parameters.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="url" type="xs:anyURI">
         <xs:annotation>
           <xs:documentation>
@@ -2239,7 +2426,13 @@
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
       </xs:choice>
-      <xs:attribute name="id" type="xs:string"/>
+      <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Unique identifier for the response in the problem. If this isn’t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="name" type="xs:string">
         <xs:annotation>
           <xs:documentation>

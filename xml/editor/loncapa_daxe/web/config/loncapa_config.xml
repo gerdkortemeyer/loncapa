@@ -508,9 +508,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answer">
         <TITRE>answer</TITRE>
@@ -573,9 +579,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="radiobuttonresponse">
@@ -586,9 +598,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="max">
         <TITRE>max number of shown foils</TITRE>
@@ -695,9 +713,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="max">
         <TITRE>max number of shown foils</TITRE>
@@ -742,9 +766,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="max">
         <TITRE>max number of shown foils</TITRE>
@@ -795,9 +825,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="max">
         <TITRE>max number of shown foils</TITRE>
@@ -813,9 +849,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="max">
         <TITRE>max number of shown foils</TITRE>
@@ -862,9 +904,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answer">
         <TITRE>answer</TITRE>
@@ -880,6 +928,10 @@
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="unit">
         <TITRE>unit</TITRE>
+        <DOCUMENTATION>
+          Expected units for the answer, with the LON-CAPA math syntax. For instance, "m/s^2" or "km/(A*hr)".
+          LON-CAPA will convert units automatically when checking if a reply is correct, so for instance "15000 kW*s" will be accepted when the correct answer is "15 MJ".
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="format">
         <TITRE>format</TITRE>
@@ -950,9 +1002,15 @@
       <DOCUMENTATION>Query for a formula.</DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answer">
         <TITRE>answer</TITRE>
@@ -1012,9 +1070,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answerdisplay">
         <TITRE>string to display for answer</TITRE>
@@ -1063,9 +1127,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="width">
         <TITRE>width (pixels)</TITRE>
@@ -1492,9 +1562,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="options">
         <TITRE>options</TITRE>
@@ -1537,9 +1613,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answer">
         <TITRE>answer</TITRE>
@@ -1574,9 +1656,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="answerdisplay">
         <TITRE>string to display for answer</TITRE>
@@ -1617,9 +1705,15 @@
       </DOCUMENTATION>
       <STRINGS_ATTRIBUT attribut="id">
         <TITRE>id</TITRE>
+        <DOCUMENTATION>
+          Unique identifier for the response in the document. If this isn&#8217;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="name">
         <TITRE>name</TITRE>
+        <DOCUMENTATION>
+          If set, the name will be used by the resource assembly tool when one is modifying parameters.
+        </DOCUMENTATION>
       </STRINGS_ATTRIBUT>
       <STRINGS_ATTRIBUT attribut="url">
         <TITRE>url</TITRE>
