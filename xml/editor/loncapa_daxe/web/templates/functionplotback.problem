@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$x=&random(-5,5,2);
+$y=&random(-3,3,2);
+$a=&random(0.5,0.9,0.1);
+if (&random(0,1,1)) {
+   $function="$a*(x-($x))^2+($y)";
+   $answer="2*$a*(x-($x))";
+   $relation='gt';
+} else {
+   $function="-$a*(x-($x))^2+($y)";
+   $answer="-2*$a*(x-($x))";
+   $relation='lt';
+}
+]]></perl>
+      <p>Provide a sketch of the derivative of the indicated function</p>
+      <functionplotresponse xaxisvisible="yes" xlabel="x" gridvisible="yes" ylabel="y(x)" id="11" xmax="10" yaxisvisible="yes" xmin="-10" ymin="-10" ymax="10" answerdisplay="$answer">
+        <functionplotelements>
+          <spline initx="-4" inity="0" index="A" order="3" scalex="8"/>
+          <backgroundplot function="$function" fixed="yes"/>
+        </functionplotelements>
+        <functionplotruleset>
+          <functionplotrule relationship="eq" xinitial="$x" value="0" derivativeorder="0" percenterror="2" index="extreme"/>
+          <functionplotrule relationship="$relation" xinitiallabel="start" xfinallabel="end" value="0" derivativeorder="1" percenterror="10" index="slope"/>
+          <functionplotrule relationship="eq" xinitiallabel="start" xfinallabel="end" value="0" derivativeorder="2" percenterror="50" index="linear"/>
+        </functionplotruleset>
+      </functionplotresponse>
+    </part>
+  </problem>
+</loncapa>

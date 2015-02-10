@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <p>Type Question Here.
+        <optionresponse max="10">
+          <foilgroup options="('True','False')">
+            <conceptgroup display="One" id="One">
+              <foil name="OneA" value="True">
+                This is statement OneA of concept One.  True
+              </foil>
+              <foil name="OneB" value="False">
+                This is statement OneB of concept One.  False
+              </foil>
+              <foil name="OneC" value="True">
+                This is statement OneC of concept One.  True
+              </foil>
+            </conceptgroup>
+            <conceptgroup display="Two" id="Two">
+              <foil name="TwoA" value="True">
+                This is statement TwoA of concept Two.  True
+              </foil>
+              <foil name="TwoB" value="False">
+                This is statement TwoB of concept Two.  False
+              </foil>
+            </conceptgroup>
+            <conceptgroup display="Three" id="Three">
+              <foil name="ThreeA" value="True">
+                This is statement ThreeA of concept Three.  True
+              </foil>
+              <foil name="ThreeB" value="False">
+                This is statement ThreeB of concept Three.  False
+              </foil>
+            </conceptgroup>
+            <conceptgroup display="Four" id="Four">
+              <foil name="FourA" value="True">
+                This is statement FourA of concept Four.  True
+              </foil>
+              <foil name="FourB" value="False">
+                This is statement FourB of concept Four.  False
+              </foil>
+            </conceptgroup>
+            <conceptgroup display="Five" id="Five">
+              <foil name="FiveA" value="True">
+                This is statement FiveA of concept Five.  True
+              </foil>
+              <foil name="FiveB" value="False">
+                This is statement FiveB of concept Five.  False
+              </foil>
+            </conceptgroup>
+            <conceptgroup display="Six" id="Six">
+              <foil name="SixA" value="True">
+                This is statement SixA of concept Six.  True
+              </foil>
+              <foil name="SixB" value="False">
+                This is statement SixB of concept Six.  False
+              </foil>
+            </conceptgroup>
+            <conceptgroup display="Seven" id="Seven">
+              <foil name="SevenA" value="True">
+                This is statement SevenA of concept Seven.  True
+              </foil>
+              <foil name="SevenB" value="False">
+                This is statement SixB of concept Six.  False
+              </foil>
+            </conceptgroup>
+          </foilgroup>
+        </optionresponse>
+        <hint>
+          Add hint text here.
+        </hint></p>
+    </part>
+  </problem>
+</loncapa>

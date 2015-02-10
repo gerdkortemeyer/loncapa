@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <p>Match the author to their work.</p>
+      <matchresponse max="10" randomize="yes">
+        <foilgroup>
+          <itemgroup>
+            <item name="shakespeare">
+              William Shakespeare
+            </item>
+            <item name="alex">
+              Aleksandr Isaevich Solzhenitsyn
+            </item>
+            <item name="dickinson">
+              Emily Dickinson
+            </item>
+            <item location="bottom" name="none">
+              None of the above
+            </item>
+          </itemgroup>
+          <foil location="random" value="none" name="For Whom the Bell Tolls">
+            For Whom the Bell Tolls
+          </foil>
+          <foil location="random" value="alex" name="Gulag">
+            The Gulag Archipelago
+          </foil>
+          <foil location="random" value="none" name="Tom Sawyer">
+            Tom Sawyer
+          </foil>
+          <foil location="random" value="shakespeare" name="King Lear">
+            King Lear
+          </foil>
+          <foil location="random" value="none" name="Gettysburg Address">
+            Gettysburg Address
+          </foil>
+          <foil location="random" value="shakespeare" name="Hamlet">
+            Hamlet
+          </foil>
+        </foilgroup>
+      </matchresponse>
+    </part>
+  </problem>
+</loncapa>

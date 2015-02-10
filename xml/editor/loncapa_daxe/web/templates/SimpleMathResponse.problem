@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$x = &random(-1,1,2) * &random(1,5,1);
+$y = &random(-1,1,2) * &random(1,3,1);
+@args = ($x, $y);
+$yaa = $y-3*$x;
+if ($yaa > 0) {
+  $yaa = "+" . $yaa;
+} elsif ($yaa == 0) {
+  $yaa = "";
+}
+$example = "3x$yaa is an example for a function having constant slope which passes through the point ($x | $y). The slope is not given explicitly, so there are different possibilities for this function.";
+]]></perl>
+      <p>State a function y(x) with constant slope which passes through the point ($x | $y).</p>
+      <p/>
+      <p>y(x) =
+        <mathresponse answerdisplay="$example" cas="maxima" args="@args">
+          <answer><![CDATA[
+y(x):=RESPONSE[1];
+hitspoint:is(abs(y(LONCAPALIST[1]) - LONCAPALIST[2]) <= 0.000000001);
+islinear:is(diff(y(x),x,2) = 0);
+hitspoint and islinear;
+]]></answer>
+          <textline readonly="no" size="50"/>
+        </mathresponse></p>
+    </part>
+  </problem>
+</loncapa>

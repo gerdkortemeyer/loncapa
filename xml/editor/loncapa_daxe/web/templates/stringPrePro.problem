@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$idx=&random(0,2,1);
+$word=('Maus','Horn','Huhn')[$idx];
+$plural=('Mäuse','Hörner','Hühner')[$idx];
+
+sub umlaute {
+    my $answer=shift;
+    $answer=~s/ae/ä/g;
+    $answer=~s/oe/ö/g;
+    $answer=~s/ue/ü/g;
+    return $answer;
+}
+]]></perl>
+      <p>What is the plural of German "$word"?
+        <stringresponse answer="$plural" type="cs" preprocess="umlaute">
+          <textline readonly="no" addchars="Ä,Ö,Ü,ä,ö,ü,ß"/>
+        </stringresponse></p>
+    </part>
+  </problem>
+</loncapa>

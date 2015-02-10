@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <parameter name="lenient" type="string_yesno" description="Partially correct is answerable" default="yes"/>
+      <p>Complete the sentence:
+        <customresponse id="11">
+          <notsolved>
+            <p>The q<textline readonly="no" size="5"/> brown fox jum<textline readonly="no" size="3"/> over the <textline readonly="no" size="3"/>zy d<textline readonly="no" size="3"/>.</p>
+          </notsolved>
+          <solved>
+            <p>The q<b>uick</b> brown fox jum<b>ps</b> over the <b>la</b>zy d<b>og</b>.</p>
+          </solved>
+          <answer type="loncapa/perl"><![CDATA[
+@answer=('uick','ps','la','og');
+$correct=0;
+for ($i=0;$i<=$#$submission;$i++) {
+    $$submission[$i]=~s/\s//gs;
+    if ($$submission[$i] eq $answer[$i]) { $correct++; }
+}
+if ($correct==$#answer+1) { return 'EXACT_ANS'; }
+if ($correct==0) { return 'INCORRECT'; }
+return('ASSIGNED_SCORE',$correct/($#answer+1));
+]]></answer>
+        </customresponse></p>
+    </part>
+  </problem>
+</loncapa>

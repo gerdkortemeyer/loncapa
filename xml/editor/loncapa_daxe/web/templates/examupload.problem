@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <parameter name="scoreformat" description="Format for display of score" type="string"/>
+      <parameter name="handgrade" description="Hand Grade" default="yes" type="string_yesno"/>
+      <perl><![CDATA[
+$weight=&parameter_setting('weight');
+if ((!defined($weight)) || ($weight eq '')) { $weight=1; }
+$awarded=&stored_data('awarded');
+if (!defined($awarded)) { $awarded=0; }
+$scoreformat=&parameter_setting('scoreformat');
+if (!defined($scoreformat) || $scoreformat eq '') { $scoreformat="2f"; }
+$display='';
+if (&parameter_setting('problemstatus')!~/^no/) {
+   if (!defined($awarded)) {
+      $display=$weight.' possible points.';
+   } else {
+      $display='You have '.&format($awarded*$weight,$scoreformat).' out of '.
+            $weight.' possible points.';
+   }
+}
+$comment=&stored_data('comment');
+if (!defined($comment) || $comment!~/\w/) {
+   $comment='';
+} else {
+   $comment='<br /><table><tr><td bgcolor="#FFFFDD">'.$comment.'</td></tr></table>';
+}
+$gradeinfo=&stored_data('gradeinfo');
+if (!defined($gradeinfo) || $gradeinfo!~/\w/) {
+   $gradeinfo='';
+} else {
+   $gradeinfo='<br /><table><tr><td bgcolor="#DDDDFF"><font size="+2">'.$gradeinfo.'</font></td></tr></table>';
+}
+]]></perl>
+      <p>$display</p>
+      <instructorcomment>
+        <p/>
+        <p><span style="color:red">You can modify the rounding of the score display using the "scoreformat" setting.
+You can upload comments and grade information with this resource when uploading CSV files. Feedback on grades can be controlled using the problemstatus parameter.</span></p>
+      </instructorcomment>
+      <p>$gradeinfo
+        $comment</p>
+      <block condition="0">
+        <numericalresponse id="score"/>
+      </block>
+    </part>
+  </problem>
+</loncapa>

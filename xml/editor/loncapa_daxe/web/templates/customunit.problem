@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$pecks=&random(3,5,1);
+$bushels=&random(2,6,1);
+$total=4.4*(8*$bushels+2*$pecks);
+]]></perl>
+      <p>You go to the market and buy $pecks peck of apples and $bushels bushel of potatoes. How much produce did you buy? Note that these are dry goods.
+        <numericalresponse answer="$total" unit="L" format="3s">
+          <parameter type="tolerance" default="5%" name="tol" description="Numerical Tolerance"/>
+          <parameter name="customunits" type="string_any" description="Custom-defined Units" default="peck=2*gallon,bushel=8*gallon,gallon=4.4*L"/>
+          <textline readonly="no"/>
+        </numericalresponse></p>
+    </part>
+  </problem>
+</loncapa>

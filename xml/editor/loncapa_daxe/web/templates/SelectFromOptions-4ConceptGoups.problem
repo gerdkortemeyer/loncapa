@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <p>Type Question Here.
+        <optionresponse max="10">
+          <foilgroup options="('Green','Red')">
+            <conceptgroup display="One" id="One">
+              <foil name="OneA" value="Green">
+                This is statement OneA of concept One.  Green
+              </foil>
+              <foil name="OneB" value="Red">
+                This is statement OneB of concept One.  Red
+              </foil>
+              <foil name="OneC" value="Green">
+                This is statement OneC of concept One.  Green
+              </foil>
+            </conceptgroup>
+            <conceptgroup display="Two" id="Two">
+              <foil name="TwoA" value="Green">
+                This is statement TwoA of concept Two.  Green
+              </foil>
+              <foil name="TwoB" value="Red">
+                This is statement TwoB of concept Two.  Red
+              </foil>
+            </conceptgroup>
+            <conceptgroup display="Three" id="Three">
+              <foil name="ThreeA" value="Green">
+                This is statement ThreeA of concept Three.  Green
+              </foil>
+              <foil name="ThreeB" value="Red">
+                This is statement ThreeB of concept Three.  Red
+              </foil>
+            </conceptgroup>
+            <conceptgroup display="Four" id="Four">
+              <foil name="FourA" value="Green">
+                This is statement FourA of concept Four.  Green
+              </foil>
+              <foil name="FourB" value="Red">
+                This is statement FourB of concept Four.  Red
+              </foil>
+            </conceptgroup>
+          </foilgroup>
+        </optionresponse>
+        <hint>
+          Add hint text here.
+        </hint></p>
+    </part>
+  </problem>
+</loncapa>

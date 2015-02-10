@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <p>Draw ethane.</p>
+      <organicresponse answer="CC" jmeanswer="2 1 C 11.14 -7.90 C 12.36 -8.60 1 2 1">
+        <textline readonly="yes"/>
+        <organichintcondition name="propane" answer="CCC"/>
+      </organicresponse>
+      <hint on="propane">
+        That's propane.
+      </hint>
+    </part>
+  </problem>
+</loncapa>

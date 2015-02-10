@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$maxacc=&random(3,5,1);
+$maxbraketime=&random(6,10,2);
+$wait=&random(2,4,1);
+]]></perl>
+      <p>At t=0 s, a car cruises at a constant positive velocity. Suddenly, a light switches to red. At t=$maxbraketime s, the driver is maximum on the brake. The car then stops in front of the red light for over $wait seconds. Eventually, it drives off, and then again cruises at a constant velocity. The car cannot accelerate with more than $maxacc m/s<sup>2</sup>.</p>
+      <p>Provide a graph of its acceleration as a function of time.</p>
+      <functionplotresponse xaxisvisible="yes" xlabel="t [s]" gridvisible="yes" ylabel="a(t) [m/s^2]" id="11" xmax="30" yaxisvisible="yes" xmin="-4" ymin="-8" ymax="8" answerdisplay="0::$maxbraketime-4,-7*(exp(-0.5*(x-$maxbraketime)^2)-exp(-8)):$maxbraketime-4:$maxbraketime+4,0:$maxbraketime+4:$maxbraketime+5+$wait,($maxacc-0.3)*(exp(-(x-($maxbraketime+7+$wait))^2)-exp(-4)):$maxbraketime+5+$wait:$maxbraketime+9+$wait,0:$maxbraketime+9+$wait">
+        <functionplotelements>
+          <spline initx="-2" inity="0" index="A" order="8" scalex="28"/>
+        </functionplotelements>
+        <functionplotruleset>
+          <functionplotrule relationship="eq" xinitiallabel="start" xfinallabel="brake" value="0" derivativeorder="0" percenterror="1" minimumlength="1"/>
+          <functionplotrule relationship="eq" xinitial="0" value="0" derivativeorder="0" percenterror="1"/>
+          <functionplotrule relationship="lt" xinitiallabel="brake" xfinallabel="stop" value="-0.1" derivativeorder="0"/>
+          <functionplotrule relationship="eq" xinitial="$maxbraketime" value="0" derivativeorder="1" percenterror="40"/>
+          <functionplotrule relationship="eq" xinitiallabel="stop" xfinallabel="driveoff" value="0" derivativeorder="0" percenterror="1" minimumlength="$wait"/>
+          <functionplotrule relationship="gt" xinitiallabel="driveoff" xfinallabel="cruise" value="0.1" derivativeorder="0"/>
+          <functionplotrule relationship="le" xinitiallabel="driveoff" xfinallabel="cruise" value="$maxacc" derivativeorder="0"/>
+          <functionplotrule relationship="eq" xinitiallabel="cruise" xfinallabel="end" value="0" derivativeorder="0" percenterror="1" minimumlength="1"/>
+        </functionplotruleset>
+      </functionplotresponse>
+    </part>
+  </problem>
+</loncapa>

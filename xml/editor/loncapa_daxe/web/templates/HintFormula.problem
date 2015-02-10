@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$a1=&random(3,6,1);
+$e1=&random(3,6,1);
+$a2=&random(6,8,1);
+$e2=&random(6,8,1);
+$da1=$a1*$e1;
+$da2=$a2*$e2;
+$de1=$e1-1;
+$de2=$e2-1;
+@derivative=($da1.'t^'.$de1,$da2.'t^'.$de2);
+@wrongderivative=($a1.'t^'.$de1,$a2.'t^'.$de2);
+]]></perl>
+      <p>What is the derivative of</p>
+      <dtm>
+        \left(\begin{array}{c}$a1 t^$e1\\ $a2 t^$e2\end{array}\right)
+      </dtm>
+      <p>with respect to <tm> t </tm>?
+        <formularesponse answer="@derivative">
+          <textline readonly="no" size="25"/>
+          <formulahintcondition answer="@wrongderivative" name="nomulti"/>
+        </formularesponse>
+        <hint on="nomulti">
+          You need to multiply with the original exponent.
+        </hint></p>
+    </part>
+  </problem>
+</loncapa>

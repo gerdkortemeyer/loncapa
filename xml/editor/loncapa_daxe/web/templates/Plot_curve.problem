@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$amplitude=&random(0.5,3.5,0.5);
+$omega=&random(1,2,0.5);
+$function="$amplitude*sin($omega*x)";
+]]></perl>
+      <gnuplot width="300" transparent="off" samples="100" grid="on" font="9" bgcolor="xffffff" height="300" align="left" fgcolor="x000000" border="on" plottype="Cartesian">
+        <axis xmin="-5" ymin="-4" xmax="5" ymax="4" color="x000000"/>
+        <xlabel>Label X</xlabel>
+        <ylabel>Label Y</ylabel>
+        <curve linestyle="linespoints" name="My Plot" pointtype="0" color="x000000">
+          <function>$function</function>
+        </curve>
+      </gnuplot>
+      <p>What is the amplitude of this function?
+        <numericalresponse answer="$amplitude" format="2s">
+          <parameter name="tol" type="tolerance" description="Numerical Tolerance" default="5%"/>
+          <textline readonly="no"/>
+        </numericalresponse></p>
+    </part>
+  </problem>
+</loncapa>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <parameter name="ordered" type="string_yesno" description="Show Parts One-at-a-Time" default="yes"/>
+    <perl><![CDATA[
+$location=&random(4,10,1);
+$example="(x-$location)^2";
+if (&random(0,1,1)) {
+   $text='minimum';
+   $factor=1;
+} else {
+   $text='maximum';
+   $factor=-1;
+   $example='-'.$example;
+}
+
+# Get user input, run through function that adds "*" to 3x, etc
+$userfunction=&implicit_multiplication(&submission(1,11));
+if ($userfunction) {
+# Determine value at extreme point
+   $extremevalue=&cas('maxima',"float(at($userfunction,x=$location))");
+   if ($extremevalue=~/^(error|incorrect)/i) {
+# cas could not evaluate the function
+      $userfunction='0';
+      $extremevalue=0;
+      $remark='Your function could not be evaluated.';
+   } else {
+      $remark='Your function is plotted.';
+      $example=$userfunction;
+   }
+} else {
+   $userfunction='0';
+   $extremevalue=0;
+   $remark='';
+}
+# Plot boundaries
+$minx=$location-5;
+$maxx=$location+5;
+$miny=$extremevalue-5;
+$maxy=$extremevalue+5;
+@args=($location,$factor);
+]]></perl>
+    <part id="1">
+      <gnuplot width="400" solid="0" plotcolor="monochrome" gridlayer="off" bmargin="default" font="9" alttag="Plot" bgcolor="xffffff" texfont="22" transparent="off" plottype="Cartesian" rmargin="default" gridtype="Cartesian" minor_ticscale="0.5" fontface="sans-serif" grid="on" align="middle" texwidth="93" height="300" border="on" samples="100" fgcolor="x000000" major_ticscale="1" tmargin="default" lmargin="default" fillstyle="empty">
+        <curve linestyle="lines" color="x000000" pointtype="1" linetype="solid" linewidth="1" name="" limit="closed" pointsize="1">
+          <function>$userfunction</function>
+        </curve>
+        <axis yzero="off" xformat="on" xmin="$minx" yformat="on" color="x000000" xmax="$maxx" xzero="off" ymax="$maxy" ymin="$miny"/>
+      </gnuplot>
+      <p>$remark</p>
+      <p>Give a differentiable real function <tm>f(x)</tm> that has a $text at <tm>x=$location</tm>.</p>
+      <p><tm>f(x)=</tm>
+        <mathresponse answerdisplay="$example" cas="maxima" args="@args" id="11">
+          <answer><![CDATA[
+y(x):=RESPONSE[1];
+hasextreme:is(at(diff(y(x),x,1),x=LONCAPALIST[1])=0);
+isrightkind:false;
+k:0;
+s:0;
+if hasextreme then for i:2 while s=0 and not is(diff(y(x),x,i)=0) do (s:at(diff(y(x),x,i),x=LONCAPALIST[1]),k:i);
+if evenp(k) and is(LONCAPALIST[2]*s>0) then isrightkind:true;
+hasextreme and isrightkind;
+]]></answer>
+          <textline readonly="no" size="50"/>
+        </mathresponse></p>
+    </part>
+    <part id="2">
+      <perl><![CDATA[
+$previous=&maxima_cas_formula_fix($example);
+$value=&cas('maxima',"float(at($previous,x=$location))");
+]]></perl>
+      <p>What is the value of your function at this $text?
+        <numericalresponse answer="$value">
+          <parameter type="tolerance" default="5%" name="tol" description="Numerical Tolerance"/>
+          <textline readonly="no"/>
+        </numericalresponse></p>
+    </part>
+  </problem>
+</loncapa>

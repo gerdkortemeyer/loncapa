@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <p>Accept an answer of around 90 or -90
+        <customresponse answerdisplay="something near 90 or -90">
+          <answer type="loncapa/perl"><![CDATA[
+# We do not want a vector
+if ($submission=~/\,/) { return 'EXTRA_ANSWER'; }
+# No units needed
+if ($submission=~/^\d+\s+\w+$/) { return 'UNIT_NOTNEEDED'; }
+# Need a numerical answer here
+if ($submission!~/^[\d\.\-]+$/) { return 'WANTED_NUMERIC'; }
+$difference=abs(90-abs($submission));
+if ($difference==0) { return 'EXACT_ANS'; }
+if ($difference < 0.001) { return 'APPROX_ANS'; }
+return 'INCORRECT';
+]]></answer>
+          <textline/>
+        </customresponse></p>
+    </part>
+  </problem>
+</loncapa>

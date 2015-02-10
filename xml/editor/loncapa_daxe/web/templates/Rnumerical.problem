@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$seed=&random(1,500,1);
+$n=&random(15,25,1);
+$offset=&random(2,5,0.1);
+$slope=&random(0.6,2.5,0.1);
+# construct a data set using R
+# dump is for debugging, print to screen to see data structure
+($data,$dump)=&cas_hashref('R',"set.seed($seed);x<-1:$n;w<-1+sqrt(x)/2;data.frame(x=x,y=$offset+$slope*x+rnorm(x)*w);");
+@x=&cas_hashref_array($data,'x');
+@y=&cas_hashref_array($data,'y');
+$datax=join(',',@x);
+$datay=join(',',@y);
+# calculate the right answer using R
+($answerdata,$dump)=&cas_hashref('R',"x<-c($datax);y<-c($datay);dataset<-data.frame(x=x,y=y);fm<-lm(y~x,data=dataset);");
+$answer=&cas_hashref_entry($answerdata,'coefficients','x').'*x+'.&cas_hashref_entry($answerdata,'coefficients','(Intercept)');
+]]></perl>
+      <p>Consider the plotted data set.</p>
+      <gnuplot width="400" solid="0" plotcolor="monochrome" gridlayer="off" bmargin="default" font="9" alttag="dynamically generated plot" bgcolor="xffffff" texfont="22" transparent="off" plottype="Cartesian" rmargin="default" gridtype="Cartesian" minor_ticscale="0.5" fontface="sans-serif" grid="on" align="left" texwidth="93" height="300" border="on" samples="100" fgcolor="x000000" major_ticscale="1" tmargin="default" lmargin="default" fillstyle="empty">
+        <curve linestyle="points" linetype="solid" color="x000000" pointtype="3" limit="closed" pointsize="2" linewidth="1">
+          <data>@x</data>
+          <data>@y</data>
+        </curve>
+      </gnuplot>
+      <p/>
+      <p>Give a linear function approximating the data.</p>
+      <p><tt>y(x)=</tt>
+        <formularesponse id="11" answer="$answer" samples="x@1:$n#20">
+          <parameter name="tol" default="2%" description="Numerical Tolerance" type="tolerance"/>
+          <textline size="25" readonly="no"/>
+        </formularesponse></p>
+    </part>
+  </problem>
+</loncapa>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <randomlabel width="576" height="432" texwidth="60" bgimg="/res/adm/includes/templates/man1.jpg">
+        <labelgroup name="face" type="text">
+          <location x="73" y="60" value=""/>
+          <location x="443" y="169" value=""/>
+          <location x="46" y="263" value=""/>
+          <location x="364" y="332" value=""/>
+          <label>A</label>
+          <label>B</label>
+          <label>C</label>
+          <label>D</label>
+        </labelgroup>
+      </randomlabel>
+      <p>Match the following:
+        <optionresponse max="10">
+          <foilgroup options="('A', 'B', 'C', 'D')">
+            <foil name="eyebrow" value="$face{1}">
+              eyebrow
+            </foil>
+            <foil name="eye" value="$face{2}">
+              eye
+            </foil>
+            <foil name="nose" value="$face{3}">
+              nose
+            </foil>
+            <foil name="mouth" value="$face{4}">
+              mouth
+            </foil>
+          </foilgroup>
+        </optionresponse></p>
+    </part>
+  </problem>
+</loncapa>

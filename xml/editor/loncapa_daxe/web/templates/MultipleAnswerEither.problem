@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+#Enter the computations here
+$a=&random(1,10,1);
+$b=$a*$a;
+]]></perl>
+      <p>If <tm> x^2=$b </tm>, what is a possible value of <tm> x </tm>?
+        <numericalresponse>
+          <answergroup type="ordered">
+            <answer name="negative" type="ordered">
+<value>-$a</value>
+        </answer>
+            <answer name="positive" type="ordered">
+<value>$a</value>
+        </answer>
+          </answergroup>
+          <parameter type="tolerance" default="5%" name="tol" description="Numerical Tolerance"/>
+          <parameter name="sig" type="int_range,0-16" default="0,15" description="Significant Figures"/>
+          <textline readonly="no"/>
+        </numericalresponse></p>
+    </part>
+  </problem>
+</loncapa>

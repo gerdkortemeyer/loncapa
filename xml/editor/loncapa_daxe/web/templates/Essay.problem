@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <p>Enter the question text here. Type in an essay below.</p>
+      <essayresponse>
+        <textfield/>
+      </essayresponse>
+    </part>
+  </problem>
+</loncapa>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$k=&random(3,6,1);
+$formula="a*x^$k";
+$m=$k-1;
+$derivative="$k*a*x^$m";
+]]></perl>
+      <p>What is the derivative of <tt>$formula</tt> with respect to x?
+        <formularesponse answer="$derivative">
+          <textline size="25"/>
+        </formularesponse></p>
+    </part>
+  </problem>
+</loncapa>

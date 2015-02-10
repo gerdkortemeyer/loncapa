@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <parameter name="maxtries" id="12" type="int_pos" default="99" description="Maximum Number of Tries"/>
+      <perl><![CDATA[
+$amplitude=&random(2.5,3.8,0.1);
+$omega=&random(1,3,0.1);
+$k=&random(0.2,0.4,0.1);
+$phi=&random(0.3,3,0.1);
+# Correct function from computer
+$function="$amplitude*exp(-$k*x)*sin($omega*x+$phi)";
+# Get user function with &submission(partID,responseID),
+# use implicit multiplication to insert "*" where obvious
+$userfunction=&implicit_multiplication(&submission(0,11));
+if ($userfunction) {
+    if (&cas('maxima',$userfunction)=~/^(error|incorrect)/i) {
+# Don't plot formulas with syntax errors, they would
+# result in a broken plot.
+        $userfunction='0';
+    }
+    $remark="The function you entered is indicated in red.";
+} else {
+   $userfunction='0';
+   $remark='';
+}
+# The user function will be evaluated fuzzy (with tolerance),
+# since the user is unlikely to hit exactly the right function.
+]]></perl>
+      <gnuplot width="600" grid="on" align="left" font="9" height="400" border="on" samples="100" bgcolor="xffffff" fgcolor="x000000" transparent="off" plottype="Cartesian">
+        <axis xmin="0" ymax="4" color="x000000" ymin="-4" xmax="10"/>
+        <xlabel>x</xlabel>
+        <ylabel>f(x)</ylabel>
+        <curve linestyle="linespoints" name="ProblemPlot" color="x000000" pointtype="0">
+          <function>$function</function>
+        </curve>
+        <curve linestyle="lines" name="UserPlot" color="xFF0000" pointtype="0">
+          <function>$userfunction</function>
+        </curve>
+      </gnuplot>
+      <p/>
+      <p>Match the function indicated in black. $remark</p>
+      <p>f(x)=
+        <formularesponse answer="$function" samples="x@0;1;2;3;4;5;6;7;8;9" id="11">
+          <textline size="60" readonly="no"/>
+          <parameter name="tol" default="0.4" description="Numerical Tolerance" type="tolerance"/>
+        </formularesponse></p>
+    </part>
+  </problem>
+</loncapa>

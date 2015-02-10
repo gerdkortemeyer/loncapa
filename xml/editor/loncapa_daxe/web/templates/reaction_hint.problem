@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <p>Write a balanced reaction for hydrogen gas and oxygen gas forming water, using the smallest integer coefficients.</p>
+      <reactionresponse answer="2H2 + O2 -&gt; 2H2O" initial="">
+        <textline readonly="yes"/>
+        <reactionhintcondition answer="H2 + O -&gt; H2O" name="gas"/>
+        <stringhintcondition answer="/\((s|l|g)\)/" name="state" type="re"/>
+      </reactionresponse>
+      <hint on="gas">
+        Oxygen is a diatomic gas.
+      </hint>
+      <hint on="state">
+        Do not include symbols for state of matter in your answer.
+      </hint>
+    </part>
+  </problem>
+</loncapa>

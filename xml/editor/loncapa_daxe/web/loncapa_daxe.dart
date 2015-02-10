@@ -51,8 +51,9 @@ void main() {
         (x.Node node, DaxeNode parent) => new Lm.fromNode(node, parent)
     );
   
-  Future.wait([Strings.load(), LCDStrings.load()]).then((List responses) {
+  Future.wait([Strings.load(), LCDStrings.load(), _readTemplates('templates.xml')]).then((List responses) {
     _init_daxe().then((v) {
+      // add things to the toolbar
       ToolbarMenu sectionMenu = _makeSectionMenu();
       if (sectionMenu != null)
         page.toolbar.add(sectionMenu);
@@ -70,6 +71,16 @@ void main() {
       tbh.replaceWith(page.toolbar.html());
       page.adjustPositionsUnderToolbar();
       page.updateAfterPathChange();
+      // add things to the menubar
+      if (responses[2] is x.Document) {
+        // at this point the menubar html is already in the document
+        Menu m = _makeTemplatesMenu(responses[2]);
+        page.mbar.add(m);
+        h.Element menubarDiv = h.document.getElementsByClassName('menubar')[0];
+        menubarDiv.append(page.mbar.createMenuDiv(m));
+        page.updateAfterPathChange();
+      } else
+        print("Error reading templates file, could not build the menu.");
     });
   });
 }
@@ -142,3 +153,111 @@ ToolbarMenu _makeSectionMenu() {
   return(tbmenu);
 }
 
+Future<x.Document> _readTemplates(String templatesPath) {
+  x.DOMParser dp = new x.DOMParser();
+  return(dp.parseFromURL(templatesPath));
+}
+
+Menu _makeTemplatesMenu(x.Document templatesDoc) {
+  Menu menu = new Menu(LCDStrings.get('Templates'));
+  x.Element templates = templatesDoc.documentElement;
+  for (x.Node child in templates.childNodes) {
+    if (child.nodeType == x.Node.ELEMENT_NODE && child.nodeName == 'menu') {
+      menu.add(_makeMenu(child));
+    }
+  }
+  return(menu);
+}
+
+Menu _makeMenu(x.Element el) {
+  String locale = LCDStrings.systemLocale;
+  String defaultLocale = LCDStrings.defaultLocale;
+  String title;
+  for (x.Node child in el.childNodes) {
+    if (child.nodeType == x.Node.ELEMENT_NODE && child.nodeName == 'title') {
+      if (child.firstChild != null && child.firstChild.nodeType == x.Node.TEXT_NODE) {
+        if ((child as x.Element).getAttribute('lang') == locale) {
+          title = child.firstChild.nodeValue;
+          break;
+        } else if ((child as x.Element).getAttribute('lang') == defaultLocale) {
+          title = child.firstChild.nodeValue;
+        }
+      }
+    }
+  }
+  if (title == null)
+    title = '?';
+  Menu menu = new Menu(title);
+  for (x.Node child in el.childNodes) {
+    if (child.nodeType == x.Node.ELEMENT_NODE) {
+      if (child.nodeName == 'menu') {
+        menu.add(_makeMenu(child));
+      } else if (child.nodeName == 'item') {
+        menu.add(_makeItem(child));
+      }
+    }
+  }
+  return(menu);
+}
+
+MenuItem _makeItem(x.Element item) {
+  String locale = LCDStrings.systemLocale;
+  String defaultLocale = LCDStrings.defaultLocale;
+  String path, type, title, help;
+  for (x.Node child in item.childNodes) {
+    if (child.nodeType == x.Node.ELEMENT_NODE) {
+      if (child.nodeName == 'title') {
+        if (child.firstChild != null && child.firstChild.nodeType == x.Node.TEXT_NODE) {
+          if ((child as x.Element).getAttribute('lang') == locale) {
+            title = child.firstChild.nodeValue;
+          } else if (title == null && (child as x.Element).getAttribute('lang') == defaultLocale) {
+            title = child.firstChild.nodeValue;
+          }
+        }
+      } else if (child.nodeName == 'path' && child.firstChild != null && child.firstChild.nodeType == x.Node.TEXT_NODE) {
+        path = child.firstChild.nodeValue;
+      } else if (child.nodeName == 'type' && child.firstChild != null && child.firstChild.nodeType == x.Node.TEXT_NODE) {
+        type = child.firstChild.nodeValue;
+      } else if (child.nodeName == 'help') {
+        if (child.firstChild != null && child.firstChild.nodeType == x.Node.TEXT_NODE) {
+          if ((child as x.Element).getAttribute('lang') == locale) {
+            help = child.firstChild.nodeValue;
+          } else if (help == null && (child as x.Element).getAttribute('lang') == defaultLocale) {
+            help = child.firstChild.nodeValue;
+          }
+        }
+      }
+    }
+  }
+  if (type == null) {
+    print("Warning: missing type for template $title\n");
+    type = 'problem';
+  }
+  x.Element refElement = doc.cfg.elementReference(type);
+  MenuItem menuItem = new MenuItem(title, () => _insertTemplate(path), data: refElement);
+  if (help != null)
+    menuItem.toolTipText = help;
+  return menuItem;
+}
+
+void _insertTemplate(String filePath) {
+  try {
+    x.DOMParser dp = new x.DOMParser();
+    dp.parseFromURL(filePath).then((x.Document templateDoc) {
+      x.Element root = templateDoc.documentElement;
+      if (root == null)
+        return;
+      doc.removeWhitespace(root);
+      DaxeNode dnRoot = NodeFactory.createFromNode(root, null);
+      UndoableEdit edit;
+      Position pos = page.getSelectionStart();
+      if (dnRoot.nodeName == 'loncapa' && doc.getRootElement() != null)
+        edit = doc.insertChildrenEdit(dnRoot, pos, checkValidity:true);
+      else
+        edit = new UndoableEdit.insertNode(pos, dnRoot);
+      doc.doNewEdit(edit);
+    });
+  } on x.DOMException catch(ex) {
+    h.window.alert(ex.toString());
+  }
+}

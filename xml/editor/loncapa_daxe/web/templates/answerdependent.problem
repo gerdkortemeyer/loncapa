@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <parameter name="ordered" type="string_yesno" description="Show Parts One-at-a-Time" default="yes"/>
+    <perl><![CDATA[
+$lower=&random(3,10,1);
+$higher=&random(15,20,1);
+$answer=&random($lower,$higher,0.1);
+$example='An example would be '.$answer;
+# Get the entered answer. First argument is partID, second is responseID
+$given=&submission(1,11);
+if ($given=~/\d/) { $answer=$given; $example='You chose '.$given; }
+$add=&random(3,6,0.1);
+$result=$given+$add;
+]]></perl>
+    <part id="1">
+      <p>Give a number between $lower and $higher.
+        <customresponse answerdisplay="$example" id="11">
+          <answer type="loncapa/perl"><![CDATA[
+# We do not want a vector
+if ($submission=~/\,/) { return 'EXTRA_ANSWER'; }
+# No units needed
+if ($submission=~/^\d+\s+\w+$/) { return 'UNIT_NOTNEEDED'; }
+# Need a numerical answer here
+if ($submission!~/^[\d\.]+$/) { return 'WANTED_NUMERIC'; }
+# is it correct?
+if (($submission>=$lower) && ($submission<=$higher)) { return 'EXACT_ANS'; }
+return 'INCORRECT';
+]]></answer>
+          <textline readonly="no"/>
+        </customresponse></p>
+    </part>
+    <part id="2">
+      <p>What do you get if you add $add to your number?
+        <numericalresponse answer="$result">
+          <parameter type="tolerance" default="1%" name="tol" description="Numerical Tolerance"/>
+          <textline readonly="no"/>
+        </numericalresponse></p>
+    </part>
+  </problem>
+</loncapa>

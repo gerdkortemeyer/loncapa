@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$a = &random(1,7,1);
+$b = $a*$a;
+]]></perl>
+      <p>In <tm> x^2 - $b = 0 </tm>, what are possible values of <tm> x </tm>?</p>
+      <numericalresponse>
+        <answergroup type="ordered">
+          <answer type="unordered">
+<value>-$a</value>
+            <value>$a</value>
+        </answer>
+        </answergroup>
+        <textline size="10" readonly="no"/>
+        <textline size="10" readonly="no"/>
+      </numericalresponse>
+    </part>
+  </problem>
+</loncapa>

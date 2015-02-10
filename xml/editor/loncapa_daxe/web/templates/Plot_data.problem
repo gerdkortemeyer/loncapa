@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+#
+# This example populates arrays with the x and y coordinates of the plot.
+# For continuous functions, another approach is to use curve plots.
+#
+$amplitude = &random(1,4,0.5);
+$x_min = -5;
+$x_max =  5;
+for ($x=$x_min;$x<=$x_max;$x=$x+0.05) {
+   push(@X,$x);
+   push(@Y,$amplitude*sin($x));
+# Safeguard:
+# The following line limits the size of the array to 1000 to avoid infinite loops
+   if (($#X>1000) || ($#Y>1000)) { last; }
+}
+]]></perl>
+      <gnuplot width="300" transparent="off" samples="100" grid="on" font="9" bgcolor="xffffff" height="300" align="left" fgcolor="x000000" border="on" plottype="Cartesian">
+        <axis xmin="$x_min" ymin="-5" xmax="$x_max" ymax="5" color="x000000"/>
+        <xlabel>Label X</xlabel>
+        <ylabel>Label Y</ylabel>
+        <curve linestyle="linespoints" name="My Plot" pointtype="0" color="x000000">
+          <data>@X</data>
+          <data>@Y</data>
+        </curve>
+      </gnuplot>
+      <p>What is the amplitude of this function?
+        <numericalresponse answer="$amplitude" format="2s">
+          <parameter name="tol" type="tolerance" description="Numerical Tolerance" default="5%"/>
+          <textline readonly="no"/>
+        </numericalresponse></p>
+    </part>
+  </problem>
+</loncapa>

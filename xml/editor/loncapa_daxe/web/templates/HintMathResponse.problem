@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$a1 = &random(-6,6,4);
+$a2 = &random(-6,6,4);
+$n1 = &random(3,11,2);
+$n2 = &random(2,10,2);
+$function = "$a1*cos($n1*x)+$a2*sin($n2*x)";
+$example=&xmlparse('An example would be <tm>(sin($n1\cdot x)+cos($n2\cdot x))/\sqrt{2}</tm>');
+]]></perl>
+      <p>Give an example of a function</p>
+      <ol>
+        <li><p>which is orthogonal to</p>
+          <p style="text-align: center"><algebra>$function</algebra></p>
+          <p/>
+          <p>with respect to the scalar product</p>
+          <dtm>
+            &lt;g \mid h&gt; = \frac{1}{\pi} \int_{-\pi}^{\pi}dx g(x) \cdot h(x)
+          </dtm></li>
+        <li>whose norm is 1.</li>
+      </ol>
+      <mathresponse answerdisplay="$example" cas="maxima" args="$function">
+        <answer><![CDATA[
+overlap:integrate((RESPONSE[1])*(LONCAPALIST[1]),x,-%pi,%pi)/%pi;
+norm:integrate((RESPONSE[1])*(RESPONSE[1]),x,-%pi,%pi)/%pi;
+is(overlap=0 and norm=1);
+]]></answer>
+        <textline readonly="no" size="50"/>
+        <mathhintcondition name="ortho" args="$function" cas="maxima">
+          <answer><![CDATA[
+overlap: integrate((LONCAPALIST[1])*(RESPONSE[1]),x,-%pi,%pi)/%pi;
+is(not overlap = 0);
+]]></answer>
+        </mathhintcondition>
+        <mathhintcondition name="norm" args="$function" cas="maxima">
+          <answer><![CDATA[
+norm: integrate((RESPONSE[1])*(RESPONSE[1]),x,-%pi,%pi)/%pi;
+is(not norm = 1);
+]]></answer>
+        </mathhintcondition>
+      </mathresponse>
+      <hint on="norm">
+        The function you have provided does not have a norm of one.
+      </hint>
+      <hint on="ortho">
+        The function you have provided is not orthogonal.
+      </hint>
+      <postanswerdate>
+        <p>Note that with respect to the above norm, <tm> \cos(nx) </tm> is perpendicular to <tm> \sin(nx) </tm> and perpendicular to <tm> \cos(mx) </tm> for <tm> n\ne m </tm>.</p>
+      </postanswerdate>
+    </part>
+  </problem>
+</loncapa>

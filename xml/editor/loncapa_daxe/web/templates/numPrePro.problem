@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+#Enter the computations here
+$idx=&random(0,2,1);
+$season=('nice spring','hot summer','cool fall')[$idx];
+$temp=273+(20,30,10)[$idx];
+
+sub abstemp {
+    my ($answer,$unit)=@_;
+    if ($unit=~/degC/) { $answer+=273; }
+    if ($unit=~/degF/) { $answer+=460; }
+    return $answer;
+}
+]]></perl>
+      <p>What is the temperature in Germany on a $season day?
+        <numericalresponse answer="$temp" id="11" preprocess="abstemp" unit="K">
+          <parameter name="tol" type="tolerance" default="5" description="Numerical Tolerance"/>
+          <textline readonly="no"/>
+        </numericalresponse></p>
+    </part>
+  </problem>
+</loncapa>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+# you could randomize here
+$formula = "C2H5OH";
+$name = "ethanol";
+$answer = "C2H5OH + 3O2 -> 2CO2 + 3H2O";
+]]></perl>
+      <p>Write a balanced reaction for the complete combustion of $name (<chem>$formula</chem>) in oxygen, using the smallest integer coefficients.</p>
+      <reactionresponse answer="$answer" initial="$formula -&gt;">
+        <textline readonly="yes"/>
+      </reactionresponse>
+    </part>
+  </problem>
+</loncapa>

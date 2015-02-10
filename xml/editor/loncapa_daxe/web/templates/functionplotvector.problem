@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$slope=&random(0.5,0.8,0.1);
+$function="2+$slope*x";
+$massx=&random(3.5,6.5,0.1);
+$massy=2.1+$slope*$massx;
+$angle=180.*atan($slope)/$pi;
+$perp=$angle+90.;
+]]></perl>
+      <p>A mass is sliding down the indicated incline with a constant velocity. Construct the free body diagram, making sure the forces are approximately proportionally correct. Leave unused vectors unattached.</p>
+      <p><i>You can use the red-colored vector sum tool to help you construct your diagram; check the boxes for the vectors you want included in the sum. The tool is just there to help you, its settings are not graded.</i></p>
+      <functionplotresponse xaxisvisible="no" xlabel="x" gridvisible="yes" ylabel="y" id="11" xmax="10" yaxisvisible="no" xmin="0" ymin="0" ymax="10" width="450" height="450">
+        <functionplotelements>
+          <backgroundplot function="$function" fixed="yes"/>
+          <plotobject label="Mass" x="$massx" y="$massy"/>
+          <plotvector label="Gravity" tailx="7" taily="1" tipx="8" tipy="1"/>
+          <plotvector label="KineticFriction" tailx="7" taily="2" tipx="8" tipy="2"/>
+          <plotvector label="StaticFriction" tailx="7" taily="3" tipx="8" tipy="3"/>
+          <plotvector label="NormalForce" tailx="7" taily="4" tipx="8" tipy="4"/>
+          <drawvectorsum label="Sum" tailx="$massx" taily="$massy" showvalue="no" vectorlist="Gravity,KineticFriction,StaticFriction,NormalForce"/>
+        </functionplotelements>
+        <functionplotruleset>
+          <functionplotvectorrule index="Grav" vector="Gravity" attachpoint="Mass" angle="270" angleerror="2"/>
+          <functionplotvectorrule index="Norm" vector="NormalForce" attachpoint="Mass" angle="$perp" angleerror="4"/>
+          <functionplotvectorrule index="KFriction" vector="KineticFriction" attachpoint="Mass" angle="$angle" angleerror="3"/>
+          <functionplotvectorrule index="SFriction" vector="StaticFriction" notattachpoint="Mass"/>
+          <functionplotvectorsumrule vectors="Gravity,NormalForce,KineticFriction" length="0" lengtherror="2" index="Total"/>
+        </functionplotruleset>
+      </functionplotresponse>
+      <hint on="Grav">
+        Gravity acts on the mass and points straight down.
+      </hint>
+      <hint on="SFriction">
+        The mass is sliding.
+      </hint>
+      <hint on="Total">
+        What should be the net force on the mass?
+      </hint>
+      <hint on="Norm">
+        What should be the direction of the normal force?
+      </hint>
+    </part>
+  </problem>
+</loncapa>

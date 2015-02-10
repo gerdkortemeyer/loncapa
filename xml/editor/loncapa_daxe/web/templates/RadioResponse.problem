@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <parameter name="maxtries" type="int_pos" default="2" description="Maximum Number of Tries"/>
+      <p>Enter the text of the question here.</p>
+      <radiobuttonresponse max="10" randomize="yes">
+        <foilgroup>
+          <foil location="random" value="true" name="foil1">
+            This is foil One, and it is currently set to "true."  Only one true foil is selected.
+          </foil>
+          <foil location="random" value="true" name="foil2">
+            This is foil Two, and it is currently set to "true."  Only one true foil is selected.
+          </foil>
+          <foil location="random" value="false" name="foil3">
+            This is foil Three, and it is currently set to "false."
+          </foil>
+          <foil location="random" value="false" name="foil4">
+            This is foil Four, and it is currently set to "false."
+          </foil>
+          <foil location="random" value="false" name="foil5">
+            This is foil Five, and it is currently set to "false."
+          </foil>
+        </foilgroup>
+      </radiobuttonresponse>
+    </part>
+  </problem>
+</loncapa>

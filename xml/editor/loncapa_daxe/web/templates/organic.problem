@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <p>The image below is acetic acid <chem>C2H4O2</chem></p>
+      <organicstructure width="250" options="border" texwidth="70" molecule="4 3 C 6.33 -6.22 C 7.73 -6.22 O 8.43 -7.43 O 8.43 -5.00 1 2 1 2 3 1 2 4 2"/>
+      <p>Complete acetic acid.</p>
+      <organicresponse jmeanswer="4 3 C 6.33 -6.22 C 7.73 -6.22 O 8.43 -7.43 O 8.43 -5.00 1 2 1 2 3 1 2 4 2" answer="CC(=O)O" molecule="3 2 C 11.42 -7.84 C 12.64 -8.54 O 12.64 -9.94 1 2 1 2 3 2">
+        <textline readonly="yes"/>
+      </organicresponse>
+    </part>
+  </problem>
+</loncapa>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <p>Enter the question text here.</p>
+      <rankresponse max="10" randomize="yes">
+        <foilgroup>
+          <foil location="random" value="1" name="foil1">
+            1
+          </foil>
+          <foil location="random" value="2" name="foil2">
+            2
+          </foil>
+          <foil location="random" value="3" name="foil3">
+            3
+          </foil>
+          <foil location="random" value="2" name="foil4">
+            2
+          </foil>
+          <foil location="random" value="2.0" name="foil5">
+            2.0
+          </foil>
+          <foil location="random" value="4" name="foil6">
+            4
+          </foil>
+          <foil location="random" value="-1" name="foil7">
+            -1
+          </foil>
+        </foilgroup>
+      </rankresponse>
+    </part>
+  </problem>
+</loncapa>

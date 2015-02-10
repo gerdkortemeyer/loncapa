@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <parameter name="maxtries" id="11" type="int_pos" default="2" description="Maximum Number of Tries"/>
+      <perl><![CDATA[
+$idx=&random(0,3,1);
+$city=('Berlin','New York','Sao Paulo','Canberra')[$idx];
+$southern=('false','false','true','true')[$idx];
+$northern=('true','true','false','false')[$idx];
+$europe=('true','false','false','false')[$idx];
+$australia=('false','false','false','true')[$idx];
+if ($idx==2) { $anothercontinent='Asia'; } else { $anothercontinent='South America'; }
+]]></perl>
+      <p>Which one of the following statements is true for $city?</p>
+      <radiobuttonresponse direction="vertical" max="3" id="12" randomize="yes">
+        <foilgroup>
+          <foil location="random" value="$europe" name="foil1">
+            In Europe
+          </foil>
+          <foil location="random" value="$australia" name="foil2">
+            In Australia
+          </foil>
+          <foil location="random" value="false" name="foil3">
+            In $anothercontinent
+          </foil>
+          <foil location="random" value="$southern" name="foil4">
+            In the Southern Hemisphere
+          </foil>
+          <foil location="random" value="$northern" name="foil5">
+            In the Northern Hemisphere
+          </foil>
+          <foil location="bottom" value="true" name="foil6">
+            None of the above
+          </foil>
+        </foilgroup>
+      </radiobuttonresponse>
+    </part>
+  </problem>
+</loncapa>

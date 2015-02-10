@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$x=&random(5,10,1);
+]]></perl>
+      <p>Make a sketch of the electrostatic potential (zero at infinity) of a negative point charge located at x=$x m.</p>
+      <functionplotresponse xaxisvisible="yes" xlabel="x [m]" gridvisible="yes" ylabel="V(x) [V]" id="11" xmax="30" yaxisvisible="yes" xmin="-4" ymin="-10" ymax="10" answerdisplay="-4/abs(x-$x)">
+        <functionplotelements>
+          <spline initx="-2" inity="0" index="A" order="2" scalex="4"/>
+          <spline index="B" order="2" initx="12" inity="0" scalex="4"/>
+        </functionplotelements>
+        <functionplotruleset>
+          <functionplotrule relationship="eq" value="undef" derivative="0" xinitial="$x" index="chargeposition" derivativeorder="0"/>
+          <functionplotrule relationship="lt" value="0" derivativeorder="0" xinitiallabel="start" xfinallabel="chargeleft" index="negleft"/>
+          <functionplotrule relationship="lt" value="0" derivativeorder="1" xinitiallabel="start" xfinallabel="chargeleft"/>
+          <functionplotrule relationship="le" value="0" derivativeorder="2" xinitiallabel="start" xfinallabel="chargeleft" percentageerror="20"/>
+          <functionplotrule relationship="eq" xinitiallabel="chargeleft" xfinallabel="chargeright" value="undef" derivativeorder="0"/>
+          <functionplotrule relationship="lt" value="0" derivativeorder="0" xinitiallabel="chargeright" xfinallabel="end" index="negright"/>
+          <functionplotrule relationship="gt" value="0" derivativeorder="1" xinitiallabel="chargeright" xfinallabel="end"/>
+          <functionplotrule relationship="le" value="0" derivativeorder="2" xinitiallabel="chargeright" xfinallabel="end" percentageerror="20"/>
+        </functionplotruleset>
+      </functionplotresponse>
+      <hint on="chargeposition">
+        The charge is not in the correct position.
+      </hint>
+      <hint on="negleft">
+        The potential is zero at negative infinity, and the charge is negative.
+      </hint>
+      <hint on="negright">
+        The potential is zero at positive infinity, and the charge is negative.
+      </hint>
+    </part>
+  </problem>
+</loncapa>

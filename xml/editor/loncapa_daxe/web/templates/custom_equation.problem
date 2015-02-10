@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$a=&random(3,8,1);
+$b=$a+&random(2,5,1);
+$sample="x=$b or y=$a*x would be correct";
+
+sub compareequations {
+    my ($var,$value,$equation,$real,$lenient)=@_;
+# var is the variable given
+# value is the expected value of $var, $var=$value
+# equation is the equation to be tested
+# real: if set, operate only in the real realm
+# lenient: if set, give credit even if the correct answer is only one of the possible answers, e.g., x^2=9 is "correct" if x=3 is expected
+    $correctanswer=&cas('maxima','trigsimp(trigreduce('.$var.'='.$value.'))');
+    if ($correctanswer=~/^Error\:/) { return $correctanswer; }
+    $solution=&cas('maxima','trigsimp(trigreduce(solve('.$equation.','.$var.')))');
+    if ($solution=~/^Error\:/) { return $solution; }
+    $solution=~s/^\[//;
+    $solution=~s/\]$//;
+    $total=0;
+    $found=0;
+    foreach my $thissolution (split(/\s*\,\s*/,$solution)) {
+         if (($real) && ($thissolution=~/\%i/)) { next; }
+         $total++;
+         if ($thissolution eq $correctanswer) { $found=1; }
+    }
+    if ((!$lenient) && ($total>1)) { return 'false'; }
+    if ($found) { return 'true'; }
+    return 'false';
+}
+]]></perl>
+      <p>Given an equation for an asymptote of</p>
+      <dtm>
+        y=$a\cdot x+\frac{1}{x-$b}
+      </dtm>
+      <customresponse answerdisplay="$sample">
+        <answer type="loncapa/perl"><![CDATA[
+$first=&compareequations('y',"$a*x",$submission,1);
+if ($first=~/^Error/) { return 'BAD_FORMULA'; }
+if ($first=~/true/) { return 'EXACT_ANS'; }
+
+$second=&compareequations('x',$b,$submission,1);
+if ($second=~/^Error/) { return 'BAD_FORMULA'; }
+if ($second=~/true/) { return 'EXACT_ANS'; }
+
+return 'INCORRECT';
+]]></answer>
+        <textline readonly="no"/>
+      </customresponse>
+    </part>
+  </problem>
+</loncapa>

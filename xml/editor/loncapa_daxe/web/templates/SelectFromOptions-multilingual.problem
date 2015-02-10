@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <perl><![CDATA[
+$bestlanguage = &languages(['en','de','fr']);
+if ($bestlanguage eq 'de') {
+    %colors = (green => 'Grün', red => 'Rot', blue => 'Blau');
+} elsif ($bestlanguage eq 'fr') {
+    %colors = (green => 'Vert', red => 'Rouge', blue => 'Bleu');
+} else { # 'en' and default
+    %colors = (green => 'Green', red => 'Red', blue => 'Blue');
+}
+]]></perl>
+      
+      <translated>
+        <lang which="en">
+          <p>English Question</p>
+        </lang>
+        <lang which="de">
+          <p>Deutscher Aufgabentext</p>
+        </lang>
+        <lang which="fr">
+          <p>Texte de la question en français</p>
+        </lang>
+        <lang which="default">
+          <p>English Question</p>
+        </lang>
+      </translated>
+      
+      <optionresponse max="10" randomize="yes" texlayout="horizontal">
+        <foilgroup options="('$colors{red}','$colors{green}','$colors{blue}')">
+          <foil location="random" value="$colors{green}" name="Foil1">
+            <translated>
+              <lang which="en">
+                <p>Foil One, currently set to "Green"</p>
+              </lang>
+              <lang which="de">
+                <p>Auswahlmöglichkeit 1, derzeit gesetzt auf "Grün"</p>
+              </lang>
+              <lang which="fr">
+                <p>Alternative n°1, valeur de courant: "Vert"</p>
+              </lang>
+              <lang which="default">
+                <p>This is foil One. It is currently set to "Green".</p>
+              </lang>
+            </translated>
+          </foil>
+          <foil location="random" value="$colors{red}" name="Foil2">
+            <translated>
+              <lang which="en">
+                <p>Foil Two, currently set to "Red"</p>
+              </lang>
+              <lang which="de">
+                <p>Auswahlmöglichkeit 2, derzeit gesetzt auf "Rot"</p>
+              </lang>
+              <lang which="fr">
+                <p>Alternative n°2, valeur de courant: "Rouge"</p>
+              </lang>
+              <lang which="default">
+                <p>Foil Two, currently set to "Red"</p>
+              </lang>
+            </translated>
+          </foil>
+          <foil location="random" value="$colors{blue}" name="Foil3">
+            <translated>
+              <lang which="en">
+                <p>Foil Three, currently set to "Blue"</p>
+              </lang>
+              <lang which="de">
+                <p>Auswahlmöglichkeit 3, derzeit gesetzt auf "Blau"</p>
+              </lang>
+              <lang which="fr">
+                <p>Alternative n°3, valeur de courant: "Bleu"</p>
+              </lang>
+              <lang which="default">
+                <p>Foil Three, currently set to "Blue"</p>
+              </lang>
+            </translated>
+          </foil>
+          <foil location="random" value="$colors{red}" name="Foil4">
+            <translated>
+              <lang which="en">
+                <p>Foil Four, currently set to "Red"</p>
+              </lang>
+              <lang which="de">
+                <p>Auswahlmöglichkeit 4, derzeit gesetzt auf "Rot"</p>
+              </lang>
+              <lang which="fr">
+                <p>Alternative n°4, valeur de courant: "Rouge"</p>
+              </lang>
+              <lang which="default">
+                <p>Foil Four, currently set to "Red"</p>
+              </lang>
+            </translated>
+          </foil>
+        </foilgroup>
+      </optionresponse>
+    </part>
+  </problem>
+</loncapa>

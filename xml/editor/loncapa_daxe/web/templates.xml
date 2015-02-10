@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+NOTE: this file is supposed to be generated on-the-fly by the server.
+
+It contains a list of menus (possibly containing submenus) to insert templates.
+
+Structure:
+  - templates contains several menu elements
+  - menu contains several title, menu and item elements
+  - item contains one path, one type and several title and help elements
+  - title and help have a lang attribute
+  - the type element has to be the name of an element in the schema
+    (it is used to avoid having to parse the templates to check insertion possibilities)
+
+One reason for using XML instead of JSON here is that we can use comments such as this one.
+Another reason is that it is a lot easier to read.
+-->
+
+<templates>
+  <menu>
+    <title lang="en">Multiple Choice Problems</title>
+    <item>
+      <path>templates/RadioResponse.problem</path>
+      <type>problem</type>
+      <title lang="en">Radio Button Response</title>
+    </item>
+    <item>
+      <path>templates/randomvalueradio.problem</path>
+      <type>problem</type>
+      <title lang="en">Randomized Question Stem Radio Button Response</title>
+    </item>
+    <item>
+      <path>templates/SimpleTrueFalse.problem</path>
+      <type>problem</type>
+      <title lang="en">Option Response - True/False</title>
+    </item>
+    <item>
+      <path>templates/SelectFromOptions-4ConceptGoups.problem</path>
+      <type>problem</type>
+      <title lang="en">Option Response - Concept Groups</title>
+    </item>
+    <item>
+      <path>templates/RandomLabelExample.problem</path>
+      <type>problem</type>
+      <title lang="en">Randomly Labelled Image with Option Response</title>
+    </item>
+    <item>
+      <path>templates/SelectFromOptions-Simple.problem</path>
+      <type>problem</type>
+      <title lang="en">Option Response - Matching</title>
+    </item>
+    <item>
+      <path>templates/SimpleMatching.problem</path>
+      <type>problem</type>
+      <title lang="en">Matching Response</title>
+    </item>
+    <item>
+      <path>templates/SimpleRank.problem</path>
+      <type>problem</type>
+      <title lang="en">Rank Response</title>
+    </item>
+  </menu>
+  <menu>
+    <title lang="en">Numerical Problems</title>
+    <item>
+      <path>templates/numerical.problem</path>
+      <type>problem</type>
+      <title lang="en">Numerical Response</title>
+    </item>
+    <item>
+      <path>templates/MultipleAnswerEither.problem</path>
+      <type>problem</type>
+      <title lang="en">One of Multiple Answers Numerical Problem</title>
+    </item>
+    <item>
+      <path>templates/numMultiAnswerUnordered.problem</path>
+      <type>problem</type>
+      <title lang="en">Numerical Response Multiple Answers unordered</title>
+    </item>
+    <item>
+      <path>templates/numPrePro.problem</path>
+      <type>problem</type>
+      <title lang="en">Numerical Response with Pre-Processing</title>
+    </item>
+    <item>
+      <path>templates/Plot_curve.problem</path>
+      <type>problem</type>
+      <title lang="en">Curve Plot with Numerical Response</title>
+    </item>
+    <item>
+      <path>templates/Plot_data.problem</path>
+      <type>problem</type>
+      <title lang="en">Data Plot with Numerical Response</title>
+    </item>
+    <item>
+      <path>templates/customunit.problem</path>
+      <type>problem</type>
+      <title lang="en">Numerical Response with Custom Units</title>
+    </item>
+  </menu>
+  <menu>
+    <title lang="en">Algebraic Response Problems</title>
+    <item>
+      <path>templates/SimpleMathResponse.problem</path>
+      <type>problem</type>
+      <title lang="en">Math Response using Computer Algebra System MAXIMA</title>
+    </item>
+    <item>
+      <path>templates/SimpleMathResponseR.problem</path>
+      <type>problem</type>
+      <title lang="en">Math Response using Computer Algebra System R</title>
+    </item>
+    <item>
+      <path>templates/HintMathResponse.problem</path>
+      <type>problem</type>
+      <title lang="en">Math Response using Computer Algebra System and Hints</title>
+    </item>
+    <item>
+      <path>templates/SimpleFormula.problem</path>
+      <type>problem</type>
+      <title lang="en">Formula Response with Samples</title>
+    </item>
+    <item>
+      <path>templates/HintFormula.problem</path>
+      <type>problem</type>
+      <title lang="en">Formula Response using Computer Algebra System and Hints</title>
+    </item>
+    <item>
+      <path>templates/SimpleFormulaCAS.problem</path>
+      <type>problem</type>
+      <title lang="en">Formula Response using Computer Algebra System</title>
+    </item>
+    <item>
+      <path>templates/MultipleAnswerUnordered.problem</path>
+      <type>problem</type>
+      <title lang="en">Unordered Multi-Answer Formula Response Problem</title>
+    </item>
+    <item>
+      <path>templates/Rnumerical.problem</path>
+      <type>problem</type>
+      <title lang="en">Formula Response using Computer Algebra System R and Data Plot</title>
+    </item>
+    <item>
+      <path>templates/custom_equation.problem</path>
+      <type>problem</type>
+      <title lang="en">Custom Response comparing Equations using Computer Algebra System</title>
+    </item>
+  </menu>
+  <menu>
+    <title lang="en">Chemistry Problems</title>
+    <item>
+      <path>templates/organic.problem</path>
+      <type>problem</type>
+      <title lang="en">Organic Material Response</title>
+    </item>
+    <item>
+      <path>templates/organic_hint.problem</path>
+      <type>problem</type>
+      <title lang="en">Organic Material Response with Hint</title>
+    </item>
+    <item>
+      <path>templates/reaction.problem</path>
+      <type>problem</type>
+      <title lang="en">Chemical Reaction Response</title>
+    </item>
+    <item>
+      <path>templates/reaction_hint.problem</path>
+      <type>problem</type>
+      <title lang="en">Chemical Reaction Response with Hints</title>
+    </item>
+  </menu>
+  <menu>
+    <title lang="en">Handgraded Problems</title>
+    <item>
+      <path>templates/DropBox.problem</path>
+      <type>problem</type>
+      <title lang="en">Drop Box</title>
+    </item>
+    <item>
+      <path>templates/Essay.problem</path>
+      <type>problem</type>
+      <title lang="en">Essay Response</title>
+    </item>
+  </menu>
+  <menu>
+    <title lang="en">Input-Dependent Problems</title>
+    <item>
+      <path>templates/answerdependent.problem</path>
+      <type>problem</type>
+      <title lang="en">Using Learner Answer in Multipart Numerical Problem</title>
+    </item>
+    <item>
+      <path>templates/dynamicgraph.problem</path>
+      <type>problem</type>
+      <title lang="en">Using Learner Formula in Graph with Formula Response</title>
+    </item>
+    <item>
+      <path>templates/extreme.problem</path>
+      <type>problem</type>
+      <title lang="en">Using Learner Formula in Graph with Math Response</title>
+    </item>
+  </menu>
+  <menu>
+    <title lang="en">Free Form Problems</title>
+    <item>
+      <path>templates/StringResponse.problem</path>
+      <type>problem</type>
+      <title lang="en">String Response</title>
+    </item>
+    <item>
+      <path>templates/stringPrePro.problem</path>
+      <type>problem</type>
+      <title lang="en">String Response with Pre-Processing</title>
+    </item>
+    <item>
+      <path>templates/CustomResponse.problem</path>
+      <type>problem</type>
+      <title lang="en">Custom Response</title>
+    </item>
+    <item>
+      <path>templates/customhints.problem</path>
+      <type>problem</type>
+      <title lang="en">Custom Response using Computer Algebra System and Hints</title>
+    </item>
+    <item>
+      <path>templates/custompartial.problem</path>
+      <type>problem</type>
+      <title lang="en">Custom Response with Partial Credit</title>
+    </item>
+    <item>
+      <path>templates/functionplotback.problem</path>
+      <type>problem</type>
+      <title lang="en">Functionplotresponse with Background Plot</title>
+    </item>
+    <item>
+      <path>templates/functionplotone.problem</path>
+      <type>problem</type>
+      <title lang="en">Functionplotresponse with Labels</title>
+    </item>
+    <item>
+      <path>templates/functionplottwo.problem</path>
+      <type>problem</type>
+      <title lang="en">Functionplotresponse with two Splines and Hints</title>
+    </item>
+    <item>
+      <path>templates/functionplotvector.problem</path>
+      <type>problem</type>
+      <title lang="en">Functionplotresponse with Vectors and Hints</title>
+    </item>
+    <item>
+      <path>templates/sampleexternal.problem</path>
+      <type>problem</type>
+      <title lang="en">External Response</title>
+    </item>
+  </menu>
+  <menu>
+    <title lang="en">Miscellaneous</title>
+    <item>
+      <path>templates/blank.problem</path>
+      <type>problem</type>
+      <title lang="en">Blank Problem</title>
+    </item>
+    <item>
+      <path>templates/ClickImageExample.problem</path>
+      <type>problem</type>
+      <title lang="en">Click-On-Image Problem</title>
+    </item>
+    <item>
+      <path>templates/SelectFromOptions-multilingual.problem</path>
+      <type>problem</type>
+      <title lang="en">Option Response - Matching (multilingual)</title>
+    </item>
+  </menu>
+</templates>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <p>Type Question Here.
+        <optionresponse max="10" randomize="yes">
+          <foilgroup options="('Green','Red','Blue')">
+            <foil location="random" value="Green" name="Foil1">
+              This is foil One. It is currently set to "Green".
+            </foil>
+            <foil location="random" value="Red" name="Foil2">
+              This is foil Two. It is currently set to "Red".
+            </foil>
+            <foil location="random" value="Blue" name="Foil3">
+              This is foil Three. It is currently set to "Blue".
+            </foil>
+            <foil location="random" value="Red" name="Foil4">
+              This is foil Four. It is currently set to "Red".
+            </foil>
+          </foilgroup>
+        </optionresponse></p>
+    </part>
+  </problem>
+</loncapa>

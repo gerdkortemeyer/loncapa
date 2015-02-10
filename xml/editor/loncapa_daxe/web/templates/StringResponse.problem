@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loncapa>
+  <problem id="problem1">
+    <part id="part1">
+      <p>Enter your question text here.
+        The current answer is "NaCl" and it is case sensitive.
+        <stringresponse answer="NaCl" type="cs">
+          <textline/>
+        </stringresponse></p>
+    </part>
+  </problem>
+</loncapa>
