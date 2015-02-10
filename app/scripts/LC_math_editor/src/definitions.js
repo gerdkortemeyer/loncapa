@@ -299,5 +299,13 @@ Definitions.prototype.define = function() {
         p.advance("}");
         return new ENode(ENode.SET, this, null, children);
     });
+    this.prefix("$", 300, function(p) {
+        // Perl variables
+        var e = p.expression(300);
+        if (e.type != ENode.NAME)
+            throw new ParseException("Variable name expected after a $.", p.tokens[p.token_nr - 1].from);
+        e.value = '$' + e.value;
+        return e;
+    });
 };
 

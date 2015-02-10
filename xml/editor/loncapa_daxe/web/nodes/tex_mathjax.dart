@@ -84,6 +84,9 @@ class TeXMathJax extends DaxeNode {
       text = "\\[$text\\]";
     else
       text = "\\($text\\)";
+    text = text.replaceAllMapped(new RegExp(r'\$[a-zA-Z]*[0-9]*(\[[^\]]*\])?'), (match) {
+      return "\\mathtt{${match.group(0)}}";
+    });
     return(text);
   }
 }

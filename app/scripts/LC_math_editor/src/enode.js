@@ -192,6 +192,8 @@ ENode.prototype._toMathML = function(context) {
                 el = this.mi(this.value)
             }
             el.setAttribute("mathcolor", this.getColorForIdentifier(this.value, context));
+            if (this.value.indexOf('$') === 0)
+                el.setAttribute("fontfamily", "monospace");
             return(el);
         
         case ENode.NUMBER:
