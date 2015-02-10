@@ -150,6 +150,7 @@ var initEditors = function() {
                 output_node.style.color = "black";
                 output_node.style.border = "1px solid #A0A0A0";
                 output_node.style.padding = "5px";
+                output_node.style.zIndex = "1";
                 var getCSSAbsolutePosition = function getCSSAbsolutePosition(el) {
                     var x = 0;
                     var y = 0;

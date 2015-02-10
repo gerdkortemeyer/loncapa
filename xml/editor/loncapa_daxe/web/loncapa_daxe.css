@@ -1,3 +1,8 @@
+span.empty_tag, span.start_tag, span.end_tag, span.simple_type {
+  background-color: #F6F6F6;
+  border: 1px solid #808080;
+}
+
 .lcdblock {
   overflow: hidden;
   border-top: 1px solid #AAA;
@@ -126,4 +131,22 @@ input.math {
 span.math-error {
   border: solid 1px red;
   min-width: 1px;
+}
+
+.perl-text {
+  visibility: hidden;
+}
+
+.perl-text .selection {
+  visibility: visible;
+}
+
+.perl-colored {
+  z-index: -1;
+  visibility: visible;
+  font-family: monospace;
+}
+
+.perl-colored .keyword {
+  color: #A06;
 }

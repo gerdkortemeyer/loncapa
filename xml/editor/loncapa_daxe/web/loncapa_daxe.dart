@@ -23,13 +23,14 @@ import 'dart:html' as h;
 import 'package:daxe/daxe.dart';
 import 'package:daxe/src/xmldom/xmldom.dart' as x;
 import 'package:daxe/src/strings.dart';
-import 'package:daxe/src/nodes/nodes.dart' show DNCData, DNText, SimpleTypeControl;
+import 'package:daxe/src/nodes/nodes.dart' show DNCData, DNText, SimpleTypeControl, ParentUpdatingDNText;
 import 'dart:js' as js;
 
 import 'lcd_strings.dart';
 part 'nodes/lcd_block.dart';
 part 'nodes/tex_mathjax.dart';
 part 'nodes/lm.dart';
+part 'nodes/perl_block.dart';
 part 'lcd_button.dart';
 
 
@@ -49,6 +50,11 @@ void main() {
   addDisplayType('lm',
         (x.Element ref) => new Lm.fromRef(ref),
         (x.Node node, DaxeNode parent) => new Lm.fromNode(node, parent)
+    );
+  
+  addDisplayType('perl',
+        (x.Element ref) => new PerlBlock.fromRef(ref),
+        (x.Node node, DaxeNode parent) => new PerlBlock.fromNode(node, parent)
     );
   
   Future.wait([Strings.load(), LCDStrings.load(), _readTemplates('templates.xml')]).then((List responses) {

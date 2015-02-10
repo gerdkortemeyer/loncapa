@@ -156,8 +156,9 @@
       <MENU_INSERTION nom="lm"/>
       <MENU_INSERTION nom="dlm"/>
       <MENU_INSERTION nom="num"/>
-      <MENU_INSERTION nom="parse"/>
       <MENU_INSERTION nom="algebra"/>
+      <MENU_INSERTION nom="chem"/>
+      <MENU_INSERTION nom="parse"/>
     </MENU>
     <MENU nom="HTML">
       <MENU_INSERTION nom="htmlhead"/>
@@ -302,7 +303,7 @@
     <AFFICHAGE_ELEMENT element="standalone" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="problemtype" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="randomlist" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="perl" type="lcdblock">
+    <AFFICHAGE_ELEMENT element="perl" type="perl">
       <PARAMETRE nom="police" valeur="Monospaced"/>
       <AFFICHAGE_ATTRIBUT attribut="type">
         <VALEUR_SUGGEREE>loncapa/perl</VALEUR_SUGGEREE>
@@ -330,10 +331,22 @@
     <AFFICHAGE_ELEMENT element="dtm" type="texmathjax"/>
     <AFFICHAGE_ELEMENT element="lm" type="lm"/>
     <AFFICHAGE_ELEMENT element="dlm" type="lm"/>
-    <AFFICHAGE_ELEMENT element="num" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="algebra" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="chem" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
-    <AFFICHAGE_ELEMENT element="parse" type="string"><PARAMETRE nom="attributsVisibles" valeur="true"/></AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="num" type="string">
+      <PARAMETRE nom="attributsVisibles" valeur="true"/>
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="algebra" type="string">
+      <PARAMETRE nom="attributsVisibles" valeur="true"/>
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="chem" type="string">
+      <PARAMETRE nom="attributsVisibles" valeur="true"/>
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="parse" type="string">
+      <PARAMETRE nom="attributsVisibles" valeur="true"/>
+      <PARAMETRE nom="police" valeur="Monospaced"/>
+    </AFFICHAGE_ELEMENT>
     
     <AFFICHAGE_ELEMENT element="htmlhead" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="base" type="lcdblock"/>
@@ -2807,7 +2820,7 @@
       </STRINGS_ATTRIBUT>
     </STRINGS_ELEMENT>
     <STRINGS_ELEMENT element="num">
-      <TITRE>num</TITRE>
+      <TITRE>Num</TITRE>
       <DOCUMENTATION>
         Typesets a number formatted in scientific notation, fixed point, fixed point with commas, fixed point with commas and dollar sign, or in significant digits.
         

@@ -35,15 +35,19 @@ class Lm extends DaxeNode {
   
   @override
   h.Element html() {
-    h.SpanElement span = new h.SpanElement();
-    span.id = "$id";
-    span.classes.add('dn');
-    span.classes.add('math');
+    h.Element el;
+    if (nodeName == 'dlm')
+      el = new h.DivElement();
+    else
+      el = new h.SpanElement();
+    el.id = "$id";
+    el.classes.add('dn');
+    el.classes.add('math');
     if (!valid)
-      span.classes.add('invalid');
-    span.onClick.listen((h.MouseEvent event) => makeEditable());
-    updateEquationDisplay(span);
-    return(span);
+      el.classes.add('invalid');
+    el.onClick.listen((h.MouseEvent event) => makeEditable());
+    updateEquationDisplay(el);
+    return(el);
   }
   
   @override
@@ -64,11 +68,11 @@ class Lm extends DaxeNode {
   
   @override
   void afterInsert() {
-    h.SpanElement span = h.document.getElementById(id);
-    updateEquationDisplay(span);
+    h.Element el = h.document.getElementById(id);
+    updateEquationDisplay(el);
   }
   
-  void updateEquationDisplay(h.SpanElement span) {
+  void updateEquationDisplay(h.Element el) {
     String equationText = '?';
     if (firstChild != null && firstChild.nodeValue.trim() != '')
       equationText = firstChild.nodeValue;
@@ -82,7 +86,7 @@ class Lm extends DaxeNode {
         parser_symbols = new js.JsObject(js.context['LCMATH']['Parser'], [true, false, constants]);
       parser = parser_symbols;
     }
-    for (h.Node n in span.childNodes)
+    for (h.Node n in el.childNodes)
       n.remove();
     try {
       js.JsObject root = parser.callMethod('parse', [equationText]);
@@ -91,7 +95,7 @@ class Lm extends DaxeNode {
         math.setAttribute('display', nodeName == 'dlm' ? 'block' : 'inline');
         js.JsObject colors = new js.JsObject.jsify(['#000000']); // to use only black
         math.append(root.callMethod('toMathML', [colors]));
-        span.append(math);
+        el.append(math);
         Timer.run(() {
           js.JsArray params = new js.JsObject.jsify( ['Typeset', js.context['MathJax']['Hub'], id] );
           js.context['MathJax']['Hub'].callMethod('Queue', [params]);
@@ -99,17 +103,22 @@ class Lm extends DaxeNode {
         });
       }
     } catch (e) {
-      span.text = 'Error: ' + e.toString();
+      el.text = 'Error: ' + e.toString();
     }
   }
   
   void makeEditable() {
-    h.SpanElement span = h.document.getElementById(id);
-    if (span == null)
+    h.Element el = h.document.getElementById(id);
+    if (el == null)
       return;
+    h.Element editEl;
+    if (nodeName == 'dlm')
+      editEl = new h.DivElement();
+    else
+      editEl = new h.SpanElement();
+    editEl.id = id;
     h.TextInputElement input = new h.TextInputElement();
     input.classes.add('math');
-    input.id = id;
     input.setAttribute('data-unit_mode', getAttribute('mode') == 'units' ? 'true' : 'false');
     input.setAttribute('data-constants', constants);
     input.setAttribute('data-implicit_operators', 'true');
@@ -119,9 +128,8 @@ class Lm extends DaxeNode {
       if (input.value.length > 20)
         input.size = input.value.length;
     }
-    span.replaceWith(input);
+    editEl.append(input);
     h.SelectElement select = new h.SelectElement();
-    select.id = id + '_mode';
     h.OptionElement symbolsOption = new h.OptionElement();
     symbolsOption.value = 'symbols';
     symbolsOption.appendText(LCDStrings.get('lm_symbols'));
@@ -146,10 +154,8 @@ class Lm extends DaxeNode {
       }
       input.focus();
     });
-    if (input.nextNode == null)
-      input.parent.append(select);
-    else
-      input.parent.insertBefore(select, input.nextNode);
+    editEl.append(select);
+    el.replaceWith(editEl);
     input.focus();
     js.context['LCMATH'].callMethod('initEditors');
     var switchDisplay = () {
@@ -163,9 +169,7 @@ class Lm extends DaxeNode {
         if (firstChild != null)
           removeChild(firstChild);
       }
-      span = html();
-      input.replaceWith(span);
-      select.remove();
+      editEl.replaceWith(html());
     };
     input.onBlur.listen((h.Event event) {
       Timer.run(() { // timer so that activeElement is updated
@@ -181,6 +185,13 @@ class Lm extends DaxeNode {
         switchDisplay();
       });
     });
+    if (editEl is h.DivElement) {
+      editEl.onClick.listen((h.MouseEvent event) {
+        if (event.target != input && event.target != select) {
+          page.moveCursorTo(new Position(parent, parent.offsetOf(this)+1));
+        }
+      });
+    }
     input.onKeyDown.listen((h.KeyboardEvent event) {
       String equationText = input.value;
       int inputSize = input.size;
