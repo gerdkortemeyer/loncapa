@@ -56,40 +56,115 @@ class PerlBlock extends LCDBlock {
   }
   
   h.Element createOverlay() {
-    String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+    // NOTE: this is very basic, we might need a real parser to do something more complex
+    // TODO: add special highlighting for string redirect << and regular expressions 
+    final String letters = '\$@&abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_'; // starting chars in names
+    final String digits = '0123456789';
     h.DivElement div = new h.DivElement();
     div.classes.add('perl-colored');
     String text = firstChild.nodeValue;
     StringBuffer sb = new StringBuffer();
-    StringBuffer word = new StringBuffer(); // last word in sb
+    bool in_name = false;
+    bool in_comment = false;
+    bool in_number = false;
+    bool in_string = false;
+    bool in_backslash = false;
+    String string_start;
     int i = 0;
     while (i < text.length) {
       String c = text[i];
-      if (letters.contains(c)) {
-        sb.write(c);
-        word.write(c);
-      } else {
-        if (keywords.contains(word.toString())) {
-          if (sb.length > word.length) {
-            h.Text htext = new h.Text(sb.toString().substring(0, sb.length - word.length));
-            div.append(htext);
+      if (!in_string && !in_comment && (letters.contains(c) || in_name && digits.contains(c) ||
+          in_name && c == '#' && sb.toString()[sb.length-1] == '\$')) {
+        if (!in_name ) {
+          if (sb.length > 0) {
+            div.append(new h.Text(sb.toString()));
+            sb.clear();
           }
-          h.SpanElement span = new h.SpanElement();
-          span.classes.add('keyword');
-          span.appendText(word.toString());
-          div.append(span);
-          word.clear();
-          sb.clear();
-        } else {
-          word.clear();
+          in_name = true;
         }
-        sb.write(c);
+      } else if (!in_string && !in_name && !in_comment && (digits.contains(c) || (c == '.' && in_number))) {
+        if (!in_number) {
+          if (sb.length > 0) {
+            div.append(new h.Text(sb.toString()));
+            sb.clear();
+          }
+          in_number = true;
+        }
+      } else {
+        if (in_name) {
+          String s = sb.toString();
+          h.SpanElement span = new h.SpanElement();
+          if (keywords.contains(s))
+            span.classes.add('keyword');
+          else if (s.startsWith('\$') || s.startsWith('@'))
+            span.classes.add('variable');
+          else if (s.startsWith('&') || c == '(')
+            span.classes.add('function-call');
+          else
+            span.classes.add('name');
+          span.appendText(s);
+          div.append(span);
+          sb.clear();
+          in_name = false;
+        } else if (in_number) {
+          h.SpanElement span = new h.SpanElement();
+          span.classes.add('number');
+          span.appendText(sb.toString());
+          div.append(span);
+          sb.clear();
+          in_number = false;
+        } else if (in_comment && (c == '\n' || c == '\r')) {
+          h.SpanElement span = new h.SpanElement();
+          span.classes.add('comment');
+          span.appendText(sb.toString());
+          div.append(span);
+          sb.clear();
+          in_comment = false;
+        }
+        if (!in_comment && (c == '"' || c == "'") && !in_backslash) {
+          if (in_string) {
+            if (c == string_start) {
+              div.append(new h.Text(string_start));
+              h.SpanElement span = new h.SpanElement();
+              span.classes.add('string');
+              span.appendText(sb.toString().substring(1));
+              div.append(span);
+              sb.clear();
+              in_string = false;
+            }
+          } else {
+            if (sb.length > 0) {
+              div.append(new h.Text(sb.toString()));
+              sb.clear();
+            }
+            string_start = c;
+            in_string = true;
+          }
+        } else if (c == '#') {
+          if (sb.length > 0) {
+            div.append(new h.Text(sb.toString()));
+            sb.clear();
+          }
+          in_comment = true;
+        }
       }
+      if (in_string) {
+        if (c == '\\')
+          in_backslash = !in_backslash;
+        else if (in_backslash)
+          in_backslash = false;
+      }
+      sb.write(c);
       i++;
     }
     if (sb.length > 0) {
-      h.Text htext = new h.Text(sb.toString());
-      div.append(htext);
+      if (in_comment) {
+        h.SpanElement span = new h.SpanElement();
+        span.classes.add('comment');
+        span.appendText(sb.toString());
+        div.append(span);
+      } else
+        div.append(new h.Text(sb.toString()));
     }
     return(div);
   }

@@ -148,5 +148,20 @@ span.math-error {
 }
 
 .perl-colored .keyword {
-  color: #A06;
+  font-weight: bold;
+}
+.perl-colored .string {
+  color: #050;
+}
+.perl-colored .comment {
+  color: #666;
+}
+.perl-colored .variable {
+  color: #049;
+}
+.perl-colored .number {
+  color: #640;
+}
+.perl-colored .function-call {
+  color: #705;
 }
