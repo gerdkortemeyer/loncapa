@@ -58,7 +58,7 @@ class PerlBlock extends LCDBlock {
   h.Element createOverlay() {
     // NOTE: this is very basic, we might need a real parser to do something more complex
     // TODO: add special highlighting for string redirect << and regular expressions 
-    final String letters = '\$@&abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_'; // starting chars in names
+    final String letters = '\$@%&abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_'; // starting chars in names
     final String digits = '0123456789';
     h.DivElement div = new h.DivElement();
     div.classes.add('perl-colored');
@@ -96,7 +96,7 @@ class PerlBlock extends LCDBlock {
           h.SpanElement span = new h.SpanElement();
           if (keywords.contains(s))
             span.classes.add('keyword');
-          else if (s.startsWith('\$') || s.startsWith('@'))
+          else if (s.startsWith('\$') || s.startsWith('@') || s.startsWith('%'))
             span.classes.add('variable');
           else if (s.startsWith('&') || c == '(')
             span.classes.add('function-call');
@@ -140,7 +140,7 @@ class PerlBlock extends LCDBlock {
             string_start = c;
             in_string = true;
           }
-        } else if (c == '#') {
+        } else if (!in_string && c == '#') {
           if (sb.length > 0) {
             div.append(new h.Text(sb.toString()));
             sb.clear();
