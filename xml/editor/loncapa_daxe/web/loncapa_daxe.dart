@@ -262,6 +262,7 @@ void _insertTemplate(String filePath) {
       else
         edit = new UndoableEdit.insertNode(pos, dnRoot);
       doc.doNewEdit(edit);
+      page.updateAfterPathChange();
     });
   } on x.DOMException catch(ex) {
     h.window.alert(ex.toString());
