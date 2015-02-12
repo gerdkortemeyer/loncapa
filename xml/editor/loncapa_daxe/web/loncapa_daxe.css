@@ -141,6 +141,10 @@ span.math-error {
   visibility: visible;
 }
 
+.selected .perl-text {
+  visibility: visible;
+}
+
 .perl-colored {
   z-index: -1;
   visibility: visible;
