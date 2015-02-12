@@ -70,5 +70,10 @@ The following text should be used in the "HTML file" field:
 This will start the editor with an empty file. A file can also be edited by specifying its relative path (from the web directory) in the \\*
 URL: \texttt{/loncapa\_daxe/web/loncapa\_daxe.html?file=test.problem\&config=config/loncapa\_config.xml}
 
-Note that there is a bug in the Dart SDK 1.5 that prevents the use of Daxe in Javascript (Dart Issue 19888). It is fixed in v1.6 (which is not out yet as of August 25 2014). We could work around it with Javascript, but waiting for the new version is easier. Since early 2013 (before version 1), there has been some issues with the conversion from Dart to Javascript, but Google has been fast to fix them when they were reported at \url{https://code.google.com/p/dart/issues/list}.
+Note that there is a bug in the Dart SDK 1.5 that prevents the use of Daxe in Javascript (Dart Issue 19888). It is fixed in v1.6. Since early 2013 (before version 1), there has been some issues with the conversion from Dart to Javascript, but Google has been fast to fix them when they were reported at \url{https://code.google.com/p/dart/issues/list}.
 
+\subsection{Export to Javascript}
+
+Note that an export is not necessary to just test Daxe with Javascript (as explained above).
+To export the Javascript code and related files for use in LON-CAPA, select a LON-CAPA Daxe file (as opposed to Daxe) in the Dart editor,
+and select the menu \texttt{Tools - Pub Build (generates JS)}. A whole directory is built in \texttt{loncapa_daxe/build}.
