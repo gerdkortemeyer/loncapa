@@ -105,6 +105,17 @@ function deletefile(entity,domain,url) {
          });
 }
 
+function downloadfile(entity,domain,url) {
+         // NOTE: we can't use AJAX if we want the user to get a save dialog
+         window.location = '/portfolio?command=download&entity='+encodeURIComponent(entity)+
+           '&domain='+encodeURIComponent(domain)+'&url='+url;
+}
+
+function editfile(entity,domain,url) {
+         raw_file_url = '/portfolio?command=download&entity='+entity+'&domain='+domain+'&url='+url;
+         window.location = '/scripts/daxe/daxe.html?config=config/loncapa_config.xml&file='+encodeURIComponent(raw_file_url);
+}
+
 
 function init_datatable(destroy) {
    if (destroy) {

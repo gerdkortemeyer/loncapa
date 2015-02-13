@@ -256,5 +256,15 @@ sub add_link {
    return &action_link('list-add','Add',$onclick);
 }
 
+sub download_link {
+   my ($onclick)=@_;
+   return &action_link('download','Download',$onclick);
+}
+
+sub edit_link {
+   my ($onclick)=@_;
+   return &action_link('edit','Edit',$onclick);
+}
+
 1;
 __END__

@@ -71,6 +71,22 @@ cp app/scripts/jquery* /home/httpd/html/scripts
 cp app/scripts/lc* /home/httpd/html/scripts
 cp -R app/scripts/jstree /home/httpd/html/scripts/
 cp app/scripts/LC_math_editor/dist/LC_math_editor.min.js /home/httpd/html/scripts/
+
+mkdir /home/httpd/html/scripts/daxe
+cp xml/editor/loncapa_daxe/loncapa_daxe.min.dart.js /home/httpd/html/scripts/daxe/
+cp xml/editor/loncapa_daxe/daxe.html /home/httpd/html/scripts/daxe/
+cp xml/editor/loncapa_daxe/web/*.css /home/httpd/html/scripts/daxe/
+cp xml/editor/loncapa_daxe/web/*.properties /home/httpd/html/scripts/daxe/
+mkdir /home/httpd/html/scripts/daxe/config
+cp xml/editor/loncapa_daxe/web/config/loncapa.xsd /home/httpd/html/scripts/daxe/config/
+cp xml/editor/loncapa_daxe/web/config/loncapa_config.xml /home/httpd/html/scripts/daxe/config/
+cp xml/editor/loncapa_daxe/web/config/xml.xsd /home/httpd/html/scripts/daxe/config/
+mkdir /home/httpd/html/scripts/daxe/images
+cp xml/editor/loncapa_daxe/web/images/*.png /home/httpd/html/scripts/daxe/images/
+cp xml/editor/loncapa_daxe/web/templates.xml /home/httpd/html/scripts/daxe/
+cp -R xml/editor/loncapa_daxe/web/templates /home/httpd/html/scripts/daxe/
+cp xml/editor/loncapa_daxe/web/LC_math_editor.min.js /home/httpd/html/scripts/daxe/
+
 chown -R www:www /home/httpd/html/scripts/*
 chmod -R a+rx /home/httpd/html/scripts/*
 mkdir /home/httpd/html/css

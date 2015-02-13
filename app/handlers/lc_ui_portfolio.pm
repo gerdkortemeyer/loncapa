@@ -68,6 +68,13 @@ sub edit_permission {
    return &allowed_user('edit_portfolio',undef,$aentity,$adomain);
 }
 
+sub view_permission {
+   my ($rurl)=@_;
+# Extract author domain and entity from URL
+   my ($adomain,$aentity)=($rurl=~/^([^\/]+)\/([^\/]+)\//);
+   return &allowed_user('view_portfolio',undef,$aentity,$adomain);
+}
+
 sub verify_url {
    my ($entity,$url)=@_;
    return (&Apache::lc_entity_urls::url_to_entity('/asset/-/-/'.$url) eq $entity);
@@ -295,8 +302,12 @@ sub listdirectory {
           $status=&publication_status_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,$modified,$published);
           $rights=&rights_link($file->{'entity'},$file->{'domain'},$file->{'url'},$obsolete,$modified,$published);
 # Action links
+          $actionicons.=&Apache::lc_ui_utils::download_link(&action_jump("downloadfile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
           unless ($published) {
              $actionicons.=&Apache::lc_ui_utils::delete_link(&action_jump("deletefile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+             if ($file->{'filename'} =~ /\.xml$/) { # FIXME
+               $actionicons.=&Apache::lc_ui_utils::edit_link(&action_jump("editfile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
+             }
           } else {
              unless ($obsolete) {
                 $actionicons.=&Apache::lc_ui_utils::remove_link(&action_jump("removefile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
@@ -432,6 +443,48 @@ sub recover {
    return 'ok';
 }
 
+sub downloadfile {
+  my ($entity,$domain,$url,$r)=@_;
+  unless (&view_permission($url)) {
+    &logwarning("No view portfolio permission ($url)");
+    $r->print('error');
+    return;
+  }
+  unless (&verify_url($entity,$url)) {
+    &logwarning("Mismatch ($entity) ($domain) ($url)");
+    $r->print('error');
+    return;
+  }
+  my $filepath = &Apache::lc_entity_urls::url_to_filepath('/asset/wrk/-/'.$url);
+  my $filename = $url;
+  $filename =~ s/^.*\/([^\/]*)$/$1/;
+  if (open(my $fh, '<', $filepath)) {
+    $r->headers_out->set('Content-Disposition' => "attachment; filename=$filename");
+    if (-B $fh) {
+      binmode($fh);
+      local $/ = \10240;
+      while (<$fh>) {
+        print $_;
+      }
+    } else {
+      binmode($fh, ":encoding(utf-8)");
+      if ($filename =~ /\.xml$/) { # FIXME
+        $r->content_type('text/xml; charset=utf-8');
+      } else {
+        $r->content_type('text/plain; charset=utf-8');
+      }
+      while (my $line = <$fh>) {
+        chomp $line;
+        $r->print("$line\n");
+      }
+    }
+    close FILE;
+  } else {
+    &logerror("Downloading failed for ($entity) ($domain)");
+    $r->print('error');
+  }
+}
+
 
 
 sub handler {
@@ -454,6 +507,8 @@ sub handler {
       $r->print(&deletefile($content{'entity'},$content{'domain'},$content{'url'}));
    } elsif ($content{'command'} eq 'recover') {
       $r->print(&recover($content{'entity'},$content{'domain'},$content{'url'}));
+   } elsif ($content{'command'} eq 'download') {
+      &downloadfile($content{'entity'},$content{'domain'},$content{'url'},$r);
    }
    return OK;
 }
