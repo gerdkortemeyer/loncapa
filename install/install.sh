@@ -86,6 +86,12 @@ cp xml/editor/loncapa_daxe/web/images/*.png /home/httpd/html/scripts/daxe/images
 cp xml/editor/loncapa_daxe/web/templates.xml /home/httpd/html/scripts/daxe/
 cp -R xml/editor/loncapa_daxe/web/templates /home/httpd/html/scripts/daxe/
 cp xml/editor/loncapa_daxe/web/LC_math_editor.min.js /home/httpd/html/scripts/daxe/
+mkdir /home/httpd/html/scripts/daxe/packages
+mkdir /home/httpd/html/scripts/daxe/packages/daxe
+cp -R xml/editor/daxe/lib/fonts /home/httpd/html/scripts/daxe/packages/daxe/
+cp -R xml/editor/daxe/lib/images /home/httpd/html/scripts/daxe/packages/daxe/
+cp xml/editor/daxe/lib/daxe.css /home/httpd/html/scripts/daxe/packages/daxe/
+cp xml/editor/daxe/lib/*.properties /home/httpd/html/scripts/daxe/packages/daxe/
 
 chown -R www:www /home/httpd/html/scripts/*
 chmod -R a+rx /home/httpd/html/scripts/*
