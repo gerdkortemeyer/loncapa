@@ -1479,7 +1479,7 @@ n=o.$callName
 if(n!=null){m=d?o:H.bx(a,o,t)
 w[n]=m}}w["call*"]=s
 return v},
-rc:function(a,b,c,d){var z=H.w7
+oJ:function(a,b,c,d){var z=H.w7
 switch(b?-1:a){case 0:return function(e,f){return function(){return f(this)[e]()}}(c,z)
 case 1:return function(e,f){return function(g){return f(this)[e](g)}}(c,z)
 case 2:return function(e,f){return function(g,h){return f(this)[e](g,h)}}(c,z)
@@ -1493,7 +1493,7 @@ z=b.$stubName
 y=b.length
 x=a[z]
 w=b==null?x==null:b===x
-if(typeof dart_precompiled=="function"||!w||y>=27)return H.rc(y,!w,z,b)
+if(typeof dart_precompiled=="function"||!w||y>=27)return H.oJ(y,!w,z,b)
 if(y===0){w=$.mJ
 if(w==null){w=H.E2("self")
 $.mJ=w}w="return function(){return this."+H.d(w)+"."+H.d(z)+"();"
@@ -2520,7 +2520,7 @@ QE:[function(a){},"$1","ux",2,0,15,16],
 f8:[function(a,b){var z=$.X3
 z.toString
 P.L2(null,null,z,a,b)},function(a){return P.f8(a,null)},null,"$2","$1","pI",2,2,17,18,19,20],
-Ph:[function(){},"$0","jN",0,0,14],
+p0:[function(){},"$0","wd",0,0,14],
 FE:function(a,b,c){var z,y,x,w,v,u,t
 try{b.$1(a.$0())}catch(u){t=H.Ru(u)
 z=t
@@ -4669,7 +4669,7 @@ d7:{
 "^":"qE;",
 q3:function(a){return a.select.$0()},
 "%":"HTMLContentElement"},
-oJ:{
+Un:{
 "^":"BV;B:length=",
 T2:function(a,b){var z=this.YP(a,b)
 return z!=null?z:""},
@@ -5143,7 +5143,7 @@ BR:{
 "^":"qE;",
 $isBR:true,
 "%":"HTMLUListElement"},
-aG:{
+Ky:{
 "^":"El;fg:height%,R:width%",
 "%":"HTMLVideoElement"},
 K5:{
@@ -13053,7 +13053,7 @@ rD:function(a){return P.y(this.j5(0).rD(a),this.j5(1).rD(a))+4},
 T4:function(a){return this.Dt(!0)+this.Tq(!0)},
 Dt:function(a){return this.j5(0).T4(!0)+1+this.Jp/2+this.zm.c7(this.mh).Wf*0.3},
 Tq:function(a){return P.y(0,this.j5(1).T4(!0)+1+this.Jp/2-this.zm.c7(this.mh).Wf*0.3)},
-static:{"^":"Ug,n2"}},
+static:{"^":"Ug,Ph"}},
 h1:{
 "^":"OS;Fj,zm,eT,mh,wd,a4",
 Va:function(a,b,c){var z,y,x
@@ -13980,7 +13980,7 @@ z=a!=null
 if(z)this.IC=H.VM(Array(this.hd),[B.e1])
 this.AC(c)
 if(z)this.wO=a},
-static:{"^":"UY,dd,XX,D2,u1,x6,Pp,uW,EC,Qi",Ry:function(a,b,c,d){var z=new B.RF(null,null,8,60,null,!1,0,null,null)
+static:{"^":"UY,dd,XX,D2,TvM,x6,Pp,uW,EC,Qi",Ry:function(a,b,c,d){var z=new B.RF(null,null,8,60,null,!1,0,null,null)
 z.WR(a,b,c,d)
 return z},Vu:function(){if($.D2)return
 var z=J.uP(W.d9(10,10))
@@ -14882,6 +14882,39 @@ if(y&&v!=null)$.uc.ef(v,u).ml(new U.u0(z))
 else if(y)$.uc.W2(u).ml(new U.G8(z))
 else{window.alert($.V8.t(0,"daxe.missing_config"))
 z.pm($.V8.t(0,"daxe.missing_config"))}return z.MM},
+rc:function(){U.QR().Rx(new U.aG(),new U.fr())},
+QR:function(){var z,y,x,w,v,u,t,s
+z=J.pB($.aq.VX,"&url=")
+if(z===-1)return P.Xo(new Z.ER("bad URL",null),null,null)
+y=P.pE(J.ZZ($.aq.VX,J.WB(z,5)),C.dy,!0)
+x=J.U6(y)
+z=x.cn(y,"/")
+if(z===-1)w=y
+else{v=z+1
+w=x.yn(y,v)
+y=x.Nj(y,0,v)}u=H.VM(new P.Zf(H.VM(new P.vs(0,$.X3,null),[null])),[null])
+t=new XMLHttpRequest()
+x=H.VM(new W.RO(t,"load",!1),[null])
+H.VM(new W.xC(0,x.J6,x.fA,W.VF(new U.zY(u)),x.el),[H.Kp(x,0)]).DN()
+x=H.VM(new W.RO(t,"error",!1),[null])
+H.VM(new W.xC(0,x.J6,x.fA,W.VF(new U.zZ(u,t)),x.el),[H.Kp(x,0)]).DN()
+C.Dt.EP(t,"POST","/upload_file")
+t.setRequestHeader("Content-Type","multipart/form-data; boundary=AaB03x")
+s=P.p9("")
+s.KF("--AaB03x\r\n")
+s.KF("Content-Disposition: form-data; name=\"uploads_path\"\r\n")
+s.KF("Content-type: text/plain; charset=UTF-8\r\n")
+s.KF("Content-transfer-encoding: 8bit\r\n\r\n")
+s.KF(y)
+s.KF("\r\n--AaB03x\r\n")
+s.KF("Content-Disposition: form-data; name=\"uploads\"; filename=\""+H.d(w)+"\"\r\n")
+s.KF("Content-Type: application/octet-stream\r\n\r\n")
+$.aq.Qw.stv("UTF-8")
+s.KF(J.AG($.aq))
+s.KF("\r\n--AaB03x--\r\n\r\n")
+x=s.IN
+t.send(x.charCodeAt(0)==0?x:x)
+return u.MM},
 cT:function(){var z,y,x,w,v,u,t,s,r
 z=Z.F3($.lx.t(0,"Section"))
 y=$.aq.y9.Ln.Ru(Z.iO("section"))
@@ -15074,7 +15107,7 @@ wf:{
 $1:[function(a){U.On().ml(new U.VW(a))},"$1",null,2,0,null,91,"call"]},
 VW:{
 "^":"Li:24;a",
-$1:[function(a){var z,y,x,w,v,u,t
+$1:[function(a){var z,y,x,w,v,u,t,s,r,q,p
 z=U.cT()
 if(z!=null)$.uc.ne.hL.push(z)
 y=$.aq.y9.bS("m")
@@ -15091,21 +15124,42 @@ $.uc.ll()
 $.uc.Uj()
 w=this.a
 u=J.U6(w)
-if(!!J.x(u.t(w,2)).$isQF){t=U.IS(u.t(w,2))
-$.uc.nc.qL.push(t)
-w=document.getElementsByClassName("menubar")
-if(0>=w.length)return H.e(w,0)
-w[0].appendChild($.uc.nc.Au(t))
+if(!!J.x(u.t(w,2)).$isQF){t=document.getElementsByClassName("menubar")
+if(0>=t.length)return H.e(t,0)
+s=t[0]
+if(J.pB($.aq.VX,"&url=")!==-1){r=Z.oD($.V8.t(0,"menu.save"),new U.ql(),null,"S")
+t=$.uc.nc.qL
+if(0>=t.length)return H.e(t,0)
+q=t[0]
+J.bi(q,r)
+J.DG(s.firstChild,$.uc.nc.Au(q))}p=U.IS(u.t(w,2))
+$.uc.nc.qL.push(p)
+s.appendChild($.uc.nc.Au(p))
 $.uc.Uj()}else P.JS("Error reading templates file, could not build the menu.")},"$1",null,2,0,null,93,"call"]},
 jr:{
 "^":"Li:44;b",
 $0:[function(){return $.aq.qM(this.b,"element")},"$0",null,0,0,null,"call"]},
+ql:{
+"^":"Li:44;",
+$0:[function(){return U.rc()},"$0",null,0,0,null,"call"]},
 u0:{
 "^":"Li:24;a",
 $1:[function(a){return this.a.tZ(0)},"$1",null,2,0,null,93,"call"]},
 G8:{
 "^":"Li:24;b",
 $1:[function(a){return this.b.tZ(0)},"$1",null,2,0,null,93,"call"]},
+aG:{
+"^":"Li:24;",
+$1:[function(a){window.alert($.V8.t(0,"save.success"))},"$1",null,2,0,null,48,"call"]},
+fr:{
+"^":"Li:79;",
+$1:[function(a){window.alert(J.WB(J.WB($.V8.t(0,"save.error"),": "),J.yj(a)))},"$1",null,2,0,null,73,"call"]},
+zY:{
+"^":"Li:42;a",
+$1:[function(a){this.a.tZ(0)},"$1",null,2,0,null,41,"call"]},
+zZ:{
+"^":"Li:42;b,c",
+$1:[function(a){this.b.pm(new Z.ER(J.AG(this.c.status),null))},"$1",null,2,0,null,41,"call"]},
 HP:{
 "^":"Li:44;a,b,c",
 $0:[function(){var z,y
@@ -18684,10 +18738,10 @@ $.fk=$.fk+1
 z=$.aq.y9.ww(this.LP)
 this.a3=z
 z=z==null||z.length===0
-y=this.LP
-x=$.aq
-if(z)this.w9=x.y9.CK(this.rS,y)
-else{w=x.y9.Ln.O8(y)
+y=$.aq
+x=this.LP
+if(z)this.w9=y.y9.CK(this.rS,x)
+else{w=y.y9.Ln.O8(x)
 if(!J.kE(this.a3,"")&&w==null)this.a3.push("")}},
 static:{"^":"fk",JG:function(a,b,c){var z=new S.Ec(a,null,b,null,null,null,null,null,c,null,null)
 z.LH(a,b,c)

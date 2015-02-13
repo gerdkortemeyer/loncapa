@@ -79,10 +79,16 @@ void main() {
       page.updateAfterPathChange();
       // add things to the menubar
       if (responses[2] is x.Document) {
-        // at this point the menubar html is already in the document
+        // at this point the menubar html is already in the document, so we have to fix the HTML
+        h.Element menubarDiv = h.document.getElementsByClassName('menubar')[0];
+        if (doc.filePath.indexOf('&url=') != -1) { // otherwise we are not on LON-CAPA
+          MenuItem item = new MenuItem(Strings.get('menu.save'), () => save(), shortcut: 'S');
+          Menu fileMenu = page.mbar.menus[0];
+          fileMenu.add(item);
+          menubarDiv.firstChild.replaceWith(page.mbar.createMenuDiv(fileMenu));
+        }
         Menu m = _makeTemplatesMenu(responses[2]);
         page.mbar.add(m);
-        h.Element menubarDiv = h.document.getElementsByClassName('menubar')[0];
         menubarDiv.append(page.mbar.createMenuDiv(m));
         page.updateAfterPathChange();
       } else
@@ -126,6 +132,59 @@ Future _init_daxe() {
     h.window.alert(Strings.get('daxe.missing_config'));
     completer.completeError(Strings.get('daxe.missing_config'));
   }
+  return(completer.future);
+}
+
+void save() {
+  saveOnLONCAPA().then((_) {
+    h.window.alert(Strings.get('save.success'));
+  }, onError: (DaxeException ex) {
+    h.window.alert(Strings.get('save.error') + ': ' + ex.message);
+  });
+}
+
+/**
+ * Send the document with a POST request to LON-CAPA.
+ */
+Future saveOnLONCAPA() {
+  int ind = doc.filePath.indexOf('&url=');
+  if (ind == -1)
+    return(new Future.error(new DaxeException('bad URL')));
+  String path = doc.filePath.substring(ind+5);
+  path = Uri.decodeQueryComponent(path);
+  ind = path.lastIndexOf('/');
+  String filename;
+  if (ind == -1)
+    filename = path;
+  else {
+    filename = path.substring(ind+1);
+    path = path.substring(0, ind+1);
+  }
+  Completer completer = new Completer();
+  String bound = 'AaB03x';
+  h.HttpRequest request = new h.HttpRequest();
+  request.onLoad.listen((h.ProgressEvent event) {
+    completer.complete(); // TODO: check for something, status is sometimes wrongly OK
+  });
+  request.onError.listen((h.ProgressEvent event) {
+    completer.completeError(new DaxeException(request.status.toString()));
+  });
+  request.open('POST', '/upload_file');
+  request.setRequestHeader('Content-Type', "multipart/form-data; boundary=$bound");
+  
+  StringBuffer sb = new StringBuffer();
+  sb.write("--$bound\r\n");
+  sb.write('Content-Disposition: form-data; name="uploads_path"\r\n');
+  sb.write('Content-type: text/plain; charset=UTF-8\r\n');
+  sb.write('Content-transfer-encoding: 8bit\r\n\r\n');
+  sb.write(path);
+  sb.write("\r\n--$bound\r\n");
+  sb.write('Content-Disposition: form-data; name="uploads"; filename="$filename"\r\n');
+  sb.write('Content-Type: application/octet-stream\r\n\r\n');
+  doc.dndoc.xmlEncoding = 'UTF-8'; // the document is forced to use UTF-8
+  sb.write(doc.toString());
+  sb.write('\r\n--$bound--\r\n\r\n');
+  request.send(sb.toString());
   return(completer.future);
 }
 
