@@ -63,5 +63,5 @@ cpan Math::SigFigs
 cpan enum
 cpan aliased
 cpan Locale::Currency::Format
-cpan Phyisics::Unit
+cpan Physics::Unit
 cpan Number::FormatEng
