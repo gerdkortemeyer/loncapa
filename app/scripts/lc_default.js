@@ -185,6 +185,19 @@ function display_asset(newuri) {
    hide_navarrows();
 }
 
+function display_editor(raw_file_url) {
+    var frameurl = '/scripts/daxe/daxe.html?config=config/loncapa_config.xml&file='+encodeURIComponent(raw_file_url);
+    var newcontent='<div id="content"><iframe id="contentframe" src="'+frameurl+'"></iframe></div>';
+    $('#contentframeload').css("visibility","visible");
+    $('#content').replaceWith(newcontent);
+    $('#contentframe').load(function() {
+        var frameheight = parent.innerHeight - parent.document.getElementById('contentframe').getBoundingClientRect().top - 25;
+        this.style.height = frameheight + 'px';
+        $('#contentframeload').css("visibility","hidden");
+    });
+    hide_navarrows();
+}
+
 function show_navarrows() {
    $('#content').css('width','94%');
    $('#navleft').css('width','3%');

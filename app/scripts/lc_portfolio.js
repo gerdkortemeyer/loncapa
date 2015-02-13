@@ -112,8 +112,7 @@ function downloadfile(entity,domain,url) {
 }
 
 function editfile(entity,domain,url) {
-         raw_file_url = '/portfolio?command=download&entity='+entity+'&domain='+domain+'&url='+url;
-         window.location = '/scripts/daxe/daxe.html?config=config/loncapa_config.xml&file='+encodeURIComponent(raw_file_url);
+    parent.display_editor('/portfolio?command=download&entity='+entity+'&domain='+domain+'&url='+url);
 }
 
 
