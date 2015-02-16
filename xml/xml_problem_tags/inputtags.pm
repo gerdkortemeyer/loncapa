@@ -42,7 +42,7 @@ sub textboxmessaging {
    if (($status ne 'no_valid_response') &&
        ($status ne 'correct') &&
        ($status ne 'incorrect')) {
-      return '<span class="lcresponseerror" id="'.$id.'_message">'.&mt($status).($message=~/\S/s?': '.$message:'').'</span><script>attach_textfield_message("'.$id.'");</script>';
+      return '<span class="lcresponseerror" id="'.$id.'_message" style="display:none">'.&mt($status).($message=~/\S/s?': '.$message:'').'</span><script>attach_textfield_message("'.$id.'");</script>';
    } else {
       return '';
    }
