@@ -1083,4 +1083,10 @@ abstract class DaxeNode {
   void beforeRemove() {
   }
   
+  /**
+   * Returns true if the children should be using ParentUpdatingDNText instead of DNText
+   */
+  bool get needsParentUpdatingDNText {
+    return false;
+  }
 }

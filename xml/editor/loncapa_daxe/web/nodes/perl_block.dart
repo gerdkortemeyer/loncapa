@@ -29,7 +29,9 @@ class PerlBlock extends LCDBlock {
     'package', 'sub', 'do', 'given ', 'when ', 'default', '__END__', '__DATA__',
     '__FILE__', '__LINE__', '__PACKAGE__'];
   
-  PerlBlock.fromRef(x.Element elementRef) : super.fromRef(elementRef);
+  PerlBlock.fromRef(x.Element elementRef) : super.fromRef(elementRef) {
+    state = 1;
+  }
   
   PerlBlock.fromNode(x.Node node, DaxeNode parent) : super.fromNode(node, parent) {
     if (firstChild is DNText && firstChild.nextSibling == null) {
@@ -167,5 +169,9 @@ class PerlBlock extends LCDBlock {
         div.append(new h.Text(sb.toString()));
     }
     return(div);
+  }
+  
+  bool get needsParentUpdatingDNText {
+    return true;
   }
 }

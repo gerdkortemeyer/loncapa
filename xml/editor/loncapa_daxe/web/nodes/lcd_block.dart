@@ -242,7 +242,14 @@ class LCDBlock extends DaxeNode {
   }
   
   @override
+  void newNodeCreationUI(ActionFunction okfct) {
+    // do not display an attribute dialog when the node is created
+    okfct();
+  }
+  
+  @override
   void attributeDialog([ActionFunction okfct]) {
+    // this is called by the contextual menu
     state = 0;
     if (getHTMLContentsNode() != null)
       updateHTML();
