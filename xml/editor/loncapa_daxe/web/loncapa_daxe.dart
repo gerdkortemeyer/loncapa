@@ -203,9 +203,11 @@ ToolbarMenu _makeSectionMenu() {
     menuItem.action = () {
       ToolbarStyleInfo info = menuItem.data;
       x.Element sectionRef = info.validRef;
-      DaxeNode section = NodeFactory.create(sectionRef);
+      LCDBlock section = NodeFactory.create(sectionRef);
+      section.state = 1;
       section.setAttribute('class', 'role-' + role);
-      DaxeNode h1 = NodeFactory.create(h1Ref);
+      LCDBlock h1 = NodeFactory.create(h1Ref);
+      h1.state = 1;
       if (doc.insert2(section, page.getSelectionStart())) {
         doc.insertNode(h1, new Position(section, 0));
         page.cursor.moveTo(new Position(h1, 0));
