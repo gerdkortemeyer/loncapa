@@ -3862,7 +3862,11 @@
   </xs:complexType>
   <xs:complexType mixed="true" name="lonplot--data">
     <xs:annotation>
-      <xs:documentation>Curve data</xs:documentation>
+      <xs:documentation>
+        Curve data
+        
+        The data must be either a perl array, @X, or a comma separated list, such as “0.5,0.9,1.5,2.4” (without quotes). ’NaN’ is a valid value. Note the the ”Y” values are entered in a separate array.
+      </xs:documentation>
     </xs:annotation>
   </xs:complexType>
   <xs:complexType mixed="true" name="lonplot--function">
