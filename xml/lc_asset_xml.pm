@@ -39,6 +39,7 @@ use Apache::lc_xml_forms;
 use Apache::lc_xml_perl;
 use Apache::lc_xml_tex;
 use Apache::lc_xml_lm;
+use Apache::lc_xml_lonplot;
 use Apache::lc_xml_trees;
 use Apache::lc_xml_tables;
 use Apache::lc_xml_conditionals;
