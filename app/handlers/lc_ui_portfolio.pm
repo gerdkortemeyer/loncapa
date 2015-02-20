@@ -305,7 +305,7 @@ sub listdirectory {
           $actionicons.=&Apache::lc_ui_utils::download_link(&action_jump("downloadfile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
           unless ($published) {
              $actionicons.=&Apache::lc_ui_utils::delete_link(&action_jump("deletefile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
-             if ($file->{'filename'} =~ /\.xml$/) { # FIXME
+             if ($file->{'filename'} =~ /\.xml$/ || $file->{'filename'} =~ /\.lc$/) { # FIXME
                $actionicons.=&Apache::lc_ui_utils::edit_link(&action_jump("editfile",$file->{'entity'},$file->{'domain'},$file->{'url'}));
              }
           } else {
