@@ -207,7 +207,7 @@ sub timezone_choices {
 sub action_icon {
    my ($which,$title)=@_;
    $title=&mt($title);
-   return '<img src="/images/actionicons/'.$which.'.png" alt="'.$title.'" title="'.$title.'" />';
+   return '<img src="/images/actionicons/'.$which.'.png" width="22" height="22" alt="'.$title.'" title="'.$title.'" />';
 }
 
 sub action_link {
