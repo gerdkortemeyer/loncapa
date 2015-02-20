@@ -1,34 +1,21 @@
-# The LearningOnline Network with CAPA
+# The LearningOnline Network with CAPA - LON-CAPA
 # Dynamic plot
 #
-# $Id: lonplot.pm,v 1.175 2014/06/19 17:23:50 raeburn Exp $
+# Copyright (C) 2014 Michigan State University Board of Trustees
 #
-# Copyright Michigan State University Board of Trustees
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
 #
-# This file is part of the LearningOnline Network with CAPA (LON-CAPA).
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
 #
-# LON-CAPA is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-# LON-CAPA is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with LON-CAPA; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
-# /home/httpd/html/adm/gpl.txt
-#
-# http://www.lon-capa.org/
-#
-
-
-
-
 package Apache::lc_xml_lonplot;
 
 use strict;
@@ -37,6 +24,7 @@ no warnings 'uninitialized';
 
 use Apache::lc_asset_xml();
 use Apache::lc_asset_safeeval();
+use Apache::lc_ui_localize;
 
 use HTML::PullParser;
 
@@ -687,10 +675,15 @@ sub end_gnuplot_html {
     my $result = '';
 
     &check_inputs(); # Make sure we have all the data we need
-    ##
+    # get an id
+    my $id = &Apache::lc_asset_xml::open_tag_attribute('id', $stack);
+    if (!defined $id) {
+        $id = 'my_gnuplot_canvas_'.int(rand(1000)); # this should not happen anyway, the parser generates an id
+    }
     ## Write the plot description to the file
-    my $gnuplot_script = &write_gnuplot_file();
-    # add required scripts (this would be better elsewhere, to avoid doubles, but...)
+    my $gnuplot_script = &write_gnuplot_file($id);
+    # add required scripts (this would be better elsewhere, to avoid doubles, but
+    #   that would require parsing the whole document before output)
     $result .= '<script src="/scripts/gnuplot/canvas_term/canvastext.js"></script>'."\n";
     $result .= '<script src="/scripts/gnuplot/canvas_term/canvasmath.js"></script>'."\n";
     $result .= '<script src="/scripts/gnuplot/canvas_term/gnuplot_common.js"></script>'."\n";
@@ -700,20 +693,55 @@ sub end_gnuplot_html {
     $result .= '<script>gnuplotjs_url = "/scripts/gnuplot/gnuplotjs/gnuplot.js";</script>'."\n";
     $result .= '<script src="/scripts/gnuplot/gnuplotjscanvas.js"></script>'."\n";
     ## return canvas element and script for the plot
-    my $id = &Apache::lc_asset_xml::open_tag_attribute('id', $stack);
-    if (!defined $id) {
-        $id = 'my_gnuplot_canvas_'.int(rand(1000)); # this should not happen anyway, the parser generates an id
-    }
     my $width = $Apache::lc_xml_lonplot::plot{'width'};
     my $height = $Apache::lc_xml_lonplot::plot{'height'};
     my $align = $Apache::lc_xml_lonplot::plot{'align'};
     my $alt = $Apache::lc_xml_lonplot::plot{'alttag'};
     $result .= '<canvas id="'.$id.'" width="'.$width.'" height="'.$height.
         '" alt="'.$alt.'" oncontextmenu="return false;" tabindex="0"';
-    if ($align eq 'right') {
-        $result .= ' style="float: right"';
+    my $style = &Apache::lc_asset_xml::open_tag_attribute('style', $stack);
+    if ($align eq 'right' || $align eq 'middle' || $align eq 'center') {
+        if (!defined $style) {
+            $style = '';
+        } else {
+            $style .= '; ';
+        }
+        if ($align eq 'right') {
+            $style .= 'float:right';
+        } else {
+            $style .= 'display:block; margin-left:auto; margin-right:auto';
+        }
     }
-    $result .= '></canvas>'."\n";
+    if (defined $style) {
+        $result .= ' style="'.$style.'"';
+    }
+    my $class = &Apache::lc_asset_xml::open_tag_attribute('class', $stack);
+    if (defined $class) {
+        $class .= ' ';
+    } else {
+        $class = '';
+    }
+    $class .= 'lcgnuplotcanvas';
+    $result .= ' class="'.$class.'"';
+    $result .= "></canvas>\n";
+    # add control buttons
+    $result .= '<div';
+    if ($align eq 'right' || $align eq 'middle' || $align eq 'center') {
+        $result .= ' style="';
+        if ($align eq 'right') {
+            $result .= 'text-align:right';
+        } else {
+            $result .= 'text-align:center';
+        }
+        $result .= '"';
+    }
+    $result .= '>';
+    $result .= '<button onclick="gnuplot.unzoom(); return false;">'.&mt("Unzoom")."</button>\n";
+    if ($Apache::lc_xml_lonplot::plot{'grid'} eq 'on') {
+        $result .= '<button onclick="gnuplot.toggle_grid(); return false;">'.&mt("Toggle grid")."</button>\n";
+    }
+    $result .= '</div>';
+    # add the gnuplot script and the Javascript to run it right away
     $result .= '<div id="'.$id.'_script'.'" style="display:none">'.$gnuplot_script.'</div>'."\n";
     $result .= '<script>run_gnuplot_script(document.getElementById("'.$id.'_script'.'").textContent, "'.$id.'");</script>';
     
@@ -1546,48 +1574,54 @@ sub generate_tics {
 
 ##------------------------------------------------------- write_gnuplot_file
 sub write_gnuplot_file {
+    my ($id) = @_;
     my ($fontsize, $font_properties) =  &get_font();
     my $gnuplot_input = '';
     my $curve;
     #
     # Check to be sure we do not have any empty curves
-    my @curvescopy;
-    foreach my $curve (@curves) {
-        if (exists($curve->{'function'})) {
-            if ($curve->{'function'} !~ /^\s*$/) {
-                push(@curvescopy,$curve);
-            }
-        } elsif (exists($curve->{'data'})) {
-            foreach my $data (@{$curve->{'data'}}) {
-                if (scalar(@$data) > 0) {
-                    push(@curvescopy,$curve);
-                    last;
-                }
-            }
-        }
-    }
-    @curves = @curvescopy;
+#     my @curvescopy;
+#     foreach my $curve (@curves) {
+#         if (exists($curve->{'function'})) {
+#             if ($curve->{'function'} !~ /^\s*$/) {
+#                 push(@curvescopy,$curve);
+#             }
+#         } elsif (exists($curve->{'data'})) {
+#             foreach my $data (@{$curve->{'data'}}) {
+#                 if (scalar(@$data) > 0) {
+#                     push(@curvescopy,$curve);
+#                     last;
+#                 }
+#             }
+#         }
+#     }
+#     @curves = @curvescopy;
     # Collect all the colors
-    my @Colors;
-    push @Colors, $Apache::lc_xml_lonplot::plot{'bgcolor'};
-    push @Colors, $Apache::lc_xml_lonplot::plot{'fgcolor'}; 
-    push @Colors, (defined($axis{'color'})?$axis{'color'}:$Apache::lc_xml_lonplot::plot{'fgcolor'});
-    foreach $curve (@curves) {
-        push @Colors, ($curve->{'color'} ne '' ? 
-                       $curve->{'color'}       : 
-                       $Apache::lc_xml_lonplot::plot{'fgcolor'}        );
-    }
+#     my @Colors;
+#     push @Colors, $Apache::lc_xml_lonplot::plot{'bgcolor'};
+#     push @Colors, $Apache::lc_xml_lonplot::plot{'fgcolor'}; 
+#     push @Colors, (defined($axis{'color'})?$axis{'color'}:$Apache::lc_xml_lonplot::plot{'fgcolor'});
+#     foreach $curve (@curves) {
+#         push @Colors, ($curve->{'color'} ne '' ? 
+#                        $curve->{'color'}       : 
+#                        $Apache::lc_xml_lonplot::plot{'fgcolor'}        );
+#     }
     
     # set term
-    #$gnuplot_input .= 'set terminal png enhanced nocrop ';
+    $gnuplot_input .= 'set terminal canvas enhanced name "'.$id.'"';
+    $gnuplot_input .= ' size '.$Apache::lc_xml_lonplot::plot{'width'}.','.$Apache::lc_xml_lonplot::plot{'height'}.' ';
+    # some properties do not need to be set with the canvas terminal (curve colors, transparent)
+    # or cannot be set (fgcolor, font files, axis colors)
     #$gnuplot_input .= 'transparent ' if ($Apache::lc_xml_lonplot::plot{'transparent'} eq 'on');
     #$gnuplot_input .= 'font "'.$Apache::lonnet::perlvar{'lonFontsDir'}.
     #    '/'.$font_properties->{'file'}.'.ttf" ';
-    #$gnuplot_input .= $fontsize;
-    #$gnuplot_input .= ' size '.$Apache::lc_xml_lonplot::plot{'width'}.','.$Apache::lc_xml_lonplot::plot{'height'}.' ';
-    #$gnuplot_input .= "@Colors\n"; # FIXME: do we need this ?
+    $gnuplot_input .= ' fsize '.$fontsize;
+    if ($Apache::lc_xml_lonplot::plot{'transparent'} ne 'on') {
+        $gnuplot_input .= ' background "'.$Apache::lc_xml_lonplot::plot{'bgcolor'}.'"';
+    }
+    $gnuplot_input .= "\n";
     # set output
-    #$gnuplot_input .= "set output\n";
+    $gnuplot_input .= "set output 'out_$id.js'\n";
     $gnuplot_input .= "set encoding utf8\n";
     # cartesian or polar plot?
     if (lc($Apache::lc_xml_lonplot::plot{'plottype'}) eq 'polar') {

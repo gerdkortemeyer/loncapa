@@ -383,5 +383,14 @@ span.maxima-error {
    min-width: 1px;
 }
 
-div.eqnbox { margin: 1em }
-span.math-error { border: solid 1px red; min-width: 1px; }
+div.eqnbox {
+    margin: 1em;
+}
+span.math-error {
+    border: solid 1px red;
+    min-width: 1px;
+}
+
+.lcgnuplotcanvas {
+    cursor: crosshair;
+}
