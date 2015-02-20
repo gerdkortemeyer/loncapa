@@ -56,7 +56,7 @@ sub end_html_html {
 }
 
 sub end_loncapa_html {
-   return &end_html(@_);
+   return &end_body(@_).&end_html(@_);
 }
 
 sub end_html {
