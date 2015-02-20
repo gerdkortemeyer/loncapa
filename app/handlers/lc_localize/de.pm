@@ -914,7 +914,11 @@ use utf8;
 
 ": activate to sort column ascending" => ": aktiviere um Spalte aufsteigend zu ordnen",
 
-": activate to sort column descending" => ": aktiviere um Spalte absteigend zu ordnen"
+": activate to sort column descending" => ": aktiviere um Spalte absteigend zu ordnen",
+
+'Unzoom' => 'Unzoom',
+
+'Toggle grid' => 'Toggle grid'
 
 );
 
