@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<optionresponse>
+  <foilgroup options="('green','red','blue')">
+    <foil name="foil1" value="red">
+      foil1: red
+    </foil>
+    <foil name="foil2" value="green">
+      foil2: green
+    </foil>
+    <foil name="foil3" value="blue">
+      foil3: blue
+    </foil>
+    <foil name="foil4" value="red">
+      foil4: red
+    </foil>
+  </foilgroup>
+</optionresponse>

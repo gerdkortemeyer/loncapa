@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<imageresponse>
+  <foilgroup>
+    <foil name="foil1">
+      <image>man1.jpg</image>
+      <text>Click on an eye</text>
+      <rectangle>(127,139)-(186,178)</rectangle>
+      <rectangle>(242,139)-(306,183)</rectangle>
+    </foil>
+    <foil name="foil2">
+      <image>man1.jpg</image>
+      <text>Click on the nose</text>
+      <rectangle>(192,180)-(227,222)</rectangle>
+    </foil>
+    <foil name="foil3">
+      <image>man1.jpg</image>
+      <text>Click on the mouth</text>
+      <rectangle>(142,226)-(294,293)</rectangle>
+    </foil>
+  </foilgroup>
+</imageresponse>

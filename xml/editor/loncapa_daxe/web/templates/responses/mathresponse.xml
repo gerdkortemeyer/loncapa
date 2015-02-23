@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mathresponse cas="maxima">
+  <answer>
+y(x):=RESPONSE[1];
+
+  </answer>
+  <textline size="40"/>
+</mathresponse>

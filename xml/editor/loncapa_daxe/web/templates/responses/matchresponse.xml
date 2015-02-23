@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<matchresponse>
+  <foilgroup>
+    <itemgroup>
+      <item name="item1">
+        item1
+      </item>
+      <item name="item2">
+        item2
+      </item>
+    </itemgroup>
+    <foil name="foil1" value="item1">
+      foil1 matching item1
+    </foil>
+    <foil name="foil2" value="item2">
+      foil2 matching item2
+    </foil>
+  </foilgroup>
+</matchresponse>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<formularesponse answer="x">
+  <parameter name="tol" type="tolerance" description="Numerical Tolerance" default="0.00001"/>
+  <textline size="25"/>
+</formularesponse>

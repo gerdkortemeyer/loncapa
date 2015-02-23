@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<radiobuttonresponse>
+  <foilgroup>
+    <foil name="correct" value="true">
+      correct option
+    </foil>
+    <foil name="wrong1" value="false">
+      wrong option 1
+    </foil>
+    <foil name="wrong2" value="false">
+      wrong option 2
+    </foil>
+  </foilgroup>
+</radiobuttonresponse>

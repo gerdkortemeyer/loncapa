@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customresponse>
+  <answer>
+# We do not want a vector
+if ($submission=~/\,/) { return 'EXTRA_ANSWER'; }
+# No units needed
+if ($submission=~/^\d+\s+\w+$/) { return 'UNIT_NOTNEEDED'; }
+# Need a numerical answer here
+if ($submission!~/^[\d\.\-]+$/) { return 'WANTED_NUMERIC'; }
+$difference=abs(42-$submission);
+if ($difference==0) { return 'EXACT_ANS'; }
+if ($difference &lt; 0.001) { return 'APPROX_ANS'; }
+return 'INCORRECT';
+  </answer>
+  <textline/>
+</customresponse>
