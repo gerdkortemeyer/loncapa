@@ -85,6 +85,8 @@ class LCDBlock extends DaxeNode {
     div.classes.add('lcdblock');
     h.DivElement headerDiv = new h.DivElement();
     headerDiv.classes.add('lcdblock-header');
+    if (state == 2 || !hasContent)
+      headerDiv.classes.add('without-content-afterwards');
     
     h.DivElement titleDiv = new h.DivElement();
     h.DivElement buttonBox = new h.DivElement();
@@ -218,6 +220,7 @@ class LCDBlock extends DaxeNode {
             value = '';
         }
         attributeControls[name].setValue(value);
+        attributeControls[name].checkValue(false);
         i++;
       }
       updateValidity();

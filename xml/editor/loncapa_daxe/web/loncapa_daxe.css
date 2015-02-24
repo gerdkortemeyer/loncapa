@@ -4,7 +4,6 @@ span.empty_tag, span.start_tag, span.end_tag, span.simple_type {
 }
 
 .lcdblock {
-  overflow: hidden;
   border-top: 1px solid #AAA;
   border-left: 1px solid #AAA;
   border-bottom: 1px solid #AAA;
@@ -27,9 +26,9 @@ span.empty_tag, span.start_tag, span.end_tag, span.simple_type {
 }
 
 .lcdblock-header {
-  overflow: auto;
   background-color: #F5F5F5;
   padding: 2px;
+  border-top-left-radius: 0.4em;
   border-top-right-radius: 0.4em;
   box-shadow: 0px 1px 2px #AAA;
   cursor: default;
@@ -39,6 +38,20 @@ span.empty_tag, span.start_tag, span.end_tag, span.simple_type {
   font-size: medium;
   color: black;
   text-align: left;
+}
+
+.lcdblock-header:after {
+  /* clearfix for floating buttons */
+  /* we can't use overflow:auto because of the parameter template menu which needs to overflow */
+  visibility: hidden;
+  display: block;
+  content: "";
+  clear: both;
+  height: 0;
+}
+
+.lcdblock-header.without-content-afterwards {
+  border-bottom-left-radius: 0.4em;
 }
 
 .lcdblock.invalid>.lcdblock-header {

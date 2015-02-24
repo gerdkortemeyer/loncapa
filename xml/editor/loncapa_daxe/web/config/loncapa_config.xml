@@ -280,15 +280,7 @@
     <AFFICHAGE_ELEMENT element="parserlib" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="scriptlib" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="lcmeta" type="lcdblock"/>
-    <AFFICHAGE_ELEMENT element="parameter" type="lcdblock">
-      <AFFICHAGE_ATTRIBUT attribut="type">
-        <VALEUR_SUGGEREE>tolerance</VALEUR_SUGGEREE>
-        <VALEUR_SUGGEREE>int</VALEUR_SUGGEREE>
-        <VALEUR_SUGGEREE>float</VALEUR_SUGGEREE>
-        <VALEUR_SUGGEREE>string</VALEUR_SUGGEREE>
-        <VALEUR_SUGGEREE>date</VALEUR_SUGGEREE>
-      </AFFICHAGE_ATTRIBUT>
-    </AFFICHAGE_ELEMENT>
+    <AFFICHAGE_ELEMENT element="parameter" type="parameter"/>
     <AFFICHAGE_ELEMENT element="preduedate" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="postanswerdate" type="lcdblock"/>
     <AFFICHAGE_ELEMENT element="solved" type="lcdblock"/>

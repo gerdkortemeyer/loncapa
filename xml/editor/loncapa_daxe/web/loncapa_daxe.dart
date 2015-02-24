@@ -28,6 +28,7 @@ import 'dart:js' as js;
 
 import 'lcd_strings.dart';
 part 'nodes/lcd_block.dart';
+part 'nodes/lcd_parameter.dart';
 part 'nodes/tex_mathjax.dart';
 part 'nodes/lm.dart';
 part 'nodes/perl_block.dart';
@@ -55,6 +56,11 @@ void main() {
   addDisplayType('perl',
         (x.Element ref) => new PerlBlock.fromRef(ref),
         (x.Node node, DaxeNode parent) => new PerlBlock.fromNode(node, parent)
+    );
+  
+  addDisplayType('parameter',
+        (x.Element ref) => new LCDParameter.fromRef(ref),
+        (x.Node node, DaxeNode parent) => new LCDParameter.fromNode(node, parent)
     );
   
   Future.wait([Strings.load(), LCDStrings.load(), _readTemplates('templates.xml')]).then((List responses) {

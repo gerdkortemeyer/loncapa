@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Implemented parameters, suggested based on the first matching context.
+  We might want to create this file dynamically (not sure if this would be useful, but the list should be unique,
+  although not all parameters make sense in the editor, so we might need to specify which ones do).
+  TODO: Check which parameters should be in problem and which should be in part, and adjust document conversion.
+  NOTE: Not sure if the "part_0" parameters defined in packages.tab should be here...
+-->
+
+<parameters>
+  <context ancestor="problem">
+    <parameter>
+      <name>opendate</name>
+      <type>date_start</type>
+      <title lang="en">Problem Opening Date</title>
+    </parameter>
+    <parameter>
+      <name>duedate</name>
+      <type>date_end</type>
+      <title lang="en">Problem Due Date</title>
+    </parameter>
+    <parameter>
+      <name>answerdate</name>
+      <type>date_start</type>
+      <title lang="en">Problem Answer Date</title>
+    </parameter>
+  </context>
+  <context ancestor="part">
+    <parameter>
+      <name>weight</name>
+      <type>float_pos</type>
+      <default>1</default>
+      <title lang="en">Weight</title>
+    </parameter>
+    <parameter>
+      <name>maxtries</name>
+      <type>int_pos</type>
+      <default>99</default>
+      <title lang="en">Maximum Number of Tries</title>
+    </parameter>
+    <parameter>
+      <name>hinttries</name>
+      <type>int_pos</type>
+      <default>1</default>
+      <title lang="en">Number of Tries before hints appear</title>
+    </parameter>
+    <parameter>
+      <name>type</name>
+      <type>string_questiontype</type>
+      <title lang="en">Question Type</title>
+    </parameter>
+    <parameter>
+      <name>randomizeontries</name>
+      <type>int_pos</type>
+      <title lang="en">Tries before new Variation (if Qn. Type=randomizetry)</title>
+    </parameter>
+    <parameter>
+      <name>printstartdate</name>
+      <type>date_start</type>
+      <title lang="en">Print start date</title>
+    </parameter>
+    <parameter>
+      <name>printenddate</name>
+      <type>date_end</type>
+      <title lang="en">Print end date</title>
+    </parameter>
+    <parameter>
+      <name>acc</name>
+      <type>string_ip</type>
+      <title lang="en">Client IP/Name Access Control</title>
+    </parameter>
+    <parameter>
+      <name>problemstatus</name>
+      <type>string_problemstatus</type>
+      <default>yes</default>
+      <title lang="en">Show Problem Status</title>
+    </parameter>
+    <parameter>
+      <name>display</name>
+      <type>string</type>
+      <title lang="en">Part Description</title>
+    </parameter>
+    <parameter>
+      <name>ordered</name>
+      <type>string_yesno</type>
+      <default>no</default>
+      <title lang="en">Show Parts One-at-a-Time</title>
+    </parameter>
+    <parameter>
+      <name>retrypartial</name>
+      <type>string_yesno</type>
+      <default>no</default>
+      <title lang="en">Partially correct is answerable</title>
+    </parameter>
+  </context>
+  <context ancestor="numericalhint">
+    <parameter>
+      <name>tol</name>
+      <type>tolerance</type>
+      <default>5%</default>
+      <title lang="en">Numerical Tolerance</title>
+    </parameter>
+    <parameter>
+      <name>sig</name>
+      <type>int_range,0-16</type>
+      <title lang="en">Significant Figures</title>
+    </parameter>
+  </context>
+  <context ancestor="numericalresponse">
+    <parameter>
+      <name>tol</name>
+      <type>tolerance</type>
+      <default>5%</default>
+      <title lang="en">Numerical Tolerance</title>
+    </parameter>
+    <parameter>
+      <name>sig</name>
+      <type>int_range</type>
+      <title lang="en">Significant Digits</title>
+    </parameter>
+    <parameter>
+      <name>turnoffunit</name>
+      <type>string_yesno</type>
+      <default>no</default>
+      <title lang="en">Show Units - Disable Entry</title>
+    </parameter>
+    <parameter>
+      <name>numbubbles</name>
+      <type>int_pos</type>
+      <default>8</default>
+      <title lang="en">Number of bubbles in bubblesheet exam mode</title>
+    </parameter>
+    <parameter>
+      <name>allowalgebra</name>
+      <type>string_yesno</type>
+      <default>no</default>
+      <title lang="en">Allow algebraic entry</title>
+    </parameter>
+    <parameter>
+      <name>customunits</name>
+      <type>string_any</type>
+      <title lang="en">Custom-defined Units</title>
+    </parameter>
+  </context>
+  <context ancestor="formularesponse">
+    <parameter>
+      <name>tol</name>
+      <type>tolerance</type>
+      <default>0.00000000001</default>
+      <title lang="en">Numerical Tolerance</title>
+    </parameter>
+    <parameter>
+      <name>turnoffeditor</name>
+      <type>string_yesno</type>
+      <default>no</default>
+      <title lang="en">Hide DragMath-Editor</title>
+    </parameter>
+  </context>
+  <context ancestor="essayresponse">
+    <parameter>
+      <name>handgrade</name>
+      <type>string_yesno</type>
+      <default>yes</default>
+      <title lang="en">Hand Graded</title>
+    </parameter>
+    <parameter>
+      <name>maxcollaborators</name>
+      <type>int_zeropos</type>
+      <default>0</default>
+      <title lang="en">Maximum Number of Collaborators</title>
+    </parameter>
+    <parameter>
+      <name>uploadedfiletypes</name>
+      <type>string_fileext</type>
+      <title lang="en">Allowed File Extensions for Uploaded Files</title>
+    </parameter>
+    <parameter>
+      <name>maxfilesize</name>
+      <type>float_pos</type>
+      <default>10.0</default>
+      <title lang="en">Max. cumulative size (MB) for submitted files</title>
+    </parameter>
+  </context>
+  <context ancestor="externalresponse">
+    <parameter>
+      <name>uploadedfiletypes</name>
+      <type>string_fileext</type>
+      <title lang="en">Allowed File Extensions for Uploaded Files</title>
+    </parameter>
+    <parameter>
+      <name>maxfilesize</name>
+      <type>float_pos</type>
+      <default>10.0</default>
+      <title lang="en">Max. cumulative size (MB) for submitted files</title>
+    </parameter>
+    <parameter>
+      <name>maxcollaborators</name>
+      <type>int_zeropos</type>
+      <default>0</default>
+      <title lang="en">Maximum Number of Collaborators</title>
+    </parameter>
+  </context>
+  <context ancestor="mathresponse">
+    <parameter>
+      <name>turnoffeditor</name>
+      <type>string_yesno</type>
+      <default>no</default>
+      <title lang="en">Hide DragMath-Editor</title>
+    </parameter>
+  </context>
+  <context ancestor="optionresponse">
+    <parameter>
+      <name>lenient</name>
+      <type>string_lenient</type>
+      <default>default</default>
+      <title lang="en">Lenient Grading (Partial Credit)</title>
+    </parameter>
+  </context>
+  <context ancestor="matchresponse">
+    <parameter>
+      <name>lenient</name>
+      <type>string_lenient</type>
+      <default>default</default>
+      <title lang="en">Lenient Grading (Partial Credit)</title>
+    </parameter>
+  </context>
+</parameters>
