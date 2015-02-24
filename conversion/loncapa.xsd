@@ -4147,7 +4147,43 @@
     <xs:complexType>
       <xs:attribute name="id" type="xs:string"/>
       <xs:attribute name="name" type="xs:string"/>
-      <xs:attribute name="type" type="xs:string" use="required"/>
+      <xs:attribute name="type" use="required">
+        <xs:simpleType>
+          <xs:union>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="date"/>
+                <xs:enumeration value="date_end"/>
+                <xs:enumeration value="date_interval"/>
+                <xs:enumeration value="date_start"/>
+                <xs:enumeration value="float"/>
+                <xs:enumeration value="float_pos"/>
+                <xs:enumeration value="int"/>
+                <xs:enumeration value="int_pos"/>
+                <xs:enumeration value="int_range"/>
+                <xs:enumeration value="int_zeropos"/>
+                <xs:enumeration value="string"/>
+                <xs:enumeration value="string_any"/>
+                <xs:enumeration value="string_discussvote"/>
+                <xs:enumeration value="string_examcode"/>
+                <xs:enumeration value="string_fileext"/>
+                <xs:enumeration value="string_ip"/>
+                <xs:enumeration value="string_lenient"/>
+                <xs:enumeration value="string_problemstatus"/>
+                <xs:enumeration value="string_questiontype"/>
+                <xs:enumeration value="string_useslots"/>
+                <xs:enumeration value="string_yesno"/>
+                <xs:enumeration value="tolerance"/>
+              </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:pattern value="int_range,[0-9]+-[0-9]+"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
+      </xs:attribute>
       <xs:attribute name="description" type="xs:string"/>
       <xs:attribute name="default" type="xs:string">
         <xs:annotation>
