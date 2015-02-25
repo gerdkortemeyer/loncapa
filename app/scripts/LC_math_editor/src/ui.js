@@ -79,7 +79,8 @@ var handleChange = function(math_object) {
                     output_node.appendChild(document.createTextNode(txt.substring(0, e.from)));
                     var span = document.createElement('span');
                     span.appendChild(document.createTextNode(txt.substring(e.from, e.to + 1)));
-                    span.className = 'math-error';
+                    span.style.border = 'solid 1px red';// this used to be CSS "math-error", but using CSS caused too many problems
+                    span.style.minWidth = '1px';
                     output_node.appendChild(span);
                     if (e.to < txt.length - 1) {
                         output_node.appendChild(document.createTextNode(txt.substring(e.to + 1)));
@@ -190,6 +191,12 @@ var initEditors = function() {
                       an_output_node.style.display = "none";
                     };
                 }
+                var hide_node_if_no_error = function(an_output_node) {
+                    return function(e) {
+                      if (!an_output_node.hasAttribute('title'))
+                        an_output_node.style.display = "none";
+                    };
+                }
                 var focus = function(a_ta, an_output_node) {
                     return function(e) {
                         if (a_ta.value != '') {
@@ -200,7 +207,7 @@ var initEditors = function() {
                 };
                 ta.addEventListener("blur", hide_node(output_node), false);
                 ta.addEventListener("focus", focus(ta, output_node), false);
-                output_node.addEventListener("mouseenter", hide_node(output_node), false);
+                output_node.addEventListener("mouseenter", hide_node_if_no_error(output_node), false);
                 ind_math = math_objects.length;
                 var oldtxt = "";
                 math_objects[ind_math] = {
