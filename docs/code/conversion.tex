@@ -1,0 +1,80 @@
+\chapter{Conversion}\index{conversion}
+
+\section{Scope}
+The conversion converts the latest version of all HTML, problem, exam, survey and library documents.
+
+\section{Script usage}
+\texttt{loncapa/conversion/convert.pl} converts a document or a directory recursively when given its path on the command line. Currently it creates \texttt{.lc} files, without touching the original files.
+
+\section{Encoding}
+To read the documents correctly, the character encoding must be known. It is assumed to be UTF-8 by LON-CAPA, but this assumption is wrong for many documents. Many of them are encoded in cp1252 or ISO-8859-1, but there are also some using MacRoman. There is no way to guess without error the character encoding used when it is not UNICODE, so we have to make a guess. To do that, the conversion counts the most common non-ASCII characters in the documents (especially in English, German, Spanish and Portuguese). It converts all documents to UTF-8.
+
+\section{Syntax}
+Because the new documents use the XML syntax, a syntax conversion is necessary. It tries to preserve what was expected from documents, with the LON-CAPA tags (interpreted by LON-CAPA) and the HTML ones (mostly interpreted by web browsers). This is not easy, because the documents are not well-formed, and cannot be parsed without risks for errors. They also contain many syntax errors, which the conversion tries to fix. CDATA sections are used for blocks of code that might contain many special characters. Otherwise character entities are used to replace special XML characters.
+
+\section{Document structure}
+The new document structure encloses the previous content of the file by a root \texttt{loncapa} element, or (for libraries) a \texttt{library} element.
+\texttt{head} is replaced by \texttt{htmlhead}, and moved to the beginning.
+\texttt{body} is replaced by an empty \texttt{htmlbody} element positioned after \texttt{htmlhead} (if present), with the attributes from the \texttt{body} element.
+Most documents will not have any \texttt{htmlhead} or \texttt{htmlbody} element, because they are not necessary.
+The non-LON-CAPA \texttt{meta} elements are removed.
+
+\section{Removed elements}
+The following elements are removed without replacement:
+\texttt{startouttext} and \texttt{endouttext} (also removed when misspelled), \texttt{startpartmarker}, \texttt{endpartmarker}, \texttt{displayweight}, \texttt{displaystudentphoto}, \texttt{basefont}, \texttt{displaytitle}, \texttt{displayduedate}, \texttt{allow}, \texttt{allows}, \texttt{x-claris-tagview}, \texttt{x-claris-window}, \texttt{x-sas-window}.
+
+\section{tex, web and m}
+Because LaTeX is no longer used for printing, \texttt{<tex>}, \texttt{<web>}, \texttt{\&tex} and \texttt{\&web} are replaced by HTML when it is possible to do so automatically.
+When it is not, \texttt{tex} and \texttt{web} will have to be fixed by hand (replaced by equivalent CSS). In this case the conversion issues a warning.
+\texttt{<m>} is replaced by a mix of HTML, \texttt{tm} and \texttt{dtm}. The conversion to HTML uses \texttt{tth}.
+
+\section{HTML errors}
+HTML errors are fixed whenever possible, to make the resulting documents valid. Here is a list of errors that are fixed:
+\begin{itemize}
+\item inline elements containing block elements.
+\item \texttt{font} and \texttt{u} elements are replaced by \texttt{span} with CSS, or with CSS in the enclosing element.
+\item missing cells are added in tables.
+\item lists are fixed (things like \texttt{ul/ul}).
+\item \texttt{image} elements are replaced by \texttt{img}.
+\item deprecated style attributes are replaced by CSS (there are lots of them).
+\item \texttt{<center>} is replaced by a \texttt{div} or CSS, depending on the context.
+\item \texttt{<nobr>} is replaced by a \texttt{span} with CSS.
+\item \texttt{p} elements are added where needed, replacing \texttt{br} elements.
+\item empty style elements are removed.
+\end{itemize}
+
+\section{LON-CAPA elements}
+\begin{itemize}
+\item \texttt{responseparam} is renamed \texttt{parameter}.
+\item \texttt{<script type="loncapa/perl">} is replaced by \texttt{<perl>}.
+\item \texttt{<notsolved>} tags are removed in the case \texttt{<hintgroup showoncorrect="no"><notsolved>...</notsolved></hintgroup>}
+and in the case \texttt{<notsolved><hintgroup showoncorrect="no">...</hintgroup></notsolved>}.
+\item \texttt{<part>} elements are added so that responses are always inside a part. Warnings are issued when documents cannot be fixed.
+\item Hints are changed according to the new schema.
+For instance,
+\begin{verbatim}
+<numericalresponse>
+  <hintgroup>text1<numericalhint name="c"/><hintpart on="c">text2</hintpart></hintgroup>
+</numericalresponse>
+\end{verbatim}
+is replaced by
+\begin{verbatim}
+<numericalresponse>
+  <numericalhintcondition name="c"/>
+</numericalresponse>
+<hint>text1</hint><hint on="c">text2</hint>
+\end{verbatim}
+but \texttt{hintgroup} is kept when it is useful.
+Also \texttt{"hint"} elements (that should not exists) are replaced by their content, and \texttt{on="default"} is replaced by \texttt{default="yes"}.
+\item A unique \texttt{id} is added to problems and parts that don't have one.
+\item \texttt{conceptgroup/@concept} is renamed \texttt{display} and a new \texttt{id} attribute is created.
+\item Whitespace is removed inside elements with an empty content model.
+\item All attributes are turned into lowercase.
+\item Some spelling mistakes are fixed for \texttt{numericalresponse/@unit}.
+\item \texttt{\&format} and \texttt{\&prettyprint} are replaced by \texttt{<num>} whenever possible.
+\item \texttt{\&chemparse} is replaced by \texttt{<chem>}.
+\item If the function call is enclosed in \texttt{<display>}, the \texttt{<display>} element is removed.
+\end{itemize}
+
+\section{Pretty-print}
+After conversion, the document is rewritten in a nice, easy to read way.
