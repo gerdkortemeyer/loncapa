@@ -5,12 +5,13 @@
     </xs:documentation>
   </xs:annotation>
   
-  <xs:annotation>
-    <xs:documentation>
-      This import is needed to use xml:space="preserve".
-    </xs:documentation>
-  </xs:annotation>
-  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd">
+    <xs:annotation>
+      <xs:documentation>
+        This import is needed to use xml:space="preserve".
+      </xs:documentation>
+    </xs:annotation>
+  </xs:import>
   
   <xs:annotation>
     <xs:documentation>
@@ -271,8 +272,8 @@
       <xs:element name="p" type="p-with-text"/>
       <xs:element name="ul" type="ul-with-text"/>
       <xs:element name="ol" type="ol-with-text"/>
-      <xs:element name="table" type="table-with-text"/>
       <xs:element name="dl" type="dl-with-text"/>
+      <xs:element name="table" type="table-with-text"/>
     </xs:choice>
   </xs:group>
   <xs:group name="blocks-with-parts">
@@ -291,8 +292,8 @@
       <xs:element name="p" type="p-with-text"/>
       <xs:element name="ul" type="ul-with-parts"/>
       <xs:element name="ol" type="ol-with-parts"/>
-      <xs:element name="table" type="table-with-parts"/>
       <xs:element name="dl" type="dl-with-parts"/>
+      <xs:element name="table" type="table-with-parts"/>
     </xs:choice>
   </xs:group>
   <xs:group name="blocks-with-responses">
@@ -311,8 +312,8 @@
       <xs:element name="p" type="p-with-responses"/>
       <xs:element name="ul" type="ul-with-responses"/>
       <xs:element name="ol" type="ol-with-responses"/>
-      <xs:element name="table" type="table-with-responses"/>
       <xs:element name="dl" type="dl-with-responses"/>
+      <xs:element name="table" type="table-with-responses"/>
     </xs:choice>
   </xs:group>
   <xs:group name="blocks-with-text">
@@ -328,8 +329,8 @@
       <xs:element name="p" type="p-with-text"/>
       <xs:element name="ul" type="ul-with-text"/>
       <xs:element name="ol" type="ol-with-text"/>
-      <xs:element name="table" type="table-with-text"/>
       <xs:element name="dl" type="dl-with-text"/>
+      <xs:element name="table" type="table-with-text"/>
     </xs:choice>
   </xs:group>
   <xs:group name="inlines">
@@ -593,8 +594,8 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="foilgroup" type="radiobuttonresponse--foilgroup"/>
         <xs:element ref="parameter"/>
+        <xs:element name="foilgroup" type="radiobuttonresponse--foilgroup"/>
         <xs:element ref="radiobuttonhintcondition"/>
         <xs:group ref="text-only"/>
         <xs:element ref="solved"/>
@@ -755,8 +756,8 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="foilgroup" type="optionresponse--foilgroup"/>
         <xs:element ref="parameter"/>
+        <xs:element name="foilgroup" type="optionresponse--foilgroup"/>
         <xs:element ref="optionhintcondition"/>
         <xs:group ref="text-only"/>
         <xs:element ref="solved"/>
@@ -959,8 +960,8 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="foilgroup" type="matchresponse--foilgroup"/>
         <xs:element ref="parameter"/>
+        <xs:element name="foilgroup" type="matchresponse--foilgroup"/>
         <xs:group ref="text-only"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -1134,8 +1135,8 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="foilgroup" type="rankresponse--foilgroup"/>
         <xs:element ref="parameter"/>
+        <xs:element name="foilgroup" type="rankresponse--foilgroup"/>
         <xs:group ref="text-only"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -1226,8 +1227,8 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="foilgroup" type="imageresponse--foilgroup"/>
         <xs:element ref="parameter"/>
+        <xs:element name="foilgroup" type="imageresponse--foilgroup"/>
         <xs:group ref="text-only"/>
         <xs:element ref="solved"/>
         <xs:element ref="notsolved"/>
@@ -1666,6 +1667,7 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="parameter"/>
         <xs:element name="answer" type="mathresponse--answer">
           <xs:annotation>
             <xs:documentation>
@@ -1673,7 +1675,6 @@
             </xs:documentation>
           </xs:annotation>
         </xs:element>
-        <xs:element ref="parameter"/>
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
@@ -2604,8 +2605,8 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element name="answer" type="customresponse--answer"/>
         <xs:element ref="parameter"/>
+        <xs:element name="answer" type="customresponse--answer"/>
         <xs:element ref="textfield"/>
         <xs:element ref="hiddensubmission"/>
         <xs:element ref="hiddenline"/>
@@ -5860,6 +5861,22 @@
       </xs:documentation>
     </xs:annotation>
     <xs:attributeGroup ref="coreattrs"/>
+    <xs:attribute name="type" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Indicates the numbering type:
+          - 'a' indicates lowercase letters,
+          - 'A' indicates uppercase letters,
+          - 'i' indicates lowercase Roman numerals,
+          - 'I' indicates uppercase Roman numerals,
+          - and '1' indicates numbers (default).
+          
+          The type set is used for the entire list unless a different type attribute is used within an enclosed &lt;li&gt; element.
+          
+          Note: This attribute was deprecated in HTML4, but reintroduced in HTML5. Unless the value of the list number matters (e.g. in legal or technical documents where items are to be referenced by their number/letter), the CSS list-style-type property should be used instead.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
   <xs:complexType name="ol-with-parts">
     <xs:complexContent>

@@ -31,6 +31,7 @@ XML schema for LON-CAPA 3 documents.
 
 
 
+
 <div class="documentation">
 This import is needed to use xml:space="preserve".
 </div>
@@ -736,16 +737,16 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="table_0"></a>
-<h3>Element <span class="nomtitre">table</span>
-</h3>type: <a href="#table-with-text_0">table-with-text</a>
+<a name="dl_0"></a>
+<h3>Element <span class="nomtitre">dl</span>
+</h3>type: <a href="#dl-with-text_0">dl-with-text</a>
 <br>
 <br>
 </li>
 <li>
-<a name="dl_0"></a>
-<h3>Element <span class="nomtitre">dl</span>
-</h3>type: <a href="#dl-with-text_0">dl-with-text</a>
+<a name="table_0"></a>
+<h3>Element <span class="nomtitre">table</span>
+</h3>type: <a href="#table-with-text_0">table-with-text</a>
 <br>
 <br>
 </li>
@@ -828,16 +829,16 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="table_1"></a>
-<h3>Element <span class="nomtitre">table</span>
-</h3>type: <a href="#table-with-parts_0">table-with-parts</a>
+<a name="dl_1"></a>
+<h3>Element <span class="nomtitre">dl</span>
+</h3>type: <a href="#dl-with-parts_0">dl-with-parts</a>
 <br>
 <br>
 </li>
 <li>
-<a name="dl_1"></a>
-<h3>Element <span class="nomtitre">dl</span>
-</h3>type: <a href="#dl-with-parts_0">dl-with-parts</a>
+<a name="table_1"></a>
+<h3>Element <span class="nomtitre">table</span>
+</h3>type: <a href="#table-with-parts_0">table-with-parts</a>
 <br>
 <br>
 </li>
@@ -924,16 +925,16 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="table_2"></a>
-<h3>Element <span class="nomtitre">table</span>
-</h3>type: <a href="#table-with-responses_0">table-with-responses</a>
+<a name="dl_2"></a>
+<h3>Element <span class="nomtitre">dl</span>
+</h3>type: <a href="#dl-with-responses_0">dl-with-responses</a>
 <br>
 <br>
 </li>
 <li>
-<a name="dl_2"></a>
-<h3>Element <span class="nomtitre">dl</span>
-</h3>type: <a href="#dl-with-responses_0">dl-with-responses</a>
+<a name="table_2"></a>
+<h3>Element <span class="nomtitre">table</span>
+</h3>type: <a href="#table-with-responses_0">table-with-responses</a>
 <br>
 <br>
 </li>
@@ -1008,16 +1009,16 @@ Choice between:<ul>
 <br>
 </li>
 <li>
-<a name="table_3"></a>
-<h3>Element <span class="nomtitre">table</span>
-</h3>type: <a href="#table-with-text_0">table-with-text</a>
+<a name="dl_3"></a>
+<h3>Element <span class="nomtitre">dl</span>
+</h3>type: <a href="#dl-with-text_0">dl-with-text</a>
 <br>
 <br>
 </li>
 <li>
-<a name="dl_3"></a>
-<h3>Element <span class="nomtitre">dl</span>
-</h3>type: <a href="#dl-with-text_0">dl-with-text</a>
+<a name="table_3"></a>
+<h3>Element <span class="nomtitre">table</span>
+</h3>type: <a href="#table-with-text_0">table-with-text</a>
 <br>
 <br>
 </li>
@@ -1311,6 +1312,38 @@ Choice between:<ul>
 <br>
 <hr>
 
+<a name="response-identification_0"></a>
+<h3>Attribute group: <span class="nomtitre">response-identification</span>
+</h3>
+Attribute <span class="nomattribut">id</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Unique identifier for the response in the document. If this isn&rsquo;t set, it will be set during the publication step. It is used to assign parameter names in a way that can be tracked if an instructor modifies by hand.
+</div>
+<br>
+
+
+</div>
+Attribute <span class="nomattribut">name</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+If set, the name will be used by the resource assembly tool when one is modifying parameters.
+</div>
+<br>
+
+
+</div>
+
+<br>Parents:<a href="#stringresponse_0">stringresponse</a>, <a href="#essayresponse_0">essayresponse</a>, <a href="#radiobuttonresponse_0">radiobuttonresponse</a>, <a href="#optionresponse_0">optionresponse</a>, <a href="#matchresponse_0">matchresponse</a>, <a href="#rankresponse_0">rankresponse</a>, <a href="#imageresponse_0">imageresponse</a>, <a href="#numericalresponse_0">numericalresponse</a>, <a href="#formularesponse_0">formularesponse</a>, <a href="#mathresponse_0">mathresponse</a>, <a href="#functionplotresponse_0">functionplotresponse</a>, <a href="#organicresponse_0">organicresponse</a>, <a href="#reactionresponse_0">reactionresponse</a>, <a href="#customresponse_0">customresponse</a>, <a href="#externalresponse_0">externalresponse</a>
+<br>
+<hr>
+
 
 
 <div class="documentation">
@@ -1358,14 +1391,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">answer</span>:
     <div class="indentation">required<br>type: <tt>xs:string</tt>
 <br>
@@ -1593,14 +1622,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 
 <a href="#loncapa-css_0">loncapa-css</a>
 <br>
@@ -1635,14 +1660,14 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
+<a href="#parameter_0">parameter</a>
+<br>
+</li>
+<li>
 <a name="foilgroup_0"></a>
 <h3>Element <span class="nomtitre">foilgroup</span>
 </h3>type: <a href="#radiobuttonresponse--foilgroup_0">radiobuttonresponse--foilgroup</a>
 <br>
-<br>
-</li>
-<li>
-<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -1662,14 +1687,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">max</span>:
     <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
@@ -1975,14 +1996,14 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
+<a href="#parameter_0">parameter</a>
+<br>
+</li>
+<li>
 <a name="foilgroup_1"></a>
 <h3>Element <span class="nomtitre">foilgroup</span>
 </h3>type: <a href="#optionresponse--foilgroup_0">optionresponse--foilgroup</a>
 <br>
-<br>
-</li>
-<li>
-<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -2002,14 +2023,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">max</span>:
     <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
@@ -2401,14 +2418,14 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
+<a href="#parameter_0">parameter</a>
+<br>
+</li>
+<li>
 <a name="foilgroup_2"></a>
 <h3>Element <span class="nomtitre">foilgroup</span>
 </h3>type: <a href="#matchresponse--foilgroup_0">matchresponse--foilgroup</a>
 <br>
-<br>
-</li>
-<li>
-<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -2424,14 +2441,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">max</span>:
     <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
@@ -2800,14 +2813,14 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
+<a href="#parameter_0">parameter</a>
+<br>
+</li>
+<li>
 <a name="foilgroup_3"></a>
 <h3>Element <span class="nomtitre">foilgroup</span>
 </h3>type: <a href="#rankresponse--foilgroup_0">rankresponse--foilgroup</a>
 <br>
-<br>
-</li>
-<li>
-<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -2823,14 +2836,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">max</span>:
     <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
@@ -3017,14 +3026,14 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
+<a href="#parameter_0">parameter</a>
+<br>
+</li>
+<li>
 <a name="foilgroup_4"></a>
 <h3>Element <span class="nomtitre">foilgroup</span>
 </h3>type: <a href="#imageresponse--foilgroup_0">imageresponse--foilgroup</a>
 <br>
-<br>
-</li>
-<li>
-<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -3040,14 +3049,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">max</span>:
     <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
@@ -3373,14 +3378,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">answer</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
@@ -3409,6 +3410,15 @@ When switched into exam ("bubble sheet") mode, LON-CAPA usually create wrong ans
 Attribute <span class="nomattribut">unit</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+Expected units for the answer, with the LON-CAPA math syntax. For instance, "m/s^2" or "km/(A*hr)".
+LON-CAPA will convert units automatically when checking if a reply is correct, so for instance "15000 kW*s" will be accepted when the correct answer is "15 MJ".
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">format</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
@@ -3793,14 +3803,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">answer</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
@@ -3951,6 +3957,10 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
+<a href="#parameter_0">parameter</a>
+<br>
+</li>
+<li>
 <a name="answer_8"></a>
 <h3>Element <span class="nomtitre">answer</span>
 </h3>type: <a href="#mathresponse--answer_0">mathresponse--answer</a>
@@ -3963,10 +3973,6 @@ Maxima or R script using the arrays RESPONSE and LONCAPALIST.
 <br>
 
 
-<br>
-</li>
-<li>
-<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -3998,14 +4004,10 @@ Maxima or R script using the arrays RESPONSE and LONCAPALIST.
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">answerdisplay</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
@@ -4252,14 +4254,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">width</span>:
     <div class="indentation">optional<br>type: <a href="#int-or-perl_0">int-or-perl</a>
 <br>
@@ -5487,14 +5485,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">options</span>:
     <div class="indentation">optional<br>
 
@@ -5670,14 +5664,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">answer</span>:
     <div class="indentation">required<br>type: <tt>xs:string</tt>
 <br>
@@ -5775,14 +5765,14 @@ Can contain text<br>
 <div class="indentation">
 Choice between:<ul>
 <li>
+<a href="#parameter_0">parameter</a>
+<br>
+</li>
+<li>
 <a name="answer_15"></a>
 <h3>Element <span class="nomtitre">answer</span>
 </h3>type: <a href="#customresponse--answer_0">customresponse--answer</a>
 <br>
-<br>
-</li>
-<li>
-<a href="#parameter_0">parameter</a>
 <br>
 </li>
 <li>
@@ -5814,14 +5804,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">answerdisplay</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
@@ -6005,14 +5991,10 @@ Choice between:<ul>
 <br>
 </li>
 </ul>
-Attribute <span class="nomattribut">id</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+
+<a href="#response-identification_0">response-identification</a>
 <br>
-</div>
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
-</div>
 Attribute <span class="nomattribut">url</span>:
     <div class="indentation">optional<br>type: <tt>xs:anyURI</tt>
 <br>
@@ -6071,51 +6053,6 @@ Shared response elements
 </div>
 <br>
 
-
-<a name="responseparam_0"></a>
-<h3>Element <span class="nomtitre">responseparam</span>
-</h3>
-
-
-<div class="documentation">
-Parameters for a response
-
-Defines an externally adjustable parameter for the question, which the question can then use to allow other users to customize the problem for their courses without changing the source code of the problem.
-</div>
-<br>
-
-
-<div class="indentation">
-Attribute <span class="nomattribut">name</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">type</span>:
-    <div class="indentation">required<br>type: <tt>xs:string</tt>
-<br>
-</div>
-Attribute <span class="nomattribut">default</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-
-
-<div class="documentation">
-default value
-</div>
-<br>
-
-
-</div>
-Attribute <span class="nomattribut">description</span>:
-    <div class="indentation">optional<br>type: <tt>xs:string</tt>
-<br>
-</div>
-
-</div>
-
-<br>
-<br>
-<hr>
 
 <a name="textfield_0"></a>
 <h3>Element <span class="nomtitre">textfield</span>
@@ -8274,7 +8211,11 @@ For vector plots, determines the angle the arrow lines that return to the main l
 <div class="indentation">
 
 
-<div class="documentation">Curve data</div>
+<div class="documentation">
+Curve data
+
+The data must be either a perl array, @X, or a comma separated list, such as &ldquo;0.5,0.9,1.5,2.4&rdquo; (without quotes). &rsquo;NaN&rsquo; is a valid value. Note the the &rdquo;Y&rdquo; values are entered in a separate array.
+</div>
 <br>
 
 
@@ -8865,8 +8806,116 @@ Attribute <span class="nomattribut">name</span>:
 <br>
 </div>
 Attribute <span class="nomattribut">type</span>:
-    <div class="indentation">required<br>type: <tt>xs:string</tt>
-<br>
+    <div class="indentation">required<br>
+
+Possible values:<ul>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>date</tt>
+</li>
+
+<li>
+<tt>date_end</tt>
+</li>
+
+<li>
+<tt>date_interval</tt>
+</li>
+
+<li>
+<tt>date_start</tt>
+</li>
+
+<li>
+<tt>float</tt>
+</li>
+
+<li>
+<tt>float_pos</tt>
+</li>
+
+<li>
+<tt>int</tt>
+</li>
+
+<li>
+<tt>int_pos</tt>
+</li>
+
+<li>
+<tt>int_range</tt>
+</li>
+
+<li>
+<tt>int_zeropos</tt>
+</li>
+
+<li>
+<tt>string</tt>
+</li>
+
+<li>
+<tt>string_any</tt>
+</li>
+
+<li>
+<tt>string_discussvote</tt>
+</li>
+
+<li>
+<tt>string_examcode</tt>
+</li>
+
+<li>
+<tt>string_fileext</tt>
+</li>
+
+<li>
+<tt>string_ip</tt>
+</li>
+
+<li>
+<tt>string_lenient</tt>
+</li>
+
+<li>
+<tt>string_problemstatus</tt>
+</li>
+
+<li>
+<tt>string_questiontype</tt>
+</li>
+
+<li>
+<tt>string_useslots</tt>
+</li>
+
+<li>
+<tt>string_yesno</tt>
+</li>
+
+<li>
+<tt>tolerance</tt>
+</li>
+
+</ul>
+
+</li>
+<li>
+Value restriction based on xs:string<ul>
+
+<li>
+<tt>int_range,[0-9]+-[0-9]+</tt>
+</li>
+
+</ul>
+
+</li>
+</ul>
+
+
 </div>
 Attribute <span class="nomattribut">description</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
@@ -8875,6 +8924,14 @@ Attribute <span class="nomattribut">description</span>:
 Attribute <span class="nomattribut">default</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
 <br>
+
+
+<div class="documentation">
+default value
+</div>
+<br>
+
+
 </div>
 Attribute <span class="nomattribut">display</span>:
     <div class="indentation">optional<br>type: <tt>xs:string</tt>
@@ -12533,6 +12590,27 @@ Ordered list
 <a href="#coreattrs_0">coreattrs</a>
 <br>
 <br>
+Attribute <span class="nomattribut">type</span>:
+    <div class="indentation">optional<br>type: <tt>xs:string</tt>
+<br>
+
+
+<div class="documentation">
+Indicates the numbering type:
+- 'a' indicates lowercase letters,
+- 'A' indicates uppercase letters,
+- 'i' indicates lowercase Roman numerals,
+- 'I' indicates uppercase Roman numerals,
+- and '1' indicates numbers (default).
+
+The type set is used for the entire list unless a different type attribute is used within an enclosed &lt;li&gt; element.
+
+Note: This attribute was deprecated in HTML4, but reintroduced in HTML5. Unless the value of the list number matters (e.g. in legal or technical documents where items are to be referenced by their number/letter), the CSS list-style-type property should be used instead.
+</div>
+<br>
+
+
+</div>
 
 </div>
 <hr>
@@ -16856,7 +16934,7 @@ Value restriction based on xs:string<ul>
 <a href="#rectangle_1">rectangle</a>
             (under drawimage)
           <br>
-<a href="#responseparam_0">responseparam</a>
+<a href="#response-identification_0">response-identification</a>
 <br>
 <a href="#responses_0">responses</a>
 <br>
