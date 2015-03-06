@@ -64,3 +64,4 @@ cpan enum
 cpan aliased
 cpan Locale::Currency::Format
 cpan Number::FormatEng
+yum install libxml2-devel
