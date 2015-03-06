@@ -24,7 +24,6 @@ use Apache::lc_logs;
 use Math::SigFigs;
 use Number::Format qw(:subs);
 use Locale::Currency::Format;
-use Physics::Unit qw(:ALL);
 use Number::FormatEng qw(:all);
 
 our @ISA = qw(Exporter);
@@ -101,42 +100,37 @@ sub format {
 }
 
 #
-# Format a number with units.  If starting units are given, conversion is attempted
+# Format a number with units. Certain units can be given a metric prefix if requested. 
 #
 sub format_units {
-    my ($num, $unitout, $formatstring) = @_;
-    my ($result, $unitin);
-    # Look for starting units
-    if ($num =~ /^([\+\-\.\d]+[eE]?[\+\-\d]*)\s?([^\d]*)$/) {
-        $num = $1;
-        $unitin = $2;
-    } else {
+    my ($num, $units, $formatstring, $prefix) = @_;
+    # Validate number
+    unless ($num =~ /^([\+\-\.\d]+[eE]?[\+\-\d]*)$/) {
         # Invalid input, just return
         return $num;
     }
-    # Convert units if input units are present and conversion is possible
-    if ($unitin) {
-        eval {$result = GetUnit("$num $unitin")->convert("$unitout") };
-        # If conversion impossible, return original number with original units
-        return "$num $unitin" if $@;
-    } else { $result = $num; } # No starting units, skip conversion
-
-    # If unitout is a base SI unit, add a metric prefix
-    if ($unitout eq eval{GetUnit($unitout)->expanded}) {
-        $result = format_pref($result);
-        # If there is a metric prefix move it from the number string to the unit string
-        if ($result =~ /^(.*\d)([a-zA-Z])$/) {
-            $result = $1;
-            $unitout = $2.$unitout;
+    # Try to add a metric prefix if requested
+    if (($prefix eq 'true') or ($prefix eq '1')) {
+        # Only add a prefix if the requested unit is an appropriate base or derived
+        # unit that doesn't already have a prefix.
+        my @prefixable = qw(m s A K Hz L N Pa J eV W C V ohm ohms Ohm F T Wb H Sv);
+        if (grep {$_ eq $units} @prefixable) {
+            $num = format_pref($num);
+            # If there is a metric prefix move it from 
+            # the number string to the unit string
+            if ($num =~ /^(.*\d)([a-zA-Z])$/) {
+                $num = $1;
+                $units = $2.$units;
+            }
         }
     }
     # Apply requested formatstring.  Default to "3g"
     if ($formatstring) { 
-        $result = &format($result, $formatstring); 
+        $num = &format($num, $formatstring); 
     } else {
-        $result = &format($result, "3g"); 
+        $num = &format($num, "3g"); 
     }
-    return "$result $unitout";
+    return "$num $units";
 }
 
 #
@@ -145,7 +139,13 @@ sub format_units {
 #
 sub format_currency {
     my ($num,$currencycode)=@_;
-    return currency_format($currencycode, $num, FMT_SYMBOL);
+    # Make sure the given currency code is valid
+    if (currency_symbol($currencycode)) {
+        return currency_format($currencycode, $num, FMT_HTML);
+    } else {
+        # Otherwise just return the number
+        return $num;
+    }
 }
 
 sub start_num_html {
@@ -178,7 +178,7 @@ sub start_quantity_html {
     pop(@{$stack->{'tags'}});
 # Evaluate all variables that may be in there inside safespace, return formatted version
     return &format_units(&Apache::lc_asset_safeeval::texteval($safe,$text),
-            $token->[2]->{'unit'},$token->[2]->{'format'});
+            $token->[2]->{'units'},$token->[2]->{'format'},$token->[2]->{'prefix'});
 }
 
 1;

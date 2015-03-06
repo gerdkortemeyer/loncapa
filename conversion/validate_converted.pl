@@ -15,7 +15,7 @@ binmode(STDOUT, ':encoding(UTF-8)');
 binmode(STDERR, ':encoding(UTF-8)');
 
 if (scalar(@ARGV) != 1) {
-  print STDERR "Usage: perl validate_clean.pl file|directory\n";
+  print STDERR "Usage: perl validate_converted.pl file|directory\n";
   exit(1);
 }
 

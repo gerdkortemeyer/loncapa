@@ -344,6 +344,8 @@
       <xs:element ref="lm"/>
       <xs:element ref="chem"/>
       <xs:element ref="num"/>
+      <xs:element ref="monetary"/>
+      <xs:element ref="quantity"/>
       <xs:element ref="parse"/>
       <xs:element ref="algebra"/>
       <xs:element ref="textline"/>
@@ -5079,6 +5081,62 @@
     </xs:annotation>
     <xs:complexType mixed="true">
       <xs:attribute name="format" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="quantity">
+    <xs:annotation>
+      <xs:documentation>
+        Typesets a number with units.  Input can be either a real number or a Perl variable 
+        indicated by the "real-or-perl" type.   
+        "units" is a required string attribute that should contain some combination of 
+        units.  They will be appended to the number regardless of their validity.
+        The "format" attribute acts on the number the same as in the &lt;num&gt; element.  
+        The default value is "3g".
+        "prefix" is a boolean attribute which indicates the desire to add an appropriate 
+        metric prefix to the units.  Here is the list units that can accept a prefix.
+        [m, s, A, K, Hz, L, N, Pa, J, eV, W, C, V, ohm, ohms, Ohm, F, T, Wb, H, Sv]
+        Compound units are not currently supported.  The magnitude of the number is changed 
+        according to the prefix before the "format" attribue is applied.
+
+        &lt;quantity units="m"&gt;1234567&lt;/quantity&gt; results in 1.23 x 10^6 m
+        &lt;quantity format="2s" units="m"&gt;1234567&lt;/quantity&gt; results in 1200000 m
+        &lt;quantity format="3g" units="m" prefix="true"&gt;1234567&lt;/quantity&gt; results in 1.23 Mm
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="real-or-perl">
+          <xs:attribute name="units" type="xs:string" use="required" />
+          <xs:attribute name="format" type="xs:string" default="3g" />
+          <xs:attribute name="prefix" type="xs:boolean" default="false" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="monetary">
+    <xs:annotation>
+      <xs:documentation>
+        Typesets a monetary expression with the appropriate currency symbol and separator.
+        The required "currency" attribute must be a three letter string and should correspond
+        to an ISO 4217 currency code.
+
+        &lt;monetary currency="USD"&gt;3.505&lt;/monetary&gt; results in $3.50
+        &lt;monetary currency="EUR"&gt;3.50&lt;/monetary&gt; results in &#128;3,50
+        &lt;monetary currency="JPY"&gt;3.50&lt;/monetary&gt; results in &#165;4
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="real-or-perl">
+          <xs:attribute name="currency" use="required">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:pattern value="[A-Za-z]{3}"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:extension>
+      </xs:simpleContent>
     </xs:complexType>
   </xs:element>
   <xs:element name="algebra">
